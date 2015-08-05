@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc/spring-jdbc-3.0.xsd" 
+	xmlns:mybatis="http://mybatis.org/schema/mybatis-spring" 
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
+       	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+       	http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-3.0.xsd
+       	http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring.xsd"
+	default-lazy-init="true">
+
+	<!-- Activates scanning of @Autowired -->
+	<context:annotation-config/>
+	<context:component-scan base-package="com.alm.rivaledge.persistence.dao"/>
+	<context:component-scan base-package="com.alm.rivaledge.service"/>
+	<context:component-scan base-package="com.alm.rivaledge.service.impl"/>
+
+	<!-- Test data source -->
+	<!-- We should be using an in-memory database, but getting the data out of -->
+	<!-- the existing LMD database is turning out to be one big whack-a-mole   -->
+	<!-- exercise. Tables and columns popping up from all over the place.      -->
+	<!-- It would take far too much time that I don't have at this stage of    -->
+	<!-- the project sprint. - Jagan (fl867).                                  -->
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+		<property name="driverClassName"        value="${jdbcTest.driverClassName}"/>
+        <property name="url"                    value="${jdbcTest.url}"/>
+        <property name="username"               value="${jdbcTest.username}"/>
+        <property name="password"               value="${jdbcTest.password}"/>
+        <property name="initialSize" 			value="100"/>
+	</bean>
+	
+	<!-- MyBatis Spring Factory to wire mappers to XML -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="mapperLocations" value="classpath:lawma0_data/**/*.xml"/>
+    </bean>
+
+	<!-- Scan for mapper definitions -->
+	<mybatis:scan base-package="com.alm.rivaledge.persistence.dao.lawma0_data"/>
+    
+</beans>
