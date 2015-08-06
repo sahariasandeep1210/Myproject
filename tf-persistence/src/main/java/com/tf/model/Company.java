@@ -68,6 +68,19 @@ public class Company {
 	@Column(name="company_reference")
 	private String companyreference;
 	
+	@Column(name="OrganisationType")
+	private String orgType;
+	
+	@Column(name="industryclassification")
+	private String indClassification;
+	
+	@Column(name="sic_code")
+	private Long sicCode; 
+	
+	@Column(name="company_type")
+	private String companyType;	
+	
+	
 	@OneToMany(mappedBy="company")
 	private Set<User> users;
 	
@@ -211,6 +224,46 @@ public class Company {
 		this.companyreference = companyreference;
 	}
 
+	public String getOrgType() {
+		return orgType;
+	}
+
+	public void setOrgType(String orgType) {
+		this.orgType = orgType;
+	}
+
+	public String getIndClassification() {
+		return indClassification;
+	}
+
+	public void setIndClassification(String indClassification) {
+		this.indClassification = indClassification;
+	}
+
+	public Long getSicCode() {
+		return sicCode;
+	}
+
+	public void setSicCode(Long sicCode) {
+		this.sicCode = sicCode;
+	}
+
+	public String getCompanyType() {
+		return companyType;
+	}
+
+	public void setCompanyType(String companyType) {
+		this.companyType = companyType;
+	}
+
+	public Set<User> getUsers() {
+		return users;
+	}
+
+	public void setUsers(Set<User> users) {
+		this.users = users;
+	}
+
 	@Override
 	public String toString() {
 		return "Company [id=" + id + ", name=" + name + ", altname=" + altname
@@ -221,7 +274,11 @@ public class Company {
 				+ shareholders + ", customers=" + customers + ", accounts="
 				+ accounts + ", jurisdiction=" + jurisdiction + ", bustype="
 				+ bustype + ", activestatus=" + activestatus
-				+ ", companyreference=" + companyreference + "]";
+				+ ", companyreference=" + companyreference + ", orgType="
+				+ orgType + ", indClassification=" + indClassification
+				+ ", sicCode=" + sicCode + ", companyType=" + companyType
+				+ ", users=" + users + "]";
 	}
+
 
 }

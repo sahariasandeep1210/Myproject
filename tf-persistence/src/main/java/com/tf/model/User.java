@@ -83,7 +83,10 @@ public class User {
 	private Integer updateFlag; 
 	
 	@Column(name="active_status")
-	private Integer activeStatus;
+	private Integer activeStatus; 
+	
+	@Column(name="companydirector")
+	private Integer companyDirector;
 	
 	
 	@ManyToOne
@@ -321,6 +324,16 @@ public class User {
 	}
 
 
+	public Integer getCompanyDirector() {
+		return companyDirector;
+	}
+
+
+	public void setCompanyDirector(Integer companyDirector) {
+		this.companyDirector = companyDirector;
+	}
+
+
 	public Company getCompany() {
 		return company;
 	}
@@ -343,8 +356,9 @@ public class User {
 				+ ", tcAgree=" + tcAgree + ", dirConfirm=" + dirConfirm
 				+ ", checksAgree=" + checksAgree + ", companyID=" + companyID
 				+ ", memtype=" + memtype + ", updateFlag=" + updateFlag
-				+ ", activeStatus=" + activeStatus + ", company=" + company
-				+ "]";
+				+ ", activeStatus=" + activeStatus + ", companyDirector="
+				+ companyDirector + ", company=" + company + "]";
 	}
+	
 
 }
