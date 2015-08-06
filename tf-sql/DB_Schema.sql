@@ -63,3 +63,4 @@ ALTER TABLE tf_company ADD OrganisationType VARCHAR(100);
 ALTER TABLE tf_company ADD industryclassification VARCHAR(150);
 ALTER TABLE tf_company ADD sic_code INT;
 ALTER TABLE tf_company ADD company_type VARCHAR(150);
+ALTER TABLE tf_user ADD companydirector VARCHAR(10);
