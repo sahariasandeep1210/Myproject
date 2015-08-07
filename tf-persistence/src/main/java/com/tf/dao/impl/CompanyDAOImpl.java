@@ -3,6 +3,7 @@ package com.tf.dao.impl;
 import java.util.List;
 
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.tf.dao.CompanyDAO;
 import com.tf.model.Company;
@@ -12,6 +13,7 @@ import com.tf.model.Company;
 public class CompanyDAOImpl  extends BaseDAO implements CompanyDAO{
 	
 	@SuppressWarnings("unchecked")
+	@Transactional
 	public List<Company> getCompanies() {
 		_log.debug("Inside getCompanies ");
 		try {
@@ -26,6 +28,8 @@ public class CompanyDAOImpl  extends BaseDAO implements CompanyDAO{
 		}
 	}
 	
+	
+	@Transactional
 	public void addCompany(Company company) {
 		_log.debug("persisting Company instance");
 		try {
@@ -37,6 +41,7 @@ public class CompanyDAOImpl  extends BaseDAO implements CompanyDAO{
 		}
 	}
 	
+	@Transactional
 	public Company findById(long id) {
 		_log.debug("getting Pizza instance with id: " + id);
 		try {

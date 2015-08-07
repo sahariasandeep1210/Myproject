@@ -8,6 +8,7 @@
     <session-factory>
         <mapping class="com.tf.model.Company" />
        <mapping class="com.tf.model.User" /> 
+       <mapping class="com.tf.model.CompanyType" /> 
     </session-factory>
 	    
 </hibernate-configuration>

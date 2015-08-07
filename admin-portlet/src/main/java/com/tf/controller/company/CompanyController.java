@@ -1,19 +1,12 @@
 package com.tf.controller.company;
 
-import java.beans.PropertyEditorSupport;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.portlet.ModelAndView;
@@ -31,9 +24,7 @@ import com.liferay.portal.theme.ThemeDisplay;
 import com.tf.controller.BaseController;
 import com.tf.model.Company;
 import com.tf.model.User;
-import com.tf.service.CompanyService;
 import com.tf.util.CompanyStatus;
-import com.tf.util.MyCustomNumberEditor;
 
 
 /**
@@ -45,30 +36,9 @@ import com.tf.util.MyCustomNumberEditor;
 @RequestMapping(value = "VIEW")
 public class CompanyController extends BaseController {
 	
-	@Autowired
-	private CompanyService companyService;
 	
-	@InitBinder
-	public void binder(WebDataBinder binder) {
-		binder.registerCustomEditor(Date.class, new PropertyEditorSupport() {
-		    public void setAsText(String value) {
-		        try {
-		            setValue(new SimpleDateFormat("MM/dd/yyyy").parse(value));
-		        } catch(Exception e) {
-		            setValue(null);
-		        }
-		    }
-		    public String getAsText() {
-		    	if(getValue()!=null){
-		    		return new SimpleDateFormat("MM/dd/yyyy").format((Date) getValue());
-		    	}else{
-		    		return null;
-		    	}	        
-		    }
-		});
-		
-		binder.registerCustomEditor(Long.class,new MyCustomNumberEditor(Long.class, true));
-	}
+	
+
 	
 	@RenderMapping
 	protected ModelAndView renderCompanyList(@ModelAttribute("companyModel") Company company,ModelMap model,RenderRequest request, RenderResponse response) throws Exception {		
@@ -84,7 +54,10 @@ public class CompanyController extends BaseController {
 		if(companyID!=0){
 			 company=companyService.findById(companyID);			
 		}
+		
 		model.put("companyModel", company);
+		model.put("orgTypeMap", orgTypeMap);
+		model.put("companyTypeMap", initialzeCompanyTypeMap());
 		return new ModelAndView("createcompany", model);		
 	}
 	

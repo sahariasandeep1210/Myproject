@@ -277,7 +277,7 @@ public class Company {
 				+ ", companyreference=" + companyreference + ", orgType="
 				+ orgType + ", indClassification=" + indClassification
 				+ ", sicCode=" + sicCode + ", companyType=" + companyType
-				+ ", users=" + users + "]";
+				+ "]";
 	}
 
 

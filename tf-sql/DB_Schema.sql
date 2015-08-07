@@ -64,3 +64,14 @@ ALTER TABLE tf_company ADD industryclassification VARCHAR(150);
 ALTER TABLE tf_company ADD sic_code INT;
 ALTER TABLE tf_company ADD company_type VARCHAR(150);
 ALTER TABLE tf_user ADD companydirector VARCHAR(10);
+
+CREATE TABLE `tf_company_type` (
+  `id` INT(11) NOT NULL ,
+   NAME VARCHAR(45) CHARACTER SET utf8 DEFAULT NULL,
+   PRIMARY KEY (`id`),
+   UNIQUE KEY `id_UNIQUE` (`id`));
+   
+INSERT INTO tf_company_type VALUES (1,"Primary Investor");
+INSERT INTO tf_company_type VALUES (2,"Secondary Investor");
+INSERT INTO tf_company_type VALUES (3,"Admin");
+INSERT INTO tf_company_type VALUES (4,"Seller");

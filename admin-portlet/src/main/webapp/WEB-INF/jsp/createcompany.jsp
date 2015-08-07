@@ -79,6 +79,19 @@
 				<form:input path="website" cssClass="span6" />
 			</div>			
 		</div>
+		
+		<div class="row-fluid">
+			<div class="span6">
+				<label class="span6">Organisation Type:</label>
+				<form:select path="orgType" items="${orgTypeMap}" class="dropdown"  id="orgType"  placeholder="Organisation Type"  />
+			</div>
+			<div class="span6">
+				<label class="span6">Company Type:</label>
+				<form:select path="companyType" items="${companyTypeMap}" class="dropdown"  id="companyType"  placeholder="CompanyType Type"  />
+
+			</div>
+					
+		</div>
 		<div class="row-fluid">
 			<div class="span6">
 				<label class="span6">Directors:</label>
