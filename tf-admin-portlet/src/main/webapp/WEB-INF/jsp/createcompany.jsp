@@ -154,7 +154,7 @@
 				</div>
 				<div class="span6">  
 				  <div class="span12">
-				  	<h4 style="float: right !important;"><a href="${createUserURL}" style="color: #295780;font-weight: bold;"><i class="fa fa fa-plus"></i> Add User</a></h4>
+				  	<h4 style="float: right !important;"><a href="${createUserURL}&companyID=${companyModel.id}" style="color: #295780;font-weight: bold;"><i class="fa fa fa-plus"></i> Add User</a></h4>
 				  </div>
 				  </div>			
 		</div>
@@ -172,14 +172,14 @@
 					</tr>
 				</thead>
 				<tbody>
-					<c:forEach items="${allUsers}" var="user">
+					<c:forEach items="${users}" var="user">
 						<tr onclick="window.location.href='${createUserURL}&userID=${user.id}'">
 							<td>${user.firstName} </td>
 							<td>${user.lastName}</td>
 							<td>${user.username}</td>
 							<td>${user.email}</td>
 							<td>${user.mobile}</td>
-							<td>${company.level}</td>							
+							<td>${user.level}</td>							
 						</tr>
 					</c:forEach>
 				</tbody>

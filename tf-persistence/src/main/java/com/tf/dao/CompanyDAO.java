@@ -11,5 +11,6 @@ public interface CompanyDAO {
 	public void addCompany(Company company);
 	
 	public Company findById(long id);
-
+	
+	public String  getCompanyTypebyID(long id);
 }

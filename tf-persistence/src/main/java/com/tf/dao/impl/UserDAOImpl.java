@@ -4,17 +4,19 @@ import java.util.List;
 
 import org.hibernate.Query;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.tf.dao.UserDAO;
+import com.tf.model.Company;
 import com.tf.model.User;
 
 
 @Repository
+@Transactional
 public class UserDAOImpl extends BaseDAO  implements UserDAO{
 	
 	
 	public void addorUpdateUser(User user) {
-		_log.debug("persisting Company instance");
 		try {
 			sessionFactory.getCurrentSession().saveOrUpdate(user);
 			_log.debug("persist successful"+user);
@@ -24,11 +26,28 @@ public class UserDAOImpl extends BaseDAO  implements UserDAO{
 		}
 	}
 	
+	public User findById(long id) {
+		_log.debug("getting User instance with id: " + id);
+		try {
+			User instance = (User) sessionFactory.getCurrentSession().get(
+					"com.tf.model.User", id);
+			if (instance == null) {
+				_log.debug("get successful, no instance found");
+			} else {
+				_log.debug("get successful, instance found");
+			}
+			return instance;
+		} catch (RuntimeException re) {
+			_log.error("get failed", re);
+			throw re;
+		}
+	}
+	
 	@SuppressWarnings("unchecked")
 	public List<User> findUserByCompanyId(long id) {
 		_log.debug("getting User instance with id: " + id);
 		try {
-			Query query = sessionFactory.getCurrentSession().createQuery("from User where companyID = :companyID ");
+			Query query = sessionFactory.getCurrentSession().createQuery("from User where company.id = :companyID ");
 			query.setParameter("companyID", id);
 			
 			List<User> list = query.list();

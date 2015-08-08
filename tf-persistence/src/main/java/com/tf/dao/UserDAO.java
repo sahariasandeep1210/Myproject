@@ -9,5 +9,7 @@ public interface UserDAO {
 	public void addorUpdateUser(User user);
 	
 	public List<User> findUserByCompanyId(long id);
+	
+	public User findById(long id) ;
 
 }

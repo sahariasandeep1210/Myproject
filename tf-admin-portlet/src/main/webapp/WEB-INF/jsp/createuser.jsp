@@ -1,7 +1,9 @@
 <%@include file="init.jsp"%>
 
 
-
+<portlet:renderURL var="createURL">
+	<portlet:param name="render" value="createCompany" />
+</portlet:renderURL>
 <portlet:actionURL var="createUserURL">
 	<portlet:param name="action" value="createUser" />
 </portlet:actionURL>
@@ -18,8 +20,8 @@
 <div class="container-fluid">
 	<form:form commandName="userModel" method="post"
 		action="${createUserURL}" id="createUser" autocomplete="off" name="userDetail">
-		<input type="hidden" value="${deleteUserURL}" id="deleteURL">
-
+		<input type="hidden" value="${deleteUserURL}" id="deleteURL"> 
+		<input type="hidden" value="${companyID}" id="companyID" name="company">
 		<div class="row-fluid">
 			<div class="span12" style="padding-bottom: 30px;">
 				<div class="span4"></div>
@@ -77,7 +79,25 @@
 				<form:input path="level" cssClass="span6" />
 			</div>			
 		</div>
-		
+
+		<div class="row-fluid">
+			<div class="span6">
+				<label class="span3"> 
+					<form:radiobutton path="companyDirector" value="Yes" id="yesOption" />Yes
+				</label> 
+				<label class="span3"> 
+					<form:radiobutton  path="companyDirector" value="No" id="noOption" />No
+				</label>
+
+			</div>
+		</div>
+		<div class="row-fluid">
+			<div class="span6">			
+				<label class="span6">User Type:</label>
+				<form:select path="type" items="${userTypesMap}" class="dropdown"  id="type"  placeholder="User Type"  />
+			</div>
+		</div>
+
 		<div class="row-fluid">
 			<div class="span6">
 			<c:choose>
@@ -93,7 +113,7 @@
 				
 				
 				
-				<input type="button" value="Go Back" 			 class="btn btn-primary"  data-url="${companyListURL}"	id="cmpbackBtn"  />
+				<input type="button" value="Go Back" 			 class="btn btn-primary"  data-url="${createURL}&companyID=${companyID}"	id="cmpbackBtn"  />
 				<%-- <button formaction="${defaultRender}" class="btn btn-primary"><i class="fa fa-reply fa-1"></i>  Go Back</button>  --%>
 			</div>
 		</div>

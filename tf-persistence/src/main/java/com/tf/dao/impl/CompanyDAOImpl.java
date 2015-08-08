@@ -10,10 +10,11 @@ import com.tf.model.Company;
 
 
 @Repository
+@Transactional
 public class CompanyDAOImpl  extends BaseDAO implements CompanyDAO{
 	
 	@SuppressWarnings("unchecked")
-	@Transactional
+
 	public List<Company> getCompanies() {
 		_log.debug("Inside getCompanies ");
 		try {
@@ -29,7 +30,6 @@ public class CompanyDAOImpl  extends BaseDAO implements CompanyDAO{
 	}
 	
 	
-	@Transactional
 	public void addCompany(Company company) {
 		_log.debug("persisting Company instance");
 		try {
@@ -41,9 +41,8 @@ public class CompanyDAOImpl  extends BaseDAO implements CompanyDAO{
 		}
 	}
 	
-	@Transactional
 	public Company findById(long id) {
-		_log.debug("getting Pizza instance with id: " + id);
+		_log.debug("getting User instance with id: " + id);
 		try {
 			Company instance = (Company) sessionFactory.getCurrentSession().get(
 					"com.tf.model.Company", id);
@@ -53,6 +52,27 @@ public class CompanyDAOImpl  extends BaseDAO implements CompanyDAO{
 				_log.debug("get successful, instance found");
 			}
 			return instance;
+		} catch (RuntimeException re) {
+			_log.error("get failed", re);
+			throw re;
+		}
+	}
+	
+
+	public String  getCompanyTypebyID(long id) {
+		_log.debug("getting User instance with id: " + id);
+		String companyType="";
+		try {
+			if(id!=0){
+				
+				companyType = (String) sessionFactory.getCurrentSession().createQuery("select cmp.companyType from Company cmp where cmp.id = :id").setLong("id",id).uniqueResult();
+				if (companyType == null) {
+					_log.debug("get successful, no instance found");
+				} else {
+					_log.debug("get successful, instance found");
+				}
+			}
+			return companyType;
 		} catch (RuntimeException re) {
 			_log.error("get failed", re);
 			throw re;

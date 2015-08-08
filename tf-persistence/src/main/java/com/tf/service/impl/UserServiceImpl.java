@@ -17,13 +17,16 @@ public class UserServiceImpl implements UserService {
 	private UserDAO userDAO;
 
 	public void addorUpdateUser(User user) {
-		// TODO Auto-generated method stub
-		
+		userDAO.addorUpdateUser(user);		
 	}
 
 	public List<User> findUserByCompanyId(long id) {
 		// TODO Auto-generated method stub
-		return null;
+		return userDAO.findUserByCompanyId(id);
+	}
+	
+	public User findById(long id){
+		return userDAO.findById(id);
 	}
 
 }

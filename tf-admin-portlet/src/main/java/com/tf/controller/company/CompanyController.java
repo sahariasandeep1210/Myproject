@@ -1,5 +1,9 @@
 package com.tf.controller.company;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 import javax.portlet.RenderRequest;
@@ -51,13 +55,17 @@ public class CompanyController extends BaseController {
 	@RenderMapping(params="render=createCompany")
 	protected ModelAndView renderCreateCompany(@ModelAttribute("companyModel") Company company,ModelMap model,RenderRequest request, RenderResponse response) throws Exception {	
 		long companyID = ParamUtil.getLong(request, "companyID");
+		List<User> users =new ArrayList<User>();
 		if(companyID!=0){
-			 company=companyService.findById(companyID);			
+			 company=companyService.findById(companyID);
+			 users=userService.findUserByCompanyId(companyID);
+			 
 		}
 		
 		model.put("companyModel", company);
+		model.put("users", users);
 		model.put("orgTypeMap", orgTypeMap);
-		model.put("companyTypeMap", initialzeCompanyTypeMap());
+		model.put("companyTypeMap", companyTypeMap);
 		return new ModelAndView("createcompany", model);		
 	}
 	
@@ -84,10 +92,14 @@ public class CompanyController extends BaseController {
 	@RenderMapping(params="render=createUser")
 	protected ModelAndView renderCreateUser(@ModelAttribute("userModel") User user,ModelMap model,RenderRequest request, RenderResponse response) throws Exception {	
 		long userID = ParamUtil.getLong(request, "userID");
+		long companyID = ParamUtil.getLong(request, "companyID");
 		if(userID!=0){
-			 //company=companyService.findById(userID);			
+			user=userService.findById(userID);	
 		}
+		Map<String,String> userTypesMap=adminUtility.getUserTypes(adminUtility.getUserID(request), companyService.getCompanyTypebyID(companyID), request);
 		model.put("userModel", user);
+		model.put("companyID", companyID);
+		model.put("userTypesMap", userTypesMap);
 		return new ModelAndView("createuser", model);		
 	}
 	
@@ -99,8 +111,14 @@ public class CompanyController extends BaseController {
 		System.out.println("userModel:::"+user);	
 		com.liferay.portal.model.User lruser = addLiferayUser(user, request);
 		System.out.println("lruser:::"+lruser);
+		System.out.println("User>>>>>>>>>>>>>>>>>>>>:::"+user);
 		//Liferay user has been added now we need to add user information to tf_user table
 		//and map the same to Liferay userId and Company/Seller
+		user.setActive(0);
+		user.setLiferayUserId(lruser.getUserId());
+		userService.addorUpdateUser(user);
+		System.out.println("After User Added");
+		
 		
 	}
 
@@ -108,9 +126,9 @@ public class CompanyController extends BaseController {
 			ActionRequest request) throws PortalException, SystemException {
 		ThemeDisplay themeDisplay=(ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);	
 		
-		boolean autoPassword = true;
-		String password1 = null;
-		String password2 = null;
+		boolean autoPassword = false;
+		String password1 = "test123";
+		String password2 = "test123";
 		boolean autoScreenName = false;
 		String screenName = user.getUsername();
 		String emailAddress = user.getEmail();

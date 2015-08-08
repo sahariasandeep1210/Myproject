@@ -44,7 +44,7 @@ public class User {
 	private String type;
 	
 	@Column(name="active")
-	private String active;	
+	private Integer active;	
 	
 	@Column(name="email")
 	private String email;
@@ -86,7 +86,7 @@ public class User {
 	private Integer activeStatus; 
 	
 	@Column(name="companydirector")
-	private Integer companyDirector;
+	private String companyDirector;
 	
 	
 	@ManyToOne
@@ -184,12 +184,12 @@ public class User {
 	}
 
 
-	public String getActive() {
+	public Integer getActive() {
 		return active;
 	}
 
 
-	public void setActive(String active) {
+	public void setActive(Integer active) {
 		this.active = active;
 	}
 
@@ -324,12 +324,12 @@ public class User {
 	}
 
 
-	public Integer getCompanyDirector() {
+	public String getCompanyDirector() {
 		return companyDirector;
 	}
 
 
-	public void setCompanyDirector(Integer companyDirector) {
+	public void setCompanyDirector(String companyDirector) {
 		this.companyDirector = companyDirector;
 	}
 

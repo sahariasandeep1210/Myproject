@@ -30,5 +30,9 @@ public class CompanyServiceImpl implements CompanyService {
 		// TODO Auto-generated method stub
 		return companyDAO.findById(id);
 	}
+	
+	public String  getCompanyTypebyID(long id)	{
+	return companyDAO.getCompanyTypebyID(id);
+}
 
 }
