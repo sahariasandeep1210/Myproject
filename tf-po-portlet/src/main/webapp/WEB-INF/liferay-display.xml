@@ -3,6 +3,6 @@
 
 <display>
 	<category name="Trade Finance - Admin">
-		<portlet id="tf-company-portlet"/>		
+		<portlet id="tf-po-portlet"/>		
 	</category>
 </display>
