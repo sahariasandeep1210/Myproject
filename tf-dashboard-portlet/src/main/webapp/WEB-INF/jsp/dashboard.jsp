@@ -9,7 +9,7 @@
 			<div class="row" style="margin-top: :30px">
 				<div>
 					<p id="poblock">
-						<a href=""  class="btn btn-primary"  ><i class="fa fa-plus fa-1"></i> Create Purchase order</a>
+						<a href="${createPOURL}"  class="btn btn-primary"  ><i class="fa fa-plus fa-1"></i> Create Purchase order</a>
 					</p>
 				</div>
 			</div>
@@ -21,22 +21,19 @@
 
 
 	<div class="span3">
-		<!-- <div class="white-panel pn">
+		<div class="white-panel pn">
 			<div class="white-header">
-				<h5>TOP PRODUCT</h5>
+				<h4>Manage Seller Information</h4>
 			</div>
-			<div class="row">
-				<div class="col-sm-6 col-xs-6 goleft">
-					<p>
-						<i class="fa fa-heart"></i> 122
+			<div class="row" style="margin-top: :30px">
+				<div>
+					<p id="poblock">
+						<a href="${mangaeCompanyURL}"  class="btn btn-primary"  > <i class="fa fa-industryfa-1" ></i> Manage Seller</a>
 					</p>
 				</div>
-				<div class="col-sm-6 col-xs-6"></div>
 			</div>
-			<div class="centered">
-				<img src="assets/img/product.png" width="120">
-			</div> 
-		</div>-->
+			
+		</div>
 	</div>
 	<!-- /col-md-4 -->
 

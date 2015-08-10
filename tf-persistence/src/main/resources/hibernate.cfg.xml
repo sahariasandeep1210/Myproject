@@ -9,6 +9,7 @@
         <mapping class="com.tf.model.Company" />
        <mapping class="com.tf.model.User" /> 
        <mapping class="com.tf.model.CompanyType" /> 
+       <mapping class="com.tf.model.PurchaseOrderModel" />
     </session-factory>
 	    
 </hibernate-configuration>
