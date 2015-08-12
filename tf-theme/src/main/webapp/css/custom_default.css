@@ -21,7 +21,7 @@ $colorBackground: #F5F5F5;
 	background: $colorBackground;
 
 	#header-wrapper {
-		background-image: url(../images/bg_t.png);
+		/* background-image: url(../images/bg_t.png); */
 		height: 367px;
 		position: relative;
 	}
@@ -55,8 +55,8 @@ $colorBackground: #F5F5F5;
 	#main-content > .portlet,
 	#main-content > .portlet-layout,
 	#content .breadcrumb {
-	   /*  background: #FFF; */
-	    background: #ECEBE7; 
+	   background: #FFF;
+	   /*  background: #ECEBE7;  */
 	   
 	    margin-bottom: 18px;
 	    @include box-shadow(0 0 3px #999);
@@ -116,8 +116,10 @@ $colorBackground: #F5F5F5;
 	
 	#sitesearch {
 		.site-search-button {
-			background-color: #6A6A6A;
-			color: #BBBBBB;
+			/* background-color: #6A6A6A; */
+			/* color: #BBBBBB; */
+			background-color:#295780;
+			color: #FFFFFF; 
 		}
 	}
 

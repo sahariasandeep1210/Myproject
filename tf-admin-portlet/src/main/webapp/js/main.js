@@ -75,6 +75,16 @@ $(document).ready(function(){
 		var url = $(this).attr('data-url');
 		submitUserForms(url);
 	});
+	
+	$("#dateestablished").datepicker({
+		changeMonth : true,
+		changeYear : true,
+		showOn : "button",
+		buttonImage : "/tf-theme/images/calendar.jpg",
+		buttonImageOnly : true,
+		buttonText : "Select date"
+	});
+	
 	 
 });
 

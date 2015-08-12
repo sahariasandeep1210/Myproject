@@ -50,8 +50,8 @@
 
 			</div>
 			<div class="span6">
-				<label class="span6">Date Established:</label>
-				<form:input path="dateestablished" cssClass="span6" />
+				<label class="span5">Date Established:</label>
+				<form:input path="dateestablished" cssClass="span6" id="dateestablished" />
 
 			</div>
 

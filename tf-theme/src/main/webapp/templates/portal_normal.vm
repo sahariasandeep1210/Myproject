@@ -58,7 +58,7 @@ $theme.include($body_top_include)
 					#if ($site_header_icon != 'no-site-header-icon')
 						<span class="icon-stack">
 							<i class="icon-circle icon-stack-base"></i>
-							<i class="site-header-icon $site_header_icon"></i>
+							<i class="icon-suitcase icon-1" style="color: white;"></i>
 						</span>
 					#else
 						<img alt="$logo_description" height="$site_logo_height" src="$site_logo" width="$site_logo_width" />
