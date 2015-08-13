@@ -1,0 +1,521 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+@import "compass";
+@import "mixins";
+
+@import url(custom_default.css);
+@import url(custom_dashboard.css);
+@import url(custom_responsive.css);
+@import url(custom_extras.css);
+
+/* $colorBackgroundBody: #eeebe8; */
+$colorBackgroundBody: #fff;
+$colorHeading: #5E60B2;
+$colorHighlightWarn: #953537;
+$colorHighlightInfo: #5CB260;
+
+$colorHudCrumbBackground: #000;
+$colorHudCrumbText: #FFF;
+
+@font-face {
+	font-family: 'Open Sans';
+	font-style: normal;
+	font-weight: 400;
+	src: url('../fonts/opensans/OpenSans-Regular.eot');
+    src: local('Open Sans'),
+		 local('OpenSans'),
+    	 url('../fonts/opensans/OpenSans-Regular.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/opensans/OpenSans-Regular.woff') format('woff'),
+         url('../fonts/opensans/OpenSans-Regular.ttf') format('truetype');
+}
+
+@font-face {
+	font-family: 'Open Sans';
+	font-style: normal;
+	font-weight: 300;
+	src: url('../fonts/opensans/OpenSans-Light.eot');
+    src: local('Open Sans Light'),
+		 local('OpenSans-Light'),
+    	 url('../fonts/opensans/OpenSans-Light.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/opensans/OpenSans-Light.woff') format('woff'),
+         url('../fonts/opensans/OpenSans-Light.ttf') format('truetype');
+}
+
+
+
+/* ----- WhiteHall Finance CSS  Start -------- */
+
+.breadcrumb {	
+	margin-bottom: 0px !important;
+}
+
+.portlet-layout  {
+	box-shadow:00 !important;
+}
+
+table.tablesorter thead tr th.tablesorter-headerAsc:after,
+table.tablesorter thead tr th.tablesorter-headerDesc:after,
+table.tablesorter thead tr th.tablesorter-header:after {
+  font-family: FontAwesome;
+}
+table.tablesorter thead tr th.tablesorter-header:after {
+  content: "\f0dc";
+  float: right;
+  margin-top: -20px;
+}
+table.tablesorter thead tr th.tablesorter-headerAsc:after {
+  content: "\f0de";
+}
+table.tablesorter thead tr th.tablesorter-headerDesc:after {
+  content: "\f0dd";
+}
+table.tablesorter thead tr th {
+	 background-color: #295780 !important;
+	/* background-color: #555555 !important; */
+	/* color: #ccc; */ 
+	color: #FFFFFF; 
+	text-align: left;
+	padding: 5px;
+	font-weight: normal;
+	text-shadow: none;
+	border-right: 2px solid #fff;
+	font-family: calibari;
+}
+
+.btn-primary {
+	 background-color: #295780 !important; 
+	/* background-color: #555555 !important; */
+	/* color: #ccc !important; */
+	color: #FFFFFF; 
+	text-align: !important;
+	text-shadow: none;
+	font-weight: normal !important;
+	background-image: linear-gradient(to bottom, #295780, #295780) !important;
+}
+
+.tablesorter input.tablesorter-filter, .tablesorter select.tablesorter-filter {
+    width: 98%;
+    height: auto;
+    margin: 0;
+    padding: 4px;
+    background-color: #fff;
+    border: 1px solid #bbb;
+    color: #333;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    -webkit-transition: height 0.1s ease;
+    -moz-transition: height 0.1s ease;
+    -o-transition: height 0.1s ease;
+    transition: height 0.1s ease;
+}
+
+.table-responsive {
+  min-height: .01%;
+  overflow-x: auto;
+}
+
+.aui label{
+	/* color: #555 !important;  */
+	/* color: #295780 !important; */
+    font-weight: bold !important;
+ }
+ 
+ .aui h4 {
+ 	/* color: #555 !important; */
+ 	color: #295780 !important;
+    font-weight: bold !important;
+ }
+ 
+ .portlet-title {
+ 	display: none !important;
+ }
+ 
+ .ui-datepicker-trigger {
+    display: inline;
+    padding:0px;
+    padding-left:3px;
+    vertical-align:baseline;
+    position:relative;
+}
+ 
+    
+
+
+
+
+@media screen and (max-width: 767px) {
+  .table-responsive {
+    width: 100%;
+    margin-bottom: 15px;
+    overflow-y: hidden;
+    -ms-overflow-style: -ms-autohiding-scrollbar;
+    border: 1px solid #ddd;
+  }
+  .table-responsive > .table {
+    margin-bottom: 0;
+  }
+  .table-responsive > .table > thead > tr > th,
+  .table-responsive > .table > tbody > tr > th,
+  .table-responsive > .table > tfoot > tr > th,
+  .table-responsive > .table > thead > tr > td,
+  .table-responsive > .table > tbody > tr > td,
+  .table-responsive > .table > tfoot > tr > td {
+    white-space: nowrap;
+  }
+  .table-responsive > .table-bordered {
+    border: 0;
+  }
+  .table-responsive > .table-bordered > thead > tr > th:first-child,
+  .table-responsive > .table-bordered > tbody > tr > th:first-child,
+  .table-responsive > .table-bordered > tfoot > tr > th:first-child,
+  .table-responsive > .table-bordered > thead > tr > td:first-child,
+  .table-responsive > .table-bordered > tbody > tr > td:first-child,
+  .table-responsive > .table-bordered > tfoot > tr > td:first-child {
+    border-left: 0;
+  }
+  .table-responsive > .table-bordered > thead > tr > th:last-child,
+  .table-responsive > .table-bordered > tbody > tr > th:last-child,
+  .table-responsive > .table-bordered > tfoot > tr > th:last-child,
+  .table-responsive > .table-bordered > thead > tr > td:last-child,
+  .table-responsive > .table-bordered > tbody > tr > td:last-child,
+  .table-responsive > .table-bordered > tfoot > tr > td:last-child {
+    border-right: 0;
+  }
+  .table-responsive > .table-bordered > tbody > tr:last-child > th,
+  .table-responsive > .table-bordered > tfoot > tr:last-child > th,
+  .table-responsive > .table-bordered > tbody > tr:last-child > td,
+  .table-responsive > .table-bordered > tfoot > tr:last-child > td {
+    border-bottom: 0;
+  }
+}
+
+
+
+/* ----- WhiteHall Finance CSS  End-------- */
+
+/* ---------- Base styles ---------- */
+
+.aui {
+	height: 100%;
+
+	.portal-normal {
+		min-height: 100%;
+		background: $colorBackgroundBody;
+		font-family: 'Open Sans';
+		font-weight: 400;
+	}
+
+	a {
+		&:hover {
+			color: $colorHighlightWarn;
+		}
+	}
+
+	h2 {
+		font-size: 2.2em;
+	}
+
+	#wrapper {
+		height: 100%;
+	    padding: 0;
+    	margin: auto;
+    	position: relative;
+	}
+
+	#banner {
+		margin: auto;
+		overflow-y: auto;
+
+		.site-title {
+			margin: 0;
+			font-weight: 300;
+			font-size: 34px;
+			
+			> a:hover, > a:focus {
+				text-decoration: none;
+			}
+			
+			.logo > span {
+				vertical-align: middle;
+			}
+
+			.site-name {
+				/* color: #CCCCCC; */
+				color: #FFFFFF; 
+				font-size: 1.5em;
+				margin-left: -0.1em;
+			}
+			
+			.site-header-icon {
+				text-shadow: 0 1px 0 #BBB;
+			}
+		}
+	}
+
+	#subbanner {
+	   color: #555 !important;
+		font-size: 2.7em;
+		font-weight: 300;
+		line-height: 1.6em;
+		margin-top: 5px;
+		text-align: center;
+		vertical-align: middle;
+		text-shadow: 0 0 3px #bbb;
+
+		.nav-banner-toggle {
+			display: none;
+		}
+	}
+
+	#navigation {
+		.navbar-inner {
+			background: none;
+			border: none;
+			padding: 0;
+			@include box-shadow(none);
+		}
+
+		.nav {
+			margin: 0;
+
+			> li {
+				border: 1px solid #888;
+				border-width: 0 0 0 1px;
+				margin: 0;
+				padding: 0 6px;
+
+				&:first-child {
+					border-width: 0 !important;
+
+					&.lfr-nav-item > a:before {
+					    content: "\f015";
+					    font-family: 'fontawesome-alloy';
+					}
+				}
+
+				&.open {
+					> a {
+						color: #888;
+						background-color: #EEE;
+					}
+				}
+
+				> a {
+					background: none;
+					/* color: #BBB; */
+					color: #fff !important;
+					font-weight: 300;
+					text-transform: uppercase;
+					padding: 8px 12px;
+					margin: 0;
+					@include text-shadow(none);
+					@include border-radius(0);
+
+					&:hover, &.focus {
+						color: #888;
+						/* background-color: #EEE; */
+						background-color: #0db5e7;
+					}
+				}
+
+				.drag-handle {
+					display: none;
+				}
+			}
+
+			.active {
+				> a {
+					color: #EEE;
+    				box-shadow: none;
+				}
+			}
+
+			.dropdown-menu {
+				background-color: #EEE;
+				border-width: 0;
+				margin: 0;
+				left: 6px;
+				@include border-radius(0);
+
+				&:after, &:before {
+					border-width: 0;
+				}
+
+				> li {
+					> a {
+						text-transform: uppercase;
+
+						&:hover {
+							background: #0db5e7;
+							color: #333;
+						}
+					}
+				}
+			}
+		}
+
+		.nav-helpers {
+			display: none;
+		}
+
+		#personal-menu {
+			&:before {
+				content: "\f007";
+				font-family: 'fontawesome-alloy';
+				margin-right: 6px;
+			}
+		}
+
+		#sign-in, #sign-out {
+			color: lighten($colorHighlightInfo, 15%);
+
+			&:before {
+				content: "\f090";
+				font-family: 'fontawesome-alloy';
+				margin-right: 6px;
+			}
+
+			&:hover {
+				background-color: $colorHighlightInfo;
+				color: #EEEEEE;
+			}
+		}
+
+		#sign-out {
+			color: lighten($colorHighlightWarn, 10%);
+
+			&:before {
+				content: "\f08b";
+			}
+
+			&:hover {
+				background-color: $colorHighlightWarn;
+			}
+		}
+	}
+
+	#sitesearch {
+		display: table;
+
+		.site-search-button {
+			display: table-cell;
+			background-color: #6A6A6A;
+			padding: 4px 12px;
+			color: #BBBBBB;
+		}
+
+		.site-search-button:hover {
+			background-color: #FFFFFF;
+			text-decoration: none;
+		}
+
+		.site-search-button:focus {
+			text-decoration: none;
+		}
+
+		.site-search-form {
+			display: table-cell;
+			vertical-align: middle;
+			width: 100%;
+			overflow-x: hidden;
+			@include single-transition(width 0.3s ease);
+
+			.site-search-field {
+				width: 100%;
+				display: block;
+				@include border-radius(0);
+				margin: 0;
+				font-size: 12px;
+				line-height: 14px;
+				padding: 8px;
+				box-sizing: border-box;
+				background: #616161;
+				border: none;
+				color: #BBBBBB;
+				height: auto;
+			}
+
+			.site-search-field:focus {
+				@include box-shadow(none);
+			}
+		}
+	}
+	
+	.lfr-hudcrumbs {
+		position: fixed;
+		top: 0;
+		z-index: 600;
+		
+		.breadcrumb {
+			background-color: $colorHudCrumbBackground;
+			
+			li a {
+				color: $colorHudCrumbText;
+				text-shadow: none;
+			}
+		}
+		
+	}
+	
+	
+	#footer {
+		text-align: right;
+		padding: 0 20px;
+	}
+
+	.portlet {
+		.portlet-topper {
+			padding-left: 10px;
+
+			.portlet-topper-toolbar {
+				right: 7px;
+
+				.caret {
+					display: none;
+				}
+			}
+
+			h1 {
+				color: #555;
+				font-size: 15px;
+				margin: 0;
+			}
+		}
+	}
+
+	.portlet-dockbar {
+		.navbar-inner {
+			background: #FFFFFF;
+			@include box-shadow(none);
+		}
+
+		.sign-out {
+			display: none;
+		}
+		
+		.dockbar-user-notifications {
+			.user-notification-link {
+				padding: 8px;
+			}
+			
+			.user-notifications-count {
+				margin: 0;
+				color: #BBBBBB;
+			}
+		}
+	}
+}
+
+

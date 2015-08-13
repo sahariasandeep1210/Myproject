@@ -55,6 +55,7 @@ public class CompanyController extends BaseController {
 	@RenderMapping(params="render=createCompany")
 	protected ModelAndView renderCreateCompany(@ModelAttribute("companyModel") Company company,ModelMap model,RenderRequest request, RenderResponse response) throws Exception {	
 		long companyID = ParamUtil.getLong(request, "companyID");
+		ThemeDisplay themeDispay=(ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);
 		List<User> users =new ArrayList<User>();
 		if(companyID!=0){
 			 company=companyService.findById(companyID);
@@ -62,6 +63,7 @@ public class CompanyController extends BaseController {
 			 
 		}
 		
+		model.put("currentUser",themeDispay.getUser());
 		model.put("companyModel", company);
 		model.put("users", users);
 		model.put("orgTypeMap", orgTypeMap);

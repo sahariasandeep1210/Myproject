@@ -1,0 +1,105 @@
+
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>com.liferay.plugins</groupId>
+	<artifactId>tf-login-theme</artifactId>
+	<version>1.0-SNAPSHOT</version>
+	<packaging>war</packaging>
+
+	<name>Trade Finance Login Theme</name>
+	<description>Trade Finance is Liferay Theme Plugin that is meant to provide a pragmatic look and feel that can be adjusted via several configurable options. Its two different views allow for using it in public website–scenarios as well as for administration or dashboard-style interfaces while providing a common look and feel when switching between them.</description>
+
+	<developers>
+		<developer>
+			<name>Gautam Sharma</name>
+			<email>gautam.kct1988@gmail.com</email>			
+		</developer>
+	</developers>
+
+	<properties>
+		<liferay.version>6.2.1</liferay.version>
+	</properties>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>com.liferay.maven.plugins</groupId>
+				<artifactId>liferay-maven-plugin</artifactId>
+				<version>${liferay.version}</version>
+				<executions>
+					<execution>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>theme-merge</goal>
+							<goal>build-thumbnail</goal>
+							<goal>build-css</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<liferayVersion>${liferay.version}</liferayVersion>
+					<autoDeployDir>${liferay.auto.deploy.dir}</autoDeployDir>
+					<parentTheme>_styled</parentTheme>
+					<pluginType>theme</pluginType>
+					<themeType>vm</themeType>
+				</configuration>
+			</plugin>
+			<!-- <plugin>
+				<groupId>com.mycila</groupId>
+				<artifactId>license-maven-plugin</artifactId>
+				<configuration>
+					<header>${project.basedir}/LICENSE</header>
+					<includes>
+						<include>src/**</include>
+					</includes>
+					<mapping>
+						<scss>JAVADOC_STYLE</scss>
+					</mapping>
+					<properties>
+						<owner>Liferay, Inc.</owner>
+					</properties>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>check</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin> -->
+			<plugin>
+				<artifactId>maven-resources-plugin</artifactId>
+				<configuration>
+					<encoding>UTF-8</encoding>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<configuration>
+					<archive>
+						<manifest>
+							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+							</manifest>
+						<manifestEntries>
+							<Build-Time>${timestamp}</Build-Time>
+							<Implementation-Build>${buildNumber}</Implementation-Build>
+						</manifestEntries>
+					</archive>
+					<webResources>
+						<resource>
+							<directory>src/main/resources/WEB-INF</directory>
+							<targetPath>WEB-INF</targetPath>
+							<filtering>true</filtering>
+							<includes>
+								<include>liferay-plugin-package.properties</include>
+							</includes>
+						</resource>
+					</webResources>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+ 
+#parse ($init)
+ 
+<html class="$root_css_class" dir="#language ("lang.dir")" lang="$w3c_language_id">
+ 
+<head>
+<title>$the_title - $company_name</title>
+ 
+<meta content="initial-scale=1.0, width=device-width" name="viewport" />
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+ 
+$theme.include($top_head_include)
+</head>
+ 
+<body class="$css_class">
+ 
+<a href="#main-content" id="skip-to-content">#language ("skip-to-content")</a>
+ 
+$theme.include($body_top_include)
+ 
+<div class="container-fluid" id="wrapper">
+<header id="banner" role="banner">
+<div id="heading">
+<h1 class="site-title">
+<div class="site-logo"><img alt="$logo_description" height="$site_logo_height" src="$site_logo" width="$site_logo_width" /></div>
+#if ($show_site_name)
+<span class="site-name">
+$site_name
+</span>
+#end
+</h1>
+ 
+<h2 class="page-title">
+<span>$the_title</span>
+</h2>
+<div class="site-message">Sign in to continue to your portal.</div>
+</div>
+</header>
+ 
+<div id="content">
+#if ($selectable)
+$theme.include($content_include)
+#else
+$portletDisplay.recycle()
+ 
+$portletDisplay.setTitle($the_title)
+ 
+$theme.wrapPortlet("portlet.vm", $content_include)
+#end
+</div>
+ 
+<footer id="footer" role="contentinfo">
+</footer>
+</div>
+ 
+$theme.include($body_bottom_include)
+ 
+$theme.include($bottom_include)
+ 
+</body>
+ 
+</html>
