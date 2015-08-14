@@ -19,7 +19,7 @@ import com.liferay.portlet.PortletURLFactoryUtil;
 @Component
 public class LiferayUtility {
 	
-	public  String setPortletURL(PortletRequest request,String portletName,String inputParam,String inputValue) {
+	public  String setPortletURL(PortletRequest request,String portletName,String inputParam,String inputValue,boolean isPrivateLayout) {
 		// TODO Auto-generated method stub
 		List<Portlet> portletList = PortletLocalServiceUtil.getPortlets();
         String portletId = null;
@@ -33,7 +33,7 @@ public class LiferayUtility {
         }
         ThemeDisplay themeDisplay=(ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);
         try {
-        	long plid= PortalUtil.getPlidFromPortletId(themeDisplay.getScopeGroupId(),false, portletId);
+        	long plid= PortalUtil.getPlidFromPortletId(themeDisplay.getScopeGroupId(),isPrivateLayout, portletId);
 			 portletURL = PortletURLFactoryUtil.create(request,portletId, 
 					plid, PortletRequest.RENDER_PHASE);
 			if(inputParam!=null){				

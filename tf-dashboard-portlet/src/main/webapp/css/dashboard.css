@@ -1,14 +1,38 @@
 .white-panel {
     text-align: center;
-    color: #ccd1d9;
+    color: black;
+    background: #ffffff;
+}
+
+.white-panel .white-header {
+      background: #f4f4f4;
+    padding: 3px;
+    margin-bottom: 15px;
+    color: #c6c6c6;
+}
+
+.white-panel p {
+    margin-top: 5px;
+    font-weight: 700;
+    margin-left: 15px;
+}
+
+p {
+    margin: 0 0 10px;
 }
 
 .pn {
-    height: 200px;
-    border: 2px solid #ccc;
+    height: 240px;
+    border: 1px solid #ccc;
+}
+
+.coming-soon{
+	background: url(../images/ComingSoon1.png) no-repeat center top;
+    text-align: center;
+    background-position: center center;
 }
 
 #poblock{
 	
-	    margin: 45px !important;
+	    margin: 25px !important;
 }

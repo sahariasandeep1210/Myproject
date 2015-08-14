@@ -9,8 +9,9 @@
 		<header-portlet-css>/css/jquery-ui.min.css</header-portlet-css>
 		<header-portlet-css>/css/font-awesome.min.css</header-portlet-css>
 		<header-portlet-css>/css/dashboard.css</header-portlet-css>
-		<header-portlet-css>/css/bootstrap_grid.css</header-portlet-css> 		
-		<header-portlet-css>/css/main.css</header-portlet-css>  
+		<header-portlet-css>/css/bootstrap_grid.css</header-portlet-css> 				
+		<header-portlet-css>/css/panel.css</header-portlet-css>  
+		<header-portlet-css>/css/main.css</header-portlet-css>
 		<footer-portlet-javascript>/js/jquery-latest.min.js</footer-portlet-javascript>
 		<footer-portlet-javascript>/js/jquery-ui.min.js</footer-portlet-javascript>
 		
