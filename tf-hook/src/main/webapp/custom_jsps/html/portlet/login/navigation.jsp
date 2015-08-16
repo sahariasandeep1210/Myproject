@@ -4,7 +4,7 @@
 
 <%
 String companyPortletId="tfcompanyportlet_WAR_tfadminportlet";
-long companyPortletPlid= PortalUtil.getPlidFromPortletId(themeDisplay.getScopeGroupId(),true, companyPortletId);
+long companyPortletPlid= PortalUtil.getPlidFromPortletId(themeDisplay.getScopeGroupId(),false, companyPortletId);
 %>
 
 <liferay-portlet:renderURL portletName="tfcompanyportlet_WAR_tfadminportlet"   var="createCompanyURL" plid="<%=companyPortletPlid%>"   windowState="<%=WindowState.NORMAL.toString()%>">

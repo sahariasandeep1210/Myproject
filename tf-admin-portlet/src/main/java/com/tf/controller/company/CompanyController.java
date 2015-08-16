@@ -29,6 +29,7 @@ import com.tf.controller.BaseController;
 import com.tf.model.Company;
 import com.tf.model.User;
 import com.tf.util.CompanyStatus;
+import com.tf.util.Registration;
 
 
 /**
@@ -53,8 +54,10 @@ public class CompanyController extends BaseController {
 	}
 	
 	@RenderMapping(params="render=createCompany")
-	protected ModelAndView renderCreateCompany(@ModelAttribute("companyModel") Company company,ModelMap model,RenderRequest request, RenderResponse response) throws Exception {	
+	protected ModelAndView renderCreateCompany(@ModelAttribute("registration") Registration registration,ModelMap model,RenderRequest request, RenderResponse response) throws Exception {	
 		long companyID = ParamUtil.getLong(request, "companyID");
+		Company company=null;
+		User user=null;
 		ThemeDisplay themeDispay=(ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);
 		List<User> users =new ArrayList<User>();
 		if(companyID!=0){
@@ -62,9 +65,11 @@ public class CompanyController extends BaseController {
 			 users=userService.findUserByCompanyId(companyID);
 			 
 		}
-		
-		model.put("currentUser",themeDispay.getUser());
-		model.put("companyModel", company);
+		registration.setCompany(company);
+		registration.setUser(user);
+		System.out.println("Current ::::"+themeDispay.getRealUser()+":::");
+		model.put("currentUser",themeDispay.getRealUser());
+		model.put("registration", registration);
 		model.put("users", users);
 		model.put("orgTypeMap", orgTypeMap);
 		model.put("companyTypeMap", companyTypeMap);
