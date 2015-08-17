@@ -146,7 +146,7 @@ table.tablesorter thead tr th {
     display: inline;
     padding:0px;
     padding-left:3px;
-    vertical-align:baseline;
+    vertical-align: top !important;
     position:relative;
 }
  

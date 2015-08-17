@@ -48,15 +48,16 @@ CREATE TABLE `tf_user` (
   `tcagree` VARCHAR(45) CHARACTER SET utf8  DEFAULT NULL,
   `dirconfirm` VARCHAR(45) CHARACTER SET utf8  DEFAULT NULL,
   `checksagree` VARCHAR(45) CHARACTER SET utf8  DEFAULT NULL,
- `company_idcompany` INT(11) DEFAULT NULL,
   `memtype` VARCHAR(45) CHARACTER SET utf8  DEFAULT NULL,
   `updateflag` INT(11) DEFAULT NULL,
   `active_status` TINYINT(1) DEFAULT '1',
+  `company_id` INT(11) DEFAULT NULL,
+  `companydirector` VARCHAR(45) CHARACTER SET utf8  DEFAULT NULL,  
   PRIMARY KEY (`iduser`),
   UNIQUE KEY `username_UNIQUE` (`username`),
   UNIQUE KEY `iduser_UNIQUE` (`iduser`),
-  KEY `fk_user_company_idx` (`company_idcompany`),
-  CONSTRAINT `fk_user_company` FOREIGN KEY (`company_idcompany`) REFERENCES `tf_company` (`idcompany`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  KEY `fk_user_company_idx` (`company_id`),
+  CONSTRAINT `fk_user_company` FOREIGN KEY (`company_id`) REFERENCES `tf_company` (`idcompany`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=INNODB AUTO_INCREMENT=1469 DEFAULT CHARSET=utf8 COMMENT='User table';
 
 ALTER TABLE tf_company ADD OrganisationType VARCHAR(100);

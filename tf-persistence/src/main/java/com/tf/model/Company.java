@@ -3,12 +3,15 @@ package com.tf.model;
 import java.util.Date;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
 
 
 @Entity
@@ -81,7 +84,8 @@ public class Company {
 	private String companyType;	
 	
 	
-	@OneToMany(mappedBy="company")
+	@OneToMany(cascade=CascadeType.ALL)
+    @JoinColumn(name="company_id")
 	private Set<User> users;
 	
 	public Company() {

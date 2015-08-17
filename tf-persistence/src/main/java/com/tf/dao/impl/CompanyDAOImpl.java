@@ -41,6 +41,19 @@ public class CompanyDAOImpl  extends BaseDAO implements CompanyDAO{
 		}
 	}
 	
+	public Company registerCompany(Company company) {
+		_log.debug("persisting Company instance");
+		try {
+			long id=(Long) sessionFactory.getCurrentSession().save(company);
+			company.setId(id);
+			_log.debug("persist successful"+company);
+		} catch (RuntimeException re) {
+			_log.error("persist failed", re);
+			throw re;
+		}
+		return company;
+	}
+	
 	public Company findById(long id) {
 		_log.debug("getting User instance with id: " + id);
 		try {

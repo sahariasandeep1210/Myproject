@@ -9,6 +9,7 @@ long companyPortletPlid= PortalUtil.getPlidFromPortletId(themeDisplay.getScopeGr
 
 <liferay-portlet:renderURL portletName="tfcompanyportlet_WAR_tfadminportlet"   var="createCompanyURL" plid="<%=companyPortletPlid%>"   windowState="<%=WindowState.NORMAL.toString()%>">
  <liferay-portlet:param name="render" value="createCompany"/>
+  <liferay-portlet:param name="action" value="registration"/>
 </liferay-portlet:renderURL>
 
 <liferay-util:buffer var="navigation">

@@ -1,8 +1,10 @@
 package com.tf.controller.company;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
@@ -55,7 +57,8 @@ public class CompanyController extends BaseController {
 	
 	@RenderMapping(params="render=createCompany")
 	protected ModelAndView renderCreateCompany(@ModelAttribute("registration") Registration registration,ModelMap model,RenderRequest request, RenderResponse response) throws Exception {	
-		long companyID = ParamUtil.getLong(request, "companyID");
+		long companyID = ParamUtil.getLong(request, "companyID"); 
+		String userAction = ParamUtil.getString(request, "action","");
 		Company company=null;
 		User user=null;
 		ThemeDisplay themeDispay=(ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);
@@ -64,16 +67,50 @@ public class CompanyController extends BaseController {
 			 company=companyService.findById(companyID);
 			 users=userService.findUserByCompanyId(companyID);
 			 
+		}else if("registration".equals(userAction)){
+			company=new Company();
+			user=new User();
+			company.setCompanyType("Seller");
+			user.setType("Seller Admin");
+			
 		}
 		registration.setCompany(company);
 		registration.setUser(user);
-		System.out.println("Current ::::"+themeDispay.getRealUser()+":::");
+		Map<String,String> userTypesMap=adminUtility.getUserTypes(adminUtility.getUserID(request), companyService.getCompanyTypebyID(companyID), request);
 		model.put("currentUser",themeDispay.getRealUser());
 		model.put("registration", registration);
 		model.put("users", users);
 		model.put("orgTypeMap", orgTypeMap);
 		model.put("companyTypeMap", companyTypeMap);
+		model.put("userTypesMap", userTypesMap);
 		return new ModelAndView("createcompany", model);		
+	}
+	
+	@ActionMapping(params="action=registerCompany")
+	protected void registerCompany(@ModelAttribute("registration") Registration registration, 
+												 ModelMap model, 
+												 ActionRequest request,
+												 ActionResponse response) throws Exception {
+		System.out.println("Registration Model:::"+registration);
+		User user=registration.getUser();
+		com.liferay.portal.model.User lruser = addLiferayUser(user, request);
+		//Company company=companyService.registerCompany(registration.getCompany());
+		
+		System.out.println("lruser:::"+lruser);
+		//Liferay user has been added now we need to add user information to tf_user table
+		//and map the same to Liferay userId and Company/Seller
+		user.setActive(0);
+		user.setLiferayUserId(lruser.getUserId());
+		//userService.addorUpdateUser(user);
+		Company company = registration.getCompany();
+		Set<User> users=new LinkedHashSet<User>();
+		users.add(user);
+		company.setUsers(users);
+		company=companyService.registerCompany(company);
+		System.out.println("After User Added");
+		StringBuilder loginURL=new StringBuilder("/web/guest/home");
+		loginURL.append("?registration=success");
+		response.sendRedirect(loginURL.toString());
 	}
 	
 	
@@ -133,9 +170,9 @@ public class CompanyController extends BaseController {
 			ActionRequest request) throws PortalException, SystemException {
 		ThemeDisplay themeDisplay=(ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);	
 		
-		boolean autoPassword = false;
-		String password1 = "test123";
-		String password2 = "test123";
+		boolean autoPassword = true;
+		String password1 = null;
+		String password2 = null;
 		boolean autoScreenName = false;
 		String screenName = user.getUsername();
 		String emailAddress = user.getEmail();

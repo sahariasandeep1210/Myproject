@@ -3,6 +3,10 @@
 	<portlet:param name="action" value="createCompany" />
 </portlet:actionURL>
 
+<portlet:actionURL var="regCompanyURL">
+	<portlet:param name="action" value="registerCompany" />
+</portlet:actionURL>
+
 <portlet:renderURL var="createUserURL">
 	<portlet:param name="render" value="createUser" />
 </portlet:renderURL>
@@ -22,20 +26,32 @@
 		action="${createCompanyURL}" id="createCompany" autocomplete="off"
 		name="companyDetail">
 		<input type="hidden" value="${deleteCompanyURL}" id="deleteURL">
-
-		<div class="row-fluid">
-			<div class="span12" style="padding-bottom: 30px;">
-				<div class="span4"></div>
-				<div class="span4">
-					<h4>Add Company Information</h4>
+	<c:choose>
+		<c:when test="${currentUser.emailAddress == 'default@liferay.com'}">
+			<div class="row-fluid">
+				<div class="span12" style="padding-bottom: 30px;">
+					<div class="span4"><h5>Company Information</h5></div>					
 				</div>
 			</div>
-		</div>
+			
+		</c:when>
+		<c:otherwise>
+			<div class="row-fluid">
+				<div class="span12" style="padding-bottom: 30px;">
+					<div class="span4"></div>
+					<div class="span4">
+						<h4>Add Company Information</h4>
+					</div>
+				</div>
+			</div>
+		</c:otherwise>	
+	</c:choose>
+	
+		
 
 		<div class="row-fluid">
 			<div class="span6">
-				<label class="span6">Name:</label> <input type="hidden" name="id"
-					value="${registration.company.id}" />
+				<label class="span6">Name:</label> <input type="hidden" name="id" value="${registration.company.id}" />
 				<form:input path="company.name" name="" cssClass="span6" />
 
 			</div>
@@ -51,8 +67,8 @@
 
 			</div>
 			<div class="span6">
-				<label class="span5">Date Established:</label>
-				<form:input path="company.dateestablished" cssClass="span6"
+				<label class="span6">Date Established:</label>
+				<form:input path="company.dateestablished" cssClass="span5"
 					id="dateestablished" />
 
 			</div>
@@ -88,12 +104,24 @@
 				<form:select path="company.orgType" items="${orgTypeMap}" class="dropdown"
 					id="orgType" placeholder="Organisation Type" />
 			</div>
-			<div class="span6">
-				<label class="span6">Company Type:</label>
-				<form:select path="company.companyType" items="${companyTypeMap}"
-					class="dropdown" id="companyType" placeholder="CompanyType Type" />
 
-			</div>
+			<c:choose>
+				<c:when test="${currentUser.emailAddress == 'default@liferay.com'}">
+					<div class="span6">
+						<label class="span6">Company Type:</label>
+						<form:input path="company.companyType" cssClass="span6"   readonly="true"/>
+					</div>
+				</c:when>
+				<c:otherwise>
+					<div class="span6">
+						<label class="span6">Company Type:</label>
+						<form:select path="company.companyType" items="${companyTypeMap}"
+							class="dropdown" id="companyType" placeholder="CompanyType Type" />
+
+					</div>
+				</c:otherwise>
+			</c:choose>
+
 
 		</div>
 		<div class="row-fluid">
@@ -133,16 +161,12 @@
 			<hr>
 			<div class="row-fluid">
 				<div class="span12" style="padding-bottom: 30px;">
-					<div class="span4"></div>
-					<div class="span4">
-						<h4>Add User Information</h4>
-					</div>
+					<div class="span4"><h5>User Information</h5></div>					
 				</div>
 			</div>
 			<div class="row-fluid">
 				<div class="span6">
-					<label class="span6">Title:</label> <input type="hidden" name="id"
-						value="${registration.user.id}" />
+					<label class="span6">Title:</label> 
 					<form:input path="user.title" cssClass="span6" />
 
 				</div>
@@ -190,6 +214,8 @@
 
 			<div class="row-fluid">
 				<div class="span6">
+					<label class="span6">Company Director:</label>
+					<div class="span6">
 					<label class="span3"> <form:radiobutton
 							path="user.companyDirector" value="Yes" id="yesOption" />Yes
 					</label> <label class="span3"> <form:radiobutton
@@ -197,8 +223,11 @@
 					</label>
 
 				</div>
+
+				</div>
+				
 			</div>
-			<div class="row-fluid">
+			<div class="row-fluid" <c:if test="${currentUser.emailAddress == 'default@liferay.com'}"> style="display:none;"</c:if>>
 				<div class="span6">
 					<label class="span6">User Type:</label>
 					<form:select path="user.type" items="${userTypesMap}" class="dropdown"
@@ -214,6 +243,10 @@
 							data-url="${createCompanyURL}" id="cmpUpdate" />
 						<input type="button" value="Delete" class="btn btn-danger"
 							onclick="deleteCompany()" />
+					</c:when>
+					<c:when test="${currentUser.emailAddress == 'default@liferay.com'}">
+						<input type="button" value="Register" class="btn btn-primary"
+							data-url="${regCompanyURL}" id="cmpAdd" />
 					</c:when>
 					<c:otherwise>
 						<input type="button" value="Add Company" class="btn btn-primary"

@@ -14,8 +14,17 @@
  */
 --%>
 
+<%@page import="com.liferay.portal.util.PortalUtil"%>
 <%@ include file="/html/portlet/login/init.jsp" %>
-<%System.out.println("Helloo--------------"); %>
+
+<%
+
+
+
+%>
+	<c:if test="${registration eq 'success'}">
+		<div class="alert alert-success">Congratulations! You have successfully registered.Please check your email for login instruction.</div>
+	</c:if>
 <c:choose>
 	<c:when test="<%= themeDisplay.isSignedIn() %>">
 

@@ -73,8 +73,7 @@ public class User {
 	@Column(name="checksagree")
 	private String checksAgree;
 	
-	@Column(name="company_idcompany")
-	private String companyID;
+
 	
 	@Column(name="memtype")
 	private String memtype;
@@ -90,7 +89,6 @@ public class User {
 	
 	
 	@ManyToOne
-	@JoinColumn(name="company_id")
 	private Company company;
 
 
@@ -283,17 +281,6 @@ public class User {
 		this.checksAgree = checksAgree;
 	}
 
-
-	public String getCompanyID() {
-		return companyID;
-	}
-
-
-	public void setCompanyID(String companyID) {
-		this.companyID = companyID;
-	}
-
-
 	public String getMemtype() {
 		return memtype;
 	}
@@ -354,7 +341,7 @@ public class User {
 				+ telWork + ", mobile=" + mobile + ", level=" + level
 				+ ", dirEmail=" + dirEmail + ", dirName=" + dirName
 				+ ", tcAgree=" + tcAgree + ", dirConfirm=" + dirConfirm
-				+ ", checksAgree=" + checksAgree + ", companyID=" + companyID
+				+ ", checksAgree=" + checksAgree 
 				+ ", memtype=" + memtype + ", updateFlag=" + updateFlag
 				+ ", activeStatus=" + activeStatus + ", companyDirector="
 				+ companyDirector + ", company=" + company + "]";

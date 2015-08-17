@@ -13,4 +13,6 @@ public interface CompanyService {
 	public Company findById(long id);
 	
 	public String  getCompanyTypebyID(long id);
+	
+	public Company registerCompany(Company company);
 }

@@ -35,4 +35,9 @@ public class CompanyServiceImpl implements CompanyService {
 	return companyDAO.getCompanyTypebyID(id);
 }
 
+	public Company registerCompany(Company company) {
+		// TODO Auto-generated method stub
+		return companyDAO.registerCompany(company);
+	}
+
 }
