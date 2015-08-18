@@ -1,6 +1,6 @@
-
-
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.liferay.plugins</groupId>
@@ -19,6 +19,7 @@
 	</developers>
 
 	<properties>
+		<liferay.auto.deploy.dir>G:/Project/liferay-portal-6.2-ce-ga3/deploy</liferay.auto.deploy.dir>
 		<liferay.version>6.2.1</liferay.version>
 	</properties>
 
@@ -102,4 +103,6 @@
 			</plugin>
 		</plugins>
 	</build>
+	
 </project>
+

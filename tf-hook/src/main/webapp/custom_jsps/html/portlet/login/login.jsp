@@ -18,11 +18,13 @@
 <%@ include file="/html/portlet/login/init.jsp" %>
 
 <%
-
-
-
+	HttpServletRequest req = PortalUtil
+			.getHttpServletRequest(renderRequest);
+	String registration = PortalUtil.getOriginalServletRequest(req)
+			.getParameter("registration");
+	req.setAttribute("registration", registration);
 %>
-	<c:if test="${registration eq 'success'}">
+<c:if test="${registration eq 'success'}">
 		<div class="alert alert-success">Congratulations! You have successfully registered.Please check your email for login instruction.</div>
 	</c:if>
 <c:choose>

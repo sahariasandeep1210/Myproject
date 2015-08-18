@@ -86,6 +86,44 @@ public class CompanyController extends BaseController {
 		return new ModelAndView("createcompany", model);		
 	}
 	
+	@RenderMapping(params="render=registerCompany")
+	protected ModelAndView renderRegisterCompany(@ModelAttribute("registration") Registration registration,ModelMap model,RenderRequest request, RenderResponse response) throws Exception {	
+		String currentScreen=ParamUtil.getString(request, "currentScreen","Company");
+		if(registration.getCompany()==null){
+			Company cmp = new Company();
+			cmp.setCompanyType("Seller");
+			registration.setCompany(cmp);
+		}if(registration.getUser()==null){
+			User user=new User();
+			user.setType("Seller Admin");
+			registration.setUser(user);		
+		}	
+		registration.getUser().setType("Seller Admin");
+		model.put("registration", registration);
+		model.put("orgTypeMap", orgTypeMap);
+		model.put("currentScreen", currentScreen);
+		return new ModelAndView("registration", model);		
+	}
+	
+	@ActionMapping(params="action=homePage")
+	protected void homePage( ModelMap model, 
+												 ActionRequest request,
+												 ActionResponse response) throws Exception {		
+		response.sendRedirect("/web/guest/home");
+	}
+	
+	@ActionMapping(params="action=regCompanyInfo")
+	protected void addCompanyInfo(@ModelAttribute("registration") Registration registration,  ModelMap model, 
+												 ActionRequest request,
+												 ActionResponse response) throws Exception {
+		response.setRenderParameter("render", "registerCompany");
+		response.setRenderParameter("currentScreen", "User");
+		System.out.println("Regitsration :: "+registration.getCompany());
+		System.out.println("Regitsration :: "+registration.getCompany());
+		model.put("registration", registration);
+	}
+	
+	
 	@ActionMapping(params="action=registerCompany")
 	protected void registerCompany(@ModelAttribute("registration") Registration registration, 
 												 ModelMap model, 

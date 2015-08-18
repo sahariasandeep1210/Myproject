@@ -17,6 +17,10 @@ $(function() {
 		}
 	});
 	
+	$("#companyDiv").hide();
+	$("#userDiv").hide();
+	enableDisableTab();
+	
 	$("#deleteCompany").hide();
 	 $('table').tablesorter();
 	
@@ -64,8 +68,7 @@ $(function() {
 
 $(document).ready(function(){
 	
-	$("#cmpUpdate,#cmpAdd,#cmpback").click(function(){
-		console.log("hello1");
+	$("#cmpUpdate,#cmpAdd,#cmpback,#continue,#registerSeller,#homePage").click(function(){
 		var url = $(this).attr('data-url');
 		submitTradeForms(url);
 	});
@@ -93,7 +96,6 @@ function deleteCompany() {
 }
 
 function submitTradeForms(url) {
-	console.log("hello2");
 	document.forms["companyDetail"].action = url;
 	document.forms["companyDetail"].submit();
 }
@@ -102,4 +104,23 @@ function submitUserForms(url) {
 	console.log("hello2");
 	document.forms["userDetail"].action = url;
 	document.forms["userDetail"].submit();
+}
+
+function enableDisableTab(){
+	console.log("insdie");
+	var currentTab=$("#currScreen").val();
+	console.log("currentTab:::::"+currentTab);
+	if(currentTab=='Company'){
+		console.log("if");
+		$("#companyDiv").show();
+		$("#Company").addClass("active");
+		$("#User").removeClass("active");
+		
+	}else{
+		console.log("else");
+		$("#userDiv").show();
+		$("#User").addClass("active");
+		$("#Company").removeClass("active");
+	}
+	
 }
