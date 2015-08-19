@@ -15,6 +15,10 @@ public class PurchaseOrderDTO {
 	private BigDecimal poAmount;
 	private Integer poDays;
 	private String poNotes;
+	private BigDecimal financeAmount;
+	private Date shippingDate;
+	private Date deliveryDate;
+	private Integer isTraded; 
 	
 	private MultipartFile insuranceDoc; 
 	private MultipartFile invoiceDoc; 
@@ -75,6 +79,38 @@ public class PurchaseOrderDTO {
 	public void setPoNotes(String poNotes) {
 		this.poNotes = poNotes;
 	}
+	public BigDecimal getFinanceAmount() {
+		return financeAmount;
+	}
+
+	public void setFinanceAmount(BigDecimal financeAmount) {
+		this.financeAmount = financeAmount;
+	}
+
+	public Date getShippingDate() {
+		return shippingDate;
+	}
+
+	public void setShippingDate(Date shippingDate) {
+		this.shippingDate = shippingDate;
+	}
+
+	public Date getDeliveryDate() {
+		return deliveryDate;
+	}
+
+	public void setDeliveryDate(Date deliveryDate) {
+		this.deliveryDate = deliveryDate;
+	}
+
+	public Integer getIsTraded() {
+		return isTraded;
+	}
+
+	public void setIsTraded(Integer isTraded) {
+		this.isTraded = isTraded;
+	}
+
 	public MultipartFile getInsuranceDoc() {
 		return insuranceDoc;
 	}
@@ -117,12 +153,16 @@ public class PurchaseOrderDTO {
 		return "PurchaseOrderDTO [id=" + id + ", sellerId=" + sellerId
 				+ ", debtorCompany=" + debtorCompany + ", poNumber=" + poNumber
 				+ ", poDate=" + poDate + ", poAmount=" + poAmount + ", poDays="
-				+ poDays + ", poNotes=" + poNotes + ", insuranceDoc="
-				+ insuranceDoc + ", invoiceDoc=" + invoiceDoc
-				+ ", deliveryNoteDoc=" + deliveryNoteDoc + ", shippingDoc="
-				+ shippingDoc + ", locDoc=" + locDoc + ", contractDoc="
-				+ contractDoc + "]";
-	} 
+				+ poDays + ", poNotes=" + poNotes + ", financeAmount="
+				+ financeAmount + ", shippingDate=" + shippingDate
+				+ ", deliveryDate=" + deliveryDate + ", isTraded=" + isTraded
+				+ ", insuranceDoc=" + insuranceDoc + ", invoiceDoc="
+				+ invoiceDoc + ", deliveryNoteDoc=" + deliveryNoteDoc
+				+ ", shippingDoc=" + shippingDoc + ", locDoc=" + locDoc
+				+ ", contractDoc=" + contractDoc + "]";
+	}
+
+	
 
 	
 }

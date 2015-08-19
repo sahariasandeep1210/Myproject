@@ -44,7 +44,7 @@
 			</div>
 			<div class="span6">
 				<label class="span6">PO Date</label>
-				<form:input path="poDate" cssClass="span6" />
+				<form:input path="poDate" cssClass="span6"  id="poDate"/>
 			</div>
 		</div>
 		<div class="row-fluid">
@@ -64,7 +64,23 @@
 				<label class="span6">PO Notes:</label>
 				<form:textarea path="poNotes" cssClass="span6" />
 			</div>
+			<div class="span6">
+				<label class="span6">Finance Amount</label>
+				<form:input path="financeAmount" cssClass="span6" />
+			</div>
 
+		</div>
+		
+		<div class="row-fluid">
+			<div class="span6">
+				<label class="span6">Shipping Date:</label>
+				<form:input path="shippingDate" cssClass="span5" id="shippingDate" />
+
+			</div>
+			<div class="span6">
+				<label class="span6">Delivery Date:</label>
+				<form:input path="deliveryDate" cssClass="span5" id="deliveryDate" />
+			</div>
 		</div>
 		
 		
@@ -81,14 +97,14 @@
 			<c:otherwise>				
 					<input type="hidden" name="uploadDocments"
 					value="true" />
-				<div class="row-fluid">
+			<!-- 	<div class="row-fluid">
 					<div class="span6" style="float: right;">
 						<h4>
 							<span id="uploadSpan"><i class="fa fa-upload fa-1"></i> Upload Documents</span>
 						</h4>
 					</div>
 				</div>
-				
+				 -->
 				<div class="table-responsive" id="uploadTableDiv">
 					<table class="table table-hover  table-bordered">
 						<thead>
@@ -132,12 +148,13 @@
 						</tbody>
 					</table>
 				</div>
-				
-				<div class="span6">
-						<input type="submit" value="Update Purchase order"
-							class="btn btn-primary" data-url="${addPurchaseOrderURL}"
-							id="updatePO" />
-					</div>
+				<div class="row-fluid">
+					<div class="span6">
+							<input type="submit" value="Update Purchase order"
+								class="btn btn-primary" data-url="${addPurchaseOrderURL}"
+								id="updatePO" />
+						</div>
+				</div>
 			</c:otherwise>
 		
 		</c:choose>

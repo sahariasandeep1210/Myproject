@@ -67,7 +67,6 @@ public class PurchaseOrderController {
 												 ActionRequest request,
 												 ActionResponse response) throws Exception {
 		_log.info("Render Add Purchase Order Action");
-		_log.info("purchaseOrderModel>>>>>>>>>>>>>>>"+purchaseOrderDTO);
 		boolean uploadDoc=ParamUtil.getBoolean(request, "uploadDocments",false);
 		System.out.println("uploadDoc:::::"+uploadDoc);
 		if(uploadDoc){
@@ -100,6 +99,10 @@ public class PurchaseOrderController {
 		purchaseOrderModel.setPoAmount(purchaseOrderDTO.getPoAmount());
 		purchaseOrderModel.setPoDays(purchaseOrderDTO.getPoDays());
 		purchaseOrderModel.setPoNotes(purchaseOrderDTO.getPoNotes());
+		purchaseOrderModel.setFinanceAmount(purchaseOrderDTO.getFinanceAmount());
+		purchaseOrderModel.setDeliveryDate(purchaseOrderDTO.getDeliveryDate());
+		purchaseOrderModel.setShippingDate(purchaseOrderDTO.getShippingDate());
+		purchaseOrderModel.setIsTraded(purchaseOrderDTO.getIsTraded());
 		return purchaseOrderModel;
 	}
 	

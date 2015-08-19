@@ -1,7 +1,7 @@
 $(document).ready(function(){
 	
 	
-	$("#uploadTableDiv").hide();
+	//$("#uploadTableDiv").hide();
 	
 /*	$("#updatePO").click(function(){
 		var url = $(this).attr('data-url');
@@ -10,6 +10,15 @@ $(document).ready(function(){
 	
 	$("#uploadSpan").click(function(){
 		$("#uploadTableDiv").toggle();
+	});
+	
+	$("#poDate,#shippingDate,#deliveryDate").datepicker({
+		changeMonth : true,
+		changeYear : true,
+		showOn : "button",
+		buttonImage : "/tf-theme/images/calendar.jpg",
+		buttonImageOnly : true,
+		buttonText : "Select date"
 	});
 	 
 });

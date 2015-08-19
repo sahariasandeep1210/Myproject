@@ -41,6 +41,18 @@ public class PurchaseOrderModel {
 	@Column(name="po_notes")
 	private String poNotes;
 	
+	@Column(name="finance_amount")
+	private BigDecimal financeAmount;
+	
+	@Column(name="shipping_date")
+	private Date shippingDate;
+	
+	@Column(name="delivery_date")
+	private Date deliveryDate;	
+	
+	@Column(name="is_traded")
+	private Integer isTraded; 
+	
 	public PurchaseOrderModel() {
 	}
 
@@ -108,13 +120,50 @@ public class PurchaseOrderModel {
 		this.poNotes = poNotes;
 	}
 
+	public BigDecimal getFinanceAmount() {
+		return financeAmount;
+	}
+
+	public void setFinanceAmount(BigDecimal financeAmount) {
+		this.financeAmount = financeAmount;
+	}
+
+	public Date getShippingDate() {
+		return shippingDate;
+	}
+
+	public void setShippingDate(Date shippingDate) {
+		this.shippingDate = shippingDate;
+	}
+
+	public Date getDeliveryDate() {
+		return deliveryDate;
+	}
+
+	public void setDeliveryDate(Date deliveryDate) {
+		this.deliveryDate = deliveryDate;
+	}
+
+	public Integer getIsTraded() {
+		return isTraded;
+	}
+
+	public void setIsTraded(Integer isTraded) {
+		this.isTraded = isTraded;
+	}
+
 	@Override
 	public String toString() {
 		return "PurchaseOrderModel [id=" + id + ", sellerId=" + sellerId
 				+ ", debtorCompany=" + debtorCompany + ", poNumber=" + poNumber
 				+ ", poDate=" + poDate + ", poAmount=" + poAmount + ", poDays="
-				+ poDays + ", poNotes=" + poNotes + "]";
+				+ poDays + ", poNotes=" + poNotes + ", financeAmount="
+				+ financeAmount + ", shippingDate=" + shippingDate
+				+ ", deliveryDate=" + deliveryDate + ", isTraded=" + isTraded
+				+ "]";
 	}
+
+	
 	
 
 }

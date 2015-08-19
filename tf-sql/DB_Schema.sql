@@ -77,6 +77,8 @@ INSERT INTO tf_company_type VALUES (2,"Secondary Investor");
 INSERT INTO tf_company_type VALUES (3,"Admin");
 INSERT INTO tf_company_type VALUES (4,"Seller");
 
+
+DROP TABLE IF EXISTS `tf_purchase_order`;
 CREATE TABLE `tf_purchase_order` (
   `purchase_order_id` INT(11) NOT NULL AUTO_INCREMENT,
    `seller_id` INT(11)  NOT NULL,
@@ -86,7 +88,21 @@ CREATE TABLE `tf_purchase_order` (
    `po_amount` DECIMAL     ,  
    `po_days`   INT(11) ,
    `po_notes` VARCHAR(45) CHARACTER SET utf8  DEFAULT NULL,
+   `finance_amount` DECIMAL, 
+   `shipping_date` DATE, 
+   `delivery_date` DATE, 
+   `is_traded` TINYINT(1) DEFAULT '0',
    PRIMARY KEY (`purchase_order_id`),
    UNIQUE KEY `purchase_order_id_UNIQUE` (`purchase_order_id`),
     UNIQUE KEY `po_number_UNIQUE` (`po_number`)
+   );
+   
+DROP TABLE IF EXISTS `tf_po_documents`;
+CREATE TABLE `tf_po_documents` (
+   `purchase_order_id` INT(11) NOT NULL,
+   `document_id` INT(11)  NOT NULL,   
+   `document_type` VARCHAR(30) CHARACTER SET utf8  NOT NULL,
+   `document_url` VARCHAR(300) CHARACTER SET utf8  NOT NULL,
+   `create_date` DATE  ,    
+   UNIQUE KEY `document_id_UNIQUE` (`document_id`)    
    );

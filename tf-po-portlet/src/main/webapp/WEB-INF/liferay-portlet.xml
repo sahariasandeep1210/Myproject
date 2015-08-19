@@ -5,16 +5,9 @@
 	<portlet>
 		<portlet-name>tf-po-portlet</portlet-name>
 		<icon>/icon.png</icon>
-		<requires-namespaced-parameters>false</requires-namespaced-parameters>
-		<header-portlet-css>/css/jquery-ui.min.css</header-portlet-css>
-		<header-portlet-css>/css/font-awesome.min.css</header-portlet-css>
-		<header-portlet-css>/css/po.css</header-portlet-css>
-		<header-portlet-css>/css/bootstrap_grid.css</header-portlet-css> 		
-		<header-portlet-css>/css/main.css</header-portlet-css>  
-		<footer-portlet-javascript>/js/jquery-latest.min.js</footer-portlet-javascript>
-		<footer-portlet-javascript>/js/jquery-ui.min.js</footer-portlet-javascript>
-		<footer-portlet-javascript>/js/main.js</footer-portlet-javascript>
-		
+		<requires-namespaced-parameters>false</requires-namespaced-parameters>		
+		<header-portlet-css>/css/po.css</header-portlet-css>	
+		<footer-portlet-javascript>/js/main.js</footer-portlet-javascript>		
 	</portlet>
 	<role-mapper>
 		<role-name>administrator</role-name>
