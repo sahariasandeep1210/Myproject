@@ -104,5 +104,6 @@ CREATE TABLE `tf_po_documents` (
    `document_type` VARCHAR(30) CHARACTER SET utf8  NOT NULL,
    `document_url` VARCHAR(300) CHARACTER SET utf8  NOT NULL,
    `create_date` DATE  ,    
+   PRIMARY KEY (`document_id`),
    UNIQUE KEY `document_id_UNIQUE` (`document_id`)    
    );
