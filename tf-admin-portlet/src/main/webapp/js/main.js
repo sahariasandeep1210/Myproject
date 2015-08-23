@@ -4,12 +4,12 @@ $(function() {
 		autoOpen : false,
 		resizable : false,
 		width : 415,
-		height : 200,
+		height : 300,
 		modal : true,
 		buttons : {
 			"Continue" : function () {
 				var url = $("#deleteURL").val();
-				submitForm(url);
+				submitTradeForms(url);
 			},
 			Cancel : function () {
 				$(this).dialog("close");
@@ -74,7 +74,6 @@ $(document).ready(function(){
 	});
 	
 	$("#userAdd,#userUpdate").click(function(){
-		console.log("hello1");
 		var url = $(this).attr('data-url');
 		submitUserForms(url);
 	});
@@ -107,17 +106,14 @@ function submitUserForms(url) {
 }
 
 function enableDisableTab(){
-	console.log("insdie");
 	var currentTab=$("#currScreen").val();
 	console.log("currentTab:::::"+currentTab);
 	if(currentTab=='Company'){
-		console.log("if");
 		$("#companyDiv").show();
 		$("#Company").addClass("active");
 		$("#User").removeClass("active");
 		
 	}else{
-		console.log("else");
 		$("#userDiv").show();
 		$("#User").addClass("active");
 		$("#Company").removeClass("active");

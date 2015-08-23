@@ -2,6 +2,7 @@ package com.tf.dao.impl;
 
 import java.util.List;
 
+import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,11 +16,11 @@ public class CompanyDAOImpl  extends BaseDAO implements CompanyDAO{
 	
 	@SuppressWarnings("unchecked")
 
-	public List<Company> getCompanies() {
+	public List<Company> getCompanies(Integer status) {
 		_log.debug("Inside getCompanies ");
 		try {
 			
-			List<Company> results = (List<Company>) sessionFactory.getCurrentSession().createQuery("from Company").list();;
+			List<Company> results = (List<Company>) sessionFactory.getCurrentSession().createCriteria(Company.class).add(Restrictions.ne("activestatus", status)).list();
 			_log.debug("GetCompanies successful, result size: "
 					+ results.size());
 			return results;

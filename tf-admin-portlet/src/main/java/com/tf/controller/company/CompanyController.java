@@ -50,35 +50,24 @@ public class CompanyController extends BaseController {
 	@RenderMapping
 	protected ModelAndView renderCompanyList(@ModelAttribute("companyModel") Company company,ModelMap model,RenderRequest request, RenderResponse response) throws Exception {		
 		_log.info("Render Company List");
-		System.out.println("Size:::"+companyService.getCompanies());
-		model.put("allCompanies", companyService.getCompanies());
+		System.out.println("Size:::"+companyService.getCompanies(CompanyStatus.DELETED.getValue()));
+		model.put("allCompanies", companyService.getCompanies(CompanyStatus.DELETED.getValue()));
 		return new ModelAndView("companylist", model);		
 	}
 	
 	@RenderMapping(params="render=createCompany")
-	protected ModelAndView renderCreateCompany(@ModelAttribute("registration") Registration registration,ModelMap model,RenderRequest request, RenderResponse response) throws Exception {	
+	protected ModelAndView renderCreateCompany(@ModelAttribute("companyModel") Company company,ModelMap model,RenderRequest request, RenderResponse response) throws Exception {	
 		long companyID = ParamUtil.getLong(request, "companyID"); 
-		String userAction = ParamUtil.getString(request, "action","");
-		Company company=null;
-		User user=null;
 		ThemeDisplay themeDispay=(ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);
 		List<User> users =new ArrayList<User>();
 		if(companyID!=0){
 			 company=companyService.findById(companyID);
 			 users=userService.findUserByCompanyId(companyID);
 			 
-		}else if("registration".equals(userAction)){
-			company=new Company();
-			user=new User();
-			company.setCompanyType("Seller");
-			user.setType("Seller Admin");
-			
-		}
-		registration.setCompany(company);
-		registration.setUser(user);
+		}	
 		Map<String,String> userTypesMap=adminUtility.getUserTypes(adminUtility.getUserID(request), companyService.getCompanyTypebyID(companyID), request);
 		model.put("currentUser",themeDispay.getRealUser());
-		model.put("registration", registration);
+		model.put("companyModel", company);
 		model.put("users", users);
 		model.put("orgTypeMap", orgTypeMap);
 		model.put("companyTypeMap", companyTypeMap);
@@ -158,6 +147,7 @@ public class CompanyController extends BaseController {
 												 ActionRequest request,
 												 ActionResponse response) throws Exception {
 		System.out.println("companyModel:::"+company);	
+		company.setActivestatus(CompanyStatus.NEW.getValue());
 		companyService.addCompany(company);
 	}
 	
