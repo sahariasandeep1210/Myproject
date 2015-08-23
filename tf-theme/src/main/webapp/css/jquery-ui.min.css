@@ -1073,7 +1073,7 @@ body .ui-tooltip {
 }
 
 .ui-state-default .ui-icon {
-	background-image: url("../images/ui-icons_3d80b3_256x240.png")
+	/* background-image: url("../images/ui-icons_3d80b3_256x240.png") */
 }
 
 .ui-state-hover .ui-icon, .ui-state-focus .ui-icon {

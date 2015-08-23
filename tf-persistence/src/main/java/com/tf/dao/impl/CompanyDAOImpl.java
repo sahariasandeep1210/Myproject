@@ -1,6 +1,8 @@
 package com.tf.dao.impl;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
@@ -8,6 +10,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.tf.dao.CompanyDAO;
 import com.tf.model.Company;
+import com.tf.model.User;
+import com.tf.persistance.util.CompanyStatus;
+import com.tf.persistance.util.WorkflowConstants;
 
 
 @Repository
@@ -40,6 +45,26 @@ public class CompanyDAOImpl  extends BaseDAO implements CompanyDAO{
 			_log.error("persist failed", re);
 			throw re;
 		}
+	}
+	
+	public List<Long> deleteCompany(Long id) {
+		_log.debug("persisting Company instance");
+		List<Long> liferayUserIds=new ArrayList<Long>();
+		try {
+			Company company=findById(id);
+			company.setActivestatus(CompanyStatus.DELETED.getValue());
+			 Set<User> users=company.getUsers();
+			 for(User user : users){
+				 user.setActive(WorkflowConstants.STATUS_INACTIVE);
+				 liferayUserIds.add(user.getLiferayUserId());
+			 }
+			sessionFactory.getCurrentSession().saveOrUpdate(company);
+			_log.debug("persist successful"+company);
+		} catch (RuntimeException re) {
+			_log.error("persist failed", re);
+			throw re;
+		}
+		return liferayUserIds;
 	}
 	
 	public Company registerCompany(Company company) {

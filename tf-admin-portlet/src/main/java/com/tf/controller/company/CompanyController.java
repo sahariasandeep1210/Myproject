@@ -23,14 +23,16 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.ServiceContextFactory;
+import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.service.UserServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.tf.controller.BaseController;
 import com.tf.model.Company;
 import com.tf.model.User;
-import com.tf.util.CompanyStatus;
+import com.tf.persistance.util.CompanyStatus;
 import com.tf.util.Registration;
 
 
@@ -158,7 +160,14 @@ public class CompanyController extends BaseController {
 												 ActionResponse response) throws Exception {
 		System.out.println("companyModel:::"+company);
 		company.setActivestatus(CompanyStatus.DELETED.getValue());
-		companyService.addCompany(company);
+		//this is soft delete and will return liferay userids
+		//we are only update tf_company status to 4
+		//and tf_user status to 5
+		List<Long> liferayUserIds=companyService.deleteCompany(company.getId());	
+		//Now updating status as Inactive(5) in Liferay User_ table
+		for(Long userID : liferayUserIds){
+			UserLocalServiceUtil.updateStatus(userID, WorkflowConstants.STATUS_INACTIVE);
+		}
 	} 
 	
 	@RenderMapping(params="render=createUser")

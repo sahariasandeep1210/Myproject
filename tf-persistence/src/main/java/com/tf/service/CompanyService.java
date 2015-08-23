@@ -15,4 +15,6 @@ public interface CompanyService {
 	public String  getCompanyTypebyID(long id);
 	
 	public Company registerCompany(Company company);
+	
+	public List<Long> deleteCompany(Long id);
 }

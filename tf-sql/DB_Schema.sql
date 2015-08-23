@@ -107,3 +107,17 @@ CREATE TABLE `tf_po_documents` (
    PRIMARY KEY (`document_id`),
    UNIQUE KEY `document_id_UNIQUE` (`document_id`)    
    );
+   
+DROP TABLE IF EXISTS `tf_invoice_company`;
+CREATE TABLE `tf_invoice_company` (
+    `id` INT(11) NOT NULL,
+   `company_name` VARCHAR(40),
+   `description` VARCHAR(150) CHARACTER SET utf8  NOT NULL,    
+   PRIMARY KEY (`id`),
+   UNIQUE KEY `id` (`id`)    
+ );
+ 
+INSERT INTO tf_invoice_company VALUES (1,"Tesco","Tesco");
+INSERT INTO tf_invoice_company VALUES (2,"Sainsburys","Sainsburys");
+INSERT INTO tf_invoice_company VALUES (3,"ASDA","ASDA");
+INSERT INTO tf_invoice_company VALUES (4,"Co-OP","Co-OP");

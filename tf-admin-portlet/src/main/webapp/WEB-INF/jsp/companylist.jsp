@@ -20,10 +20,11 @@
 		<div class="row-fluid">
 			<div class="span6">
 				<h4>Manage Companies</h4>
+				<h6 style="float: right !important;"><a href="${createURL}" style="color: #295780;font-weight: bold;"><i class="fa fa fa-plus"></i> Add Company</a></h6>
 			</div>
 			<div class="span6">  
 			  <div class="span12">
-			  	<h4 style="float: right !important;"><a href="${createURL}" style="color: #295780;font-weight: bold;"><i class="fa fa fa-plus"></i> Add Company</a></h4>
+			  	<h5 style="float: right !important;" ><a href="${createURL}" style="color: #295780;font-weight: bold;"> Export</a></h5>
 			  </div>
 			  </div>			
 		</div>

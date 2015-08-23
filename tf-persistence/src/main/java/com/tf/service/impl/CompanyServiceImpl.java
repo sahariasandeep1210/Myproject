@@ -39,5 +39,9 @@ public class CompanyServiceImpl implements CompanyService {
 		// TODO Auto-generated method stub
 		return companyDAO.registerCompany(company);
 	}
+	
+	public List<Long> deleteCompany(Long id){
+		 return companyDAO.deleteCompany(id);
+	}
 
 }
