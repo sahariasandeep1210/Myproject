@@ -162,8 +162,4 @@ public class PurchaseOrderModel {
 				+ ", deliveryDate=" + deliveryDate + ", isTraded=" + isTraded
 				+ "]";
 	}
-
-	
-	
-
 }

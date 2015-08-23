@@ -40,9 +40,11 @@ import com.liferay.portlet.documentlibrary.model.DLFileEntry;
 import com.liferay.portlet.documentlibrary.model.DLFolder;
 import com.liferay.portlet.documentlibrary.model.DLFolderConstants;
 import com.liferay.portlet.documentlibrary.service.DLAppServiceUtil;
+import com.liferay.portlet.documentlibrary.util.PDFProcessor;
 import com.tf.model.PODocument;
 import com.tf.model.PurchaseOrderModel;
 import com.tf.po.model.PurchaseOrderDTO;
+import com.tf.service.PODocumentService;
 import com.tf.service.PurchaseOrderService;
 
 
@@ -57,6 +59,9 @@ public class PurchaseOrderController {
 	
 	@Autowired
 	private PurchaseOrderService purchaseOrderService;
+	
+	@Autowired
+	private PODocumentService documentService;
 	
 	@InitBinder
 	public void binder(WebDataBinder binder) {
@@ -83,15 +88,23 @@ public class PurchaseOrderController {
 	}
 	
 	@RenderMapping
-	protected ModelAndView defaultRender(ModelMap model,RenderRequest request, RenderResponse response) throws Exception {		
+	protected ModelAndView defaultRender(@ModelAttribute("purchaseOrderDTO") PurchaseOrderDTO purchaseOrderDTO,ModelMap model,RenderRequest request, RenderResponse response) throws Exception {		
 		_log.info("Render PO Order");
-		return new ModelAndView("purchaseorder", model);		
+		List<PurchaseOrderModel> list= purchaseOrderService.getPurchaseOrderList();
+		model.put("list",list);
+		return new ModelAndView("purchaseorderlist", model);		
 	}
 	
 	@RenderMapping(params="render=addPurchaseOrder")	
 	protected ModelAndView addPurchaseOrder(@ModelAttribute("purchaseOrderDTO") PurchaseOrderDTO purchaseOrderDTO, ModelMap model,RenderRequest request, RenderResponse response) throws Exception {	
 		_log.info("Render Add Purchase Order");
+		long purchaseOrderId = ParamUtil.getLong(request, "purchaseOrderId"); 
+		PurchaseOrderModel purchaseOrderModel=purchaseOrderService.findById(purchaseOrderId);
+		purchaseOrderDTO=transformPoModelToPoDTO(purchaseOrderModel);
+		PODocument pddocumentsList=documentService.findById(purchaseOrderId);
+		ThemeDisplay themeDispay=(ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);
 		model.put("purchaseOrderDTO",purchaseOrderDTO);
+		model.put("pddocumentsList",pddocumentsList);
 		return new ModelAndView("createpurchaseorder", model);	
 	} 
 	
@@ -107,7 +120,6 @@ public class PurchaseOrderController {
 			uploadDocument(map,request,purchaseOrderDTO.getId(),purchaseOrderDTO);
 			
 		}else{
-			
 			if(purchaseOrderDTO.getId()!=null){
 				
 			}else{
@@ -175,10 +187,6 @@ public class PurchaseOrderController {
         				poFolderId, repositoryId);
         	} 
         addFilestoFolder(themeDisplay,purchaseOrderDTO,folder.getFolderId(),request);
-        
-        
-        
-		
 	}
 
 	private void addFilestoFolder(ThemeDisplay themeDisplay,PurchaseOrderDTO purchaseOrderDTO,Long folderId,ActionRequest request) throws PortalException, SystemException, IOException {
@@ -191,7 +199,7 @@ public class PurchaseOrderController {
 				 String fileNamePrefix=fileNamePrefixSb.toString();
 				 if(purchaseOrderDTO.getInsuranceDoc() !=null && purchaseOrderDTO.getInsuranceDoc().getSize()>0){
 					 StringBuilder insurceDocName=new StringBuilder(fileNamePrefix);
-					 insurceDocName.append(purchaseOrderDTO.getInsuranceDoc().getOriginalFilename());
+					 insurceDocName.append("Insurance_").append(purchaseOrderDTO.getInsuranceDoc().getOriginalFilename());
 					 fileEntry= DLAppServiceUtil.addFileEntry(themeDisplay.getScopeGroupId(), folderId, insurceDocName.toString(), mimeType, insurceDocName.toString(), insurceDocName.toString(), "upload", purchaseOrderDTO.getInsuranceDoc().getInputStream(), purchaseOrderDTO.getInsuranceDoc().getSize(), serviceContext);
 					 PODocument poDocument =new PODocument();
 					 poDocument.setPoID(purchaseOrderDTO.getId());
@@ -201,10 +209,11 @@ public class PurchaseOrderController {
 					 poDocument.setCreate_date(fileEntry.getCreateDate());
 					 System.out.println("poDocument:::::"+poDocument);
 					 docList.add(poDocument);					
-				 } if(purchaseOrderDTO.getInvoiceDoc()!=null && purchaseOrderDTO.getInvoiceDoc().getSize()>0){
-					 StringBuilder invoiceDocName=new StringBuilder(fileNamePrefix);
-					 invoiceDocName.append(purchaseOrderDTO.getInvoiceDoc().getOriginalFilename());
-					 fileEntry= DLAppServiceUtil.addFileEntry(themeDisplay.getScopeGroupId(), folderId, invoiceDocName.toString(), mimeType, invoiceDocName.toString(), invoiceDocName.toString(), "upload", purchaseOrderDTO.getInvoiceDoc().getInputStream(), purchaseOrderDTO.getInvoiceDoc().getSize(), serviceContext);
+				 }
+				 if(purchaseOrderDTO.getInvoiceDoc()!=null && purchaseOrderDTO.getInvoiceDoc().getSize()>0){
+					 StringBuilder contractDocName=new StringBuilder(fileNamePrefix);
+					 contractDocName.append("Invoice_").append(purchaseOrderDTO.getInvoiceDoc().getOriginalFilename());
+					 fileEntry= DLAppServiceUtil.addFileEntry(themeDisplay.getScopeGroupId(), folderId, contractDocName.toString(), mimeType, contractDocName.toString(), contractDocName.toString(), "upload", purchaseOrderDTO.getInvoiceDoc().getInputStream(), purchaseOrderDTO.getInvoiceDoc().getSize(), serviceContext);
 					 PODocument poDocument =new PODocument();
 					 poDocument.setPoID(purchaseOrderDTO.getId());
 					 poDocument.setDocumentID(fileEntry.getFileEntryId());
@@ -213,8 +222,69 @@ public class PurchaseOrderController {
 					 poDocument.setCreate_date(fileEntry.getCreateDate());
 					 System.out.println("poDocument:::::"+poDocument);
 					 docList.add(poDocument);
+				 }
+				 if(purchaseOrderDTO.getDeliveryNoteDoc()!=null && purchaseOrderDTO.getDeliveryNoteDoc().getSize()>0){
+					 StringBuilder delieveryDocName=new StringBuilder(fileNamePrefix);
+					 delieveryDocName.append("Delievery_").append(purchaseOrderDTO.getDeliveryNoteDoc().getOriginalFilename());
+					 fileEntry= DLAppServiceUtil.addFileEntry(themeDisplay.getScopeGroupId(), folderId, delieveryDocName.toString(), mimeType, delieveryDocName.toString(), delieveryDocName.toString(), "upload", purchaseOrderDTO.getDeliveryNoteDoc().getInputStream(), purchaseOrderDTO.getDeliveryNoteDoc().getSize(), serviceContext);
+					 PODocument poDocument =new PODocument();
+					 poDocument.setPoID(purchaseOrderDTO.getId());
+					 poDocument.setDocumentID(fileEntry.getFileEntryId());
+					 poDocument.setDocumentType("Delievery");
+					 poDocument.setDocumentUrl(getUrl(themeDisplay,fileEntry));
+					 poDocument.setCreate_date(fileEntry.getCreateDate());
+					 System.out.println("poDocument:::::"+poDocument);
+					 docList.add(poDocument);
 				 }	
-				 
+				 if(purchaseOrderDTO.getShippingDoc()!=null && purchaseOrderDTO.getShippingDoc().getSize()>0){
+					 StringBuilder shippingDocName=new StringBuilder(fileNamePrefix);
+					 shippingDocName.append("Shipping_").append(purchaseOrderDTO.getShippingDoc().getOriginalFilename());
+					 fileEntry= DLAppServiceUtil.addFileEntry(themeDisplay.getScopeGroupId(), folderId, shippingDocName.toString(), mimeType, shippingDocName.toString(), shippingDocName.toString(), "upload", purchaseOrderDTO.getShippingDoc().getInputStream(), purchaseOrderDTO.getShippingDoc().getSize(), serviceContext);
+					 PODocument poDocument =new PODocument();
+					 poDocument.setPoID(purchaseOrderDTO.getId());
+					 poDocument.setDocumentID(fileEntry.getFileEntryId());
+					 poDocument.setDocumentType("Shipping");
+					 poDocument.setDocumentUrl(getUrl(themeDisplay,fileEntry));
+					 poDocument.setCreate_date(fileEntry.getCreateDate());
+					 System.out.println("poDocument:::::"+poDocument);
+					 docList.add(poDocument);
+				 }	
+				 if(purchaseOrderDTO.getLocDoc()!=null && purchaseOrderDTO.getLocDoc().getSize()>0){
+					 StringBuilder locDocName=new StringBuilder(fileNamePrefix);
+					 locDocName.append("LOC").append(purchaseOrderDTO.getLocDoc().getOriginalFilename()).append("LOC");
+					 fileEntry= DLAppServiceUtil.addFileEntry(themeDisplay.getScopeGroupId(), folderId, locDocName.toString(), mimeType, locDocName.toString(), locDocName.toString(), "upload", purchaseOrderDTO.getLocDoc().getInputStream(), purchaseOrderDTO.getLocDoc().getSize(), serviceContext);
+					 PODocument poDocument =new PODocument();
+					 poDocument.setPoID(purchaseOrderDTO.getId());
+					 poDocument.setDocumentID(fileEntry.getFileEntryId());
+					 poDocument.setDocumentType("LOC");
+					 poDocument.setDocumentUrl(getUrl(themeDisplay,fileEntry));
+					 poDocument.setCreate_date(fileEntry.getCreateDate());
+					 System.out.println("poDocument:::::"+poDocument);
+					 docList.add(poDocument);
+				 }		
+				 if(purchaseOrderDTO.getContractDoc()!=null && purchaseOrderDTO.getContractDoc().getSize()>0){
+					 StringBuilder contractDocName=new StringBuilder(fileNamePrefix);
+					 contractDocName.append("Contract_").append(purchaseOrderDTO.getContractDoc().getOriginalFilename());
+					 fileEntry= DLAppServiceUtil.addFileEntry(themeDisplay.getScopeGroupId(), folderId, contractDocName.toString(), mimeType, contractDocName.toString(), contractDocName.toString(), "upload", purchaseOrderDTO.getContractDoc().getInputStream(), purchaseOrderDTO.getContractDoc().getSize(), serviceContext);
+					 PODocument poDocument =new PODocument();
+					 poDocument.setPoID(purchaseOrderDTO.getId());
+					 poDocument.setDocumentID(fileEntry.getFileEntryId());
+					 poDocument.setDocumentType("Contract");
+					 poDocument.setDocumentUrl(getUrl(themeDisplay,fileEntry));
+					 poDocument.setCreate_date(fileEntry.getCreateDate());
+					 System.out.println("poDocument:::::"+poDocument);
+					 docList.add(poDocument);
+				 }	
+				if (docList != null && docList.size() > 0) {
+					for (PODocument poDocument : docList) {
+						try {
+							documentService.addPODocument(poDocument);
+						} catch (Exception e) {
+							_log.error("error is occured in addFilestoFolder()" + e);
+						}
+		
+					}
+				}
 	}
 
 
