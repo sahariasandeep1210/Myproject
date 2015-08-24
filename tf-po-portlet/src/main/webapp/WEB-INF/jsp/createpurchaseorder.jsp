@@ -4,8 +4,6 @@
 	<portlet:param name="action" value="addPurchaseOrder" />
 </portlet:actionURL>
 
-
-
 <div class="container-fluid">
 	<c:if test="${create eq 'success' && purchaseOrderDTO.id !=null}">
 		<div class="alert alert-success">Purchase order has been successfully added.Please click on Upload Documents to upload relevant documents </div>
@@ -117,32 +115,170 @@
 						<tbody>
 							<tr>
 								<td>Insurance</td>
-								<td> <input type="file" name="insuranceDoc"> </td>
+								<td>
+								<c:set var="count" value="0" scope="page" />
+								<c:set var="url" value="" scope="page" />
+								<c:set var="docName" value="" scope="page" />
+								 <c:forEach items="${pddocumentsList}" var="pddocument" varStatus="status">
+									   <c:choose>
+											<c:when test="${pddocument.documentType eq 'Insurance' && not empty pddocument.documentUrl}">
+											    <c:set var="count" value="1" scope="page" />
+												<c:set var="url" value="${pddocument.documentUrl}" scope="page" />
+												<c:set var="docName" value="${pddocument.documentName}" scope="page" />
+											</c:when>    
+											<c:otherwise>
+											</c:otherwise>
+										</c:choose>
+								</c:forEach>  
+								<c:choose>
+									<c:when test="${count eq '1'}">
+									   <a href="${url}" >${docName}</a>
+									   <c:set var="count" value="0" scope="page" />
+								       <c:set var="url" value="" scope="page" />
+									</c:when>    
+									<c:otherwise>
+									   <input type="file" name="insuranceDoc">
+									</c:otherwise>	
+								</c:choose>													
+								</td>
 								<td></td>
 							</tr>
 							<tr>
 								<td>Invoice</td>
-								<td> <input type="file" name="invoiceDoc"> </td>
+								<td> 
+								    <c:forEach items="${pddocumentsList}" var="pddocument" varStatus="status">
+									   <c:choose>
+											<c:when test="${pddocument.documentType eq 'Invoice' && not empty pddocument.documentUrl}">
+											    <c:set var="count" value="1" scope="page" />
+												<c:set var="url" value="${pddocument.documentUrl}" scope="page" />
+												<c:set var="docName" value="${pddocument.documentName}" scope="page" />
+											</c:when>    
+											<c:otherwise>
+											</c:otherwise>
+										</c:choose>
+								    </c:forEach>  
+									<c:choose>
+										<c:when test="${count eq '1'}">
+										   <a href="${url}" >${docName}</a>
+										   <c:set var="count" value="0" scope="page" />
+										   <c:set var="url" value="" scope="page" />
+										</c:when>    
+										<c:otherwise>
+										   <input type="file" name="invoiceDoc">
+										</c:otherwise>	
+									</c:choose>		
+								
+								</td>
 								<td></td>
 							</tr>
 							<tr>
 								<td>Delivery Note</td>
-								<td> <input type="file" name="deliveryNoteDoc"> </td>
+								<td>
+								    <c:forEach items="${pddocumentsList}" var="pddocument" varStatus="status">
+									   <c:choose>
+											<c:when test="${pddocument.documentType eq 'Delievery' && not empty pddocument.documentUrl}">
+											    <c:set var="count" value="1" scope="page" />
+												<c:set var="url" value="${pddocument.documentUrl}" scope="page" />
+												<c:set var="docName" value="${pddocument.documentName}" scope="page" />
+											</c:when>    
+											<c:otherwise>
+											</c:otherwise>
+										</c:choose>
+								    </c:forEach>  
+									<c:choose>
+										<c:when test="${count eq '1'}">
+										   <a href="${url}" >${docName}</a>
+										   <c:set var="count" value="0" scope="page" />
+										   <c:set var="url" value="" scope="page" />
+										</c:when>    
+										<c:otherwise>
+										   <input type="file" name="deliveryNoteDoc">
+										</c:otherwise>	
+									</c:choose>		
+								</td>
 								<td></td>
 							</tr>
 							<tr>
 								<td>Shipping</td>
-								<td> <input type="file" name="shippingDoc"> </td>
+								<td> 
+								    <c:forEach items="${pddocumentsList}" var="pddocument" varStatus="status">
+									   <c:choose>
+											<c:when test="${pddocument.documentType eq 'Shipping' && not empty pddocument.documentUrl}">
+											    <c:set var="count" value="1" scope="page" />
+												<c:set var="url" value="${pddocument.documentUrl}" scope="page" />
+												<c:set var="docName" value="${pddocument.documentName}" scope="page" />
+											</c:when>    
+											<c:otherwise>
+											</c:otherwise>
+										</c:choose>
+								    </c:forEach>  
+									<c:choose>
+										<c:when test="${count eq '1'}">
+										   <a href="${url}" >${docName}</a>
+										   <c:set var="count" value="0" scope="page" />
+										   <c:set var="url" value="" scope="page" />
+										</c:when>    
+										<c:otherwise>
+										   <input type="file" name="shippingDoc">
+										</c:otherwise>	
+									</c:choose>		
+								    
+								</td>
 								<td></td>
 							</tr>
 							<tr>
 								<td>Letter of Credit</td>
-								<td> <input type="file" name="locDoc"> </td>
+								<td> 
+								  <c:forEach items="${pddocumentsList}" var="pddocument" varStatus="status">
+									   <c:choose>
+											<c:when test="${pddocument.documentType eq 'LOC' && not empty pddocument.documentUrl}">
+											    <c:set var="count" value="1" scope="page" />
+												<c:set var="url" value="${pddocument.documentUrl}" scope="page" />
+												<c:set var="docName" value="${pddocument.documentName}" scope="page" />
+											</c:when>    
+											<c:otherwise>
+											</c:otherwise>
+										</c:choose>
+								    </c:forEach>  
+									<c:choose>
+										<c:when test="${count eq '1'}">
+										   <a href="${url}" >${docName}</a>
+										   <c:set var="count" value="0" scope="page" />
+										   <c:set var="url" value="" scope="page" />
+										</c:when>    
+										<c:otherwise>
+										   <input type="file" name="locDoc">
+										</c:otherwise>	
+									</c:choose>		
+								
+								</td>
 								<td></td>
 							</tr>
 							<tr>
 								<td>Contract</td>
-								<td> <input type="file" name="contractDoc"> </td>
+								<td> 
+								    <c:forEach items="${pddocumentsList}" var="pddocument" varStatus="status">
+									   <c:choose>
+											<c:when test="${pddocument.documentType eq 'Contract' && not empty pddocument.documentUrl}">
+											    <c:set var="count" value="1" scope="page" />
+												<c:set var="url" value="${pddocument.documentUrl}" scope="page" />
+												<c:set var="docName" value="${pddocument.documentName}" scope="page" />
+											</c:when>    
+											<c:otherwise>
+											</c:otherwise>
+										</c:choose>
+								    </c:forEach>  
+									<c:choose>
+										<c:when test="${count eq '1'}">
+										   <a href="${url}" >${docName}</a>
+										   <c:set var="count" value="0" scope="page" />
+										   <c:set var="url" value="" scope="page" />
+										</c:when>    
+										<c:otherwise>
+										   <input type="file" name="ContractDoc">
+										</c:otherwise>	
+									</c:choose>		
+								</td>
 								<td></td>
 							</tr>
 						</tbody>
@@ -156,11 +292,7 @@
 						</div>
 				</div>
 			</c:otherwise>
-		
 		</c:choose>
-		
 		</form:form>
 		
-
-
 </div>

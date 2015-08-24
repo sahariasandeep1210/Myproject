@@ -23,7 +23,7 @@ public class PODocumentServiceImpl implements PODocumentService{
 		return poDocumentDAO.getPODocuments();
 	}
 
-	public PODocument findById(long id) {
+	public List<PODocument> findById(long id) {
 		return poDocumentDAO.findById(id);
 	}
 

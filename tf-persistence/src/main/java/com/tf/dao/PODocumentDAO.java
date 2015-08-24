@@ -8,5 +8,5 @@ public interface PODocumentDAO {
 	
 	public PODocument addPODocument(PODocument PoModel);
 	public List<PODocument> getPODocuments(); 
-	public PODocument findById(long id);
+	public List<PODocument>  findById(long id);
 }

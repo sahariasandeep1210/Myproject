@@ -99,12 +99,13 @@ public class PurchaseOrderController {
 	protected ModelAndView addPurchaseOrder(@ModelAttribute("purchaseOrderDTO") PurchaseOrderDTO purchaseOrderDTO, ModelMap model,RenderRequest request, RenderResponse response) throws Exception {	
 		_log.info("Render Add Purchase Order");
 		long purchaseOrderId = ParamUtil.getLong(request, "purchaseOrderId"); 
-		PurchaseOrderModel purchaseOrderModel=purchaseOrderService.findById(purchaseOrderId);
-		purchaseOrderDTO=transformPoModelToPoDTO(purchaseOrderModel);
-		PODocument pddocumentsList=documentService.findById(purchaseOrderId);
-		ThemeDisplay themeDispay=(ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);
-		model.put("purchaseOrderDTO",purchaseOrderDTO);
-		model.put("pddocumentsList",pddocumentsList);
+		if(purchaseOrderId>0){
+			PurchaseOrderModel purchaseOrderModel=purchaseOrderService.findById(purchaseOrderId);
+			purchaseOrderDTO=transformPoModelToPoDTO(purchaseOrderModel);
+			List<PODocument> pddocumentsList=documentService.findById(purchaseOrderId);
+			model.put("purchaseOrderDTO",purchaseOrderDTO);
+			model.put("pddocumentsList",pddocumentsList);
+		}
 		return new ModelAndView("createpurchaseorder", model);	
 	} 
 	
@@ -205,6 +206,7 @@ public class PurchaseOrderController {
 					 poDocument.setPoID(purchaseOrderDTO.getId());
 					 poDocument.setDocumentID(fileEntry.getFileEntryId());
 					 poDocument.setDocumentType("Insurance");
+					 poDocument.setDocumentName(purchaseOrderDTO.getInsuranceDoc().getOriginalFilename());
 					 poDocument.setDocumentUrl(getUrl(themeDisplay,fileEntry));
 					 poDocument.setCreate_date(fileEntry.getCreateDate());
 					 System.out.println("poDocument:::::"+poDocument);
@@ -218,6 +220,7 @@ public class PurchaseOrderController {
 					 poDocument.setPoID(purchaseOrderDTO.getId());
 					 poDocument.setDocumentID(fileEntry.getFileEntryId());
 					 poDocument.setDocumentType("Invoice");
+					 poDocument.setDocumentName(purchaseOrderDTO.getInvoiceDoc().getOriginalFilename());
 					 poDocument.setDocumentUrl(getUrl(themeDisplay,fileEntry));
 					 poDocument.setCreate_date(fileEntry.getCreateDate());
 					 System.out.println("poDocument:::::"+poDocument);
@@ -231,6 +234,7 @@ public class PurchaseOrderController {
 					 poDocument.setPoID(purchaseOrderDTO.getId());
 					 poDocument.setDocumentID(fileEntry.getFileEntryId());
 					 poDocument.setDocumentType("Delievery");
+					 poDocument.setDocumentName(purchaseOrderDTO.getDeliveryNoteDoc().getOriginalFilename());
 					 poDocument.setDocumentUrl(getUrl(themeDisplay,fileEntry));
 					 poDocument.setCreate_date(fileEntry.getCreateDate());
 					 System.out.println("poDocument:::::"+poDocument);
@@ -244,6 +248,7 @@ public class PurchaseOrderController {
 					 poDocument.setPoID(purchaseOrderDTO.getId());
 					 poDocument.setDocumentID(fileEntry.getFileEntryId());
 					 poDocument.setDocumentType("Shipping");
+					 poDocument.setDocumentName(purchaseOrderDTO.getShippingDoc().getOriginalFilename());
 					 poDocument.setDocumentUrl(getUrl(themeDisplay,fileEntry));
 					 poDocument.setCreate_date(fileEntry.getCreateDate());
 					 System.out.println("poDocument:::::"+poDocument);
@@ -251,12 +256,13 @@ public class PurchaseOrderController {
 				 }	
 				 if(purchaseOrderDTO.getLocDoc()!=null && purchaseOrderDTO.getLocDoc().getSize()>0){
 					 StringBuilder locDocName=new StringBuilder(fileNamePrefix);
-					 locDocName.append("LOC").append(purchaseOrderDTO.getLocDoc().getOriginalFilename()).append("LOC");
+					 locDocName.append("LOC_").append(purchaseOrderDTO.getLocDoc().getOriginalFilename()).append("LOC");
 					 fileEntry= DLAppServiceUtil.addFileEntry(themeDisplay.getScopeGroupId(), folderId, locDocName.toString(), mimeType, locDocName.toString(), locDocName.toString(), "upload", purchaseOrderDTO.getLocDoc().getInputStream(), purchaseOrderDTO.getLocDoc().getSize(), serviceContext);
 					 PODocument poDocument =new PODocument();
 					 poDocument.setPoID(purchaseOrderDTO.getId());
 					 poDocument.setDocumentID(fileEntry.getFileEntryId());
 					 poDocument.setDocumentType("LOC");
+					 poDocument.setDocumentName(purchaseOrderDTO.getLocDoc().getOriginalFilename());
 					 poDocument.setDocumentUrl(getUrl(themeDisplay,fileEntry));
 					 poDocument.setCreate_date(fileEntry.getCreateDate());
 					 System.out.println("poDocument:::::"+poDocument);
@@ -269,6 +275,7 @@ public class PurchaseOrderController {
 					 PODocument poDocument =new PODocument();
 					 poDocument.setPoID(purchaseOrderDTO.getId());
 					 poDocument.setDocumentID(fileEntry.getFileEntryId());
+					 poDocument.setDocumentName(purchaseOrderDTO.getContractDoc().getOriginalFilename());
 					 poDocument.setDocumentType("Contract");
 					 poDocument.setDocumentUrl(getUrl(themeDisplay,fileEntry));
 					 poDocument.setCreate_date(fileEntry.getCreateDate());

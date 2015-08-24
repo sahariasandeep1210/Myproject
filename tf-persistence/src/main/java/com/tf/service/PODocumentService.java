@@ -11,6 +11,6 @@ public interface PODocumentService {
 	
 	public List<PODocument> getPODocuments(); 
   
-	public PODocument findById(long id);
+	public List<PODocument> findById(long id);
 
 }

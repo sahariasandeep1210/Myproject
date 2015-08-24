@@ -29,7 +29,20 @@ public class PODocument {
     @Column(name="create_date")
    	private Date create_date;
     
-    public PODocument() {
+    @Column(name="document_name")
+   	private String documentName;
+    
+    
+    
+    public String getDocumentName() {
+		return documentName;
+	}
+
+	public void setDocumentName(String documentName) {
+		this.documentName = documentName;
+	}
+
+	public PODocument() {
 		// TODO Auto-generated constructor stub
 	}
 
@@ -75,9 +88,10 @@ public class PODocument {
 
 	@Override
 	public String toString() {
-		return "PODocuments [poID=" + poID + ", documentID=" + documentID
+		return "PODocument [documentID=" + documentID + ", poID=" + poID
 				+ ", documentType=" + documentType + ", documentUrl="
-				+ documentUrl + ", create_date=" + create_date + "]";
+				+ documentUrl + ", create_date=" + create_date
+				+ ", documentName=" + documentName + "]";
 	}
 	
 

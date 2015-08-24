@@ -19,7 +19,7 @@ public class PODocumentDAOImpl  extends BaseDAO implements PODocumentDAO {
 	public PODocument addPODocument(PODocument podModel) {
 		try {
 			long id=(Long) sessionFactory.getCurrentSession().save(podModel);
-			podModel.setPoID(id);
+			podModel.setDocumentID(id);
 			_log.debug("persist successful"+podModel);
 		} catch (RuntimeException re) {
 			_log.error("persist failed", re);
@@ -42,20 +42,20 @@ public class PODocumentDAOImpl  extends BaseDAO implements PODocumentDAO {
 		}
 	}
 	
-	public PODocument findById(long id) {
+	public List<PODocument> findById(long id) {
 		_log.debug("getting User instance with id: " + id);
 		try {
-			List<PODocument> results = (List<PODocument>) sessionFactory.getCurrentSession().createCriteria(PODocument.class).add(Restrictions.ne("poID", id)).list();	
+			List<PODocument> results = (List<PODocument>) sessionFactory.getCurrentSession().createCriteria(PODocument.class).add(Restrictions.eq("poID", id)).list();	
 			PODocument instance = null;
 			if (results != null && results.size() > 0) {
-				instance = results.get(0);
+				
 			}
 			if (instance == null) {
 				_log.debug("get successful, no instance found");
 			} else {
 				_log.debug("get successful, instance found");
 			}
-			return instance;
+			return results;
 		} catch (RuntimeException re) {
 			_log.error("get failed", re);
 			throw re;
