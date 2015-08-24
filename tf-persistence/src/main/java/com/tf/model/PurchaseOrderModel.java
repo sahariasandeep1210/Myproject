@@ -7,6 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 
@@ -52,6 +53,9 @@ public class PurchaseOrderModel {
 	
 	@Column(name="is_traded")
 	private Integer isTraded; 
+	
+	@ManyToOne
+	private Trade trade;
 	
 	public PurchaseOrderModel() {
 	}
@@ -150,6 +154,14 @@ public class PurchaseOrderModel {
 
 	public void setIsTraded(Integer isTraded) {
 		this.isTraded = isTraded;
+	}
+
+	public Trade getTrade() {
+		return trade;
+	}
+
+	public void setTrade(Trade trade) {
+		this.trade = trade;
 	}
 
 	@Override

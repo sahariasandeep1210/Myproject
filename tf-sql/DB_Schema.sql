@@ -129,20 +129,21 @@ ALTER TABLE `tf_po_documents` ADD COLUMN document_name VARCHAR(100) AFTER docume
 DROP TABLE IF EXISTS `tf_trade`;
 CREATE TABLE `tf_trade` (
    `trade_id` INT(11) NOT NULL AUTO_INCREMENT,
-   `duration ` INT(11)  NOT NULL,
-   `closing_date`  DATE  ,  
-   `opening_date`  DATE  ,  
-   `trade_amount` DECIMAL     ,    
+   `duration` INT(11),
+   `closing_date`  DATE,  
+   `opening_date`  DATE,  
+   `trade_amount` DECIMAL,    
    `status` TINYINT(1) DEFAULT '1',
    `invoive_company_id`    INT(11) NOT NULL,
    `seller_company_id` INT(11) NOT NULL,
    `trade_days` INT(11),
    `trade_description` VARCHAR(300) ,
-   `repayment_date ` DATE, 
-   `trade_settled ` TINYINT(1) DEFAULT '0', 
-   `is_secondary_allotment ` TINYINT(1) DEFAULT '0', 
+   `repayment_date` DATE, 
+   `trade_settled` TINYINT(1) DEFAULT '0', 
+   `is_secondary_allotment` TINYINT(1) DEFAULT '0', 
    `total_value` DECIMAL   ,    
    PRIMARY KEY (`trade_id`),
-   UNIQUE KEY `purchase_order_id_UNIQUE` (`purchase_order_id`),
-   UNIQUE KEY `po_number_UNIQUE` (`po_number`)
+   UNIQUE KEY `trade_id_UNIQUE` (`trade_id`)  
    );
+   
+   ALTER TABLE `tf_purchase_order` ADD COLUMN trade_id INT(11) AFTER is_traded;
