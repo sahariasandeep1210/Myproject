@@ -132,7 +132,8 @@
 								</c:forEach>  
 								<c:choose>
 									<c:when test="${count eq '1'}">
-									   <a href="${url}" >${docName}</a>
+									   <a href="${url}" class="file-download">${docName}</a>
+									    <input type="file" name="insuranceDoc">
 									   <c:set var="count" value="0" scope="page" />
 								       <c:set var="url" value="" scope="page" />
 									</c:when>    
@@ -159,7 +160,8 @@
 								    </c:forEach>  
 									<c:choose>
 										<c:when test="${count eq '1'}">
-										   <a href="${url}" >${docName}</a>
+										   <a href="${url}" class="file-download">${docName}</a>
+										    <input type="file" name="invoiceDoc">
 										   <c:set var="count" value="0" scope="page" />
 										   <c:set var="url" value="" scope="page" />
 										</c:when>    
@@ -187,7 +189,8 @@
 								    </c:forEach>  
 									<c:choose>
 										<c:when test="${count eq '1'}">
-										   <a href="${url}" >${docName}</a>
+										   <a href="${url}" class="file-download">${docName}</a>
+										    <input type="file" name="deliveryNoteDoc">
 										   <c:set var="count" value="0" scope="page" />
 										   <c:set var="url" value="" scope="page" />
 										</c:when>    
@@ -214,7 +217,8 @@
 								    </c:forEach>  
 									<c:choose>
 										<c:when test="${count eq '1'}">
-										   <a href="${url}" >${docName}</a>
+										   <a href="${url}" class="file-download" >${docName}</a>
+										   <input type="file" name="shippingDoc">
 										   <c:set var="count" value="0" scope="page" />
 										   <c:set var="url" value="" scope="page" />
 										</c:when>    
@@ -242,7 +246,8 @@
 								    </c:forEach>  
 									<c:choose>
 										<c:when test="${count eq '1'}">
-										   <a href="${url}" >${docName}</a>
+										   <a href="${url}" class="file-download">${docName}</a>
+										    <input type="file" name="locDoc">
 										   <c:set var="count" value="0" scope="page" />
 										   <c:set var="url" value="" scope="page" />
 										</c:when>    
@@ -270,7 +275,8 @@
 								    </c:forEach>  
 									<c:choose>
 										<c:when test="${count eq '1'}">
-										   <a href="${url}" >${docName}</a>
+										   <a href="${url}" class="file-download">${docName}</a>
+										   <input type="file" name="ContractDoc">
 										   <c:set var="count" value="0" scope="page" />
 										   <c:set var="url" value="" scope="page" />
 										</c:when>    
@@ -296,3 +302,13 @@
 		</form:form>
 		
 </div>
+
+
+<script>
+$(function(){
+	$(".file-download").on("click",function(event){
+		 event.preventDefault();
+		 window.open($(this).attr("href"),'_blank');  
+	})
+});
+</script>
