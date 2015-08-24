@@ -121,3 +121,5 @@ INSERT INTO tf_invoice_company VALUES (1,"Tesco","Tesco");
 INSERT INTO tf_invoice_company VALUES (2,"Sainsburys","Sainsburys");
 INSERT INTO tf_invoice_company VALUES (3,"ASDA","ASDA");
 INSERT INTO tf_invoice_company VALUES (4,"Co-OP","Co-OP");
+
+ ALTER TABLE `tf_po_documents` ADD COLUMN document_name VARCHAR(100) AFTER document_type
