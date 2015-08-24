@@ -30,7 +30,7 @@ public class Trade {
 	@Column(name="closing_date")
 	private Date closingDate;	
 	
-	@Column(name="closing_date")
+	@Column(name="opening_date")
 	private Date openingDate;
 	
 	@Column(name="trade_amount")
