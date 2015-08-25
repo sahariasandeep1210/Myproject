@@ -32,13 +32,19 @@
 				</thead>
 				<tbody>
 					<c:forEach items="${list}" var="purchaseObj">
-						<tr onclick="window.location.href='${addPurchaseOrderURL}&purchaseOrderId=${purchaseObj.id}'">
-							<td>${purchaseObj.sellerId} </td>
-							<td>${purchaseObj.poNumber}</td>
-							<td>${purchaseObj.poAmount	}</td>
-							<td>${purchaseObj.poDays}</td>
-							<td>${purchaseObj.financeAmount}</td>
-						</tr>
+					    <c:choose>
+							<c:when test="${not empty purchaseObj.sellerId}">
+							<tr onclick="window.location.href='${addPurchaseOrderURL}&purchaseOrderId=${purchaseObj.id}'">
+								<td>${purchaseObj.sellerId} </td>
+								<td>${purchaseObj.poNumber}</td>
+								<td>${purchaseObj.poAmount	}</td>
+								<td>${purchaseObj.poDays}</td>
+								<td>${purchaseObj.financeAmount}</td>
+							</tr>
+							</c:when>    
+							<c:otherwise>
+							</c:otherwise>
+						</c:choose>
 					</c:forEach>
 				</tbody>
 			</table>
