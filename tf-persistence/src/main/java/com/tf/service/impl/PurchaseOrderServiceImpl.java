@@ -28,4 +28,9 @@ public class PurchaseOrderServiceImpl  implements PurchaseOrderService{
 		return purchaseOrderDAO.findById(id);
 	}
 
+	public void UpdatePurchaseOrder(PurchaseOrderModel poModel) {
+		 purchaseOrderDAO.UpdatePurchaseOrder(poModel);
+		
+	}
+
 }

@@ -26,6 +26,16 @@ public class PurchaseOrderDAOImpl  extends BaseDAO implements PurchaseOrderDAO {
 		return poModel;
 	}
 	
+	public void UpdatePurchaseOrder(PurchaseOrderModel poModel) {
+		try {
+			sessionFactory.getCurrentSession().saveOrUpdate(poModel);
+			_log.debug("persist successful"+poModel);
+		} catch (RuntimeException re) {
+			_log.error("persist failed", re);
+			throw re;
+		}
+	}	
+	
 	public PurchaseOrderModel addPODocuments(PurchaseOrderModel poModel) {
 		try {
 			long id=(Long) sessionFactory.getCurrentSession().save(poModel);

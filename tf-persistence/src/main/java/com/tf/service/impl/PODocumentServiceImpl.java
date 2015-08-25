@@ -15,8 +15,8 @@ public class PODocumentServiceImpl implements PODocumentService{
 	@Autowired
 	private PODocumentDAO poDocumentDAO;
 	
-	public PODocument addPODocument(PODocument PoModel) {
-		return poDocumentDAO.addPODocument(PoModel);
+	public void addPODocument(PODocument PoModel) {
+		 poDocumentDAO.addPODocument(PoModel);
 	}
 
 	public List<PODocument> getPODocuments() {
@@ -26,5 +26,10 @@ public class PODocumentServiceImpl implements PODocumentService{
 	public List<PODocument> findById(long id) {
 		return poDocumentDAO.findById(id);
 	}
+
+	public void deleteDocuments(PODocument poDocument) {
+		 poDocumentDAO.deleteDocuments(poDocument);
+	}
+	
 
 }

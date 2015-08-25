@@ -12,4 +12,5 @@ public interface PurchaseOrderService {
 	
 	public PurchaseOrderModel findById(long id);
 
+	public void UpdatePurchaseOrder(PurchaseOrderModel poModel);
 }

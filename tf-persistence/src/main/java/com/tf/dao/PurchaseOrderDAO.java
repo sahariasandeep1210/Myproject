@@ -22,5 +22,11 @@ public interface PurchaseOrderDAO {
 	 * @return
 	 */
 	public PurchaseOrderModel findById(long id);
+	
+	/**
+	 * 
+	 * @param poModel
+	 */
+	public void UpdatePurchaseOrder(PurchaseOrderModel poModel);
 
 }

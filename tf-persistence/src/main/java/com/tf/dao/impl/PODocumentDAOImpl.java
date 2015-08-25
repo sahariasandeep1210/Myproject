@@ -16,16 +16,14 @@ import com.tf.model.PurchaseOrderModel;
 @Transactional(rollbackFor = Exception.class)
 public class PODocumentDAOImpl  extends BaseDAO implements PODocumentDAO {
 	
-	public PODocument addPODocument(PODocument podModel) {
+	public void addPODocument(PODocument podModel) {
 		try {
-			long id=(Long) sessionFactory.getCurrentSession().save(podModel);
-			podModel.setDocumentID(id);
+			sessionFactory.getCurrentSession().saveOrUpdate(podModel);
 			_log.debug("persist successful"+podModel);
 		} catch (RuntimeException re) {
 			_log.error("persist failed", re);
 			throw re;
 		}
-		return podModel;
 	}
 	
 	public List<PODocument> getPODocuments() {
@@ -56,6 +54,16 @@ public class PODocumentDAOImpl  extends BaseDAO implements PODocumentDAO {
 				_log.debug("get successful, instance found");
 			}
 			return results;
+		} catch (RuntimeException re) {
+			_log.error("get failed", re);
+			throw re;
+		}
+	}
+
+	public void  deleteDocuments(PODocument poDocument) {
+		_log.debug("getting User instance with id: " + poDocument);
+		try {
+			sessionFactory.getCurrentSession().delete(poDocument);
 		} catch (RuntimeException re) {
 			_log.error("get failed", re);
 			throw re;

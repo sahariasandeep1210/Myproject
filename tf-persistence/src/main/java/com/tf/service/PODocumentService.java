@@ -7,10 +7,12 @@ import com.tf.model.PurchaseOrderModel;
 
 public interface PODocumentService {
 	
-	public PODocument addPODocument(PODocument PODocument);
+	public void addPODocument(PODocument PODocument);
 	
 	public List<PODocument> getPODocuments(); 
   
 	public List<PODocument> findById(long id);
+	
+	public void deleteDocuments(PODocument poDocument);
 
 }

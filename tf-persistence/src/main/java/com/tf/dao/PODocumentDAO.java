@@ -6,7 +6,8 @@ import com.tf.model.PODocument;
 
 public interface PODocumentDAO {
 	
-	public PODocument addPODocument(PODocument PoModel);
+	public void addPODocument(PODocument PoModel);
 	public List<PODocument> getPODocuments(); 
 	public List<PODocument>  findById(long id);
+	public void deleteDocuments(PODocument poDocument);
 }
