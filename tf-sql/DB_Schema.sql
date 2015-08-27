@@ -169,3 +169,29 @@ CREATE TABLE `scf_invoice` (
    UNIQUE KEY `invoice_number_UNIQUE` (`invoice_number`)
    );
    
+DROP TABLE IF EXISTS `scf_trade`;
+CREATE TABLE `scf_trade` (
+    `id` INT(11) NOT NULL AUTO_INCREMENT,
+   `scf_trade` TINYINT(1) DEFAULT '0',
+   `duration` INT(10), 
+   `closing_date`  DATE,
+   `opening_date`  DATE,
+   `investor_Payment_date`  DATE,
+   `Seller_Payment_date`  DATE,
+   `trade_amount`  DECIMAL,
+   `status` TINYINT(1) DEFAULT '0',
+   `company_id` INT(11) NOT NULL,
+   `trade_notes` VARCHAR(45) CHARACTER SET utf8  DEFAULT NULL,
+   `trade_settled` TINYINT(1) DEFAULT '0',
+   `want_to_insure` TINYINT(1) DEFAULT '0',
+   `insurance_doc_id` INT(11),
+   `insurance_doc_name` VARCHAR(70) CHARACTER SET utf8  DEFAULT NULL,
+   `insurance_doc_url` VARCHAR(800) CHARACTER SET utf8  DEFAULT NULL,
+   `insurance_doc_type` VARCHAR(50) CHARACTER SET utf8  DEFAULT NULL,
+   `promisory_note` VARCHAR(300) CHARACTER SET utf8  DEFAULT NULL,
+   `create_date`  DATE,
+   `update_date`  DATE,
+   PRIMARY KEY (`id`),
+   UNIQUE KEY `id_UNIQUE` (`id`)
+   );
+   
