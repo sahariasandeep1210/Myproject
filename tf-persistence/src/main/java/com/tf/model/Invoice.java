@@ -10,154 +10,202 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="scf_invoice")
+@Table(name = "scf_invoice")
 public class Invoice {
-	
+
 	@Id
-    @Column(name="id")
-    @GeneratedValue
-    private long id;
-	
-	@Column(name="invoice_number")
+	@Column(name = "id")
+	@GeneratedValue
+	private long id;
+
+	@Column(name = "invoice_number")
 	private long invoiceNumber;
-	
-	@Column(name="invoice_date")
+
+	@Column(name = "invoice_date")
 	private Date invoiceDate;
-	
-	@Column(name="seller_company_registration_number")
+
+	@Column(name = "seller_company_registration_number")
 	private String sellerCompanyRegistrationNumber;
-	
-	@Column(name="seller_company_vat_number")
+
+	@Column(name = "seller_company_vat_number")
 	private String sellerCompanyVatNumber;
-	
-	@Column(name="invoice_amout")
+
+	@Column(name = "invoice_amout")
 	private BigDecimal invoiceAmount;
-	
-	@Column(name="vat_amount")
+
+	@Column(name = "vat_amount")
 	private BigDecimal vatAmount;
-	
-	@Column(name="invoice_desc")
+
+	@Column(name = "invoice_desc")
 	private String invoiceDesc;
-	
-	@Column(name="duration")
+
+	@Column(name = "duration")
 	private int duration;
-	
-	@Column(name="payment_date")
+
+	@Column(name = "payment_date")
 	private Date payment_date;
-	
+
+	@Column(name = "currency")
 	private String currency;
 
+	@Column(name = "uploadedby")
+	private String uploadedby;
+
+	@Column(name = "document_id")
+	private Long documentId;
+
+	@Column(name = "document_name")
+	private String documentName;
+
+	@Column(name = "document_type")
+	private String documentType;
+
+	@Column(name = "document_url")
+	private String documentUrl;
+
+	@Column(name = "upload_date")
+	private Date uploadDate;
+
+	public Invoice() {
+		// TODO Auto-generated constructor stub
+	}
 
 	public long getId() {
 		return id;
 	}
 
-
 	public void setId(long id) {
 		this.id = id;
 	}
-
 
 	public long getInvoiceNumber() {
 		return invoiceNumber;
 	}
 
-
 	public void setInvoiceNumber(long invoiceNumber) {
 		this.invoiceNumber = invoiceNumber;
 	}
-
 
 	public Date getInvoiceDate() {
 		return invoiceDate;
 	}
 
-
 	public Date getPayment_date() {
 		return payment_date;
 	}
-
 
 	public void setPayment_date(Date payment_date) {
 		this.payment_date = payment_date;
 	}
 
-
 	public void setInvoiceDate(Date invoiceDate) {
 		this.invoiceDate = invoiceDate;
 	}
 
-
 	public String getSellerCompanyRegistrationNumber() {
 		return sellerCompanyRegistrationNumber;
 	}
-
 
 	public void setSellerCompanyRegistrationNumber(
 			String sellerCompanyRegistrationNumber) {
 		this.sellerCompanyRegistrationNumber = sellerCompanyRegistrationNumber;
 	}
 
-
 	public String getSellerCompanyVatNumber() {
 		return sellerCompanyVatNumber;
 	}
-
 
 	public void setSellerCompanyVatNumber(String sellerCompanyVatNumber) {
 		this.sellerCompanyVatNumber = sellerCompanyVatNumber;
 	}
 
-
 	public BigDecimal getInvoiceAmount() {
 		return invoiceAmount;
 	}
-
 
 	public void setInvoiceAmount(BigDecimal invoiceAmount) {
 		this.invoiceAmount = invoiceAmount;
 	}
 
-
 	public BigDecimal getVatAmount() {
 		return vatAmount;
 	}
-
 
 	public void setVatAmount(BigDecimal vatAmount) {
 		this.vatAmount = vatAmount;
 	}
 
-
 	public String getInvoiceDesc() {
 		return invoiceDesc;
 	}
-
 
 	public void setInvoiceDesc(String invoiceDesc) {
 		this.invoiceDesc = invoiceDesc;
 	}
 
-
 	public int getDuration() {
 		return duration;
 	}
-
 
 	public void setDuration(int duration) {
 		this.duration = duration;
 	}
 
-
 	public String getCurrency() {
 		return currency;
 	}
-
 
 	public void setCurrency(String currency) {
 		this.currency = currency;
 	}
 
+	public String getUploadedby() {
+		return uploadedby;
+	}
+
+	public void setUploadedby(String uploadedby) {
+		this.uploadedby = uploadedby;
+	}
+
+	public Long getDocumentId() {
+		return documentId;
+	}
+
+	public void setDocumentId(Long documentId) {
+		this.documentId = documentId;
+	}
+
+	public String getDocumentName() {
+		return documentName;
+	}
+
+	public void setDocumentName(String documentName) {
+		this.documentName = documentName;
+	}
+
+	public String getDocumentType() {
+		return documentType;
+	}
+
+	public void setDocumentType(String documentType) {
+		this.documentType = documentType;
+	}
+
+	public String getDocumentUrl() {
+		return documentUrl;
+	}
+
+	public void setDocumentUrl(String documentUrl) {
+		this.documentUrl = documentUrl;
+	}
+
+	public Date getUploadDate() {
+		return uploadDate;
+	}
+
+	public void setUploadDate(Date uploadDate) {
+		this.uploadDate = uploadDate;
+	}
 
 	@Override
 	public String toString() {
@@ -165,12 +213,14 @@ public class Invoice {
 				+ ", invoiceDate=" + invoiceDate
 				+ ", sellerCompanyRegistrationNumber="
 				+ sellerCompanyRegistrationNumber + ", sellerCompanyVatNumber="
-				+ sellerCompanyVatNumber + ", invoice_amout=" + invoiceAmount
+				+ sellerCompanyVatNumber + ", invoiceAmount=" + invoiceAmount
 				+ ", vatAmount=" + vatAmount + ", invoiceDesc=" + invoiceDesc
 				+ ", duration=" + duration + ", payment_date=" + payment_date
-				+ ", currency=" + currency + "]";
+				+ ", currency=" + currency + ", uploadedby=" + uploadedby
+				+ ", documentId=" + documentId + ", documentName="
+				+ documentName + ", documentType=" + documentType
+				+ ", documentUrl=" + documentUrl + ", uploadDate=" + uploadDate
+				+ "]";
 	}
-	
-	
-	
+
 }

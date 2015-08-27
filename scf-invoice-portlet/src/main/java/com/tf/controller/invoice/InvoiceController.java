@@ -1,9 +1,8 @@
-package com.tf.controller.company;
+package com.tf.controller.invoice;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -26,7 +25,9 @@ import org.springframework.web.portlet.ModelAndView;
 import org.springframework.web.portlet.bind.annotation.ActionMapping;
 import org.springframework.web.portlet.bind.annotation.RenderMapping;
 
-import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.theme.ThemeDisplay;
+import com.tf.dto.InvoiceDTO;
 import com.tf.model.Invoice;
 import com.tf.service.InvoiceService;
 
@@ -44,34 +45,38 @@ public class InvoiceController {
 	protected InvoiceService invoiceService;
 	
 	@RenderMapping
-	protected ModelAndView renderInvoiceList(@ModelAttribute("invoiceModel") Invoice invoice,ModelMap model,RenderRequest request, RenderResponse response) throws Exception {		
+	protected ModelAndView renderInvoiceList(@ModelAttribute("invoiceModel") InvoiceDTO invoice,ModelMap model,RenderRequest request, RenderResponse response) throws Exception {		
 		System.out.println("In render");
 		return new ModelAndView("addInvoice", model);		
 	}	
 	
 	
 	@ActionMapping(params="action=importInvoice")
-	protected ModelAndView callAction(@ModelAttribute("invoiceModel") Invoice invoice, 
+	protected void callAction(@ModelAttribute("invoiceModel") InvoiceDTO invoice, 
 												 ModelMap model, 
 												 ActionRequest request,
 												 ActionResponse response) throws Exception {
-			String d=ParamUtil.getString(request, "check"); 
-			String docu=ParamUtil.getString(request, "docu"); 
-			System.out.println("docu:::::"+docu);
-			String path=request.getParameter("insuranceDoc");
-			System.out.println(d);
-			System.out.println(path);
-	        FileInputStream inputStream = new FileInputStream(new File("C:\\Office pic\\Sample.xlsx"));
-	        Workbook workbook = new XSSFWorkbook(inputStream);
-	        List<Invoice> invoiceList=new ArrayList<Invoice>();
+			Invoice invoiceModel=null;
+			Workbook workbook=null;
+			List<Invoice> invoiceList=new ArrayList<Invoice>();
+	        //FileInputStream inputStream = new FileInputStream();
+			ThemeDisplay themeDisplay= (ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);
+			String userName=themeDisplay.getUser().getScreenName();
+	        
+		    try {
+		    workbook = new XSSFWorkbook(invoice.getInvoiceDoc().getInputStream());
 	        int numberOfSheets = workbook.getNumberOfSheets();
 	        for(int i=0; i < numberOfSheets; i++){
-	        	Invoice obj=new Invoice();
+	        	
 	        	Sheet sheet = workbook.getSheetAt(i);
                 //every sheet has rows, iterate over them
                 Iterator<Row> rowIterator = sheet.iterator();
                 while (rowIterator.hasNext()) 
                 {
+                	 invoiceModel=new Invoice();
+    	        	 invoiceModel.setUploadDate(new Date());
+    	        	 invoiceModel.setUploadedby(userName);
+    	        	 invoiceModel.setDocumentName(invoice.getInvoiceDoc().getName());
                 	Row row = rowIterator.next();
                     //Every row has columns, get the column iterator and iterate over them
                     Iterator<Cell> cellIterator = row.cellIterator();
@@ -81,52 +86,52 @@ public class InvoiceController {
                     	Cell cell = cellIterator.next();
                         //Get the Cell object
                        if(index==0){
-                    	   obj.setInvoiceNumber((long)(cell.getNumericCellValue())); 
+                    	   invoiceModel.setInvoiceNumber((long)cell.getNumericCellValue()); 
                        }else if(index==1){
-                    	   obj.setInvoiceDate(cell.getDateCellValue());
+                    	   invoiceModel.setInvoiceDate(cell.getDateCellValue());
                     	   
                        }else if(index==2){
-                    	   obj.setSellerCompanyRegistrationNumber(cell.getStringCellValue());
+                    	   invoiceModel.setSellerCompanyRegistrationNumber(cell.getStringCellValue());
                        }
                        else if(index==3){
-                    	   obj.setSellerCompanyVatNumber(cell.getStringCellValue());
+                    	   invoiceModel.setSellerCompanyVatNumber(cell.getStringCellValue());
                        }
                        else if(index==4){
-                    	   obj.setInvoiceAmount(BigDecimal.valueOf(cell.getNumericCellValue()));
+                    	   invoiceModel.setInvoiceAmount(BigDecimal.valueOf(cell.getNumericCellValue()));
                        }
                        else if(index==5){
-                    	   obj.setVatAmount(BigDecimal.valueOf(cell.getNumericCellValue()));
+                    	   invoiceModel.setVatAmount(BigDecimal.valueOf(cell.getNumericCellValue()));
                        }
                        else if(index==6){
-                    	   obj.setInvoiceDesc(cell.getStringCellValue());
+                    	   invoiceModel.setInvoiceDesc(cell.getStringCellValue());
                        }
                        else if(index==7){
-                    	   obj.setDuration((int)(cell.getNumericCellValue()));
+                    	   invoiceModel.setDuration((int)(cell.getNumericCellValue()));
                        }
                        else if(index==8){
-                    	   obj.setPayment_date(cell.getDateCellValue());
+                    	   invoiceModel.setPayment_date(cell.getDateCellValue());
                        }
                        else if(index==9){
-                    	   obj.setCurrency(cell.getStringCellValue());
+                    	   invoiceModel.setCurrency(cell.getStringCellValue());
                        }
                         index++;
                     }   
-                    invoiceList.add(obj);
+                    invoiceList.add(invoiceModel);
                 }
                
 	        }
-	        try {
+	    
 				if (invoiceList != null && invoiceList.size() > 0) {
 					for (Invoice invoice2 : invoiceList) {
 						invoiceService.addInvoice(invoice2);
 					}
 				}
 			} catch (Exception e) {
-				// TODO: handle exception
+				e.printStackTrace();
 			}finally{
-				  inputStream.close();
+				
 			}
-	    	return new ModelAndView("addInvoice", model);	
+	    	
 
 	}
 }
