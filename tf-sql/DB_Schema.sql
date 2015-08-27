@@ -147,3 +147,21 @@ CREATE TABLE `tf_trade` (
    );
    
    ALTER TABLE `tf_purchase_order` ADD COLUMN trade_id INT(11) AFTER is_traded;
+   
+DROP TABLE IF EXISTS `scf_invoice`;
+CREATE TABLE `scf_invoice` (
+    `id` INT(11) NOT NULL AUTO_INCREMENT,
+   `invoice_number` INT(11)  NOT NULL,
+   `invoice_date`  DATE,
+   `seller_company_registration_number` VARCHAR(25) CHARACTER SET utf8  NOT NULL,
+   `seller_company_vat_number` VARCHAR(25) CHARACTER SET utf8 NOT NULL ,   
+   `invoice_amout` DECIMAL     ,  
+   `vat_amount`   DECIMAL ,
+   `invoice_desc` VARCHAR(45) CHARACTER SET utf8  DEFAULT NULL,
+   `duration` INT(11), 
+   `payment_date` DATE, 
+   `currency`  VARCHAR(45) CHARACTER SET utf8, 
+   PRIMARY KEY (`id`),
+   UNIQUE KEY `id_UNIQUE` (`id`),
+   UNIQUE KEY `invoice_number_UNIQUE` (`invoice_number`)
+   );

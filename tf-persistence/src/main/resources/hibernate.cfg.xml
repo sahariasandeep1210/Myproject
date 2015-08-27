@@ -12,6 +12,7 @@
        <mapping class="com.tf.model.PurchaseOrderModel" /> 
        <mapping class="com.tf.model.PODocument" /> 
        <mapping class="com.tf.model.Trade" />
+        <mapping class="com.tf.model.Invoice" />
     </session-factory>
 	    
 </hibernate-configuration>
