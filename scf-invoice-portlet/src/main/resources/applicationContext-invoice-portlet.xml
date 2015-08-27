@@ -39,7 +39,8 @@
         <property name="defaultEncoding" value="UTF-8" />
     </bean> 
   
-    
+      <bean id="portletMultipartResolver"
+       class="org.springframework.web.portlet.multipart.CommonsPortletMultipartResolver" />
     
  
 

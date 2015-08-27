@@ -6,8 +6,12 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
+import javax.portlet.ActionRequest;
+import javax.portlet.ActionResponse;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
+
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -19,7 +23,9 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.portlet.ModelAndView;
+import org.springframework.web.portlet.bind.annotation.ActionMapping;
 import org.springframework.web.portlet.bind.annotation.RenderMapping;
+
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.tf.model.Invoice;
 import com.tf.service.InvoiceService;
@@ -44,12 +50,14 @@ public class InvoiceController {
 	}	
 	
 	
-	@RenderMapping(params="render=importInvoice")
+	@ActionMapping(params="action=importInvoice")
 	protected ModelAndView callAction(@ModelAttribute("invoiceModel") Invoice invoice, 
 												 ModelMap model, 
-												 RenderRequest request,
-												 RenderResponse response) throws Exception {
+												 ActionRequest request,
+												 ActionResponse response) throws Exception {
 			String d=ParamUtil.getString(request, "check"); 
+			String docu=ParamUtil.getString(request, "docu"); 
+			System.out.println("docu:::::"+docu);
 			String path=request.getParameter("insuranceDoc");
 			System.out.println(d);
 			System.out.println(path);

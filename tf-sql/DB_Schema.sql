@@ -161,7 +161,11 @@ CREATE TABLE `scf_invoice` (
    `duration` INT(11), 
    `payment_date` DATE, 
    `currency`  VARCHAR(45) CHARACTER SET utf8, 
+   `uploadedby`  VARCHAR(30) CHARACTER SET utf8, 
+   `document_name`  VARCHAR(100) CHARACTER SET utf8, 
+   `upload_date`  DATE,
    PRIMARY KEY (`id`),
    UNIQUE KEY `id_UNIQUE` (`id`),
    UNIQUE KEY `invoice_number_UNIQUE` (`invoice_number`)
    );
+   
