@@ -160,16 +160,24 @@ CREATE TABLE `scf_invoice` (
    `invoice_desc` VARCHAR(45) CHARACTER SET utf8  DEFAULT NULL,
    `duration` INT(11), 
    `payment_date` DATE, 
-   `currency`  VARCHAR(45) CHARACTER SET utf8, 
-   `uploadedby`  VARCHAR(30) CHARACTER SET utf8, 
-   `document_id`  INT(11), 
-   `document_name`  VARCHAR(100) CHARACTER SET utf8, 
-   `document_type`  VARCHAR(100) CHARACTER SET utf8, 
-   `document_url`  VARCHAR(800) CHARACTER SET utf8, 
-   `upload_date`  DATE,
+   `currency`  VARCHAR(45) CHARACTER SET utf8,   
    PRIMARY KEY (`id`),
    UNIQUE KEY `id_UNIQUE` (`id`),
    UNIQUE KEY `invoice_number_UNIQUE` (`invoice_number`)
+   );
+   
+DROP TABLE IF EXISTS `scf_invoice_document`;
+CREATE TABLE `scf_invoice_document` (
+    `id` INT(11) NOT NULL AUTO_INCREMENT,
+   `document_id`  INT(11),    
+   `document_name`  VARCHAR(100) CHARACTER SET utf8, 
+   `document_type`  VARCHAR(100) CHARACTER SET utf8, 
+   `document_url`  VARCHAR(800) CHARACTER SET utf8, 
+   `uploadedby`  VARCHAR(30) CHARACTER SET utf8,   
+   `upload_date`  DATE,
+   PRIMARY KEY (`id`),
+   UNIQUE KEY `id_UNIQUE` (`id`),
+   UNIQUE KEY `document_id_UNIQUE` (`document_id`)
    );
    
 DROP TABLE IF EXISTS `scf_trade`;

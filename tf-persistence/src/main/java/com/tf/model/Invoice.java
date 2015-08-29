@@ -48,24 +48,6 @@ public class Invoice {
 	@Column(name = "currency")
 	private String currency;
 
-	@Column(name = "uploadedby")
-	private String uploadedby;
-
-	@Column(name = "document_id")
-	private Long documentId;
-
-	@Column(name = "document_name")
-	private String documentName;
-
-	@Column(name = "document_type")
-	private String documentType;
-
-	@Column(name = "document_url")
-	private String documentUrl;
-
-	@Column(name = "upload_date")
-	private Date uploadDate;
-
 	public Invoice() {
 		// TODO Auto-generated constructor stub
 	}
@@ -159,54 +141,6 @@ public class Invoice {
 		this.currency = currency;
 	}
 
-	public String getUploadedby() {
-		return uploadedby;
-	}
-
-	public void setUploadedby(String uploadedby) {
-		this.uploadedby = uploadedby;
-	}
-
-	public Long getDocumentId() {
-		return documentId;
-	}
-
-	public void setDocumentId(Long documentId) {
-		this.documentId = documentId;
-	}
-
-	public String getDocumentName() {
-		return documentName;
-	}
-
-	public void setDocumentName(String documentName) {
-		this.documentName = documentName;
-	}
-
-	public String getDocumentType() {
-		return documentType;
-	}
-
-	public void setDocumentType(String documentType) {
-		this.documentType = documentType;
-	}
-
-	public String getDocumentUrl() {
-		return documentUrl;
-	}
-
-	public void setDocumentUrl(String documentUrl) {
-		this.documentUrl = documentUrl;
-	}
-
-	public Date getUploadDate() {
-		return uploadDate;
-	}
-
-	public void setUploadDate(Date uploadDate) {
-		this.uploadDate = uploadDate;
-	}
-
 	@Override
 	public String toString() {
 		return "Invoice [id=" + id + ", invoiceNumber=" + invoiceNumber
@@ -216,11 +150,7 @@ public class Invoice {
 				+ sellerCompanyVatNumber + ", invoiceAmount=" + invoiceAmount
 				+ ", vatAmount=" + vatAmount + ", invoiceDesc=" + invoiceDesc
 				+ ", duration=" + duration + ", payment_date=" + payment_date
-				+ ", currency=" + currency + ", uploadedby=" + uploadedby
-				+ ", documentId=" + documentId + ", documentName="
-				+ documentName + ", documentType=" + documentType
-				+ ", documentUrl=" + documentUrl + ", uploadDate=" + uploadDate
-				+ "]";
+				+ ", currency=" + currency + "]";
 	}
 
 }

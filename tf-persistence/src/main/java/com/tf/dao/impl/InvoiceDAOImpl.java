@@ -7,7 +7,6 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.tf.dao.InvoiceDAO;
-import com.tf.model.Company;
 import com.tf.model.Invoice;
 
 @Repository

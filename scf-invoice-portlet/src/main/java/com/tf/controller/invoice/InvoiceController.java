@@ -59,7 +59,7 @@ public class InvoiceController {
 		String userName=themeDisplay.getUser().getScreenName();
 	    List<Invoice> invoiceList=invoiceService.getInvoice(userName);
 		model.put("invoiceList",invoiceList);
-		return new ModelAndView("addInvoice", model);		
+		return new ModelAndView("invoicelist", model);		
 	}	
 	
 	
@@ -78,8 +78,7 @@ public class InvoiceController {
 	        long parentFolderId = DLFolderConstants.DEFAULT_PARENT_FOLDER_ID;
 	        Folder folder=null;
 	        Folder parentfolder=null;
-	        parentfolder = DLAppServiceUtil.getFolder(
-	    			currentSideID, 0, "Invoices");
+	        parentfolder = DLAppServiceUtil.getFolder(currentSideID, 0, "Invoices");
 	        if(parentfolder!=null){
 	            parentFolderId=parentfolder.getFolderId();
 	        }
