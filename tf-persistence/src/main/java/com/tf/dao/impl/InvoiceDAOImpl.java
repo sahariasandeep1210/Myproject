@@ -1,9 +1,13 @@
 package com.tf.dao.impl;
 
+import java.util.List;
+
+import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.tf.dao.InvoiceDAO;
+import com.tf.model.Company;
 import com.tf.model.Invoice;
 
 @Repository
@@ -20,4 +24,17 @@ public class InvoiceDAOImpl  extends BaseDAO implements InvoiceDAO {
 		}
 	}
 
+	
+	public List<Invoice> getInvoice(String name){
+		_log.debug("Inside getInvoice ");
+		try {
+			List<Invoice> results = (List<Invoice>) sessionFactory.getCurrentSession().createCriteria(Invoice.class).add(Restrictions.eq("uploadedby", name)).list();
+			_log.debug("GetCompanies successful, result size: "
+					+ results.size());
+			return results;
+		} catch (RuntimeException re) {
+			_log.error("GetCompanies failed", re);
+			throw re;
+		}
+	}
 }

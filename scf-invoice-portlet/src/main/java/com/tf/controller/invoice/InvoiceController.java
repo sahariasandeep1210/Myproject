@@ -25,8 +25,16 @@ import org.springframework.web.portlet.ModelAndView;
 import org.springframework.web.portlet.bind.annotation.ActionMapping;
 import org.springframework.web.portlet.bind.annotation.RenderMapping;
 
+import com.liferay.portal.kernel.repository.model.FileEntry;
+import com.liferay.portal.kernel.repository.model.Folder;
+import com.liferay.portal.kernel.util.MimeTypesUtil;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.service.ServiceContextFactory;
 import com.liferay.portal.theme.ThemeDisplay;
+import com.liferay.portlet.documentlibrary.model.DLFileEntry;
+import com.liferay.portlet.documentlibrary.model.DLFolderConstants;
+import com.liferay.portlet.documentlibrary.service.DLAppServiceUtil;
 import com.tf.dto.InvoiceDTO;
 import com.tf.model.Invoice;
 import com.tf.service.InvoiceService;
@@ -47,6 +55,10 @@ public class InvoiceController {
 	@RenderMapping
 	protected ModelAndView renderInvoiceList(@ModelAttribute("invoiceModel") InvoiceDTO invoice,ModelMap model,RenderRequest request, RenderResponse response) throws Exception {		
 		System.out.println("In render");
+		ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);
+		String userName=themeDisplay.getUser().getScreenName();
+	    List<Invoice> invoiceList=invoiceService.getInvoice(userName);
+		model.put("invoiceList",invoiceList);
 		return new ModelAndView("addInvoice", model);		
 	}	
 	
@@ -56,18 +68,29 @@ public class InvoiceController {
 												 ModelMap model, 
 												 ActionRequest request,
 												 ActionResponse response) throws Exception {
+		    FileEntry  fileEntry=null;
 			Invoice invoiceModel=null;
 			Workbook workbook=null;
 			List<Invoice> invoiceList=new ArrayList<Invoice>();
 	        //FileInputStream inputStream = new FileInputStream();
-			ThemeDisplay themeDisplay= (ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);
+			ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);
+			long currentSideID = themeDisplay.getScopeGroupId();
+	        long parentFolderId = DLFolderConstants.DEFAULT_PARENT_FOLDER_ID;
+	        Folder folder=null;
+	        Folder parentfolder=null;
+	        parentfolder = DLAppServiceUtil.getFolder(
+	    			currentSideID, 0, "Invoices");
+	        if(parentfolder!=null){
+	            parentFolderId=parentfolder.getFolderId();
+	        }
 			String userName=themeDisplay.getUser().getScreenName();
-	        
-		    try {
+			String mimeType = MimeTypesUtil.getContentType(invoice.getInvoiceDoc().getInputStream(), invoice.getInvoiceDoc().getName());
+			ServiceContext serviceContext = ServiceContextFactory.getInstance(DLFileEntry.class.getName(), request); 
+			fileEntry= DLAppServiceUtil.addFileEntry(themeDisplay.getScopeGroupId(), parentFolderId, invoice.getInvoiceDoc().toString(), mimeType, invoice.getInvoiceDoc().getOriginalFilename(), invoice.getInvoiceDoc().toString(), "upload", invoice.getInvoiceDoc().getInputStream(), invoice.getInvoiceDoc().getSize(), serviceContext);
+			try {
 		    workbook = new XSSFWorkbook(invoice.getInvoiceDoc().getInputStream());
 	        int numberOfSheets = workbook.getNumberOfSheets();
 	        for(int i=0; i < numberOfSheets; i++){
-	        	
 	        	Sheet sheet = workbook.getSheetAt(i);
                 //every sheet has rows, iterate over them
                 Iterator<Row> rowIterator = sheet.iterator();
