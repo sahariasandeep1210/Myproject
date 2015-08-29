@@ -1,5 +1,7 @@
 <%@include file="init.jsp"%>
-
+<portlet:actionURL var="importInvoiceURL">
+	<portlet:param name="action" value="importInvoice" />
+</portlet:actionURL>
 <div class="container-fluid">
 	<div class="table-responsive">
 		<table class="table table-hover tablesorter table-bordered">
@@ -11,7 +13,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				<c:forEach items="${invoicelist}" var="invoice">
+				<c:forEach items="${invoiceList}" var="invoice">
 					<tr>
 						<td>${invoice.name}</td>
 						<td>${invoice.regNumber}</td>

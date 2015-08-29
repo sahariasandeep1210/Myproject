@@ -1,8 +1,6 @@
 <%@include file="init.jsp"%>
 
-<portlet:actionURL var="importInvoiceURL">
-	<portlet:param name="action" value="importInvoice" />
-</portlet:actionURL>
+
 
 
 

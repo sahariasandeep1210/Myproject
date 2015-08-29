@@ -2,11 +2,15 @@ package com.tf.model;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -47,6 +51,8 @@ public class Invoice {
 
 	@Column(name = "currency")
 	private String currency;
+	
+
 
 	public Invoice() {
 		// TODO Auto-generated constructor stub

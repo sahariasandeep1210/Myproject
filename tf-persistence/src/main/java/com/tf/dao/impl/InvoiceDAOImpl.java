@@ -27,7 +27,7 @@ public class InvoiceDAOImpl  extends BaseDAO implements InvoiceDAO {
 	public List<Invoice> getInvoice(String name){
 		_log.debug("Inside getInvoice ");
 		try {
-			List<Invoice> results = (List<Invoice>) sessionFactory.getCurrentSession().createCriteria(Invoice.class).add(Restrictions.eq("uploadedby", name)).list();
+			List<Invoice> results = (List<Invoice>) sessionFactory.getCurrentSession().createQuery("from Invoice").list();
 			_log.debug("GetCompanies successful, result size: "
 					+ results.size());
 			return results;

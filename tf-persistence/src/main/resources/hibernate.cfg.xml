@@ -3,16 +3,17 @@
     "-//Hibernate/Hibernate Configuration DTD//EN"
     "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
 
- 
+
 <hibernate-configuration>
-    <session-factory>
-        <mapping class="com.tf.model.Company" />
-       <mapping class="com.tf.model.User" /> 
-       <mapping class="com.tf.model.CompanyType" /> 
-       <mapping class="com.tf.model.PurchaseOrderModel" /> 
-       <mapping class="com.tf.model.PODocument" /> 
-       <mapping class="com.tf.model.Trade" />
-        <mapping class="com.tf.model.Invoice" />
-    </session-factory>
-	    
+	<session-factory>
+		<mapping class="com.tf.model.Company" />
+		<mapping class="com.tf.model.User" />
+		<mapping class="com.tf.model.CompanyType" />
+		<mapping class="com.tf.model.PurchaseOrderModel" />
+		<mapping class="com.tf.model.PODocument" />
+		<mapping class="com.tf.model.Trade" />
+		<mapping class="com.tf.model.Invoice" />
+		<mapping class="com.tf.model.InvoiceDocument" />
+	</session-factory>
+
 </hibernate-configuration>
