@@ -1,5 +1,7 @@
 package com.tf.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +18,9 @@ public class InvoiceDocumentServiceImpl implements InvoiceDocumentService {
 	
 	public void addInvoiceDocument(InvoiceDocument invoiceDocument){
 		 invoiceDocumentDAO.addInvoiceDocument(invoiceDocument);		
+	}
+	public List<InvoiceDocument> getInvoiceDocuments(){
+		return invoiceDocumentDAO.getInvoiceDocuments();
 	}
 
 }

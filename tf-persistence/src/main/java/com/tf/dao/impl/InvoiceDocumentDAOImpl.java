@@ -1,5 +1,7 @@
 package com.tf.dao.impl;
 
+import java.util.List;
+
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,4 +23,17 @@ public class InvoiceDocumentDAOImpl extends BaseDAO implements InvoiceDocumentDA
 		}
 	}
 
+	
+	public List<InvoiceDocument> getInvoiceDocuments(){
+		_log.debug("Inside getInvoice ");
+		try {
+			List<InvoiceDocument> results = (List<InvoiceDocument>) sessionFactory.getCurrentSession().createQuery("from InvoiceDocument").list();
+			_log.debug("getInvoiceDocuments successful, result size: "
+					+ results.size());
+			return results;
+		} catch (RuntimeException re) {
+			_log.error("getInvoiceDocuments failed", re);
+			throw re;
+		}
+	}
 }

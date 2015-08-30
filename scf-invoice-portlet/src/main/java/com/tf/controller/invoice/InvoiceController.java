@@ -63,12 +63,9 @@ public class InvoiceController {
 	protected ModelAndView renderInvoiceList(
 			@ModelAttribute("invoiceModel") InvoiceDTO invoice, ModelMap model,
 			RenderRequest request, RenderResponse response) throws Exception {
-		System.out.println("In render");
-		ThemeDisplay themeDisplay = (ThemeDisplay) request
-				.getAttribute(WebKeys.THEME_DISPLAY);
-		String userName = themeDisplay.getUser().getScreenName();
-		List<Invoice> invoiceList = invoiceService.getInvoice(userName);
-		model.put("invoiceList", invoiceList);
+		System.out.println("In render");		
+		List<InvoiceDocument> invoiceDocumentList = invoiceDocumentService.getInvoiceDocuments();
+		model.put("invoiceList", invoiceDocumentList);
 		return new ModelAndView("invoicelist", model);
 	}
 
@@ -98,8 +95,8 @@ public class InvoiceController {
 				DLFileEntry.class.getName(), request);
 		fileEntry = DLAppServiceUtil.addFileEntry(themeDisplay
 					.getScopeGroupId(), parentFolderId, invoice.getInvoiceDoc()
-					.toString(), mimeType, invoice.getInvoiceDoc()
-					.getOriginalFilename(), invoice.getInvoiceDoc().toString(),
+					.getOriginalFilename(), mimeType, invoice.getInvoiceDoc()
+					.getOriginalFilename(), invoice.getInvoiceDoc().getOriginalFilename(),
 					"upload", invoice.getInvoiceDoc().getInputStream(), invoice.getInvoiceDoc().getSize(), serviceContext);
 		try {
 			workbook = new XSSFWorkbook(invoice.getInvoiceDoc()
@@ -109,7 +106,7 @@ public class InvoiceController {
 			invoiceDocument.setDocumentId(fileEntry.getFileEntryId());
 			invoiceDocument.setUploadDate(new Date());
 			invoiceDocument.setUploadedby(userName);
-			invoiceDocument.setDocumentName(invoice.getInvoiceDoc().getName());
+			invoiceDocument.setDocumentName(invoice.getInvoiceDoc().getOriginalFilename());
 			invoiceDocument.setDocumentUrl(getUrl(themeDisplay, fileEntry));
 			invoiceDocument.setDocumentType(mimeType);
 			for (int i = 0; i < numberOfSheets; i++) {

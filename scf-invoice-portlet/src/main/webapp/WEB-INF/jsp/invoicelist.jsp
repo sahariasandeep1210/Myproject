@@ -14,10 +14,11 @@
 			</thead>
 			<tbody>
 				<c:forEach items="${invoiceList}" var="invoice">
+						<c:set var="url" value="${invoice.documentUrl}" scope="page" />
 					<tr>
-						<td>${invoice.name}</td>
-						<td>${invoice.regNumber}</td>
-						<td>${invoice.addRegistered}</td>
+						<td> <a href="${url}" class="file-download">${invoice.documentName}</a></td>
+						<td>${invoice.uploadedby}</td>
+						<td>${invoice.uploadDate}</td>
 
 					</tr>
 				</c:forEach>
