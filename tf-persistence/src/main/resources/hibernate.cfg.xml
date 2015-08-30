@@ -13,7 +13,8 @@
 		<mapping class="com.tf.model.PODocument" />
 		<mapping class="com.tf.model.Trade" />
 		<mapping class="com.tf.model.Invoice" />
-		<mapping class="com.tf.model.InvoiceDocument" />
+		<mapping class="com.tf.model.InvoiceDocument" /> 
+		<mapping class="com.tf.model.SCFTrade" /> 
 	</session-factory>
 
 </hibernate-configuration>
