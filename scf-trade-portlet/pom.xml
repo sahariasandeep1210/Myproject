@@ -47,7 +47,7 @@
 				<artifactId>maven-war-plugin</artifactId>
 				<version>2.0.2</version>
 				<configuration>
-					<warName>scf-invoice-portlet</warName>
+					<warName>scf-trade-portlet</warName>
 					<dependentWarExcludes></dependentWarExcludes>
 					<!--<webappDirectory> ${env.CATALINA_HOME}/webapps/hrms-ws </webappDirectory> -->
 					<outputDirectory>

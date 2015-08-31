@@ -9,6 +9,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.springframework.web.multipart.MultipartFile;
+
 
 @Entity
 @Table(name="scf_trade")
@@ -75,6 +77,8 @@ public class SCFTrade {
 	
 	@Column(name="update_date")
 	private Date updatDate;
+	
+	private MultipartFile insuranceDoc;
 	
 	public SCFTrade() {
 	}
@@ -237,6 +241,14 @@ public class SCFTrade {
 
 	public void setUpdatDate(Date updatDate) {
 		this.updatDate = updatDate;
+	}
+
+	public MultipartFile getInsuranceDoc() {
+		return insuranceDoc;
+	}
+
+	public void setInsuranceDoc(MultipartFile insuranceDoc) {
+		this.insuranceDoc = insuranceDoc;
 	}
 
 	@Override
