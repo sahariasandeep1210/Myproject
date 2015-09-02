@@ -1,5 +1,12 @@
 <%@include file="init.jsp"%>
 
+<portlet:actionURL var="createTradeURL">
+	<portlet:param name="action" value="createTrade" />
+</portlet:actionURL>
+
+<portlet:renderURL var="defaultRender">
+</portlet:renderURL>
+
 
 <div class="container-fluid">
 	<form:form commandName="scfTradeModel" method="post"
@@ -124,9 +131,9 @@
 		<div class="row-fluid">
 			<div class="span6">
 				<input type="button" value="Add Trade" class="btn btn-primary"
-					data-url="${createCompanyURL}" id="cmpAdd" /> <input type="button"
+					data-url="${createTradeURL}" id="tradeAdd" /> <input type="button"
 					value="Go Back" class="btn btn-primary"
-					data-url="${companyListURL}" id="cmpback" />
+					data-url="${defaultRender}" id="tradeback" />
 			</div>
 		</div>
 

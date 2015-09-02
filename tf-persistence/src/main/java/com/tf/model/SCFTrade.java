@@ -78,7 +78,7 @@ public class SCFTrade {
 	@Column(name="update_date")
 	private Date updatDate;
 	
-	private MultipartFile insuranceDoc;
+	
 	
 	public SCFTrade() {
 	}
@@ -243,13 +243,7 @@ public class SCFTrade {
 		this.updatDate = updatDate;
 	}
 
-	public MultipartFile getInsuranceDoc() {
-		return insuranceDoc;
-	}
-
-	public void setInsuranceDoc(MultipartFile insuranceDoc) {
-		this.insuranceDoc = insuranceDoc;
-	}
+	
 
 	@Override
 	public String toString() {

@@ -11,11 +11,20 @@ $(document).ready(function(){
 	});
 	
 	$("#insureCheck").change(function() {
-		console.log("Inside");
 		$("#insuranceDocDiv").toggle();
 	});
 		
+	
+	$("#tradeAdd,#tradeback").click(function(){
+		var url = $(this).attr('data-url');
+		submitTradeForms(url);
+	});
 
 
 
 });
+
+function submitTradeForms(url) {
+	document.forms["TradeDetail"].action = url;
+	document.forms["TradeDetail"].submit();
+}
