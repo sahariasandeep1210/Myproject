@@ -24,7 +24,7 @@ public class InvoiceDAOImpl  extends BaseDAO implements InvoiceDAO {
 	}
 
 	
-	public List<Invoice> getInvoice(String name){
+	public List<Invoice> getInvoices(){
 		_log.debug("Inside getInvoice ");
 		try {
 			List<Invoice> results = (List<Invoice>) sessionFactory.getCurrentSession().createQuery("from Invoice").list();

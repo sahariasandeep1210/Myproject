@@ -59,13 +59,23 @@ public class InvoiceController {
 	@Autowired
 	protected InvoiceDocumentService invoiceDocumentService;
 
-	@RenderMapping
-	protected ModelAndView renderInvoiceList(
+	@RenderMapping(params = "render=invoiceDocuments")
+	protected ModelAndView renderInvoiceDocumentList(
 			@ModelAttribute("invoiceModel") InvoiceDTO invoice, ModelMap model,
 			RenderRequest request, RenderResponse response) throws Exception {
 		System.out.println("In render");		
 		List<InvoiceDocument> invoiceDocumentList = invoiceDocumentService.getInvoiceDocuments();
 		model.put("invoiceList", invoiceDocumentList);
+		return new ModelAndView("invoicedoclist", model);
+	}
+	
+	@RenderMapping
+	protected ModelAndView renderInvoiceList(
+			@ModelAttribute("invoiceModel") InvoiceDTO invoice, ModelMap model,
+			RenderRequest request, RenderResponse response) throws Exception {
+		System.out.println("In Default render");		
+		List<Invoice> invoices = invoiceService.getInvoices();
+		model.put("invoiceList", invoices);
 		return new ModelAndView("invoicelist", model);
 	}
 
@@ -160,6 +170,7 @@ public class InvoiceController {
 			}
 			
 			invoiceDocumentService.addInvoiceDocument(invoiceDocument);
+		response.setRenderParameter("render","invoiceDocuments");
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {

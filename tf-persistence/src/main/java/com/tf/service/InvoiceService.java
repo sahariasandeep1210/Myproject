@@ -9,5 +9,5 @@ public interface InvoiceService {
 
 	public void addInvoice(Invoice invoice);
 	
-	public List<Invoice> getInvoice(String name);
+	public List<Invoice> getInvoices();
 }

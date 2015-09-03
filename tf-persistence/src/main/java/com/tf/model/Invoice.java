@@ -46,7 +46,10 @@ public class Invoice {
 	private Date payment_date;
 
 	@Column(name = "currency")
-	private String currency;
+	private String currency;	
+	
+	@Column(name = "scf_company")
+	private String scfCompany;
 	
 
 
@@ -143,6 +146,14 @@ public class Invoice {
 		this.currency = currency;
 	}
 
+	public String getScfCompany() {
+		return scfCompany;
+	}
+
+	public void setScfCompany(String scfCompany) {
+		this.scfCompany = scfCompany;
+	}
+
 	@Override
 	public String toString() {
 		return "Invoice [id=" + id + ", invoiceNumber=" + invoiceNumber
@@ -152,7 +163,7 @@ public class Invoice {
 				+ sellerCompanyVatNumber + ", invoiceAmount=" + invoiceAmount
 				+ ", vatAmount=" + vatAmount + ", invoiceDesc=" + invoiceDesc
 				+ ", duration=" + duration + ", payment_date=" + payment_date
-				+ ", currency=" + currency + "]";
-	}
+				+ ", currency=" + currency + ", scfCompany=" + scfCompany + "]";
+	}	
 
 }

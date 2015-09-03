@@ -19,8 +19,8 @@ public class InvoiceServiceImpl implements InvoiceService{
 		
 	}
 
-	public List<Invoice> getInvoice(String name) {
-		List<Invoice> invoices=invoiceDAO.getInvoice(name);
+	public List<Invoice> getInvoices() {
+		List<Invoice> invoices=invoiceDAO.getInvoices();
 		return invoices;
 	}
 

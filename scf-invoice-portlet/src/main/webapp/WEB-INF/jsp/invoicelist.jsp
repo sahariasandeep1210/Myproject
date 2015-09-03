@@ -2,60 +2,54 @@
 <portlet:actionURL var="importInvoiceURL">
 	<portlet:param name="action" value="importInvoice" />
 </portlet:actionURL>
+
+<portlet:renderURL var="invoiceDocumentsURL">
+	<portlet:param name="render" value="invoiceDocuments" />
+</portlet:renderURL>
 <div class="container-fluid">
-	<div class="table-responsive">
-		<table class="table table-hover tablesorter table-bordered">
-			<thead>
-				<tr>
-					<th>Name</th>
-					<th>Uploaded By</th>
-					<th>Upload date</th>
-				</tr>
-			</thead>
-			<tbody>
-				<c:forEach items="${invoiceList}" var="invoice">
-						<c:set var="url" value="${invoice.documentUrl}" scope="page" />
+	<form name="invoicelist" method="post" action="${invoiceDocumentsURL}">
+		<div class="table-responsive">
+			<table class="table table-hover tablesorter table-bordered">
+				<thead>
 					<tr>
-						<td> <a href="${url}" class="file-download">${invoice.documentName}</a></td>
-						<td>${invoice.uploadedby}</td>
-						<td>${invoice.uploadDate}</td>
-
+						<th></th>
+						<th>Invoice Number</th>
+						<th>Date</th>
+						<th>Amount</th>
+						<th>Duration</th>
+						<th>Invoice Company</th>
 					</tr>
-				</c:forEach>
-			</tbody>
-		</table>
-	</div>
-	
-	<div class="row-fluid">
-		<!-- <a href="#myModal" role="button" class="btn btn-primary" data-toggle="modal">Upload Invoice</a> -->
-		<input type="button" value="Upload Invoice"	class="btn btn-primary" id="updateInvoice" />
-	</div>
-	
-	
-	
-</div>
+				</thead>
+				<tbody>
+					<c:forEach items="${invoiceList}" var="invoice">
+						<tr>
+							<td><input type="checkbox" value="${invoice.id}"
+								name="invoiceId"></td>
+							<td>${invoice.invoiceNumber}</td>
+							<td>${invoice.invoiceDate}</td>
+							<td>${invoice.invoiceAmount}</td>
+							<td>${invoice.duration}</td>
+							<td>${invoice.scfCompany}</td>
+						</tr>
+					</c:forEach>
+				</tbody>
+			</table>
+		</div>
 
-<!-- Modal -->
+		<div class="row-fluid">
+			<input type="submit" value="Upload Invoice Document" class="btn btn-primary"
+				id="uploadInvoice" />
+				<input type="button" value="Create Trade" class="btn btn-primary"
+				id="createTrade" />
+		</div>
 
 
-	<form:form commandName="invoiceModel" id="importInvoiceForm"
-		method="post" action="${importInvoiceURL}" name="importInvoicForm"
-		enctype="multipart/form-data">
+	</form>
 
-<div id="myModal" class="modal  fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-    <h3 id="myModalLabel">Upload Invoice</h3>
-  </div>
-  <div class="modal-body">
-    <%@include file="addinvoice.jsp"%>
-  </div>
-  <div class="modal-footer">
-    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-   <input type="submit" value="Upload Invoice" class="btn btn-primary" />
-  </div>
+
+
 </div>
 
 
-	</form:form>
+
 

@@ -9,5 +9,5 @@ public interface InvoiceDAO {
 	
 	public void addInvoice(Invoice invoice);
 	
-	public List<Invoice> getInvoice(String name);
+	public List<Invoice> getInvoices();
 }
