@@ -81,7 +81,7 @@ table.tablesorter thead tr th.tablesorter-headerDesc:after {
   content: "\f0dd";
 }
 table.tablesorter thead tr th {
-	 background-color: #295780 !important;
+	 background-color: #003D59 !important;
 	/* background-color: #555555 !important; */
 	/* color: #ccc; */ 
 	color: #FFFFFF; 
@@ -94,14 +94,14 @@ table.tablesorter thead tr th {
 }
 
 .btn-primary {
-	 background-color: #295780 !important; 
+	 background-color: #003D59 !important; 
 	/* background-color: #555555 !important; */
 	/* color: #ccc !important; */
 	color: #FFFFFF; 
 	text-align: !important;
 	text-shadow: none;
 	font-weight: normal !important;
-	background-image: linear-gradient(to bottom, #295780, #295780) !important;
+	background-image: linear-gradient(to bottom, #003D59, #003D59) !important;
 }
 
 .tablesorter input.tablesorter-filter, .tablesorter select.tablesorter-filter {
@@ -134,7 +134,7 @@ table.tablesorter thead tr th {
  
  .aui h4 {
  	/* color: #555 !important; */
- 	color: #295780 !important;
+ 	color: #003D59 !important;
     font-weight: bold !important;
  }
  

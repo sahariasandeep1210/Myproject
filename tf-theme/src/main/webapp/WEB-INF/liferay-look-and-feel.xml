@@ -51,7 +51,7 @@
 					);
 				]]>
 			</setting>
-			<setting configurable="true" type="text" key="theme-color-main" value="#295780">
+			<setting configurable="true" type="text" key="theme-color-main" value="#003D59">
 				<![CDATA[
 					AUI().ready(
 						'aui-color-picker-popover',
@@ -100,7 +100,7 @@
 					);
 				]]>
 			</setting>
-			<setting  configurable="true" type="text" key="theme-color-highlight" value="#295780">
+			<setting  configurable="true" type="text" key="theme-color-highlight" value="#003D59">
 				<![CDATA[
 					AUI().ready(
 						'aui-color-picker-popover',
