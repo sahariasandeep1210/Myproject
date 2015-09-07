@@ -47,6 +47,7 @@ public class SCFTradeController {
 	
 	@RenderMapping(params="render=createTrade")
 	protected ModelAndView renderCreateTrade(@ModelAttribute("scfTradeModel") SCFTrade scfTrade,ModelMap model,RenderRequest request, RenderResponse response) throws Exception {	
+		System.out.println("SCFTradeController.renderCreateTrade() --------Data--------------");
 		long tradeID = ParamUtil.getLong(request, "tradeID"); 
 		model.put("scfTradeModel", scfTrade);		
 		return new ModelAndView("createscftrade", model);
@@ -59,7 +60,6 @@ public class SCFTradeController {
 												 ActionResponse response) throws Exception{
 		
 		System.out.println("scf Trade-----"+scfTrade);
-		System.out.println("File-----"+scfTrade.getInsuranceDoc().getName());
 		
 	}
 

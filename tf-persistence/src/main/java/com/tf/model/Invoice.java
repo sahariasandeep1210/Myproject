@@ -7,6 +7,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -48,8 +50,9 @@ public class Invoice {
 	@Column(name = "currency")
 	private String currency;	
 	
-	@Column(name = "scf_company")
-	private String scfCompany;
+	@ManyToOne  
+    @JoinColumn(name = "scf_company")  
+	private Long scfCompany;
 	
 
 
@@ -146,11 +149,11 @@ public class Invoice {
 		this.currency = currency;
 	}
 
-	public String getScfCompany() {
+	public Long getScfCompany() {
 		return scfCompany;
 	}
 
-	public void setScfCompany(String scfCompany) {
+	public void setScfCompany(Long scfCompany) {
 		this.scfCompany = scfCompany;
 	}
 
