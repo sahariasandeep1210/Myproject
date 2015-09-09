@@ -38,6 +38,10 @@ long plid= PortalUtil.getPlidFromPortletId(themeDisplay.getScopeGroupId(),true, 
 </liferay-portlet:renderURL>
 
 <div class="container-fluid">
+
+<div class="alert alert-error" id="errormsg" style="display: none;">
+ 
+</div>
 	<form name="invoicelist" method="post" action="${invoiceDocumentsURL}" id="invoicelist">
 	<input type="hidden" name="invoices" id="invoices">
 		<div class="table-responsive">
@@ -55,8 +59,7 @@ long plid= PortalUtil.getPlidFromPortletId(themeDisplay.getScopeGroupId(),true, 
 				<tbody>
 					<c:forEach items="${invoiceList}" var="invoice">
 						<tr>
-							<td><input type="checkbox" value="${invoice.id}"
-								name="invoiceId"></td>
+							<td><input type="checkbox" value="${invoice.id}" name="invoiceId" date-attr="${invoice.invoiceDate}" scfcompany-attr="${invoice.scfCompany}"></td>
 							<td>${invoice.invoiceNumber}</td>
 							<td><fmt:formatDate pattern="dd-MM-yyyy" value="${invoice.invoiceDate}" /></td>
 							<td>${invoice.invoiceAmount}</td>

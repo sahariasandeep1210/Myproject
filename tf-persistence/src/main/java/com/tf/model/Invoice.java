@@ -52,7 +52,7 @@ public class Invoice {
 	
 	@ManyToOne  
     @JoinColumn(name = "scf_company")  
-	private Long scfCompany;
+	private InvoiceCompany scfCompany;
 	
 
 
@@ -149,11 +149,11 @@ public class Invoice {
 		this.currency = currency;
 	}
 
-	public Long getScfCompany() {
+	public InvoiceCompany getScfCompany() {
 		return scfCompany;
 	}
 
-	public void setScfCompany(Long scfCompany) {
+	public void setScfCompany(InvoiceCompany scfCompany) {
 		this.scfCompany = scfCompany;
 	}
 
