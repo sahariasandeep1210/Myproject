@@ -52,6 +52,7 @@ public class SCFTradeController {
 	@RenderMapping(params="render=createTrade")
 	protected ModelAndView renderCreateTrade(@ModelAttribute("scfTradeModel") SCFTrade scfTrade,ModelMap model,RenderRequest request, RenderResponse response) throws Exception {	
 		long tradeID = ParamUtil.getLong(request, "tradeID"); 
+		Long companyId = ParamUtil.getLong(request, "companyId"); 
 		String invoiceIds= ParamUtil.getString(request, "invoices");
 		System.out.println("tradeIds::::"+invoiceIds);
 		BigDecimal invoicesAmount = invoiceService.getInvoicesAmount(invoiceIds);
