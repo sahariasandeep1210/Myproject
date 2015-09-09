@@ -6,13 +6,11 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.tf.dao.PurchaseOrderDAO;
-import com.tf.model.Company;
-import com.tf.model.PODocument;
 import com.tf.model.PurchaseOrderModel;
 
 @Repository
 @Transactional(rollbackFor = Exception.class)
-public class PurchaseOrderDAOImpl  extends BaseDAO implements PurchaseOrderDAO {
+public class PurchaseOrderDAOImpl  extends BaseDAOImpl<PurchaseOrderModel, Long> implements PurchaseOrderDAO {
 	
 	public PurchaseOrderModel addPO(PurchaseOrderModel poModel) {
 		try {

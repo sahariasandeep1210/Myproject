@@ -1,5 +1,6 @@
 package com.tf.controller.trade;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import javax.portlet.ActionRequest;
@@ -18,6 +19,7 @@ import org.springframework.web.portlet.bind.annotation.RenderMapping;
 
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.tf.model.SCFTrade;
+import com.tf.service.InvoiceService;
 import com.tf.service.SCFTradeService;
 
 /**
@@ -35,11 +37,13 @@ public class SCFTradeController {
 	@Autowired
 	private SCFTradeService scfTradeService;
 	
+	@Autowired
+	private InvoiceService invoiceService;
+	
 	@RenderMapping
 	protected ModelAndView renderInvoiceList(
 			@ModelAttribute("scfTradeModel") SCFTrade scfTrade, ModelMap model,
 			RenderRequest request, RenderResponse response) throws Exception {
-		System.out.println("SCFTradeController.renderInvoiceList() ----------------------");
 		List<SCFTrade> scftrades=scfTradeService.getScfTrades();
 		model.put("trades", scftrades);
 		return new ModelAndView("tradelist", model);
@@ -47,8 +51,12 @@ public class SCFTradeController {
 	
 	@RenderMapping(params="render=createTrade")
 	protected ModelAndView renderCreateTrade(@ModelAttribute("scfTradeModel") SCFTrade scfTrade,ModelMap model,RenderRequest request, RenderResponse response) throws Exception {	
-		System.out.println("SCFTradeController.renderCreateTrade() --------Data--------------");
 		long tradeID = ParamUtil.getLong(request, "tradeID"); 
+		String invoiceIds= ParamUtil.getString(request, "invoices");
+		System.out.println("tradeIds::::"+invoiceIds);
+		BigDecimal invoicesAmount = invoiceService.getInvoicesAmount(invoiceIds);
+		System.out.println("invoicesAmount::::"+invoicesAmount);
+		scfTrade.setTradeAmount(invoicesAmount);
 		model.put("scfTradeModel", scfTrade);		
 		return new ModelAndView("createscftrade", model);
 	}

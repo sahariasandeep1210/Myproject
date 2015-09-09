@@ -92,7 +92,7 @@ $theme.include($body_top_include)
 
 	<footer id="footer" role="contentinfo">
 		<p class="powered-by">
-			#language ("powered-by") <a href="http://www.liferay.com" rel="external">WhiteHall Finance</a>
+			#language ("powered-by") <a href="http://www.liferay.com" rel="external" style="color: white;text-decoration: underline;">WhiteHall Finance</a>
 		</p>
 	</footer>
 </div>

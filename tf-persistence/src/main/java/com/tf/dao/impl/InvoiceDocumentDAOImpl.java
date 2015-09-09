@@ -11,7 +11,7 @@ import com.tf.model.InvoiceDocument;
 
 @Repository
 @Transactional(rollbackFor = Exception.class)
-public class InvoiceDocumentDAOImpl extends BaseDAO implements InvoiceDocumentDAO {
+public class InvoiceDocumentDAOImpl extends BaseDAOImpl<InvoiceDocument, Long> implements InvoiceDocumentDAO {
 	
 	public void addInvoiceDocument(InvoiceDocument invoiceDocument) {
 		try {

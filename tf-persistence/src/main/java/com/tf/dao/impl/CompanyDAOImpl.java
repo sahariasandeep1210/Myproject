@@ -17,7 +17,7 @@ import com.tf.persistance.util.WorkflowConstants;
 
 @Repository
 @Transactional
-public class CompanyDAOImpl  extends BaseDAO implements CompanyDAO{
+public class CompanyDAOImpl  extends BaseDAOImpl<Company, Long>   implements CompanyDAO{
 	
 	@SuppressWarnings("unchecked")
 

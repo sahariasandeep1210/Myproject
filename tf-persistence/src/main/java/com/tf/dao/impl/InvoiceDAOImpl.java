@@ -1,8 +1,9 @@
 package com.tf.dao.impl;
 
+import java.math.BigDecimal;
 import java.util.List;
 
-import org.hibernate.criterion.Restrictions;
+import org.hibernate.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -11,7 +12,7 @@ import com.tf.model.Invoice;
 
 @Repository
 @Transactional(rollbackFor = Exception.class)
-public class InvoiceDAOImpl  extends BaseDAO implements InvoiceDAO {
+public class InvoiceDAOImpl  extends BaseDAOImpl<Invoice, Long> implements InvoiceDAO {
 
 	public void addInvoice(Invoice invoice) {
 		try {
@@ -28,6 +29,22 @@ public class InvoiceDAOImpl  extends BaseDAO implements InvoiceDAO {
 		_log.debug("Inside getInvoice ");
 		try {
 			List<Invoice> results = (List<Invoice>) sessionFactory.getCurrentSession().createQuery("from Invoice").list();
+			_log.debug("GetCompanies successful, result size: "
+					+ results.size());
+			return results;
+		} catch (RuntimeException re) {
+			_log.error("GetCompanies failed", re);
+			throw re;
+		}
+	}
+	
+	public List<BigDecimal> getInvoicesAmount(List<Long> invoiceIds){
+		_log.debug("Inside getInvoice ");
+		try {
+			
+			Query query =  sessionFactory.getCurrentSession().createQuery("SELECT invoice.invoiceAmount FROM Invoice invoice WHERE invoice.id IN (:ids) ");
+			query.setParameterList("ids", invoiceIds);
+			List<BigDecimal> results = query.list();
 			_log.debug("GetCompanies successful, result size: "
 					+ results.size());
 			return results;

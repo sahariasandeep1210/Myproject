@@ -10,7 +10,7 @@ import com.tf.model.SCFTrade;
 
 @Repository
 @Transactional(rollbackFor = Exception.class)
-public class SCFTradeDAOImpl extends BaseDAO implements SCFTradeDAO {	
+public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Long> implements SCFTradeDAO {	
 
 	
 	public List<SCFTrade>  getScfTrades(){

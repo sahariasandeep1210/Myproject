@@ -10,7 +10,7 @@ import com.tf.model.CompanyType;
 
 
 @Repository
-public class CompanyTypeDAOImpl  extends BaseDAO implements CompanyTypeDAO{
+public class CompanyTypeDAOImpl  extends BaseDAOImpl<CompanyType, Long>   implements CompanyTypeDAO{
 	
 	@SuppressWarnings("unchecked")
 	@Transactional

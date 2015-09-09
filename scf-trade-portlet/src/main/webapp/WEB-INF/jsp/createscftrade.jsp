@@ -78,8 +78,9 @@
 		<div class="row-fluid">
 			<div class="span6">
 				<label class="span6">Company Name:</label>
-				<form:select path="companyId" items="${companyIdMap}"
-					class="dropdown span6" id="companyId" placeholder="Company Name" />
+				<form:input path="companyId" cssClass="span6" />
+				<%-- <form:select path="companyId" items="${companyIdMap}"
+					class="dropdown span6" id="companyId" placeholder="Company Name" /> --%>
 			</div>
 
 

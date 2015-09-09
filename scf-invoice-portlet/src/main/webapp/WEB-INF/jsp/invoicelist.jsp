@@ -44,6 +44,7 @@ long plid= PortalUtil.getPlidFromPortletId(themeDisplay.getScopeGroupId(),true, 
 </div>
 	<form name="invoicelist" method="post" action="${invoiceDocumentsURL}" id="invoicelist">
 	<input type="hidden" name="invoices" id="invoices">
+	<input type="hidden" name="companyId" id="companyId">
 		<div class="table-responsive">
 			<table class="table table-hover tablesorter table-bordered">
 				<thead>
@@ -59,12 +60,12 @@ long plid= PortalUtil.getPlidFromPortletId(themeDisplay.getScopeGroupId(),true, 
 				<tbody>
 					<c:forEach items="${invoiceList}" var="invoice">
 						<tr>
-							<td><input type="checkbox" value="${invoice.id}" name="invoiceId" date-attr="${invoice.invoiceDate}" scfcompany-attr="${invoice.scfCompany}"></td>
+							<td><input type="checkbox" value="${invoice.id}" name="invoiceId" date-attr="${invoice.invoiceDate}" scfcompany-attr="${invoice.scfCompany.id}"></td>
 							<td>${invoice.invoiceNumber}</td>
 							<td><fmt:formatDate pattern="dd-MM-yyyy" value="${invoice.invoiceDate}" /></td>
 							<td>${invoice.invoiceAmount}</td>
 							<td>${invoice.duration}</td>
-							<td>${invoice.scfCompany}</td>
+							<td>${invoice.scfCompany.companyName}</td>
 						</tr>
 					</c:forEach>
 				</tbody>

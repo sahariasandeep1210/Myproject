@@ -7,13 +7,12 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.tf.dao.UserDAO;
-import com.tf.model.Company;
 import com.tf.model.User;
 
 
 @Repository
 @Transactional
-public class UserDAOImpl extends BaseDAO  implements UserDAO{
+public class UserDAOImpl extends BaseDAOImpl<User, Long>  implements UserDAO{
 	
 	
 	public void addorUpdateUser(User user) {

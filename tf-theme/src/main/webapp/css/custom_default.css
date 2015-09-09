@@ -59,7 +59,7 @@ $colorBackground: #F5F5F5;
 	   /*  background: #ECEBE7;  */
 	   
 	    margin-bottom: 18px;
-	    @include box-shadow(0 0 3px #999);
+	   /*  @include box-shadow(0 0 3px #999); */
 	    @include border-radius(4px);
 	}
 

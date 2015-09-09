@@ -37,7 +37,8 @@ $(document).ready(function() {
 			$("#invoicelist input:checkbox:checked").each(function() {
 				invoices.push($(this).val());
 			});
-			$("#invoices").val(invoices.toString());
+			$("#invoices").val(invoices.toString()); 
+			$("#companyId").val(scfCompany.toString());
 			document.forms["invoicelist"].action = url;
 			document.forms["invoicelist"].submit();
 			 

@@ -7,14 +7,11 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.tf.dao.PODocumentDAO;
-import com.tf.dao.PurchaseOrderDAO;
-import com.tf.model.Company;
 import com.tf.model.PODocument;
-import com.tf.model.PurchaseOrderModel;
 
 @Repository
 @Transactional(rollbackFor = Exception.class)
-public class PODocumentDAOImpl  extends BaseDAO implements PODocumentDAO {
+public class PODocumentDAOImpl  extends BaseDAOImpl<PODocument, Long> implements PODocumentDAO {
 	
 	public void addPODocument(PODocument podModel) {
 		try {
