@@ -44,6 +44,7 @@ $colorBackground: #F5F5F5;
 		box-sizing: border-box;
 		display: table;
     	width: 100%;
+    	background-image: url(../images/top_bg.png) !important;
 
 		#heading {
 			display: table-cell;

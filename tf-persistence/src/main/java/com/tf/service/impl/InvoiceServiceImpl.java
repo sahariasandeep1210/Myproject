@@ -17,8 +17,8 @@ public class InvoiceServiceImpl implements InvoiceService{
 	@Autowired
 	private InvoiceDAO invoiceDAO;
 
-	public void addInvoice(Invoice invoice) {
-		 invoiceDAO.addInvoice(invoice);
+	public void addInvoices(List<Invoice> invoice) {
+		 invoiceDAO.addInvoices(invoice);
 		
 	}
 

@@ -1,13 +1,9 @@
 package com.tf.model;
 
-import java.util.Set;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 
@@ -26,8 +22,7 @@ public class InvoiceCompany {
 	@Column(name = "description")
 	private String description;
 	
-	@OneToMany(mappedBy="scfCompany", cascade=CascadeType.ALL)  
-    private Set<Invoice> invoices;  
+
 	
 	public InvoiceCompany() {
 		// TODO Auto-generated constructor stub

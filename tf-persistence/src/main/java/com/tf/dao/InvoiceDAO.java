@@ -8,7 +8,7 @@ import com.tf.model.Invoice;
 
 public interface InvoiceDAO {
 	
-	public void addInvoice(Invoice invoice);
+	public void addInvoices(List<Invoice> invoice);
 	
 	public List<Invoice> getInvoices();
 	

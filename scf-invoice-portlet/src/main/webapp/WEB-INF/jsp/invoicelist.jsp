@@ -65,7 +65,7 @@ long plid= PortalUtil.getPlidFromPortletId(themeDisplay.getScopeGroupId(),true, 
 							<td><fmt:formatDate pattern="dd-MM-yyyy" value="${invoice.invoiceDate}" /></td>
 							<td>${invoice.invoiceAmount}</td>
 							<td>${invoice.duration}</td>
-							<td>${invoice.scfCompany.companyName}</td>
+							<td>${invoice.scfCompany.name}</td>
 						</tr>
 					</c:forEach>
 				</tbody>

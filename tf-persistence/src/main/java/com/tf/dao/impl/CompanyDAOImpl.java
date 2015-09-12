@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.transform.Transformers;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,6 +28,26 @@ public class CompanyDAOImpl  extends BaseDAOImpl<Company, Long>   implements Com
 		try {
 			
 			List<Company> results = (List<Company>) sessionFactory.getCurrentSession().createCriteria(Company.class).add(Restrictions.ne("activestatus", status)).list();
+			_log.debug("GetCompanies successful, result size: "
+					+ results.size());
+			return results;
+		} catch (RuntimeException re) {
+			_log.error("GetCompanies failed", re);
+			throw re;
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Company> getCompanies(String companyType) {
+		_log.debug("Inside getCompanies ");
+		try {
+			
+			List<Company> results = (List<Company>) sessionFactory.getCurrentSession().createCriteria(Company.class)
+				   .setProjection(Projections.projectionList()
+				   .add(Projections.property("id"), "id")
+				   .add(Projections.property("name"), "name"))
+				   .add(Restrictions.eq("companyType", companyType))
+				   .setResultTransformer(Transformers.aliasToBean(Company.class)).list();
 			_log.debug("GetCompanies successful, result size: "
 					+ results.size());
 			return results;

@@ -29,7 +29,8 @@ $dockbarHeight: 41px;
 
 		.portlet-dockbar {
 			.navbar-inner {
-				background: $colorBackgroundBody;
+				 background: $colorBackgroundBody;
+				
 			}
 		}
 	}
@@ -47,6 +48,7 @@ $dockbarHeight: 41px;
 	    height: 100%;
 	    z-index: 1040;
 	    left: 0;
+	    background-image: url(../images/top_bg.png);
 	    @include single-transition(left 0.3s ease);
 	}
 
@@ -115,6 +117,10 @@ $dockbarHeight: 41px;
 			.nav-collapse {
 				height: auto;
     			overflow: visible;
+    			background-color: #346697 !important;
+    			font-size: 13p !important;
+    			background-image: linear-gradient(to bottom,#346697,#346697) !important;
+    			
 			}
 		}
 	}

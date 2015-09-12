@@ -17,4 +17,6 @@ public interface CompanyDAO {
 	public Company registerCompany(Company company);
 	
 	public List<Long> deleteCompany(Long id);
+	
+	public List<Company> getCompanies(String companyType);
 }

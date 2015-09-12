@@ -27,15 +27,12 @@
 		name="companyDetail">
 		<input type="hidden" value="${deleteCompanyURL}" id="deleteURL">	
 			<div class="row-fluid">
-				<div class="span12" style="padding-bottom: 30px;">
-					<div class="span4"></div>
-					<div class="span4">
-						<h4>Add Company Information</h4>
-					</div>
+				<div class="span12" style="border-bottom: 1px solid #003d59;">
+					<div class="span4"><h4>Add Company Information</h4></div>					
 				</div>
 			</div>
 	
-		
+		<div style="background-color: #f4f4f4;padding: :10px">
 
 		<div class="row-fluid">
 			<div class="span6">
@@ -161,7 +158,7 @@
 			</div>
 		</div>
 
-
+</div>
 	</form:form>
 	<c:if test="${companyModel.id !=null && companyModel.id !=0}">
 		<div class="row-fluid">

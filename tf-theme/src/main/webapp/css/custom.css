@@ -81,28 +81,29 @@ table.tablesorter thead tr th.tablesorter-headerDesc:after {
   content: "\f0dd";
 }
 table.tablesorter thead tr th {
-	 background-color: #DEE7EE !important;
+	/*  background-color: #DEE7EE !important; */
 	/* background-color: #555555 !important; */
+	background-color: #346697 !important;
 	/* color: #ccc; */ 
-	color: #003D59; 
+	color: #fff; 
 	text-align: left;
 	padding: 5px;
 	font-weight: normal;
 	text-shadow: none;
-	border-right: 2px solid #fff;
-	font-family: calibari;
+	/* border-right: 2px solid #fff; */
+	font-family: Candara;
 }
 
 .btn-primary {
-	 background-color: #B7C846 !important; 
+	 background-color: #346697 !important; 
 	/* background-color: #555555 !important; */
 	/* color: #ccc !important; */
 	 border-radius: 5px !important;
-    color: #003d59 !important;
+    color: #fff !important;
 	text-align: !important;
 	text-shadow: none;
 	font-weight: normal !important;
-	background-image: linear-gradient(to bottom, #B7C846, #B7C846) !important;
+	background-image: linear-gradient(to bottom, #346697, #346697) !important;
 }
 
 .tablesorter input.tablesorter-filter, .tablesorter select.tablesorter-filter {
@@ -151,6 +152,9 @@ table.tablesorter thead tr th {
     position:relative;
 }
  
+.aui .navbar-inner{
+	     background-image: linear-gradient(to bottom,#346697,#346697); 
+}
     
 
 
@@ -282,7 +286,9 @@ table.tablesorter thead tr th {
 
 	#navigation {
 		.navbar-inner {
-			background: none;
+			/* background: none; */
+			background-color: #003d59 !important;
+    		float: right !important;
 			border: none;
 			padding: 0;
 			@include box-shadow(none);
@@ -472,7 +478,7 @@ table.tablesorter thead tr th {
 	
 	
 	#footer {
-	background-color: #003D59 !important;
+	background-color: #346697 !important;
     color: #fff !important;
 		text-align: right;
 		padding: 0 20px;

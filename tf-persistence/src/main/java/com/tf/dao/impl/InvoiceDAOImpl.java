@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import org.hibernate.Query;
+import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,10 +15,13 @@ import com.tf.model.Invoice;
 @Transactional(rollbackFor = Exception.class)
 public class InvoiceDAOImpl  extends BaseDAOImpl<Invoice, Long> implements InvoiceDAO {
 
-	public void addInvoice(Invoice invoice) {
+	public void addInvoices(List<Invoice> invoices) {
 		try {
-			sessionFactory.getCurrentSession().save(invoice);
-			_log.debug("persist successful"+invoice);
+			Session session=sessionFactory.getCurrentSession();
+			for(Invoice invoice: invoices){
+				session.save(invoice);
+			}
+			_log.debug("Invoices persisted successful");
 		} catch (RuntimeException re) {
 			_log.error("persist failed", re);
 			throw re;

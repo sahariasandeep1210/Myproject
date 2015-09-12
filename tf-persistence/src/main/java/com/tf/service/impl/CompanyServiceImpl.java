@@ -43,5 +43,10 @@ public class CompanyServiceImpl implements CompanyService {
 	public List<Long> deleteCompany(Long id){
 		 return companyDAO.deleteCompany(id);
 	}
+	
+	public List<Company> getCompanies(String companyType){
+		return companyDAO.getCompanies(companyType);
+		
+	}
 
 }

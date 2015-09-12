@@ -4,7 +4,9 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
@@ -36,8 +38,10 @@ import com.liferay.portlet.documentlibrary.model.DLFileEntry;
 import com.liferay.portlet.documentlibrary.model.DLFolderConstants;
 import com.liferay.portlet.documentlibrary.service.DLAppServiceUtil;
 import com.tf.dto.InvoiceDTO;
+import com.tf.model.Company;
 import com.tf.model.Invoice;
 import com.tf.model.InvoiceDocument;
+import com.tf.service.CompanyService;
 import com.tf.service.InvoiceDocumentService;
 import com.tf.service.InvoiceService;
 
@@ -53,11 +57,13 @@ import com.tf.service.InvoiceService;
 public class InvoiceController {
 
 	@Autowired
-	protected InvoiceService invoiceService;
-	
+	protected InvoiceService invoiceService;	
 	
 	@Autowired
 	protected InvoiceDocumentService invoiceDocumentService;
+	
+	@Autowired
+	protected CompanyService companyService;
 
 	@RenderMapping(params = "render=invoiceDocuments")
 	protected ModelAndView renderInvoiceDocumentList(
@@ -65,10 +71,14 @@ public class InvoiceController {
 			RenderRequest request, RenderResponse response) throws Exception {
 		System.out.println("In render");		
 		List<InvoiceDocument> invoiceDocumentList = invoiceDocumentService.getInvoiceDocuments();
+		List<Company> companyList = companyService.getCompanies("5");
+		System.out.println("companyList::"+companyList.get(0).getId());
+		model.put("companyList", companyList);
 		model.put("invoiceList", invoiceDocumentList);
 		return new ModelAndView("invoicedoclist", model);
 	}
-	
+
+
 	@RenderMapping
 	protected ModelAndView renderInvoiceList(
 			@ModelAttribute("invoiceModel") InvoiceDTO invoice, ModelMap model,
@@ -84,6 +94,7 @@ public class InvoiceController {
 			@ModelAttribute("invoiceModel") InvoiceDTO invoice, ModelMap model,
 			ActionRequest request, ActionResponse response) throws Exception {
 		FileEntry fileEntry = null;
+		int currentRow=0;
 		Invoice invoiceModel = null;
 		InvoiceDocument invoiceDocument = null;
 		Workbook workbook = null;
@@ -125,6 +136,7 @@ public class InvoiceController {
 				Iterator<Row> rowIterator = sheet.iterator();
 				while (rowIterator.hasNext()) {
 					invoiceModel = new Invoice();
+					currentRow=currentRow++;
 
 					Row row = rowIterator.next();
 					// Every row has columns, get the column iterator and
@@ -163,21 +175,22 @@ public class InvoiceController {
 
 			}
 
-			if (invoiceList != null && invoiceList.size() > 0) {
-				for (Invoice invoice2 : invoiceList) {
-					invoiceService.addInvoice(invoice2);
-				}
-			}
-			
-			invoiceDocumentService.addInvoiceDocument(invoiceDocument);
+			if (invoiceList != null && invoiceList.size() > 0) {	
+					invoiceService.addInvoices(invoiceList);				
+					invoiceDocumentService.addInvoiceDocument(invoiceDocument);
+			}			
 		response.setRenderParameter("render","invoiceDocuments");
 		} catch (Exception e) {
-			e.printStackTrace();
+			model.put("errorOccured",true);
+		
 		} finally {
-
+			model.put("currentRow",currentRow);
 		}
 
 	}
+	
+	
+	
 
 	private String getUrl(ThemeDisplay themeDisplay, FileEntry fileEntry) {
 		StringBuilder sb = new StringBuilder();
