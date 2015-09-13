@@ -21,8 +21,8 @@ public class SCFTradeServiceImpl  implements SCFTradeService{
 		return scfTradeDAO.getScfTrades();
 	}
 	
-	public void saveorUpdate(SCFTrade scfTrade){
-		scfTradeDAO.saveorUpdate(scfTrade);
+	public SCFTrade save(SCFTrade scfTrade){
+		return scfTradeDAO.save(scfTrade);
 	}
 
 }

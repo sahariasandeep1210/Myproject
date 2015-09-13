@@ -255,6 +255,14 @@ public class SCFTrade {
 
 	
 
+	public Set<Invoice> getInvoices() {
+		return invoices;
+	}
+
+	public void setInvoices(Set<Invoice> invoices) {
+		this.invoices = invoices;
+	}
+
 	@Override
 	public String toString() {
 		return "SCFTrade [id=" + id + ", scfTrade=" + scfTrade + ", duration="

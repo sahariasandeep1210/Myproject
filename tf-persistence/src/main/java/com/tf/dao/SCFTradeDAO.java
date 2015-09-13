@@ -8,6 +8,6 @@ public interface SCFTradeDAO {
 	
 	public List<SCFTrade> getScfTrades();
 	
-	public void saveorUpdate(SCFTrade scfTrade);
+	public SCFTrade save(SCFTrade scfTrade);
 
 }

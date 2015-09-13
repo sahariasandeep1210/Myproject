@@ -8,6 +8,6 @@ public interface SCFTradeService {
 	
 	public List<SCFTrade> getScfTrades();
 	
-	public void saveorUpdate(SCFTrade scfTrade);
+	public SCFTrade save(SCFTrade scfTrade);
 
 }

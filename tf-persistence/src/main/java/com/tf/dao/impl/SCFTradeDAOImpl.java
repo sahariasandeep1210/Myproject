@@ -26,13 +26,16 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Long> implements SCFT
 		}
 	}
 	
-	public void saveorUpdate(SCFTrade scfTrade) {
+	public SCFTrade save(SCFTrade scfTrade) {
 		try {
-			sessionFactory.getCurrentSession().saveOrUpdate(scfTrade);
+			Long id=(Long)sessionFactory.getCurrentSession().save(scfTrade);
+			scfTrade.setId(id);
 			_log.debug("persist successful"+scfTrade);
 		} catch (RuntimeException re) {
 			_log.error("persist failed", re);
 			throw re;
 		}
+		
+		return scfTrade;
 	}
 }

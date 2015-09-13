@@ -2,9 +2,11 @@ package com.tf.service.impl;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -48,6 +50,19 @@ public class InvoiceServiceImpl implements InvoiceService{
 		System.out.println("sumInvoiceAmt::::::"+sumInvoiceAmt);
 		return invoiceInfoMap;
 		
+		
+	}
+	
+	public Set<Invoice> getInvoices(String invoiceIds){
+		
+		List<String> idsList=Arrays.asList(invoiceIds.split(","));
+		List<Long> idsListactual=new ArrayList<Long>();
+		for(String id :idsList){ 
+			idsListactual.add(Long.valueOf(id));
+		}
+		List<Invoice> invoices=invoiceDAO.getInvoicesAmount(idsListactual);
+		Set<Invoice> invoiceSet = new HashSet<Invoice>(invoices);
+		return invoiceSet;
 		
 	}
 

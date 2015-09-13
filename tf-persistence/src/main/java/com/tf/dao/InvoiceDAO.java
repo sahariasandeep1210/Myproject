@@ -1,6 +1,5 @@
 package com.tf.dao;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 import com.tf.model.Invoice;

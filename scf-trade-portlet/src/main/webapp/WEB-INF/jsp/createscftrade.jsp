@@ -1,7 +1,7 @@
 <%@include file="init.jsp"%>
 
 <portlet:actionURL var="createTradeURL">
-	<portlet:param name="action" value="createTrade" />
+	<portlet:param name="action" value="saveTrade" />
 </portlet:actionURL>
 
 <portlet:renderURL var="defaultRender">
@@ -12,7 +12,8 @@
 	<form:form commandName="scfTradeModel" method="post"
 		action="${createTradeURL}" id="createTrade" autocomplete="off"
 		name="TradeDetail">
-		<input type="hidden" value="${deleteTradeURL}" id="deleteURL">
+		<input type="hidden" value="${deleteTradeURL}" id="deleteURL"> 
+		<input type="hidden" value="${invoiceIds}" name="invoiceIds"> 
 		<div class="row-fluid">
 			<div class="span12" style="padding-bottom: 30px;">
 				<div class="span4"></div>
@@ -37,7 +38,7 @@
 		<div class="row-fluid">
 			<div class="span6">
 				<label class="span6">Duration:</label>
-				<form:input path="duration" cssClass="span6" />
+				<form:input path="duration" cssClass="span6"  id="duration"/>
 
 			</div>
 			<div class="span6">
@@ -79,7 +80,7 @@
 			<div class="span6">
 				<label class="span6">Company Name:</label>
 				<label class="span6">${scfTradeModel.company.name}</label>
-				<input type="hidden" value="${scfTradeModel.company.id}" name="companyName">
+				<input type="hidden" value="${scfTradeModel.company.id}" name="companyID">
 				<%-- <form:select path="companyId" items="${companyIdMap}"
 					class="dropdown span6" id="companyId" placeholder="Company Name" /> --%>
 			</div>

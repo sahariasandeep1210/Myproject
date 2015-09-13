@@ -1,6 +1,7 @@
 package com.tf.controller.trade;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -19,8 +20,10 @@ import org.springframework.web.portlet.bind.annotation.ActionMapping;
 import org.springframework.web.portlet.bind.annotation.RenderMapping;
 
 import com.liferay.portal.kernel.util.ParamUtil;
+import com.tf.controller.SCFTradeDTO;
 import com.tf.model.Company;
 import com.tf.model.SCFTrade;
+import com.tf.service.CompanyService;
 import com.tf.service.InvoiceService;
 import com.tf.service.SCFTradeService;
 
@@ -42,9 +45,11 @@ public class SCFTradeController {
 	@Autowired
 	private InvoiceService invoiceService;
 	
+	@Autowired
+	private CompanyService companyService;
+	
 	@RenderMapping
-	protected ModelAndView renderInvoiceList(
-			@ModelAttribute("scfTradeModel") SCFTrade scfTrade, ModelMap model,
+	protected ModelAndView renderInvoiceList(ModelMap model,
 			RenderRequest request, RenderResponse response) throws Exception {
 		List<SCFTrade> scftrades=scfTradeService.getScfTrades();
 		model.put("trades", scftrades);
@@ -52,7 +57,7 @@ public class SCFTradeController {
 	}
 	
 	@RenderMapping(params="render=createTrade")
-	protected ModelAndView renderCreateTrade(@ModelAttribute("scfTradeModel") SCFTrade scfTrade,ModelMap model,RenderRequest request, RenderResponse response) throws Exception {	
+	protected ModelAndView renderCreateTrade(@ModelAttribute("scfTradeModel") SCFTradeDTO scfTrade,ModelMap model,RenderRequest request, RenderResponse response) throws Exception {	
 		long tradeID = ParamUtil.getLong(request, "tradeID"); 
 		Long companyId = ParamUtil.getLong(request, "companyId"); 
 		String invoiceIds= ParamUtil.getString(request, "invoices");
@@ -67,14 +72,37 @@ public class SCFTradeController {
 		return new ModelAndView("createscftrade", model);
 	}
 	
-	@ActionMapping(params="action=createTrade")
-	protected void saveTarde(@ModelAttribute("scfTradeModel") SCFTrade scfTrade, 
+	@ActionMapping(params="action=saveTrade")
+	protected void saveTarde(@ModelAttribute("scfTradeModel") SCFTradeDTO scfTradeDTO, 
 												 ModelMap model, 
 												 ActionRequest request,
 												 ActionResponse response) throws Exception{
-		
-		System.out.println("scf Trade-----"+scfTrade);
-		
+		Long companyID = ParamUtil.getLong(request, "companyID"); 
+		Company company=companyService.findById(companyID);
+		scfTradeDTO.setCompany(company);
+		SCFTrade scfTrade=transformTOScfTrade(scfTradeDTO);
+		scfTrade=scfTradeService.save(scfTrade);
+		System.out.println("scf Trade-----"+scfTradeDTO);		
+	}
+
+	private SCFTrade transformTOScfTrade(SCFTradeDTO scfTradeDTO) {
+		SCFTrade scfTrade =new SCFTrade();
+		scfTrade.setClosingDate(scfTradeDTO.getClosingDate());
+		scfTrade.setCompany(scfTradeDTO.getCompany());
+		scfTrade.setCreateDate(new Date());
+		scfTrade.setDuration(scfTradeDTO.getDuration());
+		scfTrade.setInvestorPaymentDate(scfTradeDTO.getInvestorPaymentDate());
+		scfTrade.setOpeningDate(scfTradeDTO.getOpeningDate());
+		scfTrade.setPromisoryNote(scfTradeDTO.getPromisoryNote());
+		scfTrade.setScfTrade(scfTradeDTO.getScfTrade());
+		scfTrade.setSellerPaymentDate(scfTradeDTO.getSellerPaymentDate());
+		scfTrade.setStatus(scfTradeDTO.getStatus());
+		scfTrade.setTradeAmount(scfTradeDTO.getTradeAmount());
+		scfTrade.setTradeNotes(scfTradeDTO.getTradeNotes());
+		scfTrade.setTradeSettled(scfTradeDTO.getTradeSettled());
+		scfTrade.setWantToInsure(scfTradeDTO.getWantToInsure());
+		scfTrade.setInvoices(invoiceService.getInvoices(scfTradeDTO.getInvoiceIds()));
+		return scfTrade;
 	}
 
 }
