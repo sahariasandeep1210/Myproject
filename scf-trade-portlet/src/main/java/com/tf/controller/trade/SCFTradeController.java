@@ -2,6 +2,7 @@ package com.tf.controller.trade;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
@@ -18,6 +19,7 @@ import org.springframework.web.portlet.bind.annotation.ActionMapping;
 import org.springframework.web.portlet.bind.annotation.RenderMapping;
 
 import com.liferay.portal.kernel.util.ParamUtil;
+import com.tf.model.Company;
 import com.tf.model.SCFTrade;
 import com.tf.service.InvoiceService;
 import com.tf.service.SCFTradeService;
@@ -55,10 +57,13 @@ public class SCFTradeController {
 		Long companyId = ParamUtil.getLong(request, "companyId"); 
 		String invoiceIds= ParamUtil.getString(request, "invoices");
 		System.out.println("tradeIds::::"+invoiceIds);
-		BigDecimal invoicesAmount = invoiceService.getInvoicesAmount(invoiceIds);
-		System.out.println("invoicesAmount::::"+invoicesAmount);
-		scfTrade.setTradeAmount(invoicesAmount);
-		model.put("scfTradeModel", scfTrade);		
+		Map<Company,BigDecimal> invoiceMap = invoiceService.getInvoicesAmount(invoiceIds);
+		Map.Entry<Company,BigDecimal> entry = invoiceMap.entrySet().iterator().next();
+		System.out.println("invoicesAmount::::"+entry.getValue());
+		scfTrade.setTradeAmount(entry.getValue());
+		scfTrade.setCompany(entry.getKey());
+		model.put("scfTradeModel", scfTrade);
+		model.put("invoiceIds", invoiceIds);
 		return new ModelAndView("createscftrade", model);
 	}
 	

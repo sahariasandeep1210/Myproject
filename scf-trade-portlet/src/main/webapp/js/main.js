@@ -1,13 +1,39 @@
 $(document).ready(function(){
 
 	
-	$("#closingDate,#openingDate,#investorPaymentDate,#SellerPaymentDate").datepicker({
+	$("#investorPaymentDate,#SellerPaymentDate").datepicker({
 		changeMonth : true,
 		changeYear : true,
 		showOn : "button",
 		buttonImage : "/tf-theme/images/calendar.jpg",
 		buttonImageOnly : true,
 		buttonText : "Select date"
+	});
+	
+	$("#openingDate").datepicker({
+		changeMonth : true,
+		dateFormat: 'dd-mm-yy',
+		changeYear : true,
+		showOn : "button",
+		buttonImage : "/tf-theme/images/calendar.jpg",
+		buttonImageOnly : true,
+		buttonText : "Select date",
+		onClose: function( selectedDate ) {
+			$( "#closingDate" ).datepicker( "option", "minDate", selectedDate );
+		}
+	});
+	
+	$("#closingDate").datepicker({
+		changeMonth : true,
+		dateFormat: 'dd-mm-yy',
+		changeYear : true,
+		showOn : "button",
+		buttonImage : "/tf-theme/images/calendar.jpg",
+		buttonImageOnly : true,
+		buttonText : "Select date",
+		onClose: function( selectedDate ) {
+			$( "#openingDate" ).datepicker( "option", "maxDate", selectedDate );
+			}
 	});
 	
 	$("#insureCheck").change(function() {

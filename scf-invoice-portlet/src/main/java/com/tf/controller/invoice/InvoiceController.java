@@ -27,6 +27,8 @@ import org.springframework.web.portlet.ModelAndView;
 import org.springframework.web.portlet.bind.annotation.ActionMapping;
 import org.springframework.web.portlet.bind.annotation.RenderMapping;
 
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.repository.model.Folder;
 import com.liferay.portal.kernel.util.MimeTypesUtil;
@@ -35,6 +37,7 @@ import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.ServiceContextFactory;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portlet.documentlibrary.model.DLFileEntry;
+import com.liferay.portlet.documentlibrary.model.DLFolder;
 import com.liferay.portlet.documentlibrary.model.DLFolderConstants;
 import com.liferay.portlet.documentlibrary.service.DLAppServiceUtil;
 import com.tf.dto.InvoiceDTO;
@@ -85,7 +88,8 @@ public class InvoiceController {
 			RenderRequest request, RenderResponse response) throws Exception {
 		System.out.println("In Default render");		
 		List<Invoice> invoices = invoiceService.getInvoices();
-		model.put("invoiceList", invoices);
+		model.put("invoicesList", invoices);
+		model.put("defaultRender", Boolean.TRUE);
 		return new ModelAndView("invoicelist", model);
 	}
 
@@ -93,49 +97,26 @@ public class InvoiceController {
 	protected void callAction(
 			@ModelAttribute("invoiceModel") InvoiceDTO invoice, ModelMap model,
 			ActionRequest request, ActionResponse response) throws Exception {
-		FileEntry fileEntry = null;
+		request.getPortletSession().removeAttribute("invoiceDTO");
+		request.getPortletSession().removeAttribute("invoiceList");
+		System.out.println("invoice:::::::::::::::::::"+invoice);
+		
 		int currentRow=0;
-		Invoice invoiceModel = null;
-		InvoiceDocument invoiceDocument = null;
+		Invoice invoiceModel = null;		
 		Workbook workbook = null;
 		List<Invoice> invoiceList = new ArrayList<Invoice>();
-		// FileInputStream inputStream = new FileInputStream();
-		ThemeDisplay themeDisplay = (ThemeDisplay) request
-				.getAttribute(WebKeys.THEME_DISPLAY);
-		long currentSideID = themeDisplay.getScopeGroupId();
-		long parentFolderId = DLFolderConstants.DEFAULT_PARENT_FOLDER_ID;
-		Folder parentfolder = null;
-		parentfolder = DLAppServiceUtil.getFolder(currentSideID, 0, "Invoices");
-		if (parentfolder != null) {
-			parentFolderId = parentfolder.getFolderId();
-		}
-		String userName = themeDisplay.getUser().getScreenName();
-		String mimeType = MimeTypesUtil.getContentType(invoice.getInvoiceDoc()
-				.getInputStream(), invoice.getInvoiceDoc().getName());
-		ServiceContext serviceContext = ServiceContextFactory.getInstance(
-				DLFileEntry.class.getName(), request);
-		fileEntry = DLAppServiceUtil.addFileEntry(themeDisplay
-					.getScopeGroupId(), parentFolderId, invoice.getInvoiceDoc()
-					.getOriginalFilename(), mimeType, invoice.getInvoiceDoc()
-					.getOriginalFilename(), invoice.getInvoiceDoc().getOriginalFilename(),
-					"upload", invoice.getInvoiceDoc().getInputStream(), invoice.getInvoiceDoc().getSize(), serviceContext);
+	
 		try {
 			workbook = new XSSFWorkbook(invoice.getInvoiceDoc()
 					.getInputStream());
-			int numberOfSheets = workbook.getNumberOfSheets();
-			invoiceDocument = new InvoiceDocument();
-			invoiceDocument.setDocumentId(fileEntry.getFileEntryId());
-			invoiceDocument.setUploadDate(new Date());
-			invoiceDocument.setUploadedby(userName);
-			invoiceDocument.setDocumentName(invoice.getInvoiceDoc().getOriginalFilename());
-			invoiceDocument.setDocumentUrl(getUrl(themeDisplay, fileEntry));
-			invoiceDocument.setDocumentType(mimeType);
+			int numberOfSheets = workbook.getNumberOfSheets();			
 			for (int i = 0; i < numberOfSheets; i++) {
 				Sheet sheet = workbook.getSheetAt(i);
 				// every sheet has rows, iterate over them
 				Iterator<Row> rowIterator = sheet.iterator();
 				while (rowIterator.hasNext()) {
 					invoiceModel = new Invoice();
+					invoiceModel.setScfCompany(companyService.findById(invoice.getScfCompany()));
 					currentRow=currentRow++;
 
 					Row row = rowIterator.next();
@@ -174,20 +155,83 @@ public class InvoiceController {
 				}
 
 			}
+			
+			request.getPortletSession().setAttribute("invoiceDTO", invoice);
+			request.getPortletSession().setAttribute("invoiceList", invoiceList);
 
-			if (invoiceList != null && invoiceList.size() > 0) {	
+			/*if (invoiceList != null && invoiceList.size() > 0) {	
 					invoiceService.addInvoices(invoiceList);				
 					invoiceDocumentService.addInvoiceDocument(invoiceDocument);
-			}			
+			}	*/
+		model.put("documentUpload",Boolean.TRUE);
+		model.put("invoicesList",invoiceList);
 		response.setRenderParameter("render","invoiceDocuments");
 		} catch (Exception e) {
 			model.put("errorOccured",true);
+			e.printStackTrace();
 		
 		} finally {
 			model.put("currentRow",currentRow);
 		}
 
 	}
+	
+	@SuppressWarnings("unchecked")
+	@ActionMapping(params = "action=saveInvoices")
+	protected void saveInvoices(ModelMap model,
+			ActionRequest request, ActionResponse response) throws Exception {
+		InvoiceDTO invoice= (InvoiceDTO)request.getPortletSession().getAttribute("invoiceDTO");		
+		List<Invoice> invoiceList = (List<Invoice>)request.getPortletSession().getAttribute("invoiceList");
+	
+		
+		FileEntry fileEntry = null;
+		Folder folder=null;
+		InvoiceDocument invoiceDocument = null;
+		// FileInputStream inputStream = new FileInputStream();
+		ThemeDisplay themeDisplay = (ThemeDisplay) request
+				.getAttribute(WebKeys.THEME_DISPLAY);
+		long currentSideID = themeDisplay.getScopeGroupId();
+		long parentFolderId = DLFolderConstants.DEFAULT_PARENT_FOLDER_ID;
+		Folder parentfolder = null;
+		parentfolder = DLAppServiceUtil.getFolder(currentSideID, 0, "Invoices");
+		if (parentfolder != null) {
+			parentFolderId = parentfolder.getFolderId();
+		}
+		 Integer	folderCount=DLAppServiceUtil.getFoldersCount(currentSideID,  parentFolderId) ;         
+		ServiceContext serviceContextDlFolder = ServiceContextFactory.getInstance(DLFolder.class.getName(), request); 
+		folder=DLAppServiceUtil.addFolder(currentSideID, parentFolderId, folderCount.toString(), "Invoices Document Folder", serviceContextDlFolder);
+		String userName = themeDisplay.getUser().getScreenName();
+		String mimeType = MimeTypesUtil.getContentType(invoice.getInvoiceDoc()
+				.getInputStream(), invoice.getInvoiceDoc().getName());
+		ServiceContext serviceContext = ServiceContextFactory.getInstance(
+				DLFileEntry.class.getName(), request);
+		fileEntry = DLAppServiceUtil.addFileEntry(themeDisplay
+				.getScopeGroupId(), folder.getFolderId(), invoice.getInvoiceDoc()
+				.getOriginalFilename(), mimeType, invoice.getInvoiceDoc()
+				.getOriginalFilename(), invoice.getInvoiceDoc()
+				.getOriginalFilename(), "upload", invoice.getInvoiceDoc()
+				.getInputStream(), invoice.getInvoiceDoc().getSize(),
+				serviceContext);
+		invoiceDocument = new InvoiceDocument();
+		invoiceDocument.setDocumentId(fileEntry.getFileEntryId());
+		invoiceDocument.setUploadDate(new Date());
+		invoiceDocument.setUploadedby(userName);
+		invoiceDocument.setDocumentName(invoice.getInvoiceDoc()
+				.getOriginalFilename());
+		invoiceDocument.setDocumentUrl(getUrl(themeDisplay, fileEntry));
+		invoiceDocument.setDocumentType(mimeType);
+
+		if (invoiceList != null && invoiceList.size() > 0) {
+			invoiceService.addInvoices(invoiceList);
+			invoiceDocumentService.addInvoiceDocument(invoiceDocument);
+		}
+		response.setRenderParameter("render","invoiceDocuments");
+
+	}
+	
+	
+	
+	
 	
 	
 	

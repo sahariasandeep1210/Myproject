@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.tf.model.Company;
 
-public interface CompanyDAO {
+public interface CompanyDAO extends BaseDAO<Company, Long>{
 	
 	public List<Company> getCompanies(Integer status);
 	

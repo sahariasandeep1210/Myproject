@@ -12,5 +12,5 @@ public interface InvoiceDAO {
 	
 	public List<Invoice> getInvoices();
 	
-	public List<BigDecimal> getInvoicesAmount(List<Long> invoiceIds);
+	public List<Invoice> getInvoicesAmount(List<Long> invoiceIds);
 }

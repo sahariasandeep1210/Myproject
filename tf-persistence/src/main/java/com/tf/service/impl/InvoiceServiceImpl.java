@@ -2,12 +2,15 @@ package com.tf.service.impl;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.tf.dao.InvoiceDAO;
+import com.tf.model.Company;
 import com.tf.model.Invoice;
 import com.tf.service.InvoiceService;
 
@@ -27,19 +30,23 @@ public class InvoiceServiceImpl implements InvoiceService{
 		return invoices;
 	}
 	
-	public BigDecimal getInvoicesAmount(String invoiceIds){
+	public Map<Company,BigDecimal> getInvoicesAmount(String invoiceIds){
+		Map<Company,BigDecimal> invoiceInfoMap=new LinkedHashMap<Company,BigDecimal>();
 		BigDecimal sumInvoiceAmt=new BigDecimal(0);
+		Company company=null; 
 		List<String> invoicesAmt=Arrays.asList(invoiceIds.split(","));
 		List<Long> invoicesAmtactual=new ArrayList<Long>();
 		for(String amount :invoicesAmt){ 
 			invoicesAmtactual.add(Long.valueOf(amount));
 		}
-		List<BigDecimal> invoiceAmounts=invoiceDAO.getInvoicesAmount(invoicesAmtactual);
-		for(BigDecimal amount : invoiceAmounts){
-			sumInvoiceAmt = sumInvoiceAmt.add(amount);
+		List<Invoice> invoiceAmounts=invoiceDAO.getInvoicesAmount(invoicesAmtactual);
+		for(Invoice invoice : invoiceAmounts){
+			company =invoice.getScfCompany();
+			sumInvoiceAmt = sumInvoiceAmt.add(invoice.getInvoiceAmount());
 		}	
+		invoiceInfoMap.put(company, sumInvoiceAmt);
 		System.out.println("sumInvoiceAmt::::::"+sumInvoiceAmt);
-		return sumInvoiceAmt;
+		return invoiceInfoMap;
 		
 		
 	}

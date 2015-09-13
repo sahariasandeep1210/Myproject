@@ -78,7 +78,8 @@
 		<div class="row-fluid">
 			<div class="span6">
 				<label class="span6">Company Name:</label>
-				<form:input path="companyId" cssClass="span6" />
+				<label class="span6">${scfTradeModel.company.name}</label>
+				<input type="hidden" value="${scfTradeModel.company.id}" name="companyName">
 				<%-- <form:select path="companyId" items="${companyIdMap}"
 					class="dropdown span6" id="companyId" placeholder="Company Name" /> --%>
 			</div>

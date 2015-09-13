@@ -164,7 +164,9 @@ CREATE TABLE `scf_invoice` (
    `duration` INT(11), 
    `payment_date` DATE, 
    `currency`  VARCHAR(45) CHARACTER SET utf8,   
-   `scf_company`  VARCHAR(100) CHARACTER SET utf8,   
+   `scf_company`  VARCHAR(100) CHARACTER SET utf8,  
+   `due_date`  DATE, 
+   `trade_id`  INT(11),  
    PRIMARY KEY (`id`),
    UNIQUE KEY `id_UNIQUE` (`id`),
    UNIQUE KEY `invoice_number_UNIQUE` (`invoice_number`)

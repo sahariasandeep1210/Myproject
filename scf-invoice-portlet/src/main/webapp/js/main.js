@@ -16,6 +16,10 @@ $(document).ready(function() {
 
 	});
 	
+	if ($('#confirmationModel').length > 0) {
+		$('#confirmationModel').modal('show');
+	}
+	
 
 	
 	$("#createTrade").click(function() {	

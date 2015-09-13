@@ -2,6 +2,11 @@
 <portlet:actionURL var="importInvoiceURL">
 	<portlet:param name="action" value="importInvoice" />
 </portlet:actionURL>
+
+<portlet:actionURL var="saveInvoicesURL">
+	<portlet:param name="action" value="saveInvoices" />
+</portlet:actionURL>
+
 <div class="container-fluid">
 	<div class="table-responsive">
 		<table class="table table-hover tablesorter table-bordered">
@@ -28,7 +33,7 @@
 	
 	<div class="row-fluid">
 		<!-- <a href="#myModal" role="button" class="btn btn-primary" data-toggle="modal">Upload Invoice</a> -->
-		<input type="button" value="Upload Invoice"	class="btn btn-primary" id="updateInvoice" />
+		<input type="button" value="Upload Invoice"	class="btn btn-primary" id="updateInvoice" />${documentUpload}
 	</div>
 	
 	
@@ -58,4 +63,26 @@
 
 
 	</form:form>
+
+<c:if test="${documentUpload}">
+	<form:form  id="saveInvoiceForm" method="post" action="${saveInvoicesURL}" name="saveInvoicForm" >
+		<div id="confirmationModel" class=" modal fade" tabindex="-1"
+			role="dialog" aria-labelledby="confirmationModelLabel"
+			aria-hidden="true">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">×</button>
+				<h3 id="myModalLabel">Invoice Preview</h3>
+			</div>
+			<div class="modal-body">
+				<%@include file="invoicelisttable.jsp"%>
+			</div>
+			<div class="modal-footer">
+				<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+				<input type="submit" value="Save Invoices" class="btn btn-primary" />
+			</div>
+		</div>
+	</form:form>
+</c:if>
+
 

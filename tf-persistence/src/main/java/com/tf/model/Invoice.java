@@ -54,6 +54,13 @@ public class Invoice {
     @JoinColumn(name = "scf_company")  
 	private Company scfCompany;
 	
+	@Column(name = "due_date")
+	private Date dueDate;
+	
+	@ManyToOne  
+    @JoinColumn(name = "trade_id")  
+	private SCFTrade scfTrade;
+	
 
 
 	public Invoice() {
@@ -155,6 +162,22 @@ public class Invoice {
 
 	public void setScfCompany(Company scfCompany) {
 		this.scfCompany = scfCompany;
+	}
+
+	public Date getDueDate() {
+		return dueDate;
+	}
+
+	public void setDueDate(Date dueDate) {
+		this.dueDate = dueDate;
+	}
+
+	public SCFTrade getScfTrade() {
+		return scfTrade;
+	}
+
+	public void setScfTrade(SCFTrade scfTrade) {
+		this.scfTrade = scfTrade;
 	}
 
 	@Override

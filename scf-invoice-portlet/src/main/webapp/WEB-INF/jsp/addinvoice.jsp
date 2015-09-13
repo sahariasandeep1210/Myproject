@@ -21,7 +21,7 @@
 <div class="row-fluid">
 	<div class="span6">
 		<label class="span6">File Type:</label> 
-		<select id="scfCompany" name="scfCompany"  placeholder="SCF Company">
+		<select id="fileType" name="fileType"  placeholder="File Type">
 			<option value="CSV">CSV</option>
 			<option value="XLS">XLS/XLSX</option>		   	   
 		</select>

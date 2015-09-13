@@ -5,10 +5,12 @@ import java.util.List;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.transform.Transformers;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.tf.dao.InvoiceDAO;
+import com.tf.model.Company;
 import com.tf.model.Invoice;
 
 @Repository
@@ -42,13 +44,13 @@ public class InvoiceDAOImpl  extends BaseDAOImpl<Invoice, Long> implements Invoi
 		}
 	}
 	
-	public List<BigDecimal> getInvoicesAmount(List<Long> invoiceIds){
+	public List<Invoice> getInvoicesAmount(List<Long> invoiceIds){
 		_log.debug("Inside getInvoice ");
 		try {
 			
-			Query query =  sessionFactory.getCurrentSession().createQuery("SELECT invoice.invoiceAmount FROM Invoice invoice WHERE invoice.id IN (:ids) ");
+			Query query =  sessionFactory.getCurrentSession().createQuery("FROM Invoice invoice WHERE invoice.id IN (:ids) ");
 			query.setParameterList("ids", invoiceIds);
-			List<BigDecimal> results = query.list();
+			List<Invoice> results = (List<Invoice>)query.list();;
 			_log.debug("GetCompanies successful, result size: "
 					+ results.size());
 			return results;

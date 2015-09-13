@@ -2,11 +2,16 @@ package com.tf.model;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.springframework.web.multipart.MultipartFile;
@@ -45,8 +50,9 @@ public class SCFTrade {
 	@Column(name="status")
 	private Integer status;
 	
-	@Column(name="company_id")
-	private Long companyId;
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "company_id")
+	private Company company;
 	
 	@Column(name="trade_notes")
 	private String tradeNotes;	
@@ -77,6 +83,10 @@ public class SCFTrade {
 	
 	@Column(name="update_date")
 	private Date updatDate;
+	
+	@OneToMany(cascade=CascadeType.ALL)
+    @JoinColumn(name="trade_id")
+	private Set<Invoice> invoices;
 	
 	
 	
@@ -155,12 +165,12 @@ public class SCFTrade {
 		this.status = status;
 	}
 
-	public Long getCompanyId() {
-		return companyId;
+	public Company getCompany() {
+		return company;
 	}
 
-	public void setCompanyId(Long companyId) {
-		this.companyId = companyId;
+	public void setCompany(Company company) {
+		this.company = company;
 	}
 
 	public String getTradeNotes() {
@@ -251,8 +261,8 @@ public class SCFTrade {
 				+ duration + ", closingDate=" + closingDate + ", openingDate="
 				+ openingDate + ", investorPaymentDate=" + investorPaymentDate
 				+ ", SellerPaymentDate=" + SellerPaymentDate + ", tradeAmount="
-				+ tradeAmount + ", status=" + status + ", companyId="
-				+ companyId + ", tradeNotes=" + tradeNotes + ", tradeSettled="
+				+ tradeAmount + ", status=" + status + ", company="
+				+ company + ", tradeNotes=" + tradeNotes + ", tradeSettled="
 				+ tradeSettled + ", wantToInsure=" + wantToInsure
 				+ ", insuranceDocId=" + insuranceDocId + ", insuranceDocName="
 				+ insuranceDocName + ", insuranceDocUrl=" + insuranceDocUrl
