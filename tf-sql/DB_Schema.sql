@@ -72,7 +72,7 @@ INSERT INTO tf_company_type VALUES (1,"Primary Investor");
 INSERT INTO tf_company_type VALUES (2,"Secondary Investor");
 INSERT INTO tf_company_type VALUES (3,"Admin");
 INSERT INTO tf_company_type VALUES (4,"Seller");
-INSERT INTO tf_company_type VALUES (4,"SCF Company");
+INSERT INTO tf_company_type VALUES (5,"SCF Company");
 
 
 DROP TABLE IF EXISTS `tf_purchase_order`;
