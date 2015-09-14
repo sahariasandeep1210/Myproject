@@ -1,6 +1,4 @@
 DROP TABLE IF EXISTS `tf_company`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `tf_company` (
   `idcompany` INT(11) NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(100) ,
@@ -14,7 +12,7 @@ CREATE TABLE `tf_company` (
   `directors` VARCHAR(200) ,
   `shareholders` VARCHAR(200) ,
  `customers` VARCHAR(200) ,
- `accounts` VARCHAR(45) 
+ `accounts` VARCHAR(45), 
  `jurisdiction` VARCHAR(45) ,
  `bustype` VARCHAR(100) ,
   `active_status` TINYINT(1) DEFAULT '1',
@@ -26,8 +24,6 @@ CREATE TABLE `tf_company` (
 
 
 DROP TABLE IF EXISTS `tf_user`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `tf_user` (
   `iduser` INT(11) NOT NULL AUTO_INCREMENT,
   `firstname` VARCHAR(45) ,
