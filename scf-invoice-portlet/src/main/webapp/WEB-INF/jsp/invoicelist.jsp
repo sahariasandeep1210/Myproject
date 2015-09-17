@@ -38,9 +38,21 @@ long plid= PortalUtil.getPlidFromPortletId(themeDisplay.getScopeGroupId(),true, 
 <%@include file="tabview.jsp"%>
 <div class="container-fluid" style=" padding: 0px;">
 
-<div class="alert alert-error" id="errormsg" style="display: none;">
- 
+<div class="alert alert-error" id="errormsg" style="display: none;"> 
 </div>
+<div class="row-fluid">
+				<div class="span12" >
+					<div class="span4"><h4>Manage Invoices</h4></div>		
+								
+				</div>
+</div>
+<div class="row-fluid">
+				<div class="span12">
+					<div class="span12"><h6>Conveniently manage  your invoices.Please select one or more invoices to create trade.Alternatively you can upload invoices to create new trade </h6></div>		
+								
+				</div>
+</div>
+
 	<form name="invoicelist" method="post" action="${invoiceDocumentsURL}" id="invoicelist">
 	<input type="hidden" name="invoices" id="invoices">
 	<input type="hidden" name="companyId" id="companyId">

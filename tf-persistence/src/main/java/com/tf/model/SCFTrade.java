@@ -48,7 +48,7 @@ public class SCFTrade {
 	private BigDecimal tradeAmount;
 	
 	@Column(name="status")
-	private Integer status;
+	private String status;
 	
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "company_id")
@@ -157,11 +157,11 @@ public class SCFTrade {
 		this.tradeAmount = tradeAmount;
 	}
 
-	public Integer getStatus() {
+	public String getStatus() {
 		return status;
 	}
 
-	public void setStatus(Integer status) {
+	public void setStatus(String status) {
 		this.status = status;
 	}
 

@@ -192,7 +192,7 @@ CREATE TABLE `scf_trade` (
    `investor_Payment_date`  DATE,
    `Seller_Payment_date`  DATE,
    `trade_amount`  DECIMAL,
-   `status` TINYINT(1) DEFAULT '0',
+   `status` VARCHAR(50) ,
    `company_id` INT(11) NOT NULL,
    `trade_notes` VARCHAR(45) ,
    `trade_settled` TINYINT(1) DEFAULT '0',

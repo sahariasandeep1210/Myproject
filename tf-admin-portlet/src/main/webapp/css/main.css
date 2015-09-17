@@ -90,3 +90,8 @@ hr {
 .error_label {
 	color: red;
 }
+
+
+.ui-dialog .ui-dialog-title{
+	color: #fff !important;
+}

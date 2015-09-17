@@ -13,7 +13,7 @@
 	<portlet:param name="action" value="homePage" />
 </portlet:actionURL>
 
-<div class="alert alert-danger" id="errorMsg"><i class="icon-remove-sign icon-2"></i> Some required information is missing or incomplete. Please correct your entries and try again.</div>
+<div class="alert alert-danger" id="errorMsg"><i class="icon-remove-sign icon-2"></i> </div>
 
 
 <div class="container-fluid">

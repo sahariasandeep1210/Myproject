@@ -11,9 +11,12 @@ import com.tf.model.Company;
 public class SCFTradeDTO implements Serializable {
 	
 	
-	private static final long serialVersionUID = -1964587293927344031L;
 	
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6405552856399167612L;
 	private Long id;	
 	private Integer scfTrade;
 	private Integer duration;
@@ -22,7 +25,7 @@ public class SCFTradeDTO implements Serializable {
 	private Date investorPaymentDate;	
 	private Date SellerPaymentDate;
 	private BigDecimal tradeAmount;
-	private Integer status;
+	private String status;
 	private Company company;
 	private String tradeNotes;	
 	private Integer tradeSettled;
@@ -100,11 +103,11 @@ public class SCFTradeDTO implements Serializable {
 		this.tradeAmount = tradeAmount;
 	}
 
-	public Integer getStatus() {
+	public String getStatus() {
 		return status;
 	}
 
-	public void setStatus(Integer status) {
+	public void setStatus(String status) {
 		this.status = status;
 	}
 

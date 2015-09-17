@@ -17,36 +17,36 @@
 <portlet:renderURL var="defaultRender">
 </portlet:renderURL>
 
+<div class="alert alert-danger" id="errorMsg"><i class="icon-remove-sign icon-2"></i> </div>
+
 <div class="container-fluid">
 	<form:form commandName="userModel" method="post"
-		action="${createUserURL}" id="createUser" autocomplete="off" name="userDetail">
+		action="${createUserURL}" id="createUser"  name="userDetail">
 		<input type="hidden" value="${deleteUserURL}" id="deleteURL"> 
-		<input type="hidden" value="${companyID}" id="companyID" name="company">
+		<input type="hidden" value="${companyID}" id="companyID" name="companyID">
 		<div class="row-fluid">
-			<div class="span12" style="padding-bottom: 30px;">
-				<div class="span4"></div>
-				<div class="span4">
-					<h4>Add User Information</h4>
+				<div class="span12" style="border-bottom: 1px solid #003d59;margin-bottom: 35px">
+					<div class="span4"><h4>Add User Information</h4></div>					
 				</div>
 			</div>
-		</div>
+	
 
 		<div class="row-fluid">
 			<div class="span6">
-				<label class="span6">Title:</label>
+				<label class="span6">Title:<span class="requiredStar">*</span></label>
 				<input type="hidden" name="id" value="${userModel.id}"/>
-				<form:input path="title"  cssClass="span6" />
+				<form:input path="title"  cssClass="span6" id="title"/>
 
 			</div>
 			<div class="span6">
-				<label class="span6">Username:</label>
-				<form:input path="username" cssClass="span6" />
+				<label class="span6">Username:<span class="requiredStar">*</span></label>
+				<form:input path="username" cssClass="span6"  id="username" />
 			</div>
 		</div>
 		<div class="row-fluid">
 			<div class="span6">
-				<label class="span6">First Name:</label>
-				<form:input path="firstName" cssClass="span6" />
+				<label class="span6">First Name:<span class="requiredStar">*</span></label>
+				<form:input path="firstName" cssClass="span6" id="firstname"/>
 
 			</div>
 			<div class="span6">
@@ -58,20 +58,20 @@
 		</div>
 		<div class="row-fluid">
 			<div class="span6">
-				<label class="span6">Last Name:</label>
-				<form:input path="lastName" cssClass="span6" />
+				<label class="span6">Last Name:<span class="requiredStar">*</span></label>
+				<form:input path="lastName" cssClass="span6"  id="lastname"/>
 			</div>
 			
 			<div class="span6">
-				<label class="span6">Email:</label>
-				<form:input path="email" cssClass="span6" />
+				<label class="span6">Email:<span class="requiredStar">*</span></label>
+				<form:input path="email" cssClass="span6"  id="email" />
 			</div>
 			
 		</div>
 		<div class="row-fluid">
 			<div class="span6">
-				<label class="span6">Telephone No:</label>
-				<form:input path="mobile" cssClass="span6" />
+				<label class="span6">Telephone No:<span class="requiredStar">*</span></label>
+				<form:input path="mobile" cssClass="span6" id="userTelNo" />
 
 			</div>
 			<div class="span6">
@@ -81,7 +81,10 @@
 		</div>
 
 		<div class="row-fluid">
+			
 			<div class="span6">
+				<label class="span6">Company Director</label>
+				<div class="span6">
 				<label class="span3"> 
 					<form:radiobutton path="companyDirector" value="Yes" id="yesOption" />Yes
 				</label> 
@@ -90,6 +93,8 @@
 				</label>
 
 			</div>
+			</div>
+			
 		</div>
 		<div class="row-fluid">
 			<div class="span6">			
@@ -104,16 +109,18 @@
 				<c:when test="${userModel.id !=null && userModel.id !=0}">
 					<input type="button" value="Update"		 			 class="btn btn-primary"  data-url="${createUserURL}" id="userUpdate" />
 					<input type="button" value="Delete"		 class="btn btn-danger"   onclick="deleteCompany()" />
+					<input type="button" value="Go Back" 			 class="btn btn-primary"  data-url="${createURL}&companyID=${userModel.company.id}"	id="cmpbackBtn"  />
 				</c:when>
 				<c:otherwise>
 					<input type="button" value="Add User" 			 class="btn btn-primary"  data-url="${createUserURL}" id="userAdd" />
+					<input type="button" value="Go Back" 			 class="btn btn-primary"  data-url="${createURL}&companyID=${companyID}"	id="cmpbackBtn"  />
 				</c:otherwise>
 			
 			</c:choose>
 				
 				
 				
-				<input type="button" value="Go Back" 			 class="btn btn-primary"  data-url="${createURL}&companyID=${companyID}"	id="cmpbackBtn"  />
+				
 				<%-- <button formaction="${defaultRender}" class="btn btn-primary"><i class="fa fa-reply fa-1"></i>  Go Back</button>  --%>
 			</div>
 		</div>

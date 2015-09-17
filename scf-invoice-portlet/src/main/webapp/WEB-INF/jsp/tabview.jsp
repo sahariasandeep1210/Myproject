@@ -22,8 +22,8 @@
 			<!--  <a class="brand" href="#">Title</a>  -->
 			 <div class="nav-collapse collapse navbar-responsive-collapse unique"> 
 				<ul class="nav">
-					<li id="invoiceList"><a href="${invoicesURL}" style="box-shadow: none !important;">Invoices</a></li>
-					<li id="invoicedocList"><a href="${invoiceDocumentsURL}" style="box-shadow: none !important;">Invoice Documents</a></li>
+					<li id="invoiceList"><a href="${invoicesURL}" style="font-weight: bolder!important; text-shadow: none!important;color: #003d59!important;">Invoices</a></li>
+					<li id="invoicedocList"><a href="${invoiceDocumentsURL}" style="font-weight: bolder!important; text-shadow: none!important;color: #003d59!important;">Invoice Documents</a></li>
 				</ul>
 			 </div> 
 		</div>

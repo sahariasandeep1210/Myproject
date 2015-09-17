@@ -18,8 +18,8 @@ public class CompanyServiceImpl implements CompanyService {
 	private CompanyDAO companyDAO;
 
 	@Transactional
-	public List<Company> getCompanies(Integer status) {
-		return companyDAO.getCompanies(status);
+	public List<Company> getCompaniesByStatus(String status) {
+		return companyDAO.getCompaniesByStatus(status);
 	}
 
 	public void addCompany(Company company) {

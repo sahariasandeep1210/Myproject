@@ -20,16 +20,16 @@
 		<div class="row-fluid">
 			<div class="span6">
 				<h4>Manage Companies</h4>
-				<h6 style="float: right !important;"><a href="${createURL}" style="color: #295780;font-weight: bold;"><i class="fa fa fa-plus"></i> Add Company</a></h6>
+				<%-- <h6 style="float: right !important;"><a href="${createURL}" style="color: #295780;font-weight: bold;"><i class="fa fa fa-plus"></i> Add Company</a></h6> --%>
 			</div>
 			<div class="span6">  
 			  <div class="span12">
-			  	<h5 style="float: right !important;" ><a href="${createURL}" style="color: #295780;font-weight: bold;"> Export</a></h5>
+			  	<h5 style="float: right !important;" ><a href="javascript:;" style="color: #295780;font-weight: bold;" id="exportCompanies"><i class="fa fa-file-excel-o fa-2"></i> Export</a></h5>
 			  </div>
 			  </div>			
 		</div>
 		<div class="table-responsive">
-			<table class="table table-hover tablesorter table-bordered">
+			<table class="table table-hover tablesorter table-bordered"  id="companyListTable">
 				<thead>
 					<tr>
 						<th>Name</th>
@@ -47,7 +47,7 @@
 							<td>${company.name} </td>
 							<td>${company.regNumber}</td>
 							<td>${company.addRegistered}</td>
-							<td>${company.dateestablished}</td>
+							<td><fmt:formatDate pattern="dd-MM-yyyy" value="${company.dateestablished}" /></td>
 							<td>${company.website}</td>
 							<td>${company.telnumber}</td>
 							<td>${company.activestatus}</td>							
@@ -62,6 +62,15 @@
 					</c:forEach>
 				</tbody>
 			</table>
+		</div>
+		<div class="row-fluid" id="yui_patched_v3_11_0_1_1442485862967_504">
+			<div class="span6" id="yui_patched_v3_11_0_1_1442485862967_503">
+				<a
+					href="${createURL}"
+					class="btn btn-primary" style="color: #fff; font-weight: bold;"><i
+					class="fa fa fa-plus" ></i>
+					Add Company</a>
+			</div>
 		</div>
 
 	</form:form>

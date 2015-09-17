@@ -52,8 +52,8 @@ public class CompanyController extends BaseController {
 	@RenderMapping
 	protected ModelAndView renderCompanyList(@ModelAttribute("companyModel") Company company,ModelMap model,RenderRequest request, RenderResponse response) throws Exception {		
 		_log.info("Render Company List");
-		System.out.println("Size:::"+companyService.getCompanies(CompanyStatus.DELETED.getValue()));
-		model.put("allCompanies", companyService.getCompanies(CompanyStatus.DELETED.getValue()));
+		System.out.println("Size:::"+companyService.getCompaniesByStatus(CompanyStatus.DELETED.getValue()));
+		model.put("allCompanies", companyService.getCompaniesByStatus(CompanyStatus.DELETED.getValue()));
 		return new ModelAndView("companylist", model);		
 	}
 	
@@ -150,6 +150,10 @@ public class CompanyController extends BaseController {
 												 ActionRequest request,
 												 ActionResponse response) throws Exception {
 		System.out.println("companyModel:::"+company);	
+		if(company !=null && company.getId() !=null){
+			company.setUsers(companyService.findById(company.getId()).getUsers());
+		}
+		//company=companyService.findById(company.getId());
 		company.setActivestatus(CompanyStatus.NEW.getValue());
 		companyService.addCompany(company);
 	}
@@ -191,15 +195,21 @@ public class CompanyController extends BaseController {
 												 ActionRequest request,
 												 ActionResponse response) throws Exception {
 		System.out.println("userModel:::"+user);	
-		com.liferay.portal.model.User lruser = addLiferayUser(user, request);
-		System.out.println("lruser:::"+lruser);
+		Long companyID = ParamUtil.getLong(request, "companyID");
+		user.setCompany(companyService.findById(companyID));
+		if(user.getId() ==null){			
+			com.liferay.portal.model.User lruser = addLiferayUser(user, request);
+			System.out.println("lruser:::"+lruser);
+			user.setLiferayUserId(lruser.getUserId());
+		}
 		System.out.println("User>>>>>>>>>>>>>>>>>>>>:::"+user);
 		//Liferay user has been added now we need to add user information to tf_user table
 		//and map the same to Liferay userId and Company/Seller
 		user.setActive(0);
-		user.setLiferayUserId(lruser.getUserId());
 		userService.addorUpdateUser(user);
 		System.out.println("After User Added");
+		response.setRenderParameter("companyID", companyID.toString());
+		response.setRenderParameter("render", "createCompany");
 		
 		
 	}

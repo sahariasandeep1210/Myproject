@@ -6,7 +6,7 @@ import com.tf.model.Company;
 
 public interface CompanyDAO extends BaseDAO<Company, Long>{
 	
-	public List<Company> getCompanies(Integer status);
+	public List<Company> getCompaniesByStatus(String status);
 	
 	public void addCompany(Company company);
 	

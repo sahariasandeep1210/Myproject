@@ -12,6 +12,8 @@ $(document).ready(function() {
 			$("#createTrade").show();
 		} else {
 			$("#createTrade").hide();
+			$("#errormsg").text("");
+			$("#errormsg").hide();		
 		}
 
 	});
@@ -48,10 +50,10 @@ $(document).ready(function() {
 			 
 		 }else{
 			 if(uniquescmp.length>1){
-				 $("#errormsg").text("All the invoice in a trade must be from same SCF company");
+				 $("#errormsg").text("All the invoices in a trade must be from same Invoice company");
 				 $("#errormsg").show();				 
 			 } if(uniquesDates.length>1){
-				 $("#errormsg").text("All the invoice in a trade must be having same closing date");
+				 $("#errormsg").text("All the invoices in a trade must be having same closing date");
 				 $("#errormsg").show();
 			 }
 		 }

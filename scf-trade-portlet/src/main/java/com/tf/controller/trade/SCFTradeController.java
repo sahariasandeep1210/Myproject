@@ -1,6 +1,7 @@
 package com.tf.controller.trade;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -20,9 +21,13 @@ import org.springframework.web.portlet.bind.annotation.ActionMapping;
 import org.springframework.web.portlet.bind.annotation.RenderMapping;
 
 import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.security.permission.PermissionChecker;
+import com.liferay.portal.theme.ThemeDisplay;
 import com.tf.controller.SCFTradeDTO;
 import com.tf.model.Company;
 import com.tf.model.SCFTrade;
+import com.tf.persistance.util.TradeStatus;
 import com.tf.service.CompanyService;
 import com.tf.service.InvoiceService;
 import com.tf.service.SCFTradeService;
@@ -51,7 +56,14 @@ public class SCFTradeController {
 	@RenderMapping
 	protected ModelAndView renderInvoiceList(ModelMap model,
 			RenderRequest request, RenderResponse response) throws Exception {
-		List<SCFTrade> scftrades=scfTradeService.getScfTrades();
+		List<SCFTrade> scftrades=null;
+		ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);
+		PermissionChecker permissionChecker = themeDisplay.getPermissionChecker();
+		if(permissionChecker.isOmniadmin() ){
+			scftrades=scfTradeService.getScfTrades();
+		}else{
+			scftrades=new ArrayList<SCFTrade>();
+		}		 
 		model.put("trades", scftrades);
 		return new ModelAndView("tradelist", model);
 	}
@@ -81,6 +93,7 @@ public class SCFTradeController {
 		Company company=companyService.findById(companyID);
 		scfTradeDTO.setCompany(company);
 		SCFTrade scfTrade=transformTOScfTrade(scfTradeDTO);
+		scfTrade.setStatus(TradeStatus.NEW.getValue());
 		scfTrade=scfTradeService.save(scfTrade);
 		System.out.println("scf Trade-----"+scfTradeDTO);		
 	}

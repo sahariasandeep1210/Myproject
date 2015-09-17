@@ -20,24 +20,24 @@
 <portlet:renderURL var="defaultRender">
 </portlet:renderURL>
 
-
+<div class="alert alert-danger" id="errorMsg"><i class="icon-remove-sign icon-2"></i> </div>
 <div class="container-fluid">
 	<form:form commandName="companyModel" method="post"
-		action="${createCompanyURL}" id="createCompany" autocomplete="off"
+		action="${createCompanyURL}" id="createCompany" 
 		name="companyDetail">
 		<input type="hidden" value="${deleteCompanyURL}" id="deleteURL">	
 			<div class="row-fluid">
-				<div class="span12" style="border-bottom: 1px solid #003d59;">
+				<div class="span12" style="border-bottom: 1px solid #003d59;margin-bottom: 35px">
 					<div class="span4"><h4>Add Company Information</h4></div>					
 				</div>
 			</div>
 	
-		<div style="background-color: #f4f4f4;padding: :10px">
+		<!-- <div style="background-color: #f4f4f4;padding: :10px"> -->
 
 		<div class="row-fluid">
 			<div class="span6">
 				<label class="span6">Name:<span class="requiredStar">*</span></label> <input type="hidden" name="id" value="${companyModel.id}" />
-				<form:input path="name" name="" cssClass="span6" />
+				<form:input path="name" name="" cssClass="span6" id="companyName" />
 
 			</div>
 			<div class="span6">
@@ -48,7 +48,7 @@
 		<div class="row-fluid">
 			<div class="span6">
 				<label class="span6">Registration Number:<span class="requiredStar">*</span></label>
-				<form:input path="regNumber" cssClass="span6" />
+				<form:input path="regNumber" cssClass="span6" id="registrationNo"  />
 
 			</div>
 			<div class="span6">
@@ -62,7 +62,7 @@
 		<div class="row-fluid">
 			<div class="span6">
 				<label class="span6">Address Registered:<span class="requiredStar">*</span></label>
-				<form:input path="addRegistered" cssClass="span6" />
+				<form:input path="addRegistered" cssClass="span6" id="cmpAddress"/>
 			</div>
 
 			<div class="span6">
@@ -74,7 +74,7 @@
 		<div class="row-fluid">
 			<div class="span6">
 				<label class="span6">Telephone No:<span class="requiredStar">*</span></label>
-				<form:input path="telnumber" cssClass="span6" />
+				<form:input path="telnumber" cssClass="span6" id="telNo" />
 
 			</div>
 			<div class="span6">
@@ -158,7 +158,7 @@
 			</div>
 		</div>
 
-</div>
+<!-- </div> -->
 	</form:form>
 	<c:if test="${companyModel.id !=null && companyModel.id !=0}">
 		<div class="row-fluid">
@@ -191,7 +191,7 @@
 				<tbody>
 					<c:forEach items="${users}" var="user">
 						<tr
-							onclick="window.location.href='${createUserURL}&userID=${user.id}'">
+							onclick="window.location.href='${createUserURL}&userID=${user.id}&companyID=${companyModel.id}'">
 							<td>${user.firstName}</td>
 							<td>${user.lastName}</td>
 							<td>${user.username}</td>
@@ -210,7 +210,7 @@
 	<div class="message">
 		Are you sure you want to delete this Company? 
 		<br />
-		Please remember all the user who are associated with company will also be deleted.
+		Please remember all the information associated(Users,Trades,Invoices etc.) with company will also be deleted.
 		<hr>Press 'Continue' to delete or 'Cancel' to go back
 	</div>
 </div>

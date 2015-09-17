@@ -1,8 +1,24 @@
+var errormessage="Some required information is missing or incomplete. Please correct your entries and try again.";
+
 $(function() {
+	
 	
 	$("#errorMsg").hide();
 	$("#telNo").inputmask("999-999-9999");
 	$("#userTelNo").inputmask("999-999-9999");
+	
+	$("#exportCompanies").click(function(){
+		/* window.open('data:application/vnd.ms-excel,' + $('#dvData').html());
+		 e.preventDefault();*/	
+		
+		$('#companyListTable').tableExport({
+			type : 'excel',
+			escape : 'false',
+			fileName: 'companieslist',
+			worksheetName: 'Company List'
+		});
+		
+	});
 	
 	
 	
@@ -74,11 +90,12 @@ $(function() {
 
 $(document).ready(function(){
 	
-	$("#cmpUpdate,#cmpAdd,#cmpback,#homePage").click(function(){
+	$("#cmpback,#homePage").click(function(){
 		var url = $(this).attr('data-url');
 		submitTradeForms(url);
 	});
 	
+	//registration first step
 	$("#continue").click(function(){
 		var error_free = true;
 		error_free = validateCompanyInfo(error_free);
@@ -89,6 +106,20 @@ $(document).ready(function(){
 		
 	});
 	
+	
+	//Company Add
+	$("#cmpAdd,#cmpUpdate").click(function(){
+		var error_free = true;
+		error_free = validateCompanyInfo(error_free);
+		if (error_free) {
+			var url = $(this).attr('data-url');
+			submitTradeForms(url);
+		}
+		
+	});
+	
+	
+	//registration final Step
 	$("#registerSeller").click(function(){
 		var error_free = true;
 		error_free = validateUserInfo(error_free);
@@ -102,6 +133,20 @@ $(document).ready(function(){
 	});
 	
 	$("#userAdd,#userUpdate").click(function(){
+		var error_free = true;
+		console.log("error_free:::"+error_free)
+		error_free = validateUserInfo(error_free);
+		console.log("error_free:::"+error_free)
+		
+	
+		if (error_free) {	
+			var url = $(this).attr('data-url');
+			console.log("url:::"+url)
+			submitUserForms(url);
+		}
+	});
+	
+	$("#cmpbackBtn").click(function(){
 		var url = $(this).attr('data-url');
 		submitUserForms(url);
 	});
@@ -129,7 +174,6 @@ function submitTradeForms(url) {
 }
 
 function submitUserForms(url) {
-	console.log("hello2");
 	document.forms["userDetail"].action = url;
 	document.forms["userDetail"].submit();
 }
@@ -160,6 +204,7 @@ function validateCompanyInfo(error_free) {
 	elements[3] = "cmpAddress";
 	elements[4] = "telNo";
 	$("#errorMsg").hide();
+	$("#errorMsg").html();
 	for (i = 0; i < elements.length; i++) {
 		var element = $("#" + elements[i]);
 		var eleValue = element.val();
@@ -167,6 +212,7 @@ function validateCompanyInfo(error_free) {
 			element.addClass("error_show");
 			error_free = false;
 			$("#errorMsg").show();
+			$("#errorMsg").html(errormessage);
 		} else {
 			element.removeClass("error_show");
 		}
@@ -184,6 +230,7 @@ function validateUserInfo(error_free){
 	elements[5] = "userTelNo";
 	
 	$("#errorMsg").hide();
+	$("#errorMsg").html();
 	
 	for (i = 0; i < elements.length; i++) {
 		var element = $("#" + elements[i]);
@@ -192,6 +239,7 @@ function validateUserInfo(error_free){
 			element.addClass("error_show");
 			error_free = false;
 			$("#errorMsg").show();
+			$("#errorMsg").html(errormessage);
 		} else {
 			element.removeClass("error_show");
 		}

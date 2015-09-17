@@ -28,7 +28,7 @@ public class DashboardController {
 	protected ModelAndView renderCompanyList(ModelMap model,RenderRequest request, RenderResponse response) throws Exception {		
 		_log.info("Render Dashboard");
 		setPortletURls(model,request);
-		return new ModelAndView("dashboard", model);		
+		return new ModelAndView("newdashboard", model);		
 	}
 
 	private void setPortletURls(ModelMap map, RenderRequest request) {

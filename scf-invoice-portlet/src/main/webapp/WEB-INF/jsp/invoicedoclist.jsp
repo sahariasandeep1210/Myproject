@@ -9,6 +9,13 @@
 
 <%@include file="tabview.jsp"%>
 
+<div class="row-fluid">
+				<div class="span12" >
+					<div class="span4"><h4>Manage Invoice Documents</h4></div>		
+								
+				</div>
+</div>
+
 <div class="container-fluid" style=" padding: 0px;">
 	<div class="table-responsive">
 		<table class="table table-hover tablesorter table-bordered">
@@ -25,7 +32,7 @@
 					<tr>
 						<td> <a href="${url}" class="file-download">${invoice.documentName}</a></td>
 						<td>${invoice.uploadedby}</td>
-						<td>${invoice.uploadDate}</td>
+						<td><fmt:formatDate pattern="dd-MM-yyyy" value="${invoice.uploadDate}" /></td>
 
 					</tr>
 				</c:forEach>
@@ -35,7 +42,7 @@
 	
 	<div class="row-fluid">
 		<!-- <a href="#myModal" role="button" class="btn btn-primary" data-toggle="modal">Upload Invoice</a> -->
-		<input type="button" value="Upload Invoice"	class="btn btn-primary" id="updateInvoice" />${documentUpload}
+		<input type="button" value="Upload Invoice"	class="btn btn-primary" id="updateInvoice" />
 	</div>
 	
 	

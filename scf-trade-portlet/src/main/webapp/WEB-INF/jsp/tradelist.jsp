@@ -44,27 +44,37 @@
 					</tr>
 				</thead>
 				<tbody>
-					<c:forEach items="${trades}" var="trade">
-						<tr onclick="window.location.href='${createURL}&tradeID=${trade.id}'">
-							<td>${trade.scfTrade} </td>
-							<td>${trade.openingDate}</td>
-							<td>${trade.closingDate}</td>
-							<td>${trade.tradeAmount}</td>
-							<td>${trade.tradeSettled}</td>
-							<td>${trade.status}</td>
-						</tr>
-					</c:forEach>
+					<c:choose>
+						<c:when test="${fn:length(trades) gt 0}">
+							<c:forEach items="${trades}" var="trade">
+								<tr
+									onclick="window.location.href='${createURL}&tradeID=${trade.id}'">
+									<td>${trade.scfTrade}</td>
+									<td><fmt:formatDate pattern="dd-MM-yyyy" value="${trade.openingDate}" /></td>
+									<td><fmt:formatDate pattern="dd-MM-yyyy" value="${trade.closingDate}" /></td>
+									<td>${trade.tradeAmount}</td>
+									<td>${trade.tradeSettled}</td>
+									<td>${trade.status}</td>
+								</tr>
+							</c:forEach>
+						</c:when>
+						<c:otherwise>
+							<tr>
+								<td colspan="6" align="center">No records found!</td>
+							</tr>
+						</c:otherwise>
+					</c:choose>
 				</tbody>
 			</table>
 		</div>
 
 	</form:form>
-	<div class="row-fluid">
+	<%-- <div class="row-fluid">
 		<div class="span6">			
 				<a href="${createURL}"  class="btn btn-primary" style="color: #fff; font-weight: bold;"><i
 					class="fa fa fa-plus"></i> Add Trade</a>		
 		</div>
 
-	</div>
+	</div> --%>
 
 </div>

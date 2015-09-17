@@ -88,6 +88,8 @@ public class InvoiceController {
 			@ModelAttribute("invoiceModel") InvoiceDTO invoice, ModelMap model,
 			RenderRequest request, RenderResponse response) throws Exception {
 		System.out.println("In Default render");		
+		request.getPortletSession().removeAttribute("invoiceDTO");
+		request.getPortletSession().removeAttribute("invoiceList");	
 		List<Invoice> invoices = invoiceService.getInvoices();
 		model.put("invoicesList", invoices);
 		model.put("defaultRender", Boolean.TRUE);
@@ -148,6 +150,8 @@ public class InvoiceController {
 							invoiceModel.setPayment_date(cell.getDateCellValue());
 						} else if (index == 9) {
 							invoiceModel.setCurrency(cell.getStringCellValue());
+						}else if (index == 10) {
+							invoiceModel.setDueDate(cell.getDateCellValue());
 						}
 						index++;
 					}

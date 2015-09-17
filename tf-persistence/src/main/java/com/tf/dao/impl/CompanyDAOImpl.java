@@ -23,7 +23,7 @@ public class CompanyDAOImpl  extends BaseDAOImpl<Company, Long>   implements Com
 	
 	@SuppressWarnings("unchecked")
 
-	public List<Company> getCompanies(Integer status) {
+	public List<Company> getCompaniesByStatus(String status) {
 		_log.debug("Inside getCompanies ");
 		try {
 			
