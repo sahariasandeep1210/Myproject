@@ -82,3 +82,11 @@ hr {
 	font-weight: bold;
 	margin-right: 2px;
 }
+
+.error_show {
+	border: red 1px solid !important;
+}
+
+.error_label {
+	color: red;
+}

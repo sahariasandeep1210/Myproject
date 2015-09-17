@@ -25,7 +25,7 @@
 	req.setAttribute("registration", registration);
 %>
 <c:if test="${registration eq 'success'}">
-		<div class="alert alert-success">Congratulations! You have successfully registered.Please check your email for login instruction.</div>
+		<div class="alert alert-success"><i class="icon-ok icon-2"></i> Congratulations! You have successfully registered.Please check your email for login instruction.</div>
 	</c:if>
 <c:choose>
 	<c:when test="<%= themeDisplay.isSignedIn() %>">

@@ -15,7 +15,7 @@ CREATE TABLE `tf_company` (
  `accounts` VARCHAR(45), 
  `jurisdiction` VARCHAR(45) ,
  `bustype` VARCHAR(100) ,
-  `active_status` TINYINT(1) DEFAULT '1',
+  `active_status` VARCHAR(50) ,
   `company_reference` VARCHAR(50),
   PRIMARY KEY (`idcompany`),
   UNIQUE KEY `name_UNIQUE` (`name`),

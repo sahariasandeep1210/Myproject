@@ -1,19 +1,60 @@
 .btn-file {
-    position: relative;
-    overflow: hidden;
+	position: relative;
+	overflow: hidden;
 }
+
 .btn-file input[type=file] {
-    position: absolute;
-    top: 0;
-    right: 0;
-    min-width: 100%;
-    min-height: 100%;
-    font-size: 100px;
-    text-align: right;
-    filter: alpha(opacity=0);
-    opacity: 0;
-    outline: none;
-    background: white;
-    cursor: inherit;
-    display: block;
+	position: absolute;
+	top: 0;
+	right: 0;
+	min-width: 100%;
+	min-height: 100%;
+	font-size: 100px;
+	text-align: right;
+	filter: alpha(opacity = 0);
+	opacity: 0;
+	outline: none;
+	background: white;
+	cursor: inherit;
+	display: block;
+}
+
+.aui .navitem {
+	
+	background-color: #DEE7EE;
+	background-image: -moz-linear-gradient(top, #DEE7EE, #DEE7EE);
+	background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#DEE7EE),
+		to(#DEE7EE));
+	background-image: -webkit-linear-gradient(top, #DEE7EE, #DEE7EE);
+	background-image: -o-linear-gradient(top, #DEE7EE, #DEE7EE);
+	background-image: linear-gradient(to bottom, #DEE7EE, #DEE7EE);
+	background-repeat: repeat-x;
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FFF9F9F9',
+		endColorstr='#FFF3F3F3', GradientType=0);
+	border: 1px solid #ddd;
+	-webkit-border-radius: 2px;
+	-moz-border-radius: 2px;
+	border-radius: 2px;
+	-webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.065);
+	-moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.065);
+	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.065);
+}
+
+#invoicenavbar {
+	background-color: #DEE7EE !important;
+	background-image: -moz-linear-gradient(top, #DEE7EE, #DEE7EE) !important;
+	background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#DEE7EE),
+		to(#DEE7EE)) !important;
+	background-image: -webkit-linear-gradient(top, #DEE7EE, #DEE7EE)
+		!important;
+	background-image: -o-linear-gradient(top, #DEE7EE, #DEE7EE) !important;
+	background-image: linear-gradient(to bottom, #DEE7EE, #DEE7EE)
+		!important;
+	margin-bottom: 60px !important;
+}
+
+.active {
+	font-weight: bolder !important;
+	text-shadow: none !important;
+	color: #003d59 !important;
 }

@@ -66,7 +66,7 @@ public class Company {
 	private String bustype;
 	
 	@Column(name="active_status")
-	private Integer activestatus;
+	private String activestatus;
 	
 	@Column(name="company_reference")
 	private String companyreference;
@@ -212,11 +212,11 @@ public class Company {
 		this.bustype = bustype;
 	}
 
-	public Integer getActivestatus() {
+	public String getActivestatus() {
 		return activestatus;
 	}
 
-	public void setActivestatus(Integer activestatus) {
+	public void setActivestatus(String activestatus) {
 		this.activestatus = activestatus;
 	}
 

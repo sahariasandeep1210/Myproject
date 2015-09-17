@@ -4,5 +4,6 @@
 <%@ taglib 		prefix="c"				uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib  	prefix="fmt"			uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib  	prefix="fn"				uri="http://java.sun.com/jsp/jstl/functions" %>
-<%@taglib 		prefix="liferay-theme"	uri="http://liferay.com/tld/theme"  %>
+<%@ taglib 		prefix="liferay-theme"	uri="http://liferay.com/tld/theme"  %>
+<%@ taglib 		prefix="liferay-ui"		uri="http://liferay.com/tld/ui"  %>
 <portlet:defineObjects/>

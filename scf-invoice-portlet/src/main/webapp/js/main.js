@@ -1,6 +1,6 @@
 $(document).ready(function() {
 
-	
+	enableTab();
 	$("#createTrade").hide();
 	$("#updateInvoice").click(function() {
 		$('#myModal').modal('show');
@@ -76,4 +76,17 @@ Array.prototype.unique = function() {
         }
     }
     return arr; 
+}
+
+function enableTab(){
+	var curentTab=$("#currentTab").val();
+	if(curentTab=='invoiceslist'){
+		$("#invoiceList").addClass("active");
+	}else if(curentTab=='invoiceDocuments'){
+		$("#invoicedocList").addClass("active");
+	}else{
+		$("#invoiceList").addClass("active");
+	}
+	
+	
 }

@@ -2,20 +2,20 @@ package com.tf.persistance.util;
 
 public enum CompanyStatus {
 	
-	NEW(0),
-	PENDINGCREDITCHECK(1),
-	CREDITCHECKSUCCESS(2),
-	ACTIVESTATUS(3),
-	DELETED(4),
-	DISABLED(5);
+	NEW("New"),
+	PENDINGCREDITCHECK("Pending Credit Check"),
+	CREDITCHECKSUCCESS("Credit Check Success"),
+	ACTIVESTATUS("Active"),
+	DELETED("Deleted"),
+	DISABLED("Disabled");
 		
-	private final int value;
+	private final String value;
 	
-	CompanyStatus(int value){
+	CompanyStatus(String value){
 		this.value = value;
 	}
 
-	public int getValue() {
+	public String getValue() {
 		return value;
 	}
 

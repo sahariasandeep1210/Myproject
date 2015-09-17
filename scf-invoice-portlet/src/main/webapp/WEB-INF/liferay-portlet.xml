@@ -7,7 +7,7 @@
 		<icon>/icon.png</icon>
 		<requires-namespaced-parameters>false</requires-namespaced-parameters>	
 		<header-portlet-css>/css/main.css</header-portlet-css>  
-		<footer-portlet-javascript>/js/bootstrap.min.js</footer-portlet-javascript>
+		<!-- <footer-portlet-javascript>/js/bootstrap.min.js</footer-portlet-javascript> -->
 		<footer-portlet-javascript>/js/main.js</footer-portlet-javascript>
 	</portlet>
 	<role-mapper>

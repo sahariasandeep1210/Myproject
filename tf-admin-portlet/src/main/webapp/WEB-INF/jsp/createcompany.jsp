@@ -36,7 +36,7 @@
 
 		<div class="row-fluid">
 			<div class="span6">
-				<label class="span6">Name:</label> <input type="hidden" name="id" value="${companyModel.id}" />
+				<label class="span6">Name:<span class="requiredStar">*</span></label> <input type="hidden" name="id" value="${companyModel.id}" />
 				<form:input path="name" name="" cssClass="span6" />
 
 			</div>
@@ -47,12 +47,12 @@
 		</div>
 		<div class="row-fluid">
 			<div class="span6">
-				<label class="span6">Registration Number:</label>
+				<label class="span6">Registration Number:<span class="requiredStar">*</span></label>
 				<form:input path="regNumber" cssClass="span6" />
 
 			</div>
 			<div class="span6">
-				<label class="span6">Date Established:</label>
+				<label class="span6">Date Established:<span class="requiredStar">*</span></label>
 				<form:input path="dateestablished" cssClass="span5"
 					id="dateestablished" />
 
@@ -61,7 +61,7 @@
 		</div>
 		<div class="row-fluid">
 			<div class="span6">
-				<label class="span6">Address Registered:</label>
+				<label class="span6">Address Registered:<span class="requiredStar">*</span></label>
 				<form:input path="addRegistered" cssClass="span6" />
 			</div>
 
@@ -73,7 +73,7 @@
 		</div>
 		<div class="row-fluid">
 			<div class="span6">
-				<label class="span6">Telephone No:</label>
+				<label class="span6">Telephone No:<span class="requiredStar">*</span></label>
 				<form:input path="telnumber" cssClass="span6" />
 
 			</div>

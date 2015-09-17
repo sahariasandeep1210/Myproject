@@ -135,6 +135,7 @@ public class CompanyController extends BaseController {
 		Set<User> users=new LinkedHashSet<User>();
 		users.add(user);
 		company.setUsers(users);
+		company.setActivestatus(CompanyStatus.NEW.getValue());
 		company=companyService.registerCompany(company);
 		System.out.println("After User Added");
 		StringBuilder loginURL=new StringBuilder("/web/guest/home");

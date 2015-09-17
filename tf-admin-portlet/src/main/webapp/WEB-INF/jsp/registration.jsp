@@ -13,7 +13,7 @@
 	<portlet:param name="action" value="homePage" />
 </portlet:actionURL>
 
-
+<div class="alert alert-danger" id="errorMsg"><i class="icon-remove-sign icon-2"></i> Some required information is missing or incomplete. Please correct your entries and try again.</div>
 
 
 <div class="container-fluid">
@@ -39,9 +39,9 @@
 
 		<div class="row-fluid">
 			<div class="span6">
-				<label class="span6">Name:</label> <input type="hidden" name="id"
+				<label class="span6">Name:<span class="requiredStar">*</span></label> <input type="hidden" name="id"
 					value="${registration.company.id}" />
-				<form:input path="company.name" name="" cssClass="span6" />
+				<form:input path="company.name" name="" cssClass="span6"  id="companyName"/>
 
 			</div>
 			<div class="span6">
@@ -51,12 +51,12 @@
 		</div>
 		<div class="row-fluid">
 			<div class="span6">
-				<label class="span6">Registration Number:</label>
-				<form:input path="company.regNumber" cssClass="span6" />
+				<label class="span6">Registration Number:<span class="requiredStar">*</span></label>
+				<form:input path="company.regNumber" cssClass="span6" id="registrationNo" />
 
 			</div>
 			<div class="span6">
-				<label class="span6">Date Established:</label>
+				<label class="span6">Date Established:<span class="requiredStar">*</span></label>
 				<form:input path="company.dateestablished" cssClass="span5"
 					id="dateestablished" />
 
@@ -65,8 +65,8 @@
 		</div>
 		<div class="row-fluid">
 			<div class="span6">
-				<label class="span6">Address Registered:</label>
-				<form:input path="company.addRegistered" cssClass="span6" />
+				<label class="span6">Address Registered:<span class="requiredStar">*</span></label>
+				<form:input path="company.addRegistered" cssClass="span6" id="cmpAddress" />
 			</div>
 
 			<div class="span6">
@@ -77,8 +77,8 @@
 		</div>
 		<div class="row-fluid">
 			<div class="span6">
-				<label class="span6">Telephone No:</label>
-				<form:input path="company.telnumber" cssClass="span6" />
+				<label class="span6">Telephone No:<span class="requiredStar">*</span></label>
+				<form:input path="company.telnumber" cssClass="span6"  id="telNo"/>
 
 			</div>
 			<div class="span6">
@@ -146,44 +146,44 @@
 			</div>
 			<div class="row-fluid">
 				<div class="span6">
-					<label class="span6">Title:</label>
-					<form:input path="user.title" cssClass="span6" />
+					<label class="span6">Title:<span class="requiredStar">*</span></label>
+					<form:input path="user.title" cssClass="span6"  id="title"/>
 
 				</div>
 				<div class="span6">
-					<label class="span6">Username:</label>
-					<form:input path="user.username" cssClass="span6" />
+					<label class="span6">Username:<span class="requiredStar">*</span></label>
+					<form:input path="user.username" cssClass="span6"  id="username"/>
 				</div>
 			</div>
 			<div class="row-fluid">
 				<div class="span6">
-					<label class="span6">First Name:</label>
-					<form:input path="user.firstName" cssClass="span6" />
+					<label class="span6">First Name:<span class="requiredStar">*</span></label>
+					<form:input path="user.firstName" cssClass="span6"  id="firstname"/>
 
 				</div>
 				<div class="span6">
 					<label class="span6">Middle Name:</label>
-					<form:input path="user.middleName" cssClass="span6" />
+					<form:input path="user.middleName" cssClass="span6"  />
 
 				</div>
 
 			</div>
 			<div class="row-fluid">
 				<div class="span6">
-					<label class="span6">Last Name:</label>
-					<form:input path="user.lastName" cssClass="span6" />
+					<label class="span6">Last Name:<span class="requiredStar">*</span></label>
+					<form:input path="user.lastName" cssClass="span6" id="lastname"/>
 				</div>
 
 				<div class="span6">
-					<label class="span6">Email:</label>
-					<form:input path="user.email" cssClass="span6" />
+					<label class="span6">Email:<span class="requiredStar">*</span></label>
+					<form:input path="user.email" cssClass="span6" id="email"/>
 				</div>
 
 			</div>
 			<div class="row-fluid">
 				<div class="span6">
-					<label class="span6">Telephone No:</label>
-					<form:input path="user.mobile" cssClass="span6" />
+					<label class="span6">Telephone No:<span class="requiredStar">*</span></label>
+					<form:input path="user.mobile" cssClass="span6"  id="userTelNo"/>
 
 				</div>
 				<div class="span6">

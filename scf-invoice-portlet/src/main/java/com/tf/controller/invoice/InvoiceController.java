@@ -4,9 +4,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
@@ -27,8 +25,6 @@ import org.springframework.web.portlet.ModelAndView;
 import org.springframework.web.portlet.bind.annotation.ActionMapping;
 import org.springframework.web.portlet.bind.annotation.RenderMapping;
 
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.repository.model.Folder;
 import com.liferay.portal.kernel.util.MimeTypesUtil;
@@ -58,6 +54,11 @@ import com.tf.service.InvoiceService;
 @Controller
 @RequestMapping(value = "VIEW")
 public class InvoiceController {
+	
+	private  final static String ACTIVETAB="activetab";
+	
+	
+	
 
 	@Autowired
 	protected InvoiceService invoiceService;	
@@ -75,9 +76,9 @@ public class InvoiceController {
 		System.out.println("In render");		
 		List<InvoiceDocument> invoiceDocumentList = invoiceDocumentService.getInvoiceDocuments();
 		List<Company> companyList = companyService.getCompanies("5");
-		System.out.println("companyList::"+companyList.get(0).getId());
 		model.put("companyList", companyList);
 		model.put("invoiceList", invoiceDocumentList);
+		model.put(ACTIVETAB,"invoiceDocuments");
 		return new ModelAndView("invoicedoclist", model);
 	}
 
@@ -90,6 +91,7 @@ public class InvoiceController {
 		List<Invoice> invoices = invoiceService.getInvoices();
 		model.put("invoicesList", invoices);
 		model.put("defaultRender", Boolean.TRUE);
+		model.put(ACTIVETAB,"invoiceslist");
 		return new ModelAndView("invoicelist", model);
 	}
 
@@ -98,9 +100,7 @@ public class InvoiceController {
 			@ModelAttribute("invoiceModel") InvoiceDTO invoice, ModelMap model,
 			ActionRequest request, ActionResponse response) throws Exception {
 		request.getPortletSession().removeAttribute("invoiceDTO");
-		request.getPortletSession().removeAttribute("invoiceList");
-		System.out.println("invoice:::::::::::::::::::"+invoice);
-		
+		request.getPortletSession().removeAttribute("invoiceList");		
 		int currentRow=0;
 		Invoice invoiceModel = null;		
 		Workbook workbook = null;

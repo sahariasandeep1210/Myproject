@@ -1,5 +1,11 @@
 $(function() {
 	
+	$("#errorMsg").hide();
+	$("#telNo").inputmask("999-999-9999");
+	$("#userTelNo").inputmask("999-999-9999");
+	
+	
+	
 	$("#deleteCompany").dialog({
 		autoOpen : false,
 		resizable : false,
@@ -68,9 +74,31 @@ $(function() {
 
 $(document).ready(function(){
 	
-	$("#cmpUpdate,#cmpAdd,#cmpback,#continue,#registerSeller,#homePage").click(function(){
+	$("#cmpUpdate,#cmpAdd,#cmpback,#homePage").click(function(){
 		var url = $(this).attr('data-url');
 		submitTradeForms(url);
+	});
+	
+	$("#continue").click(function(){
+		var error_free = true;
+		error_free = validateCompanyInfo(error_free);
+		if (error_free) {
+			var url = $(this).attr('data-url');
+			submitTradeForms(url);
+		}
+		
+	});
+	
+	$("#registerSeller").click(function(){
+		var error_free = true;
+		error_free = validateUserInfo(error_free);
+		console.log("error_free:::"+error_free)
+		if (error_free) {
+			var url = $(this).attr('data-url');
+			console.log("url:::"+url)
+			submitTradeForms(url);
+		}
+		
 	});
 	
 	$("#userAdd,#userUpdate").click(function(){
@@ -82,6 +110,7 @@ $(document).ready(function(){
 		changeMonth : true,
 		changeYear : true,
 		showOn : "button",
+		maxDate : '0',
 		buttonImage : "/tf-theme/images/calendar.jpg",
 		buttonImageOnly : true,
 		buttonText : "Select date"
@@ -118,5 +147,55 @@ function enableDisableTab(){
 		$("#User").addClass("active");
 		$("#Company").removeClass("active");
 	}
+	
+}
+
+
+function validateCompanyInfo(error_free) {
+
+	var elements = [];
+	elements[0] = "companyName";
+	elements[1] = "registrationNo";
+	elements[2] = "dateestablished";
+	elements[3] = "cmpAddress";
+	elements[4] = "telNo";
+	$("#errorMsg").hide();
+	for (i = 0; i < elements.length; i++) {
+		var element = $("#" + elements[i]);
+		var eleValue = element.val();
+		if (eleValue == '' || eleValue == null || (element.is('select') && element[0].selectedIndex == 0)) {
+			element.addClass("error_show");
+			error_free = false;
+			$("#errorMsg").show();
+		} else {
+			element.removeClass("error_show");
+		}
+	}
+	return error_free;
+}
+
+function validateUserInfo(error_free){
+	var elements = [];
+	elements[0] = "title";
+	elements[1] = "username";
+	elements[2] = "firstname";
+	elements[3] = "lastname";
+	elements[4] = "email";
+	elements[5] = "userTelNo";
+	
+	$("#errorMsg").hide();
+	
+	for (i = 0; i < elements.length; i++) {
+		var element = $("#" + elements[i]);
+		var eleValue = element.val();
+		if (eleValue == '' || eleValue == null || (element.is('select') && element[0].selectedIndex == 0)) {
+			element.addClass("error_show");
+			error_free = false;
+			$("#errorMsg").show();
+		} else {
+			element.removeClass("error_show");
+		}
+	}
+	return error_free;
 	
 }

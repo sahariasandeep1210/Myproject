@@ -7,7 +7,9 @@
 	<portlet:param name="action" value="saveInvoices" />
 </portlet:actionURL>
 
-<div class="container-fluid">
+<%@include file="tabview.jsp"%>
+
+<div class="container-fluid" style=" padding: 0px;">
 	<div class="table-responsive">
 		<table class="table table-hover tablesorter table-bordered">
 			<thead>

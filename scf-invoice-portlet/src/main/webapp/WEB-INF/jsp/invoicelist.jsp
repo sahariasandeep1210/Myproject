@@ -11,9 +11,9 @@
 	<portlet:param name="action" value="importInvoice" />
 </portlet:actionURL>
 
-<portlet:renderURL var="invoiceDocumentsURL">
+<%-- <portlet:renderURL var="invoiceDocumentsURL">
 	<portlet:param name="render" value="invoiceDocuments" />
-</portlet:renderURL>
+</portlet:renderURL> --%>
 
 
 
@@ -25,7 +25,6 @@ ThemeDisplay themeDisplay=(ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPL
 for(Portlet portlet : portletList){
 	if(portlet.getPortletName().equalsIgnoreCase("scf-trade-portlet")){
 		portletId =  portlet.getPortletId();     
-		System.out.println("portletId:::::::::::::::::::::"+portletId);
 		break;
 	}                     
 }
@@ -36,8 +35,8 @@ long plid= PortalUtil.getPlidFromPortletId(themeDisplay.getScopeGroupId(),true, 
 <liferay-portlet:renderURL portletName="<%=portletId %>" var="createTradeURL" plid="<%=plid%>"  windowState="<%=WindowState.NORMAL.toString()%>">
 <liferay-portlet:param name="render" value="createTrade"/>
 </liferay-portlet:renderURL>
-
-<div class="container-fluid">
+<%@include file="tabview.jsp"%>
+<div class="container-fluid" style=" padding: 0px;">
 
 <div class="alert alert-error" id="errormsg" style="display: none;">
  
@@ -48,8 +47,8 @@ long plid= PortalUtil.getPlidFromPortletId(themeDisplay.getScopeGroupId(),true, 
 		  <%@include file="invoicelisttable.jsp"%>
 
 		<div class="row-fluid">
-			<input type="submit" value="Upload Invoice Document" class="btn btn-primary"
-				id="uploadInvoice" />
+		<!-- 	<input type="submit" value="Upload Invoice Document" class="btn btn-primary"
+				id="uploadInvoice" /> -->
 				<input type="button" value="Create Trade" class="btn btn-primary" id="createTrade"  data-url="${createTradeURL}" />
 		</div>
 
