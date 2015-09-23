@@ -29,7 +29,7 @@
 			<div class="span6">
 				<label class="span6">SCF Trade:</label>
 				<label class="checkbox span6"> <form:checkbox path="scfTrade"
-						value="1" /> 
+						value="Yes" /> 
 				</label>
 
 			</div>

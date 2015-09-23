@@ -13,12 +13,13 @@ public class SCFTradeDTO implements Serializable {
 	
 	
 	
+	
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 6405552856399167612L;
+	private static final long serialVersionUID = -3399347740700344933L;
 	private Long id;	
-	private Integer scfTrade;
+	private String scfTrade;
 	private Integer duration;
 	private Date closingDate;
 	private Date openingDate;
@@ -36,7 +37,7 @@ public class SCFTradeDTO implements Serializable {
 	private String invoiceIds;
 	
 	public SCFTradeDTO() {
-		// TODO Auto-generated constructor stub
+		this.scfTrade="No";
 	}
 
 	public Long getId() {
@@ -47,11 +48,11 @@ public class SCFTradeDTO implements Serializable {
 		this.id = id;
 	}
 
-	public Integer getScfTrade() {
+	public String getScfTrade() {
 		return scfTrade;
 	}
 
-	public void setScfTrade(Integer scfTrade) {
+	public void setScfTrade(String scfTrade) {
 		this.scfTrade = scfTrade;
 	}
 

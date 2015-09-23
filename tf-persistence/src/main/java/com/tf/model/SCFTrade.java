@@ -14,8 +14,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import org.springframework.web.multipart.MultipartFile;
-
 
 @Entity
 @Table(name="scf_trade")
@@ -27,7 +25,7 @@ public class SCFTrade {
 	private Long id;
 	
 	@Column(name="scf_trade")
-	private Integer scfTrade;
+	private String scfTrade;
 	
 	@Column(name="duration")
 	private Integer duration;
@@ -101,11 +99,11 @@ public class SCFTrade {
 		this.id = id;
 	}
 
-	public Integer getScfTrade() {
+	public String getScfTrade() {
 		return scfTrade;
 	}
 
-	public void setScfTrade(Integer scfTrade) {
+	public void setScfTrade(String scfTrade) {
 		this.scfTrade = scfTrade;
 	}
 

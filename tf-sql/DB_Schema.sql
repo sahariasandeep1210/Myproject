@@ -185,7 +185,7 @@ CREATE TABLE `scf_invoice_document` (
 DROP TABLE IF EXISTS `scf_trade`;
 CREATE TABLE `scf_trade` (
     `id` INT(11) NOT NULL AUTO_INCREMENT,
-   `scf_trade` TINYINT(1) DEFAULT '0',
+   `scf_trade` VARCHAR(10) ,
    `duration` INT(10), 
    `closing_date`  DATE,
    `opening_date`  DATE,
