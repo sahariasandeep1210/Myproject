@@ -69,18 +69,27 @@ public class SCFTradeController {
 	}
 	
 	@RenderMapping(params="render=createTrade")
-	protected ModelAndView renderCreateTrade(@ModelAttribute("scfTradeModel") SCFTradeDTO scfTrade,ModelMap model,RenderRequest request, RenderResponse response) throws Exception {	
-		long tradeID = ParamUtil.getLong(request, "tradeID"); 
-		Long companyId = ParamUtil.getLong(request, "companyId"); 
-		String invoiceIds= ParamUtil.getString(request, "invoices");
-		System.out.println("tradeIds::::"+invoiceIds);
-		Map<Company,BigDecimal> invoiceMap = invoiceService.getInvoicesAmount(invoiceIds);
-		Map.Entry<Company,BigDecimal> entry = invoiceMap.entrySet().iterator().next();
-		System.out.println("invoicesAmount::::"+entry.getValue());
-		scfTrade.setTradeAmount(entry.getValue());
-		scfTrade.setCompany(entry.getKey());
-		model.put("scfTradeModel", scfTrade);
-		model.put("invoiceIds", invoiceIds);
+	protected ModelAndView renderCreateTrade(@ModelAttribute("scfTradeModel") SCFTradeDTO scfTradeDTO,ModelMap model,RenderRequest request, RenderResponse response) throws Exception {	
+		Long tradeID = ParamUtil.getLong(request, "tradeID"); 
+		if(tradeID==null){
+			
+			
+			Long companyId = ParamUtil.getLong(request, "companyId"); 
+			String invoiceIds= ParamUtil.getString(request, "invoices");
+			System.out.println("tradeIds::::"+invoiceIds);
+			Map<Company,BigDecimal> invoiceMap = invoiceService.getInvoicesAmount(invoiceIds);
+			Map.Entry<Company,BigDecimal> entry = invoiceMap.entrySet().iterator().next();
+			System.out.println("invoicesAmount::::"+entry.getValue());
+			scfTradeDTO.setTradeAmount(entry.getValue());
+			scfTradeDTO.setCompany(entry.getKey());
+			model.put("invoiceIds", invoiceIds);
+		}else{
+			SCFTrade scfTrade=scfTradeService.findById(tradeID);
+			scfTradeDTO=transformTOScfTradeDTO(scfTrade);
+			
+			//transformTOScfTradeDTO()
+		}
+		model.put("scfTradeModel", scfTradeDTO);
 		return new ModelAndView("createscftrade", model);
 	}
 	
@@ -95,7 +104,6 @@ public class SCFTradeController {
 		SCFTrade scfTrade=transformTOScfTrade(scfTradeDTO);
 		scfTrade.setStatus(TradeStatus.NEW.getValue());
 		scfTrade=scfTradeService.save(scfTrade);
-		System.out.println("scf Trade-----"+scfTradeDTO);		
 	}
 
 	private SCFTrade transformTOScfTrade(SCFTradeDTO scfTradeDTO) {
@@ -116,6 +124,26 @@ public class SCFTradeController {
 		scfTrade.setWantToInsure(scfTradeDTO.getWantToInsure());
 		scfTrade.setInvoices(invoiceService.getInvoices(scfTradeDTO.getInvoiceIds()));
 		return scfTrade;
+	}
+	
+	private SCFTradeDTO transformTOScfTradeDTO(SCFTrade scfTrade) {
+		SCFTradeDTO scfTradeDTO= new SCFTradeDTO();		
+		scfTradeDTO.setId(scfTrade.getId());
+		scfTradeDTO.setClosingDate(scfTrade.getClosingDate());
+		scfTradeDTO.setCompany(scfTrade.getCompany());
+		scfTradeDTO.setDuration(scfTrade.getDuration());
+		scfTradeDTO.setInvestorPaymentDate(scfTrade.getInvestorPaymentDate());
+		scfTradeDTO.setOpeningDate(scfTrade.getOpeningDate());
+		scfTradeDTO.setPromisoryNote(scfTrade.getPromisoryNote());
+		scfTradeDTO.setScfTrade(scfTrade.getScfTrade());
+		scfTradeDTO.setSellerPaymentDate(scfTrade.getSellerPaymentDate());
+		scfTradeDTO.setStatus(scfTrade.getStatus());
+		scfTradeDTO.setTradeAmount(scfTrade.getTradeAmount());
+		scfTradeDTO.setTradeNotes(scfTrade.getTradeNotes());
+		scfTradeDTO.setTradeSettled(scfTrade.getTradeSettled());
+		scfTradeDTO.setWantToInsure(scfTrade.getWantToInsure());
+		return scfTradeDTO;
+		
 	}
 
 }

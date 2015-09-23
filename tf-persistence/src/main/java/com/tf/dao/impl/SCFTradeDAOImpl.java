@@ -1,16 +1,18 @@
 package com.tf.dao.impl;
 
+import java.io.Serializable;
 import java.util.List;
 
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.tf.dao.SCFTradeDAO;
+import com.tf.model.Company;
 import com.tf.model.SCFTrade;
 
 @Repository
-@Transactional(rollbackFor = Exception.class)
-public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Long> implements SCFTradeDAO {	
+@Transactional
+public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> implements SCFTradeDAO {	
 
 	
 	public List<SCFTrade>  getScfTrades(){
@@ -37,5 +39,22 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Long> implements SCFT
 		}
 		
 		return scfTrade;
+	}
+	
+	public SCFTrade findById(long id) {
+		_log.debug("getting Trade instance with id: " + id);
+		try {
+			SCFTrade instance = (SCFTrade) sessionFactory.getCurrentSession().get(
+					"com.tf.model.SCFTrade", id);
+			if (instance == null) {
+				_log.debug("get successful, no instance found");
+			} else {
+				_log.debug("get successful, instance found");
+			}
+			return instance;
+		} catch (RuntimeException re) {
+			_log.error("get failed", re);
+			throw re;
+		}
 	}
 }
