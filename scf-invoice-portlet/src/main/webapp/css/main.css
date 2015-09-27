@@ -53,8 +53,12 @@
 	margin-bottom: 30px !important;
 }
 
-.active {
+/* .active {
 	font-weight: bolder !important;
 	text-shadow: none !important;
 	color: #003d59 !important;
+} */
+
+.hideclass{
+	display: none;
 }

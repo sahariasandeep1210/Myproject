@@ -1,4 +1,4 @@
-package com.tf.controller;
+package com.tf.util;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -11,12 +11,7 @@ import com.tf.model.Company;
 public class SCFTradeDTO implements Serializable {
 	
 	
-	
-	
-	
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = -3399347740700344933L;
 	private Long id;	
 	private String scfTrade;

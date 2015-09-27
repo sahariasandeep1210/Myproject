@@ -1,17 +1,16 @@
 package com.tf.dao.impl;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
-import org.hibernate.transform.Transformers;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.tf.dao.InvoiceDAO;
-import com.tf.model.Company;
 import com.tf.model.Invoice;
+import com.tf.model.SCFTrade;
 
 @Repository
 @Transactional(rollbackFor = Exception.class)
@@ -58,5 +57,21 @@ public class InvoiceDAOImpl  extends BaseDAOImpl<Invoice, Long> implements Invoi
 			_log.error("GetCompanies failed", re);
 			throw re;
 		}
+	}
+	
+	public List<Invoice> getInvoices(long companyID){
+		
+		_log.debug("Inside getInvoices ");
+		try {
+			
+			List<Invoice> results = (List<Invoice>) sessionFactory.getCurrentSession().createCriteria(Invoice.class).add(Restrictions.eq("scfCompany.id", companyID)).list();
+			_log.debug("getInvoices successful, result size: "
+					+ results.size());
+			return results;
+		} catch (RuntimeException re) {
+			_log.error("getScfgetInvoicesTrades failed", re);
+			throw re;
+		}
+		
 	}
 }

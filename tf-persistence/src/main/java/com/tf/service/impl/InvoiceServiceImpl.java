@@ -65,6 +65,10 @@ public class InvoiceServiceImpl implements InvoiceService{
 		return invoiceSet;
 		
 	}
+	
+	public List<Invoice> getInvoices(long companyID){
+		return invoiceDAO.getInvoices(companyID);
+	}
 
 
 	

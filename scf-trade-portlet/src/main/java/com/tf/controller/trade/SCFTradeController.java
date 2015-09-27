@@ -1,6 +1,8 @@
 package com.tf.controller.trade;
 
+import java.beans.PropertyEditorSupport;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -14,6 +16,8 @@ import javax.portlet.RenderResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.portlet.ModelAndView;
@@ -24,13 +28,15 @@ import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.security.permission.PermissionChecker;
 import com.liferay.portal.theme.ThemeDisplay;
-import com.tf.controller.SCFTradeDTO;
 import com.tf.model.Company;
 import com.tf.model.SCFTrade;
+import com.tf.persistance.util.Constants;
 import com.tf.persistance.util.TradeStatus;
 import com.tf.service.CompanyService;
 import com.tf.service.InvoiceService;
 import com.tf.service.SCFTradeService;
+import com.tf.util.MyCustomNumberEditor;
+import com.tf.util.SCFTradeDTO;
 
 /**
  * This controller is responsible for request/response handling on
@@ -53,16 +59,43 @@ public class SCFTradeController {
 	@Autowired
 	private CompanyService companyService;
 	
+	
+	@InitBinder
+	public void binder(WebDataBinder binder) {
+		
+		binder.registerCustomEditor(Date.class, new PropertyEditorSupport() {
+			public void setAsText(String value) {
+				try {
+					setValue(new SimpleDateFormat("MM/dd/yyyy").parse(value));
+				} catch (Exception e) {
+					setValue(null);
+				}
+			}
+
+			public String getAsText() {
+				if (getValue() != null) {
+					return new SimpleDateFormat("MM/dd/yyyy")
+							.format((Date) getValue());
+				} else {
+					return null;
+				}
+			}
+		});
+
+		binder.registerCustomEditor(Long.class, new MyCustomNumberEditor(
+				Long.class, true));
+	}
+	
 	@RenderMapping
-	protected ModelAndView renderInvoiceList(ModelMap model,
+	protected ModelAndView renderTradeList(ModelMap model,
 			RenderRequest request, RenderResponse response) throws Exception {
 		List<SCFTrade> scftrades=null;
 		ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);
 		PermissionChecker permissionChecker = themeDisplay.getPermissionChecker();
 		if(permissionChecker.isOmniadmin() ){
 			scftrades=scfTradeService.getScfTrades();
-		}else{
-			scftrades=new ArrayList<SCFTrade>();
+		}else if(request.isUserInRole(Constants.SCF_ADMIN)){
+			scftrades=scfTradeService.getScfTrades(themeDisplay.getUser().getCompanyId());
 		}		 
 		model.put("trades", scftrades);
 		return new ModelAndView("tradelist", model);

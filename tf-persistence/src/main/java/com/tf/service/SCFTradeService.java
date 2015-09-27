@@ -11,5 +11,7 @@ public interface SCFTradeService  {
 	public SCFTrade save(SCFTrade scfTrade);
 	
 	public SCFTrade findById(long id);
+	
+	public List<SCFTrade> getScfTrades(Long companyID);
 
 }

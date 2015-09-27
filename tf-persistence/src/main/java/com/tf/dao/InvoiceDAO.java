@@ -12,4 +12,6 @@ public interface InvoiceDAO {
 	public List<Invoice> getInvoices();
 	
 	public List<Invoice> getInvoicesAmount(List<Long> invoiceIds);
+	
+	public List<Invoice> getInvoices(long companyID);
 }

@@ -2,7 +2,13 @@ $(document).ready(function() {
 
 	enableTab();
 	$("#createTrade").hide();
+	
+	$('ul.nav-pills li a').click(function (e) {
+		  $('ul.nav-pills li.active').removeClass('active')
+		  $(this).parent('li').addClass('active')
+		})
 	$("#updateInvoice").click(function() {
+		$('#wrapperfirst').removeClass('hideclass');
 		$('#myModal').modal('show');
 	});
 
@@ -19,6 +25,7 @@ $(document).ready(function() {
 	});
 	
 	if ($('#confirmationModel').length > 0) {
+		$('#wrappersecond').removeClass('hideclass');
 		$('#confirmationModel').modal('show');
 	}
 	

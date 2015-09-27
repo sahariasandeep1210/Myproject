@@ -6,10 +6,14 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.tf.dao.BaseDAO;
 
 
+@Repository
+@Transactional
 public class BaseDAOImpl<T, ID extends Serializable> implements BaseDAO<T, ID>  {
 	
 	protected static final Log _log = LogFactory.getLog(BaseDAOImpl.class);

@@ -10,7 +10,7 @@
 <input type="hidden" value="${activetab}" name="currentTab" id="currentTab">
 
 </form>
-<div class="navbar" id="invoicenavbar">
+<%-- <div class="navbar" id="invoicenavbar">
 	<div class="navitem">
 		<div class="container">
 			   <a class="btn btn-navbar" data-toggle="collapse" data-target=".unique">
@@ -28,4 +28,31 @@
 			 </div> 
 		</div>
 	</div>
-</div>
+</div> --%>
+
+<%-- <liferay-ui:tabs names="Invois1,Invoce1 Documets1" refresh="true"  url0="${invoicesURL}"  url1="${invoiceDocumentsURL}"> 	
+
+</liferay-ui:tabs> --%>
+
+<%-- <liferay-ui:tabs names="tab1,tab2,tab3" refresh="false" tabsValues="tab1,tab2,tab3">
+    <liferay-ui:section>
+        Text for Tab 1.
+    </liferay-ui:section>
+    <liferay-ui:section>
+        Text for Tab 2.
+    </liferay-ui:section>
+    <liferay-ui:section>
+        Text for Tab 3.
+    </liferay-ui:section>
+</liferay-ui:tabs> --%>
+
+ <ul class="nav nav-tabs">
+	<li class="tab" 	id="invoiceList" >
+		<a	href="${invoicesURL}" >Invoices
+	</a>
+	</li>
+	<li class="tab"	id="invoicedocList">
+		<a		href="${invoiceDocumentsURL}" >Invoice Documents   
+		</a>
+	</li>
+</ul>

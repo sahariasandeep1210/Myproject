@@ -3,11 +3,11 @@ package com.tf.dao.impl;
 import java.io.Serializable;
 import java.util.List;
 
+import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.tf.dao.SCFTradeDAO;
-import com.tf.model.Company;
 import com.tf.model.SCFTrade;
 
 @Repository
@@ -16,7 +16,7 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 
 	
 	public List<SCFTrade>  getScfTrades(){
-		_log.debug("Inside getInvoice ");
+		_log.debug("Inside getScfTrades  ");
 		try {
 			List<SCFTrade> results = (List<SCFTrade>) sessionFactory.getCurrentSession().createQuery("from SCFTrade").list();
 			_log.debug("getScfTrades successful, result size: "
@@ -39,6 +39,21 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 		}
 		
 		return scfTrade;
+	}
+	
+	public List<SCFTrade> getScfTrades(Long companyID){		
+		_log.debug("Inside getScfTrades ");
+		try {
+			
+			List<SCFTrade> results = (List<SCFTrade>) sessionFactory.getCurrentSession().createCriteria(SCFTrade.class).add(Restrictions.eq("company.id", companyID)).list();
+			_log.debug("getScfTrades successful, result size: "
+					+ results.size());
+			return results;
+		} catch (RuntimeException re) {
+			_log.error("getScfTrades failed", re);
+			throw re;
+		}
+		
 	}
 	
 	public SCFTrade findById(long id) {

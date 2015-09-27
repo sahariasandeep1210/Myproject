@@ -18,4 +18,6 @@ public interface InvoiceService {
 	public Map<Company,BigDecimal> getInvoicesAmount(String invoiceIds);
 	
 	public Set<Invoice> getInvoices(String invoiceIds);
+	
+	public List<Invoice> getInvoices(long companyID);
 }

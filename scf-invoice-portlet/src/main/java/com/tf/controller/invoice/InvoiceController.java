@@ -29,6 +29,7 @@ import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.repository.model.Folder;
 import com.liferay.portal.kernel.util.MimeTypesUtil;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.security.permission.PermissionChecker;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.ServiceContextFactory;
 import com.liferay.portal.theme.ThemeDisplay;
@@ -40,15 +41,16 @@ import com.tf.dto.InvoiceDTO;
 import com.tf.model.Company;
 import com.tf.model.Invoice;
 import com.tf.model.InvoiceDocument;
+import com.tf.persistance.util.Constants;
 import com.tf.service.CompanyService;
 import com.tf.service.InvoiceDocumentService;
 import com.tf.service.InvoiceService;
 
 /**
  * This controller is responsible for request/response handling on
- * Seller/Company screens
+ * Invoice screens
  * 
- * @author pawan
+ * @author Gautam Sharma
  * 
  */
 @Controller
@@ -87,10 +89,17 @@ public class InvoiceController {
 	protected ModelAndView renderInvoiceList(
 			@ModelAttribute("invoiceModel") InvoiceDTO invoice, ModelMap model,
 			RenderRequest request, RenderResponse response) throws Exception {
-		System.out.println("In Default render");		
+		System.out.println("In Default render");	
+		List<Invoice> invoices= new ArrayList<Invoice>();
+		ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);
+		PermissionChecker permissionChecker = themeDisplay.getPermissionChecker();
+		if(permissionChecker.isOmniadmin() ){
+			invoices=invoiceService.getInvoices();
+		}else if(request.isUserInRole(Constants.SCF_ADMIN)){
+			invoices=invoiceService.getInvoices(themeDisplay.getUser().getCompanyId());
+		}
 		request.getPortletSession().removeAttribute("invoiceDTO");
 		request.getPortletSession().removeAttribute("invoiceList");	
-		List<Invoice> invoices = invoiceService.getInvoices();
 		model.put("invoicesList", invoices);
 		model.put("defaultRender", Boolean.TRUE);
 		model.put(ACTIVETAB,"invoiceslist");

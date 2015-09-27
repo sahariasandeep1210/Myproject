@@ -19,7 +19,6 @@ public class SCFTradeServiceImpl  implements SCFTradeService{
 	private SCFTradeDAO scfTradeDAO;
 
 	public List<SCFTrade> getScfTrades() {
-		// TODO Auto-generated method stub
 		return scfTradeDAO.getScfTrades();
 	}
 	
@@ -29,6 +28,10 @@ public class SCFTradeServiceImpl  implements SCFTradeService{
 	
 	public SCFTrade findById(long id){
 		return scfTradeDAO.findById(id);
+	}
+	
+	public List<SCFTrade> getScfTrades(Long companyID){
+		return scfTradeDAO.getScfTrades(companyID);		
 	}
 
 }
