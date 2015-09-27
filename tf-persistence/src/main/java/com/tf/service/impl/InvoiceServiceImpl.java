@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.tf.dao.InvoiceDAO;
+import com.tf.dao.UserDAO;
 import com.tf.model.Company;
 import com.tf.model.Invoice;
 import com.tf.service.InvoiceService;
@@ -21,6 +22,9 @@ public class InvoiceServiceImpl implements InvoiceService{
 
 	@Autowired
 	private InvoiceDAO invoiceDAO;
+	
+	@Autowired
+	private UserDAO userDAO;
 
 	public void addInvoices(List<Invoice> invoice) {
 		 invoiceDAO.addInvoices(invoice);
@@ -66,8 +70,9 @@ public class InvoiceServiceImpl implements InvoiceService{
 		
 	}
 	
-	public List<Invoice> getInvoices(long companyID){
-		return invoiceDAO.getInvoices(companyID);
+	public List<Invoice> getInvoices(long userId){
+		long companyId=userDAO.getCompanyIDbyUserID(userId);
+		return invoiceDAO.getInvoices(companyId);
 	}
 
 

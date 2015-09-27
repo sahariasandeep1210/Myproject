@@ -139,6 +139,8 @@ public class CompanyDAOImpl  extends BaseDAOImpl<Company, Long>   implements Com
 			throw re;
 		}
 	}
+	
+	
 
 
 }

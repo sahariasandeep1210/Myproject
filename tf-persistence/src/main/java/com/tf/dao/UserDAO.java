@@ -11,5 +11,7 @@ public interface UserDAO {
 	public List<User> findUserByCompanyId(long id);
 	
 	public User findById(long id) ;
+	
+	public long  getCompanyIDbyUserID(long id);
 
 }

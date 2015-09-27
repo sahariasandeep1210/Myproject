@@ -96,7 +96,7 @@ public class InvoiceController {
 		if(permissionChecker.isOmniadmin() ){
 			invoices=invoiceService.getInvoices();
 		}else if(request.isUserInRole(Constants.SCF_ADMIN)){
-			invoices=invoiceService.getInvoices(themeDisplay.getUser().getCompanyId());
+			invoices=invoiceService.getInvoices(themeDisplay.getUser().getUserId());
 		}
 		request.getPortletSession().removeAttribute("invoiceDTO");
 		request.getPortletSession().removeAttribute("invoiceList");	

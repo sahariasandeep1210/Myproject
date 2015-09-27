@@ -11,5 +11,7 @@ public interface UserService {
 	public List<User> findUserByCompanyId(long id);
 	
 	public User findById(long id);
+	
+	public long  getCompanyIDbyUserID(long id);
 
 }
