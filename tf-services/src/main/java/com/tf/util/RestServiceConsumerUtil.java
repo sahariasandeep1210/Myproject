@@ -11,25 +11,35 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.web.client.RestTemplate;
 
 public class RestServiceConsumerUtil {
+	
+	public static  RestTemplate restTemplate = getRestTemplate();
+	
+	public static final  Properties prop =initializePropoerties();
+	
+	
 
-	public static String getServiceURL(int serviceName, long contactId) {
-		Properties prop = new Properties();
-		ClassLoader loader = Thread.currentThread().getContextClassLoader();
-		InputStream in = loader
-				.getResourceAsStream("");
-		String baseUrl = null;
-		try {
-			prop.load(in);
-			baseUrl = prop.getProperty("SERVICE_BASE_URL");
-			in.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-		return baseUrl;
+	public  String getProperty(String key) {
+		String value = null;
+		value = prop.getProperty(key);
+		System.out.println("Value Is :::"+value);
+		return value;
 	}
 
-	public static RestTemplate getRestTemplate() {
+	private static Properties initializePropoerties() {
+		Properties prop = new Properties();
+		
+		try {
+			InputStream in = RestServiceConsumerUtil.class.getClassLoader()
+					.getResourceAsStream("resource_en.properties");
+			prop.load(in);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return prop;
+	}
+
+	public  static RestTemplate getRestTemplate() {	
 		RestTemplate restTemplate = new RestTemplate();
 		ServiceResponseErrorHandler responseErrorHanler = new ServiceResponseErrorHandler();
 		restTemplate.setErrorHandler(responseErrorHanler);
@@ -43,6 +53,8 @@ public class RestServiceConsumerUtil {
 		restTemplate.getMessageConverters().add(converter);
 		return restTemplate;
 	}
+	
+	
 
 	
 

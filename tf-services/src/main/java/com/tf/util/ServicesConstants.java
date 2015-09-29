@@ -1,0 +1,10 @@
+package com.tf.util;
+
+public class ServicesConstants {
+	
+	public static final String SERVICE_BASE_URL 										= "SERVICE_BASE_URL";
+	public static final String COMPANY_SEARCH 											= "COMPANY_SEARCH";
+	public static final String API_KEY 													= "API_KEY";
+	
+
+}
