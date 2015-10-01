@@ -3,12 +3,14 @@ package com.tf.service;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 
 import com.tf.model.CompanyList;
 import com.tf.util.RestServiceConsumerUtil;
 import com.tf.util.ServiceResponseException;
 import com.tf.util.ServicesConstants;
 
+@Service
 public class CompanyServices  extends BaseService{
 	
 	public CompanyList getCompanyInfo(String query,Integer itemsPerPage,Integer startIndex)

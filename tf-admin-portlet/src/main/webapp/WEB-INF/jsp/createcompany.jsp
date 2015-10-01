@@ -20,6 +20,8 @@
 <portlet:renderURL var="defaultRender">
 </portlet:renderURL>
 
+<portlet:resourceURL id="fetchCompanyDetails" var="fetchCompanyDetails" ></portlet:resourceURL> 
+
 <div class="alert alert-danger" id="errorMsg"><i class="icon-remove-sign icon-2"></i> </div>
 <div class="container-fluid">
 	<form:form commandName="companyModel" method="post"
@@ -33,6 +35,21 @@
 			</div>
 	
 		<!-- <div style="background-color: #f4f4f4;padding: :10px"> -->
+		
+		<div class="row-fluid">
+			<div class="span6">
+				<label class="span6">Company Number:</label> 
+				<%-- <form:input path="name" name="" cssClass="span6" id="companyName" /> --%>
+				<input type="text" id="companyNumber" name="companyNumber" class="span6"/>
+
+			</div>
+			<div class="span3">
+				<input type="hidden" value="${fetchCompanyDetails}" id="fetchURL" />
+				<input type="button" value="Find Company" class="span6 btn btn-primary" id="findCompany" />
+
+			</div>
+			
+		</div>
 
 		<div class="row-fluid">
 			<div class="span6">

@@ -17,6 +17,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.tf.model.CompanyType;
 import com.tf.service.CompanyService;
+import com.tf.service.CompanyServices;
 import com.tf.service.CompanyTypeService;
 import com.tf.service.UserService;
 import com.tf.util.AdminUtility;
@@ -37,6 +38,9 @@ public class BaseController {
 	
 	@Autowired
 	protected  AdminUtility adminUtility;
+	
+	@Autowired
+	protected CompanyServices companyServices;
 
 	public static Map<String, String> orgTypeMap = initialzeOrgTypeMap();
 	public static Map<Long, String> companyTypeMap;

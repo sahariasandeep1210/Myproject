@@ -1,5 +1,6 @@
 package com.tf.controller.company;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -10,17 +11,25 @@ import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
+import javax.portlet.ResourceRequest;
+import javax.portlet.ResourceResponse;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.portlet.ModelAndView;
 import org.springframework.web.portlet.bind.annotation.ActionMapping;
 import org.springframework.web.portlet.bind.annotation.RenderMapping;
+import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 
+import com.google.gson.Gson;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.json.JSONArray;
+import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
@@ -31,6 +40,8 @@ import com.liferay.portal.service.UserServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.tf.controller.BaseController;
 import com.tf.model.Company;
+import com.tf.model.CompanyList;
+import com.tf.model.CompanyModel;
 import com.tf.model.User;
 import com.tf.persistance.util.CompanyStatus;
 import com.tf.util.Registration;
@@ -212,6 +223,27 @@ public class CompanyController extends BaseController {
 		response.setRenderParameter("render", "createCompany");
 		
 		
+	}
+	
+	@ResourceMapping(value = "fetchCompanyDetails")
+	public void fetchCompanyDetails(ResourceRequest request,
+			ResourceResponse response) throws IOException {
+		String companyNo = ParamUtil.getString(request, "companyNo");
+		System.out.println("companyNo:::::"+companyNo);
+		 String companyModelString="";
+		//JSONArray cmpArray = JSONFactoryUtil.createJSONArray();	
+		
+		if (!StringUtils.isEmpty(companyNo)) {
+			//JSONObject companyObject = JSONFactoryUtil.createJSONObject();	
+			CompanyList cmpList=companyServices.getCompanyInfo(companyNo, null, null);
+			if(cmpList!=null && cmpList.getItems()!=null && cmpList.getItems().get(0)!=null){
+				CompanyModel cmpModel=cmpList.getItems().get(0);
+				 Gson gson=new Gson();
+				 companyModelString = gson.toJson(cmpModel);
+			}
+		} 
+		System.out.println(companyModelString);
+		response.getWriter().println(companyModelString);
 	}
 
 	private com.liferay.portal.model.User addLiferayUser(User user,
