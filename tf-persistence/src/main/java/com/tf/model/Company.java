@@ -10,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 
@@ -87,6 +88,10 @@ public class Company {
 	@OneToMany(cascade=CascadeType.ALL)
     @JoinColumn(name="company_id")
 	private Set<User> users;
+	
+	@OneToOne(cascade=CascadeType.ALL)
+	@JoinColumn(name="company_id")
+	private Address address;
 	
 	public Company() {
 		// TODO Auto-generated constructor stub
@@ -266,6 +271,14 @@ public class Company {
 
 	public void setUsers(Set<User> users) {
 		this.users = users;
+	}
+
+	public Address getAddress() {
+		return address;
+	}
+
+	public void setAddress(Address address) {
+		this.address = address;
 	}
 
 	@Override

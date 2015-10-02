@@ -16,6 +16,7 @@
 		<mapping class="com.tf.model.InvoiceDocument" /> 
 		<mapping class="com.tf.model.SCFTrade" />  
 		<mapping class="com.tf.model.InvoiceCompany" />  
+		<mapping class="com.tf.model.Address" />  
 	</session-factory>
 
 </hibernate-configuration>

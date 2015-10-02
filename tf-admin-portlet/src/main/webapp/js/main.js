@@ -3,7 +3,8 @@ var errormessage="Some required information is missing or incomplete. Please cor
 $(function() {
 	
 	
-	$("#errorMsg").hide();
+	$("#errorMsg").hide(); 
+	$("#companyDetails").hide(); 
 	$("#telNo").inputmask("999-999-9999");
 	$("#userTelNo").inputmask("999-999-9999");
 	
@@ -30,12 +31,31 @@ $(function() {
 					companyNo: $("#companyNumber").val() 
 				  }, 
 			success: function(data){
-						//var companObject= JSON.parse(data); 
+						//var companObject= JSON.parse(data);
+						$("#companyDetails").show(); 
 						var companyObject=jQuery.parseJSON(data);
 						//var obj = jQuery.parseJSON( '{ "name": "John" }' );
-						$("#companyName").val(companyObject.title);																									// clear
+						$("#companyName").val(companyObject.title);			
+						$("#registrationNo").val(companyObject.company_number);// clear 
+						$("#companyreference").val(companyObject.description); 
+						var creatDate=new Date(companyObject.date_of_creation);
+						$("#dateestablished").val(dateFormatter(creatDate));
+						
+						//adding Address information
+						$("#address1").val(companyObject.address.address_line_1);
+						$("#address2").val(companyObject.address.address_line_2);
+						$("#locality").val(companyObject.address.locality);
+						$("#region").val(companyObject.region);
+						$("#postalCode").val(companyObject.address.postal_code);
+						
 						//$.each(content, function(i, state) { $('#state').append($('<option>').text(state.name).attr('value', state.stateId)); }); 
-					 } });
+					 } ,
+			error: function(jqXHR, textStatus, errorThrown) {
+				ajaxindicatorstop();
+				$("#companyDetails").show(); 
+				$('#myModal').modal('show');
+			}
+			});
 		
 	
 	});
@@ -271,7 +291,7 @@ function validateUserInfo(error_free){
 function ajaxindicatorstart(text)
 {
 	if($('body').find('#resultLoading').attr('id') != 'resultLoading'){
-	$('body').append('<div id="resultLoading" style="display:none"><div><img src="/tf-theme/images/ajax-loader.gif"><div>'+text+'</div></div><div class="bg"></div></div>');
+	$('body').append('<div id="resultLoading" style="display:none"><div><img src="/tf-admin-portlet/images/ajax-loader.gif"><div>'+text+'</div></div><div class="bg"></div></div>');
 	}
 	
 	$('#resultLoading').css({
@@ -330,3 +350,19 @@ $(document).ajaxStart(function () {
 	//hide ajax indicator
 	ajaxindicatorstop();
 });
+
+function dateFormatter (dateObject) {
+    var d = new Date(dateObject);
+    var day = d.getDate();
+    var month = d.getMonth() + 1;
+    var year = d.getFullYear();
+    if (day < 10) {
+        day = "0" + day;
+    }
+    if (month < 10) {
+        month = "0" + month;
+    }
+    var date = month+ "/" + day  + "/" + year;
+
+    return date;
+}; 

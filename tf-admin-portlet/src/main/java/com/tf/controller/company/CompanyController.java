@@ -9,10 +9,12 @@ import java.util.Set;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
+import javax.portlet.PortletResponse;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -233,17 +235,25 @@ public class CompanyController extends BaseController {
 		 String companyModelString="";
 		//JSONArray cmpArray = JSONFactoryUtil.createJSONArray();	
 		
-		if (!StringUtils.isEmpty(companyNo)) {
-			//JSONObject companyObject = JSONFactoryUtil.createJSONObject();	
-			CompanyList cmpList=companyServices.getCompanyInfo(companyNo, null, null);
-			if(cmpList!=null && cmpList.getItems()!=null && cmpList.getItems().get(0)!=null){
-				CompanyModel cmpModel=cmpList.getItems().get(0);
-				 Gson gson=new Gson();
-				 companyModelString = gson.toJson(cmpModel);
+		try {
+			if (!StringUtils.isEmpty(companyNo)) {
+				//JSONObject companyObject = JSONFactoryUtil.createJSONObject();	
+				CompanyList cmpList = companyServices.getCompanyInfo(companyNo,
+						null, null);
+				if (cmpList != null && cmpList.getItems() != null
+						&& cmpList.getItems().get(0) != null) {
+					CompanyModel cmpModel = cmpList.getItems().get(0);
+					Gson gson = new Gson();
+					companyModelString = gson.toJson(cmpModel);
+				}
 			}
-		} 
-		System.out.println(companyModelString);
-		response.getWriter().println(companyModelString);
+			System.out.println(companyModelString);
+			response.getWriter().println(companyModelString);
+		} catch (Exception e) {
+			_log.error("Error occured while fetching company information"+e.getMessage());
+			response.setProperty(ResourceResponse.HTTP_STATUS_CODE, "400");
+		}
+		
 	}
 
 	private com.liferay.portal.model.User addLiferayUser(User user,

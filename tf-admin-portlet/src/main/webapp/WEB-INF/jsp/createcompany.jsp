@@ -43,18 +43,21 @@
 				<input type="text" id="companyNumber" name="companyNumber" class="span6"/>
 
 			</div>
-			<div class="span3">
+			<div class="span4">
 				<input type="hidden" value="${fetchCompanyDetails}" id="fetchURL" />
-				<input type="button" value="Find Company" class="span6 btn btn-primary" id="findCompany" />
+				<input type="button" value="Find Company Details" class="span6 btn btn-primary" id="findCompany" />
 
 			</div>
 			
 		</div>
+		
 
+	<div id="companyDetails">
 		<div class="row-fluid">
 			<div class="span6">
 				<label class="span6">Name:<span class="requiredStar">*</span></label> <input type="hidden" name="id" value="${companyModel.id}" />
 				<form:input path="name" name="" cssClass="span6" id="companyName" />
+				
 
 			</div>
 			<div class="span6">
@@ -78,15 +81,46 @@
 		</div>
 		<div class="row-fluid">
 			<div class="span6">
-				<label class="span6">Address Registered:<span class="requiredStar">*</span></label>
-				<form:input path="addRegistered" cssClass="span6" id="cmpAddress"/>
+				<label class="span6" >Address Information</label>
+				<%-- <form:input path="addRegistered" cssClass="span6" id="cmpAddress"/> --%>
 			</div>
 
-			<div class="span6">
+			<%-- <div class="span6">
 				<label class="span6">Address Trading:</label>
 				<form:input path="addTrading" cssClass="span6" />
+			</div> --%>
+
+		</div>
+		
+		<div class="row-fluid">
+			<div class="span6">
+				<div class="span6">
+				 	<form:input path="address.addressLine1" cssClass="span9" id="address1" placeholder="Address Line 1*"/> 
+				 </div>
+				<div class="span6">
+				 	<form:input path="address.addressLine2" cssClass="span9" id="address2" placeholder="Address Line 2"/> 
+				 </div>
+			</div>		
+
+		</div>
+		<div class="row-fluid">
+			<div class="span6">
+				<div class="span6">
+					<form:input path="address.locality" cssClass="span9" id="locality" placeholder="Locality"/> 
+				 </div>
+				 <div class="span6">
+				 	<form:input path="address.region" cssClass="span9" id="region" placeholder="Region*"/> 
+				 </div>
 			</div>
 
+			 <div class="span6">
+				 <form:input path="address.postalCode" cssClass="span4" id="postalCode" placeholder="Postal Code*"/> 
+			</div> 
+
+		</div>
+		<div class="row-fluid">
+			<div class="span12">
+			</div>
 		</div>
 		<div class="row-fluid">
 			<div class="span6">
@@ -148,7 +182,7 @@
 			</div>
 			<div class="span6">
 				<label class="span6">Company Reference :</label>
-				<form:input path="companyreference" cssClass="span6" />
+				<form:input path="companyreference" cssClass="span6" id="companyreference" />
 			</div>
 		</div>
 		
@@ -174,6 +208,7 @@
 					data-url="${companyListURL}" id="cmpback" />
 			</div>
 		</div>
+</div>
 
 <!-- </div> -->
 	</form:form>
@@ -230,5 +265,18 @@
 		Please remember all the information associated(Users,Trades,Invoices etc.) with company will also be deleted.
 		<hr>Press 'Continue' to delete or 'Cancel' to go back
 	</div>
+</div>
+
+<div id="myModal" class="modal  fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myModalLabel">Not Found!</h3>
+  </div>
+  <div class="modal-body">
+    <p>Company details not found.Please enter manually.</p>
+  </div>
+  <div class="modal-footer">
+    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+  </div>
 </div>
 
