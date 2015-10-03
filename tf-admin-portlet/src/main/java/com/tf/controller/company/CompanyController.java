@@ -41,6 +41,7 @@ import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.service.UserServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.tf.controller.BaseController;
+import com.tf.model.Address;
 import com.tf.model.Company;
 import com.tf.model.CompanyList;
 import com.tf.model.CompanyModel;
@@ -164,7 +165,14 @@ public class CompanyController extends BaseController {
 												 ActionResponse response) throws Exception {
 		System.out.println("companyModel:::"+company);	
 		if(company !=null && company.getId() !=null){
-			company.setUsers(companyService.findById(company.getId()).getUsers());
+			Company cmp = companyService.findById(company.getId());
+			company.setUsers(cmp.getUsers());
+			company.getAddress().setId(cmp.getAddress().getId());
+			//Address add= cmp.getAddress();
+			
+		}else{
+			//company.setAddress(company.getAddress());
+			company.getAddress().setCompany(company);
 		}
 		//company=companyService.findById(company.getId());
 		company.setActivestatus(CompanyStatus.NEW.getValue());
@@ -238,14 +246,9 @@ public class CompanyController extends BaseController {
 		try {
 			if (!StringUtils.isEmpty(companyNo)) {
 				//JSONObject companyObject = JSONFactoryUtil.createJSONObject();	
-				CompanyList cmpList = companyServices.getCompanyInfo(companyNo,
-						null, null);
-				if (cmpList != null && cmpList.getItems() != null
-						&& cmpList.getItems().get(0) != null) {
-					CompanyModel cmpModel = cmpList.getItems().get(0);
-					Gson gson = new Gson();
-					companyModelString = gson.toJson(cmpModel);
-				}
+				CompanyModel cmpModel  = companyServices.getCompanyInfo(companyNo);			
+				Gson gson = new Gson();
+				companyModelString = gson.toJson(cmpModel);			
 			}
 			System.out.println(companyModelString);
 			response.getWriter().println(companyModelString);

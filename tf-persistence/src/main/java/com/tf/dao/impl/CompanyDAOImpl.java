@@ -61,6 +61,7 @@ public class CompanyDAOImpl  extends BaseDAOImpl<Company, Long>   implements Com
 	public void addCompany(Company company) {
 		_log.debug("persisting Company instance");
 		try {
+			company.getAddress().setCompany(company);
 			sessionFactory.getCurrentSession().saveOrUpdate(company);
 			_log.debug("persist successful"+company);
 		} catch (RuntimeException re) {

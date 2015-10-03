@@ -1,11 +1,15 @@
 package com.tf.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
 
@@ -18,8 +22,8 @@ public class Address {
     @GeneratedValue
 	private Long id;
 	
-	@OneToOne
-	@JoinColumn(name = "company_id")  
+	@OneToOne(cascade=CascadeType.ALL)
+	@JoinColumn(name = "idcompany")  
 	private Company company;
 	
 	@Column(name="address_line_1")
@@ -33,6 +37,9 @@ public class Address {
 	
 	@Column(name="region")
 	private String region;	
+	
+	@Column(name="country")
+	private String country;
 	
 	@Column(name="postal_code")
 	private String postalCode;	
@@ -96,13 +103,23 @@ public class Address {
 		this.postalCode = postalCode;
 	}
 
+	public String getCountry() {
+		return country;
+	}
+
+	public void setCountry(String country) {
+		this.country = country;
+	}
+
 	@Override
 	public String toString() {
 		return "Address [id=" + id + ", company=" + company + ", addressLine1="
 				+ addressLine1 + ", addressLine2=" + addressLine2
 				+ ", locality=" + locality + ", region=" + region
-				+ ", postalCode=" + postalCode + "]";
+				+ ", country=" + country + ", postalCode=" + postalCode + "]";
 	}
+
+	
 	
 	
 

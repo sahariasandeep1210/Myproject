@@ -6,6 +6,7 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -89,8 +90,7 @@ public class Company {
     @JoinColumn(name="company_id")
 	private Set<User> users;
 	
-	@OneToOne(cascade=CascadeType.ALL)
-	@JoinColumn(name="company_id")
+	@OneToOne(mappedBy = "company",cascade=CascadeType.ALL)    
 	private Address address;
 	
 	public Company() {

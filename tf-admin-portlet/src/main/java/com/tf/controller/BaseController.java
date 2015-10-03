@@ -95,6 +95,7 @@ public class BaseController {
 		Map<String, String> map = new LinkedHashMap<String, String>();
 		map.put("", "Select");
 		map.put("Company", "Company");
+		map.put("ltd", "Ltd");
 		map.put("LLP", "LLP");
 		map.put("Partnership", "Partnership");
 		map.put("Sole Trader", "Sole Trader");

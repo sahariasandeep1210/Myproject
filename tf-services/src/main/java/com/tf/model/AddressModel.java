@@ -12,6 +12,7 @@ public class AddressModel implements Serializable{
 	private String address_line_2;
 	private String region;
 	private String locality;
+	private String country;
 	private String care_of;
 	
 	public AddressModel() {
@@ -66,14 +67,21 @@ public class AddressModel implements Serializable{
 		this.care_of = care_of;
 	}
 
+	public String getCountry() {
+		return country;
+	}
+
+	public void setCountry(String country) {
+		this.country = country;
+	}
+
 	@Override
 	public String toString() {
 		return "AddressModel [postal_code=" + postal_code + ", address_line_1="
 				+ address_line_1 + ", address_line_2=" + address_line_2
 				+ ", region=" + region + ", locality=" + locality
-				+ ", care_of=" + care_of + "]";
+				+ ", country=" + country + ", care_of=" + care_of + "]";
 	}
-	
 	
 
 }

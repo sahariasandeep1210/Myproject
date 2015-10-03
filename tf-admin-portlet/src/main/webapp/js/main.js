@@ -2,9 +2,11 @@ var errormessage="Some required information is missing or incomplete. Please cor
 
 $(function() {
 	
+	enableDisableoptions();
+	
 	
 	$("#errorMsg").hide(); 
-	$("#companyDetails").hide(); 
+	
 	$("#telNo").inputmask("999-999-9999");
 	$("#userTelNo").inputmask("999-999-9999");
 	
@@ -23,39 +25,54 @@ $(function() {
 	
 	$("#findCompany").click(function(){
 		
-		$.ajax({ 
-			url: $("#fetchURL").val(), 
-			type: 'POST', 
-			datatype:'json', 
-			data: { 
-					companyNo: $("#companyNumber").val() 
-				  }, 
-			success: function(data){
-						//var companObject= JSON.parse(data);
-						$("#companyDetails").show(); 
-						var companyObject=jQuery.parseJSON(data);
-						//var obj = jQuery.parseJSON( '{ "name": "John" }' );
-						$("#companyName").val(companyObject.title);			
-						$("#registrationNo").val(companyObject.company_number);// clear 
-						$("#companyreference").val(companyObject.description); 
-						var creatDate=new Date(companyObject.date_of_creation);
-						$("#dateestablished").val(dateFormatter(creatDate));
-						
-						//adding Address information
-						$("#address1").val(companyObject.address.address_line_1);
-						$("#address2").val(companyObject.address.address_line_2);
-						$("#locality").val(companyObject.address.locality);
-						$("#region").val(companyObject.region);
-						$("#postalCode").val(companyObject.address.postal_code);
-						
-						//$.each(content, function(i, state) { $('#state').append($('<option>').text(state.name).attr('value', state.stateId)); }); 
-					 } ,
-			error: function(jqXHR, textStatus, errorThrown) {
-				ajaxindicatorstop();
-				$("#companyDetails").show(); 
-				$('#myModal').modal('show');
-			}
-			});
+		var companyNumber=$("#companyNumber").val();
+		$("#companyNumber").removeClass("error_show");
+		if(companyNumber!=''){
+			
+			$.ajax({ 
+				url: $("#fetchURL").val(), 
+				type: 'POST', 
+				datatype:'json', 
+				data: { 
+						companyNo: companyNumber 
+					  }, 
+				success: function(data){
+							//var companObject= JSON.parse(data);
+					
+							$("#companyNumber").removeClass("error_show");
+							$("#companyDetails").show(); 
+							var companyObject=jQuery.parseJSON(data);
+							console.log("::companyObject::"+companyObject);
+							//var obj = jQuery.parseJSON( '{ "name": "John" }' );
+							$("#companyName").val(companyObject.company_name);			
+							$("#registrationNo").val(companyObject.company_number);// clear 
+							$("#jurisdiction").val(companyObject.jurisdiction); 
+							var creatDate=new Date(companyObject.date_of_creation);
+							$("#dateestablished").val(dateFormatter(creatDate));
+							$("#orgType").val(companyObject.type);
+							
+							//adding Address information
+							$("#address1").val(companyObject.registered_office_address.address_line_1);
+							$("#address2").val(companyObject.registered_office_address.address_line_2);
+							$("#locality").val(companyObject.registered_office_address.locality);
+							$("#region").val(companyObject.registered_office_address.region);
+							$("#country").val(companyObject.registered_office_address.country);
+							$("#postalCode").val(companyObject.registered_office_address.postal_code);
+							
+							
+							//$.each(content, function(i, state) { $('#state').append($('<option>').text(state.name).attr('value', state.stateId)); }); 
+						 } ,
+				error: function(jqXHR, textStatus, errorThrown) {
+					ajaxindicatorstop();
+					$(':input').not(':button, :submit, :reset, :hidden, input[id=companyNumber]').val('').removeAttr('checked').removeAttr('selected');
+					$("#companyDetails").show(); 
+					$('#myModal').modal('show');
+				}
+				});	
+			
+		}else{
+			$("#companyNumber").addClass("error_show");
+		}
 		
 	
 	});
@@ -149,6 +166,7 @@ $(document).ready(function(){
 	
 	//Company Add
 	$("#cmpAdd,#cmpUpdate").click(function(){
+		$("#companyNumber").removeClass("error_show");
 		var error_free = true;
 		error_free = validateCompanyInfo(error_free);
 		if (error_free) {
@@ -166,7 +184,6 @@ $(document).ready(function(){
 		console.log("error_free:::"+error_free)
 		if (error_free) {
 			var url = $(this).attr('data-url');
-			console.log("url:::"+url)
 			submitTradeForms(url);
 		}
 		
@@ -174,14 +191,11 @@ $(document).ready(function(){
 	
 	$("#userAdd,#userUpdate").click(function(){
 		var error_free = true;
-		console.log("error_free:::"+error_free)
 		error_free = validateUserInfo(error_free);
-		console.log("error_free:::"+error_free)
 		
 	
 		if (error_free) {	
 			var url = $(this).attr('data-url');
-			console.log("url:::"+url)
 			submitUserForms(url);
 		}
 	});
@@ -241,8 +255,11 @@ function validateCompanyInfo(error_free) {
 	elements[0] = "companyName";
 	elements[1] = "registrationNo";
 	elements[2] = "dateestablished";
-	elements[3] = "cmpAddress";
-	elements[4] = "telNo";
+	elements[3] = "address1";
+	elements[4] = "region";
+	elements[5] = "country";
+	elements[6] = "postalCode";
+	elements[7] = "telNo";
 	$("#errorMsg").hide();
 	$("#errorMsg").html();
 	for (i = 0; i < elements.length; i++) {
@@ -365,4 +382,14 @@ function dateFormatter (dateObject) {
     var date = month+ "/" + day  + "/" + year;
 
     return date;
-}; 
+}
+
+function enableDisableoptions(){
+	if($("#compId").val()==''){
+		$("#companyDetails").hide(); 
+	}else{
+		$("#fetchCmpInfo").hide(); 	
+	}
+	
+	
+}

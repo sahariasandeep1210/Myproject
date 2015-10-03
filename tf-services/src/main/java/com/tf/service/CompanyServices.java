@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.tf.model.CompanyList;
+import com.tf.model.CompanyModel;
 import com.tf.util.RestServiceConsumerUtil;
 import com.tf.util.ServiceResponseException;
 import com.tf.util.ServicesConstants;
@@ -13,12 +14,20 @@ import com.tf.util.ServicesConstants;
 @Service
 public class CompanyServices  extends BaseService{
 	
-	public CompanyList getCompanyInfo(String query,Integer itemsPerPage,Integer startIndex)
-		    throws ServiceResponseException
-		  {
+	public CompanyList getCompaniesInfo(String query,Integer itemsPerPage,Integer startIndex)
+		    throws ServiceResponseException {
 		    String url = getCompanySearchURL(query,itemsPerPage,startIndex);
 		    HttpEntity<String> request = new HttpEntity<String>(createHeaders(restServiceConsumerUtil.getProperty(ServicesConstants.API_KEY)));
 		    ResponseEntity<CompanyList> response   = RestServiceConsumerUtil.restTemplate.exchange(url, HttpMethod.GET, request, CompanyList.class);
+		    return response.getBody(); 
+		  }
+	
+
+	public CompanyModel getCompanyInfo(String companyNumber)
+		    throws ServiceResponseException {
+		    String url = getCompanyInfoURL(companyNumber);
+		    HttpEntity<String> request = new HttpEntity<String>(createHeaders(restServiceConsumerUtil.getProperty(ServicesConstants.API_KEY)));
+		    ResponseEntity<CompanyModel> response   = RestServiceConsumerUtil.restTemplate.exchange(url, HttpMethod.GET, request, CompanyModel.class);
 		    return response.getBody(); 
 		  }
 
@@ -34,6 +43,13 @@ public class CompanyServices  extends BaseService{
 			url.append("&start_index=");
 			url.append(startIndex);
 		}		
+		return url.toString();
+	}
+	
+	private String getCompanyInfoURL(String number) {
+		StringBuilder url=new StringBuilder(SERVICE_BASE_URL);
+		url.append(restServiceConsumerUtil.getProperty(ServicesConstants.COMPANY_DETAILS));
+		url.append(number);			
 		return url.toString();
 	}
 		  

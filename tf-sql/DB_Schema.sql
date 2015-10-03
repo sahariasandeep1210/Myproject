@@ -212,14 +212,15 @@ CREATE TABLE `scf_trade` (
 DROP TABLE IF EXISTS `tf_address`;
 CREATE TABLE `tf_address` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
-  `company_id` INT(11) NOT NULL ,
+  `idcompany` INT(11) NOT NULL ,
   `address_line_1` VARCHAR(150),
   `address_line_2` VARCHAR(150),
   `locality` VARCHAR(25),
   `region` VARCHAR(25),
+  `country` VARCHAR(25),
   `postal_code` VARCHAR(10),  
   PRIMARY KEY (`id`),
-  FOREIGN KEY (company_id) REFERENCES tf_company(idcompany)
+  FOREIGN KEY (idcompany) REFERENCES tf_company(idcompany)
 ) ENGINE=INNODB AUTO_INCREMENT=1986;
 
    

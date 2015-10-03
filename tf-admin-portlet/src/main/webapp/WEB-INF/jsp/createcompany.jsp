@@ -36,7 +36,7 @@
 	
 		<!-- <div style="background-color: #f4f4f4;padding: :10px"> -->
 		
-		<div class="row-fluid">
+		<div class="row-fluid" id="fetchCmpInfo">
 			<div class="span6">
 				<label class="span6">Company Number:</label> 
 				<%-- <form:input path="name" name="" cssClass="span6" id="companyName" /> --%>
@@ -55,7 +55,7 @@
 	<div id="companyDetails">
 		<div class="row-fluid">
 			<div class="span6">
-				<label class="span6">Name:<span class="requiredStar">*</span></label> <input type="hidden" name="id" value="${companyModel.id}" />
+				<label class="span6">Name:<span class="requiredStar">*</span></label> <input type="hidden" name="id" value="${companyModel.id}" id="compId" />
 				<form:input path="name" name="" cssClass="span6" id="companyName" />
 				
 
@@ -100,16 +100,19 @@
 				<div class="span6">
 				 	<form:input path="address.addressLine2" cssClass="span9" id="address2" placeholder="Address Line 2"/> 
 				 </div>
+			</div>
+			 <div class="span6">
+				 	<form:input path="address.locality" cssClass="span4" id="locality" placeholder="Locality"/> 
 			</div>		
 
 		</div>
 		<div class="row-fluid">
 			<div class="span6">
 				<div class="span6">
-					<form:input path="address.locality" cssClass="span9" id="locality" placeholder="Locality"/> 
+					<form:input path="address.region" cssClass="span9" id="region" placeholder="Region*"/> 
 				 </div>
 				 <div class="span6">
-				 	<form:input path="address.region" cssClass="span9" id="region" placeholder="Region*"/> 
+				 	<form:input path="address.country" cssClass="span9" id="country" placeholder="country*"/> 
 				 </div>
 			</div>
 
@@ -171,7 +174,7 @@
 			</div>
 			<div class="span6">
 				<label class="span6">Jurisdiction:</label>
-				<form:input path="jurisdiction" cssClass="span6" />
+				<form:input path="jurisdiction" cssClass="span6"  id="jurisdiction"/>
 			</div>
 		</div>
 		<div class="row-fluid">
