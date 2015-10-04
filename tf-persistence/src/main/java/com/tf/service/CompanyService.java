@@ -8,6 +8,8 @@ public interface CompanyService {
 	
 	public List<Company> getCompaniesByStatus(String status);
 	
+	public List<Company> getCompaniesByStatus(String status,long userID);
+	
 	public void addCompany(Company company);
 
 	public Company findById(long id);

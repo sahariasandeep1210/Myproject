@@ -86,8 +86,7 @@ public class Company {
 	private String companyType;	
 	
 	
-	@OneToMany(cascade=CascadeType.ALL)
-    @JoinColumn(name="company_id")
+	@OneToMany(mappedBy = "company",cascade=CascadeType.ALL)      
 	private Set<User> users;
 	
 	@OneToOne(mappedBy = "company",cascade=CascadeType.ALL)    

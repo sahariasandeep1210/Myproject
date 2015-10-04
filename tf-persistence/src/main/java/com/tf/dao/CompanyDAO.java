@@ -8,6 +8,8 @@ public interface CompanyDAO extends BaseDAO<Company, Long>{
 	
 	public List<Company> getCompaniesByStatus(String status);
 	
+	public List<Company> getCompaniesByStatus(String status,long companyId);
+	
 	public void addCompany(Company company);
 	
 	public Company findById(long id);

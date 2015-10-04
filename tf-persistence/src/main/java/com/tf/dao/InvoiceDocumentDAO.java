@@ -9,5 +9,7 @@ public interface InvoiceDocumentDAO {
 	public void addInvoiceDocument(InvoiceDocument invoiceDocument);
 	
 	public List<InvoiceDocument> getInvoiceDocuments();
+	
+	public List<InvoiceDocument> getInvoiceDocuments(long companyId);
 
 }

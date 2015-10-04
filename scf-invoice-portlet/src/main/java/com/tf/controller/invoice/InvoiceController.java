@@ -8,6 +8,8 @@ import java.util.List;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
+import javax.portlet.PortletRequest;
+import javax.portlet.PortletResponse;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 
@@ -76,7 +78,15 @@ public class InvoiceController {
 			@ModelAttribute("invoiceModel") InvoiceDTO invoice, ModelMap model,
 			RenderRequest request, RenderResponse response) throws Exception {
 		System.out.println("In render");		
-		List<InvoiceDocument> invoiceDocumentList = invoiceDocumentService.getInvoiceDocuments();
+		ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);
+		List<InvoiceDocument> invoiceDocumentList=new ArrayList<InvoiceDocument>();
+		
+		if(getPermissionChecker(request).isOmniadmin() ){
+			invoiceDocumentList = invoiceDocumentService.getInvoiceDocuments();
+		}else if(request.isUserInRole(Constants.SCF_ADMIN)){
+			invoiceDocumentList = invoiceDocumentService.getInvoiceDocuments(themeDisplay.getUser().getUserId());
+		}
+		
 		List<Company> companyList = companyService.getCompanies("5");
 		model.put("companyList", companyList);
 		model.put("invoiceList", invoiceDocumentList);
@@ -92,8 +102,7 @@ public class InvoiceController {
 		System.out.println("In Default render");	
 		List<Invoice> invoices= new ArrayList<Invoice>();
 		ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);
-		PermissionChecker permissionChecker = themeDisplay.getPermissionChecker();
-		if(permissionChecker.isOmniadmin() ){
+		if(getPermissionChecker(request).isOmniadmin() ){
 			invoices=invoiceService.getInvoices();
 		}else if(request.isUserInRole(Constants.SCF_ADMIN)){
 			invoices=invoiceService.getInvoices(themeDisplay.getUser().getUserId());
@@ -244,7 +253,12 @@ public class InvoiceController {
 	
 	
 	
-	
+	private PermissionChecker getPermissionChecker(PortletRequest request){
+		ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);
+		PermissionChecker permissionChecker = themeDisplay.getPermissionChecker();
+		return permissionChecker;
+		
+	}
 	
 	
 	

@@ -18,15 +18,29 @@
 		action="${createURL}" id="companyList" autocomplete="off">
 
 		<div class="row-fluid">
-			<div class="span6">
-				<h4>Manage Companies</h4>
-				<%-- <h6 style="float: right !important;"><a href="${createURL}" style="color: #295780;font-weight: bold;"><i class="fa fa fa-plus"></i> Add Company</a></h6> --%>
-			</div>
-			<div class="span6">  
-			  <div class="span12">
-			  	<h5 style="float: right !important;" ><a href="javascript:;" style="color: #295780;font-weight: bold;" id="exportCompanies"><i class="fa fa-file-excel-o fa-2"></i> Export</a></h5>
-			  </div>
-			  </div>			
+			<c:choose>
+				<c:when test="${permissionChecker.isOmniadmin()}">
+					<div class="span6">
+						<h4>Manage Companies</h4>
+						<%-- <h6 style="float: right !important;"><a href="${createURL}" style="color: #295780;font-weight: bold;"><i class="fa fa fa-plus"></i> Add Company</a></h6> --%>
+					</div>
+					<div class="span6">
+						<div class="span12">
+							<h5 style="float: right !important;">
+								<a href="javascript:;"
+									style="color: #295780; font-weight: bold;" id="exportCompanies"><i
+									class="fa fa-file-excel-o fa-2"></i> Export</a>
+							</h5>
+						</div>
+					</div>
+				</c:when>
+				<c:otherwise>
+					<div class="span6">
+						<h4>Manage My Company</h4>
+					</div>
+				</c:otherwise>			
+			</c:choose>
+			
 		</div>
 		<div class="table-responsive">
 			<table class="table table-hover tablesorter table-bordered"  id="companyListTable">
@@ -63,6 +77,7 @@
 				</tbody>
 			</table>
 		</div>
+		<c:if test="${permissionChecker.isOmniadmin()}">
 		<div class="row-fluid" id="yui_patched_v3_11_0_1_1442485862967_504">
 			<div class="span6" id="yui_patched_v3_11_0_1_1442485862967_503">
 				<a
@@ -72,6 +87,7 @@
 					Add Company</a>
 			</div>
 		</div>
+		</c:if>
 
 	</form:form>
 

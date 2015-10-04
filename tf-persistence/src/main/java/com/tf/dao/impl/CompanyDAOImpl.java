@@ -36,6 +36,21 @@ public class CompanyDAOImpl  extends BaseDAOImpl<Company, Long>   implements Com
 			throw re;
 		}
 	}
+	public List<Company> getCompaniesByStatus(String status,long companyId){
+		_log.debug("Inside getCompanies ");
+		try {
+			
+			List<Company> results = (List<Company>) sessionFactory.getCurrentSession().createCriteria(Company.class)
+					.add(Restrictions.ne("activestatus", status))
+					.add(Restrictions.eq("id", companyId)).list();
+			_log.debug("GetCompanies successful, result size: "
+					+ results.size());
+			return results;
+		} catch (RuntimeException re) {
+			_log.error("GetCompanies failed", re);
+			throw re;
+		}
+	}
 	
 	@SuppressWarnings("unchecked")
 	public List<Company> getCompanies(String companyType) {

@@ -223,4 +223,6 @@ CREATE TABLE `tf_address` (
   FOREIGN KEY (idcompany) REFERENCES tf_company(idcompany)
 ) ENGINE=INNODB AUTO_INCREMENT=1986;
 
+ALTER TABLE  `scf_invoice_document` ADD scf_company INT(11);
+
    

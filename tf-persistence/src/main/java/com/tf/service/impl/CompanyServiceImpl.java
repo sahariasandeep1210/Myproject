@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.tf.dao.CompanyDAO;
+import com.tf.dao.UserDAO;
 import com.tf.model.Company;
 import com.tf.service.CompanyService;
 
@@ -16,12 +17,20 @@ public class CompanyServiceImpl implements CompanyService {
 	
 	@Autowired
 	private CompanyDAO companyDAO;
+	
+	@Autowired
+	private UserDAO userDAO;
 
 	@Transactional
 	public List<Company> getCompaniesByStatus(String status) {
 		return companyDAO.getCompaniesByStatus(status);
 	}
 
+	public List<Company> getCompaniesByStatus(String status,long userID){
+		long companyId=userDAO.getCompanyIDbyUserID(userID);
+		return companyDAO.getCompaniesByStatus(status,companyId);	
+	}
+	
 	public void addCompany(Company company) {
 		 companyDAO.addCompany(company);		
 	}

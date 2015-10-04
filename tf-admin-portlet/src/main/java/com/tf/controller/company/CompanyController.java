@@ -9,12 +9,11 @@ import java.util.Set;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
-import javax.portlet.PortletResponse;
+import javax.portlet.PortletRequest;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
-import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -29,24 +28,21 @@ import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 import com.google.gson.Gson;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.json.JSONArray;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
-import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
+import com.liferay.portal.security.permission.PermissionChecker;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.ServiceContextFactory;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.service.UserServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.tf.controller.BaseController;
-import com.tf.model.Address;
 import com.tf.model.Company;
-import com.tf.model.CompanyList;
 import com.tf.model.CompanyModel;
 import com.tf.model.User;
 import com.tf.persistance.util.CompanyStatus;
+import com.tf.persistance.util.Constants;
 import com.tf.util.Registration;
 
 
@@ -66,8 +62,16 @@ public class CompanyController extends BaseController {
 	@RenderMapping
 	protected ModelAndView renderCompanyList(@ModelAttribute("companyModel") Company company,ModelMap model,RenderRequest request, RenderResponse response) throws Exception {		
 		_log.info("Render Company List");
-		System.out.println("Size:::"+companyService.getCompaniesByStatus(CompanyStatus.DELETED.getValue()));
-		model.put("allCompanies", companyService.getCompaniesByStatus(CompanyStatus.DELETED.getValue()));
+		List<Company> companyList=new ArrayList<Company>();
+		ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);
+		if(getPermissionChecker(request).isOmniadmin() ){
+			companyList = companyService.getCompaniesByStatus(CompanyStatus.DELETED.getValue());
+		}else if(request.isUserInRole(Constants.SCF_ADMIN)){
+			long companyId=userService.getCompanyIDbyUserID(themeDisplay.getUserId());
+			Company cmpObject = companyService.findById(companyId);
+			companyList.add(cmpObject);
+		}
+		model.put("allCompanies",companyList);
 		return new ModelAndView("companylist", model);		
 	}
 	
@@ -299,6 +303,11 @@ public class CompanyController extends BaseController {
 		return lruser;
 	}
 	
+	private PermissionChecker getPermissionChecker(PortletRequest request){
+		ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);
+		PermissionChecker permissionChecker = themeDisplay.getPermissionChecker();
+		return permissionChecker;		
+	}
 
 
 }

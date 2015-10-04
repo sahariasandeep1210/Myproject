@@ -2,10 +2,12 @@ package com.tf.dao.impl;
 
 import java.util.List;
 
+import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.tf.dao.InvoiceDocumentDAO;
+import com.tf.model.Company;
 import com.tf.model.InvoiceDocument;
 
 
@@ -35,5 +37,19 @@ public class InvoiceDocumentDAOImpl extends BaseDAOImpl<InvoiceDocument, Long> i
 			_log.error("getInvoiceDocuments failed", re);
 			throw re;
 		}
+	}
+	public List<InvoiceDocument> getInvoiceDocuments(long companyId){
+		try {
+			List<InvoiceDocument> results = (List<InvoiceDocument>) sessionFactory
+					.getCurrentSession().createCriteria(InvoiceDocument.class)
+					.add(Restrictions.eq("scfCompany.id", companyId)).list();
+			_log.debug("getInvoiceDocuments successful, result size: "
+					+ results.size());
+			return results;
+		} catch (RuntimeException re) {
+			_log.error("getInvoiceDocuments failed", re);
+			throw re;
+		}
+		
 	}
 }

@@ -6,6 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -37,6 +38,10 @@ public class InvoiceDocument {
 	
 	@Column(name = "upload_date")
 	private Date uploadDate;
+	
+	@ManyToOne  
+    @JoinColumn(name = "scf_company")  
+	private Company scfCompany;
 	
 	
 	
@@ -98,6 +103,14 @@ public class InvoiceDocument {
 
 	public void setUploadDate(Date uploadDate) {
 		this.uploadDate = uploadDate;
+	}
+
+	public Company getScfCompany() {
+		return scfCompany;
+	}
+
+	public void setScfCompany(Company scfCompany) {
+		this.scfCompany = scfCompany;
 	}
 
 	@Override
