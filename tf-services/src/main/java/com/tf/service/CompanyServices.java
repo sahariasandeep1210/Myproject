@@ -30,6 +30,14 @@ public class CompanyServices  extends BaseService{
 		    ResponseEntity<CompanyModel> response   = RestServiceConsumerUtil.restTemplate.exchange(url, HttpMethod.GET, request, CompanyModel.class);
 		    return response.getBody(); 
 		  }
+	
+	public CompanyModel getOfficersInfo(String companyNumber)
+		    throws ServiceResponseException {
+		    String url = getOfficersURL(companyNumber);
+		    HttpEntity<String> request = new HttpEntity<String>(createHeaders(restServiceConsumerUtil.getProperty(ServicesConstants.API_KEY)));
+		    ResponseEntity<CompanyModel> response   = RestServiceConsumerUtil.restTemplate.exchange(url, HttpMethod.GET, request, CompanyModel.class);
+		    return response.getBody(); 
+		  }
 
 	private String getCompanySearchURL(String query, Integer itemsPerPage,
 			Integer startIndex) {
@@ -50,6 +58,14 @@ public class CompanyServices  extends BaseService{
 		StringBuilder url=new StringBuilder(SERVICE_BASE_URL);
 		url.append(restServiceConsumerUtil.getProperty(ServicesConstants.COMPANY_DETAILS));
 		url.append(number);			
+		return url.toString();
+	}
+	
+	private String getOfficersURL(String number) {
+		StringBuilder url=new StringBuilder(SERVICE_BASE_URL);
+		url.append(restServiceConsumerUtil.getProperty(ServicesConstants.COMPANY_DETAILS));
+		url.append(number);
+		url.append(restServiceConsumerUtil.getProperty(ServicesConstants.OFFICERS));
 		return url.toString();
 	}
 		  

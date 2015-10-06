@@ -21,6 +21,7 @@
 </portlet:renderURL>
 
 <portlet:resourceURL id="fetchCompanyDetails" var="fetchCompanyDetails" ></portlet:resourceURL> 
+<portlet:resourceURL id="fetchOfficers" var="fetchOfficers" ></portlet:resourceURL> 
 
 <div class="alert alert-danger" id="errorMsg"><i class="icon-remove-sign icon-2"></i> </div>
 <div class="container-fluid">
@@ -209,6 +210,11 @@
 
 				<input type="button" value="Go Back" class="btn btn-primary"
 					data-url="${companyListURL}" id="cmpback" />
+					
+					<c:if test="${companyModel.id ==null || companyModel.id ==0}">
+						<input type="button" value="Fetch Officers Information" class="btn btn-primary"
+							data-url="${fetchOfficers}" id="fetchOfficers" />
+					</c:if>
 			</div>
 		</div>
 </div>

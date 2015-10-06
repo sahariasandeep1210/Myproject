@@ -6,6 +6,7 @@ public class ServicesConstants {
 	public static final String COMPANY_SEARCH 											= "COMPANY_SEARCH";
 	public static final String COMPANY_DETAILS 											= "COMPANY_DETAILS";
 	public static final String API_KEY 													= "API_KEY";
+	public static final String OFFICERS													= "OFFICERS";
 	
 
 }

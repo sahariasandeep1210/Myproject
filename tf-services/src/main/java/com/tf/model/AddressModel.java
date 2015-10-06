@@ -14,6 +14,7 @@ public class AddressModel implements Serializable{
 	private String locality;
 	private String country;
 	private String care_of;
+	private String premises;
 	
 	public AddressModel() {
 		// TODO Auto-generated constructor stub
@@ -75,13 +76,21 @@ public class AddressModel implements Serializable{
 		this.country = country;
 	}
 
+	public String getPremises() {
+		return premises;
+	}
+
+	public void setPremises(String premises) {
+		this.premises = premises;
+	}
+
 	@Override
 	public String toString() {
 		return "AddressModel [postal_code=" + postal_code + ", address_line_1="
 				+ address_line_1 + ", address_line_2=" + address_line_2
 				+ ", region=" + region + ", locality=" + locality
-				+ ", country=" + country + ", care_of=" + care_of + "]";
+				+ ", country=" + country + ", care_of=" + care_of
+				+ ", premises=" + premises + "]";
 	}
-	
 
 }
