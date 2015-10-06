@@ -89,7 +89,7 @@ public class CompanyDAOImpl  extends BaseDAOImpl<Company, Long>   implements Com
 		_log.debug("persisting Company instance");
 		List<Long> liferayUserIds=new ArrayList<Long>();
 		try {
-			Company company=findById(id);
+			Company company=findByCompanyId(id);
 			company.setActivestatus(CompanyStatus.DELETED.getValue());
 			 Set<User> users=company.getUsers();
 			 for(User user : users){
@@ -105,6 +105,22 @@ public class CompanyDAOImpl  extends BaseDAOImpl<Company, Long>   implements Com
 		return liferayUserIds;
 	}
 	
+	private Company findByCompanyId(Long id) {
+		_log.debug("getting User instance with id: " + id);
+		try {
+			Company instance = (Company) sessionFactory.getCurrentSession().get(
+					"com.tf.model.Company", id);
+			if (instance == null) {
+				_log.debug("get successful, no instance found");
+			} else {
+				_log.debug("get successful, instance found");
+			}
+			return instance;
+		} catch (RuntimeException re) {
+			_log.error("get failed", re);
+			throw re;
+		}
+	}
 	public Company registerCompany(Company company) {
 		_log.debug("persisting Company instance");
 		try {

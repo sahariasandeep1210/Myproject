@@ -225,4 +225,18 @@ CREATE TABLE `tf_address` (
 
 ALTER TABLE  `scf_invoice_document` ADD scf_company INT(11);
 
+DROP TABLE IF EXISTS `tf_officer`;
+CREATE TABLE `tf_officer` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `company_id` INT(11) NOT NULL ,
+  `name` VARCHAR(100),
+  `officer_role` VARCHAR(70),
+  `resigned_on` DATE,
+  `country_of_residence` VARCHAR(50),
+  `country` VARCHAR(25),
+  `postal_code` VARCHAR(10),  
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (idcompany) REFERENCES tf_company(idcompany)
+) ENGINE=INNODB AUTO_INCREMENT=1986;
+
    

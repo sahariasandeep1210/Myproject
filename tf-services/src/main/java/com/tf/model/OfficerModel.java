@@ -3,6 +3,9 @@ package com.tf.model;
 import java.io.Serializable;
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class OfficerModel  implements Serializable{
 	
 	/**

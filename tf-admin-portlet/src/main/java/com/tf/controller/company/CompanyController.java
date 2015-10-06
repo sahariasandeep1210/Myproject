@@ -40,6 +40,7 @@ import com.liferay.portal.theme.ThemeDisplay;
 import com.tf.controller.BaseController;
 import com.tf.model.Company;
 import com.tf.model.CompanyModel;
+import com.tf.model.OfficerList;
 import com.tf.model.User;
 import com.tf.persistance.util.CompanyStatus;
 import com.tf.persistance.util.Constants;
@@ -260,6 +261,31 @@ public class CompanyController extends BaseController {
 			_log.error("Error occured while fetching company information"+e.getMessage());
 			response.setProperty(ResourceResponse.HTTP_STATUS_CODE, "400");
 		}
+		
+	}
+	
+	@ResourceMapping(value = "fetchOfficers")
+	public ModelAndView fetchOfficers(ResourceRequest request,
+			ResourceResponse response,ModelMap modelMap) throws IOException {
+		String companyNo = ParamUtil.getString(request, "companyNo");
+		OfficerList officersList=new OfficerList();
+		System.out.println("companyNo:::::"+companyNo);
+		//JSONArray cmpArray = JSONFactoryUtil.createJSONArray();	
+		
+		try {
+			if (!StringUtils.isEmpty(companyNo)) {
+				//JSONObject companyObject = JSONFactoryUtil.createJSONObject();	
+				 officersList  = companyServices.getOfficersInfo(companyNo);							
+			}
+			
+			
+			modelMap.addAttribute("officers", officersList.getItems());
+			return new ModelAndView("officerslist");
+		} catch (Exception e) {
+			_log.error("Error occured while fetching officers information"+e.getMessage());
+			response.setProperty(ResourceResponse.HTTP_STATUS_CODE, "400");
+		}
+		return new ModelAndView("officerslist");
 		
 	}
 

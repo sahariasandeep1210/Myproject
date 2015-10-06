@@ -2,7 +2,7 @@ var errormessage="Some required information is missing or incomplete. Please cor
 
 $(function() {
 	
-	enableDisableoptions();
+	//enableDisableoptions();
 	
 	
 	$("#errorMsg").hide(); 
@@ -33,6 +33,7 @@ $(function() {
 				url: $("#fetchURL").val(), 
 				type: 'POST', 
 				datatype:'json', 
+				cache: false,
 				data: { 
 						companyNo: companyNumber 
 					  }, 
@@ -40,7 +41,7 @@ $(function() {
 							//var companObject= JSON.parse(data);
 					
 							$("#companyNumber").removeClass("error_show");
-							$("#companyDetails").show(); 
+							//$("#companyDetails").show(); 
 							var companyObject=jQuery.parseJSON(data);
 							console.log("::companyObject::"+companyObject);
 							//var obj = jQuery.parseJSON( '{ "name": "John" }' );
@@ -65,7 +66,7 @@ $(function() {
 				error: function(jqXHR, textStatus, errorThrown) {
 					ajaxindicatorstop();
 					$(':input').not(':button, :submit, :reset, :hidden, input[id=companyNumber]').val('').removeAttr('checked').removeAttr('selected');
-					$("#companyDetails").show(); 
+					//$("#companyDetails").show(); 
 					$('#myModal').modal('show');
 				}
 				});	
@@ -76,6 +77,37 @@ $(function() {
 		
 	
 	});
+	
+	$("#fetchOfficers").click(function(){
+		
+		var companyNumber=$("#registrationNo").val();
+		if(companyNumber!=''){
+			
+			$.ajax({ 
+				url: $(this).attr('data-url'), 
+				type: 'POST', 
+				datatype:'json', 
+				cache: false,
+				data: { 
+						companyNo: companyNumber 
+					  }, 
+				success: function(data){				
+							$("#officersDiv").html(data);
+							
+						 } ,
+				error: function(jqXHR, textStatus, errorThrown) {
+					ajaxindicatorstop();
+				}
+				});	
+			
+		}else{
+			$("#companyNumber").addClass("error_show");
+		}
+		
+	
+	});
+	
+	
 	
 	$("#deleteCompany").dialog({
 		autoOpen : false,

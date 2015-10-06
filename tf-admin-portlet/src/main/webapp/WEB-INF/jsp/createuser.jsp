@@ -24,6 +24,7 @@
 		action="${createUserURL}" id="createUser"  name="userDetail">
 		<input type="hidden" value="${deleteUserURL}" id="deleteURL"> 
 		<input type="hidden" value="${companyID}" id="companyID" name="companyID">
+		<input type="hidden" value="${userModel.liferayUserId}" id="liferayUserId" name="liferayUserId">
 		<div class="row-fluid">
 				<div class="span12" style="border-bottom: 1px solid #003d59;margin-bottom: 35px">
 					<div class="span4"><h4>Add User Information</h4></div>					

@@ -1,5 +1,20 @@
 <%@include file="init.jsp"%>
 
+
+						
+<div class="row-fluid">
+	
+	<div class="span12">
+		<div class="span12">
+			<h5 style="float: right !important;">
+				<input type="button" value="Fetch Officers Information"
+						class="btn btn-primary" data-url="${fetchOfficers}"
+						id="fetchOfficers" />
+			</h5>
+		</div>
+	</div>
+</div>
+
 <div class="table-responsive">
 			<table class="table table-hover tablesorter table-bordered">
 				<thead>
@@ -12,17 +27,24 @@
 					</tr>
 				</thead>
 				<tbody>
-					<c:forEach items="${officers}" var="officer">
-						<tr
-							onclick="window.location.href='${createUserURL}&userID=${user.id}&companyID=${companyModel.id}'">
-							<td>${user.firstName}</td>
-							<td>${user.lastName}</td>
-							<td>${user.username}</td>
-							<td>${user.email}</td>
-							<td>${user.mobile}</td>
-							<td>${user.level}</td>
-						</tr>
-					</c:forEach>
+					<c:choose>
+						<c:when test="${fn:length(officers) gt 0}">
+							<c:forEach items="${officers}" var="officer">
+								<tr>
+									<td>${officer.name}</td>
+									<td>${officer.officer_role}</td>
+									<td><fmt:formatDate pattern="dd-MM-yyyy" value="${officer.appointed_on}" /></td>
+									<td>${officer.nationality}</td>
+									<td><fmt:formatDate pattern="dd-MM-yyyy" value="${officer.resigned_on}" /></td>
+								</tr>
+							</c:forEach>
+						</c:when>
+						<c:otherwise>
+							<tr>
+								<td colspan="6" align="center" style="text-align: center;"> No Officers found!</td>
+							</tr>
+						</c:otherwise>
+					</c:choose>
 				</tbody>
 			</table>
 		</div>

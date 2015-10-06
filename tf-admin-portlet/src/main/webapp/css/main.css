@@ -92,6 +92,16 @@ hr {
 }
 
 
-.ui-dialog .ui-dialog-title{
+.ui-dialog .ui-dialog-title {
 	color: #fff !important;
+}
+
+a {
+	text-decoration: none !important
+}
+
+.aui .accordion-heading {
+    border-bottom: 0;
+    background-color: #DEE7EE !important;
+    color: #295780 !important;
 }

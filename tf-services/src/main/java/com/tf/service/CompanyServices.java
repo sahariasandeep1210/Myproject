@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.tf.model.CompanyList;
 import com.tf.model.CompanyModel;
+import com.tf.model.OfficerList;
 import com.tf.util.RestServiceConsumerUtil;
 import com.tf.util.ServiceResponseException;
 import com.tf.util.ServicesConstants;
@@ -31,11 +32,11 @@ public class CompanyServices  extends BaseService{
 		    return response.getBody(); 
 		  }
 	
-	public CompanyModel getOfficersInfo(String companyNumber)
+	public OfficerList getOfficersInfo(String companyNumber)
 		    throws ServiceResponseException {
 		    String url = getOfficersURL(companyNumber);
 		    HttpEntity<String> request = new HttpEntity<String>(createHeaders(restServiceConsumerUtil.getProperty(ServicesConstants.API_KEY)));
-		    ResponseEntity<CompanyModel> response   = RestServiceConsumerUtil.restTemplate.exchange(url, HttpMethod.GET, request, CompanyModel.class);
+		    ResponseEntity<OfficerList> response   = RestServiceConsumerUtil.restTemplate.exchange(url, HttpMethod.GET, request, OfficerList.class);
 		    return response.getBody(); 
 		  }
 
