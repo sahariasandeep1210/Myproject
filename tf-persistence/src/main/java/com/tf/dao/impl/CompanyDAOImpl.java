@@ -93,7 +93,7 @@ public class CompanyDAOImpl  extends BaseDAOImpl<Company, Long>   implements Com
 			company.setActivestatus(CompanyStatus.DELETED.getValue());
 			 Set<User> users=company.getUsers();
 			 for(User user : users){
-				 user.setActive(WorkflowConstants.STATUS_INACTIVE);
+				 user.setActive(Boolean.FALSE);
 				 liferayUserIds.add(user.getLiferayUserId());
 			 }
 			sessionFactory.getCurrentSession().saveOrUpdate(company);

@@ -25,7 +25,7 @@ public class Trade {
 	private Long id;
 	
 	@Column(name="duration")
-	private BigDecimal duration;
+	private Integer duration;
 	
 	@Column(name="closing_date")
 	private Date closingDate;	
@@ -36,8 +36,9 @@ public class Trade {
 	@Column(name="trade_amount")
 	private BigDecimal tradAmount;
 	
-	@Column(name="status")
-	private Integer status;
+	//@Column(name="status")
+	@Column(name="status",nullable = false, columnDefinition = "TINYINT", length = 1)
+	private boolean status;
 	
 	@Column(name="invoive_company_id")
 	private Long invoiveCompanyId;
@@ -46,7 +47,7 @@ public class Trade {
 	private Long sellerCompanyId;
 	
 	@Column(name="trade_days")
-	private Long tradeDays;
+	private Integer tradeDays;
 	
 	@Column(name="trade_description")
 	private String tradeDescription;
@@ -54,11 +55,13 @@ public class Trade {
 	@Column(name="repayment_date")
 	private Date repaymentDate;
 	
-	@Column(name="trade_settled")
-	private Integer tradeSettled;	
+	//@Column(name="trade_settled")
+	@Column(name="trade_settled",nullable = false, columnDefinition = "TINYINT", length = 1)
+	private boolean tradeSettled;	
 	
-	@Column(name="is_secondary_allotment")
-	private Integer isSecAllotment;
+	//@Column(name="is_secondary_allotment")
+	@Column(name="is_secondary_allotment",nullable = false, columnDefinition = "TINYINT", length = 1)
+	private boolean isSecAllotment;
 	
 	@Column(name="total_value")
 	private BigDecimal totalValue;
@@ -75,11 +78,11 @@ public class Trade {
 		this.id = id;
 	}
 
-	public BigDecimal getDuration() {
+	public Integer getDuration() {
 		return duration;
 	}
 
-	public void setDuration(BigDecimal duration) {
+	public void setDuration(Integer duration) {
 		this.duration = duration;
 	}
 
@@ -107,11 +110,11 @@ public class Trade {
 		this.tradAmount = tradAmount;
 	}
 
-	public Integer getStatus() {
+	public boolean getStatus() {
 		return status;
 	}
 
-	public void setStatus(Integer status) {
+	public void setStatus(boolean status) {
 		this.status = status;
 	}
 
@@ -131,11 +134,11 @@ public class Trade {
 		this.sellerCompanyId = sellerCompanyId;
 	}
 
-	public Long getTradeDays() {
+	public Integer getTradeDays() {
 		return tradeDays;
 	}
 
-	public void setTradeDays(Long tradeDays) {
+	public void setTradeDays(Integer tradeDays) {
 		this.tradeDays = tradeDays;
 	}
 
@@ -155,19 +158,19 @@ public class Trade {
 		this.repaymentDate = repaymentDate;
 	}
 
-	public Integer getTradeSettled() {
+	public boolean getTradeSettled() {
 		return tradeSettled;
 	}
 
-	public void setTradeSettled(Integer tradeSettled) {
+	public void setTradeSettled(boolean tradeSettled) {
 		this.tradeSettled = tradeSettled;
 	}
 
-	public Integer getIsSecAllotment() {
+	public boolean getIsSecAllotment() {
 		return isSecAllotment;
 	}
 
-	public void setIsSecAllotment(Integer isSecAllotment) {
+	public void setIsSecAllotment(boolean isSecAllotment) {
 		this.isSecAllotment = isSecAllotment;
 	}
 

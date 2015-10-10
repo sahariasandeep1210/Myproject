@@ -7,6 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -22,10 +23,10 @@ public class PurchaseOrderModel {
 	private Long id;	
 	
 	@Column(name="seller_id")
-	private Integer sellerId;
+	private Long sellerId;
 	
 	@Column(name="debtor_company")
-	private Integer debtorCompany;
+	private Long debtorCompany;
 	
 	@Column(name="po_number")
 	private String poNumber;
@@ -51,10 +52,12 @@ public class PurchaseOrderModel {
 	@Column(name="delivery_date")
 	private Date deliveryDate;	
 	
-	@Column(name="is_traded")
-	private Integer isTraded; 
+	//@Column(name="is_traded")
+	@Column(name="is_traded",nullable = false, columnDefinition = "TINYINT", length = 1)
+	private boolean isTraded; 
 	
 	@ManyToOne
+	@JoinColumn(name="trade_id")
 	private Trade trade;
 	
 	public PurchaseOrderModel() {
@@ -68,19 +71,19 @@ public class PurchaseOrderModel {
 		this.id = id;
 	}
 
-	public Integer getSellerId() {
+	public Long getSellerId() {
 		return sellerId;
 	}
 
-	public void setSellerId(Integer sellerId) {
+	public void setSellerId(Long sellerId) {
 		this.sellerId = sellerId;
 	}
 
-	public Integer getDebtorCompany() {
+	public Long getDebtorCompany() {
 		return debtorCompany;
 	}
 
-	public void setDebtorCompany(Integer debtorCompany) {
+	public void setDebtorCompany(Long debtorCompany) {
 		this.debtorCompany = debtorCompany;
 	}
 
@@ -148,11 +151,11 @@ public class PurchaseOrderModel {
 		this.deliveryDate = deliveryDate;
 	}
 
-	public Integer getIsTraded() {
+	public boolean getIsTraded() {
 		return isTraded;
 	}
 
-	public void setIsTraded(Integer isTraded) {
+	public void setIsTraded(boolean isTraded) {
 		this.isTraded = isTraded;
 	}
 

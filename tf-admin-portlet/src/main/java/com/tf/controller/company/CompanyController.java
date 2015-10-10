@@ -38,9 +38,13 @@ import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.service.UserServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.tf.controller.BaseController;
+import com.tf.model.AddressModel;
 import com.tf.model.Company;
 import com.tf.model.CompanyModel;
+import com.tf.model.Officer;
+import com.tf.model.OfficerAddress;
 import com.tf.model.OfficerList;
+import com.tf.model.OfficerModel;
 import com.tf.model.User;
 import com.tf.persistance.util.CompanyStatus;
 import com.tf.persistance.util.Constants;
@@ -84,12 +88,13 @@ public class CompanyController extends BaseController {
 		if(companyID!=0){
 			 company=companyService.findById(companyID);
 			 users=userService.findUserByCompanyId(companyID);
-			 
+			 company.setOfficers(new LinkedHashSet<Officer>(officerService.findOfficersByCompanyId(companyID)));
 		}	
 		Map<String,String> userTypesMap=adminUtility.getUserTypes(adminUtility.getUserID(request), companyService.getCompanyTypebyID(companyID), request);
 		model.put("currentUser",themeDispay.getRealUser());
 		model.put("companyModel", company);
 		model.put("users", users);
+		//model.put("officers", officers);
 		model.put("orgTypeMap", orgTypeMap);
 		model.put("companyTypeMap", companyTypeMap);
 		model.put("userTypesMap", userTypesMap);
@@ -147,7 +152,7 @@ public class CompanyController extends BaseController {
 		System.out.println("lruser:::"+lruser);
 		//Liferay user has been added now we need to add user information to tf_user table
 		//and map the same to Liferay userId and Company/Seller
-		user.setActive(0);
+		user.setActive(Boolean.FALSE);
 		user.setLiferayUserId(lruser.getUserId());
 		//userService.addorUpdateUser(user);
 		Company company = registration.getCompany();
@@ -231,7 +236,7 @@ public class CompanyController extends BaseController {
 		System.out.println("User>>>>>>>>>>>>>>>>>>>>:::"+user);
 		//Liferay user has been added now we need to add user information to tf_user table
 		//and map the same to Liferay userId and Company/Seller
-		user.setActive(0);
+		user.setActive(Boolean.FALSE);
 		userService.addorUpdateUser(user);
 		System.out.println("After User Added");
 		response.setRenderParameter("companyID", companyID.toString());
@@ -267,7 +272,9 @@ public class CompanyController extends BaseController {
 	@ResourceMapping(value = "fetchOfficers")
 	public ModelAndView fetchOfficers(ResourceRequest request,
 			ResourceResponse response,ModelMap modelMap) throws IOException {
-		String companyNo = ParamUtil.getString(request, "companyNo");
+		String companyNo = ParamUtil.getString(request, "companyNo"); 
+		Long companyId = ParamUtil.getLong(request, "companyId");
+		Company company=companyService.findById(companyId);
 		OfficerList officersList=new OfficerList();
 		System.out.println("companyNo:::::"+companyNo);
 		//JSONArray cmpArray = JSONFactoryUtil.createJSONArray();	
@@ -275,17 +282,52 @@ public class CompanyController extends BaseController {
 		try {
 			if (!StringUtils.isEmpty(companyNo)) {
 				//JSONObject companyObject = JSONFactoryUtil.createJSONObject();	
-				 officersList  = companyServices.getOfficersInfo(companyNo);							
+				 officersList  = companyServices.getOfficersInfo(companyNo);	
+				 List<Officer> officerList=transformOfficersModeltoOfficerslist(officersList.getItems(),company);
+				 officerService.addOfficer(officerList);
+				 //company.setOfficers(officerList);
+				 
+				// companyService.addCompany(company);
+				 modelMap.addAttribute("officers", officerList);
 			}
 			
-			
-			modelMap.addAttribute("officers", officersList.getItems());
 			return new ModelAndView("officerslist");
 		} catch (Exception e) {
 			_log.error("Error occured while fetching officers information"+e.getMessage());
 			response.setProperty(ResourceResponse.HTTP_STATUS_CODE, "400");
 		}
 		return new ModelAndView("officerslist");
+		
+	}
+
+	private List<Officer> transformOfficersModeltoOfficerslist(List<OfficerModel> inputOfficersList,Company company) {
+		List<Officer> officerList=new ArrayList<Officer>();
+		for(OfficerModel officerModel : inputOfficersList){
+			Officer officer = new Officer();
+			setOfficersAddreesInfo(officer,officerModel.getAddress());
+			officer.setName(officerModel.getName());
+			officer.setOfficerRole(officerModel.getOfficer_role());
+			officer.setAppointedDate(officerModel.getAppointed_on());
+			officer.setResignedDate(officerModel.getResigned_on());
+			officer.setNationality(officerModel.getNationality());
+			officer.setOccupation(officerModel.getOccupation());
+			officer.setCompany(company);
+			officerList.add(officer);			
+		}
+		
+		return officerList;
+		
+	}
+
+	private void setOfficersAddreesInfo(Officer officer,AddressModel address) {
+		OfficerAddress officerAdd=new OfficerAddress();
+		officerAdd.setAddressLine1(address.getAddress_line_1());
+		officerAdd.setAddressLine2(address.getAddress_line_2());
+		officerAdd.setLocality(address.getLocality());
+		officerAdd.setRegion(address.getRegion());
+		officerAdd.setCountry(address.getCountry());
+		officerAdd.setPostalCode(address.getPostal_code());
+		officer.setOfficerAddress(officerAdd);
 		
 	}
 

@@ -45,8 +45,9 @@ public class User {
 	@Column(name="type")
 	private String type;
 	
-	@Column(name="active")
-	private Integer active;	
+	//@Column(name="active")
+	@Column(name="active",nullable = false, columnDefinition = "TINYINT", length = 1)
+	private boolean active;	
 	
 	@Column(name="email")
 	private String email;
@@ -83,8 +84,9 @@ public class User {
 	@Column(name="updateflag")
 	private Integer updateFlag; 
 	
-	@Column(name="active_status")
-	private Integer activeStatus; 
+	//@Column(name="active_status")
+	@Column(name="active_status",nullable = false, columnDefinition = "TINYINT", length = 1)
+	private boolean activeStatus; 
 	
 	@Column(name="companydirector")
 	private String companyDirector;
@@ -185,12 +187,12 @@ public class User {
 	}
 
 
-	public Integer getActive() {
+	public boolean getActive() {
 		return active;
 	}
 
 
-	public void setActive(Integer active) {
+	public void setActive(boolean active) {
 		this.active = active;
 	}
 
@@ -304,12 +306,12 @@ public class User {
 	}
 
 
-	public Integer getActiveStatus() {
+	public boolean getActiveStatus() {
 		return activeStatus;
 	}
 
 
-	public void setActiveStatus(Integer activeStatus) {
+	public void setActiveStatus(boolean activeStatus) {
 		this.activeStatus = activeStatus;
 	}
 

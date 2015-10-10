@@ -25,7 +25,7 @@ $(function() {
 	
 	$("#findCompany").click(function(){
 		
-		var companyNumber=$("#companyNumber").val();
+		var companyNumber=$("#companyNumber").val();		
 		$("#companyNumber").removeClass("error_show");
 		if(companyNumber!=''){
 			
@@ -35,7 +35,7 @@ $(function() {
 				datatype:'json', 
 				cache: false,
 				data: { 
-						companyNo: companyNumber 
+						companyNo: companyNumber 					
 					  }, 
 				success: function(data){
 							//var companObject= JSON.parse(data);
@@ -81,6 +81,7 @@ $(function() {
 	$("#fetchOfficers").click(function(){
 		
 		var companyNumber=$("#registrationNo").val();
+		var companyId=$("#compId").val();
 		if(companyNumber!=''){
 			
 			$.ajax({ 
@@ -89,7 +90,8 @@ $(function() {
 				datatype:'json', 
 				cache: false,
 				data: { 
-						companyNo: companyNumber 
+						companyNo: companyNumber,
+						companyId: companyId
 					  }, 
 				success: function(data){				
 							$("#officersDiv").html(data);

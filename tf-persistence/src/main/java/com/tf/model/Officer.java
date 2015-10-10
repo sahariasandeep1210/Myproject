@@ -2,12 +2,14 @@ package com.tf.model;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 
@@ -16,12 +18,13 @@ import javax.persistence.Table;
 public class Officer {
 	
 	@Id
-    @Column(name="id")
+    @Column(name="officer_id")
     @GeneratedValue
 	private Long id;	
 	
-	@ManyToOne  
-    @JoinColumn(name = "company_id")  
+
+	@ManyToOne(cascade=CascadeType.ALL)	
+	@JoinColumn(name = "company_id")  
 	private Company company;
 	
 	@Column(name="name")
@@ -46,10 +49,13 @@ public class Officer {
 	private String occupation;
 	
 	@Column(name="updated_on")
-	private String updatedon;
+	private Date updatedon;
 	
 	@Column(name="iduser")
 	private Long iduser;
+	
+	@OneToOne(mappedBy = "officer",cascade=CascadeType.ALL)    
+	private OfficerAddress officerAddress;
 	
 	public Officer() {
 		
@@ -127,11 +133,11 @@ public class Officer {
 		this.occupation = occupation;
 	}
 
-	public String getUpdatedon() {
+	public Date getUpdatedon() {
 		return updatedon;
 	}
 
-	public void setUpdatedon(String updatedon) {
+	public void setUpdatedon(Date updatedon) {
 		this.updatedon = updatedon;
 	}
 
@@ -141,6 +147,14 @@ public class Officer {
 
 	public void setIduser(Long iduser) {
 		this.iduser = iduser;
+	}
+
+	public OfficerAddress getOfficerAddress() {
+		return officerAddress;
+	}
+
+	public void setOfficerAddress(OfficerAddress officerAddress) {
+		this.officerAddress = officerAddress;
 	}
 
 	@Override

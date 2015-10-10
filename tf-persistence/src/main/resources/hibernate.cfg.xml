@@ -18,6 +18,7 @@
 		<mapping class="com.tf.model.InvoiceCompany" />  
 		<mapping class="com.tf.model.Address" />  
 		<mapping class="com.tf.model.Officer" /> 
+		<mapping class="com.tf.model.OfficerAddress" /> 
 	</session-factory>
 
 </hibernate-configuration>

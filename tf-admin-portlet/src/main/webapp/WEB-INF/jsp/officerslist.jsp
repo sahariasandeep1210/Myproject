@@ -47,10 +47,10 @@
 							<c:forEach items="${officers}" var="officer">
 								<tr>
 									<td>${officer.name}</td>
-									<td>${officer.officer_role}</td>
-									<td><fmt:formatDate pattern="dd-MM-yyyy" value="${officer.appointed_on}" /></td>
+									<td>${officer.officerRole}</td>
+									<td><fmt:formatDate pattern="dd-MM-yyyy" value="${officer.appointedDate}" /></td>
 									<td>${officer.nationality}</td>
-									<td><fmt:formatDate pattern="dd-MM-yyyy" value="${officer.resigned_on}" /></td>
+									<td><fmt:formatDate pattern="dd-MM-yyyy" value="${officer.resignedDate}" /></td>
 								</tr>
 							</c:forEach>
 						</c:when>

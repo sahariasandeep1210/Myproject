@@ -14,6 +14,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Type;
+
 
 @Entity
 @Table(name="scf_trade")
@@ -55,11 +57,20 @@ public class SCFTrade {
 	@Column(name="trade_notes")
 	private String tradeNotes;	
 	
-	@Column(name="trade_settled")
-	private Integer tradeSettled;
+	//@Type(type = "org.hibernate.type.NumericBooleanType")
+	//@Column(name="trade_settled",columnDefinition = "TINYINT")
+	//@Type(type = "org.hibernate.type.NumericBooleanType")
+	//@org.hibernate.annotations.Type(type="true_false")
+	//@Column(name="trade_settled", columnDefinition = "TINYINT(1) DEFAULT 0")
+	@Column(name="trade_settled",nullable = false, columnDefinition = "TINYINT", length = 1)
+	private boolean tradeSettled;
 	
-	@Column(name="want_to_insure")
-	private Integer wantToInsure;
+	//@Column(name="want_to_insure", columnDefinition = "TINYINT")
+	//@Type(type = "org.hibernate.type.NumericBooleanType")
+	//@org.hibernate.annotations.Type(type="true_false")
+	//@Column(name="want_to_insure", columnDefinition = "TINYINT(1) DEFAULT 0")
+	@Column(name="want_to_insure",nullable = false, columnDefinition = "TINYINT", length = 1)
+	private boolean wantToInsure;
 	
 	@Column(name="insurance_doc_id")
 	private Long insuranceDocId;
@@ -179,19 +190,19 @@ public class SCFTrade {
 		this.tradeNotes = tradeNotes;
 	}
 
-	public Integer getTradeSettled() {
+	public boolean getTradeSettled() {
 		return tradeSettled;
 	}
 
-	public void setTradeSettled(Integer tradeSettled) {
+	public void setTradeSettled(boolean tradeSettled) {
 		this.tradeSettled = tradeSettled;
 	}
 
-	public Integer getWantToInsure() {
+	public boolean getWantToInsure() {
 		return wantToInsure;
 	}
 
-	public void setWantToInsure(Integer wantToInsure) {
+	public void setWantToInsure(boolean wantToInsure) {
 		this.wantToInsure = wantToInsure;
 	}
 

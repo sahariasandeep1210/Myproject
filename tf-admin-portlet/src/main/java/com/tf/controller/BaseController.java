@@ -19,6 +19,7 @@ import com.tf.model.CompanyType;
 import com.tf.service.CompanyService;
 import com.tf.service.CompanyServices;
 import com.tf.service.CompanyTypeService;
+import com.tf.service.OfficerService;
 import com.tf.service.UserService;
 import com.tf.util.AdminUtility;
 import com.tf.util.MyCustomNumberEditor;
@@ -41,6 +42,9 @@ public class BaseController {
 	
 	@Autowired
 	protected CompanyServices companyServices;
+	
+	@Autowired
+	protected OfficerService officerService;
 
 	public static Map<String, String> orgTypeMap = initialzeOrgTypeMap();
 	public static Map<Long, String> companyTypeMap;
