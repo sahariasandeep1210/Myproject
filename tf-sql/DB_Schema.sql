@@ -231,12 +231,15 @@ CREATE TABLE `tf_officer` (
   `company_id` INT(11) NOT NULL ,
   `name` VARCHAR(100),
   `officer_role` VARCHAR(70),
+  `appointed_on` DATE,
   `resigned_on` DATE,
   `country_of_residence` VARCHAR(50),
-  `country` VARCHAR(25),
-  `postal_code` VARCHAR(10),  
+  `nationality` VARCHAR(50),
+  `occupation` VARCHAR(50),  
+  `updated_on` DATE, 
+  `iduser` INT(11) NOT NULL,
   PRIMARY KEY (`id`),
-  FOREIGN KEY (idcompany) REFERENCES tf_company(idcompany)
+  FOREIGN KEY (company_id) REFERENCES tf_company(idcompany)
 ) ENGINE=INNODB AUTO_INCREMENT=1986;
 
    

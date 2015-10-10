@@ -6,10 +6,8 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -91,6 +89,10 @@ public class Company {
 	
 	@OneToOne(mappedBy = "company",cascade=CascadeType.ALL)    
 	private Address address;
+	
+	
+	@OneToMany(mappedBy = "company",cascade=CascadeType.ALL)      
+	private Set<Officer> officers;
 	
 	public Company() {
 		// TODO Auto-generated constructor stub
@@ -278,6 +280,14 @@ public class Company {
 
 	public void setAddress(Address address) {
 		this.address = address;
+	}
+
+	public Set<Officer> getOfficers() {
+		return officers;
+	}
+
+	public void setOfficers(Set<Officer> officers) {
+		this.officers = officers;
 	}
 
 	@Override

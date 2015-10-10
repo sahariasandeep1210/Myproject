@@ -1,6 +1,21 @@
 <%@include file="init.jsp"%>
 
 
+<div class="row-fluid" >
+				<div class="span12" >
+					<c:choose>
+						<c:when test="${fn:length(companyModel.officers) gt 0}">
+							<div class="span12" ><h6>Officers information was updated on ${officersUpdateDate}.Please click on 'Update Officers information' to update officers information.</h6></div>
+						</c:when>
+						<c:otherwise>
+							<div class="span12" ><h6>Officers information Not Found! Please click on 'Fetch Officers Information' button to add officers to this company.</h6></div>
+						</c:otherwise>
+					</c:choose>
+					
+							
+								
+				</div>
+</div>
 						
 <div class="row-fluid">
 	

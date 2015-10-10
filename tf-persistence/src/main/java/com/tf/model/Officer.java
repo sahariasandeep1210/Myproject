@@ -45,6 +45,12 @@ public class Officer {
 	@Column(name="occupation")
 	private String occupation;
 	
+	@Column(name="updated_on")
+	private String updatedon;
+	
+	@Column(name="iduser")
+	private Long iduser;
+	
 	public Officer() {
 		
 	}
@@ -119,6 +125,22 @@ public class Officer {
 
 	public void setOccupation(String occupation) {
 		this.occupation = occupation;
+	}
+
+	public String getUpdatedon() {
+		return updatedon;
+	}
+
+	public void setUpdatedon(String updatedon) {
+		this.updatedon = updatedon;
+	}
+
+	public Long getIduser() {
+		return iduser;
+	}
+
+	public void setIduser(Long iduser) {
+		this.iduser = iduser;
 	}
 
 	@Override
