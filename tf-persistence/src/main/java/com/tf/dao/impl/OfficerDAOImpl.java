@@ -8,14 +8,13 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.tf.dao.OfficerDAO;
-import com.tf.model.Invoice;
+import com.tf.model.Company;
 import com.tf.model.Officer;
-import com.tf.model.User;
 
 
 @Repository
 @Transactional(rollbackFor = Exception.class)
-public class OfficerDAOImpl extends BaseDAOImpl<User, Long> implements  OfficerDAO{
+public class OfficerDAOImpl extends BaseDAOImpl<Officer, Long> implements  OfficerDAO{
 
 	public List<Officer> findOfficersByCompanyId(long id) {
 		
@@ -43,6 +42,34 @@ public class OfficerDAOImpl extends BaseDAOImpl<User, Long> implements  OfficerD
 				session.save(officer);
 			}
 			_log.debug("officers persisted successful");
+		} catch (RuntimeException re) {
+			_log.error("persist failed", re);
+			throw re;
+		}
+	}
+	
+	public Officer findById(long id){
+		_log.debug("getting User instance with id: " + id);
+		try {
+			Officer instance = (Officer) sessionFactory.getCurrentSession().get(
+					"com.tf.model.Officer", id);
+			if (instance == null) {
+				_log.debug("get successful, no instance found");
+			} else {
+				_log.debug("get successful, instance found");
+			}
+			return instance;
+		} catch (RuntimeException re) {
+			_log.error("get failed", re);
+			throw re;
+		}
+	}
+	
+	public void  addorUpdateOfficer(Officer officer){
+		_log.debug("persisting Company instance");
+		try {
+			sessionFactory.getCurrentSession().saveOrUpdate(officer);
+			_log.debug("persist successful"+officer);
 		} catch (RuntimeException re) {
 			_log.error("persist failed", re);
 			throw re;

@@ -15,14 +15,22 @@ import com.tf.model.User;
 public class UserDAOImpl extends BaseDAOImpl<User, Long>  implements UserDAO{
 	
 	
-	public void addorUpdateUser(User user) {
+	public Long addorUpdateUser(User user) {
 		try {
-			sessionFactory.getCurrentSession().saveOrUpdate(user);
+			if(user.getId()==null){
+				sessionFactory.getCurrentSession().save(user);			
+			}else{
+				sessionFactory.getCurrentSession().saveOrUpdate(user);
+			}
+				
+			
 			_log.debug("persist successful"+user);
+			return user.getId();
 		} catch (RuntimeException re) {
-			_log.error("persist failed", re);
-			throw re;
+			_log.error("persist failed", re);			
+			return user.getId();
 		}
+		
 	}
 	
 	public User findById(long id) {

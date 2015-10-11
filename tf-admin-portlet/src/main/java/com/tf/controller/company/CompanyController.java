@@ -6,6 +6,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.StringTokenizer;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
@@ -28,6 +29,9 @@ import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 import com.google.gson.Gson;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.json.JSONArray;
+import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
@@ -48,6 +52,7 @@ import com.tf.model.OfficerModel;
 import com.tf.model.User;
 import com.tf.persistance.util.CompanyStatus;
 import com.tf.persistance.util.Constants;
+import com.tf.util.OfficerDTO;
 import com.tf.util.Registration;
 
 
@@ -213,8 +218,10 @@ public class CompanyController extends BaseController {
 		if(userID!=0){
 			user=userService.findById(userID);	
 		}
+		List<Officer> officers=officerService.findOfficersByCompanyId(companyID);
 		Map<String,String> userTypesMap=adminUtility.getUserTypes(adminUtility.getUserID(request), companyService.getCompanyTypebyID(companyID), request);
 		model.put("userModel", user);
+		model.put("officers", officers);
 		model.put("companyID", companyID);
 		model.put("userTypesMap", userTypesMap);
 		return new ModelAndView("createuser", model);		
@@ -227,6 +234,7 @@ public class CompanyController extends BaseController {
 												 ActionResponse response) throws Exception {
 		System.out.println("userModel:::"+user);	
 		Long companyID = ParamUtil.getLong(request, "companyID");
+		Long officerId = ParamUtil.getLong(request, "officer");
 		user.setCompany(companyService.findById(companyID));
 		if(user.getId() ==null){			
 			com.liferay.portal.model.User lruser = addLiferayUser(user, request);
@@ -237,7 +245,12 @@ public class CompanyController extends BaseController {
 		//Liferay user has been added now we need to add user information to tf_user table
 		//and map the same to Liferay userId and Company/Seller
 		user.setActive(Boolean.FALSE);
-		userService.addorUpdateUser(user);
+		Long userID=userService.addorUpdateUser(user);
+		if(officerId!=null && userID!=null){
+			Officer officer=officerService.findById(officerId);
+			officer.setIduser(userID);
+			officerService.addorUpdateOfficer(officer);
+		}
 		System.out.println("After User Added");
 		response.setRenderParameter("companyID", companyID.toString());
 		response.setRenderParameter("render", "createCompany");
@@ -297,6 +310,43 @@ public class CompanyController extends BaseController {
 			response.setProperty(ResourceResponse.HTTP_STATUS_CODE, "400");
 		}
 		return new ModelAndView("officerslist");
+		
+	}
+	
+	@ResourceMapping(value = "fetchOfficerInfo")
+	public void fetchOfficeInformation(ResourceRequest request,
+			ResourceResponse response,ModelMap modelMap) throws IOException {
+		Long officerId = ParamUtil.getLong(request, "officerId");		
+		String officerInfoString="";
+		
+		try {
+			if (officerId!=null) {
+				Officer officer=officerService.findById(officerId);
+				OfficerDTO officerDTO=new OfficerDTO();
+				
+				StringTokenizer nameSt = new StringTokenizer(officer.getName(),",");
+				officerDTO.setLastName(nameSt.nextToken());
+				StringTokenizer firstNameSt = new StringTokenizer(nameSt.nextToken()," ");
+				officerDTO.setFirstName(firstNameSt.nextToken());
+				officerDTO.setMiddleName(firstNameSt.hasMoreTokens()? firstNameSt.nextToken():"");
+				officerDTO.setRole(officer.getOfficerRole());
+				officerDTO.setOccupation(officer.getOccupation());
+				
+				Gson gson = new Gson();
+				officerInfoString = gson.toJson(officerDTO);	
+				response.getWriter().println(officerInfoString);
+				//JSONObject companyObject = JSONFactoryUtil.createJSONObject();	
+				
+				 //company.setOfficers(officerList);
+				 
+				// companyService.addCompany(company);
+				//response.getWriter().println(officersArray);
+			}
+			
+		} catch (Exception e) {
+			_log.error("Error occured while fetching officer information"+e.getMessage());
+			response.setProperty(ResourceResponse.HTTP_STATUS_CODE, "400");
+		}
 		
 	}
 

@@ -16,8 +16,8 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	private UserDAO userDAO;
 
-	public void addorUpdateUser(User user) {
-		userDAO.addorUpdateUser(user);		
+	public  Long addorUpdateUser(User user) {
+		return userDAO.addorUpdateUser(user);		
 	}
 
 	public List<User> findUserByCompanyId(long id) {

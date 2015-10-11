@@ -109,6 +109,50 @@ $(function() {
 	
 	});
 	
+	$("#officer").change(function(){
+		
+		var officerVal=$(this).val();
+		if(officerVal==''){			
+			$(':input').not(':button, :submit, :reset, :hidden, input[id=officer]').val('').removeAttr('checked').removeAttr('selected');
+			$(':input').not(':button, :submit, :reset, :hidden, input[id=officer]').prop("readonly", false);
+		}else{
+			$.ajax({ 
+				url: $(this).attr('data-url'), 
+				type: 'POST', 
+				datatype:'json', 
+				cache: false,
+				data: { 
+						officerId: officerVal
+					  }, 
+				success: function(data){				
+							var officerObject= jQuery.parseJSON(data);
+							
+							$("#firstname").val(officerObject.firstName).prop("readonly", true);
+							$("#lastname").val(officerObject.lastName).prop("readonly", true);
+							if(officerObject.middleName!='' && officerObject.middleName!=null){								
+								$("#middleName").val(officerObject.middleName).prop("readonly", true);
+							}
+							if(officerObject.occupation!='' && officerObject.occupation!=null){
+								$("#occupation").val(officerObject.occupation).prop("readonly", true);
+							}
+							if(officerObject.role!='' && officerObject.role!=null){
+								$("#companyDirector").val(officerObject.role).prop("readonly", true);
+							}						
+							
+						 } ,
+				error: function(jqXHR, textStatus, errorThrown) {
+					ajaxindicatorstop();
+				}
+				});	
+		}
+		
+		
+	});
+	
+	
+	
+	
+	
 	
 	
 	$("#deleteCompany").dialog({

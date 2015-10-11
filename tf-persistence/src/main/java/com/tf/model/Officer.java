@@ -1,5 +1,6 @@
 package com.tf.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.CascadeType;
@@ -15,8 +16,14 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="tf_officer")
-public class Officer {
+public class Officer implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+
 	@Id
     @Column(name="officer_id")
     @GeneratedValue

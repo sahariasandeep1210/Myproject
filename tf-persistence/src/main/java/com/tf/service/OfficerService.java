@@ -10,4 +10,8 @@ public interface OfficerService {
 	public List<Officer> findOfficersByCompanyId(long id);
 	
 	public void addOfficer(List<Officer> officers);
+	
+	public Officer findById(long id);
+	
+	public void  addorUpdateOfficer(Officer officer);
 }

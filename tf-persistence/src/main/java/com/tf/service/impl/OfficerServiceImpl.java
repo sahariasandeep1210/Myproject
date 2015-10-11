@@ -24,5 +24,13 @@ public class OfficerServiceImpl implements OfficerService {
 	public void addOfficer(List<Officer> officers){
 		 officerDAO.addOfficer(officers);
 	}
+	
+	public Officer findById(long id){
+		return officerDAO.findById(id);
+	}
+	
+	public void  addorUpdateOfficer(Officer officer){
+		 officerDAO.addorUpdateOfficer(officer);
+	}
 
 }
