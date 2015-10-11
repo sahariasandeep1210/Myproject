@@ -326,7 +326,8 @@ public class CompanyController extends BaseController {
 		officerAdd.setLocality(address.getLocality());
 		officerAdd.setRegion(address.getRegion());
 		officerAdd.setCountry(address.getCountry());
-		officerAdd.setPostalCode(address.getPostal_code());
+		officerAdd.setPostalCode(address.getPostal_code());	
+		officerAdd.setOfficer(officer);	
 		officer.setOfficerAddress(officerAdd);
 		
 	}

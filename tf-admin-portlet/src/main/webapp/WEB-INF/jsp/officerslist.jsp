@@ -43,8 +43,8 @@
 				</thead>
 				<tbody>
 					<c:choose>
-						<c:when test="${fn:length(officers) gt 0}">
-							<c:forEach items="${officers}" var="officer">
+						<c:when test="${fn:length(companyModel.officers) gt 0}">
+							<c:forEach items="${companyModel.officers}" var="officer">
 								<tr>
 									<td>${officer.name}</td>
 									<td>${officer.officerRole}</td>
