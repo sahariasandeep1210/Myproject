@@ -44,9 +44,11 @@ import com.tf.model.Company;
 import com.tf.model.Invoice;
 import com.tf.model.InvoiceDocument;
 import com.tf.persistance.util.Constants;
+import com.tf.persistance.util.InvoiceStatus;
 import com.tf.service.CompanyService;
 import com.tf.service.InvoiceDocumentService;
 import com.tf.service.InvoiceService;
+import com.tf.service.UserService;
 
 /**
  * This controller is responsible for request/response handling on
@@ -65,7 +67,10 @@ public class InvoiceController {
 	
 
 	@Autowired
-	protected InvoiceService invoiceService;	
+	protected UserService userService;	
+	
+	@Autowired
+	protected InvoiceService invoiceService;
 	
 	@Autowired
 	protected InvoiceDocumentService invoiceDocumentService;
@@ -78,16 +83,20 @@ public class InvoiceController {
 			@ModelAttribute("invoiceModel") InvoiceDTO invoice, ModelMap model,
 			RenderRequest request, RenderResponse response) throws Exception {
 		System.out.println("In render");		
+		List<Company> companyList = new ArrayList<Company>();
 		ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);
 		List<InvoiceDocument> invoiceDocumentList=new ArrayList<InvoiceDocument>();
 		
 		if(getPermissionChecker(request).isOmniadmin() ){
 			invoiceDocumentList = invoiceDocumentService.getInvoiceDocuments();
+			 companyList = companyService.getCompanies("5");
 		}else if(request.isUserInRole(Constants.SCF_ADMIN)){
 			invoiceDocumentList = invoiceDocumentService.getInvoiceDocuments(themeDisplay.getUser().getUserId());
+			long companyId=userService.getCompanyIDbyUserID(themeDisplay.getUserId());
+			companyList.add(companyService.findById(companyId));
 		}
 		
-		List<Company> companyList = companyService.getCompanies("5");
+	
 		model.put("companyList", companyList);
 		model.put("invoiceList", invoiceDocumentList);
 		model.put(ACTIVETAB,"invoiceDocuments");
@@ -171,6 +180,8 @@ public class InvoiceController {
 						}else if (index == 10) {
 							invoiceModel.setDueDate(cell.getDateCellValue());
 						}
+						
+						invoiceModel.setStatus(InvoiceStatus.NEW.getValue());
 						index++;
 					}
 					invoiceList.add(invoiceModel);

@@ -57,6 +57,9 @@ public class Invoice {
 	@Column(name = "due_date")
 	private Date dueDate;
 	
+	@Column(name = "status")
+	private String status;
+	
 	@ManyToOne  
     @JoinColumn(name = "trade_id")  
 	private SCFTrade scfTrade;
@@ -178,6 +181,14 @@ public class Invoice {
 
 	public void setScfTrade(SCFTrade scfTrade) {
 		this.scfTrade = scfTrade;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
 	@Override

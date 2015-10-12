@@ -1,7 +1,8 @@
 $(document).ready(function() {
 
 	enableTab();
-	$("#createTrade").hide();
+	$("#createTrade").hide(); 
+	$("#requestFinance").hide();
 	
 	$('ul.nav-pills li a').click(function (e) {
 		  $('ul.nav-pills li.active').removeClass('active')

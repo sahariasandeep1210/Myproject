@@ -11,6 +11,10 @@
 	<portlet:param name="action" value="importInvoice" />
 </portlet:actionURL>
 
+<portlet:actionURL var="requestFinanceURL">
+	<portlet:param name="action" value="requestFinance" />
+</portlet:actionURL>
+
 <%-- <portlet:renderURL var="invoiceDocumentsURL">
 	<portlet:param name="render" value="invoiceDocuments" />
 </portlet:renderURL> --%>
@@ -62,6 +66,7 @@ long plid= PortalUtil.getPlidFromPortletId(themeDisplay.getScopeGroupId(),true, 
 		<!-- 	<input type="submit" value="Upload Invoice Document" class="btn btn-primary"
 				id="uploadInvoice" /> -->
 				<input type="button" value="Create Trade" class="btn btn-primary" id="createTrade"  data-url="${createTradeURL}" />
+				<input type="button" value="Request Finance" class="btn btn-primary" id=requestFinance  data-url="${requestFinanceURL}" />
 		</div>
 
 
