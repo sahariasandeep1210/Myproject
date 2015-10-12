@@ -133,8 +133,16 @@
 
 			<div class="span6">
 				<label class="span6">Company Type:</label>
-				<form:select path="companyType" items="${companyTypeMap}"
-					class="dropdown" id="companyType" placeholder="CompanyType Type" />
+				<c:choose>
+					<c:when test="${permissionChecker.isOmniadmin()}">
+						<form:select path="companyType" items="${companyTypeMap}"
+							class="dropdown" id="companyType" placeholder="CompanyType Type" />
+					</c:when>
+					<c:otherwise>
+						${companyModel.companyType}
+					</c:otherwise>
+				</c:choose>
+				
 
 			</div>
 

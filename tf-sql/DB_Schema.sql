@@ -149,7 +149,7 @@ CREATE TABLE tf_trade (
    UNIQUE KEY trade_id_UNIQUE (trade_id)  
    );
    
-ALTER TABLE `tf_purchase_order` ADD COLUMN trade_id BIGINT(20) AFTER is_traded;
+ALTER TABLE tf_purchase_order ADD COLUMN trade_id BIGINT(20) AFTER is_traded;
 
 
 DROP TABLE IF EXISTS scf_invoice;
@@ -173,6 +173,8 @@ CREATE TABLE scf_invoice (
    UNIQUE KEY invoice_number_UNIQUE (invoice_number)
    );  
 
+   
+   ALTER TABLE scf_invoice ADD COLUMN status VARCHAR(100) AFTER due_date;
    
    
  DROP TABLE IF EXISTS scf_invoice_document;

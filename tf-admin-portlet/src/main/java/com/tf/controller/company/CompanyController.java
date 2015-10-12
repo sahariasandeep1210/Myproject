@@ -35,7 +35,9 @@ import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
+import com.liferay.portal.model.Role;
 import com.liferay.portal.security.permission.PermissionChecker;
+import com.liferay.portal.service.RoleLocalServiceUtil;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.ServiceContextFactory;
 import com.liferay.portal.service.UserLocalServiceUtil;
@@ -77,6 +79,10 @@ public class CompanyController extends BaseController {
 		if(getPermissionChecker(request).isOmniadmin() ){
 			companyList = companyService.getCompaniesByStatus(CompanyStatus.DELETED.getValue());
 		}else if(request.isUserInRole(Constants.SCF_ADMIN)){
+			long companyId=userService.getCompanyIDbyUserID(themeDisplay.getUserId());
+			Company cmpObject = companyService.findById(companyId);
+			companyList.add(cmpObject);
+		}else{
 			long companyId=userService.getCompanyIDbyUserID(themeDisplay.getUserId());
 			Company cmpObject = companyService.findById(companyId);
 			companyList.add(cmpObject);
@@ -232,13 +238,18 @@ public class CompanyController extends BaseController {
 												 ModelMap model, 
 												 ActionRequest request,
 												 ActionResponse response) throws Exception {
+		boolean createUser=false;
+		ThemeDisplay themeDisplay=(ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);
 		System.out.println("userModel:::"+user);	
 		Long companyID = ParamUtil.getLong(request, "companyID");
 		Long officerId = ParamUtil.getLong(request, "officer");
 		user.setCompany(companyService.findById(companyID));
-		if(user.getId() ==null){			
+		if(user.getId() ==null){	
+			createUser=true;
 			com.liferay.portal.model.User lruser = addLiferayUser(user, request);
-			System.out.println("lruser:::"+lruser);
+			Role role =RoleLocalServiceUtil.getRole(themeDisplay.getCompanyId(), user.getType());
+			UserLocalServiceUtil.addRoleUser(role.getRoleId(), lruser.getUserId());
+			 UserLocalServiceUtil.updateUser(lruser);
 			user.setLiferayUserId(lruser.getUserId());
 		}
 		System.out.println("User>>>>>>>>>>>>>>>>>>>>:::"+user);
@@ -246,10 +257,11 @@ public class CompanyController extends BaseController {
 		//and map the same to Liferay userId and Company/Seller
 		user.setActive(Boolean.FALSE);
 		Long userID=userService.addorUpdateUser(user);
-		if(officerId!=null && userID!=null){
+		if(createUser){
 			Officer officer=officerService.findById(officerId);
 			officer.setIduser(userID);
 			officerService.addorUpdateOfficer(officer);
+			
 		}
 		System.out.println("After User Added");
 		response.setRenderParameter("companyID", companyID.toString());
