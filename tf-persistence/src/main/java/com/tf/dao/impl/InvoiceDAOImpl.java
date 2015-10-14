@@ -74,4 +74,20 @@ public class InvoiceDAOImpl  extends BaseDAOImpl<Invoice, Long> implements Invoi
 		}
 		
 	}
+	
+	public List<Invoice> getInvoicesByCompanyNumber(String companyNumber){
+		
+		_log.debug("Inside getInvoicesByCompanyNumber ");
+		try {
+			
+			List<Invoice> results = (List<Invoice>) sessionFactory.getCurrentSession().createCriteria(Invoice.class).add(Restrictions.eq("sellerCompanyRegistrationNumber", companyNumber)).list();
+			_log.debug("getInvoicesByCompanyNumber successful, result size: "
+					+ results.size());
+			return results;
+		} catch (RuntimeException re) {
+			_log.error("getInvoicesByCompanyNumber failed", re);
+			throw re;
+		}
+		
+	}
 }

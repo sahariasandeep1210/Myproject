@@ -18,16 +18,17 @@
 </div>
 						
 <div class="row-fluid">
-	
-	<div class="span12">
+	<c:if test="${fn:length(companyModel.officers) eq 0}">
 		<div class="span12">
-			<h5 style="float: right !important;">
-				<input type="button" value="Fetch Officers Information"
-						class="btn btn-primary" data-url="${fetchOfficers}"
-						id="fetchOfficers" />
-			</h5>
+			<div class="span12">
+				<h5 style="float: right !important;">
+					<input type="button" value="Fetch Officers Information"
+							class="btn btn-primary" data-url="${fetchOfficers}"
+							id="fetchOfficers" />
+				</h5>
+			</div>
 		</div>
-	</div>
+	</c:if>
 </div>
 
 <div class="table-responsive">

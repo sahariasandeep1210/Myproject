@@ -27,15 +27,24 @@
 				</tr>
 			</thead>
 			<tbody>
-				<c:forEach items="${invoiceList}" var="invoice">
-						<c:set var="url" value="${invoice.documentUrl}" scope="page" />
-					<tr>
-						<td> <a href="${url}" class="file-download">${invoice.documentName}</a></td>
-						<td>${invoice.uploadedby}</td>
-						<td><fmt:formatDate pattern="dd-MM-yyyy" value="${invoice.uploadDate}" /></td>
-
-					</tr>
-				</c:forEach>
+				<c:choose>
+						<c:when test="${fn:length(invoiceList) gt 0}">
+						<c:forEach items="${invoiceList}" var="invoice">
+								<c:set var="url" value="${invoice.documentUrl}" scope="page" />
+							<tr>
+								<td> <a href="${url}" class="file-download">${invoice.documentName}</a></td>
+								<td>${invoice.uploadedby}</td>
+								<td><fmt:formatDate pattern="dd-MM-yyyy" value="${invoice.uploadDate}" /></td>
+		
+							</tr>
+						</c:forEach>
+						</c:when>
+						<c:otherwise>
+							<tr>
+								<td colspan="3" align="center">No records found!</td>
+							</tr>
+						</c:otherwise>
+				</c:choose>
 			</tbody>
 		</table>
 	</div>

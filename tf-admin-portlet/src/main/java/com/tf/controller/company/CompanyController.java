@@ -310,10 +310,10 @@ public class CompanyController extends BaseController {
 				 officersList  = companyServices.getOfficersInfo(companyNo);	
 				 List<Officer> officerList=transformOfficersModeltoOfficerslist(officersList.getItems(),company);
 				 officerService.addOfficer(officerList);
-				 //company.setOfficers(officerList);
+				 company.setOfficers(new LinkedHashSet<Officer>(officerList));
 				 
 				// companyService.addCompany(company);
-				 modelMap.addAttribute("officers", officerList);
+				 modelMap.addAttribute("companyModel", company);
 			}
 			
 			return new ModelAndView("officerslist");

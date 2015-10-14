@@ -9,7 +9,6 @@ import java.util.List;
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 import javax.portlet.PortletRequest;
-import javax.portlet.PortletResponse;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 
@@ -39,6 +38,7 @@ import com.liferay.portlet.documentlibrary.model.DLFileEntry;
 import com.liferay.portlet.documentlibrary.model.DLFolder;
 import com.liferay.portlet.documentlibrary.model.DLFolderConstants;
 import com.liferay.portlet.documentlibrary.service.DLAppServiceUtil;
+import com.mysql.jdbc.StringUtils;
 import com.tf.dto.InvoiceDTO;
 import com.tf.model.Company;
 import com.tf.model.Invoice;
@@ -115,6 +115,9 @@ public class InvoiceController {
 			invoices=invoiceService.getInvoices();
 		}else if(request.isUserInRole(Constants.SCF_ADMIN)){
 			invoices=invoiceService.getInvoices(themeDisplay.getUser().getUserId());
+		}else if(request.isUserInRole(Constants.SELLER_ADMIN)){
+			long companyId=userService.getCompanyIDbyUserID(themeDisplay.getUserId());
+			invoices=invoiceService.getInvoicesByCompanyNumber(companyService.findById(companyId).getRegNumber());
 		}
 		request.getPortletSession().removeAttribute("invoiceDTO");
 		request.getPortletSession().removeAttribute("invoiceList");	
@@ -134,6 +137,7 @@ public class InvoiceController {
 		Invoice invoiceModel = null;		
 		Workbook workbook = null;
 		List<Invoice> invoiceList = new ArrayList<Invoice>();
+		String zero="0";
 	
 		try {
 			workbook = new XSSFWorkbook(invoice.getInvoiceDoc()
@@ -146,7 +150,7 @@ public class InvoiceController {
 				while (rowIterator.hasNext()) {
 					invoiceModel = new Invoice();
 					invoiceModel.setScfCompany(companyService.findById(invoice.getScfCompany()));
-					currentRow=currentRow++;
+					currentRow=currentRow+1;
 
 					Row row = rowIterator.next();
 					// Every row has columns, get the column iterator and
@@ -162,7 +166,23 @@ public class InvoiceController {
 							invoiceModel.setInvoiceDate(cell.getDateCellValue());
 
 						} else if (index == 2) {
-							invoiceModel.setSellerCompanyRegistrationNumber(cell.getStringCellValue());
+							cell.setCellType(Cell.CELL_TYPE_STRING);
+							/*if(cell.getCellType()==Cell.CELL_TYPE_STRING){
+								invoiceModel.setSellerCompanyRegistrationNumber(cell.getStringCellValue());
+							}else if(cell.getCellType()==Cell.CELL_TYPE_NUMERIC){
+								invoiceModel.setSellerCompanyRegistrationNumber(cell.getc);
+							}*/
+							if(!StringUtils.isNullOrEmpty(cell.getStringCellValue()) && !cell.getStringCellValue().startsWith("0")){
+								//this fix to add 0 as prefix to company number as
+								//companieshouse.gov.uk services has all company number staring from 0
+								StringBuilder sb=new StringBuilder(zero);
+								sb.append(cell.getStringCellValue());
+								invoiceModel.setSellerCompanyRegistrationNumber(sb.toString());
+								sb=null;
+							}else{
+								invoiceModel.setSellerCompanyRegistrationNumber(cell.getStringCellValue());
+							}
+							
 						} else if (index == 3) {
 							invoiceModel.setSellerCompanyVatNumber(cell.getStringCellValue());
 						} else if (index == 4) {

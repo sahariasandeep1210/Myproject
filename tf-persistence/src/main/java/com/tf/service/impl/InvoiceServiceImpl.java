@@ -75,6 +75,10 @@ public class InvoiceServiceImpl implements InvoiceService{
 		return invoiceDAO.getInvoices(companyId);
 	}
 
+	
+	public List<Invoice> getInvoicesByCompanyNumber(String companyNumber){
+		return invoiceDAO.getInvoicesByCompanyNumber(companyNumber);
+	}
 
 	
 	

@@ -14,4 +14,6 @@ public interface InvoiceDAO {
 	public List<Invoice> getInvoicesAmount(List<Long> invoiceIds);
 	
 	public List<Invoice> getInvoices(long companyID);
+	
+	public List<Invoice> getInvoicesByCompanyNumber(String companyNumber);
 }
