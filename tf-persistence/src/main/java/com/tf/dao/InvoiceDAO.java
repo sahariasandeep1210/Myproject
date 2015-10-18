@@ -5,7 +5,7 @@ import java.util.List;
 import com.tf.model.Invoice;
 
 
-public interface InvoiceDAO {
+public interface InvoiceDAO extends BaseDAO<Invoice, Long> {
 	
 	public void addInvoices(List<Invoice> invoice);
 	
@@ -16,4 +16,8 @@ public interface InvoiceDAO {
 	public List<Invoice> getInvoices(long companyID);
 	
 	public List<Invoice> getInvoicesByCompanyNumber(String companyNumber);
+	
+	public List<Invoice> getInvoicesByCompanyNoAndStatus(String companyNumber,String status);
+	
+	public void updateInvoices(List<Invoice> invoices);
 }

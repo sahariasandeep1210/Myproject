@@ -13,6 +13,10 @@ import com.tf.model.SCFTrade;
 @Repository
 @Transactional
 public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> implements SCFTradeDAO {	
+	
+	public SCFTradeDAOImpl() {
+		super(SCFTrade.class);
+	}
 
 	
 	public List<SCFTrade>  getScfTrades(){

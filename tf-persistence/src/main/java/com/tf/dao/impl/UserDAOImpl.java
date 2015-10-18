@@ -14,6 +14,11 @@ import com.tf.model.User;
 @Transactional
 public class UserDAOImpl extends BaseDAOImpl<User, Long>  implements UserDAO{
 	
+	public UserDAOImpl() {
+		super(User.class);
+	}
+
+	
 	
 	public Long addorUpdateUser(User user) {
 		try {

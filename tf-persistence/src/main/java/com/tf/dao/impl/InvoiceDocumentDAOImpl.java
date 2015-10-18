@@ -7,13 +7,16 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.tf.dao.InvoiceDocumentDAO;
-import com.tf.model.Company;
 import com.tf.model.InvoiceDocument;
 
 
 @Repository
 @Transactional(rollbackFor = Exception.class)
 public class InvoiceDocumentDAOImpl extends BaseDAOImpl<InvoiceDocument, Long> implements InvoiceDocumentDAO {
+	
+	public InvoiceDocumentDAOImpl() {
+		super(InvoiceDocument.class);
+	}
 	
 	public void addInvoiceDocument(InvoiceDocument invoiceDocument) {
 		try {

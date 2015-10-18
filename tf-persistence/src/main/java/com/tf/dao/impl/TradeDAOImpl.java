@@ -9,5 +9,9 @@ import com.tf.model.Trade;
 @Repository
 @Transactional(rollbackFor = Exception.class)
 public class TradeDAOImpl  extends BaseDAOImpl<Trade, Long> implements TradeDAO {
+	
+	public TradeDAOImpl() {
+		super(Trade.class);
+	}
 
 }

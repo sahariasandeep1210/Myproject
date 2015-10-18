@@ -79,6 +79,24 @@ public class InvoiceServiceImpl implements InvoiceService{
 	public List<Invoice> getInvoicesByCompanyNumber(String companyNumber){
 		return invoiceDAO.getInvoicesByCompanyNumber(companyNumber);
 	}
+	
+	public List<Invoice> getInvoicesByCompanyNoAndStatus(String companyNumber,String status){
+		return invoiceDAO.getInvoicesByCompanyNoAndStatus(companyNumber,status);
+	}
+	
+	
+	public void updateInvoicesStatus(List<String> invoiceIds,String status){
+		Invoice invoice;
+		List<Invoice> invoicesList=new ArrayList<Invoice>();
+		for(String id :invoiceIds){ 
+			invoice=invoiceDAO.findById(Long.valueOf(id));
+			invoice.setStatus(status);
+			invoicesList.add(invoice);			
+		}
+		
+		invoiceDAO.updateInvoices(invoicesList);
+		
+	}
 
 	
 	

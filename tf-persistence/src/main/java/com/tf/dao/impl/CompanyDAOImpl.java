@@ -14,15 +14,18 @@ import com.tf.dao.CompanyDAO;
 import com.tf.model.Company;
 import com.tf.model.User;
 import com.tf.persistance.util.CompanyStatus;
-import com.tf.persistance.util.WorkflowConstants;
 
 
 @Repository
 @Transactional
 public class CompanyDAOImpl  extends BaseDAOImpl<Company, Long>   implements CompanyDAO{
 	
+	
+	public CompanyDAOImpl() {
+		super(Company.class);
+	}
+	
 	@SuppressWarnings("unchecked")
-
 	public List<Company> getCompaniesByStatus(String status) {
 		_log.debug("Inside getCompanies ");
 		try {

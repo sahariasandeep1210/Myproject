@@ -1,5 +1,6 @@
 package com.tf.model;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -13,7 +14,10 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "scf_invoice")
-public class Invoice {
+public class Invoice implements Serializable {
+
+	
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@Column(name = "id")

@@ -21,4 +21,8 @@ public interface InvoiceService {
 	public List<Invoice> getInvoices(long companyID);
 
 	public List<Invoice> getInvoicesByCompanyNumber(String companyNumber);
+	
+	public List<Invoice> getInvoicesByCompanyNoAndStatus(String companyNumber,String status);
+	
+	public void updateInvoicesStatus(List<String> invoiceIds,String Status);
 }

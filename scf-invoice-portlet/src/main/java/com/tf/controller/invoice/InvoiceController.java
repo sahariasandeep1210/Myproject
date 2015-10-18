@@ -2,6 +2,7 @@ package com.tf.controller.invoice;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -29,6 +30,8 @@ import org.springframework.web.portlet.bind.annotation.RenderMapping;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.repository.model.Folder;
 import com.liferay.portal.kernel.util.MimeTypesUtil;
+import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.security.permission.PermissionChecker;
 import com.liferay.portal.service.ServiceContext;
@@ -113,11 +116,14 @@ public class InvoiceController {
 		ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);
 		if(getPermissionChecker(request).isOmniadmin() ){
 			invoices=invoiceService.getInvoices();
+			model.put("userType", Constants.ADMIN);
 		}else if(request.isUserInRole(Constants.SCF_ADMIN)){
 			invoices=invoiceService.getInvoices(themeDisplay.getUser().getUserId());
+			model.put("userType", Constants.SCF_ADMIN);
 		}else if(request.isUserInRole(Constants.SELLER_ADMIN)){
 			long companyId=userService.getCompanyIDbyUserID(themeDisplay.getUserId());
 			invoices=invoiceService.getInvoicesByCompanyNumber(companyService.findById(companyId).getRegNumber());
+			model.put("userType", Constants.SELLER_ADMIN);
 		}
 		request.getPortletSession().removeAttribute("invoiceDTO");
 		request.getPortletSession().removeAttribute("invoiceList");	
@@ -280,6 +286,18 @@ public class InvoiceController {
 		}
 		response.setRenderParameter("render","invoiceDocuments");
 
+	}
+	
+	@ActionMapping(params = "action=requestFinance")
+	protected void requestFinance(ModelMap model,
+			ActionRequest request, ActionResponse response) throws Exception {
+		String invoiceIds= ParamUtil.getString(request, "invoices");
+		System.out.println("invoiceIds::::"+invoiceIds);
+		if(!StringUtils.isNullOrEmpty(invoiceIds)){
+			List<String> invoicesIdList=Arrays.asList(invoiceIds.split(","));
+			invoiceService.updateInvoicesStatus(invoicesIdList, InvoiceStatus.FINANCE_REQUESTED.getValue());
+		}
+		
 	}
 	
 	

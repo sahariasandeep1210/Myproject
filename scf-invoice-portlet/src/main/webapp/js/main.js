@@ -16,9 +16,15 @@ $(document).ready(function() {
 	$(":checkbox").change(function() {		
 		var chekedLen = $(":checkbox:checked").length;
 		if (chekedLen > 0) {
-			$("#createTrade").show();
+			if($("#createTrade").length){
+				$("#createTrade").show();
+			}else if($("#requestFinance").length){
+				$("#requestFinance").show();
+			}
+			
 		} else {
 			$("#createTrade").hide();
+			$("#requestFinance").hide();
 			$("#errormsg").text("");
 			$("#errormsg").hide();		
 		}
@@ -65,6 +71,18 @@ $(document).ready(function() {
 				 $("#errormsg").show();
 			 }
 		 }
+		
+	});
+	
+	$("#requestFinance").click(function() {
+		var invoices = []; 
+		 var url = $(this).attr('data-url');
+		 $("#invoicelist input:checkbox:checked").each(function() {
+				invoices.push($(this).val());
+			});
+		 $("#invoices").val(invoices.toString()); 
+		 document.forms["invoicelist"].action = url;
+		document.forms["invoicelist"].submit();
 		
 	});
 	

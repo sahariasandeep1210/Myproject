@@ -20,7 +20,19 @@
 						<c:forEach items="${invoicesList}" var="invoice">
 							<tr>
 								<c:if test="${defaultRender}">
-								<td><input type="checkbox" value="${invoice.id}" name="invoiceId" date-attr="${invoice.dueDate}" scfcompany-attr="${invoice.scfCompany.id}" <c:if test="${invoice.scfTrade.id ne null}">disabled="disabled"</c:if> > </td>
+									<td>
+										<c:choose>
+											<c:when test="${ userType eq 'Seller Admin' && invoice.status eq 'New'}">												
+												<input type="checkbox" value="${invoice.id}" name="invoiceId" date-attr="${invoice.dueDate}" scfcompany-attr="${invoice.scfCompany.id}" <c:if test="${invoice.scfTrade.id ne null}">disabled="disabled"</c:if> >
+											</c:when>
+											<c:when test="${userType eq 'Seller Admin' && invoice.status ne 'New'}">		
+												<input type="checkbox"  name="invoiceId" date-attr="${invoice.dueDate}" scfcompany-attr="${invoice.scfCompany.id}" disabled="disabled" >		
+											</c:when>
+											<c:otherwise>
+												<input type="checkbox" value="${invoice.id}" name="invoiceId" date-attr="${invoice.dueDate}" scfcompany-attr="${invoice.scfCompany.id}" <c:if test="${invoice.scfTrade.id ne null}">disabled="disabled"</c:if> >
+											</c:otherwise>
+										</c:choose>
+									</td>
 								</c:if>
 								<td>${invoice.invoiceNumber}</td>
 								<td><fmt:formatDate pattern="dd-MM-yyyy" value="${invoice.invoiceDate}" /></td>

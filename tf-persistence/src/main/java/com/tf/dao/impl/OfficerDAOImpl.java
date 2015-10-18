@@ -8,13 +8,16 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.tf.dao.OfficerDAO;
-import com.tf.model.Company;
 import com.tf.model.Officer;
 
 
 @Repository
 @Transactional(rollbackFor = Exception.class)
 public class OfficerDAOImpl extends BaseDAOImpl<Officer, Long> implements  OfficerDAO{
+	
+	public OfficerDAOImpl() {
+		super(Officer.class);
+	}
 
 	public List<Officer> findOfficersByCompanyId(long id) {
 		

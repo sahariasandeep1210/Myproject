@@ -9,5 +9,9 @@ import com.tf.model.InvoiceCompany;
 @Repository
 public class InvoiceCompanyDAOImpl  extends BaseDAOImpl<InvoiceCompany, Long> implements InvoiceCompanyDAO{
 	
+	public InvoiceCompanyDAOImpl() {
+		super(InvoiceCompany.class);
+	}
+	
 
 }

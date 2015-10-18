@@ -13,6 +13,10 @@ import com.tf.model.PODocument;
 @Transactional(rollbackFor = Exception.class)
 public class PODocumentDAOImpl  extends BaseDAOImpl<PODocument, Long> implements PODocumentDAO {
 	
+	public PODocumentDAOImpl() {
+		super(PODocument.class);
+	}
+	
 	public void addPODocument(PODocument podModel) {
 		try {
 			sessionFactory.getCurrentSession().saveOrUpdate(podModel);

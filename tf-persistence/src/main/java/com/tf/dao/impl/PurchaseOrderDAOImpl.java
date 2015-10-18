@@ -12,6 +12,10 @@ import com.tf.model.PurchaseOrderModel;
 @Transactional(rollbackFor = Exception.class)
 public class PurchaseOrderDAOImpl  extends BaseDAOImpl<PurchaseOrderModel, Long> implements PurchaseOrderDAO {
 	
+	public PurchaseOrderDAOImpl() {
+		super(PurchaseOrderModel.class);
+	}
+	
 	public PurchaseOrderModel addPO(PurchaseOrderModel poModel) {
 		try {
 			long id=(Long) sessionFactory.getCurrentSession().save(poModel);

@@ -65,8 +65,16 @@ long plid= PortalUtil.getPlidFromPortletId(themeDisplay.getScopeGroupId(),true, 
 		<div class="row-fluid">
 		<!-- 	<input type="submit" value="Upload Invoice Document" class="btn btn-primary"
 				id="uploadInvoice" /> -->
-				<input type="button" value="Create Trade" class="btn btn-primary" id="createTrade"  data-url="${createTradeURL}" />
-				<input type="button" value="Request Finance" class="btn btn-primary" id=requestFinance  data-url="${requestFinanceURL}" />
+				<c:choose>
+					<c:when test="${userType eq 'Seller Admin'}">
+						<input type="button" value="Request Finance" class="btn btn-primary" id=requestFinance  data-url="${requestFinanceURL}" />
+					</c:when>
+					<c:otherwise>
+						<input type="button" value="Create Trade" class="btn btn-primary" id="createTrade"  data-url="${createTradeURL}" />
+					</c:otherwise>				
+				</c:choose>
+				
+				
 		</div>
 
 
