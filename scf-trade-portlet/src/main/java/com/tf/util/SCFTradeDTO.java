@@ -24,8 +24,8 @@ public class SCFTradeDTO implements Serializable {
 	private String status;
 	private Company company;
 	private String tradeNotes;	
-	private Integer tradeSettled;
-	private Integer wantToInsure;
+	private boolean tradeSettled;
+	private boolean wantToInsure;
 	private MultipartFile insuranceDocument;	
 	private String promisoryNote;
 	
@@ -123,19 +123,19 @@ public class SCFTradeDTO implements Serializable {
 		this.tradeNotes = tradeNotes;
 	}
 
-	public Integer getTradeSettled() {
+	public boolean getTradeSettled() {
 		return tradeSettled;
 	}
 
-	public void setTradeSettled(Integer tradeSettled) {
+	public void setTradeSettled(boolean tradeSettled) {
 		this.tradeSettled = tradeSettled;
 	}
 
-	public Integer getWantToInsure() {
+	public boolean getWantToInsure() {
 		return wantToInsure;
 	}
 
-	public void setWantToInsure(Integer wantToInsure) {
+	public void setWantToInsure(boolean wantToInsure) {
 		this.wantToInsure = wantToInsure;
 	}
 

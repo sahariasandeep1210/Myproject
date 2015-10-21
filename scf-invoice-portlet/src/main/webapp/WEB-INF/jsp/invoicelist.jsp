@@ -15,6 +15,10 @@
 	<portlet:param name="action" value="requestFinance" />
 </portlet:actionURL>
 
+<portlet:renderURL var="createInvoice">
+	<portlet:param name="render" value="createInvoice" />
+</portlet:renderURL>
+
 <%-- <portlet:renderURL var="invoiceDocumentsURL">
 	<portlet:param name="render" value="invoiceDocuments" />
 </portlet:renderURL> --%>
@@ -65,19 +69,23 @@ long plid= PortalUtil.getPlidFromPortletId(themeDisplay.getScopeGroupId(),true, 
 		<div class="row-fluid">
 		<!-- 	<input type="submit" value="Upload Invoice Document" class="btn btn-primary"
 				id="uploadInvoice" /> -->
+				<div class="span6">
+				<input type="submit" value="Create Invoice" class="btn btn-primary" id=requestFinance  data-url="${requestFinanceURL}"  class="span6"/>
 				<c:choose>
 					<c:when test="${userType eq 'Seller Admin'}">
-						<input type="button" value="Request Finance" class="btn btn-primary" id=requestFinance  data-url="${requestFinanceURL}" />
+						<input type="button" value="Request Finance" class="btn btn-primary" id=requestFinance  data-url="${requestFinanceURL}" class="span6"/>
 					</c:when>
 					<c:otherwise>
-						<input type="button" value="Create Trade" class="btn btn-primary" id="createTrade"  data-url="${createTradeURL}" />
+						<input type="button" value="Create Trade" class="btn btn-primary" id="createTrade"  data-url="${createTradeURL}" class="span6"/>
 					</c:otherwise>				
 				</c:choose>
+				</div>
 				
 				
 		</div>
 
-
+		
+	
 	</form>
 
 
