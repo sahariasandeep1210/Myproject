@@ -104,7 +104,7 @@ public class SCFTradeController {
 	@RenderMapping(params="render=createTrade")
 	protected ModelAndView renderCreateTrade(@ModelAttribute("scfTradeModel") SCFTradeDTO scfTradeDTO,ModelMap model,RenderRequest request, RenderResponse response) throws Exception {	
 		Long tradeID = ParamUtil.getLong(request, "tradeID"); 
-		if(tradeID==null){
+		if(tradeID==null || tradeID==0){
 			
 			
 			Long companyId = ParamUtil.getLong(request, "companyId"); 
