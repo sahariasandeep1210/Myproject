@@ -2,12 +2,15 @@ package com.tf.dao.impl;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Set;
 
+import org.hibernate.Hibernate;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.tf.dao.SCFTradeDAO;
+import com.tf.model.Invoice;
 import com.tf.model.SCFTrade;
 
 @Repository
@@ -65,6 +68,11 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 		try {
 			SCFTrade instance = (SCFTrade) sessionFactory.getCurrentSession().get(
 					"com.tf.model.SCFTrade", id);
+			Hibernate.initialize(instance.getInvoices());
+			//Set<Invoice> invoices= instance.getInvoices();
+			
+			//_log.info("Invoices Size:::"+invoices.size());
+			//instance.setInvoices(invoices);
 			if (instance == null) {
 				_log.debug("get successful, no instance found");
 			} else {

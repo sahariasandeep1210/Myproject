@@ -11,7 +11,7 @@
 <div class="container-fluid">
 	<form:form commandName="scfTradeModel" method="post"
 		action="${createTradeURL}" id="createTrade" autocomplete="off"
-		name="TradeDetail">
+		name="TradeDetail" enctype="multipart/form-data">
 		<input type="hidden" value="${deleteTradeURL}" id="deleteURL"> 
 		<input type="hidden" value="${invoiceIds}" name="invoiceIds"> 
 		<div class="row-fluid">
@@ -25,7 +25,7 @@
 
 
 
-		<div class="row-fluid">
+		<%-- <div class="row-fluid">
 			<div class="span6">
 				<label class="span6">SCF Trade:</label>
 				<label class="checkbox span6"> <form:checkbox path="scfTrade" value="Yes" /> 
@@ -33,7 +33,7 @@
 
 			</div>
 
-		</div>
+		</div> --%>
 		<div class="row-fluid">
 			<div class="span6">
 				<label class="span6">Duration:</label>
@@ -95,6 +95,16 @@
 
 		</div>
 		<div class="row-fluid">
+		<c:choose>
+		<c:when test="${scfTradeModel.id !=null && scfTradeModel.id !=0}">
+			<div class="span6">
+				
+				<label class="span6">Insurance Document:</label>
+				<a href="${scfTradeModel.insuranceDocURL}"  class="span6">${scfTradeModel.insuranceDocName}</a>
+
+			</div>
+		</c:when>
+		<c:otherwise>
 			<div class="span6">
 				
 				<label class="span6">Want to Insure?</label>
@@ -102,6 +112,9 @@
 				</label>
 
 			</div>
+		
+		</c:otherwise>
+			
 		<%-- 	<div class="span6">
 				
 				<label class="span6">Trade Settled:</label>
@@ -111,12 +124,14 @@
 
 			</div> --%>
 			
+			</c:choose>
+			
 		</div>
 
 		<div class="row-fluid" style="display: none;" id="insuranceDocDiv">
 			<div class="span6">
 				<label class="span6">Insurance Document:</label>
-			   <input type="file"		name="insuranceDoc"  class=""/>
+			   <input type="file"		name="insuranceDocument"  class=""/>
 				
 			</div>
 			

@@ -1,5 +1,6 @@
 package com.tf.model;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Set;
@@ -19,8 +20,13 @@ import org.hibernate.annotations.Type;
 
 @Entity
 @Table(name="scf_trade")
-public class SCFTrade {
+public class SCFTrade  implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1186610806150785622L;
+
 	@Id
     @Column(name="id")
     @GeneratedValue
@@ -93,8 +99,7 @@ public class SCFTrade {
 	@Column(name="update_date")
 	private Date updatDate;
 	
-	@OneToMany(cascade=CascadeType.ALL)
-    @JoinColumn(name="trade_id")
+	@OneToMany(mappedBy = "scfTrade",cascade=CascadeType.ALL) 
 	private Set<Invoice> invoices;
 	
 	
@@ -285,7 +290,7 @@ public class SCFTrade {
 				+ insuranceDocName + ", insuranceDocUrl=" + insuranceDocUrl
 				+ ", insuranceDocType=" + insuranceDocType + ", promisoryNote="
 				+ promisoryNote + ", createDate=" + createDate + ", updatDate="
-				+ updatDate + "]";
+				+ updatDate + ", invoices="+invoices+"]";
 	}	
 
 }

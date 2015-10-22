@@ -1,6 +1,7 @@
 package com.tf.controller.trade;
 
 import java.beans.PropertyEditorSupport;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -23,10 +24,23 @@ import org.springframework.web.portlet.ModelAndView;
 import org.springframework.web.portlet.bind.annotation.ActionMapping;
 import org.springframework.web.portlet.bind.annotation.RenderMapping;
 
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.repository.model.FileEntry;
+import com.liferay.portal.kernel.repository.model.Folder;
+import com.liferay.portal.kernel.util.MimeTypesUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.security.permission.PermissionChecker;
+import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.service.ServiceContextFactory;
 import com.liferay.portal.theme.ThemeDisplay;
+import com.liferay.portlet.documentlibrary.model.DLFileEntry;
+import com.liferay.portlet.documentlibrary.model.DLFolder;
+import com.liferay.portlet.documentlibrary.model.DLFolderConstants;
+import com.liferay.portlet.documentlibrary.service.DLAppServiceUtil;
 import com.tf.model.Company;
 import com.tf.model.SCFTrade;
 import com.tf.persistance.util.Constants;
@@ -47,6 +61,8 @@ import com.tf.util.SCFTradeDTO;
 @Controller
 @RequestMapping(value = "VIEW")
 public class SCFTradeController {
+	
+	protected Log _log = LogFactoryUtil.getLog(SCFTradeController.class.getName());
 	
 	
 	@Autowired
@@ -112,12 +128,12 @@ public class SCFTradeController {
 			System.out.println("invoicesAmount::::"+entry.getValue());
 			scfTradeDTO.setTradeAmount(entry.getValue());
 			scfTradeDTO.setCompany(entry.getKey());			
-			model.put("invoices", invoiceService.getInvoices(invoiceIds));			
+			model.put("invoiceList", invoiceService.getInvoices(invoiceIds));			
 			model.put("invoiceIds", invoiceIds);
 		}else{
 			SCFTrade scfTrade=scfTradeService.findById(tradeID);
 			scfTradeDTO=transformTOScfTradeDTO(scfTrade);
-			model.put("invoices", scfTrade.getInvoices());	
+			model.put("invoiceList", scfTrade.getInvoices());	
 			
 			//transformTOScfTradeDTO()
 		}
@@ -132,12 +148,65 @@ public class SCFTradeController {
 												 ModelMap model, 
 												 ActionRequest request,
 												 ActionResponse response) throws Exception{
-		Long companyID = ParamUtil.getLong(request, "companyID"); 
-		Company company=companyService.findById(companyID);
-		scfTradeDTO.setCompany(company);
-		SCFTrade scfTrade=transformTOScfTrade(scfTradeDTO);
-		scfTrade.setStatus(TradeStatus.NEW.getValue());
-		scfTrade=scfTradeService.save(scfTrade);
+		try {
+		
+			ThemeDisplay themeDisplay = (ThemeDisplay) request
+					.getAttribute(WebKeys.THEME_DISPLAY);
+			long currentSideID = themeDisplay.getScopeGroupId();
+			long parentFolderId = DLFolderConstants.DEFAULT_PARENT_FOLDER_ID;
+			ServiceContext serviceContextDlFolder = ServiceContextFactory
+					.getInstance(DLFolder.class.getName(), request);
+			Folder parentfolder = null;
+			parentfolder = DLAppServiceUtil.getFolder(currentSideID, 0,
+					"Insurance");
+			if (parentfolder != null) {
+				parentFolderId = parentfolder.getFolderId();
+			}
+			Long companyID = ParamUtil.getLong(request, "companyID");
+			Company company = companyService.findById(companyID);
+			scfTradeDTO.setCompany(company);
+			SCFTrade scfTrade = transformTOScfTrade(scfTradeDTO);
+			scfTrade.setStatus(TradeStatus.NEW.getValue());
+			scfTrade = scfTradeService.save(scfTrade);
+			if (scfTrade.getWantToInsure()) {
+				addInsuranceDocument(scfTradeDTO, request, themeDisplay,
+						currentSideID, parentFolderId, serviceContextDlFolder,
+						scfTrade);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			_log.error("Error Occured while saving Trade"+e.getMessage());
+		}
+		
+	}
+
+	private void addInsuranceDocument(SCFTradeDTO scfTradeDTO,
+			ActionRequest request, ThemeDisplay themeDisplay,
+			long currentSideID, long parentFolderId,
+			ServiceContext serviceContextDlFolder, SCFTrade scfTrade)
+			throws PortalException, SystemException, IOException {
+		FileEntry fileEntry;
+		Folder folder;
+		scfTrade=scfTradeService.findById(scfTrade.getId());
+		folder=DLAppServiceUtil.addFolder(currentSideID, parentFolderId, scfTrade.getId().toString(), "Trade Insurance Folder", serviceContextDlFolder);
+		String mimeType = MimeTypesUtil.getContentType(scfTradeDTO.getInsuranceDocument()
+				.getInputStream(), scfTradeDTO.getInsuranceDocument().getName());
+		ServiceContext serviceContext = ServiceContextFactory.getInstance(
+				DLFileEntry.class.getName(), request);
+		fileEntry = DLAppServiceUtil.addFileEntry(themeDisplay
+				.getScopeGroupId(), folder.getFolderId(), scfTradeDTO.getInsuranceDocument()
+				.getOriginalFilename(), mimeType, scfTradeDTO.getInsuranceDocument()
+				.getOriginalFilename(), scfTradeDTO.getInsuranceDocument()
+				.getOriginalFilename(), "upload", scfTradeDTO.getInsuranceDocument()
+				.getInputStream(), scfTradeDTO.getInsuranceDocument().getSize(),
+				serviceContext);
+		scfTrade.setInsuranceDocId(fileEntry.getFileEntryId());
+		scfTrade.setInsuranceDocName(scfTradeDTO.getInsuranceDocument().getOriginalFilename());
+		scfTrade.setInsuranceDocUrl(getUrl(themeDisplay, fileEntry));
+		scfTrade.setInsuranceDocType(mimeType);
+		scfTrade.setUpdatDate(new Date());
+		//scfTrade.getInvoices().addAll(scfTrade.getInvoices());
+		scfTradeService.update(scfTrade);
 	}
 
 	private SCFTrade transformTOScfTrade(SCFTradeDTO scfTradeDTO) {
@@ -176,8 +245,19 @@ public class SCFTradeController {
 		scfTradeDTO.setTradeNotes(scfTrade.getTradeNotes());
 		scfTradeDTO.setTradeSettled(scfTrade.getTradeSettled());
 		scfTradeDTO.setWantToInsure(scfTrade.getWantToInsure());
+		scfTradeDTO.setInsuranceDocName(scfTrade.getInsuranceDocName());
+		scfTradeDTO.setInsuranceDocURL(scfTrade.getInsuranceDocUrl());
 		return scfTradeDTO;
 		
+	}
+	private String getUrl(ThemeDisplay themeDisplay, FileEntry fileEntry) {
+		StringBuilder sb = new StringBuilder();
+		sb.append(themeDisplay.getPortalURL());
+		sb.append("/c/document_library/get_file?uuid=");
+		sb.append(fileEntry.getUuid());
+		sb.append("&groupId=");
+		sb.append(themeDisplay.getScopeGroupId());
+		return sb.toString();
 	}
 
 }

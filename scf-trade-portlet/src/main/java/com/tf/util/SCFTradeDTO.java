@@ -12,7 +12,10 @@ public class SCFTradeDTO implements Serializable {
 	
 	
 
-	private static final long serialVersionUID = -3399347740700344933L;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3161263407139541939L;
 	private Long id;	
 	private String scfTrade;
 	private Integer duration;
@@ -28,6 +31,9 @@ public class SCFTradeDTO implements Serializable {
 	private boolean wantToInsure;
 	private MultipartFile insuranceDocument;	
 	private String promisoryNote;
+	
+	private String insuranceDocName;
+	private String insuranceDocURL;
 	
 	private String invoiceIds;
 	
@@ -163,6 +169,22 @@ public class SCFTradeDTO implements Serializable {
 		this.invoiceIds = invoiceIds;
 	}
 
+	public String getInsuranceDocName() {
+		return insuranceDocName;
+	}
+
+	public void setInsuranceDocName(String insuranceDocName) {
+		this.insuranceDocName = insuranceDocName;
+	}
+
+	public String getInsuranceDocURL() {
+		return insuranceDocURL;
+	}
+
+	public void setInsuranceDocURL(String insuranceDocURL) {
+		this.insuranceDocURL = insuranceDocURL;
+	}
+
 	@Override
 	public String toString() {
 		return "SCFTradeDTO [id=" + id + ", scfTrade=" + scfTrade
@@ -174,9 +196,11 @@ public class SCFTradeDTO implements Serializable {
 				+ ", tradeNotes=" + tradeNotes + ", tradeSettled="
 				+ tradeSettled + ", wantToInsure=" + wantToInsure
 				+ ", insuranceDocument=" + insuranceDocument
-				+ ", promisoryNote=" + promisoryNote + ", invoiceIds="
-				+ invoiceIds + "]";
+				+ ", promisoryNote=" + promisoryNote + ", insuranceDocName="
+				+ insuranceDocName + ", insuranceDocURL=" + insuranceDocURL
+				+ ", invoiceIds=" + invoiceIds + "]";
 	}
+
 	
 
 }

@@ -11,7 +11,7 @@
 					</tr>
 				</thead>
 				<tbody>
-						<c:forEach items="${invoices}" var="invoice">
+						<c:forEach items="${invoiceList}" var="invoice">
 							<tr>						
 								<td>${invoice.invoiceNumber}</td>
 								<td><fmt:formatDate pattern="dd-MM-yyyy" value="${invoice.invoiceDate}" /></td>

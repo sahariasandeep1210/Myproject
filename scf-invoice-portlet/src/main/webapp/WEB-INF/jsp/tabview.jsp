@@ -46,13 +46,11 @@
     </liferay-ui:section>
 </liferay-ui:tabs> --%>
 
- <ul class="nav nav-tabs">
-	<li class="tab" 	id="invoiceList" >
-		<a	href="${invoicesURL}" >Invoices
-	</a>
-	</li>
-	<li class="tab"	id="invoicedocList">
-		<a		href="${invoiceDocumentsURL}" >Invoice Documents   
-		</a>
-	</li>
+<ul class="nav nav-tabs">
+	<li class="tab" id="invoiceList"><a href="${invoicesURL}">Invoices
+	</a></li>
+	<c:if test="${userType eq 'SCF Admin' || userType eq 'Admin'}">
+		<li class="tab" id="invoicedocList"><a
+			href="${invoiceDocumentsURL}">Invoice Documents </a></li>
+	</c:if>
 </ul>

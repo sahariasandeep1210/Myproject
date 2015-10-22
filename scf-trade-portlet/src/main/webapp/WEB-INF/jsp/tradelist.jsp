@@ -35,7 +35,7 @@
 			<table class="table table-hover tablesorter table-bordered">
 				<thead>
 					<tr>
-						<th>SCF Trade</th>
+					<!-- 	<th>SCF Trade</th> -->
 						<th>Opening Date</th>
 						<th>Closing Date</th>
 						<th>Trade Amount</th>
@@ -49,7 +49,7 @@
 							<c:forEach items="${trades}" var="trade">
 								<tr
 									onclick="window.location.href='${createURL}&tradeID=${trade.id}'">
-									<td>${trade.scfTrade}</td>
+									<%-- <td>${trade.scfTrade}</td> --%>
 									<td><fmt:formatDate pattern="dd-MM-yyyy" value="${trade.openingDate}" /></td>
 									<td><fmt:formatDate pattern="dd-MM-yyyy" value="${trade.closingDate}" /></td>
 									<td>${trade.tradeAmount}</td>

@@ -93,10 +93,12 @@ public class InvoiceController {
 		if(getPermissionChecker(request).isOmniadmin() ){
 			invoiceDocumentList = invoiceDocumentService.getInvoiceDocuments();
 			 companyList = companyService.getCompanies("5");
+			 model.put("userType", Constants.ADMIN);
 		}else if(request.isUserInRole(Constants.SCF_ADMIN)){
 			invoiceDocumentList = invoiceDocumentService.getInvoiceDocuments(themeDisplay.getUser().getUserId());
 			long companyId=userService.getCompanyIDbyUserID(themeDisplay.getUserId());
 			companyList.add(companyService.findById(companyId));
+			model.put("userType", Constants.SCF_ADMIN);
 		}
 		
 	
