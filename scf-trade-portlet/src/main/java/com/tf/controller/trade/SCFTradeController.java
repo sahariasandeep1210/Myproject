@@ -3,7 +3,6 @@ package com.tf.controller.trade;
 import java.beans.PropertyEditorSupport;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -104,9 +103,7 @@ public class SCFTradeController {
 	@RenderMapping(params="render=createTrade")
 	protected ModelAndView renderCreateTrade(@ModelAttribute("scfTradeModel") SCFTradeDTO scfTradeDTO,ModelMap model,RenderRequest request, RenderResponse response) throws Exception {	
 		Long tradeID = ParamUtil.getLong(request, "tradeID"); 
-		if(tradeID==null || tradeID==0){
-			
-			
+		if(tradeID==null || tradeID==0){			
 			Long companyId = ParamUtil.getLong(request, "companyId"); 
 			String invoiceIds= ParamUtil.getString(request, "invoices");
 			System.out.println("tradeIds::::"+invoiceIds);
@@ -114,11 +111,13 @@ public class SCFTradeController {
 			Map.Entry<Company,BigDecimal> entry = invoiceMap.entrySet().iterator().next();
 			System.out.println("invoicesAmount::::"+entry.getValue());
 			scfTradeDTO.setTradeAmount(entry.getValue());
-			scfTradeDTO.setCompany(entry.getKey());
+			scfTradeDTO.setCompany(entry.getKey());			
+			model.put("invoices", invoiceService.getInvoices(invoiceIds));			
 			model.put("invoiceIds", invoiceIds);
 		}else{
 			SCFTrade scfTrade=scfTradeService.findById(tradeID);
 			scfTradeDTO=transformTOScfTradeDTO(scfTrade);
+			model.put("invoices", scfTrade.getInvoices());	
 			
 			//transformTOScfTradeDTO()
 		}
@@ -126,6 +125,8 @@ public class SCFTradeController {
 		return new ModelAndView("createscftrade", model);
 	}
 	
+	
+
 	@ActionMapping(params="action=saveTrade")
 	protected void saveTarde(@ModelAttribute("scfTradeModel") SCFTradeDTO scfTradeDTO, 
 												 ModelMap model, 

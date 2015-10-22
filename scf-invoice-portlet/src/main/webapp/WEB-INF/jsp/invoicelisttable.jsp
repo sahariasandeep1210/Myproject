@@ -28,6 +28,9 @@
 											<c:when test="${userType eq 'Seller Admin' && invoice.status ne 'New'}">		
 												<input type="checkbox"  name="invoiceId" date-attr="${invoice.dueDate}" scfcompany-attr="${invoice.scfCompany.id}" disabled="disabled" >		
 											</c:when>
+											<c:when test="${invoice.status eq 'New'}">		
+												<input type="checkbox"  name="invoiceId" date-attr="${invoice.dueDate}" scfcompany-attr="${invoice.scfCompany.id}" disabled="disabled" >		
+											</c:when>
 											<c:otherwise>
 												<input type="checkbox" value="${invoice.id}" name="invoiceId" date-attr="${invoice.dueDate}" scfcompany-attr="${invoice.scfCompany.id}" <c:if test="${invoice.scfTrade.id ne null}">disabled="disabled"</c:if> >
 											</c:otherwise>

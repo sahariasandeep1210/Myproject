@@ -14,6 +14,10 @@ $(document).ready(function(){
 			}
 	});
 	
+	 $(".faqflip").click(function(){
+		    $(this).next('.faqpanel').slideToggle();
+	 });
+	
 	$("#investorPaymentDate").datepicker({
 		changeMonth : true,
 		dateFormat: 'dd/mm/yy',
@@ -73,7 +77,7 @@ $(document).ready(function(){
 	});
 	
 	$("#insureCheck").change(function() {
-		$("#insuranceDocDiv").toggle();
+		$("#insuranceDocDiv").slideToggle();
 	});
 		
 	

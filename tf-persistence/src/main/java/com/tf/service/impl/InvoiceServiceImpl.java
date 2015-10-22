@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -65,7 +66,7 @@ public class InvoiceServiceImpl implements InvoiceService{
 			idsListactual.add(Long.valueOf(id));
 		}
 		List<Invoice> invoices=invoiceDAO.getInvoicesAmount(idsListactual);
-		Set<Invoice> invoiceSet = new HashSet<Invoice>(invoices);
+		Set<Invoice> invoiceSet = new LinkedHashSet<Invoice>(invoices);
 		return invoiceSet;
 		
 	}

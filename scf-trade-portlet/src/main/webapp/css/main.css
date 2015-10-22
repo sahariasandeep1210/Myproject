@@ -17,3 +17,40 @@
     cursor: inherit;
     display: block;
 }
+
+.faqflip {
+    background-color: #f7f7f7;
+    border: solid 1px #ddd;
+    -webkit-border-radius: 4px;
+    -ms-border-radius: 4px;
+    -moz-border-radius: 4px;
+    padding:11px 15px;
+    color:#555;
+    font-size: 14px;
+    cursor:pointer;
+}
+
+.faqflip .fa{
+    float:right;
+    display:inline;
+}
+
+.faqpanel {
+    border: solid 1px #ddd;
+    -webkit-border-radius: 4px;
+    -ms-border-radius: 4px;
+    -moz-border-radius: 4px;
+    padding:11px 15px;
+    color:#555;
+    font-size: 14px;
+    cursor:pointer;
+    border-top-right-radius: 0;
+    -webkit-border-top-right-radius: 0;
+    -ms-border-top-right-radius: 0;
+    -moz-border-top-right-radius: 0;
+    border-top-left-radius: 0;
+    -webkit-border-top-left-radius: 0;
+    -ms-border-top-left-radius: 0;
+    -moz-border-top-left-radius: 0;
+    display: none;
+}

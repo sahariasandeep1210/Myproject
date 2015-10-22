@@ -32,7 +32,7 @@ public class SCFTradeDTO implements Serializable {
 	private String invoiceIds;
 	
 	public SCFTradeDTO() {
-		this.scfTrade="No";
+		this.scfTrade="Yes";
 	}
 
 	public Long getId() {

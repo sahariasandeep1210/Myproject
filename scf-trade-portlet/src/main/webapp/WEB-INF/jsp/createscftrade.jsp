@@ -28,8 +28,7 @@
 		<div class="row-fluid">
 			<div class="span6">
 				<label class="span6">SCF Trade:</label>
-				<label class="checkbox span6"> <form:checkbox path="scfTrade"
-						value="Yes" /> 
+				<label class="checkbox span6"> <form:checkbox path="scfTrade" value="Yes" /> 
 				</label>
 
 			</div>
@@ -98,19 +97,20 @@
 		<div class="row-fluid">
 			<div class="span6">
 				
-				<label class="span6">Trade Settled:</label>
-				<label class="checkbox span6"> <form:checkbox path="tradeSettled"
-						value="1" /> 
-				</label>
-
-			</div>
-			<div class="span6">
-				
 				<label class="span6">Want to Insure?</label>
 				<label class="checkbox span6"> <form:checkbox path="wantToInsure" value="1" id="insureCheck" /> 
 				</label>
 
 			</div>
+		<%-- 	<div class="span6">
+				
+				<label class="span6">Trade Settled:</label>
+				<label class="checkbox span6"> <form:checkbox path="tradeSettled"
+						value="1" /> 
+				</label>
+
+			</div> --%>
+			
 		</div>
 
 		<div class="row-fluid" style="display: none;" id="insuranceDocDiv">
@@ -129,6 +129,13 @@
 			</div>
 
 		</div>
+		<div class="row-fluid">
+			<div class="faqflip"><div class="fa fa-chevron-down"></div>Invoices within Trade</div>
+			<div class="faqpanel">
+				  <%@include file="invoicelisttable.jsp"%>
+			</div>
+		</div>
+		<br>
 
 
 		<div class="row-fluid">
@@ -139,6 +146,8 @@
 					data-url="${defaultRender}" id="tradeback" />
 			</div>
 		</div>
+		
+
 
 
 	</form:form>
