@@ -9,5 +9,7 @@ public interface BaseDAO<T, ID extends Serializable> {
 	 
 	 
 	 public void update(T entity);
+	 
+	 public T saveEntity(T entity);
 
 }

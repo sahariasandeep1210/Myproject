@@ -31,7 +31,6 @@ import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.repository.model.Folder;
 import com.liferay.portal.kernel.util.MimeTypesUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.security.permission.PermissionChecker;
 import com.liferay.portal.service.ServiceContext;
@@ -106,6 +105,51 @@ public class InvoiceController {
 		model.put("invoiceList", invoiceDocumentList);
 		model.put(ACTIVETAB,"invoiceDocuments");
 		return new ModelAndView("invoicedoclist", model);
+	}
+
+	
+	@RenderMapping(params = "render=createInvoice")
+	protected ModelAndView renderCreateInvoice(
+			@ModelAttribute("invoiceModel") InvoiceDTO invoice, ModelMap model,
+			RenderRequest request, RenderResponse response) throws Exception {
+		System.out.println("In render");		
+		List<Company> companyList = companyService.getCompanies("5");
+		model.put("companyList", companyList);
+		return new ModelAndView("createinvoice", model);
+	}
+	
+	@ActionMapping(params = "action=addInvoice")
+	protected void addInvoice(
+			@ModelAttribute("invoiceModel") InvoiceDTO invoice, ModelMap model,
+			ActionRequest request, ActionResponse response) {
+		try {
+			Invoice invoiceModel = transfromInvoiceDtoToInvoiceModel(invoice);
+			List<Invoice> invoices = new ArrayList<Invoice>();
+			invoices.add(invoiceModel);
+			invoiceService.addInvoices(invoices);
+			System.out.println("InvoiceDTO-----" + invoice);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	private Invoice transfromInvoiceDtoToInvoiceModel(InvoiceDTO invoice) {
+		Invoice invoiceModel= new Invoice();
+		invoiceModel.setInvoiceNumber(invoice.getInvoiceNumber());
+		invoiceModel.setInvoiceDate(invoice.getInvoiceDate());
+		invoiceModel.setSellerCompanyRegistrationNumber(invoice.getSellerRegNo());
+		invoiceModel.setSellerCompanyVatNumber(invoice.getSellerVatNumber());
+		invoiceModel.setInvoiceAmount(invoice.getInvoiceAmount());
+		invoiceModel.setVatAmount(invoice.getInvoiceAmount());
+		invoiceModel.setInvoiceDesc(invoice.getInvoiceDesc());
+		invoiceModel.setDuration(invoice.getDuration());
+		invoiceModel.setPayment_date(invoice.getPaymentDate());
+		invoiceModel.setCurrency(invoice.getCurrency());
+		invoiceModel.setStatus(InvoiceStatus.NEW.getValue());
+		invoiceModel.setDueDate(invoice.getDueDate());
+		Company scfCompany=companyService.findById(invoice.getScfCompany());
+		invoiceModel.setScfCompany(scfCompany);
+		return invoiceModel;
 	}
 
 

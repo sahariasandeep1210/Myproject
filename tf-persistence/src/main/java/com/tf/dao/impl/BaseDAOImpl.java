@@ -50,6 +50,12 @@ public abstract  class BaseDAOImpl<T, ID extends Serializable> implements BaseDA
 	 public void update(T entity) {
 		  sessionFactory.getCurrentSession().saveOrUpdate(entity);
 	 }
+	 
+	 public T saveEntity(T entity) {
+		 long id=(Long) sessionFactory.getCurrentSession().save(entity);
+		 System.out.println("id::::::::::::"+id);
+		return entity;
+	 }
 	
 	public Class<T> getPersistentClass() {  
         return persistentClass;  

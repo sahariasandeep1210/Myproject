@@ -84,8 +84,28 @@ $(document).ready(function() {
 		 document.forms["invoicelist"].action = url;
 		document.forms["invoicelist"].submit();
 		
+	}); 
+	$("#createInvoice").click(function() {
+		 var url = $(this).attr('data-url');
+		 document.forms["invoicelist"].action = url;
+		document.forms["invoicelist"].submit();
+		
+	}); 
+	$("#invoiceback").click(function() {
+		 var url = $(this).attr('data-url');
+		 document.forms["createInvoice"].action = url;
+		document.forms["createInvoice"].submit();
+		
 	});
 	
+	$("#invoiceDate, #paymentDate,#dueDate").datepicker({
+		changeMonth : true,
+		changeYear : true,
+		showOn : "button",	
+		buttonImage : "/tf-theme/images/calendar.jpg",
+		buttonImageOnly : true,
+		buttonText : "Select date"
+	});
 
 });
 
