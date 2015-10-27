@@ -3,12 +3,12 @@
 <%@ include file="/html/portlet/login/init.jsp" %>
 
 <%
-String companyPortletId="tfcompanyportlet_WAR_tfadminportlet";
-long companyPortletPlid= PortalUtil.getPlidFromPortletId(themeDisplay.getScopeGroupId(),false, companyPortletId);
+String regPortletId="tfregistrationportlet_WAR_tfregistrationportlet";
+long regPortletPlid= PortalUtil.getPlidFromPortletId(themeDisplay.getScopeGroupId(),false, regPortletId);
 %>
 
-<liferay-portlet:renderURL portletName="tfcompanyportlet_WAR_tfadminportlet"   var="createCompanyURL" plid="<%=companyPortletPlid%>"   windowState="<%=WindowState.NORMAL.toString()%>">
- <liferay-portlet:param name="render" value="registerCompany"/> 
+<liferay-portlet:renderURL portletName="tfregistrationportlet_WAR_tfregistrationportlet"   var="createCompanyURL" plid="<%=regPortletPlid%>"   windowState="<%=WindowState.NORMAL.toString()%>">
+
 </liferay-portlet:renderURL>
 
 <liferay-util:buffer var="navigation">

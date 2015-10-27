@@ -10,24 +10,23 @@
 		</div>
 	</div> -->
 
-	<c:if test="${companyModel.id ==null ||  companyModel.id ==0}">
-		<div class="row-fluid" id="fetchCmpInfo">
-			<div class="span6">
-				<label class="span6">Company Number:</label>
-				<%-- <form:input path="name" name="" cssClass="span6" id="companyName" /> --%>
-				<input type="text" id="companyNumber" name="companyNumber"
-					class="span6" />
-	
-			</div>
-			<div class="span4">
-				<input type="hidden" value="${fetchCompanyDetails}" id="fetchURL" />
-				<input type="button" value="Find Company Details"
-					class="span6 btn btn-primary" id="findCompany" />
-	
-			</div>
-	
+
+	<div class="row-fluid" id="fetchCmpInfo">
+		<div class="span6">
+			<label class="span6">Company Number:</label>
+			<%-- <form:input path="name" name="" cssClass="span6" id="companyName" /> --%>
+			<input type="text" id="companyNumber" name="companyNumber"
+				class="span6" />
+
 		</div>
-	</c:if>
+		<div class="span4">
+			<input type="hidden" value="${fetchCompanyDetails}" id="fetchURL" />
+			<input type="button" value="Find Company Details"
+				class="span6 btn btn-primary" id="findCompany" />
+
+		</div>
+
+	</div>
 
 
 	<div id="companyDetails">
