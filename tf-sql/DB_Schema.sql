@@ -267,6 +267,47 @@ CREATE TABLE tf_officer_address (
 ) ;
 
 
+DROP TABLE IF EXISTS tf_investor_portfolio;
+CREATE TABLE tf_investor_portfolio (
+  investor_id  BIGINT(20) NOT NULL AUTO_INCREMENT, 
+  investment_discount_rate  INT(11) DEFAULT NULL,
+  investor_status  TINYINT(1) DEFAULT '0', 
+  investor_type VARCHAR(45) ,  
+  max_dicsount_rate INT(11) DEFAULT NULL,
+  min_discount_rate INT(11) DEFAULT NULL,
+  company_id BIGINT(20) DEFAULT NULL,
+  last_change DATE ,
+  available_to_invest BIGINT(20),
+  amount_invested  BIGINT(20),
+  investment_cap  BIGINT(20),  
+  PRIMARY KEY (investor_id),  
+  UNIQUE KEY investor_id_UNIQUE (investor_id),
+  KEY fk_investor_company_idx (company_id),  
+  CONSTRAINT fk_investor_company FOREIGN KEY (company_id) REFERENCES tf_company (idcompany) 
+  ON DELETE NO ACTION ON UPDATE NO ACTION
+) ;
+
+DROP TABLE IF EXISTS tf_allotments ;
+CREATE TABLE tf_allotments (
+  allotment_id  	BIGINT(20) NOT NULL AUTO_INCREMENT,   
+  trade_id   		BIGINT(20), 
+  investor_id   	BIGINT(20), 
+  allotment_amount  	DECIMAL,  
+  noofdays  		INT(11),
+  is_primary		TINYINT(1) DEFAULT '1', 
+  user_id   		BIGINT(20),
+  market_discount       INT(11),
+  allotment_date	DATE,
+  PRIMARY KEY (allotment_id),  
+  UNIQUE KEY allotment_id_UNIQUE (allotment_id),
+  KEY fk_allotment_trade_id (trade_id),  
+  KEY fk_allotment_investor_id (investor_id),  
+  KEY fk_allotment_user_id (user_id),  
+ FOREIGN KEY (trade_id) 	REFERENCES scf_trade(id),
+ FOREIGN KEY (investor_id) 	REFERENCES tf_investor_portfolio(investor_id),
+ FOREIGN KEY (user_id) 		REFERENCES tf_user(iduser)
+) ;
+
 
 
 
