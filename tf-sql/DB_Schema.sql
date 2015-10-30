@@ -267,7 +267,6 @@ CREATE TABLE tf_officer_address (
 ) ;
 
 
-DROP TABLE IF EXISTS tf_investor_portfolio;
 CREATE TABLE tf_investor_portfolio (
   investor_id  BIGINT(20) NOT NULL AUTO_INCREMENT, 
   investment_discount_rate  INT(11) DEFAULT NULL,
@@ -276,7 +275,9 @@ CREATE TABLE tf_investor_portfolio (
   max_dicsount_rate INT(11) DEFAULT NULL,
   min_discount_rate INT(11) DEFAULT NULL,
   company_id BIGINT(20) DEFAULT NULL,
-  last_change DATE ,
+  start_date DATETIME ,
+  end_date DATETIME ,
+  updated_by VARCHAR(100) ,  
   available_to_invest BIGINT(20),
   amount_invested  BIGINT(20),
   investment_cap  BIGINT(20),  
