@@ -35,7 +35,7 @@ public class InvestorPortfolio implements Serializable{
 	private boolean investorStatus;
 	
 	@Column(name="investor_type")
-	private Boolean investorType;
+	private String investorType;
 	
 	@Column(name="max_dicsount_rate")
 	private Integer maxDiscountRate;
@@ -57,7 +57,7 @@ public class InvestorPortfolio implements Serializable{
 	private Date endDate;
 	
 	@Column(name="updated_by")
-	private Date updatedBy;
+	private String updatedBy;
 	
 	@Column(name="available_to_invest")
 	private BigDecimal availToInvest;	
@@ -96,11 +96,11 @@ public class InvestorPortfolio implements Serializable{
 		this.investorStatus = investorStatus;
 	}
 
-	public Boolean getInvestorType() {
+	public String getInvestorType() {
 		return investorType;
 	}
 
-	public void setInvestorType(Boolean investorType) {
+	public void setInvestorType(String investorType) {
 		this.investorType = investorType;
 	}
 
@@ -144,11 +144,11 @@ public class InvestorPortfolio implements Serializable{
 		this.endDate = endDate;
 	}
 
-	public Date getUpdatedBy() {
+	public String getUpdatedBy() {
 		return updatedBy;
 	}
 
-	public void setUpdatedBy(Date updatedBy) {
+	public void setUpdatedBy(String updatedBy) {
 		this.updatedBy = updatedBy;
 	}
 
