@@ -266,7 +266,7 @@ CREATE TABLE tf_officer_address (
   FOREIGN KEY (officer_id) REFERENCES tf_officer(officer_id)
 ) ;
 
-
+DROP TABLE IF EXISTS tf_investor_portfolio ;
 CREATE TABLE tf_investor_portfolio (
   investor_id  BIGINT(20) NOT NULL AUTO_INCREMENT, 
   investment_discount_rate  INT(11) DEFAULT NULL,
@@ -278,9 +278,9 @@ CREATE TABLE tf_investor_portfolio (
   start_date DATETIME ,
   end_date DATETIME ,
   updated_by VARCHAR(100) ,  
-  available_to_invest BIGINT(20),
-  amount_invested  BIGINT(20),
-  investment_cap  BIGINT(20),  
+  available_to_invest DECIMAL,  
+  amount_invested  DECIMAL,  
+  investment_cap  DECIMAL,  
   PRIMARY KEY (investor_id),  
   UNIQUE KEY investor_id_UNIQUE (investor_id),
   KEY fk_investor_company_idx (company_id),  
@@ -298,7 +298,7 @@ CREATE TABLE tf_allotments (
   is_primary		TINYINT(1) DEFAULT '1', 
   user_id   		BIGINT(20),
   market_discount       INT(11),
-  allotment_date	DATE,
+  allotment_date	DATETIME,
   PRIMARY KEY (allotment_id),  
   UNIQUE KEY allotment_id_UNIQUE (allotment_id),
   KEY fk_allotment_trade_id (trade_id),  

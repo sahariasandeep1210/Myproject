@@ -2,7 +2,7 @@ package com.tf.model;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.sql.Date;
+import java.util.Date;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -12,6 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 
 @Entity
@@ -29,8 +31,8 @@ public class InvestorPortfolio implements Serializable{
 	@Column(name="investment_discount_rate")
 	private Integer discountRate;
 	
-	@Column(name="investor_status")
-	private Boolean investorStatus;
+	@Column(name="investor_status",nullable = false, columnDefinition = "TINYINT", length = 1)
+	private boolean investorStatus;
 	
 	@Column(name="investor_type")
 	private Boolean investorType;
@@ -47,9 +49,11 @@ public class InvestorPortfolio implements Serializable{
 	private  Company company;
 	
 	@Column(name="start_date")
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date startDate;
 	
 	@Column(name="end_date")
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date endDate;
 	
 	@Column(name="updated_by")
@@ -84,11 +88,11 @@ public class InvestorPortfolio implements Serializable{
 		this.discountRate = discountRate;
 	}
 
-	public Boolean getInvestorStatus() {
+	public boolean getInvestorStatus() {
 		return investorStatus;
 	}
 
-	public void setInvestorStatus(Boolean investorStatus) {
+	public void setInvestorStatus(boolean investorStatus) {
 		this.investorStatus = investorStatus;
 	}
 

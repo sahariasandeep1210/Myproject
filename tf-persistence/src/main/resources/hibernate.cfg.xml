@@ -19,6 +19,8 @@
 		<mapping class="com.tf.model.Address" />  
 		<mapping class="com.tf.model.Officer" /> 
 		<mapping class="com.tf.model.OfficerAddress" /> 
+		<mapping class="com.tf.model.InvestorPortfolio" /> 
+		<mapping class="com.tf.model.Allotment" /> 
 	</session-factory>
 
 </hibernate-configuration>

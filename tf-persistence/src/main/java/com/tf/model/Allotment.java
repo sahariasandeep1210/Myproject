@@ -2,7 +2,7 @@ package com.tf.model;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.sql.Date;
+import java.util.Date;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -12,6 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 
 @Entity
@@ -40,8 +42,8 @@ public class Allotment implements Serializable {
 	@Column(name="noofdays")
 	private Integer noOfdays;
 	
-	@Column(name="is_primary")
-	private Boolean isPrimary;
+	@Column(name="is_primary",nullable = false, columnDefinition = "TINYINT", length = 1)
+	private boolean isPrimary;
 	
 	@OneToOne(cascade=CascadeType.ALL)
 	@JoinColumn(name = "user_id")  
@@ -50,7 +52,8 @@ public class Allotment implements Serializable {
 	@Column(name="market_discount")
 	private Integer marketDiscount;
 	
-	@Column(name="market_discount")
+	@Column(name="allotment_date")
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date allotmentDate;
 	
 	public Allotment() {
@@ -96,11 +99,11 @@ public class Allotment implements Serializable {
 		this.noOfdays = noOfdays;
 	}
 
-	public Boolean getIsPrimary() {
+	public boolean getIsPrimary() {
 		return isPrimary;
 	}
 
-	public void setIsPrimary(Boolean isPrimary) {
+	public void setIsPrimary(boolean isPrimary) {
 		this.isPrimary = isPrimary;
 	}
 
