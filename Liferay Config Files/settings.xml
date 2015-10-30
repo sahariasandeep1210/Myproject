@@ -1,0 +1,35 @@
+<settings>
+<profiles>
+     <profile>
+       <id>local</id>
+       <properties>
+      		 <!-- Liferay Specific Properties  -->
+		          <liferay.version>6.2.1</liferay.version> 
+		         <liferay.auto.deploy.dir>G:/Project/liferay-portal-6.2-ce-ga3/deploy</liferay.auto.deploy.dir>
+		         <liferay.app.server.dir>G:/Project/liferay-portal-6.2-ce-ga3/tomcat-7.0.42</liferay.app.server.dir>
+		         <liferay.app.server.deploy.dir>G:/Project/liferay-portal-6.2-ce-ga3/tomcat-7.0.42webapps</liferay.app.server.deploy.dir>
+		         <liferay.app.server.lib.global.dir>G:/Project/liferay-portal-6.2-ce-ga3/tomcat-7.0.42/lib/ext</liferay.app.server.lib.global.dir>
+		         <liferay.app.server.portal.dir>G:/Project/liferay-portal-6.2-ce-ga3/tomcat-7.0.42/webapps/ROOT</liferay.app.server.portal.dir>
+		         
+		      <!-- Hibernate Specific Properties  -->
+          		<jdbc.driverClassName>com.mysql.jdbc.Driver</jdbc.driverClassName> 
+          		<jdbc.dialect>org.hibernate.dialect.MySQLDialect</jdbc.dialect>          							
+          		<jdbc.databaseurl><![CDATA[jdbc:mysql://127.0.0.1/tradeDB?tinyInt1isBit=false&amp;useUnicode=true&amp;characterEncoding=UTF-8&amp;useFastDateParsing=false]]></jdbc.databaseurl> 
+          		<jdbc.username>root</jdbc.username> 
+          		<jdbc.password>root</jdbc.password> 
+          
+     </properties>
+     
+	<!--      <pluginGroups>
+	  <pluginGroup>com.liferay.maven.plugins</pluginGroup>
+	  <pluginGroup>org.codehaus.liferay</pluginGroup>
+	</pluginGroups> -->
+    </profile>
+  </profiles>
+  
+  
+ 
+<activeProfiles>
+    <activeProfile>local</activeProfile>
+</activeProfiles>
+</settings>
