@@ -242,7 +242,7 @@ public class CompanyController extends BaseController {
 		ThemeDisplay themeDisplay=(ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);
 		System.out.println("userModel:::"+user);	
 		Long companyID = ParamUtil.getLong(request, "companyID");
-		Long officerId = ParamUtil.getLong(request, "officer");
+		Long officerId = ParamUtil.getLong(request, "officer",0);
 		user.setCompany(companyService.findById(companyID));
 		if(user.getId() ==null){	
 			createUser=true;
@@ -257,7 +257,7 @@ public class CompanyController extends BaseController {
 		//and map the same to Liferay userId and Company/Seller
 		user.setActive(Boolean.FALSE);
 		Long userID=userService.addorUpdateUser(user);
-		if(createUser){
+		if(createUser && officerId!=0){
 			Officer officer=officerService.findById(officerId);
 			officer.setIduser(userID);
 			officerService.addorUpdateOfficer(officer);

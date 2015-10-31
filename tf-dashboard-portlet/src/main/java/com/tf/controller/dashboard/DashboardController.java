@@ -12,6 +12,7 @@ import org.springframework.web.portlet.bind.annotation.RenderMapping;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.tf.persistance.util.Constants;
 import com.tf.utility.LiferayUtility;
 
 
@@ -27,8 +28,13 @@ public class DashboardController {
 	@RenderMapping
 	protected ModelAndView renderCompanyList(ModelMap model,RenderRequest request, RenderResponse response) throws Exception {		
 		_log.info("Render Dashboard");
-		setPortletURls(model,request);
-		return new ModelAndView("newdashboard", model);		
+		setPortletURls(model,request); 
+		String viewName="newdashboard";
+		if(request.isUserInRole(Constants.PRIMARY_INVESTOR_ADMIN)){
+			viewName="investordashboard";
+		}
+		
+		return new ModelAndView(viewName, model);		
 	}
 
 	private void setPortletURls(ModelMap map, RenderRequest request) {
