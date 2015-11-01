@@ -288,6 +288,21 @@ CREATE TABLE tf_investor_portfolio (
   ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ;
 
+DROP TABLE IF EXISTS tf_investor_portfolio_history ;
+CREATE TABLE tf_investor_portfolio_history (
+  id  BIGINT(20) NOT NULL AUTO_INCREMENT, 
+  investor_id  BIGINT(20) NOT NULL, 
+  investment_discount_rate  INT(11) DEFAULT NULL, 
+   investment_cap  DECIMAL,  
+  start_date DATETIME ,
+  end_date DATETIME ,
+  updated_by VARCHAR(100) ,   
+  PRIMARY KEY (id), 
+  KEY fk_investor_id (investor_id),  
+  CONSTRAINT fk_investor FOREIGN KEY (investor_id) REFERENCES tf_investor_portfolio (investor_id) 
+  ON DELETE NO ACTION ON UPDATE NO ACTION
+) ;
+
 DROP TABLE IF EXISTS tf_allotments ;
 CREATE TABLE tf_allotments (
   allotment_id  	BIGINT(20) NOT NULL AUTO_INCREMENT,   

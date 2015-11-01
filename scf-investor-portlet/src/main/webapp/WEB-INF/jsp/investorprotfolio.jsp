@@ -1,7 +1,7 @@
 <%@include file="init.jsp"%>
 
 <portlet:actionURL var="updateProtfolioURL">
-<portlet:param name="action" value="updateProtfolio"/>
+	<portlet:param name="action" value="updateProtfolio"/>
 </portlet:actionURL>
 
 
@@ -14,7 +14,7 @@
 				</div>
 </div>
 <div class="row-fluid">
-				<div class="span12">
+				<div class="span12" style="border-bottom: 1px solid #003d59; margin-bottom: 35px">
 					<div class="span12"><h6>Conveniently manage your Portfolio.</h6></div>		
 								
 				</div>
@@ -26,7 +26,7 @@
 		<div class="row-fluid">
 			<div class="span6">
 				<label class="span6">Investment Discount Rate:<span class="requiredStar">*</span></label>
-				<input type="hidden" name="id" value="${investorModel.investorId}"		id="investorId" />
+				<input type="hidden" name="investorId" value="${investorModel.investorId}"		id="investorId" />
 				<form:input path="discountRate"  cssClass="span6" id="discountRate" />
 
 
@@ -62,36 +62,44 @@
 				<form:input path="investmentCap" name="" cssClass="span6" id="investmentCap" />
 			</div>			
 		</div>
-		
-</form:form>
 
+		<div class="row-fluid">
+			<div class="span6">
+
+				<input type="submit" value="Update Protfolio"
+					class="btn btn-primary" /> <input type="button" value="Go Back"
+					class="btn btn-primary" />
+			</div>
+			<div class="span6"></div>
+		</div>
+
+	</form:form>
 <div class="table-responsive">
 	<table class="table table-hover tablesorter table-bordered">
 		<thead>
 			<tr>
 				<th>Discount Rate</th>
-				<th>Available To Invest</th>
-				<th>Amount Invested</th>
 				<th>Investment Cap</th>
-				<th>Update Date</th>
+				<th>Start End</th>
+				<th>End Date</th>
 			</tr>
 		</thead>
 		<tbody>
 			<c:choose>
-				<c:when test="${fn:length(investors) gt 0}">
-					<c:forEach items="${investors}" var="investor">
+				<c:when test="${fn:length(investorHistoryList) gt 0}">
+					<c:forEach items="${investorHistoryList}" var="investorHis">
 						<tr>
-							<td>${investor.discountRate}</td>
-							<td>${investor.availToInvest}</td>
-							<td>${investor.amountInvested}</td>
-							<td>${investor.investmentCap}</td>
-							<td>${investor.startDate}</td>						
+							<td>${investorHis.discountRate}</td>
+							<td>${investorHis.investmentCap}</td>
+							<td>${investorHis.startDate}</td>
+							<td>${investorHis.endDate}</td>
+												
 						</tr>
 					</c:forEach>
 			</c:when>
 			<c:otherwise>
 							<tr>
-								<td colspan="6" align="center" style="text-align: center;"> No History found!</td>
+								<td colspan="4" align="center" style="text-align: center;"> No History found!</td>
 							</tr>
 			</c:otherwise>
 			</c:choose>

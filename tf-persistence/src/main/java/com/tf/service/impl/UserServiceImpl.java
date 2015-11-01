@@ -31,5 +31,9 @@ public class UserServiceImpl implements UserService {
 	public long  getCompanyIDbyUserID(long id){
 		return userDAO.getCompanyIDbyUserID(id);
 	}
+	
+	public long  getUserbyLiferayUserID(long id){
+		return userDAO.getUserbyLiferayUserID(id);
+	}
 
 }

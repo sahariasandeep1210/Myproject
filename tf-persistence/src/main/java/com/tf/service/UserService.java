@@ -13,5 +13,7 @@ public interface UserService {
 	public User findById(long id);
 	
 	public long  getCompanyIDbyUserID(long id);
+	
+	public long  getUserbyLiferayUserID(long id);
 
 }
