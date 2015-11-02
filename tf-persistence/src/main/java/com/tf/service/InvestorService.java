@@ -1,6 +1,7 @@
 package com.tf.service;
 
 import com.tf.model.InvestorPortfolio;
+import com.tf.persistance.util.DashboardModel;
 
 public interface InvestorService {
 	
@@ -11,5 +12,7 @@ public interface InvestorService {
 	public InvestorPortfolio findById(long id);
 	
 	public void updatePortfiloDetails(InvestorPortfolio investorActual,InvestorPortfolio investorChnaged,String username);
+	
+	public DashboardModel  getDashBoardInformation();
 
 }

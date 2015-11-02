@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.tf.dao.InvoiceDAO;
+import com.tf.dao.SCFTradeDAO;
 import com.tf.dao.UserDAO;
 import com.tf.model.Company;
 import com.tf.model.Invoice;
@@ -23,6 +24,9 @@ public class InvoiceServiceImpl implements InvoiceService{
 
 	@Autowired
 	private InvoiceDAO invoiceDAO;
+	
+	@Autowired
+	private SCFTradeDAO scfTradeDAO;
 	
 	@Autowired
 	private UserDAO userDAO;
@@ -91,6 +95,21 @@ public class InvoiceServiceImpl implements InvoiceService{
 		List<Invoice> invoicesList=new ArrayList<Invoice>();
 		for(String id :invoiceIds){ 
 			invoice=invoiceDAO.findById(Long.valueOf(id));
+			invoice.setStatus(status);
+			invoicesList.add(invoice);			
+		}
+		
+		invoiceDAO.updateInvoices(invoicesList);
+		
+	}
+	
+	public void updateInvoicesStatusWithTrade(List<String> invoiceIds,String status,Long tradeLong){
+		Invoice invoice;
+		List<Invoice> invoicesList=new ArrayList<Invoice>();
+		for(String id :invoiceIds){ 
+			invoice=invoiceDAO.findById(Long.valueOf(id));
+			
+			invoice.setScfTrade(scfTradeDAO.findById(tradeLong));
 			invoice.setStatus(status);
 			invoicesList.add(invoice);			
 		}

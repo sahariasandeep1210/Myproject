@@ -1,5 +1,6 @@
 package com.tf.model;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
 
@@ -16,8 +17,13 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="tf_company")
-public class Company {
+public class Company implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 9024704915265606237L;
+
 	@Id
     @Column(name="idcompany")
     @GeneratedValue

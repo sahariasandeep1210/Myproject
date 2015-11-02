@@ -102,18 +102,32 @@ p {
     display: table-cell;
     width: 40%;
     vertical-align: top;
-    font-size: 11px;
+    font-size: 13px;
     font-weight: bold;
-    color: #999;
+    color: #003d59;
 }
 
 .stat-value {
     display: block;
     margin-bottom: .55em;
-    font-size: 30px;
+    font-size: 20px;
     font-weight: bold;
     letter-spacing: -2px;
     color: #444;
+}
+
+.stats #donut-chart {
+    height: 100px;
+    margin-left: -20px;
+}
+.chart-holder {
+    width: 100%;
+    height: 250px;
+}
+
+.stat-time {
+    text-align: center;
+    padding-top: 1.5em;
 }
 
 .shortcuts {
@@ -171,4 +185,16 @@ p {
     font-size: 16px;
     color: #555;
     vertical-align: middle;
+}
+
+.chart-legend li span{
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    margin-right: 5px;
+  
+}
+
+.chart-legend li {	
+	  list-style: none !important;
 }

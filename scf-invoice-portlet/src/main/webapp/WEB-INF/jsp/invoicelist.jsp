@@ -70,7 +70,9 @@ long plid= PortalUtil.getPlidFromPortletId(themeDisplay.getScopeGroupId(),true, 
 		<!-- 	<input type="submit" value="Upload Invoice Document" class="btn btn-primary"
 				id="uploadInvoice" /> -->
 				<div class="span6">
-				<input type="button" value="Create Invoice" class="btn btn-primary" id="createInvoice"  data-url="${createInvoiceURL}"  class="span6"/>
+					<c:if test="${userType eq 'SCF Admin'}">
+						<input type="button" value="Create Invoice" class="btn btn-primary" id="createInvoice"  data-url="${createInvoiceURL}"  class="span6"/>
+					</c:if>
 				<c:choose>
 					<c:when test="${userType eq 'Seller Admin'}">
 						<input type="button" value="Request Finance" class="btn btn-primary" id="requestFinance" data-url="${requestFinanceURL}" class="span6"/>

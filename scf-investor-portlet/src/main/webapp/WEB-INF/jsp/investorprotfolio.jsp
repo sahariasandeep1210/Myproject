@@ -34,7 +34,7 @@
 		
 		</div>
 		
-		<div class="row-fluid">
+	<%-- 	<div class="row-fluid">
 			<div class="span6">
 				<label class="span6">Min Discount Rate:</label>
 				<form:input path="minDiscountRate" cssClass="span6" id="minDiscountRate" />
@@ -43,7 +43,7 @@
 				<label class="span6">Max Discount Rate:</label>
 				<form:input path="maxDiscountRate" cssClass="span6" id="maxDiscountRate" />
 			</div>	
-		</div>
+		</div> --%>
 		
 		<div class="row-fluid">
 			<div class="span6">

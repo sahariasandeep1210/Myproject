@@ -3,7 +3,7 @@
 	<portlet:param name="action" value="addInvoice" />
 </portlet:actionURL>
 
-<<portlet:renderURL var="invoiceListURL"></portlet:renderURL>
+<portlet:renderURL var="invoiceListURL"></portlet:renderURL>
 
 <div class="container-fluid">
 	<form:form commandName="invoiceModel" method="post"

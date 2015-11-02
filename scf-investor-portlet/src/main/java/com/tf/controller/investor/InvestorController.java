@@ -63,6 +63,8 @@ public class InvestorController {
 		investorModel=investorService.getInvestorByCompanyId(companyId);
 		if(investorModel==null){
 			investorModel=new InvestorPortfolio();
+			investorModel.setMinDiscountRate(20);
+			investorModel.setMaxDiscountRate(200);
 		}else{
 			List<InvestorPortfolioHistory>  investorHistoryList=investorHistoryService.getInvestorHistory(investorModel.getInvestorId());
 			model.put("investorHistoryList", investorHistoryList);

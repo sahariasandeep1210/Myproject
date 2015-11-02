@@ -25,4 +25,6 @@ public interface InvoiceService {
 	public List<Invoice> getInvoicesByCompanyNoAndStatus(String companyNumber,String status);
 	
 	public void updateInvoicesStatus(List<String> invoiceIds,String Status);
+	
+	public void updateInvoicesStatusWithTrade(List<String> invoiceIds,String status,Long tradeLong);
 }

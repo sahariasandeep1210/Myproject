@@ -4,9 +4,13 @@ import java.beans.PropertyEditorSupport;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
@@ -41,9 +45,12 @@ import com.liferay.portlet.documentlibrary.model.DLFileEntry;
 import com.liferay.portlet.documentlibrary.model.DLFolder;
 import com.liferay.portlet.documentlibrary.model.DLFolderConstants;
 import com.liferay.portlet.documentlibrary.service.DLAppServiceUtil;
+import com.mysql.jdbc.StringUtils;
 import com.tf.model.Company;
+import com.tf.model.Invoice;
 import com.tf.model.SCFTrade;
 import com.tf.persistance.util.Constants;
+import com.tf.persistance.util.InvoiceStatus;
 import com.tf.persistance.util.TradeStatus;
 import com.tf.service.CompanyService;
 import com.tf.service.InvoiceService;
@@ -168,6 +175,11 @@ public class SCFTradeController {
 			SCFTrade scfTrade = transformTOScfTrade(scfTradeDTO);
 			scfTrade.setStatus(TradeStatus.NEW.getValue());
 			scfTrade = scfTradeService.save(scfTrade);
+			if(!StringUtils.isNullOrEmpty(scfTradeDTO.getInvoiceIds())){
+				List<String> invoicesIdList=Arrays.asList(scfTradeDTO.getInvoiceIds().split(","));
+				invoiceService.updateInvoicesStatusWithTrade(invoicesIdList, InvoiceStatus.TRADE_GENERATED.getValue(),scfTrade.getId());
+			}
+		
 			if (scfTrade.getWantToInsure()) {
 				addInsuranceDocument(scfTradeDTO, request, themeDisplay,
 						currentSideID, parentFolderId, serviceContextDlFolder,

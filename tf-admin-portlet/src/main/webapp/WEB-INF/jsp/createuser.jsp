@@ -50,7 +50,7 @@
 						name="officer" data-url="${fetchOfficerInfoURL}">
 						<option value="">--- Select ---</option>
 						<c:forEach var="officer" items="${officers}">
-							<option value="${officer.id}" <c:if test="${officer.iduser !=null && officer.iduser !=0}">disabled</c:if>>${officer.name}</option>
+							<option value="${officer.id}" <c:if test="${officer.iduser !=null && officer.iduser !=0}">disabled style="background-color: #4786BC;color: white;" </c:if>>${officer.name}</option>
 						</c:forEach>
 
 					</select>

@@ -26,12 +26,16 @@ public class AdminUtility {
 			addSecInvestorUserTypes(map);
 		} else if(request.isUserInRole("SCF Admin")){
 			addSCFUserTypes(map);
+		} else if(request.isUserInRole("Primary Investor Admin")){
+			addPriInvestorUserTypes(map);
 		} else if("Primary Investor".equalsIgnoreCase(companyType) ){
 			addPriInvestorUserTypes(map);
 		} else if("Secondary Investor".equalsIgnoreCase(companyType) ){
 			addSecInvestorUserTypes(map);
-		}else if("Seller".equalsIgnoreCase(companyType)){
+		}else if("Seller".equalsIgnoreCase(companyType) || "4".equalsIgnoreCase(companyType)){
 			addSellerUserTypes(map);
+		}else if("Primary Investor".equalsIgnoreCase(companyType) || "1".equalsIgnoreCase(companyType)){
+			addPriInvestorUserTypes(map);
 		}else{
 			addSellerUserTypes(map);
 			addPriInvestorUserTypes(map);
@@ -61,8 +65,8 @@ public class AdminUtility {
 	}
 	
 	private   Map<String,String> addPriInvestorUserTypes(Map<String,String> map){
-		map.put("Primary Invester User","Primary Invester User");
-		map.put("Primary Invester Admin","Primary Invester Admin");		
+		map.put("Primary Investor User","Primary Investor User");
+		map.put("Primary Investor Admin","Primary Investor Admin");		
 		return map;		
 	}
 	
