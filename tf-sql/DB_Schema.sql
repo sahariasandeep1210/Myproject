@@ -266,9 +266,23 @@ CREATE TABLE tf_officer_address (
   FOREIGN KEY (officer_id) REFERENCES tf_officer(officer_id)
 ) ;
 
+DROP TABLE IF EXISTS tf_investor;
+CREATE TABLE tf_investor (
+  investor_id  BIGINT(20) NOT NULL AUTO_INCREMENT,  
+  company_id BIGINT(20) DEFAULT NULL,   
+  create_date  DATE,  
+  PRIMARY KEY (investor_id),  
+  UNIQUE KEY investor_id_UNIQUE (investor_id),
+  KEY fk_investor_company_idx (company_id),  
+  CONSTRAINT fk_investor_company FOREIGN KEY (company_id) REFERENCES tf_company (idcompany) 
+  ON DELETE NO ACTION ON UPDATE NO ACTION
+) ;
+
+
 DROP TABLE IF EXISTS tf_investor_portfolio ;
 CREATE TABLE tf_investor_portfolio (
-  investor_id  BIGINT(20) NOT NULL AUTO_INCREMENT, 
+  investor_portfolio_id  BIGINT(20) NOT NULL AUTO_INCREMENT, 
+  investor_id  BIGINT(20) NOT NULL,
   investment_discount_rate  INT(11) DEFAULT NULL,
   investor_status  TINYINT(1) DEFAULT '0', 
   investor_type VARCHAR(45) ,  
@@ -281,17 +295,19 @@ CREATE TABLE tf_investor_portfolio (
   available_to_invest DECIMAL,  
   amount_invested  DECIMAL,  
   investment_cap  DECIMAL,  
-  PRIMARY KEY (investor_id),  
-  UNIQUE KEY investor_id_UNIQUE (investor_id),
-  KEY fk_investor_company_idx (company_id),  
-  CONSTRAINT fk_investor_company FOREIGN KEY (company_id) REFERENCES tf_company (idcompany) 
+  PRIMARY KEY (investor_portfolio_id),  
+  UNIQUE KEY investor_portfolio_id_UNIQUE (investor_portfolio_id),
+  KEY fk_tf_investor_portfolio_investor_id (investor_id),  
+  CONSTRAINT fk_investor_portfolio_investor_id FOREIGN KEY (investor_id) REFERENCES tf_investor (investor_id),
+  KEY fk_investor_portfolio_company_idx (company_id),  
+  CONSTRAINT fk_investor_portfolio_company FOREIGN KEY (company_id) REFERENCES tf_company (idcompany) 
   ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ;
 
 DROP TABLE IF EXISTS tf_investor_portfolio_history ;
 CREATE TABLE tf_investor_portfolio_history (
   id  BIGINT(20) NOT NULL AUTO_INCREMENT, 
-  investor_id  BIGINT(20) NOT NULL, 
+  investor_portfolio_id  BIGINT(20) NOT NULL, 
   investment_discount_rate  INT(11) DEFAULT NULL, 
    investment_cap  DECIMAL,  
   start_date DATETIME ,
