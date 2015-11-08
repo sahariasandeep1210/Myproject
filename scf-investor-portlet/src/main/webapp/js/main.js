@@ -15,12 +15,12 @@ $(document).ready(function() {
 
           // Update the name attributes
           $clone
-              .find('[name="investorModel.company.id"]').attr('name', 'investorModel[' + investorIndex + '].company.id').end()
-              .find('[name="investorModel.currentCreditLine"]').attr('name', 'investorModel[' + investorIndex + '].currentCreditLine').end()
-              .find('[name="investorModel.myCreditLine"]').attr('name', 'investorModel[' + investorIndex + '].myCreditLine').end()
-              .find('[name="investorModel.discountRate"]').attr('name', 'investorModel[' + investorIndex + '].discountRate').end()
-              .find('[name="investorModel.amountInvested"]').attr('name', 'investorModel[' + investorIndex + '].amountInvested').end()
-              .find('[name="investorModel.availToInvest"]').attr('name', 'investorModel[' + investorIndex + '].availToInvest').end();
+              .find('[name="investorModel.company.id"]').attr('name', 'investorDTO.investorModel[' + investorIndex + '].company.id').end()
+              .find('[name="investorModel.currentCreditLine"]').attr('name', 'investorDTO.investorModel[' + investorIndex + '].currentCreditLine').end()
+              .find('[name="investorModel.myCreditLine"]').attr('name', 'investorDTO.investorModel[' + investorIndex + '].myCreditLine').end()
+              .find('[name="investorModel.discountRate"]').attr('name', 'investorDTO.investorModel[' + investorIndex + '].discountRate').end()
+              .find('[name="investorModel.amountInvested"]').attr('name', 'investorDTO.investorModel[' + investorIndex + '].amountInvested').end()
+              .find('[name="investorModel.availToInvest"]').attr('name', 'investorDTO.investorModel[' + investorIndex + '].availToInvest').end();
              
          
       })

@@ -20,7 +20,7 @@
 				</div>
 </div>
 
-<form:form   method="post" commandName="investorModel"
+<form:form   method="post" commandName="investorDTO"
 	action="${updateProtfolioURL}" id="investorModel" name="investorModel" class="form-horizontal">
 	
 		<div class="table-responsive">
@@ -99,17 +99,18 @@
 						<input type="text" name="investorModel.discountRate" class="span9" id="discountRate" placeholder="Offered BPS*" />
 					</div>
 					<div class="span6">
-						<input  type="text" name="investorModel.amountInvested" class="span9" id="amountInvested" placeholder="Utilized" />
+							<!-- <input  type="text" name="investorModel.amountInvested" class="span9" id="amountInvested" placeholder="Utilized" /> -->
+						 <button type="button" class="btn btn-primary removeButton"><i class="fa fa-minus"></i> Remove</button>
 					</div>
 				</div>
-				<div class="span6">
+			<!-- 	<div class="span6">
 					<div class="span6">
 						<input type="text" name="investorModel.availToInvest" class="span9" id="availToInvest" placeholder="Available" />
 					</div>
 					<div class="span6">
 						  <button type="button" class="btn btn-primary removeButton"><i class="fa fa-minus"></i> Remove</button>
 					</div>
-				</div>
+				</div> -->
 	
 			</div>
 			<hr>

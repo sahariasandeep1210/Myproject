@@ -1,6 +1,7 @@
 package com.tf.controller.investor;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -22,6 +23,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.theme.ThemeDisplay;
+import com.tf.controller.investor.util.InvestorDTO;
 import com.tf.model.Company;
 import com.tf.model.InvestorPortfolio;
 import com.tf.model.InvestorPortfolioHistory;
@@ -56,14 +58,14 @@ public class InvestorController {
 	protected  InvestorHistoryService investorHistoryService; 
 	
 	@RenderMapping
-	protected ModelAndView renderInvestorInfo(@ModelAttribute("investorModel")InvestorPortfolio  investorModel,ModelMap model,RenderRequest request, RenderResponse response) throws Exception {		
+	protected ModelAndView renderInvestorInfo(@ModelAttribute("investorDTO")InvestorDTO  investorDTO,ModelMap model,RenderRequest request, RenderResponse response) throws Exception {		
 		_log.info("Render Investor Protfolio");
 		ThemeDisplay themeDisplay=(ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);
 		List<Company> companyList = new ArrayList<Company>();
 		companyList = companyService.getCompanies("5");
 		//long userId=userService.getUserbyLiferayUserID(themeDispay.getUserId());
 		long companyId=userService.getCompanyIDbyUserID(themeDisplay.getUserId());
-		investorModel=investorService.getInvestorByCompanyId(companyId);
+		/*investorModel=investorService.getInvestorByCompanyId(companyId);
 		if(investorModel==null){
 			investorModel=new InvestorPortfolio();
 			investorModel.setMinDiscountRate(20);
@@ -72,18 +74,20 @@ public class InvestorController {
 			//List<InvestorPortfolioHistory>  investorHistoryList=investorHistoryService.getInvestorHistory(investorModel.getInvestorId());
 			//model.put("investorHistoryList", investorHistoryList);
 		}
-		model.put("investorModel", investorModel);
+		model.put("investorModel", investorModel);*/
+		model.put("investorDTO", investorDTO);		
 		model.put("companyList", companyList);
 		return new ModelAndView("investorprotfolio", model);		
 	}
 	
 	@ActionMapping(params="action=updateProtfolio")
-	protected void add(@ModelAttribute("investorModel")InvestorPortfolio  investorModel, 
+	protected void add(@ModelAttribute("investorDTO")InvestorDTO  investorDTO, 
 												 ModelMap model, 
 												 ActionRequest request,
 												 ActionResponse response) throws Exception {
-		System.out.println("investorModel:::::"+investorModel);
-		ThemeDisplay themeDisplay=(ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);
+		System.out.println("investorModel:::::"+investorDTO);
+		investorDTO.setInvestorModel(filterNullValues(investorDTO.getInvestorModel()));
+		/*ThemeDisplay themeDisplay=(ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);
 		if(investorModel.getInvestor().getInvestorId()==null ){		
 			long companyId=userService.getCompanyIDbyUserID(themeDisplay.getUserId());
 			Company company=companyService.findById(companyId);
@@ -102,8 +106,26 @@ public class InvestorController {
 				
 			}
 			
-		}
+		}*/
 		
+	}
+	
+	
+	/**
+	 * This method will discard InvestorPortfolio object which is having null Discount Rate.
+	 * 
+	 * @param 
+	 * @return List<InvestorPortfolio>
+	 */
+	private List<InvestorPortfolio> filterNullValues(List<InvestorPortfolio> investorPortfolios) {
+		List<InvestorPortfolio> updatedInvestorPortfolios=new ArrayList<InvestorPortfolio>();
+		for(InvestorPortfolio investorPortfolio :investorPortfolios){
+			if(investorPortfolio!=null && investorPortfolio.getDiscountRate()!=null){
+				updatedInvestorPortfolios.add(investorPortfolio);
+			}			
+		}
+		//Collections.sort(updatedInvestorPortfolios);
+		return updatedInvestorPortfolios;		
 	}
 	
 	
