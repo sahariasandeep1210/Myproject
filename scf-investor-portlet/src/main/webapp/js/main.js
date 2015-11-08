@@ -1,4 +1,39 @@
 $(document).ready(function() {
+	
+	  investorIndex = 0;
+	  
+	  // Add button click handler
+      $('#investorModel').on('click', '.addButton', function() {
+    	  investorIndex++;
+          var $template = $('#protfolioTemplate'),
+              $clone    = $template
+                              .clone()
+                              .removeClass('hide')
+                              .removeAttr('id')
+                              .attr('data-investor-index', investorIndex)
+                              .insertBefore($template);
+
+          // Update the name attributes
+          $clone
+              .find('[name="investorModel.company.id"]').attr('name', 'investorModel[' + investorIndex + '].company.id').end()
+              .find('[name="investorModel.currentCreditLine"]').attr('name', 'investorModel[' + investorIndex + '].currentCreditLine').end()
+              .find('[name="investorModel.myCreditLine"]').attr('name', 'investorModel[' + investorIndex + '].myCreditLine').end()
+              .find('[name="investorModel.discountRate"]').attr('name', 'investorModel[' + investorIndex + '].discountRate').end()
+              .find('[name="investorModel.amountInvested"]').attr('name', 'investorModel[' + investorIndex + '].amountInvested').end()
+              .find('[name="investorModel.availToInvest"]').attr('name', 'investorModel[' + investorIndex + '].availToInvest').end();
+             
+         
+      })
+        // Remove button click handler
+      .on('click', '.removeButton', function() {
+            var $row  = $(this).parents('.parentclass'),
+                index = $row.attr('data-investor-index');
+
+     
+
+            // Remove element containing the fields
+            $row.remove();
+        });
 
 	enableTab();
 	$("#createTrade").hide(); 

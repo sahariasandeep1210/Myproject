@@ -1,5 +1,6 @@
 package com.tf.controller.investor;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -55,9 +56,11 @@ public class InvestorController {
 	protected  InvestorHistoryService investorHistoryService; 
 	
 	@RenderMapping
-	protected ModelAndView renderCompanyList(@ModelAttribute("investorModel")InvestorPortfolio  investorModel,ModelMap model,RenderRequest request, RenderResponse response) throws Exception {		
+	protected ModelAndView renderInvestorInfo(@ModelAttribute("investorModel")InvestorPortfolio  investorModel,ModelMap model,RenderRequest request, RenderResponse response) throws Exception {		
 		_log.info("Render Investor Protfolio");
 		ThemeDisplay themeDisplay=(ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);
+		List<Company> companyList = new ArrayList<Company>();
+		companyList = companyService.getCompanies("5");
 		//long userId=userService.getUserbyLiferayUserID(themeDispay.getUserId());
 		long companyId=userService.getCompanyIDbyUserID(themeDisplay.getUserId());
 		investorModel=investorService.getInvestorByCompanyId(companyId);
@@ -66,10 +69,11 @@ public class InvestorController {
 			investorModel.setMinDiscountRate(20);
 			investorModel.setMaxDiscountRate(200);
 		}else{
-			List<InvestorPortfolioHistory>  investorHistoryList=investorHistoryService.getInvestorHistory(investorModel.getInvestorId());
-			model.put("investorHistoryList", investorHistoryList);
+			//List<InvestorPortfolioHistory>  investorHistoryList=investorHistoryService.getInvestorHistory(investorModel.getInvestorId());
+			//model.put("investorHistoryList", investorHistoryList);
 		}
 		model.put("investorModel", investorModel);
+		model.put("companyList", companyList);
 		return new ModelAndView("investorprotfolio", model);		
 	}
 	
@@ -80,18 +84,18 @@ public class InvestorController {
 												 ActionResponse response) throws Exception {
 		System.out.println("investorModel:::::"+investorModel);
 		ThemeDisplay themeDisplay=(ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);
-		if(investorModel.getInvestorId()==null ){		
+		if(investorModel.getInvestor().getInvestorId()==null ){		
 			long companyId=userService.getCompanyIDbyUserID(themeDisplay.getUserId());
 			Company company=companyService.findById(companyId);
 			if(company!=null){
-				investorModel.setCompanyId(company);
+				investorModel.setCompany(company);
 				investorModel.setUpdatedBy(themeDisplay.getUser().getScreenName());
 			}
 			investorModel.setStartDate(new Date());
 			investorService.save(investorModel);
 		}else{
-			InvestorPortfolio investor=investorService.findById(investorModel.getInvestorId());
-			if(investorModel.getDiscountRate().intValue() !=investor.getDiscountRate().intValue() || investorModel.getInvestmentCap()!=investor.getInvestmentCap()){
+			InvestorPortfolio investor=investorService.findById(investorModel.getInvestor().getInvestorId());
+			if(investorModel.getDiscountRate().intValue() !=investor.getDiscountRate().intValue() || investorModel.getCurrentCreditLine()!=investor.getCurrentCreditLine()){
 				
 				investorService.updatePortfiloDetails(investor,investorModel, themeDisplay.getUser().getScreenName());
 				

@@ -62,3 +62,8 @@
 .hideclass{
 	display: none;
 }
+
+.aui hr {   
+    border-top: 1px solid #346697!important;
+  
+}

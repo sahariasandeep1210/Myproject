@@ -43,7 +43,7 @@ public class InvestorServiceImpl implements InvestorService {
 		InvestorPortfolioHistory investorHistory =new InvestorPortfolioHistory();
 		investorHistory.setInvestorPortfolio(investor);
 		investorHistory.setDiscountRate(investor.getDiscountRate());
-		investorHistory.setInvestmentCap(investor.getInvestmentCap());
+		investorHistory.setInvestmentCap(investor.getCurrentCreditLine());
 		investorHistory.setStartDate(investor.getStartDate());
 		investorHistory.setEndDate(currentDate);
 		investorHistory.setUpdatedBy(userName);
@@ -51,7 +51,7 @@ public class InvestorServiceImpl implements InvestorService {
 		
 		//updating investor Portfolio
 		investor.setDiscountRate(investorModel.getDiscountRate());
-		investor.setInvestmentCap(investorModel.getInvestmentCap());
+		investor.setCurrentCreditLine(investorModel.getCurrentCreditLine());
 		investor.setStartDate(currentDate);
 		investorDAO.update(investor);
 		

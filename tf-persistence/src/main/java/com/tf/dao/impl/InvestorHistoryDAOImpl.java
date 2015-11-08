@@ -15,10 +15,10 @@ public class InvestorHistoryDAOImpl extends BaseDAOImpl<InvestorPortfolioHistory
 	
 	@SuppressWarnings("unchecked")
 	public List<InvestorPortfolioHistory> getInvestorHistory(long investorID) {
-		_log.debug("Inside getCompanies ");
+		_log.debug("Inside getInvestorHistory ");
 		try {
 			
-			List<InvestorPortfolioHistory> results = (List<InvestorPortfolioHistory>) sessionFactory.getCurrentSession().createCriteria(InvestorPortfolioHistory.class).add(Restrictions.eq("investorPortfolio.investorId", investorID)).list();
+			List<InvestorPortfolioHistory> results = (List<InvestorPortfolioHistory>) sessionFactory.getCurrentSession().createCriteria(InvestorPortfolioHistory.class).add(Restrictions.eq("investorPortfolio.investorProtId", investorID)).list();
 			_log.debug("getInvestorHistory successful, result size: "
 					+ results.size());
 			return results;

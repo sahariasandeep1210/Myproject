@@ -20,7 +20,7 @@ public class InvestorDAOImpl extends BaseDAOImpl<InvestorPortfolio, Long>   impl
 		try {
 			if(id!=0){
 				
-				investor = (InvestorPortfolio) sessionFactory.getCurrentSession().createQuery("from InvestorPortfolio investor where investor.company.id = :id").setLong("id",id).uniqueResult();
+				investor = (InvestorPortfolio) sessionFactory.getCurrentSession().createQuery("from InvestorPortfolio investorprot where investorprot.company.id = :id").setLong("id",id).uniqueResult();
 				if (investor == null) {
 					_log.debug("get successful, no instance found");
 				} else {
@@ -38,7 +38,7 @@ public class InvestorDAOImpl extends BaseDAOImpl<InvestorPortfolio, Long>   impl
 		try {
 			DashboardModel dasboardModel =new DashboardModel();
 				
-				Query query =sessionFactory.getCurrentSession().createQuery("SELECT SUM(investmentCap) AS totalcap,SUM(availToInvest ) AS availinvest,SUM(amountInvested) AS amountInvested FROM InvestorPortfolio ");
+				Query query =sessionFactory.getCurrentSession().createQuery("SELECT SUM(currentCreditLine) AS totalcap,SUM(availToInvest ) AS availinvest,SUM(amountInvested) AS amountInvested FROM InvestorPortfolio ");
 				 List<Object[]> list = query.list();
 			        for(Object[] arr : list){
 			        	dasboardModel.setInvestmentCap(arr[0]!=null?Long.valueOf(arr[0].toString()):0);

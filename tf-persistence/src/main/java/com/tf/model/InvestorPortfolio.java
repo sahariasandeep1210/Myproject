@@ -10,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -21,12 +22,20 @@ import javax.persistence.TemporalType;
 public class InvestorPortfolio implements Serializable{
 	
 
-	private static final long serialVersionUID = 3720078521846736343L;
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8274244119472954657L;
 
 	@Id
-    @Column(name="investor_id")
+    @Column(name="investor_portfolio_id")
     @GeneratedValue
-	private Long investorId;	
+	private Long investorProtId;	
+	
+	@ManyToOne(cascade=CascadeType.ALL)	
+	@JoinColumn(name = "investor_id")  
+	private Investor investor;
 	
 	@Column(name="investment_discount_rate")
 	private Integer discountRate;
@@ -65,19 +74,32 @@ public class InvestorPortfolio implements Serializable{
 	@Column(name="amount_invested")
 	private BigDecimal amountInvested;	
 	
-	@Column(name="investment_cap")
-	private BigDecimal investmentCap;	
+	@Column(name="my_credit_line")
+	private BigDecimal myCreditLine;
+	
+	@Column(name="current_credit_line")
+	private BigDecimal currentCreditLine;	
+	
+
 	
 	public InvestorPortfolio() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Long getInvestorId() {
-		return investorId;
+	public Long getInvestorProtId() {
+		return investorProtId;
 	}
 
-	public void setInvestorId(Long investorId) {
-		this.investorId = investorId;
+	public void setInvestorProtId(Long investorProtId) {
+		this.investorProtId = investorProtId;
+	}
+
+	public Investor getInvestor() {
+		return investor;
+	}
+
+	public void setInvestor(Investor investor) {
+		this.investor = investor;
 	}
 
 	public Integer getDiscountRate() {
@@ -88,7 +110,7 @@ public class InvestorPortfolio implements Serializable{
 		this.discountRate = discountRate;
 	}
 
-	public boolean getInvestorStatus() {
+	public boolean isInvestorStatus() {
 		return investorStatus;
 	}
 
@@ -120,11 +142,11 @@ public class InvestorPortfolio implements Serializable{
 		this.minDiscountRate = minDiscountRate;
 	}
 
-	public Company getCompanyId() {
+	public Company getCompany() {
 		return company;
 	}
 
-	public void setCompanyId(Company company) {
+	public void setCompany(Company company) {
 		this.company = company;
 	}
 
@@ -166,55 +188,37 @@ public class InvestorPortfolio implements Serializable{
 
 	public void setAmountInvested(BigDecimal amountInvested) {
 		this.amountInvested = amountInvested;
+	}	
+
+	public BigDecimal getMyCreditLine() {
+		return myCreditLine;
 	}
 
-	public BigDecimal getInvestmentCap() {
-		return investmentCap;
+	public void setMyCreditLine(BigDecimal myCreditLine) {
+		this.myCreditLine = myCreditLine;
 	}
 
-	public void setInvestmentCap(BigDecimal investmentCap) {
-		this.investmentCap = investmentCap;
+	public BigDecimal getCurrentCreditLine() {
+		return currentCreditLine;
+	}
+
+	public void setCurrentCreditLine(BigDecimal currentCreditLine) {
+		this.currentCreditLine = currentCreditLine;
 	}
 
 	@Override
 	public String toString() {
-		return "InvestorPortfolio [investorId=" + investorId
-				+ ", discountRate=" + discountRate + ", investorStatus="
-				+ investorStatus + ", investorType=" + investorType
-				+ ", maxDiscountRate=" + maxDiscountRate + ", minDiscountRate="
-				+ minDiscountRate + ", companyId=" + company + ", startDate="
-				+ startDate + ", endDate=" + endDate + ", updatedBy="
-				+ updatedBy + ", availToInvest=" + availToInvest
-				+ ", amountInvested=" + amountInvested + ", investmentCap="
-				+ investmentCap + "]";
+		return "InvestorPortfolio [investorProtId=" + investorProtId
+				+ ", investor=" + investor + ", discountRate=" + discountRate
+				+ ", investorStatus=" + investorStatus + ", investorType="
+				+ investorType + ", maxDiscountRate=" + maxDiscountRate
+				+ ", minDiscountRate=" + minDiscountRate + ", company="
+				+ company + ", startDate=" + startDate + ", endDate=" + endDate
+				+ ", updatedBy=" + updatedBy + ", availToInvest="
+				+ availToInvest + ", amountInvested=" + amountInvested
+				+ ", myCreditLine=" + myCreditLine + ", currentCreditLine="
+				+ currentCreditLine + "]";
 	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result
-				+ ((investorId == null) ? 0 : investorId.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		InvestorPortfolio other = (InvestorPortfolio) obj;
-		if (investorId == null) {
-			if (other.investorId != null)
-				return false;
-		} else if (!investorId.equals(other.investorId))
-			return false;
-		return true;
-	}	
-	
 	
 
 }

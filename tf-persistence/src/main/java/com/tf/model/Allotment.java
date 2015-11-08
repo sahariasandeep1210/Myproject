@@ -33,7 +33,7 @@ public class Allotment implements Serializable {
 	private  SCFTrade scfTrade;
 	
 	@OneToOne(cascade=CascadeType.ALL)
-	@JoinColumn(name = "investor_id")  
+	@JoinColumn(name = "investor_portfolio_id")  
 	private  InvestorPortfolio investorPortfolio;
 	
 	@Column(name="allotment_amount")

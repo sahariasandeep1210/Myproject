@@ -21,8 +21,7 @@ import javax.persistence.TemporalType;
 public class InvestorPortfolioHistory  implements Serializable{
 	
 
-
-	private static final long serialVersionUID = -2372301175575335666L;
+	private static final long serialVersionUID = 1L;
 
 	@Id
     @Column(name="id")
@@ -30,7 +29,7 @@ public class InvestorPortfolioHistory  implements Serializable{
 	private Long id;
 	
 	@ManyToOne(cascade=CascadeType.ALL)	
-	@JoinColumn(name = "investor_id")  
+	@JoinColumn(name = "investor_portfolio_id")  
 	private InvestorPortfolio investorPortfolio;	
 	
 	@Column(name="investment_discount_rate")
@@ -78,6 +77,14 @@ public class InvestorPortfolioHistory  implements Serializable{
 		this.discountRate = discountRate;
 	}
 
+	public BigDecimal getInvestmentCap() {
+		return investmentCap;
+	}
+
+	public void setInvestmentCap(BigDecimal investmentCap) {
+		this.investmentCap = investmentCap;
+	}
+
 	public Date getStartDate() {
 		return startDate;
 	}
@@ -102,14 +109,6 @@ public class InvestorPortfolioHistory  implements Serializable{
 		this.updatedBy = updatedBy;
 	}
 
-	public BigDecimal getInvestmentCap() {
-		return investmentCap;
-	}
-
-	public void setInvestmentCap(BigDecimal investmentCap) {
-		this.investmentCap = investmentCap;
-	}
-
 	@Override
 	public String toString() {
 		return "InvestorPortfolioHistory [id=" + id + ", investorPortfolio="
@@ -117,8 +116,10 @@ public class InvestorPortfolioHistory  implements Serializable{
 				+ ", investmentCap=" + investmentCap + ", startDate="
 				+ startDate + ", endDate=" + endDate + ", updatedBy="
 				+ updatedBy + "]";
-	}	
+	}
 	
+	
+
 	
 	
 

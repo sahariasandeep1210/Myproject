@@ -293,8 +293,9 @@ CREATE TABLE tf_investor_portfolio (
   end_date DATETIME ,
   updated_by VARCHAR(100) ,  
   available_to_invest DECIMAL,  
-  amount_invested  DECIMAL,  
-  investment_cap  DECIMAL,  
+  amount_invested  DECIMAL, 
+  my_credit_line  DECIMAL,    
+  current_credit_line  DECIMAL,  
   PRIMARY KEY (investor_portfolio_id),  
   UNIQUE KEY investor_portfolio_id_UNIQUE (investor_portfolio_id),
   KEY fk_tf_investor_portfolio_investor_id (investor_id),  
@@ -314,8 +315,8 @@ CREATE TABLE tf_investor_portfolio_history (
   end_date DATETIME ,
   updated_by VARCHAR(100) ,   
   PRIMARY KEY (id), 
-  KEY fk_investor_id (investor_id),  
-  CONSTRAINT fk_investor FOREIGN KEY (investor_id) REFERENCES tf_investor_portfolio (investor_id) 
+  KEY fk_investor_portfolio_id (investor_portfolio_id),  
+  CONSTRAINT fk_investor_portfolio FOREIGN KEY (investor_portfolio_id) REFERENCES tf_investor_portfolio (investor_portfolio_id) 
   ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ;
 
