@@ -71,7 +71,7 @@
 			<div class="row-fluid" >
 				<div class="span6">
 					<div class="span6">
-						<select id="scfCompany" name="investorModel.company.id"   class="span9">
+						<select id="scfCompany" name="investorModel.company.id"   class="span9 scfDropDown">
 								 <option value="" disabled selected>Select SCF Company*</option>
 								<c:forEach var="company" items="${companyList}">
 									<option value="${company.id}">${company.name}</option>

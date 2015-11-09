@@ -5,6 +5,15 @@ $(document).ready(function() {
 	  // Add button click handler
       $('#investorModel').on('click', '.addButton', function() {
     	  investorIndex++;
+    	  var allSelectedvalues = [];
+    	  $('.scfDropDown').each(function() {
+    		  var currentValue=$(this).val();
+    		  if(currentValue!="" || currentValue!=null){
+    			  allSelectedvalues.push($(this).val());    		  
+    			}    		 
+    		});
+    	  
+    	 
           var $template = $('#protfolioTemplate'),
               $clone    = $template
                               .clone()
@@ -12,6 +21,15 @@ $(document).ready(function() {
                               .removeAttr('id')
                               .attr('data-investor-index', investorIndex)
                               .insertBefore($template);
+          
+          var dropwDownEle=$clone.find('.scfDropDown');
+          
+          //update DropDown values based on user selection
+          $.each(allSelectedvalues, function( index, value ) {
+        	  dropwDownEle.find('[value="'+value+'"]').remove();
+        	 
+    		});
+          
 
           // Update the name attributes
           $clone

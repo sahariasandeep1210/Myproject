@@ -21,7 +21,7 @@ import javax.persistence.TemporalType;
 public class InvestorPortfolioHistory  implements Serializable{
 	
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 627078629504407048L;
 
 	@Id
     @Column(name="id")
@@ -35,8 +35,11 @@ public class InvestorPortfolioHistory  implements Serializable{
 	@Column(name="investment_discount_rate")
 	private Integer discountRate;
 	
-	@Column(name="investment_cap")
-	private BigDecimal investmentCap;
+	@Column(name="current_credit_line")
+	private BigDecimal currentCreditLine;
+	
+	@Column(name="my_credit_line")
+	private BigDecimal myCreditLine;
 	
 	@Column(name="start_date")
 	@Temporal(TemporalType.TIMESTAMP)
@@ -77,12 +80,20 @@ public class InvestorPortfolioHistory  implements Serializable{
 		this.discountRate = discountRate;
 	}
 
-	public BigDecimal getInvestmentCap() {
-		return investmentCap;
+	public BigDecimal getCurrentCreditLine() {
+		return currentCreditLine;
 	}
 
-	public void setInvestmentCap(BigDecimal investmentCap) {
-		this.investmentCap = investmentCap;
+	public void setCurrentCreditLine(BigDecimal currentCreditLine) {
+		this.currentCreditLine = currentCreditLine;
+	}
+
+	public BigDecimal getMyCreditLine() {
+		return myCreditLine;
+	}
+
+	public void setMyCreditLine(BigDecimal myCreditLine) {
+		this.myCreditLine = myCreditLine;
 	}
 
 	public Date getStartDate() {
@@ -113,12 +124,10 @@ public class InvestorPortfolioHistory  implements Serializable{
 	public String toString() {
 		return "InvestorPortfolioHistory [id=" + id + ", investorPortfolio="
 				+ investorPortfolio + ", discountRate=" + discountRate
-				+ ", investmentCap=" + investmentCap + ", startDate="
-				+ startDate + ", endDate=" + endDate + ", updatedBy="
-				+ updatedBy + "]";
-	}
-	
-	
+				+ ", currentCreditLine=" + currentCreditLine
+				+ ", myCreditLine=" + myCreditLine + ", startDate=" + startDate
+				+ ", endDate=" + endDate + ", updatedBy=" + updatedBy + "]";
+	}	
 
 	
 	

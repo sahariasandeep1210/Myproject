@@ -18,11 +18,8 @@ import javax.persistence.Table;
 @Entity
 @Table(name="tf_company")
 public class Company implements Serializable {
-	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 9024704915265606237L;
+
+	private static final long serialVersionUID = -1820206591708414397L;
 
 	@Id
     @Column(name="idcompany")
@@ -99,6 +96,9 @@ public class Company implements Serializable {
 	
 	@OneToMany(mappedBy = "company",cascade=CascadeType.ALL)      
 	private Set<Officer> officers;
+	
+	@OneToOne(mappedBy = "company",cascade=CascadeType.ALL)    
+	private Investor investor;
 	
 	public Company() {
 		// TODO Auto-generated constructor stub
@@ -294,6 +294,14 @@ public class Company implements Serializable {
 
 	public void setOfficers(Set<Officer> officers) {
 		this.officers = officers;
+	}
+
+	public Investor getInvestor() {
+		return investor;
+	}
+
+	public void setInvestor(Investor investor) {
+		this.investor = investor;
 	}
 
 	@Override

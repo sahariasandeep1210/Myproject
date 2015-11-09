@@ -138,7 +138,11 @@ public class RegistrationController extends BaseController {
 		user.setLiferayUserId(lruser.getUserId());
 		
 		//userService.addorUpdateUser(user);
+		
 		Company company = registration.getCompany();
+		if(company!=null && "1".equals(company.getCompanyType())){
+			 company.getInvestor().setCompany(company);
+		 }
 		company.getAddress().setCompany(company);
 		user.setCompany(company);
 		Set<User> users=new LinkedHashSet<User>();
