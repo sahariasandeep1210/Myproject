@@ -22,6 +22,7 @@
 
 <form:form   method="post" commandName="investorDTO"
 	action="${updateProtfolioURL}" id="investorModel" name="investorModel" class="form-horizontal">
+	<input type="hidden" name="investorID" value="${investorID}" />
 	
 		<div class="table-responsive">
 			<table class="table table-hover tablesorter table-bordered"  id="companyListTable">
@@ -38,7 +39,7 @@
 				<tbody>
 				 <c:choose>
 					<c:when test="${fn:length(investorHistoryList) gt 0}">
-						<c:forEach items="${allProtfolies}" var="investorProt">
+						<c:forEach items="${investorHistoryList}" var="investorProt">
 							<tr>
 								<td>${investorProt.company.name} </td>
 								<td>${investorProt.currentCreditLine}</td>

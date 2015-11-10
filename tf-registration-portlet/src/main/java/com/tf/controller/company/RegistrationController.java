@@ -43,6 +43,7 @@ import com.tf.controller.BaseController;
 import com.tf.model.AddressModel;
 import com.tf.model.Company;
 import com.tf.model.CompanyModel;
+import com.tf.model.Investor;
 import com.tf.model.Officer;
 import com.tf.model.OfficerAddress;
 import com.tf.model.OfficerList;
@@ -141,6 +142,7 @@ public class RegistrationController extends BaseController {
 		
 		Company company = registration.getCompany();
 		if(company!=null && "1".equals(company.getCompanyType())){
+			 company.setInvestor(new Investor());
 			 company.getInvestor().setCompany(company);
 		 }
 		company.getAddress().setCompany(company);

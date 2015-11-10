@@ -1,9 +1,8 @@
 package com.tf.controller.investor;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
@@ -21,12 +20,12 @@ import org.springframework.web.portlet.bind.annotation.RenderMapping;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.tf.controller.investor.util.InvestorDTO;
 import com.tf.model.Company;
 import com.tf.model.InvestorPortfolio;
-import com.tf.model.InvestorPortfolioHistory;
 import com.tf.service.CompanyService;
 import com.tf.service.InvestorHistoryService;
 import com.tf.service.InvestorService;
@@ -63,8 +62,13 @@ public class InvestorController {
 		ThemeDisplay themeDisplay=(ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);
 		List<Company> companyList = new ArrayList<Company>();
 		companyList = companyService.getCompanies("5");
-		//long userId=userService.getUserbyLiferayUserID(themeDispay.getUserId());
-		long companyId=userService.getCompanyIDbyUserID(themeDisplay.getUserId());
+		//long userId=userService.getUserbyLiferayUserID(themeDisplay.getUserId());
+		Map<Long,List<InvestorPortfolio>>  map=investorService.getInvestorPortfolioByUserId(themeDisplay.getUserId());
+		for(Map.Entry<Long, List<InvestorPortfolio>> entry : map.entrySet()){
+			model.put("investorID", entry.getKey());
+			model.put("investorHistoryList", entry.getValue());
+		}
+		//long companyId=investorService.getInvestorPortfolioByUserId(userId)
 		/*investorModel=investorService.getInvestorByCompanyId(companyId);
 		if(investorModel==null){
 			investorModel=new InvestorPortfolio();
@@ -77,6 +81,7 @@ public class InvestorController {
 		model.put("investorModel", investorModel);*/
 		model.put("investorDTO", investorDTO);		
 		model.put("companyList", companyList);
+		
 		return new ModelAndView("investorprotfolio", model);		
 	}
 	
@@ -85,8 +90,12 @@ public class InvestorController {
 												 ModelMap model, 
 												 ActionRequest request,
 												 ActionResponse response) throws Exception {
+		
+		long investorID=ParamUtil.get(request, "investorID", 0);
+		System.out.println("investorID:::::"+investorID);
 		System.out.println("investorModel:::::"+investorDTO);
 		investorDTO.setInvestorModel(filterNullValues(investorDTO.getInvestorModel()));
+		investorService.addInvestorPortfolios(investorDTO.getInvestorModel(), investorID);
 		/*ThemeDisplay themeDisplay=(ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);
 		if(investorModel.getInvestor().getInvestorId()==null ){		
 			long companyId=userService.getCompanyIDbyUserID(themeDisplay.getUserId());

@@ -1,6 +1,8 @@
 package com.tf.service.impl;
 
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -8,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.tf.dao.InvestorDAO;
 import com.tf.dao.InvestorHistoryDAO;
+import com.tf.model.Investor;
 import com.tf.model.InvestorPortfolio;
 import com.tf.model.InvestorPortfolioHistory;
 import com.tf.persistance.util.DashboardModel;
@@ -59,6 +62,18 @@ public class InvestorServiceImpl implements InvestorService {
 	
 	public DashboardModel  getDashBoardInformation(){
 		return investorDAO.getDashBoardInformation();
+	}
+
+	public Map<Long, List<InvestorPortfolio>> getInvestorPortfolioByUserId(
+			long id) {
+		
+		return investorDAO.getInvestorPortfolioByUserId(id);
+	}
+
+	public void addInvestorPortfolios(List<InvestorPortfolio> investors,
+			long investorId) {
+		investorDAO.addInvestorPortfolios(investors,investorId);
+		
 	}
 
 }
