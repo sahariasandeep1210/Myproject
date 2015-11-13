@@ -53,7 +53,7 @@ public class InvestorPortfolio implements Serializable{
 	private Integer minDiscountRate;
 	
 	
-	@OneToOne(cascade=CascadeType.ALL)
+	@OneToOne
 	@JoinColumn(name = "company_id")  
 	private  Company company;
 	

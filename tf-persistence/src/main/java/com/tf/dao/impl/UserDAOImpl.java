@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.tf.dao.UserDAO;
+import com.tf.model.Company;
 import com.tf.model.User;
 
 
@@ -89,6 +90,26 @@ public class UserDAOImpl extends BaseDAOImpl<User, Long>  implements UserDAO{
 				}
 			}
 			return companyId;
+		} catch (RuntimeException re) {
+			_log.error("get failed", re);
+			throw re;
+		}
+	}
+	
+	public Company  getCompanybyUserID(long id) {
+		_log.debug("getting User instance with id: " + id);
+		Company company=null;
+		try {
+			if(id!=0){
+				
+				company = (Company) sessionFactory.getCurrentSession().createQuery("select user.company from User user where user.liferayUserId = :id").setLong("id",id).uniqueResult();
+				if (company == null) {
+					_log.debug("get successful, no instance found");
+				} else {
+					_log.debug("get successful, instance found");
+				}
+			}
+			return company;
 		} catch (RuntimeException re) {
 			_log.error("get failed", re);
 			throw re;

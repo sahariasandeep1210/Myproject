@@ -10,7 +10,7 @@
 		</div>
 	</div> -->
 
-	<c:if test="${companyModel.id ==null ||  companyModel.id ==0}">
+	<c:if test="${companyModel.id ==null ||  companyModel.id ==0}"> 
 		<div class="row-fluid" id="fetchCmpInfo">
 			<div class="span6">
 				<label class="span6">Company Number:</label>
@@ -27,7 +27,7 @@
 			</div>
 	
 		</div>
-	</c:if>
+	 </c:if> 
 
 
 	<div id="companyDetails">

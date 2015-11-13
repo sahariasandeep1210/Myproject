@@ -4,6 +4,9 @@
 	<portlet:param name="action" value="updateProtfolio"/>
 </portlet:actionURL>
 
+<portlet:resourceURL id="editProtfolio" var="editProtfolio" ></portlet:resourceURL> 
+<portlet:resourceURL id="deleteProtfolio" var="deleteProtfolio" ></portlet:resourceURL> 
+
 
 <div class="container-fluid">
 
@@ -29,11 +32,12 @@
 				<thead>
 					<tr>
 						<th>SCF Company</th>
-						<th>Credit Line</th>
+						<th>Current Credit Line</th>
 						<th>My Credit Line</th>
 						<th>BPS</th>
 						<th>Utilised</th>
-						<th>Available</th>										
+						<th>Available</th>	
+						<th></th>										
 					</tr>
 				</thead>
 				<tbody>
@@ -41,12 +45,13 @@
 					<c:when test="${fn:length(investorHistoryList) gt 0}">
 						<c:forEach items="${investorHistoryList}" var="investorProt">
 							<tr>
-								<td>${investorProt.company.name} </td>
+								<td >${investorProt.company.name} </td>
 								<td>${investorProt.currentCreditLine}</td>
 								<td>${investorProt.myCreditLine}</td>
 								<td>${investorProt.discountRate}</td>
 								<td>${investorProt.amountInvested}</td>
 								<td>${investorProt.availToInvest}</td>
+								<th style="font-size: 25px;"><a href="javascript:void(0);" title="Edit" class="editInvestor" id="${investorProt.investorProtId}_"><i class="fa fa fa-pencil-square-o fa-3"></i></a> <%-- <a href="${deleteProtfolio}id=${investorProt.investorProtId}" title="Edit" ><i class="fa fa-trash"></i></a> --%> </th>	
 							</tr>
 						</c:forEach>
 					</c:when>
@@ -98,6 +103,51 @@
 				<div class="span6">
 					<div class="span6">
 						<input type="text" name="investorModel.discountRate" class="span9" id="discountRate" placeholder="Offered BPS*" />
+					</div>
+					<div class="span6">
+							<!-- <input  type="text" name="investorModel.amountInvested" class="span9" id="amountInvested" placeholder="Utilized" /> -->
+						 <button type="button" class="btn btn-primary removeButton"><i class="fa fa-minus"></i> Remove</button>
+					</div>
+				</div>
+			<!-- 	<div class="span6">
+					<div class="span6">
+						<input type="text" name="investorModel.availToInvest" class="span9" id="availToInvest" placeholder="Available" />
+					</div>
+					<div class="span6">
+						  <button type="button" class="btn btn-primary removeButton"><i class="fa fa-minus"></i> Remove</button>
+					</div>
+				</div> -->
+	
+			</div>
+			<hr>
+		</div>
+		
+		<div id="editTemplate" class="parentclass hide">
+		
+			<div class="row-fluid" >
+				<div class="span6">
+					<div class="span6">
+						<label class="span6 scfCompany" >Alternate Name:</label>
+					</div>
+					<div class="span6">
+						<input  type="text" name="currentCreditLine" class="span9" id="currentCreditLine" placeholder="Current Credit Line" />
+					</div>
+				</div>
+				<div class="span6">
+					<div class="span6">
+						<input  	type="text" name="myCreditLine" 	class="span9" 	id="myCreditLne" placeholder="My Credit Line*" />
+					</div>
+				</div>
+	
+			</div>
+			<div class="row-fluid">
+				<div class="span12"></div>
+			
+			</div>
+			<div class="row-fluid" >
+				<div class="span6">
+					<div class="span6">
+						<input type="text" name="discountRate" class="span9" id="discountRate" placeholder="Offered BPS*" />
 					</div>
 					<div class="span6">
 							<!-- <input  type="text" name="investorModel.amountInvested" class="span9" id="amountInvested" placeholder="Utilized" /> -->
@@ -169,6 +219,24 @@
 
 
 </div>
+
+		<div id="editConfirmationModel" class=" modal fade" tabindex="-1"
+			role="dialog" aria-labelledby="editConfirmationModelLabel"
+			aria-hidden="true">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" id="first"
+					aria-hidden="true">×</button>
+				<h4 id="myModalLabel">Edit Confirmation</h4>
+			</div>
+			<div class="modal-body">
+				<p>Are you sure you want to continue? All unsaved information would be lost.</p>
+			</div>
+			<div class="modal-footer">
+				<input type="submit" value="Edit Protfolio" class="btn btn-primary" id="last"/>
+				<button class="btn" data-dismiss="modal" aria-hidden="true">No</button>
+				
+			</div>
+		</div>
 
 
 

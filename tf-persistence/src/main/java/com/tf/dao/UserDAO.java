@@ -2,6 +2,7 @@ package com.tf.dao;
 
 import java.util.List;
 
+import com.tf.model.Company;
 import com.tf.model.User;
 
 public interface UserDAO {
@@ -15,5 +16,7 @@ public interface UserDAO {
 	public long  getCompanyIDbyUserID(long id);
 	
 	public long  getUserbyLiferayUserID(long id);
+	
+	public Company  getCompanybyUserID(long id);
 
 }

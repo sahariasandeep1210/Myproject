@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.tf.dao.UserDAO;
+import com.tf.model.Company;
 import com.tf.model.User;
 import com.tf.service.UserService;
 
@@ -34,6 +35,10 @@ public class UserServiceImpl implements UserService {
 	
 	public long  getUserbyLiferayUserID(long id){
 		return userDAO.getUserbyLiferayUserID(id);
+	}
+
+	public Company getCompanybyUserID(long id) {
+		return userDAO.getCompanybyUserID(id);
 	}
 
 }

@@ -6,6 +6,7 @@ $(document).ready(function() {
       $('#investorModel').on('click', '.addButton', function() {
     	  investorIndex++;
     	  var allSelectedvalues = [];
+    	  //this code snippet with add all selected dropdown values to array
     	  $('.scfDropDown').each(function() {
     		  var currentValue=$(this).val();
     		  if(currentValue!="" || currentValue!=null){
@@ -52,6 +53,28 @@ $(document).ready(function() {
             // Remove element containing the fields
             $row.remove();
         });
+      
+      $('#investorModel').on('click', '.editInvestor', function() {
+    	  var currentValue;
+    	  var showModel=false;
+    	  $('.parentclass :input').each(function() {
+    		   currentValue=$(this).val();
+    	        if(currentValue!=''){
+    	        	showModel=true;
+    	        	return false;
+    	        }
+    	    });
+    	  
+    	  if(showModel){
+    		  $("#editConfirmationModel").modal('show');
+    	  }else{
+    		  console.log("Do Edit");
+    	  }
+    	  
+    	  
+    	  
+    	  
+      });
 
 	enableTab();
 	$("#createTrade").hide(); 
@@ -189,5 +212,10 @@ function enableTab(){
 		$("#invoiceList").addClass("active");
 	}
 	
+	
+}
+
+
+function triggerEdit(currentId){
 	
 }

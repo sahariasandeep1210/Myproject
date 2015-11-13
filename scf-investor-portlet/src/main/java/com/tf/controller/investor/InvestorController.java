@@ -60,14 +60,19 @@ public class InvestorController {
 	protected ModelAndView renderInvestorInfo(@ModelAttribute("investorDTO")InvestorDTO  investorDTO,ModelMap model,RenderRequest request, RenderResponse response) throws Exception {		
 		_log.info("Render Investor Protfolio");
 		ThemeDisplay themeDisplay=(ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);
+		 List<InvestorPortfolio> investorPortfolioList=null;
 		List<Company> companyList = new ArrayList<Company>();
 		companyList = companyService.getCompanies("5");
 		//long userId=userService.getUserbyLiferayUserID(themeDisplay.getUserId());
 		Map<Long,List<InvestorPortfolio>>  map=investorService.getInvestorPortfolioByUserId(themeDisplay.getUserId());
 		for(Map.Entry<Long, List<InvestorPortfolio>> entry : map.entrySet()){
 			model.put("investorID", entry.getKey());
-			model.put("investorHistoryList", entry.getValue());
+			investorPortfolioList=entry.getValue();
+			model.put("investorHistoryList", investorPortfolioList);
+			
 		}
+		companyList=prepareCompanyList(companyList,investorPortfolioList);
+	
 		//long companyId=investorService.getInvestorPortfolioByUserId(userId)
 		/*investorModel=investorService.getInvestorByCompanyId(companyId);
 		if(investorModel==null){
@@ -85,16 +90,29 @@ public class InvestorController {
 		return new ModelAndView("investorprotfolio", model);		
 	}
 	
+	private List<Company> prepareCompanyList(List<Company> companyList,
+			List<InvestorPortfolio> investorPortfolioList) {
+		for(InvestorPortfolio investorPortfolio: investorPortfolioList){
+			companyList.remove(investorPortfolio.getCompany());
+			
+		}
+		return companyList;
+		
+	}
+
 	@ActionMapping(params="action=updateProtfolio")
 	protected void add(@ModelAttribute("investorDTO")InvestorDTO  investorDTO, 
 												 ModelMap model, 
 												 ActionRequest request,
 												 ActionResponse response) throws Exception {
+		ThemeDisplay themeDisplay=(ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);
+		Company company=userService.getCompanybyUserID(themeDisplay.getUserId());
 		
 		long investorID=ParamUtil.get(request, "investorID", 0);
 		System.out.println("investorID:::::"+investorID);
 		System.out.println("investorModel:::::"+investorDTO);
 		investorDTO.setInvestorModel(filterNullValues(investorDTO.getInvestorModel()));
+		//setCompany(investorDTO,company);
 		investorService.addInvestorPortfolios(investorDTO.getInvestorModel(), investorID);
 		/*ThemeDisplay themeDisplay=(ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);
 		if(investorModel.getInvestor().getInvestorId()==null ){		
@@ -117,9 +135,10 @@ public class InvestorController {
 			
 		}*/
 		
-	}
+	}	
 	
-	
+
+
 	/**
 	 * This method will discard InvestorPortfolio object which is having null Discount Rate.
 	 * 
@@ -133,7 +152,6 @@ public class InvestorController {
 				updatedInvestorPortfolios.add(investorPortfolio);
 			}			
 		}
-		//Collections.sort(updatedInvestorPortfolios);
 		return updatedInvestorPortfolios;		
 	}
 	
