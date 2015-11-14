@@ -137,6 +137,22 @@ public class InvestorController {
 		
 	}	
 	
+	@ActionMapping(params="action=editProtfolio")
+	protected void add(ModelMap model, 
+												 ActionRequest request,
+												 ActionResponse response) throws Exception {
+		long profolioId= ParamUtil.getLong(request, "profolioId",0);
+		String currentCreditLine =ParamUtil.getString(request, "currentCreditLine");
+		String myCreditLine =ParamUtil.getString(request, "myCreditLine");
+		String discountRate =ParamUtil.getString(request, "discountRate");
+		System.out.println("profolioId:::"+profolioId);
+		System.out.println("currentCreditLine:::"+currentCreditLine);
+		System.out.println("myCreditLine:::"+myCreditLine);
+		System.out.println("discountRate:::"+discountRate);
+	}
+	
+	
+	
 
 
 	/**

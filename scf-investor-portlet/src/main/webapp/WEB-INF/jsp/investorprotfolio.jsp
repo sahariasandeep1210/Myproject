@@ -4,6 +4,10 @@
 	<portlet:param name="action" value="updateProtfolio"/>
 </portlet:actionURL>
 
+<portlet:actionURL var="editProtfolioURL">
+	<portlet:param name="action" value="editProtfolio"/>
+</portlet:actionURL>
+
 <portlet:resourceURL id="editProtfolio" var="editProtfolio" ></portlet:resourceURL> 
 <portlet:resourceURL id="deleteProtfolio" var="deleteProtfolio" ></portlet:resourceURL> 
 
@@ -45,10 +49,10 @@
 					<c:when test="${fn:length(investorHistoryList) gt 0}">
 						<c:forEach items="${investorHistoryList}" var="investorProt">
 							<tr>
-								<td >${investorProt.company.name} </td>
-								<td>${investorProt.currentCreditLine}</td>
-								<td>${investorProt.myCreditLine}</td>
-								<td>${investorProt.discountRate}</td>
+								<td id="${investorProt.investorProtId}_cmpname">${investorProt.company.name} </td>
+								<td id="${investorProt.investorProtId}_currcreditLine">${investorProt.currentCreditLine}</td>
+								<td id="${investorProt.investorProtId}_mycreditLine">${investorProt.myCreditLine}</td>
+								<td id="${investorProt.investorProtId}_dicountRate">${investorProt.discountRate}</td>
 								<td>${investorProt.amountInvested}</td>
 								<td>${investorProt.availToInvest}</td>
 								<th style="font-size: 25px;"><a href="javascript:void(0);" title="Edit" class="editInvestor" id="${investorProt.investorProtId}_"><i class="fa fa fa-pencil-square-o fa-3"></i></a> <%-- <a href="${deleteProtfolio}id=${investorProt.investorProtId}" title="Edit" ><i class="fa fa-trash"></i></a> --%> </th>	
@@ -66,8 +70,10 @@
 		</div>
 		<div class="row-fluid">
 			<div class="span6">
-				 <button type="button" class="btn btn-primary addButton span3"><i class="fa fa-plus"></i> Add Protfolio</button>
+				 <button type="button" class="btn btn-primary addButton span3" id="addProtfolioBtn"><i class="fa fa-plus"></i> Add Protfolio</button>
+				 <input type="button" value="Go Back"	class="btn btn-primary" />
 			</div>
+			
 		</div>
 		<div class="row-fluid">
 			<div class="span12"></div>
@@ -122,20 +128,21 @@
 			<hr>
 		</div>
 		
-		<div id="editTemplate" class="parentclass hide">
+		<div id="editTemplate" class="hide">
 		
 			<div class="row-fluid" >
 				<div class="span6">
 					<div class="span6">
-						<label class="span6 scfCompany" >Alternate Name:</label>
+						<input type="hidden" name="profolioId" id="profolioId"/>
+						<label class="span6 scfCompany" id="scfCompantName" >Alternate Name:</label>
 					</div>
 					<div class="span6">
-						<input  type="text" name="currentCreditLine" class="span9" id="currentCreditLine" placeholder="Current Credit Line" />
+						<input  type="text" name="currentCreditLine" class="span9" id="editcurrCreditLine" placeholder="Current Credit Line" />
 					</div>
 				</div>
 				<div class="span6">
 					<div class="span6">
-						<input  	type="text" name="myCreditLine" 	class="span9" 	id="myCreditLne" placeholder="My Credit Line*" />
+						<input  	type="text" name="myCreditLine" 	class="span9" 	id="editmyCreditLne" placeholder="My Credit Line*" />
 					</div>
 				</div>
 	
@@ -147,24 +154,17 @@
 			<div class="row-fluid" >
 				<div class="span6">
 					<div class="span6">
-						<input type="text" name="discountRate" class="span9" id="discountRate" placeholder="Offered BPS*" />
+						<input type="text" name="discountRate" class="span9" id="editDiscountRate" placeholder="Offered BPS*" />
 					</div>
 					<div class="span6">
 							<!-- <input  type="text" name="investorModel.amountInvested" class="span9" id="amountInvested" placeholder="Utilized" /> -->
-						 <button type="button" class="btn btn-primary removeButton"><i class="fa fa-minus"></i> Remove</button>
+						 <button type="button" class="btn btn-primary" id="updatebtn" data-url="${editProtfolioURL}"><i class="fa fa fa-pencil-square-o fa-3"></i> Update</button>
+						 <button type="button" class="btn btn-primary" id="editCancel">Cancel</button>
 					</div>
 				</div>
-			<!-- 	<div class="span6">
-					<div class="span6">
-						<input type="text" name="investorModel.availToInvest" class="span9" id="availToInvest" placeholder="Available" />
-					</div>
-					<div class="span6">
-						  <button type="button" class="btn btn-primary removeButton"><i class="fa fa-minus"></i> Remove</button>
-					</div>
-				</div> -->
-	
+			
 			</div>
-			<hr>
+			<!-- <hr> -->
 		</div>
 
 		<div class="row-fluid">
@@ -172,12 +172,11 @@
 		</div>
 		
 
-		<div class="row-fluid">
+		<div class="row-fluid" id="butonClass">
 			<div class="span6">
 
 				<input type="submit" value="Update Protfolio"
-					class="btn btn-primary" /> <input type="button" value="Go Back"
-					class="btn btn-primary" />
+					class="btn btn-primary" id="saveProtfolios"/> 
 			</div>
 			<div class="span6"></div>
 		</div>
