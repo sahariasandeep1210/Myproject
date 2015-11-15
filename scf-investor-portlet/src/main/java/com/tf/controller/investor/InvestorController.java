@@ -1,6 +1,9 @@
 package com.tf.controller.investor;
 
+import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -8,6 +11,8 @@ import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
+import javax.portlet.ResourceRequest;
+import javax.portlet.ResourceResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.portlet.ModelAndView;
 import org.springframework.web.portlet.bind.annotation.ActionMapping;
 import org.springframework.web.portlet.bind.annotation.RenderMapping;
+import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -26,6 +32,7 @@ import com.liferay.portal.theme.ThemeDisplay;
 import com.tf.controller.investor.util.InvestorDTO;
 import com.tf.model.Company;
 import com.tf.model.InvestorPortfolio;
+import com.tf.model.InvestorPortfolioHistory;
 import com.tf.service.CompanyService;
 import com.tf.service.InvestorHistoryService;
 import com.tf.service.InvestorService;
@@ -43,6 +50,8 @@ import com.tf.service.UserService;
 public class InvestorController {
 	
 	protected Log _log = LogFactoryUtil.getLog(InvestorController.class);
+	private static final int MINDISCOUNT=20;
+	private static final int MAXDISCOUNT=180;
 	
 	@Autowired
 	protected  UserService userService; 
@@ -84,12 +93,15 @@ public class InvestorController {
 			//model.put("investorHistoryList", investorHistoryList);
 		}
 		model.put("investorModel", investorModel);*/
+		prepareDiscountList(model);
 		model.put("investorDTO", investorDTO);		
 		model.put("companyList", companyList);
 		
 		return new ModelAndView("investorprotfolio", model);		
 	}
 	
+	
+
 	private List<Company> prepareCompanyList(List<Company> companyList,
 			List<InvestorPortfolio> investorPortfolioList) {
 		for(InvestorPortfolio investorPortfolio: investorPortfolioList){
@@ -111,7 +123,7 @@ public class InvestorController {
 		long investorID=ParamUtil.get(request, "investorID", 0);
 		System.out.println("investorID:::::"+investorID);
 		System.out.println("investorModel:::::"+investorDTO);
-		investorDTO.setInvestorModel(filterNullValues(investorDTO.getInvestorModel()));
+		investorDTO.setInvestorModel(filterNullValues(investorDTO.getInvestorModel(),themeDisplay));
 		//setCompany(investorDTO,company);
 		investorService.addInvestorPortfolios(investorDTO.getInvestorModel(), investorID);
 		/*ThemeDisplay themeDisplay=(ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);
@@ -141,14 +153,35 @@ public class InvestorController {
 	protected void add(ModelMap model, 
 												 ActionRequest request,
 												 ActionResponse response) throws Exception {
+		ThemeDisplay themeDisplay=(ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);
+		InvestorPortfolio investorModel = new InvestorPortfolio();
 		long profolioId= ParamUtil.getLong(request, "profolioId",0);
-		String currentCreditLine =ParamUtil.getString(request, "currentCreditLine");
-		String myCreditLine =ParamUtil.getString(request, "myCreditLine");
-		String discountRate =ParamUtil.getString(request, "discountRate");
+		BigDecimal currentCreditLine =new BigDecimal(ParamUtil.getString(request, "currentCreditLine","0"));
+		BigDecimal myCreditLine =new BigDecimal(ParamUtil.getString(request, "myCreditLine","0"));
+		int discountRate =ParamUtil.getInteger(request, "discountRate");
+		investorModel.setCurrentCreditLine(currentCreditLine);
+		investorModel.setMyCreditLine(myCreditLine);
+		investorModel.setDiscountRate(discountRate);
+		InvestorPortfolio investor=investorService.findById(profolioId);
+		if(discountRate !=investor.getDiscountRate().intValue() || currentCreditLine !=investor.getCurrentCreditLine() || myCreditLine!=investor.getMyCreditLine()){
+			
+			investorService.updatePortfiloDetails(investor,investorModel, themeDisplay.getUser().getScreenName());
+			
+			
+		}
 		System.out.println("profolioId:::"+profolioId);
 		System.out.println("currentCreditLine:::"+currentCreditLine);
 		System.out.println("myCreditLine:::"+myCreditLine);
 		System.out.println("discountRate:::"+discountRate);
+	}
+	
+	@ResourceMapping("historyURL")
+	public ModelAndView fetchHistory(ResourceRequest request, ResourceResponse response, ModelMap modelMap)throws IOException {
+		long protfolioID = ParamUtil.getLong(request, "protfolioID",0);
+		List<InvestorPortfolioHistory>  investorHistoryList=investorHistoryService.getInvestorHistory(protfolioID);
+		modelMap.put("investorHistoryList", investorHistoryList);
+		modelMap.put("protfolioID", protfolioID);
+		return new ModelAndView("investorprotfoliohistory");
 	}
 	
 	
@@ -161,14 +194,31 @@ public class InvestorController {
 	 * @param 
 	 * @return List<InvestorPortfolio>
 	 */
-	private List<InvestorPortfolio> filterNullValues(List<InvestorPortfolio> investorPortfolios) {
+	private List<InvestorPortfolio> filterNullValues(List<InvestorPortfolio> investorPortfolios,ThemeDisplay themeDisplay) {
 		List<InvestorPortfolio> updatedInvestorPortfolios=new ArrayList<InvestorPortfolio>();
 		for(InvestorPortfolio investorPortfolio :investorPortfolios){
-			if(investorPortfolio!=null && investorPortfolio.getDiscountRate()!=null){
+			if(investorPortfolio!=null && investorPortfolio.getDiscountRate()!=null && investorPortfolio.getMyCreditLine()!=null && investorPortfolio.getCurrentCreditLine()!=null){
+				investorPortfolio.setMinDiscountRate(MINDISCOUNT);
+				investorPortfolio.setMaxDiscountRate(MAXDISCOUNT);
+				investorPortfolio.setStartDate(new Date());
+				investorPortfolio.setUpdatedBy(themeDisplay.getUser().getScreenName());
 				updatedInvestorPortfolios.add(investorPortfolio);
 			}			
 		}
 		return updatedInvestorPortfolios;		
+	}
+	
+	/**
+	 * @param model
+	 */
+	private void prepareDiscountList(ModelMap model) {
+		List<Integer> list=new ArrayList<Integer>();
+		int i=MINDISCOUNT;
+		while( i<=MAXDISCOUNT){
+			list.add(i);
+			i=i+5;
+		}
+		model.put("discountList", list);
 	}
 	
 	

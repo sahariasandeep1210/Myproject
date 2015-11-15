@@ -1,8 +1,8 @@
 $(document).ready(function() {
 	
 	  investorIndex = 0;
-	  $("#saveProtfolios").hide();
-	  
+	  $("#saveProtfolios").hide(); 
+	  $(".historyRow").hide();
 	  // Add button click handler
       $('#investorModel').on('click', '.addButton', function() {
     	  investorIndex++;
@@ -98,6 +98,37 @@ $(document).ready(function() {
     	  
       });
       
+      $('#investorModel').on('click', '.historybtn', function() {
+  	   var historyURL=$(this).attr('data-url'); 
+  	   var protfolioID=$(this).attr('protID');
+  	   
+  	   if($("#"+protfolioID+"_table").length){
+  		   $("#"+protfolioID+"_row").slideToggle();
+  	   }else{
+  			$.ajax({ 
+				url: historyURL, 
+				type: 'POST', 
+				cache: false,
+				data: { 
+					protfolioID: protfolioID 					
+					  }, 
+				success: function(data){
+					$("#"+protfolioID+"_row > td").html(data);
+					$("#"+protfolioID+"_row").slideToggle();
+							
+				} ,
+				error: function(jqXHR, textStatus, errorThrown) {
+					ajaxindicatorstop();
+					
+				}
+				});	
+  	   }
+  	  
+    });
+      
+      
+      
+      
       $('#investorModel').on('click', '#updatebtn', function() {
     	  	var url = $(this).attr('data-url');
     	  	document.forms["investorModel"].action = url;
@@ -131,3 +162,66 @@ function triggerEdit(currentId){
 	$("#butonClass" ).hide(); 
 	$("#addProtfolioBtn" ).hide();
 }
+
+function ajaxindicatorstart(text)
+{
+	if($('body').find('#resultLoading').attr('id') != 'resultLoading'){
+	$('body').append('<div id="resultLoading" style="display:none"><div><img src="/tf-admin-portlet/images/ajax-loader.gif"><div>'+text+'</div></div><div class="bg"></div></div>');
+	}
+	
+	$('#resultLoading').css({
+		'width':'100%',
+		'height':'100%',
+		'position':'fixed',
+		'z-index':'10000000',
+		'top':'0',
+		'left':'0',
+		'right':'0',
+		'bottom':'0',
+		'margin':'auto'
+	});	
+	
+	$('#resultLoading .bg').css({
+		'background':'#000000',
+		'opacity':'0.7',
+		'width':'100%',
+		'height':'100%',
+		'position':'absolute',
+		'top':'0'
+	});
+	
+	$('#resultLoading>div:first').css({
+		'width': '250px',
+		'height':'75px',
+		'text-align': 'center',
+		'position': 'fixed',
+		'top':'0',
+		'left':'0',
+		'right':'0',
+		'bottom':'0',
+		'margin':'auto',
+		'font-size':'16px',
+		'z-index':'10',
+		'color':'#ffffff'
+		
+	});
+
+    $('#resultLoading .bg').height('100%');
+    $('#resultLoading').fadeIn(300);
+    $('body').css('cursor', 'wait');
+}
+
+function ajaxindicatorstop()
+{
+    $('#resultLoading .bg').height('100%');
+    $('#resultLoading').fadeOut(300);
+    $('body').css('cursor', 'default');
+}
+
+$(document).ajaxStart(function () {
+		//show ajax indicator
+	ajaxindicatorstart('loading history data.. please wait..');
+}).ajaxStop(function () {
+	//hide ajax indicator
+	ajaxindicatorstop();
+});

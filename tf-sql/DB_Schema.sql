@@ -342,6 +342,16 @@ CREATE TABLE tf_allotments (
  FOREIGN KEY (user_id) 		REFERENCES tf_user(iduser)
 ) ;
 
+DROP TABLE IF EXISTS tf_investor_portfolio_setting;
+CREATE TABLE tf_investor_portfolio_setting (
+  id  BIGINT(20) NOT NULL AUTO_INCREMENT,  
+  max_dicsount_rate INT(11) DEFAULT NULL,
+  min_discount_rate INT(11) DEFAULT NULL, 
+  create_date  DATE,  
+  PRIMARY KEY (id),  
+  UNIQUE KEY id_UNIQUE (id) 
+) ;
+
 
 
 

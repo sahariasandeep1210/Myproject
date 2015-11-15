@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.tf.dao.InvestorDAO;
 import com.tf.dao.InvestorHistoryDAO;
-import com.tf.model.Investor;
 import com.tf.model.InvestorPortfolio;
 import com.tf.model.InvestorPortfolioHistory;
 import com.tf.persistance.util.DashboardModel;
@@ -46,6 +45,7 @@ public class InvestorServiceImpl implements InvestorService {
 		InvestorPortfolioHistory investorHistory =new InvestorPortfolioHistory();
 		investorHistory.setInvestorPortfolio(investor);
 		investorHistory.setDiscountRate(investor.getDiscountRate());
+		investorHistory.setMyCreditLine(investor.getMyCreditLine());
 		investorHistory.setCurrentCreditLine(investor.getCurrentCreditLine());
 		investorHistory.setStartDate(investor.getStartDate());
 		investorHistory.setEndDate(currentDate);
@@ -55,6 +55,7 @@ public class InvestorServiceImpl implements InvestorService {
 		//updating investor Portfolio
 		investor.setDiscountRate(investorModel.getDiscountRate());
 		investor.setCurrentCreditLine(investorModel.getCurrentCreditLine());
+		investor.setMyCreditLine(investorModel.getMyCreditLine());
 		investor.setStartDate(currentDate);
 		investorDAO.update(investor);
 		

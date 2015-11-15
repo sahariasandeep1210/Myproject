@@ -10,6 +10,7 @@
 
 <portlet:resourceURL id="editProtfolio" var="editProtfolio" ></portlet:resourceURL> 
 <portlet:resourceURL id="deleteProtfolio" var="deleteProtfolio" ></portlet:resourceURL> 
+<portlet:resourceURL id="historyURL" var="historyURL" ></portlet:resourceURL> 
 
 
 <div class="container-fluid">
@@ -55,13 +56,22 @@
 								<td id="${investorProt.investorProtId}_dicountRate">${investorProt.discountRate}</td>
 								<td>${investorProt.amountInvested}</td>
 								<td>${investorProt.availToInvest}</td>
-								<th style="font-size: 25px;"><a href="javascript:void(0);" title="Edit" class="editInvestor" id="${investorProt.investorProtId}_"><i class="fa fa fa-pencil-square-o fa-3"></i></a> <%-- <a href="${deleteProtfolio}id=${investorProt.investorProtId}" title="Edit" ><i class="fa fa-trash"></i></a> --%> </th>	
+								<td><a href="javascript:void(0);" title="Edit" class="editInvestor btn" id="${investorProt.investorProtId}_"><i class="fa fa fa-pencil-square-o fa-3"></i> Edit</a>  
+									<a href="javascript:void(0);" title="History" class="historybtn btn" data-url="${historyURL}" protID="${investorProt.investorProtId}"><i class="fa fa-history"></i> History</a>  
+								</td>	
+							</tr>
+							<tr class="historyRow"  id="${investorProt.investorProtId}_row">
+								
+							  <td colspan=7>
+							   
+							  </td>
 							</tr>
 						</c:forEach>
 					</c:when>
 					<c:otherwise>
 							<tr>
-								<td colspan="6" align="center" style="text-align: center;">Protfolio information not found!</td>
+								
+								<td colspan="7" align="center" style="text-align: center;">Protfolio information not found!</td>
 							</tr>
 					</c:otherwise>
 				</c:choose>
@@ -70,7 +80,7 @@
 		</div>
 		<div class="row-fluid">
 			<div class="span6">
-				 <button type="button" class="btn btn-primary addButton span3" id="addProtfolioBtn"><i class="fa fa-plus"></i> Add Protfolio</button>
+				 <button type="button" class="btn btn-primary addButton" id="addProtfolioBtn"><i class="fa fa-plus"></i> Add Protfolio</button>
 				 <input type="button" value="Go Back"	class="btn btn-primary" />
 			</div>
 			
@@ -108,7 +118,13 @@
 			<div class="row-fluid" >
 				<div class="span6">
 					<div class="span6">
-						<input type="text" name="investorModel.discountRate" class="span9" id="discountRate" placeholder="Offered BPS*" />
+					<!-- 	<input type="text" name="investorModel.discountRate" class="span9" id="discountRate" placeholder="Offered BPS*" /> -->
+						<select id="discountRate" name="investorModel.discountRate"   class="span9">
+								 <option value="" disabled selected>Offered BPS*</option>
+								<c:forEach var="discount" items="${discountList}">
+									<option value="${discount}">${discount}</option>
+								</c:forEach>			
+							</select>
 					</div>
 					<div class="span6">
 							<!-- <input  type="text" name="investorModel.amountInvested" class="span9" id="amountInvested" placeholder="Utilized" /> -->
@@ -182,39 +198,8 @@
 		</div>
 
 	</form:form>
-<%-- <div class="table-responsive">
-	<table class="table table-hover tablesorter table-bordered">
-		<thead>
-			<tr>
-				<th>Discount Rate</th>
-				<th>Investment Cap</th>
-				<th>Start End</th>
-				<th>End Date</th>
-			</tr>
-		</thead>
-		<tbody>
-			<c:choose>
-				<c:when test="${fn:length(investorHistoryList) gt 0}">
-					<c:forEach items="${investorHistoryList}" var="investorHis">
-						<tr>
-							<td>${investorHis.discountRate}</td>
-							<td>${investorHis.investmentCap}</td>
-							<td>${investorHis.startDate}</td>
-							<td>${investorHis.endDate}</td>
-												
-						</tr>
-					</c:forEach>
-			</c:when>
-			<c:otherwise>
-							<tr>
-								<td colspan="4" align="center" style="text-align: center;"> No History found!</td>
-							</tr>
-			</c:otherwise>
-			</c:choose>
-		</tbody>
-	</table>
-</div>
- --%>
+
+
 
 
 </div>
