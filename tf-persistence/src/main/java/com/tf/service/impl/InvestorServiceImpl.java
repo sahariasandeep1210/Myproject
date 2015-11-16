@@ -1,5 +1,6 @@
 package com.tf.service.impl;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -75,6 +76,9 @@ public class InvestorServiceImpl implements InvestorService {
 			long investorId) {
 		investorDAO.addInvestorPortfolios(investors,investorId);
 		
+	}
+	public Map<String,BigDecimal>  getProtfolioTotals(long id) {
+		return investorDAO.getProtfolioTotals(id);
 	}
 
 }

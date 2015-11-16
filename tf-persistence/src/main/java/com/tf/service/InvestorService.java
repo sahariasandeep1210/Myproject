@@ -1,5 +1,6 @@
 package com.tf.service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -21,5 +22,7 @@ public interface InvestorService {
 	public Map<Long,List<InvestorPortfolio>>  getInvestorPortfolioByUserId(long id);
 	
 	public void addInvestorPortfolios(List<InvestorPortfolio> invoices,long investorId);
+	
+	public Map<String,BigDecimal>  getProtfolioTotals(long id) ;
 
 }

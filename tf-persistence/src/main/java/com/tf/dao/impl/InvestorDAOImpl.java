@@ -1,5 +1,6 @@
 package com.tf.dao.impl;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -133,6 +134,26 @@ public class InvestorDAOImpl extends BaseDAOImpl<InvestorPortfolio, Long>   impl
 				_log.debug("get successful, instance found");
 			}
 			return instance;
+		} catch (RuntimeException re) {
+			_log.error("get failed", re);
+			throw re;
+		}
+	}
+	
+	public Map<String,BigDecimal>  getProtfolioTotals(long id) {
+		try {
+			Map<String,BigDecimal> map =new HashMap<String,BigDecimal>();
+				
+				Query query =sessionFactory.getCurrentSession().createQuery("SELECT SUM(currentCreditLine) AS totalCreditLine,SUM(myCreditLine) AS totalMyCreditLine,SUM(availToInvest ) AS availinvest,SUM(amountInvested) AS amountInvested FROM InvestorPortfolio "
+						+ " where investor.investorId = :id").setLong("id",id);
+				 List<Object[]> list = query.list();
+			        for(Object[] arr : list){
+			        	map.put("creditLine",arr[0]!=null?new BigDecimal(arr[0].toString()):BigDecimal.ZERO);
+			        	map.put("myCreditLine",arr[1]!=null?new BigDecimal(arr[1].toString()):BigDecimal.ZERO);
+			        	map.put("availToInvest",arr[2]!=null?new BigDecimal(arr[2].toString()):BigDecimal.ZERO);
+			        	map.put("amountInvested",arr[3]!=null?new BigDecimal(arr[3].toString()):BigDecimal.ZERO);
+			        } 
+			return map;
 		} catch (RuntimeException re) {
 			_log.error("get failed", re);
 			throw re;

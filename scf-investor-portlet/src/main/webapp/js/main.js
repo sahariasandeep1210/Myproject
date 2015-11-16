@@ -80,6 +80,9 @@ $(document).ready(function() {
     	    });
     	  
     	  if(showModel){
+    		 
+    		  var currentID=$(this).attr('id');
+    		  $("#invProtID").val(currentID);
     		  $("#editConfirmationModel").modal('show');
     	  }else{
     		  console.log("Do Edit >>");
@@ -144,7 +147,12 @@ $(document).ready(function() {
 
 
 
-
+function confirmEdit(){
+	 $(".addprotfolio").remove();
+	var currentId=$("#invProtID").val();
+	triggerEdit(currentId);
+	$("#editConfirmationModel").modal('hide');
+}
 
 function triggerEdit(currentId){
 	var cmpName=$("#"+currentId+"cmpname").text();

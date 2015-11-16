@@ -48,8 +48,18 @@
 				<tbody>
 				 <c:choose>
 					<c:when test="${fn:length(investorHistoryList) gt 0}">
-						<c:forEach items="${investorHistoryList}" var="investorProt">
-							<tr>
+							<tr class="totalstr">
+								<td>Totals</td>
+								<td> <c:out default="None" escapeXml="true" value="${totalsMap.creditLine eq 0 ?'':totalsMap.creditLine}"/> </td>
+								<td><c:out default="None" escapeXml="true" value="${totalsMap.myCreditLine eq 0 ?'':totalsMap.myCreditLine}"/></td>
+								<td></td>
+								<td><c:out default="None" escapeXml="true" value="${totalsMap.amountInvested eq 0 ?'':totalsMap.amountInvested}"/></td>
+								<td><c:out default="None" escapeXml="true" value="${totalsMap.availToInvest eq 0 ?'':totalsMap.availToInvest}"/></td>
+								<td>
+								</td>	
+							</tr>
+						<c:forEach items="${investorHistoryList}" var="investorProt" varStatus="loop">
+							<tr class="${loop.index % 2 == 0 ? 'evenrow' : 'oddrow'}">
 								<td id="${investorProt.investorProtId}_cmpname">${investorProt.company.name} </td>
 								<td id="${investorProt.investorProtId}_currcreditLine">${investorProt.currentCreditLine}</td>
 								<td id="${investorProt.investorProtId}_mycreditLine">${investorProt.myCreditLine}</td>
@@ -214,9 +224,10 @@
 			</div>
 			<div class="modal-body">
 				<p>Are you sure you want to continue? All unsaved information would be lost.</p>
+				<input type="hidden" id="invProtID"  value=""/>
 			</div>
 			<div class="modal-footer">
-				<input type="submit" value="Edit Protfolio" class="btn btn-primary" id="last"/>
+				<input type="button" value="Edit Protfolio" class="btn btn-primary" id="last" onclick="confirmEdit()"/>
 				<button class="btn" data-dismiss="modal" aria-hidden="true">No</button>
 				
 			</div>

@@ -86,3 +86,23 @@
     -ms-border-top-left-radius: 0;
     -moz-border-top-left-radius: 0;
 }
+
+.totalstr{
+	 background-color: #9db8cd !important;
+    font-weight: bold !important;
+    font-family: calibari !important;
+}
+
+.evenrow{
+	background-color: #fff;
+}
+.oddrow{
+	background-color: #dee7ee;
+}
+
+
+
+.table-striped tbody > tr:nth-child(odd) > td {
+  background-color: #dee7ee;
+}
+

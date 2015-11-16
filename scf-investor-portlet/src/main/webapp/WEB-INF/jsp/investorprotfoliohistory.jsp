@@ -36,10 +36,8 @@
 								<td>${investorHis.discountRate}</td>
 								<td>${investorHis.currentCreditLine}</td>
 								<td>${investorHis.myCreditLine}</td>
-								<td><fmt:formatDate pattern="dd-MM-yyyy"
-										value="${investorHis.startDate}" /></td>
-								<td><fmt:formatDate pattern="dd-MM-yyyy"
-										value="${investorHis.endDate}" /></td>
+								<td><fmt:formatDate value="${investorHis.startDate}" pattern="dd-MM-yyyy HH:mm" /> <%-- <fmt:formatDate type="both"        dateStyle="short" timeStyle="short"       value="" /> --%></td>
+								<td><fmt:formatDate value="${investorHis.endDate}" pattern="dd-MM-yyyy HH:mm" /> <%-- <fmt:formatDate type="both"        dateStyle="short" timeStyle="short"       value="" /> --%></td>
 
 							</tr>
 						</c:forEach>

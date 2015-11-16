@@ -69,17 +69,20 @@ public class InvestorController {
 	protected ModelAndView renderInvestorInfo(@ModelAttribute("investorDTO")InvestorDTO  investorDTO,ModelMap model,RenderRequest request, RenderResponse response) throws Exception {		
 		_log.info("Render Investor Protfolio");
 		ThemeDisplay themeDisplay=(ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);
+		long investorId=0l;
 		 List<InvestorPortfolio> investorPortfolioList=null;
 		List<Company> companyList = new ArrayList<Company>();
 		companyList = companyService.getCompanies("5");
 		//long userId=userService.getUserbyLiferayUserID(themeDisplay.getUserId());
 		Map<Long,List<InvestorPortfolio>>  map=investorService.getInvestorPortfolioByUserId(themeDisplay.getUserId());
 		for(Map.Entry<Long, List<InvestorPortfolio>> entry : map.entrySet()){
-			model.put("investorID", entry.getKey());
+			investorId=entry.getKey();
+			model.put("investorID", investorId);
 			investorPortfolioList=entry.getValue();
 			model.put("investorHistoryList", investorPortfolioList);
 			
 		}
+		Map<String,BigDecimal> totalsMap=investorService.getProtfolioTotals(investorId);
 		companyList=prepareCompanyList(companyList,investorPortfolioList);
 	
 		//long companyId=investorService.getInvestorPortfolioByUserId(userId)
@@ -94,6 +97,7 @@ public class InvestorController {
 		}
 		model.put("investorModel", investorModel);*/
 		prepareDiscountList(model);
+		model.put("totalsMap", totalsMap);	
 		model.put("investorDTO", investorDTO);		
 		model.put("companyList", companyList);
 		
@@ -105,8 +109,7 @@ public class InvestorController {
 	private List<Company> prepareCompanyList(List<Company> companyList,
 			List<InvestorPortfolio> investorPortfolioList) {
 		for(InvestorPortfolio investorPortfolio: investorPortfolioList){
-			companyList.remove(investorPortfolio.getCompany());
-			
+			companyList.remove(investorPortfolio.getCompany());			
 		}
 		return companyList;
 		
@@ -200,6 +203,7 @@ public class InvestorController {
 			if(investorPortfolio!=null && investorPortfolio.getDiscountRate()!=null && investorPortfolio.getMyCreditLine()!=null && investorPortfolio.getCurrentCreditLine()!=null){
 				investorPortfolio.setMinDiscountRate(MINDISCOUNT);
 				investorPortfolio.setMaxDiscountRate(MAXDISCOUNT);
+				investorPortfolio.setAvailToInvest(investorPortfolio.getMyCreditLine());
 				investorPortfolio.setStartDate(new Date());
 				investorPortfolio.setUpdatedBy(themeDisplay.getUser().getScreenName());
 				updatedInvestorPortfolios.add(investorPortfolio);
