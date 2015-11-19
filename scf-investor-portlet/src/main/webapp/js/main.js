@@ -3,6 +3,18 @@ $(document).ready(function() {
 	  investorIndex = 0;
 	  $("#saveProtfolios").hide(); 
 	  $(".historyRow").hide();
+	  
+	  $('#investorModel').on('keypress', '.addprotfolio input', function(e) {
+		  
+		  //if the letter is not digit then display error and don't type anything
+		     if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+		        //display error message
+		        //$("#errmsg").html("Digits Only").show().fadeOut("slow");
+		               return false;
+		    }
+		  
+	  });
+	  
 	  // Add button click handler
       $('#investorModel').on('click', '.addButton', function() {
     	  investorIndex++;
@@ -137,7 +149,28 @@ $(document).ready(function() {
     	  	document.forms["investorModel"].action = url;
 			document.forms["investorModel"].submit();
     	  
-      });
+      }); 
+      
+      $('#investorModel').on('click', '#saveProtfolios', function() {
+    	  var errorFree=true;
+    	  
+    	  $('.addprotfolio :input').each(function() {
+    		  currentValue=$(this).val();
+   	        if(currentValue=='' ||  currentValue==null){
+   	        	errorFree=false;
+   	        	$(this).addClass("error_show");
+   	        }else{
+   	        	$(this).removeClass("error_show");
+   	        }
+   	    });
+    	  if(errorFree){
+    		  console.log("Validation pass");   	  	  	
+  			document.forms["investorModel"].submit();
+    	  }
+    	  
+    	 
+  	  
+    });
 	
 	
 	

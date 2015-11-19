@@ -163,7 +163,7 @@
 						<label class="span6 scfCompany" id="scfCompantName" >Alternate Name:</label>
 					</div>
 					<div class="span6">
-						<input  type="text" name="currentCreditLine" class="span9" id="editcurrCreditLine" placeholder="Current Credit Line" />
+						<input  type="text" name="currentCreditLine" class="span9" id="editcurrCreditLine" placeholder="Current Credit Line*" />
 					</div>
 				</div>
 				<div class="span6">
@@ -201,7 +201,7 @@
 		<div class="row-fluid" id="butonClass">
 			<div class="span6">
 
-				<input type="submit" value="Update Protfolio"
+				<input type="button" value="Update Protfolio"
 					class="btn btn-primary" id="saveProtfolios"/> 
 			</div>
 			<div class="span6"></div>

@@ -106,3 +106,7 @@
   background-color: #dee7ee;
 }
 
+.error_show {
+	border: red 1px solid !important;
+}
+
