@@ -116,7 +116,9 @@ $(document).ready(function() {
       $('#investorModel').on('click', '.historybtn', function() {
   	   var historyURL=$(this).attr('data-url'); 
   	   var protfolioID=$(this).attr('protID');
-  	   
+  	   //hiding all other history rows
+  	 //$(".historyRow").hide();
+  	   $(this).parent().parent().toggleClass('highlightedClass');
   	   if($("#"+protfolioID+"_table").length){
   		   $("#"+protfolioID+"_row").slideToggle();
   	   }else{
@@ -154,7 +156,7 @@ $(document).ready(function() {
       $('#investorModel').on('click', '#saveProtfolios', function() {
     	  var errorFree=true;
     	  
-    	  $('.addprotfolio :input').each(function() {
+    	  $('.addprotfolio :input').not(':button, :submit, :reset, :hidden').each(function() {
     		  currentValue=$(this).val();
    	        if(currentValue=='' ||  currentValue==null){
    	        	errorFree=false;
@@ -164,7 +166,7 @@ $(document).ready(function() {
    	        }
    	    });
     	  if(errorFree){
-    		  console.log("Validation pass");   	  	  	
+    		 console.log("Validation pass>>");   	  	  	
   			document.forms["investorModel"].submit();
     	  }
     	  

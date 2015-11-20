@@ -33,7 +33,7 @@
 	<input type="hidden" name="investorID" value="${investorID}" />
 	
 		<div class="table-responsive">
-			<table class="table table-hover tablesorter table-bordered"  id="companyListTable">
+			<table class="table tablesorter table-bordered"  id="companyListTable">
 				<thead>
 					<tr>
 						<th>SCF Company</th>

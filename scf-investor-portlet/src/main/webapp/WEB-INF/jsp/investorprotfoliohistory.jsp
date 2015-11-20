@@ -1,24 +1,14 @@
 
 <%@include file="init.jsp"%>
 
-<style>
-.historytable th {
-	background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#f6f6f6),	to(#eaeaea)) !important;
-	color: #003d59 !important;
-	text-align: left;
-	padding: 5px;
-	font-weight: normal;
-	text-shadow: none;
-	font-family: Candara;
-}
-</style>
+
 <div class="row-fluid">
-	<div class="span3">
-		<label class="span12">Protfolio History</label>
+	<div class="span2">
+		<label class="span12"></label>
 	</div>
-	<div class="span9">
+	<div class="span10">
 		<div class="table-responsive" id="${protfolioID}_table">
-		<table class="table table-hover tablesorter table-bordered historytable" >
+		<table class="table  tablesorter table-bordered historytable" >
 			<thead>
 				<tr>
 					<th>Discount Rate</th>
