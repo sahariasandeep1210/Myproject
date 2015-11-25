@@ -23,6 +23,10 @@ public interface InvestorService {
 	
 	public void addInvestorPortfolios(List<InvestorPortfolio> invoices,long investorId);
 	
+	public void updateInvestorPortfolios(List<InvestorPortfolio> investors,long investorId);
+	
 	public Map<String,BigDecimal>  getProtfolioTotals(long id) ;
+	
+	public Map<Long,BigDecimal>  findTotalCreditLine(long investorID);
 
 }

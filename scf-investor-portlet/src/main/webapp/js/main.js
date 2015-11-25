@@ -108,8 +108,9 @@ $(document).ready(function() {
       
       $('#investorModel').on('click', '#editCancel', function() {
     	    $("#editTemplate").addClass("hide");
-    		$("#butonClass" ).show(); 
+    		$("#butonClass" ).hide(); 
     		$("#addProtfolioBtn" ).show();
+    		//$("#saveProtfolios").hide();
     	  
       });
       
@@ -117,8 +118,17 @@ $(document).ready(function() {
   	   var historyURL=$(this).attr('data-url'); 
   	   var protfolioID=$(this).attr('protID');
   	   //hiding all other history rows
-  	 //$(".historyRow").hide();
-  	   $(this).parent().parent().toggleClass('highlightedClass');
+  	   $(".historyRow").hide();
+  	   if($(this).parent().parent().hasClass("highlightedClass")){
+  		 $(this).parent().parent().toggleClass('highlightedClass');
+  		   return ;
+  	   }else{
+  		 $('#companyListTable tr').removeClass("highlightedClass");
+  		 $(this).parent().parent().toggleClass('highlightedClass');
+  	   }
+  	   
+  	   
+  	   
   	   if($("#"+protfolioID+"_table").length){
   		   $("#"+protfolioID+"_row").slideToggle();
   	   }else{

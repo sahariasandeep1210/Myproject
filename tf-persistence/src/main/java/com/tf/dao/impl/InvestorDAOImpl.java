@@ -1,6 +1,7 @@
 package com.tf.dao.impl;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -123,6 +124,23 @@ public class InvestorDAOImpl extends BaseDAOImpl<InvestorPortfolio, Long>   impl
 		
 	}
 	
+	public void updateInvestorPortfolios(List<InvestorPortfolio> investors,
+			long investorId) {
+		Investor investor=findByInvestorId(investorId);
+		try {
+			Session session=sessionFactory.getCurrentSession();
+			for(InvestorPortfolio investorPortfolio: investors){
+				investorPortfolio.setInvestor(investor);
+				session.update(investorPortfolio);
+			}
+			_log.debug("Invoices updated successful");
+		} catch (RuntimeException re) {
+			_log.error("update failed", re);
+			throw re;
+		}
+		
+	}
+	
 	private Investor findByInvestorId(long id) {
 		_log.debug("getting Investor instance with id: " + id);
 		try {
@@ -159,5 +177,52 @@ public class InvestorDAOImpl extends BaseDAOImpl<InvestorPortfolio, Long>   impl
 			throw re;
 		}
 	}
+	
+	public List<Long> getInvestorsScfCompanies(long investorID) {
+		List<Long> list = new ArrayList<Long>();
+		try {
+			if (investorID != 0) {
+
+				list = (List<Long>) sessionFactory
+						.getCurrentSession()
+						.createQuery(" select investorprot.company.id	from InvestorPortfolio investorprot where investorprot.investor.investorId = :id")
+						.setLong("id", investorID).list();
+
+			}
+			return list;
+		} catch (RuntimeException re) {
+			_log.error("get failed", re);
+			throw re;
+		}
+	}
+	
+	public InvestorPortfolio getInvestorProtfolio(long investorID,long scfCompany) {
+		try {				
+			InvestorPortfolio investorPortfolio = (InvestorPortfolio) sessionFactory.getCurrentSession().createQuery("from InvestorPortfolio protfolio where protfolio.company.id = :companyid and protfolio.investor.investorId = :id").setLong("companyid",scfCompany).setLong("id", investorID).uniqueResult();
+				
+			return investorPortfolio;
+		} catch (RuntimeException re) {
+			_log.error("get failed", re);
+			throw re;
+		}
+		
+	}
+	
+	public Map<Long,BigDecimal>  findTotalCreditLine(long investorID) {		
+		try {		
+			Map<Long,BigDecimal> map=new HashMap<Long, BigDecimal>();
+			List<Object[]> protfolioObjArray= sessionFactory.getCurrentSession().createSQLQuery("SELECT company_id,SUM(my_credit_line) FROM tf_investor_portfolio GROUP BY  company_id").list();				
+			for(Object[] row : protfolioObjArray){
+				map.put(Long.valueOf(row[0].toString()), new BigDecimal(row[1].toString()));
+	            
+	        }
+			return map;
+		} catch (RuntimeException re) {
+			_log.error("get failed", re);
+			throw re;
+		}
+		
+	}
+
 
 }

@@ -78,12 +78,13 @@ public class InvestorController {
 		for(Map.Entry<Long, List<InvestorPortfolio>> entry : map.entrySet()){
 			investorId=entry.getKey();
 			model.put("investorID", investorId);
-			investorPortfolioList=entry.getValue();
-			model.put("investorHistoryList", investorPortfolioList);
-			
+			investorPortfolioList=entry.getValue();		
 		}
 		Map<String,BigDecimal> totalsMap=investorService.getProtfolioTotals(investorId);
+		Map<Long,BigDecimal> totalCreditMap=investorService.findTotalCreditLine(investorId);
+		setTotalCreditLine(totalCreditMap,investorPortfolioList);
 		companyList=prepareCompanyList(companyList,investorPortfolioList);
+		model.put("investorHistoryList", investorPortfolioList);
 	
 		//long companyId=investorService.getInvestorPortfolioByUserId(userId)
 		/*investorModel=investorService.getInvestorByCompanyId(companyId);
@@ -106,10 +107,23 @@ public class InvestorController {
 	
 	
 
+	private void setTotalCreditLine(Map<Long, BigDecimal> totalCreditMap,
+			List<InvestorPortfolio> investorPortfolioList) {
+		for (InvestorPortfolio investorPortfolio :investorPortfolioList){
+			investorPortfolio.setCurrentCreditLine(totalCreditMap.get(investorPortfolio.getCompany().getId()));
+		}
+		
+	}
+
+
+
 	private List<Company> prepareCompanyList(List<Company> companyList,
 			List<InvestorPortfolio> investorPortfolioList) {
 		for(InvestorPortfolio investorPortfolio: investorPortfolioList){
-			companyList.remove(investorPortfolio.getCompany());			
+			if(!(BigDecimal.ZERO.compareTo(investorPortfolio.getMyCreditLine()) == 0 )){
+				companyList.remove(investorPortfolio.getCompany());	
+			}
+					
 		}
 		return companyList;
 		
@@ -166,7 +180,8 @@ public class InvestorController {
 		investorModel.setMyCreditLine(myCreditLine);
 		investorModel.setDiscountRate(discountRate);
 		InvestorPortfolio investor=investorService.findById(profolioId);
-		if(discountRate !=investor.getDiscountRate().intValue() || currentCreditLine !=investor.getCurrentCreditLine() || myCreditLine!=investor.getMyCreditLine()){
+		//if(discountRate !=investor.getDiscountRate().intValue() || currentCreditLine !=investor.getCurrentCreditLine() || myCreditLine!=investor.getMyCreditLine()){
+		if(discountRate !=investor.getDiscountRate().intValue() || currentCreditLine.compareTo(investor.getCurrentCreditLine()) != 0 || myCreditLine.compareTo(investor.getMyCreditLine())!=0){
 			
 			investorService.updatePortfiloDetails(investor,investorModel, themeDisplay.getUser().getScreenName());
 			

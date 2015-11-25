@@ -1,6 +1,7 @@
 package com.tf.service.impl;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -62,6 +63,8 @@ public class InvestorServiceImpl implements InvestorService {
 		
 	}
 	
+	
+	
 	public DashboardModel  getDashBoardInformation(){
 		return investorDAO.getDashBoardInformation();
 	}
@@ -74,11 +77,38 @@ public class InvestorServiceImpl implements InvestorService {
 
 	public void addInvestorPortfolios(List<InvestorPortfolio> investors,
 			long investorId) {
-		investorDAO.addInvestorPortfolios(investors,investorId);
+		List<Long> scfCmpList=investorDAO.getInvestorsScfCompanies(investorId);		
+		if(scfCmpList!=null && scfCmpList.size()>0){
+			List<InvestorPortfolio> addList=new ArrayList<InvestorPortfolio>();
+			List<InvestorPortfolio> updateList=new ArrayList<InvestorPortfolio>();
+			for(InvestorPortfolio investorPortfolio : investors){
+				if(scfCmpList.contains(investorPortfolio.getCompany().getId())){
+					//investorPortfolio=investorDAO.findById(id);
+					InvestorPortfolio investorPort =investorDAO.getInvestorProtfolio(investorId,investorPortfolio.getCompany().getId());
+					investorPort.setMyCreditLine(investorPortfolio.getMyCreditLine());
+					investorPort.setDiscountRate(investorPortfolio.getDiscountRate());
+					updateList.add(investorPort);
+				}else{
+					addList.add(investorPortfolio);
+				}			
+			}
+			investorDAO.updateInvestorPortfolios(updateList, investorId);
+			investorDAO.addInvestorPortfolios(addList,investorId);	
+		}else{
+			investorDAO.addInvestorPortfolios(investors,investorId);	
+		}
 		
+	}
+	
+	public void updateInvestorPortfolios(List<InvestorPortfolio> investors,long investorId){
+		investorDAO.updateInvestorPortfolios(investors,investorId);
 	}
 	public Map<String,BigDecimal>  getProtfolioTotals(long id) {
 		return investorDAO.getProtfolioTotals(id);
+	}
+	
+	public Map<Long,BigDecimal>  findTotalCreditLine(long investorID){
+		return investorDAO.findTotalCreditLine(investorID);
 	}
 
 }

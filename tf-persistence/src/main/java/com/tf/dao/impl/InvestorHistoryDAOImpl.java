@@ -2,6 +2,7 @@ package com.tf.dao.impl;
 
 import java.util.List;
 
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,7 +19,7 @@ public class InvestorHistoryDAOImpl extends BaseDAOImpl<InvestorPortfolioHistory
 		_log.debug("Inside getInvestorHistory ");
 		try {
 			
-			List<InvestorPortfolioHistory> results = (List<InvestorPortfolioHistory>) sessionFactory.getCurrentSession().createCriteria(InvestorPortfolioHistory.class).add(Restrictions.eq("investorPortfolio.investorProtId", investorID)).list();
+			List<InvestorPortfolioHistory> results = (List<InvestorPortfolioHistory>) sessionFactory.getCurrentSession().createCriteria(InvestorPortfolioHistory.class).add(Restrictions.eq("investorPortfolio.investorProtId", investorID)).addOrder(Order.desc("endDate")).list();
 			_log.debug("getInvestorHistory successful, result size: "
 					+ results.size());
 			return results;

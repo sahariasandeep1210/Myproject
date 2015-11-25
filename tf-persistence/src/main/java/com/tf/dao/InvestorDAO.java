@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
-import com.tf.model.Investor;
 import com.tf.model.InvestorPortfolio;
 import com.tf.persistance.util.DashboardModel;
 
@@ -18,6 +17,14 @@ public interface InvestorDAO extends BaseDAO<InvestorPortfolio, Long> {
 
 	public void addInvestorPortfolios(List<InvestorPortfolio> investors,long investorId);
 	
+	public void updateInvestorPortfolios(List<InvestorPortfolio> investors,long investorId);
+	
 	public Map<String,BigDecimal>  getProtfolioTotals(long id);
+	
+	public List<Long> getInvestorsScfCompanies(long investorID);
+	
+	public InvestorPortfolio getInvestorProtfolio(long investorID,long scfCompany);
+	
+	public Map<Long,BigDecimal>  findTotalCreditLine(long investorID);
 
 }

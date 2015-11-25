@@ -37,12 +37,12 @@
 				<thead>
 					<tr>
 						<th>SCF Company</th>
-						<th>Current Credit Line</th>
+						<th>Total Credit Line</th>
 						<th>My Credit Line</th>
 						<th>BPS</th>
 						<th>Utilised</th>
 						<th>Available</th>	
-						<th></th>										
+						<th>My Transactions</th>										
 					</tr>
 				</thead>
 				<tbody>
