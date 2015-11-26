@@ -12,7 +12,7 @@
 <portlet:resourceURL id="deleteProtfolio" var="deleteProtfolio" ></portlet:resourceURL> 
 <portlet:resourceURL id="historyURL" var="historyURL" ></portlet:resourceURL> 
 
-
+<div class="alert alert-danger" id="errorMsg"><i class="icon-remove-sign icon-2"></i> </div>
 <div class="container-fluid">
 
 <div class="row-fluid">
@@ -64,7 +64,7 @@
 								<td id="${investorProt.investorProtId}_currcreditLine">${investorProt.currentCreditLine}</td>
 								<td id="${investorProt.investorProtId}_mycreditLine">${investorProt.myCreditLine}</td>
 								<td id="${investorProt.investorProtId}_dicountRate">${investorProt.discountRate}</td>
-								<td>${investorProt.amountInvested}</td>
+								<td id="${investorProt.investorProtId}_utilised">${investorProt.amountInvested}</td>
 								<td>${investorProt.availToInvest}</td>
 								<td><a href="javascript:void(0);" title="Edit" class="editInvestor btn" id="${investorProt.investorProtId}_"><i class="fa fa fa-pencil-square-o fa-3"></i> Edit</a>  
 									<a href="javascript:void(0);" title="History" class="historybtn btn" data-url="${historyURL}" protID="${investorProt.investorProtId}"><i class="fa fa-history"></i> History</a>  
@@ -162,22 +162,38 @@
 						<input type="hidden" name="profolioId" id="profolioId"/>
 						<label class="span6 scfCompany" id="scfCompantName" >Alternate Name:</label>
 					</div>
-					<div class="span6">
+					<!-- <div class="span6">
 						<input  type="text" name="currentCreditLine" class="span9" id="editcurrCreditLine" placeholder="Current Credit Line*" />
-					</div>
-				</div>
-				<div class="span6">
+					</div> -->
 					<div class="span6">
 						<input  	type="text" name="myCreditLine" 	class="span9" 	id="editmyCreditLne" placeholder="My Credit Line*" />
+						<input type="hidden" id="editutilised" name="editutilised" />
+					</div>
+				</div>
+				<!-- <div class="span6">
+					<div class="span6">
+						<input  	type="text" name="myCreditLine" 	class="span9" 	id="editmyCreditLne" placeholder="My Credit Line*" />
+					</div>
+				</div> -->
+					<div class="span6">
+						<div class="span6">
+						<input type="text" name="discountRate" class="span9" id="editDiscountRate" placeholder="Offered BPS*" />
+					
+						</div>
+							<!-- <input  type="text" name="investorModel.amountInvested" class="span9" id="amountInvested" placeholder="Utilized" /> -->
+						 <div class="span6">
+						 <button type="button" class="btn btn-primary" id="updatebtn" data-url="${editProtfolioURL}"><i class="fa fa fa-pencil-square-o fa-3"></i> Update</button>
+						 <button type="button" class="btn btn-primary" id="editCancel">Cancel</button>
+						 </div>
 					</div>
 				</div>
 	
 			</div>
-			<div class="row-fluid">
+		<!-- 	<div class="row-fluid">
 				<div class="span12"></div>
 			
-			</div>
-			<div class="row-fluid" >
+			</div> -->
+		<%-- 	<div class="row-fluid" >
 				<div class="span6">
 					<div class="span6">
 						<input type="text" name="discountRate" class="span9" id="editDiscountRate" placeholder="Offered BPS*" />
@@ -189,7 +205,7 @@
 					</div>
 				</div>
 			
-			</div>
+			</div> --%>
 			<!-- <hr> -->
 		</div>
 

@@ -3,6 +3,8 @@ $(document).ready(function() {
 	  investorIndex = 0;
 	  $("#saveProtfolios").hide(); 
 	  $(".historyRow").hide();
+	  $("#errorMsg").hide(); 
+	  
 	  
 	  $('#investorModel').on('keypress', '.addprotfolio input', function(e) {
 		  
@@ -107,9 +109,14 @@ $(document).ready(function() {
       });
       
       $('#investorModel').on('click', '#editCancel', function() {
+    	    $("#errorMsg").hide(); 
     	    $("#editTemplate").addClass("hide");
     		$("#butonClass" ).hide(); 
     		$("#addProtfolioBtn" ).show();
+    		
+    		  $('#editTemplate :input').not(':button, :submit, :reset, :hidden').each(function() {          		 
+         	        	$(this).removeClass("error_show");         	   
+         	    });
     		//$("#saveProtfolios").hide();
     	  
       });
@@ -157,9 +164,33 @@ $(document).ready(function() {
       
       
       $('#investorModel').on('click', '#updatebtn', function() {
+    	  $("#errorMsg").hide(); 
+    	  	var errorFree=true;
+    	  	var editutilised= $("#editutilised").val() + 0;
+    	  	var editmyCreditLne= $("#editmyCreditLne").val()+ 0;
     	  	var url = $(this).attr('data-url');
-    	  	document.forms["investorModel"].action = url;
-			document.forms["investorModel"].submit();
+    	 
+    	    $('#editTemplate :input').not(':button, :submit, :reset, :hidden').each(function() {
+      		  currentValue=$(this).val();
+     	        if(currentValue=='' ||  currentValue==null){
+     	        	errorFree=false;
+     	        	$(this).addClass("error_show");
+     	        }else{
+     	        	$(this).removeClass("error_show");
+     	        }
+     	    });
+    	    if(editmyCreditLne < editutilised){
+    	    	$("#errorMsg").show(); 
+    	    	$("#errorMsg").text("My Credit line can't be less than utilized amount");
+    	    	$("#editmyCreditLne").addClass("error_show");
+    	    	errorFree=false;
+    	    }
+    	    
+    	  	
+    	  	 if(errorFree){
+    	  	 	document.forms["investorModel"].action = url;	  	  	
+      			document.forms["investorModel"].submit();
+        	  }
     	  
       }); 
       
@@ -204,10 +235,12 @@ function triggerEdit(currentId){
 	var currcreditLine=$("#"+currentId+"currcreditLine").text();
 	var mycreditLine=$("#"+currentId+"mycreditLine").text();
 	var dicountRate=$("#"+currentId+"dicountRate").text();
+	var utilised=$("#"+currentId+"utilised").text();
 	$("#scfCompantName").text(cmpName);
 	$("#editcurrCreditLine").val(currcreditLine);
 	$("#editmyCreditLne").val(mycreditLine);
 	$("#editDiscountRate").val(dicountRate);
+	$("#editutilised").val(utilised);
 	$("#editTemplate").removeClass("hide");
 	currentId=currentId.replace("_","");
 	$("#profolioId").val(currentId);
