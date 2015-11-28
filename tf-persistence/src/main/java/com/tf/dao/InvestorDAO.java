@@ -26,5 +26,7 @@ public interface InvestorDAO extends BaseDAO<InvestorPortfolio, Long> {
 	public InvestorPortfolio getInvestorProtfolio(long investorID,long scfCompany);
 	
 	public Map<Long,BigDecimal>  findTotalCreditLine(long investorID);
+	
+	public 	List<InvestorPortfolio>  findTotalCreditLineBreakDown(long scfCompany);
 
 }

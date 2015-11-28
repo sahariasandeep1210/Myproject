@@ -110,5 +110,9 @@ public class InvestorServiceImpl implements InvestorService {
 	public Map<Long,BigDecimal>  findTotalCreditLine(long investorID){
 		return investorDAO.findTotalCreditLine(investorID);
 	}
+	
+	public 	List<InvestorPortfolio>  findTotalCreditLineBreakDown(long scfCompany){
+		return investorDAO.findTotalCreditLineBreakDown(scfCompany);
+	}
 
 }

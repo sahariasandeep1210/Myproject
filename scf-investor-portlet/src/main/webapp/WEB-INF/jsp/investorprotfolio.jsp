@@ -11,6 +11,7 @@
 <portlet:resourceURL id="editProtfolio" var="editProtfolio" ></portlet:resourceURL> 
 <portlet:resourceURL id="deleteProtfolio" var="deleteProtfolio" ></portlet:resourceURL> 
 <portlet:resourceURL id="historyURL" var="historyURL" ></portlet:resourceURL> 
+<portlet:resourceURL id="crtLinebreakdownURL" var="crtLinebreakdownURL" ></portlet:resourceURL> 
 
 <div class="alert alert-danger" id="errorMsg"><i class="icon-remove-sign icon-2"></i> </div>
 <div class="container-fluid">
@@ -61,7 +62,7 @@
 						<c:forEach items="${investorHistoryList}" var="investorProt" varStatus="loop">
 							<tr class="${loop.index % 2 == 0 ? 'evenrow' : 'oddrow'}">
 								<td id="${investorProt.investorProtId}_cmpname">${investorProt.company.name} </td>
-								<td id="${investorProt.investorProtId}_currcreditLine">${investorProt.currentCreditLine}</td>
+								<td id="${investorProt.investorProtId}_currcreditLine">${investorProt.currentCreditLine} <a href="javascript:void(0);"  data-url="${crtLinebreakdownURL}" class="breakdown"   style=" float: right; vertical-align: middle; font-size: 20px" scfcompany="${investorProt.company.id}" investorID="${investorProt.investor.investorId}"><i class="fa fa-plus-square-o"></i> </a></td>
 								<td id="${investorProt.investorProtId}_mycreditLine">${investorProt.myCreditLine}</td>
 								<td id="${investorProt.investorProtId}_dicountRate">${investorProt.discountRate}</td>
 								<td id="${investorProt.investorProtId}_utilised">${investorProt.amountInvested}</td>
@@ -246,6 +247,22 @@
 				<input type="button" value="Edit Protfolio" class="btn btn-primary" id="last" onclick="confirmEdit()"/>
 				<button class="btn" data-dismiss="modal" aria-hidden="true">No</button>
 				
+			</div>
+		</div>
+		
+		<div id="breakdownModel" class=" modal fade" tabindex="-1"
+			role="dialog" aria-labelledby="breakdownModelLabel"
+			aria-hidden="true">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" id="first"
+					aria-hidden="true">×</button>
+				<h4 id="breakdownLabel">Credit Line breakdown</h4>
+			</div>
+			<div class="modal-body" id="breakdownBody">
+				
+			</div>
+			<div class="modal-footer">
+				<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>				
 			</div>
 		</div>
 

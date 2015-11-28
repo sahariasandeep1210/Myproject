@@ -28,5 +28,7 @@ public interface InvestorService {
 	public Map<String,BigDecimal>  getProtfolioTotals(long id) ;
 	
 	public Map<Long,BigDecimal>  findTotalCreditLine(long investorID);
+	
+	public 	List<InvestorPortfolio>  findTotalCreditLineBreakDown(long scfCompany);
 
 }

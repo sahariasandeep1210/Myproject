@@ -223,6 +223,18 @@ public class InvestorDAOImpl extends BaseDAOImpl<InvestorPortfolio, Long>   impl
 		}
 		
 	}
+	
+	public 	List<InvestorPortfolio>  findTotalCreditLineBreakDown(long scfCompany) {
+		try {		
+			List<InvestorPortfolio> list= (List<InvestorPortfolio>)sessionFactory.getCurrentSession().createQuery("from InvestorPortfolio where company.id = :companyid").setLong("companyid",scfCompany).list();				
+			
+			return list;
+		} catch (RuntimeException re) {
+			_log.error("get failed", re);
+			throw re;
+		}
+		
+	}
 
 
 }

@@ -203,6 +203,19 @@ public class InvestorController {
 	}
 	
 	
+	@ResourceMapping("crtLinebreakdownURL")
+	public ModelAndView crtLinebreakdown(ResourceRequest request, ResourceResponse response, ModelMap modelMap)throws IOException {
+		long scfcompany = ParamUtil.getLong(request, "scfcompany",0); 
+		long investorID = ParamUtil.getLong(request, "investorID",0);
+		Company company=companyService.findById(scfcompany);
+		List<InvestorPortfolio>  investorList=investorService.findTotalCreditLineBreakDown(scfcompany);
+		modelMap.put("investorList", investorList);
+		modelMap.put("scfCompany", company.getName());
+		modelMap.put("investorID", investorID);
+		return new ModelAndView("investorprotfoliobreak");
+	}
+	
+	
 	
 
 

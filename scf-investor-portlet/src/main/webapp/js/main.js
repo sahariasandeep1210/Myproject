@@ -59,8 +59,10 @@ $(document).ready(function() {
           
           if( $(".parentclass").length>1){
         	  $("#saveProtfolios").show();
+        	  $("#butonClass" ).show(); 
           }else{
         	  $("#saveProtfolios").hide();
+        	  $("#butonClass" ).hide(); 
           }
              
          
@@ -76,8 +78,10 @@ $(document).ready(function() {
             $row.remove();
             if( $(".parentclass").length>1){
           	  $("#saveProtfolios").show();
+          	  $("#butonClass" ).show(); 
             }else{
           	  $("#saveProtfolios").hide();
+          	 $("#butonClass" ).hide(); 
             }
         });
       
@@ -159,6 +163,33 @@ $(document).ready(function() {
   	   }
   	  
     });
+      
+      $('#investorModel').on('click', '.breakdown', function() {
+    	  var breakdownURL=$(this).attr('data-url'); 
+     	   var scfcompany=$(this).attr('scfcompany'); 
+     	  var investorID=$(this).attr('investorID');
+     	   
+     		$.ajax({ 
+				url: breakdownURL, 
+				type: 'POST', 
+				cache: false,
+				data: { 
+					scfcompany: scfcompany,
+					investorID: investorID 
+					  }, 
+				success: function(data){
+					$("#breakdownBody").html(data);
+					 $("#breakdownModel").modal('show');
+							
+				} ,
+				error: function(jqXHR, textStatus, errorThrown) {
+					ajaxindicatorstop();
+					
+				}
+				});	
+    	  
+      });
+    
       
       
       
