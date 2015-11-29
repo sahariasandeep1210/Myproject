@@ -227,7 +227,7 @@ $(document).ready(function() {
       
       $('#investorModel').on('click', '#saveProtfolios', function() {
     	  var errorFree=true;
-    	  
+    	  console.log("Save protfolois");
     	  $('.addprotfolio :input').not(':button, :submit, :reset, :hidden').each(function() {
     		  currentValue=$(this).val();
    	        if(currentValue=='' ||  currentValue==null){
@@ -237,6 +237,8 @@ $(document).ready(function() {
    	        	$(this).removeClass("error_show");
    	        }
    	    });
+    	  
+    	  console.log("Save protfolois >>>>>>>>>"+errorFree);
     	  if(errorFree){
     		 console.log("Validation pass>>");   	  	  	
   			document.forms["investorModel"].submit();

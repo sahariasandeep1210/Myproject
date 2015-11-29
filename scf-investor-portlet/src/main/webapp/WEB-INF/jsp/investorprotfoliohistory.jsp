@@ -12,7 +12,6 @@
 			<thead>
 				<tr>
 					<th>Discount Rate</th>
-					<th>Current Credit Line</th>
 					<th>My Credit Line</th>
 					<th>Start End</th>
 					<th>End Date</th>
@@ -24,7 +23,6 @@
 						<c:forEach items="${investorHistoryList}" var="investorHis">
 							<tr>
 								<td>${investorHis.discountRate}</td>
-								<td>${investorHis.currentCreditLine}</td>
 								<td>${investorHis.myCreditLine}</td>
 								<td><fmt:formatDate value="${investorHis.startDate}" pattern="dd-MM-yyyy HH:mm" /> <%-- <fmt:formatDate type="both"        dateStyle="short" timeStyle="short"       value="" /> --%></td>
 								<td><fmt:formatDate value="${investorHis.endDate}" pattern="dd-MM-yyyy HH:mm" /> <%-- <fmt:formatDate type="both"        dateStyle="short" timeStyle="short"       value="" /> --%></td>

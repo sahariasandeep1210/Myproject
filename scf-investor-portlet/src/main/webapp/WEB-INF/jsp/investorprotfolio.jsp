@@ -190,25 +190,7 @@
 				</div>
 	
 			</div>
-		<!-- 	<div class="row-fluid">
-				<div class="span12"></div>
-			
-			</div> -->
-		<%-- 	<div class="row-fluid" >
-				<div class="span6">
-					<div class="span6">
-						<input type="text" name="discountRate" class="span9" id="editDiscountRate" placeholder="Offered BPS*" />
-					</div>
-					<div class="span6">
-							<!-- <input  type="text" name="investorModel.amountInvested" class="span9" id="amountInvested" placeholder="Utilized" /> -->
-						 <button type="button" class="btn btn-primary" id="updatebtn" data-url="${editProtfolioURL}"><i class="fa fa fa-pencil-square-o fa-3"></i> Update</button>
-						 <button type="button" class="btn btn-primary" id="editCancel">Cancel</button>
-					</div>
-				</div>
-			
-			</div> --%>
-			<!-- <hr> -->
-		</div>
+	
 
 		<div class="row-fluid">
 			<div class="span12"></div>
@@ -218,8 +200,7 @@
 		<div class="row-fluid" id="butonClass">
 			<div class="span6">
 
-				<input type="button" value="Update Protfolio"
-					class="btn btn-primary" id="saveProtfolios"/> 
+				<input type="button" value="Update Protfolio"	class="btn btn-primary" id="saveProtfolios" /> 
 			</div>
 			<div class="span6"></div>
 		</div>

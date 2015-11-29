@@ -19,7 +19,7 @@
 					<c:when test="${fn:length(investorList) gt 0}">						
 						<c:forEach items="${investorList}" var="investorProt" varStatus="loop">
 							<tr class="${loop.index % 2 == 0 ? 'evenrow' : 'oddrow'}   ${investorProt.investor.investorId eq investorID ? 'boldclass' : ''}">
-								<td>Investor ${loop.count}</td>
+								<td>${investorProt.investor.investorId eq investorID ? 'Self' : 'Anonymous'}</td>
 								<td>${investorProt.myCreditLine}</td>
 								<td>${investorProt.discountRate}</td>									
 							</tr>
