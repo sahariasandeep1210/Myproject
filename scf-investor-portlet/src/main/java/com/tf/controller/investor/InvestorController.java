@@ -228,7 +228,7 @@ public class InvestorController {
 	private List<InvestorPortfolio> filterNullValues(List<InvestorPortfolio> investorPortfolios,ThemeDisplay themeDisplay) {
 		List<InvestorPortfolio> updatedInvestorPortfolios=new ArrayList<InvestorPortfolio>();
 		for(InvestorPortfolio investorPortfolio :investorPortfolios){
-			if(investorPortfolio!=null && investorPortfolio.getDiscountRate()!=null && investorPortfolio.getMyCreditLine()!=null && investorPortfolio.getCurrentCreditLine()!=null){
+			if(investorPortfolio!=null && investorPortfolio.getDiscountRate()!=null && investorPortfolio.getMyCreditLine()!=null){
 				investorPortfolio.setMinDiscountRate(MINDISCOUNT);
 				investorPortfolio.setMaxDiscountRate(MAXDISCOUNT);
 				investorPortfolio.setAvailToInvest(investorPortfolio.getMyCreditLine());

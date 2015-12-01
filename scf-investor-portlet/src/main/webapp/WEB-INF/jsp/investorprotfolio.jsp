@@ -1,4 +1,4 @@
-<%@include file="init.jsp"%>
+<%@ include file="init.jsp"%>
 
 <portlet:actionURL var="updateProtfolioURL">
 	<portlet:param name="action" value="updateProtfolio"/>
@@ -111,25 +111,13 @@
 								</c:forEach>			
 							</select>
 					</div>
-					<div class="span6">
-						<input  type="text" name="investorModel.currentCreditLine" class="span9" id="creditLine" placeholder="Current Credit Line" />
-					</div>
-				</div>
-				<div class="span6">
+					
 					<div class="span6">
 						<input  	type="text" name="investorModel.myCreditLine" 	class="span9" 	id="myCreditLne" placeholder="My Credit Line*" />
 					</div>
 				</div>
-	
-			</div>
-			<div class="row-fluid">
-				<div class="span12"></div>
-			
-			</div>
-			<div class="row-fluid" >
-				<div class="span6">
 					<div class="span6">
-					<!-- 	<input type="text" name="investorModel.discountRate" class="span9" id="discountRate" placeholder="Offered BPS*" /> -->
+					<div class="span6">
 						<select id="discountRate" name="investorModel.discountRate"   class="span9">
 								 <option value="" disabled selected>Offered BPS*</option>
 								<c:forEach var="discount" items="${discountList}">
@@ -138,50 +126,60 @@
 							</select>
 					</div>
 					<div class="span6">
-							<!-- <input  type="text" name="investorModel.amountInvested" class="span9" id="amountInvested" placeholder="Utilized" /> -->
 						 <button type="button" class="btn btn-primary removeButton"><i class="fa fa-minus"></i> Remove</button>
 					</div>
 				</div>
-			<!-- 	<div class="span6">
-					<div class="span6">
-						<input type="text" name="investorModel.availToInvest" class="span9" id="availToInvest" placeholder="Available" />
-					</div>
-					<div class="span6">
-						  <button type="button" class="btn btn-primary removeButton"><i class="fa fa-minus"></i> Remove</button>
-					</div>
-				</div> -->
+			
 	
 			</div>
+			<div class="row-fluid">
+				<div class="span12"></div>
+			
+			</div>
+		
 			<hr>
 		</div>
 		
 		<div id="editTemplate" class="hide">
+			<div class="row-fluid">
+				<div class="span6">
+					<div class="span6">
+						<label>SCF Company</label>
+					</div>
+					<div class="span6">
+							<label>My Credit Line</label>
+					</div>
+				</div>
+				<div class="span6">
+					<div class="span6">
+						<label>Discount Rate</label>
+					</div>
+				</div>
+			</div>
+		
 		
 			<div class="row-fluid" >
 				<div class="span6">
 					<div class="span6">
 						<input type="hidden" name="profolioId" id="profolioId"/>
-						<label class="span6 scfCompany" id="scfCompantName" >Alternate Name:</label>
-					</div>
-					<!-- <div class="span6">
-						<input  type="text" name="currentCreditLine" class="span9" id="editcurrCreditLine" placeholder="Current Credit Line*" />
-					</div> -->
+						<label class="scfCompany" id="scfCompantName" style="font-weight: normal !important;" >Alternate Name:</label>
+					</div>				
 					<div class="span6">
 						<input  	type="text" name="myCreditLine" 	class="span9" 	id="editmyCreditLne" placeholder="My Credit Line*" />
 						<input type="hidden" id="editutilised" name="editutilised" />
 					</div>
-				</div>
-				<!-- <div class="span6">
-					<div class="span6">
-						<input  	type="text" name="myCreditLine" 	class="span9" 	id="editmyCreditLne" placeholder="My Credit Line*" />
-					</div>
-				</div> -->
+				</div>			
 					<div class="span6">
 						<div class="span6">
-						<input type="text" name="discountRate" class="span9" id="editDiscountRate" placeholder="Offered BPS*" />
+					<!-- 	<input type="text" name="discountRate" class="span9" id="editDiscountRate" placeholder="Offered BPS*" /> -->
+						<select id="editDiscountRate" name="discountRate"   class="span9">
+								 <option value="" disabled selected>Offered BPS*</option>
+								<c:forEach var="discount" items="${discountList}">
+									<option value="${discount}">${discount}</option>
+								</c:forEach>			
+							</select>
 					
 						</div>
-							<!-- <input  type="text" name="investorModel.amountInvested" class="span9" id="amountInvested" placeholder="Utilized" /> -->
 						 <div class="span6">
 						 <button type="button" class="btn btn-primary" id="updatebtn" data-url="${editProtfolioURL}"><i class="fa fa fa-pencil-square-o fa-3"></i> Update</button>
 						 <button type="button" class="btn btn-primary" id="editCancel">Cancel</button>
@@ -231,7 +229,7 @@
 			</div>
 		</div>
 		
-		<div id="breakdownModel" class=" modal fade" tabindex="-1"
+		<div id="breakdownModel" class="modal fade" tabindex="-1"
 			role="dialog" aria-labelledby="breakdownModelLabel"
 			aria-hidden="true">
 			<div class="modal-header">
@@ -246,7 +244,3 @@
 				<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>				
 			</div>
 		</div>
-
-
-
-

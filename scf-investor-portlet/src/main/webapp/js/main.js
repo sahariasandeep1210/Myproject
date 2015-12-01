@@ -86,6 +86,9 @@ $(document).ready(function() {
         });
       
       $('#investorModel').on('click', '.editInvestor', function() {
+    	  $('#editTemplate :input').not(':button, :submit, :reset, :hidden').each(function() {          		 
+	        	$(this).removeClass("error_show");         	   
+	     });
     	  var currentValue;
     	  var showModel=false;
     	  $('.parentclass :input').each(function() {
@@ -103,7 +106,6 @@ $(document).ready(function() {
     		  $("#invProtID").val(currentID);
     		  $("#editConfirmationModel").modal('show');
     	  }else{
-    		  console.log("Do Edit >>");
     		  $(".addprotfolio").remove();
     		  var currentID=$(this).attr('id');
     		  triggerEdit(currentID);
@@ -114,13 +116,14 @@ $(document).ready(function() {
       
       $('#investorModel').on('click', '#editCancel', function() {
     	    $("#errorMsg").hide(); 
-    	    $("#editTemplate").addClass("hide");
+    	   
     		$("#butonClass" ).hide(); 
     		$("#addProtfolioBtn" ).show();
     		
     		  $('#editTemplate :input').not(':button, :submit, :reset, :hidden').each(function() {          		 
          	        	$(this).removeClass("error_show");         	   
          	    });
+    		  $("#editTemplate").addClass("hide");
     		//$("#saveProtfolios").hide();
     	  
       });
@@ -227,7 +230,6 @@ $(document).ready(function() {
       
       $('#investorModel').on('click', '#saveProtfolios', function() {
     	  var errorFree=true;
-    	  console.log("Save protfolois");
     	  $('.addprotfolio :input').not(':button, :submit, :reset, :hidden').each(function() {
     		  currentValue=$(this).val();
    	        if(currentValue=='' ||  currentValue==null){
@@ -238,7 +240,6 @@ $(document).ready(function() {
    	        }
    	    });
     	  
-    	  console.log("Save protfolois >>>>>>>>>"+errorFree);
     	  if(errorFree){
     		 console.log("Validation pass>>");   	  	  	
   			document.forms["investorModel"].submit();
