@@ -17,6 +17,7 @@ import com.tf.dao.UserDAO;
 import com.tf.model.Investor;
 import com.tf.model.InvestorPortfolio;
 import com.tf.persistance.util.DashboardModel;
+import com.tf.persistance.util.InvestorProtfolioDTO;
 
 @Repository
 @Transactional
@@ -234,6 +235,33 @@ public class InvestorDAOImpl extends BaseDAOImpl<InvestorPortfolio, Long>   impl
 			throw re;
 		}
 		
+	}
+	
+	public List<InvestorProtfolioDTO> findInvestorByRate(long comapanyId) {
+		try {
+			List<InvestorProtfolioDTO>  list = new ArrayList<InvestorProtfolioDTO>();
+			InvestorProtfolioDTO investorProtfolioDTO ;
+			List<Object[]> protfolioObjArray = sessionFactory
+					.getCurrentSession()
+					.createSQLQuery(
+							"SELECT  investor_id,my_credit_line,amount_invested,available_to_invest,investment_discount_rate,company_id FROM tf_investor_portfolio WHERE company_id=:companyID ORDER BY investment_discount_rate,my_credit_line")
+					.setLong("companyID", comapanyId).list();
+			for (Object[] row : protfolioObjArray) {
+				investorProtfolioDTO=new InvestorProtfolioDTO();
+				investorProtfolioDTO.setInvestorId(Long.valueOf(row[0].toString()));
+				investorProtfolioDTO.setMycreditLine(new BigDecimal(row[1].toString()));
+				investorProtfolioDTO.setAmountInvested(row[2]!=null?new BigDecimal(row[2].toString()):null);
+				investorProtfolioDTO.setAvailToInvest(row[3]!=null?new BigDecimal(row[3].toString()):null);
+				investorProtfolioDTO.setDiscountRate(Integer.valueOf(row[4].toString()));
+				list.add(investorProtfolioDTO);
+
+			}
+			return list;
+		} catch (RuntimeException re) {
+			_log.error("get failed", re);
+			throw re;
+		}
+
 	}
 
 

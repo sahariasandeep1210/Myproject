@@ -2,7 +2,7 @@ package com.tf.service.impl;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -11,12 +11,16 @@ import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.tf.dao.InvestorDAO;
 import com.tf.dao.InvoiceDAO;
 import com.tf.dao.SCFTradeDAO;
 import com.tf.dao.UserDAO;
 import com.tf.model.Company;
 import com.tf.model.Invoice;
+import com.tf.persistance.util.InvestorProtfolioDTO;
+import com.tf.service.InvestorPortfolio;
 import com.tf.service.InvoiceService;
 
 @Service
@@ -24,6 +28,9 @@ public class InvoiceServiceImpl implements InvoiceService{
 
 	@Autowired
 	private InvoiceDAO invoiceDAO;
+	
+	@Autowired
+	private InvestorDAO investorDAO;
 	
 	@Autowired
 	private SCFTradeDAO scfTradeDAO;
@@ -116,6 +123,55 @@ public class InvoiceServiceImpl implements InvoiceService{
 		
 		invoiceDAO.updateInvoices(invoicesList);
 		
+	}
+	
+	 @Transactional
+	public void triggerAllotment(List<String> invoiceIds){
+		 
+		
+		 Long companyID=0l;
+		Invoice invoice;
+		List<Invoice> invoicesList=new ArrayList<Invoice>();
+		for(String id :invoiceIds){ 
+			invoice=invoiceDAO.findById(Long.valueOf(id));
+			companyID=invoice.getScfCompany().getId();
+			invoicesList.add(invoice);			
+		}
+		
+		 List<InvestorProtfolioDTO> list=investorDAO.findInvestorByRate(companyID);
+		 list=getSameRateCountStamp(list);
+		
+	}
+	 
+	private List<InvestorProtfolioDTO> getSameRateCountStamp(
+			List<InvestorProtfolioDTO> list) {
+
+		List<InvestorProtfolioDTO> newInvestorList = new ArrayList<InvestorProtfolioDTO>();
+		Map<Integer, Integer> investorRateMap = new HashMap<Integer, Integer>();
+
+		int count = 1;
+
+		for (InvestorProtfolioDTO investorPortfolio : list) {
+
+			if (investorRateMap
+					.containsKey(investorPortfolio.getDiscountRate())) {
+				investorRateMap.put(investorPortfolio.getDiscountRate(),
+						++count);
+			} else {
+				count = 1;
+				investorRateMap.put(investorPortfolio.getDiscountRate(), count);
+			}
+		}
+
+		for (InvestorProtfolioDTO investorPortfolio : list) {
+
+			investorPortfolio.setSameRateCount(investorRateMap
+					.get(investorPortfolio.getDiscountRate()));
+			newInvestorList.add(investorPortfolio);
+		}
+
+		return newInvestorList;
+
 	}
 
 	

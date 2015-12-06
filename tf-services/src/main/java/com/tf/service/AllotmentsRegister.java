@@ -3,7 +3,7 @@ package com.tf.service;
 public class AllotmentsRegister {
 
 	int allotmentId; 
-	int investorId; 
+	long investorId; 
 	int tradeId; 
 	int rate;
 	int allotmentAmount ; 
@@ -15,10 +15,10 @@ public class AllotmentsRegister {
 	public void setAllotmentId(int allotmentId) {
 		this.allotmentId = allotmentId;
 	}
-	public int getInvestorId() {
+	public long getInvestorId() {
 		return investorId;
 	}
-	public void setInvestorId(int investorId) {
+	public void setInvestorId(long investorId) {
 		this.investorId = investorId;
 	}
 	public int getTradeId() {
