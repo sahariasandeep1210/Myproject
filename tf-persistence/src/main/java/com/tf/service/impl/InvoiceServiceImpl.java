@@ -2,7 +2,9 @@ package com.tf.service.impl;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -13,15 +15,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.tf.dao.AllotmentDAO;
 import com.tf.dao.InvestorDAO;
 import com.tf.dao.InvoiceDAO;
 import com.tf.dao.SCFTradeDAO;
 import com.tf.dao.UserDAO;
+import com.tf.model.Allotment;
 import com.tf.model.Company;
 import com.tf.model.Invoice;
+import com.tf.model.SCFTrade;
+import com.tf.persistance.util.AllotmentEngine;
 import com.tf.persistance.util.InvestorProtfolioDTO;
-import com.tf.service.InvestorPortfolio;
+import com.tf.persistance.util.TradeStatus;
 import com.tf.service.InvoiceService;
+import com.tf.service.SCFTradeService;
 
 @Service
 public class InvoiceServiceImpl implements InvoiceService{
@@ -37,6 +44,15 @@ public class InvoiceServiceImpl implements InvoiceService{
 	
 	@Autowired
 	private UserDAO userDAO;
+	
+	@Autowired
+	private SCFTradeService scfTradeService;	
+	
+	@Autowired
+	private AllotmentEngine allotmentEngine;
+	
+	@Autowired
+	private AllotmentDAO allotmentDAO;
 
 	public void addInvoices(List<Invoice> invoice) {
 		 invoiceDAO.addInvoices(invoice);
@@ -129,18 +145,45 @@ public class InvoiceServiceImpl implements InvoiceService{
 	public void triggerAllotment(List<String> invoiceIds){
 		 
 		
-		 Long companyID=0l;
+		Company company=null;
 		Invoice invoice;
+		BigDecimal tradeAmount=BigDecimal.ZERO;
 		List<Invoice> invoicesList=new ArrayList<Invoice>();
 		for(String id :invoiceIds){ 
 			invoice=invoiceDAO.findById(Long.valueOf(id));
-			companyID=invoice.getScfCompany().getId();
+			company=invoice.getScfCompany();
+			tradeAmount=tradeAmount.add(invoice.getInvoiceAmount());
 			invoicesList.add(invoice);			
 		}
 		
-		 List<InvestorProtfolioDTO> list=investorDAO.findInvestorByRate(companyID);
-		 list=getSameRateCountStamp(list);
+		SCFTrade scfTrade = new SCFTrade();
+		scfTrade.setCompany(company);
+		scfTrade.setCreateDate(new Date());
+		scfTrade.setStatus(TradeStatus.NEW.getValue());
+		scfTrade.setTradeAmount(tradeAmount);
+		scfTrade.setTradeNotes("Finance requested by Supplier");
+		scfTrade.setInvoices(new HashSet(invoicesList));
+		scfTrade = scfTradeService.save(scfTrade);
+		updateTradeinfotoInvovices(invoicesList, scfTrade);
+		List<InvestorProtfolioDTO> list=investorDAO.findInvestorByRate(company.getId());
+		list=getSameRateCountStamp(list);
+		List<Allotment> allotments = allotmentEngine.tradeAllotment(list, scfTrade);
+		System.out.println("------------------------------------------------------------------------------------)");
+		for(Allotment allotment : allotments){
+			System.out.println("allotment::::::::"+allotment);
+			allotmentDAO.saveEntity(allotment);
+		}
 		
+		System.out.println("************************************ ALLOTMENTS END ************************************** \n ");
+		
+		
+	}
+
+	private void updateTradeinfotoInvovices(List<Invoice> invoicesList,
+			SCFTrade scfTrade) {
+		for(Invoice inv: invoicesList){
+			inv.setScfTrade(scfTrade);
+		}
 	}
 	 
 	private List<InvestorProtfolioDTO> getSameRateCountStamp(

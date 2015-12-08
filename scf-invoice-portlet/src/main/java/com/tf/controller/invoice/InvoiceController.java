@@ -341,7 +341,8 @@ public class InvoiceController {
 		System.out.println("invoiceIds::::"+invoiceIds);
 		if(!StringUtils.isNullOrEmpty(invoiceIds)){
 			List<String> invoicesIdList=Arrays.asList(invoiceIds.split(","));
-			invoiceService.updateInvoicesStatus(invoicesIdList, InvoiceStatus.FINANCE_REQUESTED.getValue());
+			invoiceService.triggerAllotment(invoicesIdList);
+			//invoiceService.updateInvoicesStatus(invoicesIdList, InvoiceStatus.FINANCE_REQUESTED.getValue());
 		}
 		
 	}

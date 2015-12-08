@@ -99,6 +99,7 @@ public class SCFTrade  implements Serializable{
 	@Column(name="update_date")
 	private Date updatDate;
 	
+	
 	@OneToMany(mappedBy = "scfTrade",cascade=CascadeType.ALL) 
 	private Set<Invoice> invoices;
 	

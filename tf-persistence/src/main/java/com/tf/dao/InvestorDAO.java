@@ -31,5 +31,7 @@ public interface InvestorDAO extends BaseDAO<InvestorPortfolio, Long> {
 	public 	List<InvestorPortfolio>  findTotalCreditLineBreakDown(long scfCompany);
 	
 	public List<InvestorProtfolioDTO> findInvestorByRate(long comapanyId);
+	
+	public InvestorPortfolio  loadInvestorPortfolio(long protfolioID);
 
 }

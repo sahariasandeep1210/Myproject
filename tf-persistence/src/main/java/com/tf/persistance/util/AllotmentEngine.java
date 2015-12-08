@@ -2,20 +2,24 @@ package com.tf.persistance.util;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.tf.dao.InvestorDAO;
 import com.tf.model.Allotment;
+import com.tf.model.InvestorPortfolio;
 import com.tf.model.SCFTrade;
 
+@Component
 public class AllotmentEngine {
 	
 	@Autowired
 	private InvestorDAO investorDAO;
 	
-	public List<InvestorProtfolioDTO> tradeAllotment(List<InvestorProtfolioDTO> investorsList,SCFTrade trade){
+	public List<Allotment> tradeAllotment(List<InvestorProtfolioDTO> investorsList,SCFTrade trade){
 
 		List<InvestorProtfolioDTO> investors = investorsList;
 		Allotment allotment ; 
@@ -36,7 +40,7 @@ public class AllotmentEngine {
 
 			allotment = new Allotment(); 
 
-			allotment.setInvestorPortfolio(investorDAO.findById(1l));
+			allotment.setInvestorPortfolio(investorDAO.loadInvestorPortfolio(investor.getInvestorProtId()));
 			allotment.setScfTrade(trade);
 
 			if(sameRateCount <= 1 ){
@@ -53,12 +57,11 @@ public class AllotmentEngine {
 					currentAllotment = investor.getAvailToInvest();
 				}
 			}
-
-			investor.setAvailToInvest(investor.getAvailToInvest().subtract(currentAllotment));
-			investor.setAmountInvested(investor.getAmountInvested().add(currentAllotment));
+			setInvestmentInfo(currentAllotment, investor);
 			
 			allotment.setMarketDiscount(investor.getDiscountRate());
 			allotment.setAllotmentAmount(currentAllotment);
+			allotment.setAllotmentDate(new Date());
 			allotments.add(allotment);
 
 			pendingAllotment = pendingAllotment.subtract(currentAllotment) ; 
@@ -70,12 +73,28 @@ public class AllotmentEngine {
 
 		}
 		System.out.println("************************************ ALLOTMENTS BEGIN ************************************** \n");
-		for (Allotment altment : allotments) {
-			System.out.println(altment.toString());
+		
+		//updating investment information
+		for(InvestorProtfolioDTO investor : investors){
+			InvestorPortfolio investorPortfolio=investorDAO.loadInvestorPortfolio(investor.getInvestorProtId());
+			investorPortfolio.setAvailToInvest(investor.getAvailToInvest());
+			investorPortfolio.setAmountInvested(investor.getAmountInvested());
 		}
-		System.out.println("************************************ ALLOTMENTS END ************************************** \n ");
+		
 
-		return investors; 
+		return allotments; 
+	}
+
+	private void setInvestmentInfo(BigDecimal currentAllotment,InvestorProtfolioDTO investor) {
+		if(investor.getAvailToInvest()==null){
+			investor.setAvailToInvest(BigDecimal.ZERO);
+		}if(investor.getAmountInvested()==null){
+			investor.setAmountInvested(BigDecimal.ZERO);
+		}if(currentAllotment==null){
+			currentAllotment=BigDecimal.ZERO;
+		}
+		investor.setAvailToInvest(investor.getAvailToInvest().subtract(currentAllotment));
+		investor.setAmountInvested(investor.getAmountInvested().add(currentAllotment));
 	}
 
 }

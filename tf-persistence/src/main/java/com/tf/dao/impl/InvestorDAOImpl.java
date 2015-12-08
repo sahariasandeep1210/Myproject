@@ -90,7 +90,7 @@ public class InvestorDAOImpl extends BaseDAOImpl<InvestorPortfolio, Long>   impl
 		try {
 			DashboardModel dasboardModel =new DashboardModel();
 				
-				Query query =sessionFactory.getCurrentSession().createQuery("SELECT SUM(currentCreditLine) AS totalcap,SUM(availToInvest ) AS availinvest,SUM(amountInvested) AS amountInvested FROM InvestorPortfolio ");
+				Query query =sessionFactory.getCurrentSession().createQuery("SELECT SUM(myCreditLine) AS totalcap,SUM(availToInvest ) AS availinvest,SUM(amountInvested) AS amountInvested FROM InvestorPortfolio ");
 				 List<Object[]> list = query.list();
 			        for(Object[] arr : list){
 			        	dasboardModel.setInvestmentCap(arr[0]!=null?Long.valueOf(arr[0].toString()):0);
@@ -244,7 +244,7 @@ public class InvestorDAOImpl extends BaseDAOImpl<InvestorPortfolio, Long>   impl
 			List<Object[]> protfolioObjArray = sessionFactory
 					.getCurrentSession()
 					.createSQLQuery(
-							"SELECT  investor_id,my_credit_line,amount_invested,available_to_invest,investment_discount_rate,company_id FROM tf_investor_portfolio WHERE company_id=:companyID ORDER BY investment_discount_rate,my_credit_line")
+							"SELECT  investor_id,my_credit_line,amount_invested,available_to_invest,investment_discount_rate,company_id,investor_portfolio_id FROM tf_investor_portfolio WHERE company_id=:companyID ORDER BY investment_discount_rate,my_credit_line")
 					.setLong("companyID", comapanyId).list();
 			for (Object[] row : protfolioObjArray) {
 				investorProtfolioDTO=new InvestorProtfolioDTO();
@@ -253,6 +253,7 @@ public class InvestorDAOImpl extends BaseDAOImpl<InvestorPortfolio, Long>   impl
 				investorProtfolioDTO.setAmountInvested(row[2]!=null?new BigDecimal(row[2].toString()):null);
 				investorProtfolioDTO.setAvailToInvest(row[3]!=null?new BigDecimal(row[3].toString()):null);
 				investorProtfolioDTO.setDiscountRate(Integer.valueOf(row[4].toString()));
+				investorProtfolioDTO.setInvestorProtId(Long.valueOf(row[6].toString()));
 				list.add(investorProtfolioDTO);
 
 			}
@@ -262,6 +263,11 @@ public class InvestorDAOImpl extends BaseDAOImpl<InvestorPortfolio, Long>   impl
 			throw re;
 		}
 
+	}
+	
+	public InvestorPortfolio  loadInvestorPortfolio(long protfolioID){
+		InvestorPortfolio investorPortfolio =(InvestorPortfolio)sessionFactory.getCurrentSession().load("com.tf.model.InvestorPortfolio", protfolioID); 
+		return investorPortfolio;		
 	}
 
 

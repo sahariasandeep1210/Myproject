@@ -181,11 +181,9 @@ public class InvestorController {
 		investorModel.setDiscountRate(discountRate);
 		InvestorPortfolio investor=investorService.findById(profolioId);
 		//if(discountRate !=investor.getDiscountRate().intValue() || currentCreditLine !=investor.getCurrentCreditLine() || myCreditLine!=investor.getMyCreditLine()){
-		if(discountRate !=investor.getDiscountRate().intValue() || currentCreditLine.compareTo(investor.getCurrentCreditLine()) != 0 || myCreditLine.compareTo(investor.getMyCreditLine())!=0){
-			
-			investorService.updatePortfiloDetails(investor,investorModel, themeDisplay.getUser().getScreenName());
-			
-			
+		if(discountRate !=investor.getDiscountRate().intValue()  || myCreditLine.compareTo(investor.getMyCreditLine())!=0){	
+			updateAvailtoInvest(investor,investorModel);
+			investorService.updatePortfiloDetails(investor,investorModel, themeDisplay.getUser().getScreenName());		
 		}
 		System.out.println("profolioId:::"+profolioId);
 		System.out.println("currentCreditLine:::"+currentCreditLine);
@@ -193,6 +191,18 @@ public class InvestorController {
 		System.out.println("discountRate:::"+discountRate);
 	}
 	
+	private void updateAvailtoInvest(InvestorPortfolio investor,
+			InvestorPortfolio investorModel) {
+		if(investor.getAmountInvested()!=null){			
+			investorModel.setAvailToInvest(investorModel.getMyCreditLine().subtract(investor.getAmountInvested()));
+		}else{
+			investorModel.setAvailToInvest(investorModel.getMyCreditLine());
+		}
+		
+	}
+
+
+
 	@ResourceMapping("historyURL")
 	public ModelAndView fetchHistory(ResourceRequest request, ResourceResponse response, ModelMap modelMap)throws IOException {
 		long protfolioID = ParamUtil.getLong(request, "protfolioID",0);

@@ -200,8 +200,8 @@ $(document).ready(function() {
       $('#investorModel').on('click', '#updatebtn', function() {
     	  $("#errorMsg").hide(); 
     	  	var errorFree=true;
-    	  	var editutilised= $("#editutilised").val() + 0;
-    	  	var editmyCreditLne= $("#editmyCreditLne").val()+ 0;
+    	  	var editutilised= parseInt($("#editutilised").val());
+    	  	var editmyCreditLne= parseInt($("#editmyCreditLne").val());
     	  	var url = $(this).attr('data-url');
     	 
     	    $('#editTemplate :input').not(':button, :submit, :reset, :hidden').each(function() {

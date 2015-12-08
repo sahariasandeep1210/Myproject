@@ -58,6 +58,7 @@ public class InvestorServiceImpl implements InvestorService {
 		investor.setDiscountRate(investorModel.getDiscountRate());
 		investor.setCurrentCreditLine(investorModel.getCurrentCreditLine());
 		investor.setMyCreditLine(investorModel.getMyCreditLine());
+		investor.setAvailToInvest(investorModel.getAvailToInvest());
 		investor.setStartDate(currentDate);
 		investorDAO.update(investor);
 		

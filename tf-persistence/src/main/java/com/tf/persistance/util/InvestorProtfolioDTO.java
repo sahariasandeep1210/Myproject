@@ -6,9 +6,12 @@ import java.math.BigDecimal;
 public class InvestorProtfolioDTO  implements Serializable{
 	
 	
-	private static final long serialVersionUID = -58998356924107048L;
+	
+	
+	private static final long serialVersionUID = -513639379272515798L;
 	
 	private Long investorId; 
+	private Long investorProtId; 
 	private BigDecimal mycreditLine;
 	private BigDecimal amountInvested;
 	private BigDecimal availToInvest; 
@@ -26,6 +29,16 @@ public class InvestorProtfolioDTO  implements Serializable{
 	public void setInvestorId(Long investorId) {
 		this.investorId = investorId;
 	}
+	
+	public Long getInvestorProtId() {
+		return investorProtId;
+	}
+
+	public void setInvestorProtId(Long investorProtId) {
+		this.investorProtId = investorProtId;
+	}
+	
+	
 
 	public BigDecimal getMycreditLine() {
 		return mycreditLine;
@@ -70,11 +83,13 @@ public class InvestorProtfolioDTO  implements Serializable{
 	@Override
 	public String toString() {
 		return "InvestorProtfolioDTO [investorId=" + investorId
-				+ ", mycreditLine=" + mycreditLine + ", amountInvested="
-				+ amountInvested + ", availToInvest=" + availToInvest
-				+ ", discountRate=" + discountRate + ", sameRateCount="
-				+ sameRateCount + "]";
+				+ ", investorProtId=" + investorProtId + ", mycreditLine="
+				+ mycreditLine + ", amountInvested=" + amountInvested
+				+ ", availToInvest=" + availToInvest + ", discountRate="
+				+ discountRate + ", sameRateCount=" + sameRateCount + "]";
 	}
+
+	
 	
 
 }
