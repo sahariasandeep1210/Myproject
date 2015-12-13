@@ -353,6 +353,19 @@ CREATE TABLE tf_investor_portfolio_setting (
 ) ;
 
 
+DROP TABLE IF EXISTS tf_bank_holiday;
+CREATE TABLE tf_bank_holiday (
+  id  BIGINT(20) NOT NULL AUTO_INCREMENT,   
+  date  DATE,  
+  day   VARCHAR(100) DEFAULT NULL,
+  Description   VARCHAR(100) DEFAULT NULL,
+  Year INT(11) DEFAULT NULL,  
+  PRIMARY KEY (id),  
+  UNIQUE KEY id_UNIQUE (id) 
+) ;
+
+
+
 
 
 

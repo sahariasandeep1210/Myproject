@@ -102,7 +102,7 @@ public class CompanyController extends BaseController {
 			 users=userService.findUserByCompanyId(companyID);
 			 company.setOfficers(new LinkedHashSet<Officer>(officerService.findOfficersByCompanyId(companyID)));
 		}	
-		Map<String,String> userTypesMap=adminUtility.getUserTypes(adminUtility.getUserID(request), companyService.getCompanyTypebyID(companyID), request);
+		Map<String,String> userTypesMap=adminUtility.getUserTypes(adminUtility.getUserID(request), companyTypeMap.get(Long.valueOf(companyService.getCompanyTypebyID(companyID))), request);
 		model.put("currentUser",themeDispay.getRealUser());
 		model.put("companyModel", company);
 		model.put("users", users);
@@ -230,7 +230,7 @@ public class CompanyController extends BaseController {
 			user=userService.findById(userID);	
 		}
 		List<Officer> officers=officerService.findOfficersByCompanyId(companyID);
-		Map<String,String> userTypesMap=adminUtility.getUserTypes(adminUtility.getUserID(request), companyService.getCompanyTypebyID(companyID), request);
+		Map<String,String> userTypesMap=adminUtility.getUserTypes(adminUtility.getUserID(request), companyTypeMap.get(Long.valueOf(companyService.getCompanyTypebyID(companyID))), request);
 		model.put("userModel", user);
 		model.put("officers", officers);
 		model.put("companyID", companyID);

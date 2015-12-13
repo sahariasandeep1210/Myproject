@@ -74,15 +74,6 @@ public class RegistrationController extends BaseController {
 	@RenderMapping
 	protected ModelAndView renderRegisterCompany(@ModelAttribute("registration") Registration registration,ModelMap model,RenderRequest request, RenderResponse response) throws Exception {	
 		String currentScreen=ParamUtil.getString(request, "currentScreen","Company");
-	/*	if(registration.getCompany()==null){
-			Company cmp = new Company();
-			cmp.setCompanyType("Seller");
-			registration.setCompany(cmp);
-		}if(registration.getUser()==null){
-			User user=new User();
-			user.setType("Seller Admin");
-			registration.setUser(user);		
-		}*/	
 		Company company=registration.getCompany();
 		if(company!=null && "4".equals(company.getCompanyType())){
 			//seller

@@ -97,8 +97,7 @@ public class InvestorServiceImpl implements InvestorService {
 			investorDAO.addInvestorPortfolios(addList,investorId);	
 		}else{
 			investorDAO.addInvestorPortfolios(investors,investorId);	
-		}
-		
+		}		
 	}
 	
 	public void updateInvestorPortfolios(List<InvestorPortfolio> investors,long investorId){

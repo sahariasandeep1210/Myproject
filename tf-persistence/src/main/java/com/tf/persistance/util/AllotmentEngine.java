@@ -58,7 +58,7 @@ public class AllotmentEngine {
 				}
 			}
 			setInvestmentInfo(currentAllotment, investor);
-			
+			allotment.setNoOfdays(trade.getDuration());
 			allotment.setMarketDiscount(investor.getDiscountRate());
 			allotment.setAllotmentAmount(currentAllotment);
 			allotment.setAllotmentDate(new Date());

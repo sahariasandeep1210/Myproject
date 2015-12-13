@@ -2,6 +2,7 @@ package com.tf.service.impl;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -11,6 +12,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.joda.time.Days;
+import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,6 +29,7 @@ import com.tf.model.Invoice;
 import com.tf.model.SCFTrade;
 import com.tf.persistance.util.AllotmentEngine;
 import com.tf.persistance.util.InvestorProtfolioDTO;
+import com.tf.persistance.util.InvoiceStatus;
 import com.tf.persistance.util.TradeStatus;
 import com.tf.service.InvoiceService;
 import com.tf.service.SCFTradeService;
@@ -141,22 +145,31 @@ public class InvoiceServiceImpl implements InvoiceService{
 		
 	}
 	
-	 @Transactional
-	public void triggerAllotment(List<String> invoiceIds){
-		 
-		
+	@Transactional
+	public void triggerAllotment(List<String> invoiceIds){		
+		Date date=new Date();
 		Company company=null;
 		Invoice invoice;
+		Date paymentdate=null;
 		BigDecimal tradeAmount=BigDecimal.ZERO;
+		List<Date> holidayList =new ArrayList<Date>();
 		List<Invoice> invoicesList=new ArrayList<Invoice>();
 		for(String id :invoiceIds){ 
 			invoice=invoiceDAO.findById(Long.valueOf(id));
 			company=invoice.getScfCompany();
+			paymentdate=invoice.getPayment_date();
 			tradeAmount=tradeAmount.add(invoice.getInvoiceAmount());
 			invoicesList.add(invoice);			
-		}
-		
+		}		
 		SCFTrade scfTrade = new SCFTrade();
+		//dates logic
+		scfTrade.setOpeningDate(date);
+		scfTrade.setSellerPaymentDate(nextWorkingDate(date, holidayList));
+		scfTrade.setInvestorPaymentDate(nextWorkingDate(paymentdate, holidayList));
+		Days duration= Days.daysBetween(new LocalDate(scfTrade.getOpeningDate()), new LocalDate(scfTrade.getInvestorPaymentDate()));
+		scfTrade.setDuration(duration.getDays());
+		scfTrade.setClosingDate(nextWorkingDate(scfTrade.getInvestorPaymentDate(), holidayList));
+		
 		scfTrade.setCompany(company);
 		scfTrade.setCreateDate(new Date());
 		scfTrade.setStatus(TradeStatus.NEW.getValue());
@@ -164,7 +177,7 @@ public class InvoiceServiceImpl implements InvoiceService{
 		scfTrade.setTradeNotes("Finance requested by Supplier");
 		scfTrade.setInvoices(new HashSet(invoicesList));
 		scfTrade = scfTradeService.save(scfTrade);
-		updateTradeinfotoInvovices(invoicesList, scfTrade);
+		updateTradeinfoToInvovices(invoicesList, scfTrade);
 		List<InvestorProtfolioDTO> list=investorDAO.findInvestorByRate(company.getId());
 		list=getSameRateCountStamp(list);
 		List<Allotment> allotments = allotmentEngine.tradeAllotment(list, scfTrade);
@@ -172,16 +185,17 @@ public class InvoiceServiceImpl implements InvoiceService{
 		for(Allotment allotment : allotments){
 			System.out.println("allotment::::::::"+allotment);
 			allotmentDAO.saveEntity(allotment);
-		}
-		
-		System.out.println("************************************ ALLOTMENTS END ************************************** \n ");
-		
-		
+		}	
+		//now allotment is done so changing trade status to Live
+		scfTrade.setStatus(TradeStatus.LIVE.getValue());
+		scfTradeService.update(scfTrade);
+		System.out.println("************************************ ALLOTMENTS END ************************************** \n ");	
 	}
 
-	private void updateTradeinfotoInvovices(List<Invoice> invoicesList,
+	private void updateTradeinfoToInvovices(List<Invoice> invoicesList,
 			SCFTrade scfTrade) {
 		for(Invoice inv: invoicesList){
+			inv.setStatus(InvoiceStatus.TRADE_GENERATED.toString());
 			inv.setScfTrade(scfTrade);
 		}
 	}
@@ -207,14 +221,33 @@ public class InvoiceServiceImpl implements InvoiceService{
 		}
 
 		for (InvestorProtfolioDTO investorPortfolio : list) {
+			  if(investorPortfolio.getAvailToInvest().compareTo(BigDecimal.ZERO)==1){
 
-			investorPortfolio.setSameRateCount(investorRateMap
-					.get(investorPortfolio.getDiscountRate()));
-			newInvestorList.add(investorPortfolio);
+					investorPortfolio.setSameRateCount(investorRateMap
+							.get(investorPortfolio.getDiscountRate()));
+					newInvestorList.add(investorPortfolio);
+			  }
 		}
 
 		return newInvestorList;
 
+	}
+	
+	private  Date nextWorkingDate(Date date,List<Date> holidayList) {
+		Calendar c = Calendar.getInstance();
+		c.setTime(date);
+		c.add(Calendar.DATE, 1);
+		int dayOfWeek = 0;
+		int i=0;
+		while(i<1){
+			dayOfWeek = c.get(Calendar.DAY_OF_WEEK);
+			if(dayOfWeek==1 || dayOfWeek==7 || holidayList.contains(c.getTime())){
+				c.add(Calendar.DATE, 1);
+			}else{
+				i=1;
+			}			
+		}
+		return c.getTime();		
 	}
 
 	

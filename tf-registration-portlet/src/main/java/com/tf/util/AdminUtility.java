@@ -19,12 +19,7 @@ public class AdminUtility {
 		Map<String,String> map = new LinkedHashMap<String, String>();
  		ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);
 		PermissionChecker permissionChecker = themeDisplay.getPermissionChecker();
-		if(permissionChecker.isOmniadmin() || permissionChecker.isGroupAdmin(themeDisplay.getLayout().getGroupId()) || "Admin".equals(companyType)){
-			addTFUserTypes(map);
-			addSellerUserTypes(map);
-			addPriInvestorUserTypes(map);
-			addSecInvestorUserTypes(map);
-		} else if(request.isUserInRole("SCF Admin")){
+		 if("SCF Company".equalsIgnoreCase(companyType) ||  request.isUserInRole("SCF Admin")){
 			addSCFUserTypes(map);
 		} else if("Primary Investor".equalsIgnoreCase(companyType) ){
 			addPriInvestorUserTypes(map);

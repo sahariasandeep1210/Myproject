@@ -36,10 +36,11 @@
 				<thead>
 					<tr>
 					<!-- 	<th>SCF Trade</th> -->
+					    <th>SCF Company</th>
+					    <th>Duration</th>
 						<th>Opening Date</th>
 						<th>Closing Date</th>
 						<th>Trade Amount</th>
-						<th>Trade Settled </th>						
 						<th>Status</th>						
 					</tr>
 				</thead>
@@ -50,10 +51,11 @@
 								<tr
 									onclick="window.location.href='${createURL}&tradeID=${trade.id}'">
 									<%-- <td>${trade.scfTrade}</td> --%>
+									<td>${trade.company.name}</td>
+									<td>${trade.duration}</td>
 									<td><fmt:formatDate pattern="dd-MM-yyyy" value="${trade.openingDate}" /></td>
 									<td><fmt:formatDate pattern="dd-MM-yyyy" value="${trade.closingDate}" /></td>
 									<td>${trade.tradeAmount}</td>
-									<td>${trade.tradeSettled}</td>
 									<td>${trade.status}</td>
 								</tr>
 							</c:forEach>

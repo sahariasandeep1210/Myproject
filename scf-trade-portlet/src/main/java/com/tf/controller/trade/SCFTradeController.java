@@ -55,6 +55,7 @@ import com.tf.persistance.util.TradeStatus;
 import com.tf.service.CompanyService;
 import com.tf.service.InvoiceService;
 import com.tf.service.SCFTradeService;
+import com.tf.service.UserService;
 import com.tf.util.MyCustomNumberEditor;
 import com.tf.util.SCFTradeDTO;
 
@@ -80,6 +81,9 @@ public class SCFTradeController {
 	
 	@Autowired
 	private CompanyService companyService;
+	
+	@Autowired
+	protected UserService userService;	
 	
 	
 	@InitBinder
@@ -117,7 +121,8 @@ public class SCFTradeController {
 		if(permissionChecker.isOmniadmin() ){
 			scftrades=scfTradeService.getScfTrades();
 		}else if(request.isUserInRole(Constants.SCF_ADMIN)){
-			scftrades=scfTradeService.getScfTrades(themeDisplay.getUser().getCompanyId());
+			long companyId=userService.getCompanybyUserID(themeDisplay.getUserId()).getId();
+			scftrades=scfTradeService.getScfTrades(companyId);
 		}		 
 		model.put("trades", scftrades);
 		return new ModelAndView("tradelist", model);
