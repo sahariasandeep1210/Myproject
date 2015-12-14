@@ -1,10 +1,10 @@
-package com.tf.dao;
+package com.tf.service;
 
 import java.util.List;
 
 import com.tf.model.Allotment;
 
-public interface AllotmentDAO   extends BaseDAO<Allotment, Long> {
+public interface AllotmentService {
 	
 	public List<Allotment> getALlotmentsbyTrade(long tradeID);
 

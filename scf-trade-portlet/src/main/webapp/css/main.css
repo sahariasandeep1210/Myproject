@@ -54,3 +54,29 @@
     -moz-border-top-left-radius: 0;
     display: none;
 }
+
+.highlightedClass{
+	
+	background: #9db8cd !important;
+    font-Weight: bold !important;
+}
+
+.historytable th {
+	background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#f6f6f6),	to(#eaeaea)) !important;
+	/* background: #9db8cd !important; */
+	color: #003d59 !important;
+	text-align: left;
+	padding: 5px;
+	font-weight: normal;
+	text-shadow: none;
+	font-family: Candara;
+}
+
+.historyRow{
+	background: #9db8cd !important;
+	
+}
+
+.boldclass{
+	 font-weight: bold;
+}

@@ -16,6 +16,8 @@ import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
+import javax.portlet.ResourceRequest;
+import javax.portlet.ResourceResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,6 +29,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.portlet.ModelAndView;
 import org.springframework.web.portlet.bind.annotation.ActionMapping;
 import org.springframework.web.portlet.bind.annotation.RenderMapping;
+import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -46,12 +49,15 @@ import com.liferay.portlet.documentlibrary.model.DLFolder;
 import com.liferay.portlet.documentlibrary.model.DLFolderConstants;
 import com.liferay.portlet.documentlibrary.service.DLAppServiceUtil;
 import com.mysql.jdbc.StringUtils;
+import com.tf.model.Allotment;
 import com.tf.model.Company;
+import com.tf.model.InvestorPortfolioHistory;
 import com.tf.model.Invoice;
 import com.tf.model.SCFTrade;
 import com.tf.persistance.util.Constants;
 import com.tf.persistance.util.InvoiceStatus;
 import com.tf.persistance.util.TradeStatus;
+import com.tf.service.AllotmentService;
 import com.tf.service.CompanyService;
 import com.tf.service.InvoiceService;
 import com.tf.service.SCFTradeService;
@@ -84,6 +90,9 @@ public class SCFTradeController {
 	
 	@Autowired
 	protected UserService userService;	
+	
+	@Autowired
+	protected AllotmentService allotmentService;
 	
 	
 	@InitBinder
@@ -195,6 +204,15 @@ public class SCFTradeController {
 			_log.error("Error Occured while saving Trade"+e.getMessage());
 		}
 		
+	}
+	
+	@ResourceMapping("breakdownURL")
+	public ModelAndView fetchAllotmentBreak(ResourceRequest request, ResourceResponse response, ModelMap modelMap)throws IOException {
+		long tradeID = ParamUtil.getLong(request, "tradeID",0);
+		List<Allotment>  allotmentList=allotmentService.getALlotmentsbyTrade(tradeID);
+		modelMap.put("allotmentList", allotmentList);
+		modelMap.put("tradeID", tradeID);
+		return new ModelAndView("allotmentbreakup");
 	}
 
 	private void addInsuranceDocument(SCFTradeDTO scfTradeDTO,
