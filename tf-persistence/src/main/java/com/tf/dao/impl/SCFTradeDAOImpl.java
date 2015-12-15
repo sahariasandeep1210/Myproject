@@ -4,7 +4,9 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Set;
 
+import org.hibernate.FetchMode;
 import org.hibernate.Hibernate;
+import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -52,7 +54,8 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 		_log.debug("Inside getScfTrades ");
 		try {
 			
-			List<SCFTrade> results = (List<SCFTrade>) sessionFactory.getCurrentSession().createCriteria(SCFTrade.class).add(Restrictions.eq("company.id", companyID)).list();
+			List<SCFTrade> results = (List<SCFTrade>) sessionFactory.getCurrentSession().createCriteria(SCFTrade.class).add(Restrictions.eq("company.id", companyID)).setFetchMode("invoices",FetchMode.JOIN).
+					setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY).list();
 			_log.debug("getScfTrades successful, result size: "
 					+ results.size());
 			return results;

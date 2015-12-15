@@ -62,6 +62,7 @@ $(document).ready(function(){
    	   $(".historyRow").hide();
    	   if($(this).parent().parent().hasClass("highlightedClass")){
    		 $(this).parent().parent().toggleClass('highlightedClass');
+   		  changeExpandIcon(tradeID);
    		   return ;
    	   }else{
    		 $('#tradeListTable tr').removeClass("highlightedClass");
@@ -72,6 +73,8 @@ $(document).ready(function(){
    	   
    	   if($("#"+tradeID+"_table").length){
    		   $("#"+tradeID+"_row").slideToggle();
+   		   	changeExpandIcon(tradeID);		
+	   		
    	   }else{
    			$.ajax({ 
  				url: breakdownURL, 
@@ -83,6 +86,7 @@ $(document).ready(function(){
  				success: function(data){
  					$("#"+tradeID+"_row > td").html(data);
  					$("#"+tradeID+"_row").slideToggle();
+ 					changeExpandIcon(tradeID);
  							
  				} ,
  				error: function(jqXHR, textStatus, errorThrown) {
@@ -189,6 +193,18 @@ function ajaxindicatorstop()
     $('#resultLoading').fadeOut(300);
     $('body').css('cursor', 'default');
 }
+
+function changeExpandIcon(tradeID){
+	if($("#"+tradeID+"_row").css('display') == 'none'){
+  		 $("#"+tradeID+"_icon").removeClass('fa-minus-square');
+  		 $("#"+tradeID+"_icon").addClass('fa-plus-square');	   			
+  		}else{
+  		 $("#"+tradeID+"_icon").removeClass('fa-plus-square');
+  		 $("#"+tradeID+"_icon").addClass('fa-minus-square');
+  		}
+	
+}
+
 
 $(document).ajaxStart(function () {
 		//show ajax indicator

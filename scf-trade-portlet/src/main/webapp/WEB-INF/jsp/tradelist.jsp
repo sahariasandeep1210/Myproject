@@ -44,7 +44,7 @@
 						<th>Closing Date</th>
 						<th>Trade Amount</th>
 						<th>Status</th>	
-						<th>MultiInvoice ?</th>						
+						<th>Is MultiInvoice</th>						
 					</tr>
 				</thead>
 				<tbody>
@@ -57,9 +57,19 @@
 									<td>${trade.duration}</td>
 									<td><fmt:formatDate pattern="dd-MM-yyyy" value="${trade.openingDate}" /></td>
 									<td><fmt:formatDate pattern="dd-MM-yyyy" value="${trade.closingDate}" /></td>
-									<td>${trade.tradeAmount} <a href="javascript:void(0);"  data-url="${breakdownURL}" class="breakdown"   tradeID="${trade.id}" style=" float: right; vertical-align: middle; font-size: 20px" ><i class="fa fa-plus-square-o"></i> </a></td>
+									<td>${trade.tradeAmount} <a href="javascript:void(0);"  data-url="${breakdownURL}" class="breakdown"   tradeID="${trade.id}" style=" float: right; vertical-align: middle; font-size: 20px" ><i  id="${trade.id}_icon" class="fa fa-plus-square"></i> </a></td>
 									<td>${trade.status}</td>
-									<td><img src="${themeDisplay.pathThemeImages}/folder-full-delete-icon_24.png"/></td>
+									<td>
+										<c:choose>
+											<c:when test="${fn:length(trade.invoices) gt 1}">
+												<img src="${themeDisplay.pathThemeImages}/folder-full-accept-icon_24.png"/>
+											</c:when>
+											<c:otherwise>
+												<img src="${themeDisplay.pathThemeImages}/folder-full-delete-icon_24.png"/>
+											</c:otherwise>										
+										</c:choose>
+									
+									</td>
 								</tr>
 								<tr class="historyRow"  id="${trade.id}_row">								
 							  		<td colspan=7></td>
