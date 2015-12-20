@@ -165,9 +165,12 @@ public class InvestorDAOImpl extends BaseDAOImpl<InvestorPortfolio, Long>   impl
 				
 				Query query =sessionFactory.getCurrentSession().createQuery("SELECT SUM(currentCreditLine) AS totalCreditLine,SUM(myCreditLine) AS totalMyCreditLine,SUM(availToInvest ) AS availinvest,SUM(amountInvested) AS amountInvested FROM InvestorPortfolio "
 						+ " where investor.investorId = :id").setLong("id",id);
-				 List<Object[]> list = query.list();
+				Query totalCrLineQuery=sessionFactory.getCurrentSession().createQuery("SELECT SUM(myCreditLine) AS totalCreditLine FROM InvestorPortfolio ");
+				List<BigDecimal> totalCrLineList = totalCrLineQuery.list();
+				BigDecimal totalCrLine=totalCrLineList.get(0)!=null?totalCrLineList.get(0):BigDecimal.ZERO;
+			    List<Object[]> list = query.list();
 			        for(Object[] arr : list){
-			        	map.put("creditLine",arr[0]!=null?new BigDecimal(arr[0].toString()):BigDecimal.ZERO);
+			        	map.put("creditLine",totalCrLine);
 			        	map.put("myCreditLine",arr[1]!=null?new BigDecimal(arr[1].toString()):BigDecimal.ZERO);
 			        	map.put("availToInvest",arr[2]!=null?new BigDecimal(arr[2].toString()):BigDecimal.ZERO);
 			        	map.put("amountInvested",arr[3]!=null?new BigDecimal(arr[3].toString()):BigDecimal.ZERO);
@@ -228,6 +231,18 @@ public class InvestorDAOImpl extends BaseDAOImpl<InvestorPortfolio, Long>   impl
 	public 	List<InvestorPortfolio>  findTotalCreditLineBreakDown(long scfCompany) {
 		try {		
 			List<InvestorPortfolio> list= (List<InvestorPortfolio>)sessionFactory.getCurrentSession().createQuery("from InvestorPortfolio where company.id = :companyid").setLong("companyid",scfCompany).list();				
+			
+			return list;
+		} catch (RuntimeException re) {
+			_log.error("get failed", re);
+			throw re;
+		}
+		
+	}
+	
+	public 	List<InvestorPortfolio>  findAllInvestorProtFolios() {
+		try {		
+			List<InvestorPortfolio> list= (List<InvestorPortfolio>)sessionFactory.getCurrentSession().createQuery("from InvestorPortfolio order by investor.investorId").list();				
 			
 			return list;
 		} catch (RuntimeException re) {

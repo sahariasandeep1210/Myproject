@@ -15,6 +15,17 @@ $(document).ready(function() {
 		               return false;
 		    }
 		  
+	  }); 
+	  
+	  $('#investorModel').on('keypress', '#editTemplate input', function(e) {
+		  
+		  //if the letter is not digit then display error and don't type anything
+		     if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+		        //display error message
+		        //$("#errmsg").html("Digits Only").show().fadeOut("slow");
+		               return false;
+		    }
+		  
 	  });
 	  
 	  // Add button click handler
@@ -200,8 +211,18 @@ $(document).ready(function() {
       $('#investorModel').on('click', '#updatebtn', function() {
     	  $("#errorMsg").hide(); 
     	  	var errorFree=true;
-    	  	var editutilised= parseInt($("#editutilised").val());
-    	  	var editmyCreditLne= parseInt($("#editmyCreditLne").val());
+    	  	var editutilisedVal= $("#editutilised").val();
+    	  	var editmyCreditLneVal=$("#editmyCreditLne").val();
+    	  	if(editutilisedVal!=null ){
+    	  		editutilisedVal=editutilisedVal.replaceAll(',','');
+    	  	}
+    	  	if(editmyCreditLneVal!=null){
+    	  		editmyCreditLneVal=editmyCreditLneVal.replaceAll(',','');
+    	  	}
+    	  	
+    	  	
+    	  	var editutilised= parseInt(editutilisedVal);
+    	  	var editmyCreditLne= parseInt(editmyCreditLneVal);
     	  	var url = $(this).attr('data-url');
     	 
     	    $('#editTemplate :input').not(':button, :submit, :reset, :hidden').each(function() {
@@ -264,10 +285,25 @@ function confirmEdit(){
 	$("#editConfirmationModel").modal('hide');
 }
 
+String.prototype.replaceAll = function(search, replace)
+{
+    //if replace is not sent, return original string otherwise it will
+    //replace search string with 'undefined'.
+    if (replace === undefined) {
+        return this.toString();
+    }
+
+    return this.replace(new RegExp('[' + search + ']', 'g'), replace);
+};
+
 function triggerEdit(currentId){
 	var cmpName=$("#"+currentId+"cmpname").text();
 	var currcreditLine=$("#"+currentId+"currcreditLine").text();
 	var mycreditLine=$("#"+currentId+"mycreditLine").text();
+	if(mycreditLine!=null){
+		mycreditLine=mycreditLine.replaceAll(',','');
+	}
+	
 	var dicountRate=$("#"+currentId+"dicountRate").text();
 	var utilised=$("#"+currentId+"utilised").text();
 	$("#scfCompantName").text(cmpName);

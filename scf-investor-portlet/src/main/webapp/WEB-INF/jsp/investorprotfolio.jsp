@@ -51,22 +51,22 @@
 					<c:when test="${fn:length(investorHistoryList) gt 0}">
 							<tr class="totalstr">
 								<td>Totals</td>
-								<td> <c:out default="None" escapeXml="true" value="${totalsMap.creditLine eq 0 ?'':totalsMap.creditLine}"/> </td>
-								<td><c:out default="None" escapeXml="true" value="${totalsMap.myCreditLine eq 0 ?'':totalsMap.myCreditLine}"/></td>
+								<td> <fmt:formatNumber type="number" maxFractionDigits="3" value="${totalsMap.creditLine}" /> </td>
+								<td><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalsMap.myCreditLine}" /></td>
 								<td></td>
-								<td><c:out default="None" escapeXml="true" value="${totalsMap.amountInvested eq 0 ?'':totalsMap.amountInvested}"/></td>
-								<td><c:out default="None" escapeXml="true" value="${totalsMap.availToInvest eq 0 ?'':totalsMap.availToInvest}"/></td>
+								<td><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalsMap.amountInvested}" /></td>
+								<td><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalsMap.availToInvest}" /></td>
 								<td>
 								</td>	
 							</tr>
 						<c:forEach items="${investorHistoryList}" var="investorProt" varStatus="loop">
 							<tr class="${loop.index % 2 == 0 ? 'evenrow' : 'oddrow'}">
 								<td id="${investorProt.investorProtId}_cmpname">${investorProt.company.name} </td>
-								<td id="${investorProt.investorProtId}_currcreditLine">${investorProt.currentCreditLine} <a href="javascript:void(0);"  data-url="${crtLinebreakdownURL}" class="breakdown"   style=" float: right; vertical-align: middle; font-size: 20px" scfcompany="${investorProt.company.id}" investorID="${investorProt.investor.investorId}"><i class="fa fa-plus-square-o"></i> </a></td>
-								<td id="${investorProt.investorProtId}_mycreditLine">${investorProt.myCreditLine}</td>
+								<td id="${investorProt.investorProtId}_currcreditLine"><fmt:formatNumber type="number" maxFractionDigits="3" value="${investorProt.currentCreditLine}" /> <a href="javascript:void(0);"  data-url="${crtLinebreakdownURL}" class="breakdown"   style=" float: right; vertical-align: middle; font-size: 20px" scfcompany="${investorProt.company.id}" investorID="${investorProt.investor.investorId}"><i class="fa fa-plus-square-o"></i> </a></td>
+								<td id="${investorProt.investorProtId}_mycreditLine"><fmt:formatNumber type="number" maxFractionDigits="3" value="${investorProt.myCreditLine}" /></td>
 								<td id="${investorProt.investorProtId}_dicountRate">${investorProt.discountRate}</td>
-								<td id="${investorProt.investorProtId}_utilised">${investorProt.amountInvested}</td>
-								<td>${investorProt.availToInvest}</td>
+								<td id="${investorProt.investorProtId}_utilised"><fmt:formatNumber type="number" maxFractionDigits="3" value="${investorProt.amountInvested}" /></td>
+								<td><fmt:formatNumber type="number" maxFractionDigits="3" value="${investorProt.availToInvest}" /></td>
 								<td><a href="javascript:void(0);" title="Edit" class="editInvestor btn" id="${investorProt.investorProtId}_"><i class="fa fa fa-pencil-square-o fa-3"></i> Edit</a>  
 									<a href="javascript:void(0);" title="History" class="historybtn btn" data-url="${historyURL}" protID="${investorProt.investorProtId}"><i class="fa fa-history"></i> History</a>  
 								</td>	

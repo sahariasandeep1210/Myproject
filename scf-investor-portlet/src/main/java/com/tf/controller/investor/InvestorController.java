@@ -9,6 +9,7 @@ import java.util.Map;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
+import javax.portlet.PortletRequest;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 import javax.portlet.ResourceRequest;
@@ -28,6 +29,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.security.permission.PermissionChecker;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.tf.controller.investor.util.InvestorDTO;
 import com.tf.model.Company;
@@ -70,39 +72,44 @@ public class InvestorController {
 		_log.info("Render Investor Protfolio");
 		ThemeDisplay themeDisplay=(ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);
 		long investorId=0l;
-		 List<InvestorPortfolio> investorPortfolioList=null;
-		List<Company> companyList = new ArrayList<Company>();
-		companyList = companyService.getCompanies("5");
-		//long userId=userService.getUserbyLiferayUserID(themeDisplay.getUserId());
-		Map<Long,List<InvestorPortfolio>>  map=investorService.getInvestorPortfolioByUserId(themeDisplay.getUserId());
-		for(Map.Entry<Long, List<InvestorPortfolio>> entry : map.entrySet()){
-			investorId=entry.getKey();
-			model.put("investorID", investorId);
-			investorPortfolioList=entry.getValue();		
-		}
-		Map<String,BigDecimal> totalsMap=investorService.getProtfolioTotals(investorId);
-		Map<Long,BigDecimal> totalCreditMap=investorService.findTotalCreditLine(investorId);
-		setTotalCreditLine(totalCreditMap,investorPortfolioList);
-		companyList=prepareCompanyList(companyList,investorPortfolioList);
-		model.put("investorHistoryList", investorPortfolioList);
-	
-		//long companyId=investorService.getInvestorPortfolioByUserId(userId)
-		/*investorModel=investorService.getInvestorByCompanyId(companyId);
-		if(investorModel==null){
-			investorModel=new InvestorPortfolio();
-			investorModel.setMinDiscountRate(20);
-			investorModel.setMaxDiscountRate(200);
-		}else{
-			//List<InvestorPortfolioHistory>  investorHistoryList=investorHistoryService.getInvestorHistory(investorModel.getInvestorId());
-			//model.put("investorHistoryList", investorHistoryList);
-		}
-		model.put("investorModel", investorModel);*/
+		 List<InvestorPortfolio> investorPortfolioList=null;		 
+		 String viewName=prepareInvestorProtfolioInformation(request,investorDTO, model, themeDisplay,
+				investorId, investorPortfolioList);		
 		prepareDiscountList(model);
-		model.put("totalsMap", totalsMap);	
-		model.put("investorDTO", investorDTO);		
-		model.put("companyList", companyList);
+		return new ModelAndView(viewName, model);		
+	}
+
+
+
+	private String prepareInvestorProtfolioInformation(RenderRequest request,InvestorDTO investorDTO,
+			ModelMap model, ThemeDisplay themeDisplay, long investorId,
+			List<InvestorPortfolio> investorPortfolioList) {
+		String viewName="investorprotfolio";
+		if(getPermissionChecker(request).isOmniadmin() ){
+			List<InvestorPortfolio> list =investorService.findAllInvestorProtFolios();
+			model.put("investorList", list);	
+			viewName="allinvestorprotfolios";
+		}else{
+			List<Company> companyList = new ArrayList<Company>();
+			companyList = companyService.getCompanies("5");
+			Map<Long,List<InvestorPortfolio>>  map=investorService.getInvestorPortfolioByUserId(themeDisplay.getUserId());
+			for(Map.Entry<Long, List<InvestorPortfolio>> entry : map.entrySet()){
+				investorId=entry.getKey();
+				model.put("investorID", investorId);
+				investorPortfolioList=entry.getValue();		
+			}
+			Map<String,BigDecimal> totalsMap=investorService.getProtfolioTotals(investorId);
+			Map<Long,BigDecimal> totalCreditMap=investorService.findTotalCreditLine(investorId);
+			setTotalCreditLine(totalCreditMap,investorPortfolioList);
+			companyList=prepareCompanyList(companyList,investorPortfolioList);
+			model.put("investorHistoryList", investorPortfolioList);	
+			
+			model.put("totalsMap", totalsMap);	
+			model.put("investorDTO", investorDTO);		
+			model.put("companyList", companyList);
+		}
+		return viewName;
 		
-		return new ModelAndView("investorprotfolio", model);		
 	}
 	
 	
@@ -262,6 +269,14 @@ public class InvestorController {
 		}
 		model.put("discountList", list);
 	}
+	
+	
+	private PermissionChecker getPermissionChecker(PortletRequest request){
+		ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);
+		PermissionChecker permissionChecker = themeDisplay.getPermissionChecker();
+		return permissionChecker;	
+	}
+	
 	
 	
 }

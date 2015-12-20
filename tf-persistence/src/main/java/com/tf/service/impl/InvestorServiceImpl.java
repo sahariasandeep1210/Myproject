@@ -87,6 +87,7 @@ public class InvestorServiceImpl implements InvestorService {
 					//investorPortfolio=investorDAO.findById(id);
 					InvestorPortfolio investorPort =investorDAO.getInvestorProtfolio(investorId,investorPortfolio.getCompany().getId());
 					investorPort.setMyCreditLine(investorPortfolio.getMyCreditLine());
+					investorPort.setAvailToInvest(investorPortfolio.getAvailToInvest());
 					investorPort.setDiscountRate(investorPortfolio.getDiscountRate());
 					updateList.add(investorPort);
 				}else{
@@ -115,4 +116,7 @@ public class InvestorServiceImpl implements InvestorService {
 		return investorDAO.findTotalCreditLineBreakDown(scfCompany);
 	}
 
+	public 	List<InvestorPortfolio>  findAllInvestorProtFolios(){
+		return investorDAO.findAllInvestorProtFolios();
+	}
 }
