@@ -59,10 +59,7 @@
 		</plugins>
 	</build>
 
-	<!-- <distributionManagement> <repository> <id>liferay-releases</id> <url>http://localhost:8081/nexus/content/repositories/liferay-releases</url> 
-		</repository> <snapshotRepository> <id>liferay-snapshots</id> <name>Liferay 
-		Snapshots Repository</name> <url>http://localhost:8081/nexus/content/repositories/liferay-snapshots</url> 
-		</snapshotRepository> </distributionManagement> -->
+
 
 	<properties>
 		<liferay.version>6.2.2</liferay.version>

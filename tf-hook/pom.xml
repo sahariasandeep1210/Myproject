@@ -39,19 +39,13 @@
 				<configuration>
 					<warName>tf-hook</warName>
 					<dependentWarExcludes></dependentWarExcludes>
-					<!--<webappDirectory> ${env.CATALINA_HOME}/webapps/hrms-ws </webappDirectory> -->
 					<outputDirectory>
-						G:/Project/liferay-portal-6.2-ce-ga3/deploy
+							${liferay.auto.deploy.dir}
 					</outputDirectory>
 				</configuration>
 			</plugin>
 		</plugins>
 	</build>
-	<properties>
-		<liferay.auto.deploy.dir>G:/Project/liferay-portal-6.2-ce-ga3/deploy</liferay.auto.deploy.dir>
-		<liferay.version>6.2.2</liferay.version>
-	</properties>
-
 <dependencies>
 	<dependency>
 		<groupId>com.liferay.portal</groupId>
