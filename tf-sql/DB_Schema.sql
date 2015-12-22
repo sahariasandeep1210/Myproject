@@ -321,26 +321,27 @@ CREATE TABLE tf_investor_portfolio_history (
   ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ;
 
-DROP TABLE IF EXISTS tf_allotments ;
-CREATE TABLE tf_allotments (
-  allotment_id  	BIGINT(20) NOT NULL AUTO_INCREMENT,   
-  trade_id   		BIGINT(20), 
-  investor_id   	BIGINT(20), 
-  allotment_amount  	DECIMAL,  
-  noofdays  		INT(11),
-  is_primary		TINYINT(1) DEFAULT '1', 
-  user_id   		BIGINT(20),
-  market_discount       INT(11),
-  allotment_date	DATETIME,
-  PRIMARY KEY (allotment_id),  
-  UNIQUE KEY allotment_id_UNIQUE (allotment_id),
-  KEY fk_allotment_trade_id (trade_id),  
-  KEY fk_allotment_investor_id (investor_id),  
-  KEY fk_allotment_user_id (user_id),  
- FOREIGN KEY (trade_id) 	REFERENCES scf_trade(id),
- FOREIGN KEY (investor_id) 	REFERENCES tf_investor_portfolio(investor_id),
- FOREIGN KEY (user_id) 		REFERENCES tf_user(iduser)
-) ;
+DROP TABLE IF EXISTS `tf_allotments`;
+
+CREATE TABLE `tf_allotments` (
+  `allotment_id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `trade_id` bigint(20) DEFAULT NULL,
+  `investor_portfolio_id` bigint(20) DEFAULT NULL,
+  `allotment_amount` decimal(10,0) DEFAULT NULL,
+  `noofdays` int(11) DEFAULT NULL,
+  `is_primary` tinyint(1) DEFAULT '1',
+  `user_id` bigint(20) DEFAULT NULL,
+  `market_discount` int(11) DEFAULT NULL,
+  `allotment_date` datetime DEFAULT NULL,
+  PRIMARY KEY (`allotment_id`),
+  UNIQUE KEY `allotment_id_UNIQUE` (`allotment_id`),
+  KEY `fk_allotment_trade_id` (`trade_id`),
+  KEY `fk_allotment_investor_portfolio_id` (`investor_portfolio_id`),
+  KEY `fk_allotment_user_id` (`user_id`),
+  CONSTRAINT `tf_allotments_ibfk_1` FOREIGN KEY (`trade_id`) REFERENCES `scf_trade` (`id`),
+  CONSTRAINT `tf_allotments_ibfk_2` FOREIGN KEY (`investor_portfolio_id`) REFERENCES `tf_investor_portfolio` (`investor_portfolio_id`),
+  CONSTRAINT `tf_allotments_ibfk_3` FOREIGN KEY (`user_id`) REFERENCES `tf_user` (`iduser`)
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
 
 DROP TABLE IF EXISTS tf_investor_portfolio_setting;
 CREATE TABLE tf_investor_portfolio_setting (
