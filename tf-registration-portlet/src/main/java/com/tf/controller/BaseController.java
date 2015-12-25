@@ -4,7 +4,6 @@ import java.beans.PropertyEditorSupport;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.InitBinder;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.tf.model.CompanyType;
 import com.tf.service.CompanyService;
 import com.tf.service.CompanyServices;
 import com.tf.service.CompanyTypeService;

@@ -39,6 +39,7 @@
 			</plugin>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.1</version>
 			</plugin>
 			<plugin>
 				<artifactId>maven-resources-plugin</artifactId>
@@ -49,7 +50,6 @@
 				<configuration>
 					<warName>scf-investor-portlet</warName>
 					<dependentWarExcludes></dependentWarExcludes>
-					<!--<webappDirectory> ${env.CATALINA_HOME}/webapps/hrms-ws </webappDirectory> -->
 					<outputDirectory>
 						${liferay.auto.deploy.dir}
 					</outputDirectory>
@@ -59,13 +59,7 @@
 		</plugins>
 	</build>
 
-	<!-- <distributionManagement> <repository> <id>liferay-releases</id> <url>http://localhost:8081/nexus/content/repositories/liferay-releases</url> 
-		</repository> <snapshotRepository> <id>liferay-snapshots</id> <name>Liferay 
-		Snapshots Repository</name> <url>http://localhost:8081/nexus/content/repositories/liferay-snapshots</url> 
-		</snapshotRepository> </distributionManagement> -->
-
 	<properties>
-		<liferay.version>6.2.2</liferay.version>
 		<java-version>1.6</java-version>
 		<portlet-api.version>2.0</portlet-api.version>
 		<servlet-api.version>2.5</servlet-api.version>
@@ -106,16 +100,6 @@
 			<artifactId>util-java</artifactId>
 			<version>${liferay.version}</version>
 			<scope>provided</scope>
-		</dependency>
-		<dependency>
-		    <groupId>org.apache.poi</groupId>
-		    <artifactId>poi</artifactId>
-		    <version>3.10-FINAL</version>
-		</dependency>
-		<dependency>
-		    <groupId>org.apache.poi</groupId>
-		    <artifactId>poi-ooxml</artifactId>
-		    <version>3.10-FINAL</version>
 		</dependency>
 		<dependency>
 			<groupId>javax.servlet</groupId>
@@ -196,7 +180,6 @@
 			<artifactId>spring-framework-bom</artifactId>
 			<version>${spring.version}</version>
 			<type>pom</type>
-			<scope>import</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.webflow</groupId>
@@ -266,46 +249,15 @@
 			<version>3.11</version>
 		</dependency>
 		<dependency>
-		   <groupId>commons-io</groupId>
-		   <artifactId>commons-io</artifactId>
-		   <version>2.4</version>
-	    </dependency>
-		 <dependency>
-		   <groupId>commons-fileupload</groupId>
-		   <artifactId>commons-fileupload</artifactId>
-		   <version>1.2.1</version>
-		 </dependency>
-		  <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-test</artifactId>
-            <version>${spring.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.powermock</groupId>
-            <artifactId>powermock-api-mockito</artifactId>
-            <version>1.6.2</version>
-        </dependency>
-        <dependency>
-            <groupId>org.powermock</groupId>
-            <artifactId>powermock-module-junit4-rule</artifactId>
-          <version>1.6.2</version>
-        </dependency>
-        <dependency>
-            <groupId>org.powermock</groupId>
-            <artifactId>powermock-classloading-xstream</artifactId>
-           <version>1.6.2</version>
-        </dependency>
-        <dependency>
-            <groupId>commons-lang</groupId>
-            <artifactId>commons-lang</artifactId>
-            <version>2.6</version>
-        </dependency>
-          <dependency>
-            <artifactId>junit</artifactId>
-            <groupId>junit</groupId>
-            <version>4.12</version>
-        </dependency>
-
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.4</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-fileupload</groupId>
+			<artifactId>commons-fileupload</artifactId>
+			<version>1.2.1</version>
+		</dependency>
 	</dependencies>
 
 </project>
