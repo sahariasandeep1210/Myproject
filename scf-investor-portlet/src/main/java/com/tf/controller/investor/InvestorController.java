@@ -110,66 +110,35 @@ public class InvestorController {
 		}
 		return viewName;
 		
-	}
-	
-	
+	}	
 
 	private void setTotalCreditLine(Map<Long, BigDecimal> totalCreditMap,
 			List<InvestorPortfolio> investorPortfolioList) {
 		for (InvestorPortfolio investorPortfolio :investorPortfolioList){
 			investorPortfolio.setCurrentCreditLine(totalCreditMap.get(investorPortfolio.getCompany().getId()));
-		}
-		
+		}		
 	}
-
-
-
+	
 	private List<Company> prepareCompanyList(List<Company> companyList,
 			List<InvestorPortfolio> investorPortfolioList) {
 		for(InvestorPortfolio investorPortfolio: investorPortfolioList){
 			if(!(BigDecimal.ZERO.compareTo(investorPortfolio.getMyCreditLine()) == 0 )){
 				companyList.remove(investorPortfolio.getCompany());	
-			}
-					
+			}					
 		}
-		return companyList;
-		
+		return companyList;		
 	}
 
+	
 	@ActionMapping(params="action=updateProtfolio")
 	protected void add(@ModelAttribute("investorDTO")InvestorDTO  investorDTO, 
 												 ModelMap model, 
 												 ActionRequest request,
 												 ActionResponse response) throws Exception {
-		ThemeDisplay themeDisplay=(ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);
-		Company company=userService.getCompanybyUserID(themeDisplay.getUserId());
-		
+		ThemeDisplay themeDisplay=(ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);		
 		long investorID=ParamUtil.get(request, "investorID", 0);
-		System.out.println("investorID:::::"+investorID);
-		System.out.println("investorModel:::::"+investorDTO);
 		investorDTO.setInvestorModel(filterNullValues(investorDTO.getInvestorModel(),themeDisplay));
-		//setCompany(investorDTO,company);
-		investorService.addInvestorPortfolios(investorDTO.getInvestorModel(), investorID);
-		/*ThemeDisplay themeDisplay=(ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);
-		if(investorModel.getInvestor().getInvestorId()==null ){		
-			long companyId=userService.getCompanyIDbyUserID(themeDisplay.getUserId());
-			Company company=companyService.findById(companyId);
-			if(company!=null){
-				investorModel.setCompany(company);
-				investorModel.setUpdatedBy(themeDisplay.getUser().getScreenName());
-			}
-			investorModel.setStartDate(new Date());
-			investorService.save(investorModel);
-		}else{
-			InvestorPortfolio investor=investorService.findById(investorModel.getInvestor().getInvestorId());
-			if(investorModel.getDiscountRate().intValue() !=investor.getDiscountRate().intValue() || investorModel.getCurrentCreditLine()!=investor.getCurrentCreditLine()){
-				
-				investorService.updatePortfiloDetails(investor,investorModel, themeDisplay.getUser().getScreenName());
-				
-				
-			}
-			
-		}*/
+		investorService.addInvestorPortfolios(investorDTO.getInvestorModel(), investorID);	
 		
 	}	
 	
@@ -191,11 +160,7 @@ public class InvestorController {
 		if(discountRate !=investor.getDiscountRate().intValue()  || myCreditLine.compareTo(investor.getMyCreditLine())!=0){	
 			updateAvailtoInvest(investor,investorModel);
 			investorService.updatePortfiloDetails(investor,investorModel, themeDisplay.getUser().getScreenName());		
-		}
-		System.out.println("profolioId:::"+profolioId);
-		System.out.println("currentCreditLine:::"+currentCreditLine);
-		System.out.println("myCreditLine:::"+myCreditLine);
-		System.out.println("discountRate:::"+discountRate);
+		}		
 	}
 	
 	private void updateAvailtoInvest(InvestorPortfolio investor,

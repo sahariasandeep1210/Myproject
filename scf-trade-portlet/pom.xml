@@ -39,6 +39,7 @@
 			</plugin>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.1</version>
 			</plugin>
 			<plugin>
 				<artifactId>maven-resources-plugin</artifactId>
@@ -49,9 +50,8 @@
 				<configuration>
 					<warName>scf-trade-portlet</warName>
 					<dependentWarExcludes></dependentWarExcludes>
-					<!--<webappDirectory> ${env.CATALINA_HOME}/webapps/hrms-ws </webappDirectory> -->
 					<outputDirectory>
-						G:/Project/liferay-portal-6.2-ce-ga3/deploy
+						${liferay.auto.deploy.dir}
 					</outputDirectory>
 				</configuration>
 			</plugin>
@@ -59,14 +59,8 @@
 		</plugins>
 	</build>
 
-	<!-- <distributionManagement> <repository> <id>liferay-releases</id> <url>http://localhost:8081/nexus/content/repositories/liferay-releases</url> 
-		</repository> <snapshotRepository> <id>liferay-snapshots</id> <name>Liferay 
-		Snapshots Repository</name> <url>http://localhost:8081/nexus/content/repositories/liferay-snapshots</url> 
-		</snapshotRepository> </distributionManagement> -->
 
 	<properties>
-		<liferay.version>6.2.2</liferay.version>
-		<liferay.auto.deploy.dir>C:\FreeLincesing\server\liferay-portal-6.2-ce-ga3\deploy</liferay.auto.deploy.dir>
 		<java-version>1.6</java-version>
 		<portlet-api.version>2.0</portlet-api.version>
 		<servlet-api.version>2.5</servlet-api.version>
