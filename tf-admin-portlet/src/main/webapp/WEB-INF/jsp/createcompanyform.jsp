@@ -140,7 +140,8 @@
 							class="dropdown" id="companyType" placeholder="CompanyType Type" />
 					</c:when>
 					<c:otherwise>
-						${companyModel.companyType}
+						
+						${cmpType}
 					</c:otherwise>
 				</c:choose>
 				

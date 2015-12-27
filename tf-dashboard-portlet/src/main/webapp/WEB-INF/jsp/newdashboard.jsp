@@ -1,5 +1,5 @@
 
-
+<%@include file="init.jsp"%>
 
 
 <input type="hidden" value="${dashboardModel.investmentCap}" id="investmentCap" />
@@ -22,7 +22,7 @@
 							
 							<div class="stat">
 								<span class="stat-value">${dashboardModel.investmentCap}</span>									
-								Investment Cap
+								Total Credit Line
 							</div> 
 							
 							<div class="stat">
@@ -98,11 +98,18 @@
 							<i class="fa fa-bar-chart"></i>
 							<span class="shortcut-label">Reports</span>	
 						</a>
-						
-						<a href="javascript:;" class="shortcut">
-							<i class="fa fa-user fa-4"></i>
-							<span class="shortcut-label">Users</span>
-						</a>
+						<c:choose>						
+							<c:when test="${permissionChecker.isOmniadmin()}">
+								<a href="/group/guest/portfolio" class="shortcut"> <i
+									class="fa fa-user fa-4"></i> <span class="shortcut-label">Protfolio</span>
+								</a>
+							</c:when>
+							<c:otherwise>
+								<a href="javascript:;" class="shortcut"> <i
+									class="fa fa-user fa-4"></i> <span class="shortcut-label">Users</span>
+								</a>
+							</c:otherwise>
+						</c:choose>						
 						
 						<a href="javascript:;" class="shortcut">
 							<i class="fa fa-newspaper-o"></i>

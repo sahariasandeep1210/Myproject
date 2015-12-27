@@ -109,6 +109,7 @@ public class CompanyController extends BaseController {
 		//model.put("officers", officers);
 		model.put("orgTypeMap", orgTypeMap);
 		model.put("companyTypeMap", companyTypeMap);
+		model.put("cmpType", companyTypeMap.get(Long.valueOf(company.getCompanyType())));
 		model.put("userTypesMap", userTypesMap);
 		return new ModelAndView("createcompany", model);		
 	}
@@ -190,6 +191,7 @@ public class CompanyController extends BaseController {
 			Company cmp = companyService.findById(company.getId());
 			company.setUsers(cmp.getUsers());
 			company.getAddress().setId(cmp.getAddress().getId());
+			company.setCompanyType(cmp.getCompanyType());
 			//Address add= cmp.getAddress();
 			
 		}else{

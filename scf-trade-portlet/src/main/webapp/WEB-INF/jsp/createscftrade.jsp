@@ -18,7 +18,19 @@
 			<div class="span12" style="padding-bottom: 30px;">
 				<div class="span4"></div>
 				<div class="span4">
-					<h4>Add Trade Information</h4>
+					<h4>
+					<c:choose>
+						<c:when test="${scfTradeModel.id !=null && scfTradeModel.id !=0}">
+							Trade Information
+						</c:when>
+						<c:otherwise>
+							Add Trade Information
+						</c:otherwise>
+					
+					</c:choose>		
+					
+					
+					</h4>
 				</div>
 			</div>
 		</div>

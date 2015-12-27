@@ -27,7 +27,8 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 	public List<SCFTrade>  getScfTrades(){
 		_log.debug("Inside getScfTrades  ");
 		try {
-			List<SCFTrade> results = (List<SCFTrade>) sessionFactory.getCurrentSession().createQuery("from SCFTrade").list();
+			List<SCFTrade> results = (List<SCFTrade>) sessionFactory.getCurrentSession().createCriteria(SCFTrade.class).setFetchMode("invoices",FetchMode.JOIN).
+					setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY).list();
 			_log.debug("getScfTrades successful, result size: "
 					+ results.size());
 			return results;

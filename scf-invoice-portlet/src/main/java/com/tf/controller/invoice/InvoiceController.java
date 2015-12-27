@@ -190,6 +190,7 @@ public class InvoiceController {
 		Workbook workbook = null;
 		List<Invoice> invoiceList = new ArrayList<Invoice>();
 		String zero="0";
+		Company scfCompany= companyService.findById(invoice.getScfCompany());
 	
 		try {
 			workbook = new XSSFWorkbook(invoice.getInvoiceDoc()
@@ -201,7 +202,7 @@ public class InvoiceController {
 				Iterator<Row> rowIterator = sheet.iterator();
 				while (rowIterator.hasNext()) {
 					invoiceModel = new Invoice();
-					invoiceModel.setScfCompany(companyService.findById(invoice.getScfCompany()));
+					invoiceModel.setScfCompany(scfCompany);
 					currentRow=currentRow+1;
 
 					Row row = rowIterator.next();
@@ -292,7 +293,6 @@ public class InvoiceController {
 		FileEntry fileEntry = null;
 		Folder folder=null;
 		InvoiceDocument invoiceDocument = null;
-		// FileInputStream inputStream = new FileInputStream();
 		ThemeDisplay themeDisplay = (ThemeDisplay) request
 				.getAttribute(WebKeys.THEME_DISPLAY);
 		long currentSideID = themeDisplay.getScopeGroupId();
@@ -328,6 +328,7 @@ public class InvoiceController {
 
 		if (invoiceList != null && invoiceList.size() > 0) {
 			invoiceService.addInvoices(invoiceList);
+			invoiceDocument.setScfCompany(invoiceList.get(0).getScfCompany());
 			invoiceDocumentService.addInvoiceDocument(invoiceDocument);
 		}
 		response.setRenderParameter("render","invoiceDocuments");

@@ -20,7 +20,7 @@
 							
 							<div class="stat">
 								<span class="stat-value">${dashboardModel.investmentCap}</span>									
-								Investment Cap
+								Total Credit Line
 							</div> 
 							
 							<div class="stat">
