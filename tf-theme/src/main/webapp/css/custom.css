@@ -528,3 +528,10 @@ table.tablesorter thead tr th {
 }
 
 
+.userdiv {
+	float: right !important;
+    color: #c4e7ff !important;
+    padding-right: 20px !important;
+    font-size: 14px !important;
+	
+}

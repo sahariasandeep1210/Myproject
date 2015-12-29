@@ -12,6 +12,12 @@
  * details.
  *#
 <nav class="$nav_css_class navbar site-navigation" id="navigation" role="navigation">
+	#if($is_signed_in)
+		<div class="userdiv">
+			 $user.getFullName() $screenName
+		</div>
+		<br>
+	#end
 	<div class="navbar-inner">
 		<div class="nav-helpers">
 			<ol class="nav nav-pills">

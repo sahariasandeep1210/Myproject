@@ -15,6 +15,7 @@
 #set ($site_header_icon = $theme_settings.getProperty('site-header-icon'))
 #set ($theme_color_main = $theme_settings.getProperty('theme-color-main'))
 #set ($theme_color_highlight = $theme_settings.getProperty('theme-color-highlight'))
+#set( $user = $permissionChecker.getUser() )
 
 #if ($layout.isIconImage())
 	#set ($page_icon = "$theme_display.getPortalURL()$theme_display.getPathImage()/layout_icon?img_id=$layout.getIconImageId()")
