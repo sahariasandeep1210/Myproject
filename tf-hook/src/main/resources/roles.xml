@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+
+	 <root>
+			 <roles>
+			  	<role name="Primary Investor Admin" 		title="Primary Investor Admin" 		description="Primary Investor Admin"  	type="Regular"	/>
+			  	<role name="Secondary Investor Admin" 		title="Secondary Investor Admin" 	description="Secondary Investor Admin"  type="Regular"	/>
+			  	<role name="SCF Admin" 						title="SCF Admin" 					description="SCF Admin" 				type="Regular"	/>
+			  	<role name="SCF User" 						title="SCF User" 					description="SCF User" 					type="Regular"	/>
+			  	<role name="Seller Admin" 					title="Seller Admin" 				description="Seller Admin" 				type="Regular"	/>
+			  	<role name="Seller User" 					title="Seller User" 				description="Seller User" 				type="Regular"	/>		  	
+			 </roles>	 
+	</root>

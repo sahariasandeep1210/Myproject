@@ -3,7 +3,8 @@
 
 <hook>
  	<portal-properties>portal.properties</portal-properties>
-	<custom-jsp-dir>/custom_jsps</custom-jsp-dir>	
+ 	<language-properties>content/Language_en_US.properties</language-properties> 
+	<custom-jsp-dir>/custom_jsps</custom-jsp-dir>	 	
 	<!-- <service>
 		 <service-type>com.liferay.portal.service.UserLocalService</service-type>
 	    <service-impl>com.tf.hook.TFUserLocalServiceImpl</service-impl>
