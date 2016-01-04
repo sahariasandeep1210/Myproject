@@ -533,5 +533,7 @@ table.tablesorter thead tr th {
     color: #c4e7ff !important;
     padding-right: 20px !important;
     font-size: 14px !important;
-	padding-bottom: 25px;
+}
+.marginbottom{
+	margin-top: 25px !important;
 }

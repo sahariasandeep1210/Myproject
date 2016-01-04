@@ -14,11 +14,11 @@
 <nav class="$nav_css_class navbar site-navigation" id="navigation" role="navigation">
 	#if($is_signed_in)
 		<div class="userdiv">
-			 $user.getFullName() ( $screenName )
+			 $user.getFullName() ( $request.getSession().getAttribute("LIFERAY_SHARED_userRole") ) 
 		</div>
 		<br>
 	#end
-	<div class="navbar-inner">
+	<div class="navbar-inner marginbottom">
 		<div class="nav-helpers">
 			<ol class="nav nav-pills">
 				<li class="nav-item-sitenavigationtoggle">
