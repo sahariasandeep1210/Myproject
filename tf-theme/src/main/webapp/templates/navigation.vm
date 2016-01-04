@@ -14,7 +14,7 @@
 <nav class="$nav_css_class navbar site-navigation" id="navigation" role="navigation">
 	#if($is_signed_in)
 		<div class="userdiv">
-			 $user.getFullName() $screenName
+			 $user.getFullName() ( $screenName )
 		</div>
 		<br>
 	#end

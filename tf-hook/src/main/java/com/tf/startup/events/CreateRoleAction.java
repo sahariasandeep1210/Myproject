@@ -30,14 +30,17 @@ import com.liferay.util.ContentUtil;
 
 public class CreateRoleAction extends SimpleAction {
 	
+	private static final String xmlFileName="roles.xml";
+	
 
 	@Override
 	public void run(String[] arg0) throws ActionException {
 		
-		long companyId = CompanyThreadLocal.getCompanyId();	
-		String xmlName=LanguageUtil.get(LocaleUtil.getDefault(), "role.xml.file.name");
-		try {
 		
+		
+		long companyId = CompanyThreadLocal.getCompanyId();	
+		String xmlName=LanguageUtil.get(LocaleUtil.getDefault(), "role.xml.file.name",xmlFileName);
+		try {
 		 String content= ContentUtil.get(xmlName);
 		 Document document = SAXReaderUtil.read(content);
 		 Element rootElement = document.getRootElement();
