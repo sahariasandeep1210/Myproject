@@ -19,10 +19,7 @@
 	<portlet:param name="render" value="createInvoice" />
 </portlet:renderURL>
 
-<%-- <portlet:renderURL var="invoiceDocumentsURL">
-	<portlet:param name="render" value="invoiceDocuments" />
-</portlet:renderURL> --%>
-
+<liferay-ui:error key="default-error-message" 		message="default.error.message" /> 
 
 
 <%
@@ -70,11 +67,11 @@ long plid= PortalUtil.getPlidFromPortletId(themeDisplay.getScopeGroupId(),true, 
 		<!-- 	<input type="submit" value="Upload Invoice Document" class="btn btn-primary"
 				id="uploadInvoice" /> -->
 				<div class="span6">
-					<c:if test="${userType eq 'SCF Admin'}">
+					<c:if test="${userType eq 'SCF Company Admin' || userType eq 'Admin'}">
 						<input type="button" value="Create Invoice" class="btn btn-primary" id="createInvoice"  data-url="${createInvoiceURL}"  class="span6"/>
 					</c:if>
 				<c:choose>
-					<c:when test="${userType eq 'Seller Admin'}">
+					<c:when test="${userType eq 'Seller Admin' }">
 						<input type="button" value="Request Finance" class="btn btn-primary" id="requestFinance" data-url="${requestFinanceURL}" class="span6"/>
 					</c:when>
 					<c:otherwise>

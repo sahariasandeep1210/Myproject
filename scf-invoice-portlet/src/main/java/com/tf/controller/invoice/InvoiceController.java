@@ -27,8 +27,11 @@ import org.springframework.web.portlet.ModelAndView;
 import org.springframework.web.portlet.bind.annotation.ActionMapping;
 import org.springframework.web.portlet.bind.annotation.RenderMapping;
 
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.repository.model.Folder;
+import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.util.MimeTypesUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -63,10 +66,7 @@ import com.tf.service.UserService;
 @RequestMapping(value = "VIEW")
 public class InvoiceController {
 	
-	private  final static String ACTIVETAB="activetab";
-	
-	
-	
+	private  final static String ACTIVETAB="activetab";	
 
 	@Autowired
 	protected UserService userService;	
@@ -84,26 +84,31 @@ public class InvoiceController {
 	protected ModelAndView renderInvoiceDocumentList(
 			@ModelAttribute("invoiceModel") InvoiceDTO invoice, ModelMap model,
 			RenderRequest request, RenderResponse response) throws Exception {
-		System.out.println("In render");		
-		List<Company> companyList = new ArrayList<Company>();
-		ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);
-		List<InvoiceDocument> invoiceDocumentList=new ArrayList<InvoiceDocument>();
-		
-		if(getPermissionChecker(request).isOmniadmin() ){
-			invoiceDocumentList = invoiceDocumentService.getInvoiceDocuments();
-			 companyList = companyService.getCompanies("5");
-			 model.put("userType", Constants.ADMIN);
-		}else if(request.isUserInRole(Constants.SCF_ADMIN)){
-			invoiceDocumentList = invoiceDocumentService.getInvoiceDocuments(themeDisplay.getUser().getUserId());
-			long companyId=userService.getCompanyIDbyUserID(themeDisplay.getUserId());
-			companyList.add(companyService.findById(companyId));
-			model.put("userType", Constants.SCF_ADMIN);
+		try {
+			List<Company> companyList = new ArrayList<Company>();
+			ThemeDisplay themeDisplay = (ThemeDisplay) request
+					.getAttribute(WebKeys.THEME_DISPLAY);
+			List<InvoiceDocument> invoiceDocumentList = new ArrayList<InvoiceDocument>();
+			if (getPermissionChecker(request).isOmniadmin()) {
+				invoiceDocumentList = invoiceDocumentService
+						.getInvoiceDocuments();
+				companyList = companyService.getCompanies("5");
+				model.put("userType", Constants.ADMIN);
+			} else if (request.isUserInRole(Constants.SCF_ADMIN)) {
+				invoiceDocumentList = invoiceDocumentService
+						.getInvoiceDocuments(themeDisplay.getUser().getUserId());
+				long companyId = userService.getCompanyIDbyUserID(themeDisplay
+						.getUserId());
+				companyList.add(companyService.findById(companyId));
+				model.put("userType", Constants.SCF_ADMIN);
+			}
+			model.put("companyList", companyList);
+			model.put("invoiceList", invoiceDocumentList);
+			model.put(ACTIVETAB, "invoiceDocuments");
+		} catch (Exception e) {
+			SessionErrors.add(request, "default-error-message");
+			_log.error("InvoiceController.renderInvoiceDocumentList() - error occured while rendering invoice documents "+e.getMessage());
 		}
-		
-	
-		model.put("companyList", companyList);
-		model.put("invoiceList", invoiceDocumentList);
-		model.put(ACTIVETAB,"invoiceDocuments");
 		return new ModelAndView("invoicedoclist", model);
 	}
 
@@ -112,7 +117,6 @@ public class InvoiceController {
 	protected ModelAndView renderCreateInvoice(
 			@ModelAttribute("invoiceModel") InvoiceDTO invoice, ModelMap model,
 			RenderRequest request, RenderResponse response) throws Exception {
-		System.out.println("In render");		
 		List<Company> companyList = companyService.getCompanies("5");
 		model.put("companyList", companyList);
 		return new ModelAndView("createinvoice", model);
@@ -127,7 +131,6 @@ public class InvoiceController {
 			List<Invoice> invoices = new ArrayList<Invoice>();
 			invoices.add(invoiceModel);
 			invoiceService.addInvoices(invoices);
-			System.out.println("InvoiceDTO-----" + invoice);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -155,27 +158,36 @@ public class InvoiceController {
 
 	@RenderMapping
 	protected ModelAndView renderInvoiceList(
-			@ModelAttribute("invoiceModel") InvoiceDTO invoice, ModelMap model,
-			RenderRequest request, RenderResponse response) throws Exception {
-		System.out.println("In Default render");	
-		List<Invoice> invoices= new ArrayList<Invoice>();
-		ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);
-		if(getPermissionChecker(request).isOmniadmin() ){
-			invoices=invoiceService.getInvoices();
-			model.put("userType", Constants.ADMIN);
-		}else if(request.isUserInRole(Constants.SCF_ADMIN)){
-			invoices=invoiceService.getInvoices(themeDisplay.getUser().getUserId());
-			model.put("userType", Constants.SCF_ADMIN);
-		}else if(request.isUserInRole(Constants.SELLER_ADMIN)){
-			long companyId=userService.getCompanyIDbyUserID(themeDisplay.getUserId());
-			invoices=invoiceService.getInvoicesByCompanyNumber(companyService.findById(companyId).getRegNumber());
-			model.put("userType", Constants.SELLER_ADMIN);
+			RenderRequest request, RenderResponse response,ModelMap model) throws Exception {
+		try {
+			List<Invoice> invoices = new ArrayList<Invoice>();
+			ThemeDisplay themeDisplay = (ThemeDisplay) request
+					.getAttribute(WebKeys.THEME_DISPLAY);
+			if (getPermissionChecker(request).isOmniadmin()
+					|| request.isUserInRole(Constants.WHITEHALL_ADMIN)) {
+				invoices = invoiceService.getInvoices();
+				model.put("userType", Constants.ADMIN);
+			} else if (request.isUserInRole(Constants.SCF_ADMIN)) {
+				invoices = invoiceService.getInvoices(themeDisplay.getUser()
+						.getUserId());
+				model.put("userType", Constants.SCF_ADMIN);
+			} else if (request.isUserInRole(Constants.SELLER_ADMIN)) {
+				long companyId = userService.getCompanyIDbyUserID(themeDisplay
+						.getUserId());
+				invoices = invoiceService
+						.getInvoicesByCompanyNumber(companyService.findById(
+								companyId).getRegNumber());
+				model.put("userType", Constants.SELLER_ADMIN);
+			}
+			request.getPortletSession().removeAttribute("invoiceDTO");
+			request.getPortletSession().removeAttribute("invoiceList");
+			model.put("invoicesList", invoices);
+			model.put("defaultRender", Boolean.TRUE);
+			model.put(ACTIVETAB, "invoiceslist");
+		} catch (Exception e) {
+			SessionErrors.add(request, "default-error-message");
+			_log.error("InvoiceController.renderInvoiceList() - error occured while rendering invoices "+e.getMessage());
 		}
-		request.getPortletSession().removeAttribute("invoiceDTO");
-		request.getPortletSession().removeAttribute("invoiceList");	
-		model.put("invoicesList", invoices);
-		model.put("defaultRender", Boolean.TRUE);
-		model.put(ACTIVETAB,"invoiceslist");
 		return new ModelAndView("invoicelist", model);
 	}
 
@@ -343,22 +355,18 @@ public class InvoiceController {
 		if(!StringUtils.isNullOrEmpty(invoiceIds)){
 			List<String> invoicesIdList=Arrays.asList(invoiceIds.split(","));
 			invoiceService.triggerAllotment(invoicesIdList);
-			//invoiceService.updateInvoicesStatus(invoicesIdList, InvoiceStatus.FINANCE_REQUESTED.getValue());
 		}
 		
 	}
-	
-	
-	
-	private PermissionChecker getPermissionChecker(PortletRequest request){
-		ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);
-		PermissionChecker permissionChecker = themeDisplay.getPermissionChecker();
+
+	private PermissionChecker getPermissionChecker(PortletRequest request) {
+		ThemeDisplay themeDisplay = (ThemeDisplay) request
+				.getAttribute(WebKeys.THEME_DISPLAY);
+		PermissionChecker permissionChecker = themeDisplay
+				.getPermissionChecker();
 		return permissionChecker;
-		
+
 	}
-	
-	
-	
 
 	private String getUrl(ThemeDisplay themeDisplay, FileEntry fileEntry) {
 		StringBuilder sb = new StringBuilder();
@@ -369,4 +377,6 @@ public class InvoiceController {
 		sb.append(themeDisplay.getScopeGroupId());
 		return sb.toString();
 	}
+	
+	protected Log _log = LogFactoryUtil.getLog(InvoiceController.class.getName());
 }

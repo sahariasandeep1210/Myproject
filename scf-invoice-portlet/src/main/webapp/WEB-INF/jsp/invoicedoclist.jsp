@@ -6,7 +6,7 @@
 <portlet:actionURL var="saveInvoicesURL">
 	<portlet:param name="action" value="saveInvoices" />
 </portlet:actionURL>
-
+<liferay-ui:error key="default-error-message" 		message="default.error.message" /> 
 <%@include file="tabview.jsp"%>
 
 <div class="row-fluid">
