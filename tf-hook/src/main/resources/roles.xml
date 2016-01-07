@@ -4,11 +4,11 @@
 			 <roles>
 			  	<role name="Primary Investor Admin" 		title="Primary Investor Admin" 		description="Primary Investor Admin"  	type="Regular"	/>
 			  	<role name="Secondary Investor Admin" 		title="Secondary Investor Admin" 	description="Secondary Investor Admin"  type="Regular"	/>
-			  	<role name="SCF Admin" 						title="SCF Admin" 					description="SCF Admin" 				type="Regular"	/>
-			  	<role name="SCF User" 						title="SCF User" 					description="SCF User" 					type="Regular"	/>
+			  	<role name="SCF Company Admin" 				title="SCF Company Admin" 			description="SCF Company Admin" 		type="Regular"	/>
+			  	<role name="SCF Company User" 				title="SCF Company User" 			description="SCF Company User" 			type="Regular"	/>
 			  	<role name="Seller Admin" 					title="Seller Admin" 				description="Seller Admin" 				type="Regular"	/>
 			  	<role name="Seller User" 					title="Seller User" 				description="Seller User" 				type="Regular"	/>
 			  	<role name="WhiteHall Admin" 				title="WhiteHall Admin" 			description="WhiteHall Admin" 			type="Regular"	/>
-			  	<role name="WhiteHall User" 				title="WhiteHall User" 				description="WhiteHall User" 				type="Regular"	/>		  	
+			  	<role name="WhiteHall User" 				title="WhiteHall User" 				description="WhiteHall User" 			type="Regular"	/>		  	
 			 </roles>	 
 	</root>

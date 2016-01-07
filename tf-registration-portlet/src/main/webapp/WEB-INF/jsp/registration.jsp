@@ -17,6 +17,17 @@
 
 <div class="alert alert-danger" id="errorMsg"><i class="icon-remove-sign icon-2"></i> </div>
 
+<liferay-ui:error 	key="error-user-email">
+	<liferay-ui:message key="user.email.error"  arguments="${registration.user.email}"></liferay-ui:message>
+</liferay-ui:error>
+<liferay-ui:error 	key="error-user-screenname">
+	<liferay-ui:message key="user.screenname.error"  arguments="${registration.user.username}"></liferay-ui:message>
+</liferay-ui:error>
+<liferay-ui:error 	key="error-company-registration">
+	<liferay-ui:message key="company.duplicate.registration.no"  arguments="${registration.company.regNumber}"></liferay-ui:message>
+</liferay-ui:error> 			
+<liferay-ui:error key="default-error-message" 		message="default.error.message" /> 
+
 
 <div class="container-fluid">
 	<form:form commandName="registration" method="post"

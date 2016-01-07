@@ -4,6 +4,7 @@ import java.beans.PropertyEditorSupport;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.InitBinder;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.tf.model.CompanyType;
 import com.tf.service.CompanyService;
 import com.tf.service.CompanyServices;
 import com.tf.service.CompanyTypeService;
@@ -84,11 +86,12 @@ public class BaseController {
 	}
 
 	private   Map<Long, String> initialzeCompanyTypeMap() {
+		List<CompanyType> companyTypes= companyTypeService.getAllCompanyType();
 		Map<Long,String> cmpTypeMap=new LinkedHashMap<Long, String>();
 		cmpTypeMap.put(0l, "Select");
-		cmpTypeMap.put(1l, "Primary Investor");
-		cmpTypeMap.put(2l, "Secondary Investor");	
-		cmpTypeMap.put(4l, "Seller");	
+		for(CompanyType companyType : companyTypes){
+			cmpTypeMap.put(companyType.getId(), companyType.getName());
+		}
 		return cmpTypeMap;
 	}
 

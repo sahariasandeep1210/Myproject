@@ -1,9 +1,14 @@
 package com.tf.util;
 
+import java.io.Serializable;
+
 import com.tf.model.Company;
 import com.tf.model.User;
 
-public class Registration {
+public class Registration implements Serializable {
+	
+	
+	private static final long serialVersionUID = -4485521649505250453L;
 	
 	private User user;
 	private Company company;
@@ -26,5 +31,12 @@ public class Registration {
 	public void setCompany(Company company) {
 		this.company = company;
 	}
+
+	@Override
+	public String toString() {
+		return "Registration [user=" + user + ", company=" + company + "]";
+	}
+	
+	
 
 }

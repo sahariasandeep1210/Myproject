@@ -312,8 +312,7 @@ function submitUserForms(url) {
 
 function enableDisableTab(){
 	var currentTab=$("#currScreen").val();
-	console.log("currentTab:::::"+currentTab);
-	if(currentTab=='Company'){
+	if(currentTab=='Company' || currentTab==''){
 		$("#companyDiv").show();
 		$("#Company").addClass("active");
 		$("#User").removeClass("active");
