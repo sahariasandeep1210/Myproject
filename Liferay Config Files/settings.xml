@@ -4,10 +4,11 @@
        <id>local</id>
        <properties>
       		 <!-- Liferay Specific Properties  -->
-		          <liferay.version>6.2.1</liferay.version> 
+		         <liferay.version>6.2.2</liferay.version> 
+		          <app.server.parent.dir>G:/Project/liferay-portal-6.2-ce-ga3</app.server.parent.dir>
 		         <liferay.auto.deploy.dir>G:/Project/liferay-portal-6.2-ce-ga3/deploy</liferay.auto.deploy.dir>
 		         <liferay.app.server.dir>G:/Project/liferay-portal-6.2-ce-ga3/tomcat-7.0.42</liferay.app.server.dir>
-		         <liferay.app.server.deploy.dir>G:/Project/liferay-portal-6.2-ce-ga3/tomcat-7.0.42webapps</liferay.app.server.deploy.dir>
+		         <liferay.app.server.deploy.dir>G:/Project/liferay-portal-6.2-ce-ga3/tomcat-7.0.42/webapps</liferay.app.server.deploy.dir>
 		         <liferay.app.server.lib.global.dir>G:/Project/liferay-portal-6.2-ce-ga3/tomcat-7.0.42/lib/ext</liferay.app.server.lib.global.dir>
 		         <liferay.app.server.portal.dir>G:/Project/liferay-portal-6.2-ce-ga3/tomcat-7.0.42/webapps/ROOT</liferay.app.server.portal.dir>
 		         
@@ -19,11 +20,6 @@
           		<jdbc.password>root</jdbc.password> 
           
      </properties>
-     
-	<!--      <pluginGroups>
-	  <pluginGroup>com.liferay.maven.plugins</pluginGroup>
-	  <pluginGroup>org.codehaus.liferay</pluginGroup>
-	</pluginGroups> -->
     </profile>
   </profiles>
   

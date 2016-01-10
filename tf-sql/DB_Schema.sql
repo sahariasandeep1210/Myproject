@@ -54,7 +54,7 @@ CREATE TABLE tf_user (
   UNIQUE KEY iduser_UNIQUE (iduser),
   KEY fk_user_company_idx (company_id),
   CONSTRAINT fk_user_company FOREIGN KEY (company_id) REFERENCES tf_company (idcompany) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=INNODB AUTO_INCREMENT=1469 DEFAULT CHARSET=utf8 COMMENT='User table';
+);
 
 
 ALTER TABLE tf_user ADD liferay_user_id BIGINT(20);
@@ -341,7 +341,7 @@ CREATE TABLE `tf_allotments` (
   CONSTRAINT `tf_allotments_ibfk_1` FOREIGN KEY (`trade_id`) REFERENCES `scf_trade` (`id`),
   CONSTRAINT `tf_allotments_ibfk_2` FOREIGN KEY (`investor_portfolio_id`) REFERENCES `tf_investor_portfolio` (`investor_portfolio_id`),
   CONSTRAINT `tf_allotments_ibfk_3` FOREIGN KEY (`user_id`) REFERENCES `tf_user` (`iduser`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
+);
 
 DROP TABLE IF EXISTS tf_investor_portfolio_setting;
 CREATE TABLE tf_investor_portfolio_setting (
