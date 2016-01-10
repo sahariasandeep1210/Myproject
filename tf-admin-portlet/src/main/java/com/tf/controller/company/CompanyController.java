@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.StringTokenizer;
 
 import javax.portlet.ActionRequest;
@@ -16,6 +15,7 @@ import javax.portlet.RenderResponse;
 import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
 
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.StringUtils;
@@ -29,9 +29,7 @@ import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 import com.google.gson.Gson;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.json.JSONArray;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
-import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
@@ -43,6 +41,7 @@ import com.liferay.portal.service.ServiceContextFactory;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.service.UserServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
+import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 import com.tf.controller.BaseController;
 import com.tf.model.AddressModel;
 import com.tf.model.Company;
@@ -56,7 +55,6 @@ import com.tf.model.User;
 import com.tf.persistance.util.CompanyStatus;
 import com.tf.persistance.util.Constants;
 import com.tf.util.OfficerDTO;
-import com.tf.util.Registration;
 
 
 /**
@@ -66,72 +64,59 @@ import com.tf.util.Registration;
  */
 @Controller
 @RequestMapping(value = "VIEW")
-public class CompanyController extends BaseController {
-	
-	
+public class CompanyController extends BaseController {	
 	
 
 	
 	@RenderMapping
 	protected ModelAndView renderCompanyList(@ModelAttribute("companyModel") Company company,ModelMap model,RenderRequest request, RenderResponse response) throws Exception {		
 		_log.info("Render Company List");
-		List<Company> companyList=new ArrayList<Company>();
-		ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);
-		if(getPermissionChecker(request).isOmniadmin() ){
-			companyList = companyService.getCompaniesByStatus(CompanyStatus.DELETED.getValue());
-		}else if(request.isUserInRole(Constants.SCF_ADMIN)){
-			long companyId=userService.getCompanyIDbyUserID(themeDisplay.getUserId());
-			Company cmpObject = companyService.findById(companyId);
-			companyList.add(cmpObject);
-		}else{
-			long companyId=userService.getCompanyIDbyUserID(themeDisplay.getUserId());
-			Company cmpObject = companyService.findById(companyId);
-			companyList.add(cmpObject);
+		try {
+			List<Company> companyList = new ArrayList<Company>();
+			ThemeDisplay themeDisplay = (ThemeDisplay) request
+					.getAttribute(WebKeys.THEME_DISPLAY);
+			companyList = prepareCompanyList(request, companyList, themeDisplay);
+			model.put("allCompanies", companyList);
+		} catch (Exception e) {
+			SessionErrors.add(request, "default-error-message");
+			_log.error("CompanyController.renderCompanyList() - error occured while rendering company/companies"+e.getMessage());
 		}
-		model.put("allCompanies",companyList);
 		return new ModelAndView("companylist", model);		
 	}
+
+
 	
 	@RenderMapping(params="render=createCompany")
 	protected ModelAndView renderCreateCompany(@ModelAttribute("companyModel") Company company,ModelMap model,RenderRequest request, RenderResponse response) throws Exception {	
 		long companyID = ParamUtil.getLong(request, "companyID"); 
 		ThemeDisplay themeDispay=(ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);
-		List<User> users =new ArrayList<User>();
-		if(companyID!=0){
-			 company=companyService.findById(companyID);
-			 users=userService.findUserByCompanyId(companyID);
-			 company.setOfficers(new LinkedHashSet<Officer>(officerService.findOfficersByCompanyId(companyID)));
-		}	
-		Map<String,String> userTypesMap=adminUtility.getUserTypes(adminUtility.getUserID(request), companyTypeMap.get(Long.valueOf(companyService.getCompanyTypebyID(companyID))), request);
-		model.put("currentUser",themeDispay.getRealUser());
-		model.put("companyModel", company);
-		model.put("users", users);
-		//model.put("officers", officers);
+		List<User> users;
+		Map<String,String> userTypesMap;
+		try {
+			users = new ArrayList<User>();
+			if (companyID != 0) {
+				company = companyService.findById(companyID);
+				users = userService.findUserByCompanyId(companyID);
+				company.setOfficers(new LinkedHashSet<Officer>(officerService
+						.findOfficersByCompanyId(companyID)));
+				model.put("cmpType", companyTypeMap.get(Long.valueOf(company.getCompanyType())));
+			}
+			
+			model.put("currentUser", themeDispay.getRealUser());
+			model.put("users", users);
+		} catch (Exception e) {
+			SessionErrors.add(request, "default-error-message");
+			_log.error("CompanyController.createCompany() - error occured while rendering add company screen"+e.getMessage());
+		}
+		model.put("companyModel", company);	
 		model.put("orgTypeMap", orgTypeMap);
 		model.put("companyTypeMap", companyTypeMap);
-		model.put("cmpType", companyTypeMap.get(Long.valueOf(company.getCompanyType())));
-		model.put("userTypesMap", userTypesMap);
+		
+		
 		return new ModelAndView("createcompany", model);		
 	}
 	
-	@RenderMapping(params="render=registerCompany")
-	protected ModelAndView renderRegisterCompany(@ModelAttribute("registration") Registration registration,ModelMap model,RenderRequest request, RenderResponse response) throws Exception {	
-		String currentScreen=ParamUtil.getString(request, "currentScreen","Company");
-		if(registration.getCompany()==null){
-			Company cmp = new Company();
-			cmp.setCompanyType("Seller");
-			registration.setCompany(cmp);
-		}if(registration.getUser()==null){
-			User user=new User();
-			user.setType("Seller Admin");
-			registration.setUser(user);		
-		}	
-		registration.getUser().setType("Seller Admin");
-		model.put("registration", registration);
-		model.put("orgTypeMap", orgTypeMap);
-		model.put("currentScreen", currentScreen);
-		return new ModelAndView("registration", model);		
-	}
+
 	
 	@ActionMapping(params="action=homePage")
 	protected void homePage( ModelMap model, 
@@ -140,71 +125,40 @@ public class CompanyController extends BaseController {
 		response.sendRedirect("/web/guest/home");
 	}
 	
-	@ActionMapping(params="action=regCompanyInfo")
-	protected void addCompanyInfo(@ModelAttribute("registration") Registration registration,  ModelMap model, 
-												 ActionRequest request,
-												 ActionResponse response) throws Exception {
-		response.setRenderParameter("render", "registerCompany");
-		response.setRenderParameter("currentScreen", "User");
-		System.out.println("Regitsration :: "+registration.getCompany());
-		System.out.println("Regitsration :: "+registration.getCompany());
-		model.put("registration", registration);
-	}
-	
-	
-	@ActionMapping(params="action=registerCompany")
-	protected void registerCompany(@ModelAttribute("registration") Registration registration, 
-												 ModelMap model, 
-												 ActionRequest request,
-												 ActionResponse response) throws Exception {
-		System.out.println("Registration Model:::"+registration);
-		User user=registration.getUser();
-		com.liferay.portal.model.User lruser = addLiferayUser(user, request);
-		//Company company=companyService.registerCompany(registration.getCompany());
-		
-		System.out.println("lruser:::"+lruser);
-		//Liferay user has been added now we need to add user information to tf_user table
-		//and map the same to Liferay userId and Company/Seller
-		user.setActive(Boolean.FALSE);
-		user.setLiferayUserId(lruser.getUserId());
-		//userService.addorUpdateUser(user);
-		Company company = registration.getCompany();
-		Set<User> users=new LinkedHashSet<User>();
-		users.add(user);
-		company.setUsers(users);
-		company.setActivestatus(CompanyStatus.NEW.getValue());
-		company=companyService.registerCompany(company);
-		System.out.println("After User Added");
-		StringBuilder loginURL=new StringBuilder("/web/guest/home");
-		loginURL.append("?registration=success");
-		response.sendRedirect(loginURL.toString());
-	}
-	
+
 	
 	@ActionMapping(params="action=createCompany")
-	protected void callAction(@ModelAttribute("companyModel") Company company, 
+	protected void createCompanyAction(@ModelAttribute("companyModel") Company company, 
 												 ModelMap model, 
 												 ActionRequest request,
 												 ActionResponse response) throws Exception {
-		System.out.println("companyModel:::"+company);	
-		if(company !=null && company.getId() !=null){
-			Company cmp = companyService.findById(company.getId());
-			company.setUsers(cmp.getUsers());
-			company.getAddress().setId(cmp.getAddress().getId());
-			company.setCompanyType(cmp.getCompanyType());
-			//Address add= cmp.getAddress();
+		try {
+			if (company != null && company.getId() != null) {
+				Company cmp = companyService.findById(company.getId());
+				company.setUsers(cmp.getUsers());
+				company.getAddress().setId(cmp.getAddress().getId());
+				company.setCompanyType(cmp.getCompanyType());
+			} else {
+				company.getAddress().setCompany(company);
+				//WIP to refractor this code.
+				if (company != null && "1".equals(company.getCompanyType())) {
+					company.setInvestor(new Investor());
+					company.getInvestor().setCompany(company);
+				}
+			}
+			company.setActivestatus(CompanyStatus.NEW.getValue());
+			companyService.addCompany(company);
+		} catch (Exception e) {
+			if(e instanceof ConstraintViolationException || e instanceof  MySQLIntegrityConstraintViolationException){
+				SessionErrors.add(request, "error-company-registration");
+				model.put("companyModel", company);
+				response.setRenderParameter("render","createCompany");
+			}else{
+				SessionErrors.add(request, "default-error-message");
+				_log.error("CompanyController.createCompanyAction() - error occured while saving  company information"+e.getMessage());
+			}
 			
-		}else{
-			//company.setAddress(company.getAddress());
-			company.getAddress().setCompany(company);
-			if(company!=null && "1".equals(company.getCompanyType())){
-				 company.setInvestor(new Investor());
-				 company.getInvestor().setCompany(company);
-			 }
 		}
-		//company=companyService.findById(company.getId());
-		company.setActivestatus(CompanyStatus.NEW.getValue());
-		companyService.addCompany(company);
 	}
 	
 	@ActionMapping(params="action=deleteCompany")
@@ -247,7 +201,6 @@ public class CompanyController extends BaseController {
 												 ActionResponse response) throws Exception {
 		boolean createUser=false;
 		ThemeDisplay themeDisplay=(ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);
-		System.out.println("userModel:::"+user);	
 		Long companyID = ParamUtil.getLong(request, "companyID");
 		Long officerId = ParamUtil.getLong(request, "officer",0);
 		user.setCompany(companyService.findById(companyID));
@@ -259,7 +212,6 @@ public class CompanyController extends BaseController {
 			 UserLocalServiceUtil.updateUser(lruser);
 			user.setLiferayUserId(lruser.getUserId());
 		}
-		System.out.println("User>>>>>>>>>>>>>>>>>>>>:::"+user);
 		//Liferay user has been added now we need to add user information to tf_user table
 		//and map the same to Liferay userId and Company/Seller
 		user.setActive(Boolean.FALSE);
@@ -445,6 +397,22 @@ public class CompanyController extends BaseController {
 		ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);
 		PermissionChecker permissionChecker = themeDisplay.getPermissionChecker();
 		return permissionChecker;		
+	}
+	
+	private List<Company> prepareCompanyList(RenderRequest request,
+			List<Company> companyList, ThemeDisplay themeDisplay) {
+		if(getPermissionChecker(request).isOmniadmin() ){
+			companyList = companyService.getCompaniesByStatus(CompanyStatus.DELETED.getValue());
+		}else if(request.isUserInRole(Constants.SCF_ADMIN)){
+			long companyId=userService.getCompanyIDbyUserID(themeDisplay.getUserId());
+			Company cmpObject = companyService.findById(companyId);
+			companyList.add(cmpObject);
+		}else{
+			long companyId=userService.getCompanyIDbyUserID(themeDisplay.getUserId());
+			Company cmpObject = companyService.findById(companyId);
+			companyList.add(cmpObject);
+		}
+		return companyList;
 	}
 
 

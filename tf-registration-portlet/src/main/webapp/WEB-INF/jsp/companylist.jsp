@@ -9,7 +9,7 @@
 	width: 100% !important;
 }
 </style>
-
+<liferay-ui:error key="default-error-message" 		message="default.error.message" /> 
 
 <div class="container-fluid">
 

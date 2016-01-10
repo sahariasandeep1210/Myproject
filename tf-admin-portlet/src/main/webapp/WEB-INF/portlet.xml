@@ -17,7 +17,7 @@
 		<supports>
 			<mime-type>text/html</mime-type>
 		</supports>
-		<resource-bundle>content.Language</resource-bundle>
+		<resource-bundle>content/Language</resource-bundle>
 		<portlet-info>
 			<title>tf-company-portlet</title>
 			<short-title>tf-company-portlet</short-title>

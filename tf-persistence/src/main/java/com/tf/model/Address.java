@@ -1,5 +1,7 @@
 package com.tf.model;
 
+import java.io.Serializable;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,8 +14,11 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="tf_address")
-public class Address {
+public class Address implements Serializable {
 	
+	
+	private static final long serialVersionUID = -8395381046007559661L;
+
 	@Id
     @Column(name="id")
     @GeneratedValue
