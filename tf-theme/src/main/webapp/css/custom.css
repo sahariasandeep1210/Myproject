@@ -537,3 +537,9 @@ table.tablesorter thead tr th {
 .marginbottom{
 	margin-top: 25px !important;
 }
+
+
+.borderdiv {
+	border-bottom: 1px solid #003d59;
+	margin-bottom: 35px
+}

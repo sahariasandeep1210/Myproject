@@ -1,26 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:jdbc="http://www.springframework.org/schema/jdbc/spring-jdbc-3.0.xsd" 
-	xmlns:mybatis="http://mybatis.org/schema/mybatis-spring" 
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
-       	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
-       	http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-3.0.xsd
-       	http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring.xsd"
-	default-lazy-init="true">
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:jee="http://www.springframework.org/schema/jee"
+    xmlns:lang="http://www.springframework.org/schema/lang"
+    xmlns:mvc="http://www.springframework.org/schema/mvc"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xmlns:util="http://www.springframework.org/schema/util"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd
+        http://www.springframework.org/schema/lang http://www.springframework.org/schema/lang/spring-lang.xsd
+        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.1.xsd
+        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
 
 	<!-- Activates scanning of @Autowired -->
 	<context:annotation-config/>
-	<context:component-scan base-package="com.alm.rivaledge.persistence.dao"/>
-	<context:component-scan base-package="com.alm.rivaledge.service"/>
-	<context:component-scan base-package="com.alm.rivaledge.service.impl"/>
-
-	<!-- Test data source -->
-	<!-- We should be using an in-memory database, but getting the data out of -->
-	<!-- the existing LMD database is turning out to be one big whack-a-mole   -->
-	<!-- exercise. Tables and columns popping up from all over the place.      -->
-	<!-- It would take far too much time that I don't have at this stage of    -->
-	<!-- the project sprint. - Jagan (fl867).                                  -->
+	<context:component-scan base-package="com.tf"/>
+	
+	
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
 		<property name="driverClassName"        value="${jdbcTest.driverClassName}"/>
         <property name="url"                    value="${jdbcTest.url}"/>
@@ -29,13 +32,6 @@
         <property name="initialSize" 			value="100"/>
 	</bean>
 	
-	<!-- MyBatis Spring Factory to wire mappers to XML -->
-	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-        <property name="dataSource" ref="dataSource"/>
-        <property name="mapperLocations" value="classpath:lawma0_data/**/*.xml"/>
-    </bean>
-
-	<!-- Scan for mapper definitions -->
-	<mybatis:scan base-package="com.alm.rivaledge.persistence.dao.lawma0_data"/>
+	
     
 </beans>

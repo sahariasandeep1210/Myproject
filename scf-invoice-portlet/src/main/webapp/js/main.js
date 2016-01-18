@@ -5,9 +5,9 @@ $(document).ready(function() {
 	$("#requestFinance").hide();
 	
 	$('ul.nav-pills li a').click(function (e) {
-		  $('ul.nav-pills li.active').removeClass('active')
-		  $(this).parent('li').addClass('active')
-		})
+		  $('ul.nav-pills li.active').removeClass('active');
+		  $(this).parent('li').addClass('active');
+		});
 	$("#updateInvoice").click(function() {
 		$('#wrapperfirst').removeClass('hideclass');
 		$('#myModal').modal('show');

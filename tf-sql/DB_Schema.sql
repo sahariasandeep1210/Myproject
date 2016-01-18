@@ -365,10 +365,5 @@ CREATE TABLE tf_bank_holiday (
   UNIQUE KEY id_UNIQUE (id) 
 ) ;
 
-
-
-
-
-
-
-   
+ALTER TABLE tf_investor
+ADD whitehall_share INT(5);

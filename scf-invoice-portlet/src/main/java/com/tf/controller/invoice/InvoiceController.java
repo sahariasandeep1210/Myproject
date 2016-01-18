@@ -9,7 +9,6 @@ import java.util.List;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
-import javax.portlet.PortletRequest;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 
@@ -35,7 +34,6 @@ import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.util.MimeTypesUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.security.permission.PermissionChecker;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.ServiceContextFactory;
 import com.liferay.portal.theme.ThemeDisplay;
@@ -54,6 +52,7 @@ import com.tf.service.CompanyService;
 import com.tf.service.InvoiceDocumentService;
 import com.tf.service.InvoiceService;
 import com.tf.service.UserService;
+import com.tf.util.LiferayUtility;
 
 /**
  * This controller is responsible for request/response handling on
@@ -79,6 +78,9 @@ public class InvoiceController {
 	
 	@Autowired
 	protected CompanyService companyService;
+	
+	@Autowired
+	protected LiferayUtility liferayUtility;
 
 	@RenderMapping(params = "render=invoiceDocuments")
 	protected ModelAndView renderInvoiceDocumentList(
@@ -86,10 +88,9 @@ public class InvoiceController {
 			RenderRequest request, RenderResponse response) throws Exception {
 		try {
 			List<Company> companyList = new ArrayList<Company>();
-			ThemeDisplay themeDisplay = (ThemeDisplay) request
-					.getAttribute(WebKeys.THEME_DISPLAY);
+			ThemeDisplay themeDisplay = liferayUtility.getThemeDisplay(request);
 			List<InvoiceDocument> invoiceDocumentList = new ArrayList<InvoiceDocument>();
-			if (getPermissionChecker(request).isOmniadmin()) {
+			if (liferayUtility.getPermissionChecker(request).isOmniadmin()) {
 				invoiceDocumentList = invoiceDocumentService
 						.getInvoiceDocuments();
 				companyList = companyService.getCompanies("5");
@@ -163,7 +164,7 @@ public class InvoiceController {
 			List<Invoice> invoices = new ArrayList<Invoice>();
 			ThemeDisplay themeDisplay = (ThemeDisplay) request
 					.getAttribute(WebKeys.THEME_DISPLAY);
-			if (getPermissionChecker(request).isOmniadmin()
+			if (liferayUtility.getPermissionChecker(request).isOmniadmin()
 					|| request.isUserInRole(Constants.WHITEHALL_ADMIN)) {
 				invoices = invoiceService.getInvoices();
 				model.put("userType", Constants.ADMIN);
@@ -231,12 +232,7 @@ public class InvoiceController {
 							invoiceModel.setInvoiceDate(cell.getDateCellValue());
 
 						} else if (index == 2) {
-							cell.setCellType(Cell.CELL_TYPE_STRING);
-							/*if(cell.getCellType()==Cell.CELL_TYPE_STRING){
-								invoiceModel.setSellerCompanyRegistrationNumber(cell.getStringCellValue());
-							}else if(cell.getCellType()==Cell.CELL_TYPE_NUMERIC){
-								invoiceModel.setSellerCompanyRegistrationNumber(cell.getc);
-							}*/
+							cell.setCellType(Cell.CELL_TYPE_STRING);							
 							if(!StringUtils.isNullOrEmpty(cell.getStringCellValue()) && !cell.getStringCellValue().startsWith("0")){
 								//this fix to add 0 as prefix to company number as
 								//companieshouse.gov.uk services has all company number staring from 0
@@ -274,13 +270,8 @@ public class InvoiceController {
 
 			}
 			
-			request.getPortletSession().setAttribute("invoiceDTO", invoice);
-			request.getPortletSession().setAttribute("invoiceList", invoiceList);
-
-			/*if (invoiceList != null && invoiceList.size() > 0) {	
-					invoiceService.addInvoices(invoiceList);				
-					invoiceDocumentService.addInvoiceDocument(invoiceDocument);
-			}	*/
+		request.getPortletSession().setAttribute("invoiceDTO", invoice);
+		request.getPortletSession().setAttribute("invoiceList", invoiceList);		
 		model.put("documentUpload",Boolean.TRUE);
 		model.put("invoicesList",invoiceList);
 		response.setRenderParameter("render","invoiceDocuments");
@@ -335,7 +326,7 @@ public class InvoiceController {
 		invoiceDocument.setUploadedby(userName);
 		invoiceDocument.setDocumentName(invoice.getInvoiceDoc()
 				.getOriginalFilename());
-		invoiceDocument.setDocumentUrl(getUrl(themeDisplay, fileEntry));
+		invoiceDocument.setDocumentUrl(liferayUtility.getDocumentURL(themeDisplay, fileEntry));
 		invoiceDocument.setDocumentType(mimeType);
 
 		if (invoiceList != null && invoiceList.size() > 0) {
@@ -351,32 +342,12 @@ public class InvoiceController {
 	protected void requestFinance(ModelMap model,
 			ActionRequest request, ActionResponse response) throws Exception {
 		String invoiceIds= ParamUtil.getString(request, "invoices");
-		System.out.println("invoiceIds::::"+invoiceIds);
 		if(!StringUtils.isNullOrEmpty(invoiceIds)){
 			List<String> invoicesIdList=Arrays.asList(invoiceIds.split(","));
 			invoiceService.triggerAllotment(invoicesIdList);
 		}
 		
-	}
-
-	private PermissionChecker getPermissionChecker(PortletRequest request) {
-		ThemeDisplay themeDisplay = (ThemeDisplay) request
-				.getAttribute(WebKeys.THEME_DISPLAY);
-		PermissionChecker permissionChecker = themeDisplay
-				.getPermissionChecker();
-		return permissionChecker;
-
-	}
-
-	private String getUrl(ThemeDisplay themeDisplay, FileEntry fileEntry) {
-		StringBuilder sb = new StringBuilder();
-		sb.append(themeDisplay.getPortalURL());
-		sb.append("/c/document_library/get_file?uuid=");
-		sb.append(fileEntry.getUuid());
-		sb.append("&groupId=");
-		sb.append(themeDisplay.getScopeGroupId());
-		return sb.toString();
-	}
+	}	
 	
 	protected Log _log = LogFactoryUtil.getLog(InvoiceController.class.getName());
 }

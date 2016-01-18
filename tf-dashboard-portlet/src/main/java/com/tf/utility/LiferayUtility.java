@@ -27,7 +27,6 @@ public class LiferayUtility {
         for(Portlet portlet : portletList){
         	if(portlet.getPortletName().equalsIgnoreCase(portletName)){
         		portletId =  portlet.getPortletId();     
-        		System.out.println("portletId:::::::::::::::::::::"+portletId);
         		break;
         	}                     
         }

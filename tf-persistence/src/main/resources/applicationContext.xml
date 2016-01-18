@@ -25,11 +25,7 @@
 	<context:component-scan base-package="com.tf.service"/>
 	<context:component-scan base-package="com.tf.service.impl"/>
 	
-	    <!-- <bean id="propertyConfigurer"
-        class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"
-         p:location="classpath:/jdbc.properties" />  -->
-        
-      <!--   p:location="classpath*:jdbc.properties" /> classpath:/foo/bar.properties. -->
+
         
         <bean id="dataSource"
         class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close"

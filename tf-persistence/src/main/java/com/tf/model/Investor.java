@@ -22,7 +22,7 @@ import javax.persistence.Table;
 public class Investor  implements Serializable{
 	
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 220656777841228133L;
 
 
 	@Id
@@ -37,6 +37,10 @@ public class Investor  implements Serializable{
 	
 	@Column(name="create_date")
 	private Date createDate;
+	
+	
+	@Column(name="whitehall_share")
+	private Integer whitehallShare;
 	
 	@OneToMany(mappedBy = "investor",cascade=CascadeType.ALL)      
 	private Set<InvestorPortfolio> investorPortfolios;
@@ -77,13 +81,21 @@ public class Investor  implements Serializable{
 		this.investorPortfolios = investorPortfolios;
 	}
 
+	public Integer getWhitehallShare() {
+		return whitehallShare;
+	}
+
+	public void setWhitehallShare(Integer whitehallShare) {
+		this.whitehallShare = whitehallShare;
+	}
+
 	@Override
 	public String toString() {
 		return "Investor [investorId=" + investorId + ", company=" + company
-				+ ", createDate=" + createDate + "]";
+				+ ", createDate=" + createDate + ", whitehallShare="
+				+ whitehallShare + ", investorPortfolios=" + investorPortfolios
+				+ "]";
 	}
-	
-	
 	
 	
 

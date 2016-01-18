@@ -17,6 +17,7 @@ import com.tf.dao.UserDAO;
 import com.tf.model.Investor;
 import com.tf.model.InvestorPortfolio;
 import com.tf.persistance.util.DashboardModel;
+import com.tf.persistance.util.InvestorDTO;
 import com.tf.persistance.util.InvestorProtfolioDTO;
 
 @Repository
@@ -278,6 +279,24 @@ public class InvestorDAOImpl extends BaseDAOImpl<InvestorPortfolio, Long>   impl
 			throw re;
 		}
 
+	}
+	
+	
+	public List<InvestorDTO> getInvestorDetails(){
+		List<InvestorDTO>  list = new ArrayList<InvestorDTO>();
+		InvestorDTO investor ;
+		List<Object[]> investorArray = sessionFactory
+				.getCurrentSession()
+				.createSQLQuery(
+						"SELECT inv.investor_id, cmp.name,inv.whitehall_share FROM tf_investor inv,tf_company cmp WHERE inv.company_id=cmp.idcompany").list();
+		for (Object[] row : investorArray) {
+			investor=new InvestorDTO();
+			investor.setInvestorID(Long.valueOf(row[0].toString()));
+			investor.setName(row[1].toString());
+			investor.setWhitehallShare(row[2]!=null ?Integer.valueOf(row[2].toString()):null);
+			list.add(investor);
+		}
+		return list;
 	}
 	
 	public InvestorPortfolio  loadInvestorPortfolio(long protfolioID){

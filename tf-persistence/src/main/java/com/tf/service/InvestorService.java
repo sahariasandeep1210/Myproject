@@ -6,6 +6,7 @@ import java.util.Map;
 
 import com.tf.model.InvestorPortfolio;
 import com.tf.persistance.util.DashboardModel;
+import com.tf.persistance.util.InvestorDTO;
 
 public interface InvestorService {
 	
@@ -32,5 +33,7 @@ public interface InvestorService {
 	public 	List<InvestorPortfolio>  findTotalCreditLineBreakDown(long scfCompany);
 	
 	public 	List<InvestorPortfolio>  findAllInvestorProtFolios();
+	
+	public List<InvestorDTO> getInvestorDetails();
 
 }

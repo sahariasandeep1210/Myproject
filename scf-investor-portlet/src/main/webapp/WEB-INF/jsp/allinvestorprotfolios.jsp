@@ -38,8 +38,7 @@
 							placeholder="Utilised" disabled></th>
 						<th><input type="text" class="form-control"
 							placeholder="Available" disabled></th>
-						<th><!-- <input type="text" class="form-control"
-							placeholder="Trade Live Count" disabled></th> -->
+					
 					</tr>
 				</thead>
 				<tbody>
@@ -54,7 +53,7 @@
 									test="${currentInvestor ne investorProt.investor.company.name}">
 									<tr class="highlightrow">
 										<td colspan="6">${investorProt.investor.company.name}</td>
-										<td></td>
+										
 									</tr>
 									<c:set var="currentInvestor"
 										value="${investorProt.investor.company.name}" />

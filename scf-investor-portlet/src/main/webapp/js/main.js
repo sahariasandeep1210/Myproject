@@ -104,7 +104,6 @@ $(document).ready(function() {
     	  var showModel=false;
     	  $('.parentclass :input').each(function() {
     		   currentValue=$(this).val();
-    		   console.log("currentValue::::"+currentValue+":**:done");
     	        if(currentValue!='' &&  currentValue!=null && currentValue!='null'){
     	        	showModel=true;
     	        	return false;

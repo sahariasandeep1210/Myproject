@@ -15,6 +15,7 @@ import com.tf.dao.InvestorHistoryDAO;
 import com.tf.model.InvestorPortfolio;
 import com.tf.model.InvestorPortfolioHistory;
 import com.tf.persistance.util.DashboardModel;
+import com.tf.persistance.util.InvestorDTO;
 import com.tf.service.InvestorService;
 
 @Service
@@ -118,5 +119,10 @@ public class InvestorServiceImpl implements InvestorService {
 
 	public 	List<InvestorPortfolio>  findAllInvestorProtFolios(){
 		return investorDAO.findAllInvestorProtFolios();
+	}
+
+	public List<InvestorDTO> getInvestorDetails() {
+		// TODO Auto-generated method stub
+		return investorDAO.getInvestorDetails();
 	}
 }

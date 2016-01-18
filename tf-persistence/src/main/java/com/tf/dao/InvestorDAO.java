@@ -6,6 +6,7 @@ import java.util.Map;
 
 import com.tf.model.InvestorPortfolio;
 import com.tf.persistance.util.DashboardModel;
+import com.tf.persistance.util.InvestorDTO;
 import com.tf.persistance.util.InvestorProtfolioDTO;
 
 public interface InvestorDAO extends BaseDAO<InvestorPortfolio, Long> {
@@ -35,5 +36,7 @@ public interface InvestorDAO extends BaseDAO<InvestorPortfolio, Long> {
 	public InvestorPortfolio  loadInvestorPortfolio(long protfolioID);
 	
 	public 	List<InvestorPortfolio>  findAllInvestorProtFolios();
+	
+	public List<InvestorDTO> getInvestorDetails();
 
 }
