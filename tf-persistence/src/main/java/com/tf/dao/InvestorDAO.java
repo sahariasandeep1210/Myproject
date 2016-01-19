@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
+import com.tf.model.Investor;
 import com.tf.model.InvestorPortfolio;
 import com.tf.persistance.util.DashboardModel;
 import com.tf.persistance.util.InvestorDTO;
@@ -38,5 +39,7 @@ public interface InvestorDAO extends BaseDAO<InvestorPortfolio, Long> {
 	public 	List<InvestorPortfolio>  findAllInvestorProtFolios();
 	
 	public List<InvestorDTO> getInvestorDetails();
+
+	public void updateInvestorDetails(List<InvestorDTO> investors);
 
 }

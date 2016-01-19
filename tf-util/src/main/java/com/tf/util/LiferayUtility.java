@@ -2,6 +2,7 @@ package com.tf.util;
 
 import java.util.List;
 
+import javax.portlet.ActionRequest;
 import javax.portlet.PortletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,9 +16,13 @@ import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.Portlet;
 import com.liferay.portal.security.permission.PermissionChecker;
 import com.liferay.portal.service.PortletLocalServiceUtil;
+import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.service.ServiceContextFactory;
+import com.liferay.portal.service.UserServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.portlet.PortletURLFactoryUtil;
+import com.tf.model.User;
 import com.tf.service.UserService;
 
 @Component
@@ -79,5 +84,47 @@ public class LiferayUtility {
 		sb.append(themeDisplay.getScopeGroupId());
 		return sb.toString();
 	}
+	
+	public com.liferay.portal.model.User addLiferayUser(User user,
+			ActionRequest request) throws PortalException, SystemException {
+		ThemeDisplay themeDisplay=(ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);	
+		
+		boolean autoPassword = true;
+		String password1 = null;
+		String password2 = null;
+		boolean autoScreenName = false;
+		String screenName = user.getUsername();
+		String emailAddress = user.getEmail();
+		long facebookId = 0l;
+		String openId = null;
+		String firstName = user.getFirstName();
+		String middleName =  user.getMiddleName();
+		String lastName =  user.getLastName();
+		int prefixId = 0;
+		int suffixId = 0;
+		boolean male = true;
+		//this is just dummy value 
+		int birthdayMonth =2;
+		int birthdayDay = 2;
+		int birthdayYear = 1988;
+		String jobTitle = user.getLevel();
+		long[] groupIds = null;
+		long[] organizationIds = null;
+		long[] roleIds = null;
+		long[] userGroupIds = null;
+		boolean sendEmail = true;
+
+		ServiceContext serviceContext = ServiceContextFactory.getInstance(
+				com.liferay.portal.model.User.class.getName(), request);
+		com.liferay.portal.model.User lruser = UserServiceUtil.addUserWithWorkflow(
+					themeDisplay.getCompany().getCompanyId(), autoPassword, password1, password2,
+					autoScreenName, screenName, emailAddress, facebookId, openId,
+					themeDisplay.getLocale(), firstName, middleName, lastName, prefixId,
+					suffixId, male, birthdayMonth, birthdayDay, birthdayYear, jobTitle,
+					groupIds, organizationIds, roleIds, userGroupIds, sendEmail,
+					serviceContext);
+		return lruser;
+	}
+	
 
 }

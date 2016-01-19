@@ -78,8 +78,8 @@
 			</table>
 		</div>
 		<c:if test="${permissionChecker.isOmniadmin()}">
-		<div class="row-fluid" id="yui_patched_v3_11_0_1_1442485862967_504">
-			<div class="span6" id="yui_patched_v3_11_0_1_1442485862967_503">
+		<div class="row-fluid" >
+			<div class="span6" >
 				<a
 					href="${createURL}"
 					class="btn btn-primary" style="color: #fff; font-weight: bold;"><i

@@ -35,5 +35,7 @@ public interface InvestorService {
 	public 	List<InvestorPortfolio>  findAllInvestorProtFolios();
 	
 	public List<InvestorDTO> getInvestorDetails();
+	
+	public void updateInvestorDetails(List<InvestorDTO> investors); 
 
 }

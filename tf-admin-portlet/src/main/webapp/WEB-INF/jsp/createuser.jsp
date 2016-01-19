@@ -17,9 +17,19 @@
 <portlet:renderURL var="defaultRender">
 </portlet:renderURL>
 
+
+
 <portlet:resourceURL id="fetchOfficerInfo" var="fetchOfficerInfoURL" ></portlet:resourceURL> 
 
 <div class="alert alert-danger" id="errorMsg"><i class="icon-remove-sign icon-2"></i> </div>
+<liferay-ui:error 	key="error-user-email">
+	<liferay-ui:message key="user.email.error"  arguments="${userModel.email}"></liferay-ui:message>
+</liferay-ui:error>
+<liferay-ui:error 	key="error-user-screenname">
+	<liferay-ui:message key="user.screenname.error"  arguments="${userModel.username}"></liferay-ui:message>
+</liferay-ui:error>
+
+<liferay-ui:error key="default-error-message" 		message="default.error.message" /> 
 
 <div class="container-fluid">
 	<form:form commandName="userModel" method="post"

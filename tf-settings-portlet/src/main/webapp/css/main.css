@@ -2,10 +2,7 @@ table {
 	width: 100%;
 }
 
-table thead th:first-child {
-	width: 5%;
-}
 
-.aui input, .aui textarea, .aui .uneditable-input {
+/* .aui input, .aui textarea, .aui .uneditable-input {
     width: 50px!important;
-}
+} */

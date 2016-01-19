@@ -305,4 +305,25 @@ public class InvestorDAOImpl extends BaseDAOImpl<InvestorPortfolio, Long>   impl
 	}
 
 
+	
+
+
+	public void updateInvestorDetails(List<InvestorDTO> investors) {
+		try {
+			Session session=sessionFactory.getCurrentSession();
+			Investor inv;
+			for(InvestorDTO investor: investors){	
+				inv=findByInvestorId(investor.getInvestorID());
+				inv.setWhitehallShare(investor.getWhitehallShare());
+				session.update(inv);
+			}
+			_log.debug("Invoices updated successful");
+		} catch (RuntimeException re) {
+			_log.error("update failed", re);
+			throw re;
+		}
+		
+	}
+
+
 }

@@ -125,4 +125,8 @@ public class InvestorServiceImpl implements InvestorService {
 		// TODO Auto-generated method stub
 		return investorDAO.getInvestorDetails();
 	}
+
+	public void updateInvestorDetails(List<InvestorDTO> investors) {
+		 investorDAO.updateInvestorDetails(investors);		
+	}
 }

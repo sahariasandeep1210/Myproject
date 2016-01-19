@@ -1,5 +1,6 @@
 package com.tf.registration.service.impl;
 
+import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -31,6 +32,7 @@ public class RegistrationServiceImpl implements RegistrationService {
 	private CompanyService companyService;
 
 	@Override
+	@Transactional
 	public String registerCompany(Registration registration,
 			ThemeDisplay themeDisplay, User user, ServiceContext serviceContext)
 			throws PortalException, SystemException {
@@ -45,7 +47,9 @@ public class RegistrationServiceImpl implements RegistrationService {
 		user.setLiferayUserId(lruser.getUserId());		
 		Company company = registration.getCompany();
 		if(company!=null && "1".equals(company.getCompanyType())){
-			 company.setInvestor(new Investor());
+			  Investor investor=new Investor();
+			  investor.setCreateDate(new Date());
+			 company.setInvestor(investor);
 			 company.getInvestor().setCompany(company);
 		 }
 		company.getAddress().setCompany(company);

@@ -7,6 +7,13 @@ $(document).ready(function() {
 		  $(this).parent('li').addClass('active');
 	});
 	
+	$("#updateSettings").click(function (){
+		var updateURL=$("#saveURL").val();
+		document.forms["investotForm"].action = updateURL;
+		document.forms["investotForm"].submit();
+	});
+	
+	
 	
 	//currently not in used
 	$("#settings").change(function() {

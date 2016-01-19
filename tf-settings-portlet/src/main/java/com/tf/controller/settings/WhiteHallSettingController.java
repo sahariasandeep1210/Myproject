@@ -1,8 +1,11 @@
 package com.tf.controller.settings;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.portlet.ActionRequest;
+import javax.portlet.ActionResponse;
 import javax.portlet.PortletConfig;
 import javax.portlet.PortletRequest;
 import javax.portlet.RenderRequest;
@@ -16,6 +19,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.portlet.ModelAndView;
+import org.springframework.web.portlet.bind.annotation.ActionMapping;
 import org.springframework.web.portlet.bind.annotation.RenderMapping;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 
@@ -25,7 +29,10 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.util.JavaConstants;
 import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.theme.ThemeDisplay;
 import com.tf.dto.InvestorModel;
+import com.tf.model.Investor;
 import com.tf.model.InvestorPortfolioHistory;
 import com.tf.persistance.util.InvestorDTO;
 import com.tf.service.InvestorService;
@@ -80,6 +87,18 @@ public class WhiteHallSettingController {
 		return new ModelAndView(INVESTOR, model);		
 	}
 	
+	@ActionMapping(params="action=saveInvestorSettings")
+	protected void updateInvestorSettings(@ModelAttribute("investorModel")InvestorModel  investorModel,
+												 ModelMap model, 
+												 ActionRequest request,
+												 ActionResponse response) throws Exception {
+		investorService.updateInvestorDetails(investorModel.getInvestorDTO());		
+		response.setRenderParameter("render", "investorSettings");
+		
+	}
+	
+	
+
 	@ResourceMapping
 	public ModelAndView fetchSettings(ResourceRequest request, ResourceResponse response, ModelMap modelMap)throws IOException {
 		String userSelection = ParamUtil.getString(request, "userSelection","");
