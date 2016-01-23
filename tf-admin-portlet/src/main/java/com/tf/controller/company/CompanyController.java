@@ -195,17 +195,18 @@ public class CompanyController extends BaseController {
 												 ModelMap model, 
 												 ActionRequest request,
 											 ActionResponse response) throws Exception {
-		try{
 		boolean createUser=false;
 		ThemeDisplay themeDisplay=(ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);
 		Long companyID = ParamUtil.getLong(request, "companyID");
 		Long officerId = ParamUtil.getLong(request, "officer",0);
+		try{		
 		user.setCompany(companyService.findById(companyID));
-		companyutilityService.addUserInformation(user, request, createUser, themeDisplay, officerId);
+		liferayService.addUserInformation(user, request, createUser, themeDisplay, officerId);
 		response.setRenderParameter("companyID", companyID.toString());
 		response.setRenderParameter("render", "createCompany");
 		
 		}catch(PortalException e){
+			response.setRenderParameter("companyID", companyID.toString());
 			model.put("userModel", user);
 			if(e instanceof DuplicateUserEmailAddressException){
 				SessionErrors.add(request, "error-user-email");

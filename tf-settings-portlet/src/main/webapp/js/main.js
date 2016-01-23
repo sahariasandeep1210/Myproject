@@ -9,9 +9,11 @@ $(document).ready(function() {
 	
 	$("#updateSettings").click(function (){
 		var updateURL=$("#saveURL").val();
-		document.forms["investotForm"].action = updateURL;
-		document.forms["investotForm"].submit();
+		document.forms["settingForm"].action = updateURL;
+		document.forms["settingForm"].submit();
 	});
+	
+	
 	
 	
 	
@@ -55,7 +57,10 @@ function enableTab(){
 		$("#generalSettings").addClass("active");
 	}else if(curentTab=='investor'){
 		$("#investorSettings").addClass("active");
-	}else{
-		$("#generalSettings").addClass("active");
+	}else if(curentTab=='seller'){
+		$("#sellerSetings").addClass("active");
+	}
+	else{
+		$("#investorSettings").addClass("active");
 	}	
 }

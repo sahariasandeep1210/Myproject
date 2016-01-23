@@ -23,6 +23,7 @@
 		<mapping class="com.tf.model.InvestorPortfolio" /> 
 		<mapping class="com.tf.model.Allotment" /> 
 		<mapping class="com.tf.model.InvestorPortfolioHistory" /> 
+		<mapping class="com.tf.model.SellerSetting" /> 
 	</session-factory>
 
 </hibernate-configuration>

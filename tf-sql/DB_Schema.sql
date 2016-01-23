@@ -321,18 +321,19 @@ CREATE TABLE tf_investor_portfolio_history (
   ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ;
 
-DROP TABLE IF EXISTS `tf_allotments`;
-
-CREATE TABLE `tf_allotments` (
-  `allotment_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `trade_id` bigint(20) DEFAULT NULL,
-  `investor_portfolio_id` bigint(20) DEFAULT NULL,
-  `allotment_amount` decimal(10,0) DEFAULT NULL,
-  `noofdays` int(11) DEFAULT NULL,
-  `is_primary` tinyint(1) DEFAULT '1',
-  `user_id` bigint(20) DEFAULT NULL,
-  `market_discount` int(11) DEFAULT NULL,
-  `allotment_date` datetime DEFAULT NULL,
+DROP TABLE IF EXISTS tf_allotments;
+CREATE TABLE tf_allotments(
+  allotment_id bigint(20) NOT NULL AUTO_INCREMENT,
+  trade_id bigint(20) DEFAULT NULL,
+  investor_portfolio_id bigint(20) DEFAULT NULL,
+  allotment_amount decimal(10,0) DEFAULT NULL,
+  noofdays int(11) DEFAULT NULL,
+  is_primary tinyint(1) DEFAULT '1',
+  user_id bigint(20) DEFAULT NULL,
+  market_discount int(11) DEFAULT NULL,
+  investor_gross_profit  DECIMAL, 
+  investor_gross_profit  DECIMAL,     
+  allotment_date datetime DEFAULT NULL,
   PRIMARY KEY (`allotment_id`),
   UNIQUE KEY `allotment_id_UNIQUE` (`allotment_id`),
   KEY `fk_allotment_trade_id` (`trade_id`),
@@ -367,3 +368,13 @@ CREATE TABLE tf_bank_holiday (
 
 ALTER TABLE tf_investor
 ADD whitehall_share INT(5);
+
+
+DROP TABLE IF EXISTS tf_seller_setting;
+CREATE TABLE tf_seller_setting (
+  id  BIGINT(20) NOT NULL AUTO_INCREMENT,  
+  seller_transaction_fee INT(11) DECIMAL,  
+  seller_finance_fee INT(11) DECIMAL,     
+  PRIMARY KEY (id),  
+  UNIQUE KEY id_UNIQUE (id) 
+) ;

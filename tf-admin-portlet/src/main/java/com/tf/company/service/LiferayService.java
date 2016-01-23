@@ -7,7 +7,7 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.tf.model.User;
 
-public interface CompanyService {
+public interface LiferayService {
 	
 	public void addUserInformation(User user, ActionRequest request,
 			boolean createUser, ThemeDisplay themeDisplay, Long officerId)

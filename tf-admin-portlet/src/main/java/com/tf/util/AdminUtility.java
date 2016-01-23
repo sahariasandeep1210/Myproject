@@ -17,8 +17,6 @@ public class AdminUtility {
 	
 	public Map<String,String> getUserTypes(long  userId,String companyType,PortletRequest request){
 		Map<String,String> map = new LinkedHashMap<String, String>();
- 		ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);
-		PermissionChecker permissionChecker = themeDisplay.getPermissionChecker();	
 		 if("SCF Company".equalsIgnoreCase(companyType) ||  request.isUserInRole("SCF Admin")){
 			addSCFUserTypes(map);
 		} else if(request.isUserInRole("Primary Investor Admin")){
@@ -35,14 +33,7 @@ public class AdminUtility {
 			addSellerUserTypes(map);
 			addPriInvestorUserTypes(map);
 			addSecInvestorUserTypes(map);
-		}
-			/*if(permissionChecker.isOmniadmin() || permissionChecker.isGroupAdmin(themeDisplay.getLayout().getGroupId()) || "Admin".equals(companyType)){
-			addTFUserTypes(map);
-			addSellerUserTypes(map);
-			addPriInvestorUserTypes(map);
-			addSCFUserTypes(map);
-			addSecInvestorUserTypes(map);
-		} */
+		}			
 		return map;
 		
 	}
@@ -79,8 +70,8 @@ public class AdminUtility {
 	}
 	
 	private   Map<String,String> addSCFUserTypes(Map<String,String> map){
-		map.put("SCF User","SCF User");
-		map.put("SCF Admin","SCF Admin");		
+		map.put("SCF Company User","SCF Company User");
+		map.put("SCF Company Admin","SCF Company Admin");		
 		return map;			
 	}
 	

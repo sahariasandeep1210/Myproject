@@ -56,6 +56,24 @@ public class UserDAOImpl extends BaseDAOImpl<User, Long>  implements UserDAO{
 		}
 	}
 	
+	public Object[] getUserTypeAndLifearyID(long id) {
+		_log.debug("getting User instance with id: " + id);
+		try {
+			Query query =sessionFactory.getCurrentSession().createQuery("SELECT type, liferayUserId  FROM User where id = :id").setLong("id",id);
+			Object[] array = (Object[]) query.list().get(0);
+			
+			if (array == null) {
+				_log.debug("get successful, no instance found");
+			} else {
+				_log.debug("get successful, instance found");
+			}
+			return array;
+		} catch (RuntimeException re) {
+			_log.error("get failed", re);
+			throw re;
+		}
+	}
+	
 	@SuppressWarnings("unchecked")
 	public List<User> findUserByCompanyId(long id) {
 		_log.debug("getting User instance with id: " + id);

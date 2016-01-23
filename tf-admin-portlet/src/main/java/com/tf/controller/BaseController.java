@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.InitBinder;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.tf.company.service.LiferayService;
 import com.tf.model.CompanyType;
 import com.tf.service.CompanyService;
 import com.tf.service.CompanyServices;
@@ -33,7 +34,7 @@ public class BaseController {
 	protected CompanyService companyService;
 	
 	@Autowired
-	protected com.tf.company.service.CompanyService companyutilityService;
+	protected LiferayService liferayService;
 	
 	@Autowired
 	private  CompanyTypeService companyTypeService;

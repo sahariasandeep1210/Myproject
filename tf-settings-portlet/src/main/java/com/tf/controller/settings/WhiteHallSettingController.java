@@ -1,7 +1,6 @@
 package com.tf.controller.settings;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.portlet.ActionRequest;
@@ -29,13 +28,11 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.util.JavaConstants;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.theme.ThemeDisplay;
 import com.tf.dto.InvestorModel;
-import com.tf.model.Investor;
-import com.tf.model.InvestorPortfolioHistory;
+import com.tf.model.SellerSetting;
 import com.tf.persistance.util.InvestorDTO;
 import com.tf.service.InvestorService;
+import com.tf.service.SettingService;
 
 /**
  * This controller is responsible for request/response handling on
@@ -58,21 +55,25 @@ public class WhiteHallSettingController {
 	@Autowired
 	private InvestorService investorService;
 	
+	@Autowired
+	private SettingService settingService;
+	
 
-	@RenderMapping
-	protected ModelAndView renderWhitehallSettings(ModelMap model,RenderRequest request, RenderResponse response) throws Exception {		
+	
+	
+	@RenderMapping(params = "render=generalsetting")
+	protected ModelAndView renderGenraletings(ModelMap model,RenderRequest request, RenderResponse response) throws Exception {		
 		_log.info("Render WhiteHall Settings Screen");
-		try {
-			
+		try {			
 			model.put(ACTIVETAB, GENERAL_SETTINGS);
 		} catch (Exception e) {
 			SessionErrors.add(request, "default-error-message");
-			_log.error("WhiteHallSettingController.renderWhitehallSettings() - error occured while rendering Whitehall Settings Screen"+e.getMessage());
+			_log.error("WhiteHallSettingController.renderSellerSetings() - error occured while rendering Whitehall Settings Screen"+e.getMessage());
 		}
 		return new ModelAndView(GENERAL_SETTINGS, model);		
 	}
 	
-	@RenderMapping(params = "render=investorSettings")
+	@RenderMapping
 	protected ModelAndView renderInvestorSettings(@ModelAttribute("investorModel")InvestorModel  investorModel,ModelMap model,RenderRequest request, RenderResponse response) throws Exception {		
 		_log.info("Render WhiteHall Settings Screen");
 		try {
@@ -96,6 +97,32 @@ public class WhiteHallSettingController {
 		response.setRenderParameter("render", "investorSettings");
 		
 	}
+	
+	@RenderMapping(params = "render=sellerSetings")
+	protected ModelAndView renderSellerSetings(@ModelAttribute("sellerDTO")SellerSetting  sellerDTO,ModelMap model,RenderRequest request, RenderResponse response) throws Exception {		
+		_log.info("Render WhiteHall Settings Screen");
+		try {			
+			model.put(ACTIVETAB, SELLER);
+			model.put("sellerDTO", sellerDTO);	
+		} catch (Exception e) {
+			SessionErrors.add(request, "default-error-message");
+			_log.error("WhiteHallSettingController.renderSellerSetings() - error occured while rendering Whitehall Settings Screen"+e.getMessage());
+		}
+		return new ModelAndView(SELLER, model);		
+	}
+	
+	@ActionMapping(params="action=saveSellerSettings")
+	protected void saveSellerSettings(@ModelAttribute("sellerDTO")SellerSetting  sellerDTO,
+												 ModelMap model, 
+												 ActionRequest request,
+												 ActionResponse response) throws Exception {
+		System.out.println("sellerDTO::"+sellerDTO);
+		settingService.saveSellerSettings(sellerDTO);
+		response.setRenderParameter("render", "sellerSetings");
+		
+	}
+	
+
 	
 	
 

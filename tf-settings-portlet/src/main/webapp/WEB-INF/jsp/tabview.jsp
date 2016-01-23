@@ -1,10 +1,10 @@
 <%@include file="init.jsp"%>
 
 <portlet:renderURL var="generalSettingsURL">
+	<portlet:param name="render" value="generalsetting" />
 </portlet:renderURL>
 
 <portlet:renderURL var="investorSettingsURL">
-	<portlet:param name="render" value="investorSettings" />
 </portlet:renderURL>
 
 <portlet:renderURL var="sellerSetingsURL">
@@ -20,9 +20,9 @@
 </form>
 
 
-<ul class="nav nav-tabs">
-	<li class="tab" id="generalSettings"><a href="${generalSettingsURL}"><liferay-ui:message key='general' /> <liferay-ui:message key='settings' /></a></li>
+<ul class="nav nav-tabs">	
 	<li class="tab" id="investorSettings"><a	href="${investorSettingsURL}"><liferay-ui:message key='investor' /> <liferay-ui:message key='settings' /></a></li>
 	<li class="tab" id="sellerSetings"><a	href="${sellerSetingsURL}"><liferay-ui:message key='seller' /> <liferay-ui:message key='settings' /> </a></li>
 	<li class="tab" id="scfSettings"><a	href="${scfSettingsURL}"><liferay-ui:message key='scf.company' /> <liferay-ui:message key='settings' /></a></li>
+	<li class="tab" id="generalSettings"><a href="${generalSettingsURL}"><liferay-ui:message key='general' /> <liferay-ui:message key='settings' /></a></li>
 </ul>

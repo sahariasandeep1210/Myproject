@@ -25,7 +25,7 @@
 		</div>
 	</div>
 	<form:form method="post" commandName="investorModel"
-		class="form-horizontal" name="investotForm">
+		class="form-horizontal" name="settingForm">
 		<input type="hidden" value="${saveInvestorSettings}" id="saveURL" />
 		<div class="row-fluid">
 			<div class="span6">

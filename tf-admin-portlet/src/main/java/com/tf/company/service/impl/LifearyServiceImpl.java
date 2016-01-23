@@ -1,4 +1,4 @@
-package com.tf.service.impl;
+package com.tf.company.service.impl;
 
 import javax.portlet.ActionRequest;
 
@@ -12,7 +12,7 @@ import com.liferay.portal.model.Role;
 import com.liferay.portal.service.RoleLocalServiceUtil;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
-import com.tf.company.service.CompanyService;
+import com.tf.company.service.LiferayService;
 import com.tf.model.Officer;
 import com.tf.model.User;
 import com.tf.service.OfficerService;
@@ -23,7 +23,7 @@ import com.tf.util.LiferayUtility;
 
 @Transactional(rollbackFor = Exception.class)
 @Service
-public class CompanyServiceImpl implements CompanyService {
+public class LifearyServiceImpl implements LiferayService {
 	
 	@Autowired
 	protected LiferayUtility liferayUtility;
@@ -44,7 +44,19 @@ public class CompanyServiceImpl implements CompanyService {
 			UserLocalServiceUtil.addRoleUser(role.getRoleId(), lruser.getUserId());
 			UserLocalServiceUtil.updateUser(lruser);
 			user.setLiferayUserId(lruser.getUserId());
+		}else {
+			//this code need some refractoring 
+			Object[] savedUser=userService.getUserTypeAndLifearyID(user.getId());
+			if(user.getType()!=null && !user.getType().equals(savedUser[0]!=null?savedUser[0].toString():"")){
+				//user type has been changed in that case should roles need to be updated
+				com.liferay.portal.model.User lruser=UserLocalServiceUtil.getUser(savedUser[1]!=null?Long.valueOf(savedUser[1].toString()):0);
+				Role role =RoleLocalServiceUtil.getRole(themeDisplay.getCompanyId(), user.getType());
+				UserLocalServiceUtil.addRoleUser(role.getRoleId(), lruser.getUserId());
+				UserLocalServiceUtil.updateUser(lruser);
+			}
+			
 		}
+		
 		//Liferay user has been added now we need to add user information to tf_user table
 		//and map the same to Liferay userId and Company/Seller
 		user.setActive(Boolean.FALSE);

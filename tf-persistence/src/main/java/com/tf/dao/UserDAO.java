@@ -18,5 +18,7 @@ public interface UserDAO {
 	public long  getUserbyLiferayUserID(long id);
 	
 	public Company  getCompanybyUserID(long id);
+	
+	public Object[] getUserTypeAndLifearyID(long id) ;
 
 }
