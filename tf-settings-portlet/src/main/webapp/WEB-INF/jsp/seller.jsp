@@ -27,7 +27,7 @@
 	<form:form method="post" commandName="sellerDTO"
 		class="form-horizontal" name="settingForm">
 		<input type="hidden" value="${saveSellerSettings}" id="saveURL" />
-		<input type="hidden" value="${ssellerDTO.id}" name="id" />
+		<input type="hidden" value="${sellerDTO.id}" name="id" />
 		
 		
 

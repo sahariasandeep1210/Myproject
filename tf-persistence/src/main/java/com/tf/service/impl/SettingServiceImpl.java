@@ -17,4 +17,8 @@ public class SettingServiceImpl implements SettingService {
 		settingDAO.saveSellerSettings(sellerDTO);
 	}
 
+	public SellerSetting getSellerSettings() {
+		return settingDAO.getSellerSettings();		
+	}
+
 }

@@ -10,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -20,16 +21,16 @@ import javax.persistence.TemporalType;
 @Table(name="tf_allotments")
 public class Allotment implements Serializable {
 	
-	
-	private static final long serialVersionUID = 8986830734020138171L;
+
+	private static final long serialVersionUID = -4644634014660010781L;
 
 	@Id
     @Column(name="allotment_id")
     @GeneratedValue
 	private Long allotmentId;
 	
-	@OneToOne(cascade=CascadeType.ALL)
-	@JoinColumn(name = "trade_id")  
+	@ManyToOne(cascade=CascadeType.ALL)	
+    @JoinColumn(name = "trade_id")
 	private  SCFTrade scfTrade;
 	
 	@OneToOne(cascade=CascadeType.ALL)
@@ -51,6 +52,15 @@ public class Allotment implements Serializable {
 	
 	@Column(name="market_discount")
 	private Integer marketDiscount;
+	
+	@Column(name="investor_gross_profit")
+	private BigDecimal investorGrossProfit;
+	
+	@Column(name="whitehall_profit_share")
+	private BigDecimal whitehallProfitShare;
+	
+	@Column(name="investor_net_profit")
+	private BigDecimal investorNetProfit;
 	
 	@Column(name="allotment_date")
 	@Temporal(TemporalType.TIMESTAMP)
@@ -131,14 +141,41 @@ public class Allotment implements Serializable {
 		this.allotmentDate = allotmentDate;
 	}
 
+	public BigDecimal getInvestorGrossProfit() {
+		return investorGrossProfit;
+	}
+
+	public void setInvestorGrossProfit(BigDecimal investorGrossProfit) {
+		this.investorGrossProfit = investorGrossProfit;
+	}
+
+	public BigDecimal getWhitehallProfitShare() {
+		return whitehallProfitShare;
+	}
+
+	public void setWhitehallProfitShare(BigDecimal whitehallProfitShare) {
+		this.whitehallProfitShare = whitehallProfitShare;
+	}
+
+	public BigDecimal getInvestorNetProfit() {
+		return investorNetProfit;
+	}
+
+	public void setInvestorNetProfit(BigDecimal investorNetProfit) {
+		this.investorNetProfit = investorNetProfit;
+	}
+
 	@Override
 	public String toString() {
 		return "Allotment [allotmentId=" + allotmentId + ", scfTrade="
 				+ scfTrade + ", investorPortfolio=" + investorPortfolio
 				+ ", allotmentAmount=" + allotmentAmount + ", noOfdays="
 				+ noOfdays + ", isPrimary=" + isPrimary + ", userId=" + userId
-				+ ", marketDiscount=" + marketDiscount + ", allotmentDate="
-				+ allotmentDate + "]";
+				+ ", marketDiscount=" + marketDiscount
+				+ ", investorGrossProfit=" + investorGrossProfit
+				+ ", whitehallProfitShare=" + whitehallProfitShare
+				+ ", investorNetProfit=" + investorNetProfit
+				+ ", allotmentDate=" + allotmentDate + "]";
 	}
 	
 

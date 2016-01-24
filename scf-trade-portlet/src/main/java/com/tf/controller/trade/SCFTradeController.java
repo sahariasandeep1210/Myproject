@@ -120,16 +120,19 @@ public class SCFTradeController {
 	protected ModelAndView renderTradeList(ModelMap model,
 			RenderRequest request, RenderResponse response) throws Exception {
 		List<SCFTrade> scftrades=null;
+		String viewName="";
 		ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);
 		PermissionChecker permissionChecker = themeDisplay.getPermissionChecker();
 		if(permissionChecker.isOmniadmin() ){
 			scftrades=scfTradeService.getScfTrades();
+			viewName="admintradelist";
 		}else if(request.isUserInRole(Constants.SCF_ADMIN)){
 			long companyId=userService.getCompanybyUserID(themeDisplay.getUserId()).getId();
 			scftrades=scfTradeService.getScfTrades(companyId);
+			viewName="tradelist";
 		}		 
 		model.put("trades", scftrades);
-		return new ModelAndView("tradelist", model);
+		return new ModelAndView(viewName, model);
 	}
 	
 	@RenderMapping(params="render=createTrade")
@@ -138,10 +141,8 @@ public class SCFTradeController {
 		if(tradeID==null || tradeID==0){			
 			Long companyId = ParamUtil.getLong(request, "companyId"); 
 			String invoiceIds= ParamUtil.getString(request, "invoices");
-			System.out.println("tradeIds::::"+invoiceIds);
 			Map<Company,BigDecimal> invoiceMap = invoiceService.getInvoicesAmount(invoiceIds);
 			Map.Entry<Company,BigDecimal> entry = invoiceMap.entrySet().iterator().next();
-			System.out.println("invoicesAmount::::"+entry.getValue());
 			scfTradeDTO.setTradeAmount(entry.getValue());
 			scfTradeDTO.setCompany(entry.getKey());			
 			model.put("invoiceList", invoiceService.getInvoices(invoiceIds));			

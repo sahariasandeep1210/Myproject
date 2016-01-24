@@ -2,6 +2,7 @@ package com.tf.controller.company;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -138,7 +139,9 @@ public class CompanyController extends BaseController {
 				company.getAddress().setCompany(company);
 				//WIP to refractor this code.
 				if (company != null && "1".equals(company.getCompanyType())) {
-					company.setInvestor(new Investor());
+					Investor investor=new Investor();
+					investor.setCreateDate(new Date());
+					company.setInvestor(investor);
 					company.getInvestor().setCompany(company);
 				}
 			}

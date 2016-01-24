@@ -103,6 +103,10 @@ public class WhiteHallSettingController {
 		_log.info("Render WhiteHall Settings Screen");
 		try {			
 			model.put(ACTIVETAB, SELLER);
+			sellerDTO=settingService.getSellerSettings();
+			if(sellerDTO==null){
+				sellerDTO=new SellerSetting();
+			}
 			model.put("sellerDTO", sellerDTO);	
 		} catch (Exception e) {
 			SessionErrors.add(request, "default-error-message");

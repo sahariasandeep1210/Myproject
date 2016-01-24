@@ -23,10 +23,9 @@ public class InvestorPortfolio implements Serializable{
 	
 
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -8274244119472954657L;
+	
+
+	private static final long serialVersionUID = 2443204712670444306L;
 
 	@Id
     @Column(name="investor_portfolio_id")
@@ -206,19 +205,7 @@ public class InvestorPortfolio implements Serializable{
 		this.currentCreditLine = currentCreditLine;
 	}
 
-	@Override
-	public String toString() {
-		return "InvestorPortfolio [investorProtId=" + investorProtId
-				+ ", investor=" + investor + ", discountRate=" + discountRate
-				+ ", investorStatus=" + investorStatus + ", investorType="
-				+ investorType + ", maxDiscountRate=" + maxDiscountRate
-				+ ", minDiscountRate=" + minDiscountRate + ", company="
-				+ company + ", startDate=" + startDate + ", endDate=" + endDate
-				+ ", updatedBy=" + updatedBy + ", availToInvest="
-				+ availToInvest + ", amountInvested=" + amountInvested
-				+ ", myCreditLine=" + myCreditLine + ", currentCreditLine="
-				+ currentCreditLine + "]";
-	}
+	
 	
 
 }

@@ -200,7 +200,7 @@ CREATE TABLE scf_trade (
    opening_date  DATE,
    investor_Payment_date  DATE,
    Seller_Payment_date  DATE,
-   trade_amount  DECIMAL,
+   trade_amount  DECIMAL,   
    STATUS VARCHAR(50) ,
    company_id BIGINT(20) NOT NULL,
    trade_notes VARCHAR(45) ,
@@ -323,17 +323,18 @@ CREATE TABLE tf_investor_portfolio_history (
 
 DROP TABLE IF EXISTS tf_allotments;
 CREATE TABLE tf_allotments(
-  allotment_id bigint(20) NOT NULL AUTO_INCREMENT,
-  trade_id bigint(20) DEFAULT NULL,
-  investor_portfolio_id bigint(20) DEFAULT NULL,
-  allotment_amount decimal(10,0) DEFAULT NULL,
-  noofdays int(11) DEFAULT NULL,
-  is_primary tinyint(1) DEFAULT '1',
-  user_id bigint(20) DEFAULT NULL,
-  market_discount int(11) DEFAULT NULL,
-  investor_gross_profit  DECIMAL, 
-  investor_gross_profit  DECIMAL,     
-  allotment_date datetime DEFAULT NULL,
+  allotment_id BIGINT(20) NOT NULL AUTO_INCREMENT,
+  trade_id BIGINT(20) DEFAULT NULL,
+  investor_portfolio_id BIGINT(20) DEFAULT NULL,
+  allotment_amount DECIMAL(10,4) DEFAULT NULL,
+  noofdays INT(11) DEFAULT NULL,
+  is_primary TINYINT(1) DEFAULT '1',
+  user_id BIGINT(20) DEFAULT NULL,
+  market_discount INT(11) DEFAULT NULL,
+  investor_gross_profit  DECIMAL(10,4), 
+  whitehall_profit_share  DECIMAL(10,4),    
+  investor_net_profit  DECIMAL(10,4),     
+  allotment_date DATETIME DEFAULT NULL,
   PRIMARY KEY (`allotment_id`),
   UNIQUE KEY `allotment_id_UNIQUE` (`allotment_id`),
   KEY `fk_allotment_trade_id` (`trade_id`),
@@ -367,14 +368,35 @@ CREATE TABLE tf_bank_holiday (
 ) ;
 
 ALTER TABLE tf_investor
-ADD whitehall_share INT(5);
+ADD whitehall_share DECIMAL;
+ALTER TABLE tf_investor
+ADD update_date DATE;
 
 
 DROP TABLE IF EXISTS tf_seller_setting;
 CREATE TABLE tf_seller_setting (
   id  BIGINT(20) NOT NULL AUTO_INCREMENT,  
-  seller_transaction_fee INT(11) DECIMAL,  
-  seller_finance_fee INT(11) DECIMAL,     
+  seller_transaction_fee  DECIMAL(10,2),  
+  seller_finance_fee  DECIMAL(10,4),     
   PRIMARY KEY (id),  
   UNIQUE KEY id_UNIQUE (id) 
 ) ;
+
+ALTER TABLE scf_trade
+   ADD investor_total_gross_profit  DECIMAL(10,4),
+   ADD whitehall_total_share  DECIMAL(10,4),
+   ADD investor_total_net_profit  DECIMAL(10,4),
+   ADD seller_fees  DECIMAL(10,4),
+   ADD whitehall_total_profit DECIMAL(10,4),
+   ADD whitehall_net_receivable DECIMAL(10,4),
+   ADD seller_net_allotment   DECIMAL(10,4);
+
+   
+ALTER TABLE scf_trade
+   MODIFY COLUMN investor_total_gross_profit  DECIMAL(10,4),
+   MODIFY COLUMN whitehall_total_share  DECIMAL(10,4),
+   MODIFY COLUMN investor_total_net_profit  DECIMAL(10,4),
+   MODIFY COLUMN seller_fees  DECIMAL(10,4),
+   MODIFY COLUMN whitehall_total_profit DECIMAL(10,4),
+   MODIFY COLUMN whitehall_net_receivable DECIMAL(10,4),
+   MODIFY COLUMN seller_net_allotment   DECIMAL(10,4);

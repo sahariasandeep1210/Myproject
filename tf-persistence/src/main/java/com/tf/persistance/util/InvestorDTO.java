@@ -1,15 +1,17 @@
 package com.tf.persistance.util;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 public class InvestorDTO  implements Serializable {
 	
 	
-	private static final long serialVersionUID = 4345291237734446085L;
+	
+	private static final long serialVersionUID = -2665768060498858807L;
 	
 	private Long investorID;
 	private String name;
-	private Integer whitehallShare;
+	private BigDecimal whitehallShare;
 	
 	public InvestorDTO() {
 		// TODO Auto-generated constructor stub
@@ -31,11 +33,11 @@ public class InvestorDTO  implements Serializable {
 		this.name = name;
 	}
 
-	public Integer getWhitehallShare() {
+	public BigDecimal getWhitehallShare() {
 		return whitehallShare;
 	}
 
-	public void setWhitehallShare(Integer whitehallShare) {
+	public void setWhitehallShare(BigDecimal whitehallShare) {
 		this.whitehallShare = whitehallShare;
 	}
 

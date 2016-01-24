@@ -37,5 +37,7 @@ public interface InvestorService {
 	public List<InvestorDTO> getInvestorDetails();
 	
 	public void updateInvestorDetails(List<InvestorDTO> investors); 
+	
+	public BigDecimal  getWhiteHallShare(long id);
 
 }

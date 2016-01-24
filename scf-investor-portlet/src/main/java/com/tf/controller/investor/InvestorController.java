@@ -52,8 +52,8 @@ import com.tf.service.UserService;
 public class InvestorController {
 	
 	protected Log _log = LogFactoryUtil.getLog(InvestorController.class);
-	private static final int MINDISCOUNT=20;
-	private static final int MAXDISCOUNT=180;
+	private static final int MINDISCOUNT=400;
+	private static final int MAXDISCOUNT=600;
 	
 	@Autowired
 	protected  UserService userService; 
@@ -230,7 +230,7 @@ public class InvestorController {
 		int i=MINDISCOUNT;
 		while( i<=MAXDISCOUNT){
 			list.add(i);
-			i=i+5;
+			i=i+10;
 		}
 		model.put("discountList", list);
 	}

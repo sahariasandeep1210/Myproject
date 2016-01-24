@@ -2,6 +2,7 @@ package com.tf.dao.impl;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -293,7 +294,7 @@ public class InvestorDAOImpl extends BaseDAOImpl<InvestorPortfolio, Long>   impl
 			investor=new InvestorDTO();
 			investor.setInvestorID(Long.valueOf(row[0].toString()));
 			investor.setName(row[1].toString());
-			investor.setWhitehallShare(row[2]!=null ?Integer.valueOf(row[2].toString()):null);
+			investor.setWhitehallShare(row[2]!=null ?new BigDecimal(row[2].toString()):null);
 			list.add(investor);
 		}
 		return list;
@@ -315,6 +316,7 @@ public class InvestorDAOImpl extends BaseDAOImpl<InvestorPortfolio, Long>   impl
 			for(InvestorDTO investor: investors){	
 				inv=findByInvestorId(investor.getInvestorID());
 				inv.setWhitehallShare(investor.getWhitehallShare());
+				inv.setUpdateDate(new Date());
 				session.update(inv);
 			}
 			_log.debug("Invoices updated successful");
@@ -323,6 +325,31 @@ public class InvestorDAOImpl extends BaseDAOImpl<InvestorPortfolio, Long>   impl
 			throw re;
 		}
 		
+	}
+
+
+
+
+
+	public BigDecimal getWhiteHallShare(long id) {
+		BigDecimal whitehallShare=BigDecimal.ZERO;
+		try {
+			if(id!=0){
+				
+				whitehallShare = (BigDecimal) sessionFactory.getCurrentSession().createQuery("select investor.whitehallShare from Investor investor where investor.id = :id").setLong("id",id).uniqueResult();
+				if (whitehallShare == null) {
+					_log.debug("get successful, no instance found");
+				} else {
+					_log.debug("get successful, instance found");
+				}
+			}
+			return whitehallShare;
+		} catch (RuntimeException re) {
+			_log.error("get failed", re);
+			throw re;
+		}
+		
+	
 	}
 
 

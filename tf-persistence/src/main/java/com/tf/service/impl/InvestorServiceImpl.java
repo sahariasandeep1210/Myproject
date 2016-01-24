@@ -129,4 +129,8 @@ public class InvestorServiceImpl implements InvestorService {
 	public void updateInvestorDetails(List<InvestorDTO> investors) {
 		 investorDAO.updateInvestorDetails(investors);		
 	}
+	
+	public BigDecimal  getWhiteHallShare(long id){
+		return investorDAO.getWhiteHallShare(id);		
+	}
 }

@@ -151,6 +151,7 @@ public class InvoiceServiceImpl implements InvoiceService{
 		Company company=null;
 		Invoice invoice;
 		Date paymentdate=null;
+		int duration=0;
 		BigDecimal tradeAmount=BigDecimal.ZERO;
 		List<Date> holidayList =new ArrayList<Date>();
 		List<Invoice> invoicesList=new ArrayList<Invoice>();
@@ -158,6 +159,7 @@ public class InvoiceServiceImpl implements InvoiceService{
 			invoice=invoiceDAO.findById(Long.valueOf(id));
 			company=invoice.getScfCompany();
 			paymentdate=invoice.getPayment_date();
+			duration=invoice.getDuration();
 			tradeAmount=tradeAmount.add(invoice.getInvoiceAmount());
 			invoicesList.add(invoice);			
 		}		
@@ -166,8 +168,8 @@ public class InvoiceServiceImpl implements InvoiceService{
 		scfTrade.setOpeningDate(date);
 		scfTrade.setSellerPaymentDate(nextWorkingDate(date, holidayList));
 		scfTrade.setInvestorPaymentDate(nextWorkingDate(paymentdate, holidayList));
-		Days duration= Days.daysBetween(new LocalDate(scfTrade.getOpeningDate()), new LocalDate(scfTrade.getInvestorPaymentDate()));
-		scfTrade.setDuration(duration.getDays());
+		//Days duration= Days.daysBetween(new LocalDate(scfTrade.getOpeningDate()), new LocalDate(scfTrade.getInvestorPaymentDate()));
+		scfTrade.setDuration(duration);
 		scfTrade.setClosingDate(nextWorkingDate(scfTrade.getInvestorPaymentDate(), holidayList));
 		
 		scfTrade.setCompany(company);
@@ -175,7 +177,7 @@ public class InvoiceServiceImpl implements InvoiceService{
 		scfTrade.setStatus(TradeStatus.NEW.getValue());
 		scfTrade.setTradeAmount(tradeAmount);
 		scfTrade.setTradeNotes("Finance requested by Supplier");
-		scfTrade.setInvoices(new HashSet(invoicesList));
+		scfTrade.setInvoices(new HashSet<Invoice>(invoicesList));
 		scfTrade = scfTradeService.save(scfTrade);
 		updateTradeinfoToInvovices(invoicesList, scfTrade);
 		List<InvestorProtfolioDTO> list=investorDAO.findInvestorByRate(company.getId());

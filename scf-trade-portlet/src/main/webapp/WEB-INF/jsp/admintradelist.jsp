@@ -4,7 +4,6 @@
 	<portlet:param name="render" value="createTrade" />
 </portlet:renderURL>
 
-<portlet:resourceURL id="breakdownURL" var="breakdownURL" ></portlet:resourceURL> 
 
 <style>
 .aui input, .aui textarea, .aui .uneditable-input {
@@ -37,14 +36,15 @@
 			<table class="table  tablesorter table-bordered" id="tradeListTable">
 				<thead>
 					<tr>
-					<!-- 	<th>SCF Trade</th> -->
 					    <th>SCF Company</th>
-					    <th>Duration</th>
-						<th>Opening Date</th>
-						<th>Closing Date</th>
-						<th>Trade Amount</th>
-						<th>Status</th>	
-						<th>Is MultiInvoice</th>						
+					    <th>Allotment</th>
+					    <th>BPS</th>
+						<th>Investor Gross Profit</th>
+						<th>WhiteHall Share</th>
+						<th>Investor Net Profit</th>	
+						<th>Seller Fees</th>
+						<th>WhiteHall Gross Profit</th>		
+						<th>Seller Allotment</th>					
 					</tr>
 				</thead>
 				<tbody>
@@ -52,14 +52,16 @@
 						<c:when test="${fn:length(trades) gt 0}">
 							<c:forEach items="${trades}" var="trade">
 								<tr>
-									<%-- <td>${trade.scfTrade}</td> --%>
-									<td><a href="javascript:void(0);"  onclick="window.location.href='${createURL}&tradeID=${trade.id}'">${trade.company.name}</a></td>
-									<td>${trade.duration}</td>
-									<td><fmt:formatDate pattern="dd-MM-yyyy" value="${trade.openingDate}" /></td>
-									<td><fmt:formatDate pattern="dd-MM-yyyy" value="${trade.closingDate}" /></td>
-									<td>${trade.tradeAmount} <a href="javascript:void(0);"  data-url="${breakdownURL}" class="breakdown"   tradeID="${trade.id}" style=" float: right; vertical-align: middle; font-size: 20px" ><i  id="${trade.id}_icon" class="fa fa-plus-square"></i> </a></td>
-									<td>${trade.status}</td>
-									<td>
+									<td><strong><a href="javascript:void(0);"  onclick="window.location.href='${createURL}&tradeID=${trade.id}'">${trade.company.name} ( ${trade.duration} Days)</a></strong></td>
+									<td>${trade.tradeAmount}</td>
+									<td></td>
+									<td>${trade.investorTotalGross}</td>
+									<td>${trade.whitehallTotalShare}</td>
+									<td>${trade.investorTotalProfit}</td>
+									<td>${trade.sellerFees}</td>
+									<td>${trade.whitehallTotalProfit}</td>
+									<td>${trade.sellerNetAllotment}</td>
+									<%-- <td>
 										<c:choose>
 											<c:when test="${fn:length(trade.invoices) gt 1}">
 												<img src="${themeDisplay.pathThemeImages}/folder-full-accept-icon_24.png"/>
@@ -69,16 +71,31 @@
 											</c:otherwise>										
 										</c:choose>
 									
-									</td>
+									</td> --%>
 								</tr>
-								<tr class="historyRow"  id="${trade.id}_row">								
-							  		<td colspan=7></td>
-							</tr>
+								<c:if test="${fn:length(trade.allotments) gt 0}">
+									<c:forEach items="${trade.allotments}" var="allotment">
+										<tr>
+											<td></td>
+											<td>${allotment.allotmentAmount}</td>
+											<td>${allotment.marketDiscount}</td>
+											<td>${allotment.investorGrossProfit}</td>
+											<td>${allotment.whitehallProfitShare}</td>
+											<td>${allotment.investorNetProfit}</td>
+											<td></td>
+											<td></td>
+											<td></td>
+											
+										</tr>
+										
+									</c:forEach>
+								</c:if>
+							
 							</c:forEach>
 						</c:when>
 						<c:otherwise>
 							<tr>
-								<td colspan="7" align="center">No records found!</td>
+								<td colspan="9" align="center">No records found!</td>
 							</tr>
 						</c:otherwise>
 					</c:choose>

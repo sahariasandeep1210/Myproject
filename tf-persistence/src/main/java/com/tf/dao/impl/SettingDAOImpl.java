@@ -23,6 +23,21 @@ public class SettingDAOImpl  extends BaseDAOImpl<Object, Long>   implements Sett
 	
 		
 	}
+
+
+	public SellerSetting getSellerSettings() {
+
+		_log.debug("Inside getSellerSettings ");
+		try {
+			
+			SellerSetting sellerSetting = (SellerSetting) sessionFactory.getCurrentSession().createCriteria(SellerSetting.class).uniqueResult();			
+			return sellerSetting;
+		} catch (RuntimeException re) {
+			_log.error("getSellerSettings failed", re);
+			throw re;
+		}
+	
+	}
 	
 	
 

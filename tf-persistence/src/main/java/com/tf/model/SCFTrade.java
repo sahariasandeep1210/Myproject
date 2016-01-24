@@ -15,17 +15,13 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.Type;
-
 
 @Entity
 @Table(name="scf_trade")
 public class SCFTrade  implements Serializable{
 	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -1186610806150785622L;
+
+	private static final long serialVersionUID = -5168230710763288937L;
 
 	@Id
     @Column(name="id")
@@ -52,6 +48,30 @@ public class SCFTrade  implements Serializable{
 	
 	@Column(name="trade_amount")
 	private BigDecimal tradeAmount;
+	
+	
+	@Column(name="investor_total_gross_profit")
+	private BigDecimal investorTotalGross;
+	
+	@Column(name="whitehall_total_share")
+	private BigDecimal whitehallTotalShare;
+	
+	@Column(name="investor_total_net_profit")
+	private BigDecimal investorTotalProfit;
+	
+	@Column(name="seller_fees")
+	private BigDecimal sellerFees;
+	
+	@Column(name="whitehall_total_profit")
+	private BigDecimal whitehallTotalProfit;
+	
+	@Column(name="whitehall_net_receivable")
+	private BigDecimal whitehallNetReceivable;
+	
+	@Column(name="seller_net_allotment")
+	private BigDecimal sellerNetAllotment;
+	
+	
 	
 	@Column(name="status")
 	private String status;
@@ -102,6 +122,11 @@ public class SCFTrade  implements Serializable{
 	
 	@OneToMany(mappedBy = "scfTrade",cascade=CascadeType.ALL) 
 	private Set<Invoice> invoices;
+	
+	
+	@OneToMany(mappedBy = "scfTrade",cascade=CascadeType.ALL) 
+	private Set<Allotment> allotments;
+	
 	
 	
 	
@@ -278,20 +303,70 @@ public class SCFTrade  implements Serializable{
 		this.invoices = invoices;
 	}
 
-	@Override
-	public String toString() {
-		return "SCFTrade [id=" + id + ", scfTrade=" + scfTrade + ", duration="
-				+ duration + ", closingDate=" + closingDate + ", openingDate="
-				+ openingDate + ", investorPaymentDate=" + investorPaymentDate
-				+ ", SellerPaymentDate=" + SellerPaymentDate + ", tradeAmount="
-				+ tradeAmount + ", status=" + status + ", company="
-				+ company + ", tradeNotes=" + tradeNotes + ", tradeSettled="
-				+ tradeSettled + ", wantToInsure=" + wantToInsure
-				+ ", insuranceDocId=" + insuranceDocId + ", insuranceDocName="
-				+ insuranceDocName + ", insuranceDocUrl=" + insuranceDocUrl
-				+ ", insuranceDocType=" + insuranceDocType + ", promisoryNote="
-				+ promisoryNote + ", createDate=" + createDate + ", updatDate="
-				+ updatDate + ", invoices="+invoices+"]";
-	}	
+	public BigDecimal getInvestorTotalGross() {
+		return investorTotalGross;
+	}
+
+	public void setInvestorTotalGross(BigDecimal investorTotalGross) {
+		this.investorTotalGross = investorTotalGross;
+	}
+
+	public BigDecimal getWhitehallTotalShare() {
+		return whitehallTotalShare;
+	}
+
+	public void setWhitehallTotalShare(BigDecimal whitehallTotalShare) {
+		this.whitehallTotalShare = whitehallTotalShare;
+	}
+
+	public BigDecimal getInvestorTotalProfit() {
+		return investorTotalProfit;
+	}
+
+	public void setInvestorTotalProfit(BigDecimal investorTotalProfit) {
+		this.investorTotalProfit = investorTotalProfit;
+	}
+
+	public BigDecimal getSellerFees() {
+		return sellerFees;
+	}
+
+	public void setSellerFees(BigDecimal sellerFees) {
+		this.sellerFees = sellerFees;
+	}
+
+	public BigDecimal getWhitehallTotalProfit() {
+		return whitehallTotalProfit;
+	}
+
+	public void setWhitehallTotalProfit(BigDecimal whitehallTotalProfit) {
+		this.whitehallTotalProfit = whitehallTotalProfit;
+	}
+
+	public BigDecimal getWhitehallNetReceivable() {
+		return whitehallNetReceivable;
+	}
+
+	public void setWhitehallNetReceivable(BigDecimal whitehallNetReceivable) {
+		this.whitehallNetReceivable = whitehallNetReceivable;
+	}
+
+	public BigDecimal getSellerNetAllotment() {
+		return sellerNetAllotment;
+	}
+
+	public void setSellerNetAllotment(BigDecimal sellerNetAllotment) {
+		this.sellerNetAllotment = sellerNetAllotment;
+	}
+
+	public Set<Allotment> getAllotments() {
+		return allotments;
+	}
+
+	public void setAllotments(Set<Allotment> allotments) {
+		this.allotments = allotments;
+	}
+
+	
 
 }

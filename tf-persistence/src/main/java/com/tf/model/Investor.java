@@ -1,6 +1,7 @@
 package com.tf.model;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Set;
 
@@ -17,12 +18,16 @@ import javax.persistence.Table;
 
 
 
+/**
+ * @author gautamkct
+ *
+ */
 @Entity
 @Table(name="tf_investor")
 public class Investor  implements Serializable{
 	
 
-	private static final long serialVersionUID = 220656777841228133L;
+	private static final long serialVersionUID = 8925874161289925325L;
 
 
 	@Id
@@ -40,7 +45,10 @@ public class Investor  implements Serializable{
 	
 	
 	@Column(name="whitehall_share")
-	private Integer whitehallShare;
+	private BigDecimal whitehallShare;
+	
+	@Column(name="update_date")
+	private Date updateDate;
 	
 	@OneToMany(mappedBy = "investor",cascade=CascadeType.ALL)      
 	private Set<InvestorPortfolio> investorPortfolios;
@@ -81,22 +89,28 @@ public class Investor  implements Serializable{
 		this.investorPortfolios = investorPortfolios;
 	}
 
-	public Integer getWhitehallShare() {
+	public BigDecimal getWhitehallShare() {
 		return whitehallShare;
 	}
 
-	public void setWhitehallShare(Integer whitehallShare) {
+	public void setWhitehallShare(BigDecimal whitehallShare) {
 		this.whitehallShare = whitehallShare;
+	}
+
+	public Date getUpdateDate() {
+		return updateDate;
+	}
+
+	public void setUpdateDate(Date updateDate) {
+		this.updateDate = updateDate;
 	}
 
 	@Override
 	public String toString() {
 		return "Investor [investorId=" + investorId + ", company=" + company
 				+ ", createDate=" + createDate + ", whitehallShare="
-				+ whitehallShare + ", investorPortfolios=" + investorPortfolios
-				+ "]";
-	}
-	
-	
+				+ whitehallShare + ", updateDate=" + updateDate
+				+ ", investorPortfolios=" + investorPortfolios + "]";
+	}	
 
 }
