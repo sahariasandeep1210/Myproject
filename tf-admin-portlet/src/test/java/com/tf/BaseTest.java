@@ -14,11 +14,11 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  * Base setup for all unit tests in this artifact. Sets up the application
  * context and runs the tests with Spring's JUnit4 runner.
  * 
- * @author FL867
+ * @author gautamkct
  * @since Sprint 1
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:/applicationContext-test-firmPortlet.xml" })
+@ContextConfiguration(locations = { "classpath:/applicationContext-test-admin-portlet.xml" })
 public abstract class BaseTest
 {
 	protected transient final Log	testLog	= LogFactory.getLog(getClass());

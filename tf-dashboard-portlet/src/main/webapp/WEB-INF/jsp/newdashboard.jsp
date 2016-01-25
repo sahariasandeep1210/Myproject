@@ -14,7 +14,7 @@
 
 				<div class="widget-header">
 					<i class="icon-star" style="margin-left: 10px !important;"></i>
-					<h3>Quick Stats</h3>
+					<h3>Quick Stat</h3>
 				</div>
 				<!-- /widget-header -->
 			<div class="widget-content">
