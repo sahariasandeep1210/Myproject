@@ -287,9 +287,11 @@ $(document).ready(function() {
           /* Ignore tab key */
           var code = e.keyCode || e.which;
           if (code == '9') return;
+         //console.log("input  hhh value >>>:::"+$(this).val().toLowerCase());
           /* Useful DOM data and selectors */
           var $input = $(this),
           inputContent = $input.val().toLowerCase(),
+          //inputContent=inputContent.replaceAll(",",""),
           $panel = $input.parents('.filterable'),
           column = $panel.find('.filters th').index($input.parents('th')),
           $table = $panel.find('.table'),
@@ -421,3 +423,4 @@ $(document).ajaxStart(function () {
 	//hide ajax indicator
 	ajaxindicatorstop();
 });
+

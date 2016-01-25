@@ -27,7 +27,7 @@
 			</div>
 			<div class="span6">  
 			  <div class="span12">
-			  	<h5 style="float: right !important;" ><a href="${createURL}" style="color: #295780;font-weight: bold;"> Export</a></h5>
+			  	<h5 style="float: right !important;" ><a href="#" style="color: #295780;font-weight: bold;"> Export</a></h5>
 			  </div>
 			  </div>			
 		</div>
@@ -52,7 +52,7 @@
 						<c:when test="${fn:length(trades) gt 0}">
 							<c:forEach items="${trades}" var="trade">
 								<tr>
-									<td><strong><a href="javascript:void(0);"  onclick="window.location.href='${createURL}&tradeID=${trade.id}'">${trade.company.name} ( ${trade.duration} Days)</a></strong></td>
+									<td><strong><a href="javascript:void(0);"  onclick="window.location.href='${createURL}&tradeID=${trade.id}'">${trade.company.name} ( ${trade.duration} Days )</a></strong></td>
 									<td>${trade.tradeAmount}</td>
 									<td></td>
 									<td>${trade.investorTotalGross}</td>
@@ -60,18 +60,7 @@
 									<td>${trade.investorTotalProfit}</td>
 									<td>${trade.sellerFees}</td>
 									<td>${trade.whitehallTotalProfit}</td>
-									<td>${trade.sellerNetAllotment}</td>
-									<%-- <td>
-										<c:choose>
-											<c:when test="${fn:length(trade.invoices) gt 1}">
-												<img src="${themeDisplay.pathThemeImages}/folder-full-accept-icon_24.png"/>
-											</c:when>
-											<c:otherwise>
-												<img src="${themeDisplay.pathThemeImages}/folder-full-delete-icon_24.png"/>
-											</c:otherwise>										
-										</c:choose>
-									
-									</td> --%>
+									<td>${trade.sellerNetAllotment}</td>							
 								</tr>
 								<c:if test="${fn:length(trade.allotments) gt 0}">
 									<c:forEach items="${trade.allotments}" var="allotment">

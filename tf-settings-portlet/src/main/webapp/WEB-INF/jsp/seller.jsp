@@ -33,7 +33,7 @@
 
 		<div class="row-fluid">
 			<div class="span6">
-				<label class="span6">Seller transaction Fee</label>
+				<label class="span6">Seller Transaction Fee</label>
 				<form:input path="sellerTransFee" name="" cssClass="span6"  />
 			</div>
 		</div>
