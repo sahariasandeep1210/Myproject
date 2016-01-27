@@ -39,6 +39,7 @@
 			</plugin>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.1</version>
 			</plugin>
 			<plugin>
 				<artifactId>maven-resources-plugin</artifactId>
@@ -49,7 +50,6 @@
 				<configuration>
 					<warName>tf-registration-portlet</warName>
 					<dependentWarExcludes></dependentWarExcludes>
-					<!--<webappDirectory> ${env.CATALINA_HOME}/webapps/hrms-ws </webappDirectory> -->
 					<outputDirectory>
 						${liferay.auto.deploy.dir}
 					</outputDirectory>
