@@ -1,4 +1,5 @@
 <%@include file="init.jsp"%>
+<%@ taglib uri="http://whitehall.com/jsp/tld/p" prefix="p"%>
 
 <portlet:renderURL var="createURL">
 	<portlet:param name="render" value="createCompany" />
@@ -94,3 +95,5 @@
 
 
 </div>
+
+<%-- <p:paginate pageNumber="1" totalPage="2"/> --%>
