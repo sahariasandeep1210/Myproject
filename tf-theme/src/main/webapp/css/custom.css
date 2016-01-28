@@ -637,3 +637,7 @@ table.tablesorter thead tr th {
 
 /* ----- WhiteHall Finance custom Pagination CSS (Extracted from Bootstrap 3.3.4) End -------- */
 
+.error-template {padding: 40px 15px;text-align: center;}
+.error-actions {margin-top:15px;margin-bottom:15px;}
+.error-actions .btn { margin-right:10px; }
+
