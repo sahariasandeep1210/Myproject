@@ -43,7 +43,7 @@ public class DashboardController {
 
 	private void setPortletURls(ModelMap map, RenderRequest request) {
 		map.put("mangaeCompanyURL", liferayUtility.setPortletURL( request, "tf-company-portlet",null,null,true));
-		map.put("createPOURL", liferayUtility.setPortletURL(request, "tf-po-portlet","render","addPurchaseOrder",true)) ;
+		//map.put("createPOURL", liferayUtility.setPortletURL(request, "tf-po-portlet","render","addPurchaseOrder",true)) ;
 	}
 	
 
