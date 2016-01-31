@@ -357,11 +357,12 @@ public class CompanyController extends BaseController {
 			List<Company> companyList, ThemeDisplay themeDisplay,ModelMap model) {
 		Long noOfRecords=0l;
 		PaginationModel paginationModel = paginationUtil.preparePaginationModel(request);
-		if(getPermissionChecker(request).isOmniadmin() ){
+		if(getPermissionChecker(request).isOmniadmin()  || request.isUserInRole(Constants.WHITEHALL_ADMIN)){
 			companyList = companyService.getCompaniesByStatus(CompanyStatus.DELETED.getValue(),paginationModel.getStartIndex(),paginationModel.getPageSize());
 			noOfRecords=companyService.getCompaniesCount(CompanyStatus.DELETED.getValue());
 			paginationUtil.setPaginationInfo(noOfRecords,paginationModel);
 			model.put("paginationModel", paginationModel);
+			model.put("userType", Constants.WHITEHALL_ADMIN);
 		}else if(request.isUserInRole(Constants.SCF_ADMIN)){
 			long companyId=userService.getCompanyIDbyUserID(themeDisplay.getUserId());
 			Company cmpObject = companyService.findById(companyId);
