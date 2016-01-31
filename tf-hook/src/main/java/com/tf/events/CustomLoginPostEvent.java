@@ -37,7 +37,7 @@ public class CustomLoginPostEvent extends Action {
 		String userRole="";
 		try {
 		if(PortalUtil.getUser(request)!=null){
-			User user= PortalUtil.getUser(request);			
+			User user= PortalUtil.getUser(request);		
 			long companyId = CompanyThreadLocal.getCompanyId();	
 			String xmlName=LanguageUtil.get(LocaleUtil.getDefault(), "role.xml.file.name",xmlFileName);
 			String content= ContentUtil.get(xmlName);

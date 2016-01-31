@@ -5,6 +5,8 @@
 	<portlet:param name="render" value="createCompany" />
 </portlet:renderURL>
 
+<portlet:renderURL var="defaultRenderURL" />
+
 <style>
 .aui input, .aui textarea, .aui .uneditable-input {
 	width: 100% !important;
@@ -16,7 +18,11 @@
 
 
 	<form:form commandName="companyModel" method="post"
-		action="${createURL}" id="companyList" autocomplete="off">
+		action="${createURL}" id="companyList" autocomplete="off" name="companyList">
+		
+	<input type="hidden" name="currentPage" 	id="currentPage"    	value="${paginationModel.currentPage}" />
+	<input type="hidden" name="pageSize" 		id="pageSize" 			value="${paginationModel.pageSize}" />
+	<input type="hidden" name="defaultURL" 		id="defaultURL" 		value="${defaultRenderURL}" />
 
 		<div class="row-fluid">
 			<c:choose>
@@ -89,6 +95,8 @@
 			</div>
 		</div>
 		</c:if>
+		
+		
 
 	</form:form>
 
@@ -96,4 +104,5 @@
 
 </div>
 
-<%-- <p:paginate pageNumber="1" totalPage="2"/> --%>
+<p:paginate  paginationModel="${paginationModel}"/>
+

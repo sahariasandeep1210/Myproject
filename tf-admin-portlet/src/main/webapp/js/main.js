@@ -471,3 +471,10 @@ function enableDisableoptions(){
 	
 	
 }
+
+function setPage(pageNumber){
+	$("#currentPage").val(pageNumber);
+	var actionUrl=$("#defaultURL").val();
+	document.forms["companyList"].action = actionUrl;
+	document.forms["companyList"].submit();	
+}

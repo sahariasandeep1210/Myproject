@@ -52,6 +52,7 @@ import com.tf.model.User;
 import com.tf.persistance.util.CompanyStatus;
 import com.tf.persistance.util.Constants;
 import com.tf.util.OfficerDTO;
+import com.tf.util.model.PaginationModel;
 
 
 /**
@@ -72,7 +73,7 @@ public class CompanyController extends BaseController {
 			List<Company> companyList = new ArrayList<Company>();
 			ThemeDisplay themeDisplay = (ThemeDisplay) request
 					.getAttribute(WebKeys.THEME_DISPLAY);
-			companyList = prepareCompanyList(request, companyList, themeDisplay);
+			companyList = prepareCompanyList(request, companyList, themeDisplay,model);			
 			model.put("allCompanies", companyList);
 		} catch (Exception e) {
 			SessionErrors.add(request, "default-error-message");
@@ -257,19 +258,13 @@ public class CompanyController extends BaseController {
 		String companyNo = ParamUtil.getString(request, "companyNo"); 
 		Long companyId = ParamUtil.getLong(request, "companyId");
 		Company company=companyService.findById(companyId);
-		OfficerList officersList=new OfficerList();
-		System.out.println("companyNo:::::"+companyNo);
-		//JSONArray cmpArray = JSONFactoryUtil.createJSONArray();	
-		
+		OfficerList officersList=new OfficerList();		
 		try {
 			if (!StringUtils.isEmpty(companyNo)) {
-				//JSONObject companyObject = JSONFactoryUtil.createJSONObject();	
 				 officersList  = companyServices.getOfficersInfo(companyNo);	
 				 List<Officer> officerList=transformOfficersModeltoOfficerslist(officersList.getItems(),company);
 				 officerService.addOfficer(officerList);
-				 company.setOfficers(new LinkedHashSet<Officer>(officerList));
-				 
-				// companyService.addCompany(company);
+				 company.setOfficers(new LinkedHashSet<Officer>(officerList));				 
 				 modelMap.addAttribute("companyModel", company);
 			}
 			
@@ -359,18 +354,27 @@ public class CompanyController extends BaseController {
 	}
 	
 	private List<Company> prepareCompanyList(RenderRequest request,
-			List<Company> companyList, ThemeDisplay themeDisplay) {
+			List<Company> companyList, ThemeDisplay themeDisplay,ModelMap model) {
+		Long noOfRecords=0l;
+		PaginationModel paginationModel = paginationUtil.preparePaginationModel(request);
 		if(getPermissionChecker(request).isOmniadmin() ){
-			companyList = companyService.getCompaniesByStatus(CompanyStatus.DELETED.getValue());
+			companyList = companyService.getCompaniesByStatus(CompanyStatus.DELETED.getValue(),paginationModel.getStartIndex(),paginationModel.getPageSize());
+			noOfRecords=companyService.getCompaniesCount(CompanyStatus.DELETED.getValue());
+			paginationUtil.setPaginationInfo(noOfRecords,paginationModel);
+			model.put("paginationModel", paginationModel);
 		}else if(request.isUserInRole(Constants.SCF_ADMIN)){
 			long companyId=userService.getCompanyIDbyUserID(themeDisplay.getUserId());
 			Company cmpObject = companyService.findById(companyId);
 			companyList.add(cmpObject);
+			noOfRecords=1l;
 		}else{
 			long companyId=userService.getCompanyIDbyUserID(themeDisplay.getUserId());
 			Company cmpObject = companyService.findById(companyId);
 			companyList.add(cmpObject);
+			noOfRecords=1l;
 		}
+		
+		
 		return companyList;
 	}
 

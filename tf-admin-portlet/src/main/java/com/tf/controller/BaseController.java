@@ -25,6 +25,7 @@ import com.tf.service.UserService;
 import com.tf.util.AdminUtility;
 import com.tf.util.LiferayUtility;
 import com.tf.util.MyCustomNumberEditor;
+import com.tf.util.PaginationUtil;
 
 public class BaseController {
 
@@ -53,6 +54,9 @@ public class BaseController {
 	
 	@Autowired
 	protected LiferayUtility liferayUtility;
+	
+	@Autowired
+	protected PaginationUtil paginationUtil;
 
 	public static Map<String, String> orgTypeMap = initialzeOrgTypeMap();
 	public static Map<Long, String> companyTypeMap;

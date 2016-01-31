@@ -4,6 +4,8 @@ import java.io.IOException;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.SimpleTagSupport;
+
+import com.tf.util.model.PaginationModel;
  
 /**
  * @author gautamkct
@@ -11,12 +13,17 @@ import javax.servlet.jsp.tagext.SimpleTagSupport;
  */
 public class PaginationTag extends SimpleTagSupport {
  
+	private static final String BLANK 	 = "";
+	private static final String DISABLED = "disabled";
 	//current Page number
     private Integer pageNumber;
     //total no of pages
     private Integer totalPage;
+    //pagination model
+    private PaginationModel paginationModel;
     //default page Size 
     final int PAGINATION_INTERVAL = 5;
+    
  
 
 	public void setPageNumber(Integer pageNumber) {
@@ -26,6 +33,13 @@ public class PaginationTag extends SimpleTagSupport {
 	public void setTotalPage(Integer totalPage) {
 		this.totalPage = totalPage;
 	}
+
+	public void setPaginationModel(PaginationModel paginationModel) {
+		this.paginationModel = paginationModel;
+		this.pageNumber = paginationModel.getCurrentPage();
+		this.totalPage = paginationModel.getNoOfPages();
+	}
+	
 
 	public PaginationTag() {
     }
@@ -37,11 +51,18 @@ public class PaginationTag extends SimpleTagSupport {
         System.out.println("pageNumber is:" + pageNumber);
         System.out.println("totalPage is:" + totalPage);
         try {
+        	String disabledClass=BLANK;
+        	//this code needs to optomized
+        	if(paginationModel.isFirstPage()){
+        		disabledClass=DISABLED;
+        	}else{
+        		disabledClass=BLANK;
+        	}
         	
         	getJspContext().getOut().write("<div class=\"pagination pagination-centered\">");
         		getJspContext().getOut().write("<ul>");
 			        	if (totalPage != 1){
-			        		getJspContext().getOut().write("<li class=\"disabled\"><a  href=\"javascript:void(0);\">«</a></li>");
+			        		getJspContext().getOut().write("<li class=\""+disabledClass+"\"><a  href=\"javascript:void(0);\">«</a></li>");
 			        		// getJspContext().getOut().write(" <li class=\"disabled\"><a href=\"javascript:void(0);\"  aria-label=\"Previous\"><span aria-hidden=\"true\">&laquo;</span></a></li>");
 			        		if (pageNumber > 5){
 			        			getJspContext().getOut().write("<li><a href=\"javascript:void(0);\" onclick=\"setPage(1)\">1</a></li>");
@@ -60,8 +81,13 @@ public class PaginationTag extends SimpleTagSupport {
 			        			getJspContext().getOut().write("<li><a>...</a></li>");
 			        			getJspContext().getOut().write("<li><a href=\"javascript:void(0);\" onclick=\"setPage("+totalPage+")\">"+totalPage+"</a></li>");
 							}
-			        		
-			        		getJspContext().getOut().write("<li><a  href=\"javascript:void(0);\">»</a></li>");
+			        		//this code needs to optimized
+			            	if(paginationModel.isLastPage()){
+			            		disabledClass=DISABLED;
+			            	}else{
+			            		disabledClass=BLANK;
+			            	}
+			        		getJspContext().getOut().write("<li  class=\""+disabledClass+"\"><a  href=\"javascript:void(0);\">»</a></li>");
 			        		//getJspContext().getOut().write("<li><a  href=\"javascript:void(0);\" aria-label=\"Next\"><span aria-hidden=\"true\">»</span></a></li>");
 			        		
 			        	}

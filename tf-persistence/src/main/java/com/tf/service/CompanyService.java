@@ -6,7 +6,7 @@ import com.tf.model.Company;
 
 public interface CompanyService {
 	
-	public List<Company> getCompaniesByStatus(String status);
+	public List<Company> getCompaniesByStatus(String status,int startIndex,int pageSize);
 	
 	public List<Company> getCompaniesByStatus(String status,long userID);
 	
@@ -21,4 +21,6 @@ public interface CompanyService {
 	public List<Long> deleteCompany(Long id);
 	
 	public List<Company> getCompanies(String companyType);
+	
+	public Long getCompaniesCount(String status) ;
 }

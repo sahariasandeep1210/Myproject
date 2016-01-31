@@ -26,11 +26,11 @@ public class CompanyDAOImpl  extends BaseDAOImpl<Company, Long>   implements Com
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Company> getCompaniesByStatus(String status) {
+	public List<Company> getCompaniesByStatus(String status,int startIndex,int pageSize) {
 		_log.debug("Inside getCompanies ");
 		try {
 			
-			List<Company> results = (List<Company>) sessionFactory.getCurrentSession().createCriteria(Company.class).add(Restrictions.ne("activestatus", status)).list();
+			List<Company> results = (List<Company>) sessionFactory.getCurrentSession().createCriteria(Company.class).add(Restrictions.ne("activestatus", status)).setFirstResult(startIndex).setMaxResults(pageSize).list();
 			_log.debug("GetCompanies successful, result size: "
 					+ results.size());
 			return results;
@@ -39,6 +39,23 @@ public class CompanyDAOImpl  extends BaseDAOImpl<Company, Long>   implements Com
 			throw re;
 		}
 	}
+	
+	@SuppressWarnings("unchecked")
+	public Long getCompaniesCount(String status) {
+		_log.debug("Inside getCompanies ");
+		try {
+			
+			Long resultCount = (Long) sessionFactory.getCurrentSession().createCriteria(Company.class).add(Restrictions.ne("activestatus", status)).setProjection(Projections.rowCount()).uniqueResult();
+			_log.debug("Companies Count "	+ resultCount);
+			return resultCount;
+		} catch (RuntimeException re) {
+			_log.error("Companies Count failed", re);
+			throw re;
+		}
+	}
+	
+	
+	
 	public List<Company> getCompaniesByStatus(String status,long companyId){
 		_log.debug("Inside getCompanies ");
 		try {

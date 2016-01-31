@@ -69,7 +69,7 @@
 	  </tx:advice>
 	  
 	  <aop:config>
-		  <aop:pointcut id="allDaoMethods" expression="execution(* com.test.hib.*.*(..))"/>
+		  <aop:pointcut id="allDaoMethods" expression="execution(* com.tf.*.*(..))"/>
 		  <aop:advisor advice-ref="txAdvice" pointcut-ref="allDaoMethods"/>
 	</aop:config>
     <bean id="transactionManager"

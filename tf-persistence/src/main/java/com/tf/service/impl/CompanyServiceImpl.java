@@ -22,8 +22,8 @@ public class CompanyServiceImpl implements CompanyService {
 	private UserDAO userDAO;
 
 	@Transactional
-	public List<Company> getCompaniesByStatus(String status) {
-		return companyDAO.getCompaniesByStatus(status);
+	public List<Company> getCompaniesByStatus(String status,int startIndex,int pageSize) {
+		return companyDAO.getCompaniesByStatus(status, startIndex, pageSize);
 	}
 
 	public List<Company> getCompaniesByStatus(String status,long userID){
@@ -54,8 +54,11 @@ public class CompanyServiceImpl implements CompanyService {
 	}
 	
 	public List<Company> getCompanies(String companyType){
-		return companyDAO.getCompanies(companyType);
-		
+		return companyDAO.getCompanies(companyType);		
+	}
+	
+	public Long getCompaniesCount(String status) {
+		return companyDAO.getCompaniesCount(status);	
 	}
 
 }
