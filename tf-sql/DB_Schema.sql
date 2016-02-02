@@ -400,3 +400,16 @@ ALTER TABLE scf_trade
    MODIFY COLUMN whitehall_total_profit DECIMAL(10,4),
    MODIFY COLUMN whitehall_net_receivable DECIMAL(10,4),
    MODIFY COLUMN seller_net_allotment   DECIMAL(10,4);
+   
+   
+   ALTER TABLE scf_trade
+   ADD seller_transaction_fee  DECIMAL(10,2) AFTER seller_fees;
+   
+   ALTER TABLE scf_trade
+   MODIFY COLUMN investor_total_gross_profit  DECIMAL(10,2),
+   MODIFY COLUMN whitehall_total_share  DECIMAL(10,2),
+   MODIFY COLUMN investor_total_net_profit  DECIMAL(10,2),
+   MODIFY COLUMN seller_fees  DECIMAL(10,2),
+   MODIFY COLUMN whitehall_total_profit DECIMAL(10,2),
+   MODIFY COLUMN whitehall_net_receivable DECIMAL(10,2),
+   MODIFY COLUMN seller_net_allotment   DECIMAL(10,2);

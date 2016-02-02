@@ -141,38 +141,38 @@ public class AllotmentEngine {
 	
 	private BigDecimal calculateInvestorGrossProfit(BigDecimal currentAllotment,Integer discountRate,Integer duration){		
 		BigDecimal invGrossProfit=((currentAllotment.multiply(new BigDecimal(discountRate))).divide(TEN_THOUSAND)).multiply(((new BigDecimal(duration)).divide(YEAR,6, RoundingMode.HALF_UP)));
-		invGrossProfit.setScale(4, RoundingMode.CEILING);
+		invGrossProfit.setScale(2, RoundingMode.CEILING);
 		return invGrossProfit;
 	}
 	
 	private BigDecimal calculateWhiteHallShare(BigDecimal invGrossProfit,BigDecimal profitPercentage){		
 		BigDecimal whitehallProfit=(invGrossProfit.multiply(profitPercentage)).divide(HUNDRED);
-		whitehallProfit.setScale(4, RoundingMode.CEILING);
+		whitehallProfit.setScale(2, RoundingMode.CEILING);
 		return whitehallProfit;
 	}
 	
 	private BigDecimal calculateInvestorNetProfit(BigDecimal invGrossProfit,BigDecimal whitehallProfitShare){		
 		BigDecimal investorNetProfit=invGrossProfit.subtract(whitehallProfitShare);
-		investorNetProfit.setScale(4, RoundingMode.CEILING);
+		investorNetProfit.setScale(2, RoundingMode.CEILING);
 		return investorNetProfit;
 	}
 	
 	private BigDecimal calculateSellerFees(Integer duration,BigDecimal tradeAmount){
 		SellerSetting sellerSetting=settingService.getSellerSettings();
 		BigDecimal sellerFees=((new BigDecimal(duration).multiply(sellerSetting.getSellerFinFee())).divide(TEN_THOUSAND,6, RoundingMode.HALF_UP)).multiply(tradeAmount);
-		sellerFees.setScale(4, RoundingMode.CEILING);
+		sellerFees.setScale(2, RoundingMode.CEILING);
 		return sellerFees;
 	}
 	
 	private BigDecimal calculateWhitehallTotalProfit(BigDecimal whitehallTotal,BigDecimal sellerFees){		
 		BigDecimal WhitehallTotalProfit=whitehallTotal.add(sellerFees);
-		WhitehallTotalProfit.setScale(4, RoundingMode.CEILING);
+		WhitehallTotalProfit.setScale(2, RoundingMode.CEILING);
 		return WhitehallTotalProfit;
 	}
 	
 	private BigDecimal calculateSellerNetAllotment(BigDecimal tradeAmount,BigDecimal investorTotalProfit,BigDecimal WhitehallNetReceivable){		
 		BigDecimal SellerNetAllotment=tradeAmount.subtract((investorTotalProfit.add(WhitehallNetReceivable)));
-		SellerNetAllotment.setScale(4, RoundingMode.CEILING);
+		SellerNetAllotment.setScale(2, RoundingMode.CEILING);
 		return SellerNetAllotment;
 	}
 
