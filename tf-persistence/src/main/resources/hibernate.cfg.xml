@@ -24,6 +24,7 @@
 		<mapping class="com.tf.model.Allotment" /> 
 		<mapping class="com.tf.model.InvestorPortfolioHistory" /> 
 		<mapping class="com.tf.model.SellerSetting" /> 
+		<mapping class="com.tf.model.TradeAudit" /> 
 	</session-factory>
 
 </hibernate-configuration>

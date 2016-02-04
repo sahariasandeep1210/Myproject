@@ -91,10 +91,11 @@ public class PaginationTag extends SimpleTagSupport {
 			        		//getJspContext().getOut().write("<li><a  href=\"javascript:void(0);\" aria-label=\"Next\"><span aria-hidden=\"true\">»</span></a></li>");
 			        		
 			        	}
-			        	else{
+			        	//don't need this code as we will activate pagination  one pages are more than one
+			        	/*else{
 			        		//<span class=\"sr-only\">(current)</span>
 			        		getJspContext().getOut().write("<li class=\"active\"><a>1</a></li>");
-			        	}
+			        	}*/
 			     getJspContext().getOut().write("</ul>");
 			 getJspContext().getOut().write("</div>");
         } catch (Exception e) {

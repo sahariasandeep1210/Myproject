@@ -413,3 +413,21 @@ ALTER TABLE scf_trade
    MODIFY COLUMN whitehall_total_profit DECIMAL(10,2),
    MODIFY COLUMN whitehall_net_receivable DECIMAL(10,2),
    MODIFY COLUMN seller_net_allotment   DECIMAL(10,2);
+   
+      
+DROP TABLE IF EXISTS tf_trade_audit;
+CREATE TABLE tf_trade_audit(
+  id BIGINT(20) NOT NULL AUTO_INCREMENT,
+  trade_id BIGINT(20) DEFAULT NULL,  
+  user_id BIGINT(20) DEFAULT NULL,
+  seller_finance_fee  DECIMAL(10,4),
+  seller_transaction_fee  DECIMAL(10,2),
+  COMMENT   VARCHAR(500) DEFAULT NULL,
+  create_date DATETIME DEFAULT NULL,
+  update_date DATETIME DEFAULT NULL, 
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`),
+  KEY `fk_trade_audit_trade_id` (`trade_id`), 
+  KEY `fk_trade_audit_user_id` (`user_id`),
+  CONSTRAINT `tf_trade_audit_ibfk_1` FOREIGN KEY (`trade_id`) REFERENCES `scf_trade` (`id`), 
+  CONSTRAINT `tf_trade_audit_ibfk_3` FOREIGN KEY (`user_id`) REFERENCES `tf_user` (`iduser`)

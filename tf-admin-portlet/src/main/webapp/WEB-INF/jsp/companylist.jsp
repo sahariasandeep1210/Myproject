@@ -103,6 +103,4 @@
 
 
 </div>
-<c:if test="${userType eq 'WhiteHall Admin'}">
 	<p:paginate  paginationModel="${paginationModel}"/>
-</c:if>

@@ -360,9 +360,7 @@ public class CompanyController extends BaseController {
 		if(getPermissionChecker(request).isOmniadmin()  || request.isUserInRole(Constants.WHITEHALL_ADMIN)){
 			companyList = companyService.getCompaniesByStatus(CompanyStatus.DELETED.getValue(),paginationModel.getStartIndex(),paginationModel.getPageSize());
 			noOfRecords=companyService.getCompaniesCount(CompanyStatus.DELETED.getValue());
-			paginationUtil.setPaginationInfo(noOfRecords,paginationModel);
-			model.put("paginationModel", paginationModel);
-			model.put("userType", Constants.WHITEHALL_ADMIN);
+			
 		}else if(request.isUserInRole(Constants.SCF_ADMIN)){
 			long companyId=userService.getCompanyIDbyUserID(themeDisplay.getUserId());
 			Company cmpObject = companyService.findById(companyId);
@@ -375,7 +373,8 @@ public class CompanyController extends BaseController {
 			noOfRecords=1l;
 		}
 		
-		
+		paginationUtil.setPaginationInfo(noOfRecords,paginationModel);
+		model.put("paginationModel", paginationModel);
 		return companyList;
 	}
 
