@@ -80,3 +80,14 @@
 .boldclass{
 	 font-weight: bold;
 }
+/* css changes for seller trade start */
+.search-seller{
+	
+    width: 165px;
+    float: right !important;
+	margin-right:22px;
+}
+.search-supplier{
+	float: right !important;
+}
+/* css changes for seller trade end*/

@@ -375,12 +375,26 @@ ADD update_date DATE;
 
 DROP TABLE IF EXISTS tf_seller_setting;
 CREATE TABLE tf_seller_setting (
-  id  BIGINT(20) NOT NULL AUTO_INCREMENT,  
+  id  BIGINT(20) NOT NULL AUTO_INCREMENT,
+  company_Id BIGINT(20) NOT NULL ,  
   seller_transaction_fee  DECIMAL(10,2),  
-  seller_finance_fee  DECIMAL(10,4),     
+  seller_finance_fee  DECIMAL(10,4),   \
+  create_date DATE,
+  update_date DATE, 
   PRIMARY KEY (id),  
   UNIQUE KEY id_UNIQUE (id) 
 ) ;
+
+
+ALTER TABLE tf_seller_setting
+ADD company_Id BIGINT(20) NOT NULL AFTER id,
+ADD create_date DATE,
+ADD update_date DATE;
+
+ALTER TABLE tf_seller_setting
+MODIFY COLUMN company_Id BIGINT(20) NOT NULL,
+MODIFY COLUMN create_date DATE,
+MODIFY COLUMN update_date DATE;
 
 ALTER TABLE scf_trade
    ADD investor_total_gross_profit  DECIMAL(10,4),

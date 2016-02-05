@@ -1,3 +1,5 @@
+<%@include file="init.jsp"%>
+
 <div class="row-fluid">
 	 <div class="span6">
 		<!-- <h4>Manage Users</h4> -->

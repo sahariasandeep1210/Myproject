@@ -88,4 +88,19 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 			throw re;
 		}
 	}
+	/* New method added for getting the trades for seller  */
+	public List<SCFTrade> getScfTradesByTradeId(Long tradeId){		
+		_log.debug("Inside getScfTrades ");
+		try {
+			
+			List<SCFTrade> results = (List<SCFTrade>) sessionFactory.getCurrentSession().createCriteria(SCFTrade.class).add(Restrictions.eq("id", tradeId)).list();
+			_log.debug("getScfTrades successful, result size: "
+					+ results.size());
+			return results;
+		} catch (RuntimeException re) {
+			_log.error("getScfTrades failed", re);
+			throw re;
+		}
+		
+	}
 }

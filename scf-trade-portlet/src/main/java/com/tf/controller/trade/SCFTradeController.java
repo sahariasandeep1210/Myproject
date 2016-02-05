@@ -1,9 +1,44 @@
 package com.tf.controller.trade;
 
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.repository.model.FileEntry;
+import com.liferay.portal.kernel.repository.model.Folder;
+import com.liferay.portal.kernel.util.MimeTypesUtil;
+import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.security.permission.PermissionChecker;
+import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.service.ServiceContextFactory;
+import com.liferay.portal.theme.ThemeDisplay;
+import com.liferay.portlet.documentlibrary.model.DLFileEntry;
+import com.liferay.portlet.documentlibrary.model.DLFolder;
+import com.liferay.portlet.documentlibrary.model.DLFolderConstants;
+import com.liferay.portlet.documentlibrary.service.DLAppServiceUtil;
+import com.mysql.jdbc.StringUtils;
+import com.tf.model.Allotment;
+import com.tf.model.Company;
+import com.tf.model.Invoice;
+import com.tf.model.SCFTrade;
+import com.tf.persistance.util.Constants;
+import com.tf.persistance.util.InvoiceStatus;
+import com.tf.persistance.util.TradeStatus;
+import com.tf.service.AllotmentService;
+import com.tf.service.CompanyService;
+import com.tf.service.InvoiceService;
+import com.tf.service.SCFTradeService;
+import com.tf.service.UserService;
+import com.tf.util.LiferayUtility;
+import com.tf.util.MyCustomNumberEditor;
+import com.tf.util.SCFTradeDTO;
+
 import java.beans.PropertyEditorSupport;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -28,38 +63,6 @@ import org.springframework.web.portlet.bind.annotation.ActionMapping;
 import org.springframework.web.portlet.bind.annotation.RenderMapping;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.repository.model.FileEntry;
-import com.liferay.portal.kernel.repository.model.Folder;
-import com.liferay.portal.kernel.util.MimeTypesUtil;
-import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.security.permission.PermissionChecker;
-import com.liferay.portal.service.ServiceContext;
-import com.liferay.portal.service.ServiceContextFactory;
-import com.liferay.portal.theme.ThemeDisplay;
-import com.liferay.portlet.documentlibrary.model.DLFileEntry;
-import com.liferay.portlet.documentlibrary.model.DLFolder;
-import com.liferay.portlet.documentlibrary.model.DLFolderConstants;
-import com.liferay.portlet.documentlibrary.service.DLAppServiceUtil;
-import com.mysql.jdbc.StringUtils;
-import com.tf.model.Allotment;
-import com.tf.model.Company;
-import com.tf.model.SCFTrade;
-import com.tf.persistance.util.Constants;
-import com.tf.persistance.util.InvoiceStatus;
-import com.tf.persistance.util.TradeStatus;
-import com.tf.service.AllotmentService;
-import com.tf.service.CompanyService;
-import com.tf.service.InvoiceService;
-import com.tf.service.SCFTradeService;
-import com.tf.service.UserService;
-import com.tf.util.MyCustomNumberEditor;
-import com.tf.util.SCFTradeDTO;
-
 /**
  * This controller is responsible for request/response handling on
  * SCF Trade  screens
@@ -72,6 +75,7 @@ import com.tf.util.SCFTradeDTO;
 public class SCFTradeController {
 	
 	protected Log _log = LogFactoryUtil.getLog(SCFTradeController.class.getName());
+	
 	
 	
 	@Autowired
@@ -88,6 +92,8 @@ public class SCFTradeController {
 	
 	@Autowired
 	protected AllotmentService allotmentService;
+	@Autowired
+    protected LiferayUtility liferayUtility;
 	
 	
 	@InitBinder
@@ -120,9 +126,12 @@ public class SCFTradeController {
 	protected ModelAndView renderTradeList(ModelMap model,
 			RenderRequest request, RenderResponse response) throws Exception {
 		List<SCFTrade> scftrades=null;
+		SCFTrade scfTrade=null;
 		String viewName="";
 		ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);
 		PermissionChecker permissionChecker = themeDisplay.getPermissionChecker();
+		String regNum= liferayUtility.getWhiteHallComapanyRegNo(request);
+		
 		if(permissionChecker.isOmniadmin() ){
 			scftrades=scfTradeService.getScfTrades();
 			viewName="admintradelist";
@@ -130,11 +139,24 @@ public class SCFTradeController {
 			long companyId=userService.getCompanybyUserID(themeDisplay.getUserId()).getId();
 			scftrades=scfTradeService.getScfTrades(companyId);
 			viewName="tradelist";
-		}		 
+		}
+		/*  code changes done seller trade screen*/
+		else if(request.isUserInRole(Constants.SELLER_ADMIN)){
+			
+			List<Invoice> registrationNumber=invoiceService.findByRegNum(regNum);
+			scftrades = new ArrayList<SCFTrade>();
+	         for(Invoice regNumber : registrationNumber){
+	        	 scfTrade=regNumber.getScfTrade();
+	        	 List<SCFTrade> intrimTrades = scfTradeService.getScfTradesByTradeId(scfTrade.getId());
+	        	 for (SCFTrade trade : intrimTrades){
+	        		 scftrades.add(trade);
+	        	 }
+	         }
+   	  viewName="sellertradelist";
+		}
 		model.put("trades", scftrades);
 		return new ModelAndView(viewName, model);
 	}
-	
 	@RenderMapping(params="render=createTrade")
 	protected ModelAndView renderCreateTrade(@ModelAttribute("scfTradeModel") SCFTradeDTO scfTradeDTO,ModelMap model,RenderRequest request, RenderResponse response) throws Exception {	
 		Long tradeID = ParamUtil.getLong(request, "tradeID"); 
@@ -152,14 +174,30 @@ public class SCFTradeController {
 			scfTradeDTO=transformTOScfTradeDTO(scfTrade);
 			model.put("invoiceList", scfTrade.getInvoices());	
 			
-			//transformTOScfTradeDTO()
 		}
 		model.put("scfTradeModel", scfTradeDTO);
 		return new ModelAndView("createscftrade", model);
+	
+	}
+	
+    
+	@RenderMapping(params="render=singleTrade")
+	protected ModelAndView renderSingleTrade(ModelMap model,
+			RenderRequest request, RenderResponse response){
+
+	   Long tradeID = ParamUtil.getLong(request, "tradeID"); 
+	   SCFTrade scfTrade=scfTradeService.findById(tradeID);
+	   List<Allotment>  allotmentList=allotmentService.getALlotmentsbyTrade(tradeID);
+	   long companyId=liferayUtility.getWhitehallCompanyID(request);
+	   Company company=companyService.findById(companyId);
+       model.put("allotments", allotmentList);
+       model.put("trades", scfTrade);
+       model.put("companyname", company); 
+		return new ModelAndView("suppliertrade",model);
 	}
 	
 	
-
+	
 	@ActionMapping(params="action=saveTrade")
 	protected void saveTarde(@ModelAttribute("scfTradeModel") SCFTradeDTO scfTradeDTO, 
 												 ModelMap model, 

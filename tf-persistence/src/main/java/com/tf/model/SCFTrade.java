@@ -49,6 +49,9 @@ public class SCFTrade  implements Serializable{
 	@Column(name="trade_amount")
 	private BigDecimal tradeAmount;
 	
+	/* Newly colunmn added */
+	@Column(name="seller_transaction_fee")
+	private BigDecimal 	sellerTransFee;
 	
 	@Column(name="investor_total_gross_profit")
 	private BigDecimal investorTotalGross;
@@ -366,7 +369,13 @@ public class SCFTrade  implements Serializable{
 	public void setAllotments(Set<Allotment> allotments) {
 		this.allotments = allotments;
 	}
-
+	public BigDecimal getSellerTransFee() {
+		return sellerTransFee;
+	}
+	
+	public void setSellerTransFee(BigDecimal sellerTransFee) {
+		this.sellerTransFee = sellerTransFee;
+	}
 	
 
 }

@@ -22,7 +22,9 @@ import com.liferay.portal.service.UserServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.portlet.PortletURLFactoryUtil;
+import com.tf.model.Company;
 import com.tf.model.User;
+import com.tf.service.CompanyService;
 import com.tf.service.UserService;
 
 @Component
@@ -31,6 +33,8 @@ public class LiferayUtility {
 	@Autowired
 	protected UserService userService;	
 	
+	@Autowired
+	private CompanyService companyService;
 	
 	
 	public  String getPortletURL(PortletRequest request,String portletName,String inputParam,String inputValue,boolean isPrivateLayout) {
@@ -69,6 +73,11 @@ public class LiferayUtility {
 	public Long getWhitehallCompanyID(PortletRequest request){
 		long companyID=userService.getCompanyIDbyUserID(getThemeDisplay(request).getUserId());
 		return companyID;
+	}
+	public String getWhiteHallComapanyRegNo(PortletRequest request){
+		long companyID = getWhitehallCompanyID(request);
+		Company comp = companyService.findById(companyID);
+		return comp.getRegNumber();
 	}
 	
 	public PermissionChecker getPermissionChecker(PortletRequest request) {	

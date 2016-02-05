@@ -2,11 +2,14 @@ package com.tf.model;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 
@@ -23,11 +26,21 @@ public class SellerSetting implements Serializable {
     @GeneratedValue
 	private Long id;
 	
+	@OneToOne
+    @JoinColumn(name="company_id")
+	private Company company;
+	
 	@Column(name="seller_transaction_fee")
 	private BigDecimal 	sellerTransFee;
 	
 	@Column(name="seller_finance_fee")
 	private BigDecimal 	sellerFinFee;
+	
+	@Column(name="create_date")
+	private Date createDate;
+	
+	@Column(name="update_date")
+	private Date updateDate;
 	
 	public SellerSetting() {
 		
@@ -41,6 +54,14 @@ public class SellerSetting implements Serializable {
 		this.id = id;
 	}
 
+	public Company getCompany() {
+		return company;
+	}
+
+	public void setCompany(Company company) {
+		this.company = company;
+	}
+	
 	public BigDecimal getSellerTransFee() {
 		return sellerTransFee;
 	}
@@ -56,11 +77,28 @@ public class SellerSetting implements Serializable {
 	public void setSellerFinFee(BigDecimal sellerFinFee) {
 		this.sellerFinFee = sellerFinFee;
 	}
+	
+	public Date getCreateDate() {
+		return createDate;
+	}
+
+	public void setCreateDate(Date createDate) {
+		this.createDate = createDate;
+	}
+	
+	public Date getUpdateDate() {
+		return updateDate;
+	}
+
+	public void setUpdateDate(Date updateDate) {
+		this.updateDate = updateDate;
+	}
+
 
 	@Override
 	public String toString() {
 		return "SellerSetting [id=" + id + ", sellerTransFee=" + sellerTransFee
-				+ ", sellerFinFee=" + sellerFinFee + "]";
+				+ ", sellerFinFee=" + sellerFinFee + ", createDate=" +createDate+", updateDate="+updateDate+" ]";
 	}
 	
 	

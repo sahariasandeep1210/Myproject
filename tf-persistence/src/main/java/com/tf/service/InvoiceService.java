@@ -29,4 +29,6 @@ public interface InvoiceService {
 	public void updateInvoicesStatusWithTrade(List<String> invoiceIds,String status,Long tradeLong);
 	
 	public void triggerAllotment(List<String> invoiceIds);
+	public List<Invoice> findByRegNum(String regNum);
+
 }

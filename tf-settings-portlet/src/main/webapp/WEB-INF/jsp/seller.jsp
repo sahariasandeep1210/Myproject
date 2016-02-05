@@ -14,7 +14,7 @@
 
 		</div>
 	</div>
-	<div class="row-fluid">
+	<%-- <div class="row-fluid">
 		<div class="span12 borderdiv">
 			<div class="span12">
 				<h6>
@@ -23,14 +23,37 @@
 			</div>
 
 		</div>
-	</div>
+	</div> --%>
 	<form:form method="post" commandName="sellerDTO"
 		class="form-horizontal" name="settingForm">
 		<input type="hidden" value="${saveSellerSettings}" id="saveURL" />
 		<input type="hidden" value="${sellerDTO.id}" name="id" />
 		
-		
+		<div class="table-responsive">
+			<table class="table  tablesorter table-bordered" id="tradeListTable">
+				<thead>
+					<tr>
+					    <th>Seller Name</th>
+						<th>Opening Date</th>
+						<th>Modify Date</th>
+						<th>Seller Transaction Fee</th>
+						<th>Seller Finance Fee</th>	
+					</tr>
+				</thead>
+		  </table>
+	    </div>
 
+       <div class="row-fluid">
+          <div class="span6">
+              <label class="span6">Seller Company:</label>
+			<select id="sellerCompany" name="sellerCompany"  placeholder="Seller Company">
+				<option value="">---Select---</option>
+				<c:forEach var="company" items="${companyList}">
+					<option value="${company.id}">${company.name}</option>
+				</c:forEach>			
+			</select>
+           </div>
+       </div>
 		<div class="row-fluid">
 			<div class="span6">
 				<label class="span6">Seller Transaction Fee</label>

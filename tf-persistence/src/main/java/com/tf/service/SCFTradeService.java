@@ -15,5 +15,7 @@ public interface SCFTradeService  {
 	public List<SCFTrade> getScfTrades(Long companyID);
 	
 	public void update(SCFTrade scfTrade);
+	public List<SCFTrade> getScfTradesByTradeId(Long tradeId);
+
 
 }

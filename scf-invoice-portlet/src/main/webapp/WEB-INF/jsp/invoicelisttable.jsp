@@ -1,3 +1,5 @@
+<%@include file="init.jsp"%>
+	
 	<div class="table-responsive">
 			<table class="table table-hover tablesorter table-bordered">
 				<thead>

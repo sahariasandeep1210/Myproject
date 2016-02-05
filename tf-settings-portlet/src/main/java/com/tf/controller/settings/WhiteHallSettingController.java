@@ -1,6 +1,7 @@
 package com.tf.controller.settings;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.portlet.ActionRequest;
@@ -29,8 +30,11 @@ import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.util.JavaConstants;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.tf.dto.InvestorModel;
+import com.tf.model.Company;
 import com.tf.model.SellerSetting;
+import com.tf.persistance.util.CompanyTypes;
 import com.tf.persistance.util.InvestorDTO;
+import com.tf.service.CompanyService;
 import com.tf.service.InvestorService;
 import com.tf.service.SettingService;
 
@@ -58,6 +62,8 @@ public class WhiteHallSettingController {
 	@Autowired
 	private SettingService settingService;
 	
+	@Autowired
+	private CompanyService companyService;
 
 	
 	
@@ -102,6 +108,12 @@ public class WhiteHallSettingController {
 	protected ModelAndView renderSellerSetings(@ModelAttribute("sellerDTO")SellerSetting  sellerDTO,ModelMap model,RenderRequest request, RenderResponse response) throws Exception {		
 		_log.info("Render WhiteHall Settings Screen");
 		try {			
+			List<Company> companyList = new ArrayList<Company>();
+
+			String companyType=CompanyTypes.SELLER.getValue();			
+			companyList=companyService.getCompanies(companyType);
+			model.put("companyList", companyList);
+
 			model.put(ACTIVETAB, SELLER);
 			sellerDTO=settingService.getSellerSettings();
 			if(sellerDTO==null){
@@ -120,6 +132,8 @@ public class WhiteHallSettingController {
 												 ModelMap model, 
 												 ActionRequest request,
 												 ActionResponse response) throws Exception {
+		long companyId=ParamUtil.getLong(request, "sellerCompany");
+		System.out.println("Compid::"+companyId);
 		System.out.println("sellerDTO::"+sellerDTO);
 		settingService.saveSellerSettings(sellerDTO);
 		response.setRenderParameter("render", "sellerSetings");

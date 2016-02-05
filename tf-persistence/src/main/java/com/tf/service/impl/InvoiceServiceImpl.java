@@ -251,6 +251,9 @@ public class InvoiceServiceImpl implements InvoiceService{
 		}
 		return c.getTime();		
 	}
+	public List<Invoice> findByRegNum(String regNum) {
+		return invoiceDAO.findByRegNum(regNum);
+	}
 
 	
 	

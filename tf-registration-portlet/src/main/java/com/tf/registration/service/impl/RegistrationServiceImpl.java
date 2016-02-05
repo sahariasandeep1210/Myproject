@@ -31,7 +31,6 @@ public class RegistrationServiceImpl implements RegistrationService {
 	@Autowired
 	private CompanyService companyService;
 
-	@Override
 	@Transactional
 	public String registerCompany(Registration registration,
 			ThemeDisplay themeDisplay, User user, ServiceContext serviceContext)

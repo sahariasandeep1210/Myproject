@@ -37,5 +37,7 @@ public class SCFTradeServiceImpl  implements SCFTradeService{
 	public void update(SCFTrade scfTrade){
 		scfTradeDAO.update(scfTrade);
 	}
-
+	public List<SCFTrade> getScfTradesByTradeId(Long tradeId){
+		return scfTradeDAO.getScfTradesByTradeId(tradeId);
+	}
 }

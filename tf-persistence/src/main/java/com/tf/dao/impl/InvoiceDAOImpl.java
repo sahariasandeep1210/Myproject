@@ -125,4 +125,23 @@ public class InvoiceDAOImpl  extends BaseDAOImpl<Invoice, Long> implements Invoi
 			throw re;
 		}
 	}
+	
+	/* New method added for finding the RegistrationNumber */
+	public List<Invoice> findByRegNum(String regNum) {
+		try{
+			List<Invoice> invoices=(List<Invoice>) sessionFactory.getCurrentSession().createCriteria(Invoice.class)
+				.add(Restrictions.eq("sellerCompanyRegistrationNumber", regNum)).list();
+		
+		
+		if (invoices == null) {
+			_log.debug("get successful, no instance found");
+		} else {
+			_log.debug("get successful, instance found");
+		}
+		return invoices;
+	} catch (RuntimeException e) {
+		_log.error("get failed", e);
+		throw e;
+	}
+	}
 }
