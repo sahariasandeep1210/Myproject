@@ -343,8 +343,9 @@ public class InvoiceController {
 			ActionRequest request, ActionResponse response) throws Exception {
 		String invoiceIds= ParamUtil.getString(request, "invoices");
 		if(!StringUtils.isNullOrEmpty(invoiceIds)){
+			long companyId = liferayUtility.getWhitehallCompanyID(request);
 			List<String> invoicesIdList=Arrays.asList(invoiceIds.split(","));
-			invoiceService.triggerAllotment(invoicesIdList);
+			invoiceService.triggerAllotment(invoicesIdList,companyId);
 		}
 		
 	}	

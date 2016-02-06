@@ -40,11 +40,19 @@ public abstract  class BaseDAOImpl<T, ID extends Serializable> implements BaseDA
 	    }
 
 
-	public T findById(Serializable id) {
+	 public T findById(Serializable id) {
 		 T entity; 
 		entity = (T) sessionFactory.getCurrentSession().get(getPersistentClass(), id); 
 		return entity;  
 	}
+	
+	
+	public T loadById(Serializable id) {
+		 T entity; 
+		entity = (T) sessionFactory.getCurrentSession().load(getPersistentClass(), id); 
+		return entity;  
+	}
+	
 	
 	
 	 public void update(T entity) {

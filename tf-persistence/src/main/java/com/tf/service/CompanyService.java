@@ -23,4 +23,7 @@ public interface CompanyService {
 	public List<Company> getCompanies(String companyType);
 	
 	public Long getCompaniesCount(String status) ;
+	
+	public Company loadById(long id);
+	
 }

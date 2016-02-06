@@ -110,16 +110,12 @@ public class WhiteHallSettingController {
 		try {			
 			List<Company> companyList = new ArrayList<Company>();
 
-			String companyType=CompanyTypes.SELLER.getValue();			
-			companyList=companyService.getCompanies(companyType);
+			companyList=companyService.getCompanies(CompanyTypes.SELLER.getValue());
 			model.put("companyList", companyList);
-
 			model.put(ACTIVETAB, SELLER);
-			sellerDTO=settingService.getSellerSettings();
-			if(sellerDTO==null){
-				sellerDTO=new SellerSetting();
-			}
+			List<SellerSetting> sellerSettings=settingService.getSellerSettings();			
 			model.put("sellerDTO", sellerDTO);	
+			model.put("sellerSettings", sellerSettings);	
 		} catch (Exception e) {
 			SessionErrors.add(request, "default-error-message");
 			_log.error("WhiteHallSettingController.renderSellerSetings() - error occured while rendering Whitehall Settings Screen"+e.getMessage());
@@ -133,8 +129,7 @@ public class WhiteHallSettingController {
 												 ActionRequest request,
 												 ActionResponse response) throws Exception {
 		long companyId=ParamUtil.getLong(request, "sellerCompany");
-		System.out.println("Compid::"+companyId);
-		System.out.println("sellerDTO::"+sellerDTO);
+		sellerDTO.setCompany(companyService.loadById(companyId));
 		settingService.saveSellerSettings(sellerDTO);
 		response.setRenderParameter("render", "sellerSetings");
 		
@@ -147,7 +142,6 @@ public class WhiteHallSettingController {
 	@ResourceMapping
 	public ModelAndView fetchSettings(ResourceRequest request, ResourceResponse response, ModelMap modelMap)throws IOException {
 		String userSelection = ParamUtil.getString(request, "userSelection","");
-		System.out.println("userSelection::::"+userSelection);
 		String viewName="";
 		if(userSelection.equals(LanguageUtil.get(getPortletConfig(request), request.getLocale(), INVESTOR))){
 			List<InvestorDTO> investorList=investorService.getInvestorDetails();

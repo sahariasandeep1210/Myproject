@@ -35,7 +35,7 @@ public class AllotmentEngine {
 	@Autowired
 	private SettingService settingService;
 	
-	public List<Allotment> tradeAllotment(List<InvestorProtfolioDTO> investorsList,SCFTrade trade){
+	public List<Allotment> tradeAllotment(List<InvestorProtfolioDTO> investorsList,SCFTrade trade,long sellerCmpId){
 
 		List<InvestorProtfolioDTO> investors = investorsList;
 		Allotment allotment ; 
@@ -112,15 +112,18 @@ public class AllotmentEngine {
 			investorPortfolio.setAvailToInvest(investor.getAvailToInvest());
 			investorPortfolio.setAmountInvested(investor.getAmountInvested());
 		}
-		sellerFees=calculateSellerFees(trade.getDuration(), tradeAmount);
+		SellerSetting sellerSetting=settingService.getSellerSetting(sellerCmpId);
+		sellerFees=calculateSellerFees(trade.getDuration(), tradeAmount,sellerSetting);
 		
 		//setting back to Trade
 		trade.setInvestorTotalGross(investorTotalGross);
 		trade.setWhitehallTotalShare(whitehallTotal);
 		trade.setInvestorTotalProfit(investorTotalNet);
 		trade.setSellerFees(sellerFees);
-		trade.setWhitehallTotalProfit(calculateWhitehallTotalProfit(whitehallTotal,sellerFees));
-		trade.setWhitehallNetReceivable(calculateWhitehallTotalProfit(whitehallTotal,sellerFees));
+		trade.setSellerTransFee(sellerSetting.getSellerTransFee());
+		trade.setWhitehallTotalProfit(calculateWhitehallTotalProfit(whitehallTotal,sellerFees,trade.getSellerTransFee()));
+		//here we need to add VAT as well
+		trade.setWhitehallNetReceivable(calculateWhitehallTotalProfit(whitehallTotal,sellerFees,trade.getSellerTransFee()));
 		trade.setSellerNetAllotment(calculateSellerNetAllotment(tradeAmount,trade.getInvestorTotalProfit(),trade.getWhitehallNetReceivable()));
 		System.out.println("Trade to update ::::::::::::::::::::::::::::::"+trade);
 		
@@ -157,15 +160,14 @@ public class AllotmentEngine {
 		return investorNetProfit;
 	}
 	
-	private BigDecimal calculateSellerFees(Integer duration,BigDecimal tradeAmount){
-		SellerSetting sellerSetting=settingService.getSellerSettings();
+	private BigDecimal calculateSellerFees(Integer duration,BigDecimal tradeAmount,SellerSetting sellerSetting){		
 		BigDecimal sellerFees=((new BigDecimal(duration).multiply(sellerSetting.getSellerFinFee())).divide(TEN_THOUSAND,6, RoundingMode.HALF_UP)).multiply(tradeAmount);
 		sellerFees.setScale(2, RoundingMode.CEILING);
 		return sellerFees;
 	}
 	
-	private BigDecimal calculateWhitehallTotalProfit(BigDecimal whitehallTotal,BigDecimal sellerFees){		
-		BigDecimal WhitehallTotalProfit=whitehallTotal.add(sellerFees);
+	private BigDecimal calculateWhitehallTotalProfit(BigDecimal whitehallTotal,BigDecimal sellerFees,BigDecimal sellerTransFee){		
+		BigDecimal WhitehallTotalProfit=whitehallTotal.add(sellerFees).add(sellerTransFee);
 		WhitehallTotalProfit.setScale(2, RoundingMode.CEILING);
 		return WhitehallTotalProfit;
 	}

@@ -61,4 +61,8 @@ public class CompanyServiceImpl implements CompanyService {
 		return companyDAO.getCompaniesCount(status);	
 	}
 
+	public Company loadById(long id) {
+		 return companyDAO.loadById(id);
+	}
+
 }
