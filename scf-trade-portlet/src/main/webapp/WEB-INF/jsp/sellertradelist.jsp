@@ -49,11 +49,11 @@
 						<th width="8%">Opening Date</th>
 						<th width="8%">Maturity Date</th>
 						<th>Supplier Payment Date</th>
-						<th>FIXED CHARGES(£)</th>
-						<th>Whiethall Variable Fees IN £</th>
+						<th>Fixed Charges</th>
+						<th>Whiethall Variable Fees</th>
 						<th>Investors Fees</th>
 						<th>Other Fees</th>
-						<th>GROSS CHARGES</th>
+						<th>Gross charges</th>
 						<th>Finance Amount</th>
 
 					</tr>
@@ -77,7 +77,7 @@
 									<td>${trade.sellerTransFee }</td>
 									<td>${trade.investorTotalGross}</td>
 									<td>${trade.sellerFees}</td>
-									<td>${trade.tradeAmount}</td>
+									<td></td>
 									<td>${trade.sellerNetAllotment}</td>
 									<td>${trade.sellerNetAllotment}</td>
 

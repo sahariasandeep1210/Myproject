@@ -167,8 +167,13 @@
 
 		<div class="row-fluid">
 			<div class="span6">
-				<input type="button" value="Add Trade" class="btn btn-primary"
-					data-url="${createTradeURL}" id="tradeAdd" /> <input type="button"
+			<c:if test="${scfTradeModel.id == null && scfTradeModel.id == 0}">
+							<input type="button" value="Add Trade" class="btn btn-primary"
+					data-url="${createTradeURL}" id="tradeAdd" /> 
+			</c:if>
+				
+					
+					<input type="button"
 					value="Go Back" class="btn btn-primary"
 					data-url="${defaultRender}" id="tradeback" />
 			</div>
