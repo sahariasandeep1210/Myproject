@@ -18,24 +18,25 @@ $(document).ready(function() {
 	
 	
 	//currently not in used
-	$("#settings").change(function() {
-		$(".settingDiv").hide();		
-		var settingURL=$("#settingURL").val();
+	$("#sellerCompany").change(function() {
+	var settingURL=$("#settingURL").val();
 		var userSel=$(this).val();
 	  	   
-	  	   if($("#investorTable").length){
-	  		   $("#investorDiv").slideToggle();
-	  	   }else{
 	  			$.ajax({ 
 					url: settingURL, 
 					type: 'POST', 
+					datatype:'json', 
+
 					cache: false,
 					data: { 
 						userSelection: userSel 					
 						  }, 
 					success: function(data){
-						$("#investorDiv").html(data);
-						$("#investorDiv").slideToggle();
+						var setting=jQuery.parseJSON(data);
+						console.log("::settingObject::"+setting);
+
+						$("#transaction").val(setting.sellerTransFee);
+						$("#finance").val(setting.sellerFinFee);
 								
 					} ,
 					error: function(jqXHR, textStatus, errorThrown) {
@@ -43,10 +44,13 @@ $(document).ready(function() {
 						
 					}
 					});	
-	  	   }
+		
 	});
 	
+	
 });
+
+
 
 
 

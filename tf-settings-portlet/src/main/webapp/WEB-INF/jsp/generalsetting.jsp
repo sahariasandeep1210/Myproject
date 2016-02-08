@@ -2,8 +2,8 @@
 
 <%@include file="tabview.jsp"%>
 
-<portlet:resourceURL var="settingURL"></portlet:resourceURL>
-
+<%-- <portlet:resourceURL var="settingURL"></portlet:resourceURL>
+ --%>
 <div class="row-fluid">
 				<div class="span12" >
 					<div class="span4"><h4>Manage General Settings</h4></div>	
@@ -32,10 +32,10 @@
 	
 </div>
 
-</form>
+</form> --%>
 
 <div class="row-fluid settingDiv" id="investorDiv" >
 	
 	
 	
-</div> --%>
+</div> 

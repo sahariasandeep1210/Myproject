@@ -4,11 +4,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 
 public class InvestorDTO  implements Serializable {
-	
-	
-	
 	private static final long serialVersionUID = -2665768060498858807L;
-	
 	private Long investorID;
 	private String name;
 	private BigDecimal whitehallShare;

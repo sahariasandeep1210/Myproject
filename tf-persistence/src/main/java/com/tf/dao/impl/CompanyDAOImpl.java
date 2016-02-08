@@ -12,6 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.tf.dao.CompanyDAO;
 import com.tf.model.Company;
+import com.tf.model.InvestorPortfolio;
+import com.tf.model.SCFTrade;
 import com.tf.model.User;
 import com.tf.persistance.util.CompanyStatus;
 
@@ -141,6 +143,23 @@ public class CompanyDAOImpl  extends BaseDAOImpl<Company, Long>   implements Com
 			throw re;
 		}
 	}
+	
+	public Company  loadCompanyId(long id){
+		try{
+		Company company =(Company)sessionFactory.getCurrentSession().load("com.tf.model.Company", id); 
+		if (company == null) {
+			_log.debug("get successful, no company found");
+		} else {
+			_log.debug("get successful, company found");
+		}
+		return company;	
+	} catch (RuntimeException re) {
+		_log.error("get failed", re);
+		throw re;
+	}
+	}
+
+	
 	public Company registerCompany(Company company) {
 		_log.debug("persisting Company instance");
 		try {
@@ -193,6 +212,20 @@ public class CompanyDAOImpl  extends BaseDAOImpl<Company, Long>   implements Com
 	}
 	
 	
+	public List<Company> getCompaniesById(Long id){		
+		_log.debug("Inside getCompaniesById ");
+		try {
+			
+			List<Company>  results = (List<Company>) sessionFactory.getCurrentSession().createCriteria(Company.class).add(Restrictions.eq("id", id)).list();
+			_log.debug("getCompaniesById successful, result size: "
+					+ results.size());
+			return results;
+		} catch (RuntimeException re) {
+			_log.error("getCompaniesById failed", re);
+			throw re;
+		}
+		
+	}
 
 
 }

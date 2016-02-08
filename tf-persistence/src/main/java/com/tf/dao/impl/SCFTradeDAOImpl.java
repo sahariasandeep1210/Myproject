@@ -59,7 +59,7 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 					setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY).list();
 			_log.debug("getScfTrades successful, result size: "
 					+ results.size());
-			return results;
+		return results;
 		} catch (RuntimeException re) {
 			_log.error("getScfTrades failed", re);
 			throw re;

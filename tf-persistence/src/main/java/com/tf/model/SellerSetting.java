@@ -4,8 +4,10 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -26,9 +28,8 @@ public class SellerSetting implements Serializable {
     @GeneratedValue
 	private Long id;
 	
-	@OneToOne
-    @JoinColumn(name="company_id")
-	private Company company;
+	@Column(name="company_id")
+	private Long companyId;	
 	
 	@Column(name="seller_transaction_fee")
 	private BigDecimal 	sellerTransFee;
@@ -42,6 +43,7 @@ public class SellerSetting implements Serializable {
 	@Column(name="update_date")
 	private Date updateDate;
 	
+
 	public SellerSetting() {
 		
 	}
@@ -53,14 +55,14 @@ public class SellerSetting implements Serializable {
 	public void setId(Long id) {
 		this.id = id;
 	}
-
-	public Company getCompany() {
-		return company;
+	
+	public Long getCompanyId() {
+		return companyId;
 	}
 
-	public void setCompany(Company company) {
-		this.company = company;
-	}
+	public void setComapnyId(Long companyId) {
+		this.companyId = companyId;
+	} 
 	
 	public BigDecimal getSellerTransFee() {
 		return sellerTransFee;
