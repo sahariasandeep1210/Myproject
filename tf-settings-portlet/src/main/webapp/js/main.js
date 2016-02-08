@@ -12,7 +12,8 @@ $(document).ready(function() {
 		document.forms["settingForm"].action = updateURL;
 		document.forms["settingForm"].submit();
 	});
-	
+	 $('table').tablesorter();
+
 	
 	$("#exportSellers").click(function(){
 		/* window.open('data:application/vnd.ms-excel,' + $('#dvData').html());
@@ -29,7 +30,6 @@ $(document).ready(function() {
 	
 	
 	
-	//currently not in used
 	$("#sellerCompany").change(function() {
 	var settingURL=$("#settingURL").val();
 		var userSel=$(this).val();

@@ -1,7 +1,6 @@
 package com.tf.controller.settings;
 
 import com.google.gson.Gson;
-import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.servlet.SessionErrors;
@@ -17,13 +16,8 @@ import com.tf.service.InvestorService;
 import com.tf.service.SettingService;
 
 import java.io.IOException;
-import java.math.BigDecimal;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
@@ -115,38 +109,7 @@ public class WhiteHallSettingController {
 		_log.info("Render WhiteHall Settings Screen");
 
 		try {			
-			List<Object[]> listOfObjects = settingService.getSellersName();
-			System.out.println("dhanussss:"+listOfObjects);
-/*			List<List<String>> mainSellerList = new ArrayList<List<String>>(); 
-*/			for (Object []objArray : listOfObjects) {
-				System.out.println("dhauhs 1 :"+objArray[0] + objArray[1] + objArray[2] + objArray[3] + objArray[4]);
-				/*List<String> subSellerList = new ArrayList<String>();
-				
-				//change here
-				subSellerList.add((String)objArray[0]);
-				subSellerList.add((objArray[1].toString())+"");
-				subSellerList.add((objArray[2].toString())+"");
-				DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-				String createDate = df.format(objArray[3]);
-				subSellerList.add(createDate);
-				String updateDate = df.format(objArray[4]);
-				subSellerList.add(updateDate);
-				//upto here
-				
-				mainSellerList.add(subSellerList);*/
-			}
 			
-			/*// displayed by this logic
-			for(List<String> subList : mainSellerList) {
-				String testString = "";
-				for(String str : subList) {
-					testString = testString + str + "  ";
-				}
-				System.out.println("dhauhs 2 :" + testString );
-			}*/
-			
-/*			model.put("mainSellerList", mainSellerList);
-*/			
 			List<Company> companyList = new ArrayList<Company>();
 
 			String companyType = CompanyTypes.SELLER.getValue();			
@@ -173,8 +136,7 @@ public class WhiteHallSettingController {
 												 ModelMap model, 
 												 ActionRequest request,
 												 ActionResponse response) throws Exception {
-		long companyId=ParamUtil.getLong(request, "sellerCompany");
-		
+	   long companyId=ParamUtil.getLong(request, "sellerCompany");
 	   sellerDTO.setCompany(companyService.loadById(companyId));
 	   settingService.saveSellerSettings(sellerDTO);
 	   response.setRenderParameter("render", "sellerSetings");
@@ -193,12 +155,16 @@ public class WhiteHallSettingController {
 		String settingmodel=null;
 		System.out.println("userSelections::::"+userSelection);
 		try {
-		SellerSetting sellerList=settingService.getSellerSetting(userSelection);
+		SellerSetting sellerList = settingService.getSellerSetting(userSelection);
+		SellerSetting cloneSellerList = new SellerSetting();
+		cloneSellerList.setId(sellerList.getId());
+		cloneSellerList.setSellerFinFee(sellerList.getSellerFinFee());
+		cloneSellerList.setSellerTransFee(sellerList.getSellerTransFee());
 		Gson gson=new Gson();
-	    settingmodel=gson.toJson(sellerList);
+	    settingmodel=gson.toJson(cloneSellerList);
 	    response.getWriter().println(settingmodel);
 		} catch (Exception e) {
-			_log.error("Error occured while fetching company information"+e.getMessage());
+			_log.error("Error occured while fetchSettings"+e.getMessage());
 			response.setProperty(ResourceResponse.HTTP_STATUS_CODE, "400");
 		}
 		
