@@ -445,3 +445,10 @@ CREATE TABLE tf_trade_audit(
   KEY `fk_trade_audit_user_id` (`user_id`),
   CONSTRAINT `tf_trade_audit_ibfk_1` FOREIGN KEY (`trade_id`) REFERENCES `scf_trade` (`id`), 
   CONSTRAINT `tf_trade_audit_ibfk_3` FOREIGN KEY (`user_id`) REFERENCES `tf_user` (`iduser`)
+  );
+  
+  ALTER TABLE tf_allotments
+  MODIFY COLUMN  allotment_amount  DECIMAL(10,2),
+  MODIFY COLUMN  investor_gross_profit  DECIMAL(10,2), 
+  MODIFY COLUMN  whitehall_profit_share  DECIMAL(10,2),    
+  MODIFY COLUMN  investor_net_profit  DECIMAL(10,2);

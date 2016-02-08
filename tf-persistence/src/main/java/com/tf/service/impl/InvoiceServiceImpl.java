@@ -146,7 +146,7 @@ public class InvoiceServiceImpl implements InvoiceService{
 	}
 	
 	@Transactional
-	public void triggerAllotment(List<String> invoiceIds){		
+	public void triggerAllotment(List<String> invoiceIds,long sellerCmpId){		
 		Date date=new Date();
 		Company company=null;
 		Invoice invoice;
@@ -182,7 +182,7 @@ public class InvoiceServiceImpl implements InvoiceService{
 		updateTradeinfoToInvovices(invoicesList, scfTrade);
 		List<InvestorProtfolioDTO> list=investorDAO.findInvestorByRate(company.getId());
 		list=getSameRateCountStamp(list);
-		List<Allotment> allotments = allotmentEngine.tradeAllotment(list, scfTrade);
+		List<Allotment> allotments = allotmentEngine.tradeAllotment(list, scfTrade,sellerCmpId);
 		System.out.println("------------------------------------------------------------------------------------)");
 		for(Allotment allotment : allotments){
 			System.out.println("allotment::::::::"+allotment);

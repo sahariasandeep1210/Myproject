@@ -28,8 +28,9 @@ public class SellerSetting implements Serializable {
     @GeneratedValue
 	private Long id;
 	
-	@Column(name="company_id")
-	private Long companyId;	
+	@OneToOne
+	@JoinColumn(name="company_id")
+	private Company company;
 	
 	@Column(name="seller_transaction_fee")
 	private BigDecimal 	sellerTransFee;
@@ -56,13 +57,13 @@ public class SellerSetting implements Serializable {
 		this.id = id;
 	}
 	
-	public Long getCompanyId() {
-		return companyId;
+	public Company getCompany() {
+		return company;
 	}
 
-	public void setComapnyId(Long companyId) {
-		this.companyId = companyId;
-	} 
+	public void setCompany(Company company) {
+		this.company = company;
+	}
 	
 	public BigDecimal getSellerTransFee() {
 		return sellerTransFee;

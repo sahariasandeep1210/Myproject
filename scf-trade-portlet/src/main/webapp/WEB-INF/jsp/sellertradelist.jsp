@@ -32,28 +32,29 @@
 			<div class="span6">
 				<div class="span12">
 					<h5 style="float: right !important;">
-						<a href="#" style="color: #295780; font-weight: bold;"> Export</a>
+						<a href="#" style="color: #295780; font-weight: bold;" id="sellerTradeList"> Export</a>
 					</h5>
 				</div>
 			</div>
 		</div>
 
 		<div class="table-responsive">
-			<table class="table  tablesorter table-bordered" id="tradeListTable">
+			<table class="table  tablesorter table-bordered" id="sellerListTable">
 				<thead>
 					<tr>
 						<th>Trade #</th>
+						<th>Scf Company</th>
 						<th>Trade Value</th>
 						<th>Trade Status</th>
 						<th>Duration</th>
 						<th width="8%">Opening Date</th>
 						<th width="8%">Maturity Date</th>
 						<th>Supplier Payment Date</th>
-						<th>FIXED CHARGES(£)</th>
-						<th>Whiethall Variable Fees IN £</th>
+						<th>Fixed Charges</th>
+						<th>Whiethall Variable Fees</th>
 						<th>Investors Fees</th>
 						<th>Other Fees</th>
-						<th>GROSS CHARGES</th>
+						<th>Gross charges</th>
 						<th>Finance Amount</th>
 
 					</tr>
@@ -65,6 +66,7 @@
 								<tr>
 									<td><a href="javascript:void(0);"
 										onclick="window.location.href='${supplierURL}&tradeID=${trade.id}'">${trade.id}</a></td>
+										<td>${trade.company.name}</td>
 									<td>${trade.tradeAmount}</td>
 									<td>${trade.status}</td>
 									<td>${trade.duration}</td>
@@ -77,7 +79,7 @@
 									<td>${trade.sellerTransFee }</td>
 									<td>${trade.investorTotalGross}</td>
 									<td>${trade.sellerFees}</td>
-									<td>${trade.tradeAmount}</td>
+									<td></td>
 									<td>${trade.sellerNetAllotment}</td>
 									<td>${trade.sellerNetAllotment}</td>
 

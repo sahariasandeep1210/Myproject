@@ -1,20 +1,11 @@
 package com.tf.dao.impl;
 
 import com.tf.dao.SettingDAO;
-import com.tf.model.Company;
 import com.tf.model.SellerSetting;
-import com.tf.persistance.util.InvestorDTO;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.hibernate.Query;
-
-
-import org.hibernate.Criteria;
-import org.hibernate.FetchMode;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
@@ -45,14 +36,14 @@ public class SettingDAOImpl  extends BaseDAOImpl<Object, Long>   implements Sett
 	
 	
 
-	public void saveSellerSettings(SellerSetting sellerSetting) {
+	public void saveSellerSettings(SellerSetting sellerDTO) {
 
 		_log.debug("persisting Seller Settings instance");
 		try {
 			Session session=sessionFactory.getCurrentSession();
-            session.save(sellerSetting);
-			
-			_log.debug("persist successful"+sellerSetting);
+            session.save(sellerDTO);
+		
+			_log.debug("persist successful"+sellerDTO);
 		} catch (RuntimeException re) {
 			_log.error("persist failed", re);
 			throw re;
@@ -61,14 +52,13 @@ public class SettingDAOImpl  extends BaseDAOImpl<Object, Long>   implements Sett
 		
 	}
 
-	public void updateSellerSettings(SellerSetting sellerSetting) {
+	public void updateSellerSettings(SellerSetting sellerDTO) {
 		try {
 		Session session=sessionFactory.getCurrentSession();
 		SellerSetting seller;
-		seller=findBySellerId(sellerSetting.getId());
-		seller.setComapnyId(sellerSetting.getCompanyId());
-		seller.setSellerTransFee(sellerSetting.getSellerTransFee());
-		seller.setSellerFinFee(sellerSetting.getSellerFinFee());
+		seller=findBySellerId(sellerDTO.getId());
+		seller.setSellerTransFee(sellerDTO.getSellerTransFee());
+		seller.setSellerFinFee(sellerDTO.getSellerFinFee());
 		seller.setUpdateDate(new Date());
 	    session.update(seller);
 
@@ -81,35 +71,36 @@ public class SettingDAOImpl  extends BaseDAOImpl<Object, Long>   implements Sett
 	}
 	
 
-	public SellerSetting getSellerSettings() {
+	public List<SellerSetting> getSellersSetting() {
 
 		_log.debug("Inside getSellerSettings ");
 		try {
 			
-			SellerSetting sellerSetting = (SellerSetting) sessionFactory.getCurrentSession().createCriteria(SellerSetting.class).uniqueResult();			
-			return sellerSetting;
+			List<SellerSetting> sellerSettings = (List<SellerSetting>) sessionFactory.getCurrentSession().createCriteria(SellerSetting.class).list();		
+			return sellerSettings;
 		} catch (RuntimeException re) {
 			_log.error("getSellerSettings failed", re);
 			throw re;
 		}
 	
 	}
-	
-	public SellerSetting findBySellerId(Long id){
-		try {
-		SellerSetting instance = (SellerSetting) sessionFactory.getCurrentSession().get(
-				"com.tf.model.SellerSetting", id);
-		if (instance == null) {
-			_log.debug("get successful, no instance found");
-		} else {
-			_log.debug("get successful, instance found");
+
+
+	public SellerSetting getSellerSetting(long sellerCmpId) {
+		_log.debug("Inside getSellerSetting ");
+		try {			
+			SellerSetting sellerSetting = (SellerSetting) sessionFactory.getCurrentSession().createCriteria(SellerSetting.class).add(Restrictions.eq("company.id", sellerCmpId)).uniqueResult();		
+			return sellerSetting;
+		} catch (RuntimeException re) {
+			_log.error("getSellerSetting failed", re);
+			throw re;
 		}
-		return instance;
-	} catch (RuntimeException re) {
-		_log.error("get failed", re);
-		throw re;
 	}
-}
+	
+	 
+
+
+
 	
 	
 	public List<SellerSetting> findByCompanyId(Long companyId) {
@@ -127,4 +118,19 @@ public class SettingDAOImpl  extends BaseDAOImpl<Object, Long>   implements Sett
 			throw re;
 		}
 	}
+	
+	public SellerSetting findBySellerId(Long id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	public SellerSetting getSellerSettings() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	public List<SellerSetting> getSellerSetting() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	
 }

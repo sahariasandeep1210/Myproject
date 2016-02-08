@@ -17,10 +17,11 @@
                     
             </div>
             <div class="span6">
-                    <label class="span6">Opening Date:</label>
-                    <fmt:formatDate value="${trades.openingDate}" pattern="dd-MM-yyyy" />
+                    <label class="span6">SCF company Name:</label>
+                    ${trades.company.name} 
                     
             </div>
+            
      </div>
       <div class="row-fluid">
             <div class="span6">
@@ -29,10 +30,11 @@
                     
             </div>
             <div class="span6">
-                    <label class="span6">Maturity Date:</label>
-                    <fmt:formatDate value="${trades.closingDate}" pattern="dd-MM-yyyy" />
+                    <label class="span6">Opening Date:</label>
+                    <fmt:formatDate value="${trades.openingDate}" pattern="dd-MM-yyyy" />
                     
             </div>
+            
      </div>
      <div class="row-fluid">
             <div class="span6">
@@ -41,16 +43,24 @@
                     
             </div>
             <div class="span6">
-                    <label class="span6">Supplier Payment Date:</label>
-                    <fmt:formatDate value="${trades.sellerPaymentDate}" pattern="dd-MM-yyyy " />
+                    <label class="span6">Maturity Date:</label>
+                    <fmt:formatDate value="${trades.closingDate}" pattern="dd-MM-yyyy" />
                     
             </div>
+            
      </div>
             <div class="row-fluid">
                 <div class="span6">
                             <label class="span6">Seller Varibale Charges:</label> 
                             ${trades.sellerFees}
                 </div>
+                
+                <div class="span6">
+                    <label class="span6">Supplier Payment Date:</label>
+                    <fmt:formatDate value="${trades.sellerPaymentDate}" pattern="dd-MM-yyyy " />
+                    
+            </div>
+                
             </div>
       
       

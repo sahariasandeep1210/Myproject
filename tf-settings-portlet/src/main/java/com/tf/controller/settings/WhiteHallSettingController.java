@@ -148,11 +148,19 @@ public class WhiteHallSettingController {
 /*			model.put("mainSellerList", mainSellerList);
 */			
 			List<Company> companyList = new ArrayList<Company>();
+
 			String companyType = CompanyTypes.SELLER.getValue();			
 			companyList = companyService.getCompanies(companyType);
 			model.put("companyList", companyList);
 
             model.put(ACTIVETAB, SELLER);	
+
+			companyList=companyService.getCompanies(CompanyTypes.SELLER.getValue());
+			model.put("companyList", companyList);
+			model.put(ACTIVETAB, SELLER);
+			List<SellerSetting> sellerSettings=settingService.getSellersSetting();				
+			model.put("sellerDTO", sellerDTO);	
+			model.put("sellerSettings", sellerSettings);	
 		} catch (Exception e) {
 			SessionErrors.add(request, "default-error-message");
 			_log.error("WhiteHallSettingController.renderSellerSetings() - error occured while rendering Whitehall Settings Screen"+e.getMessage());
@@ -165,29 +173,11 @@ public class WhiteHallSettingController {
 												 ModelMap model, 
 												 ActionRequest request,
 												 ActionResponse response) throws Exception {
-		SellerSetting sellerSetting=null;
 		long companyId=ParamUtil.getLong(request, "sellerCompany");
-		Company company=companyService.findById(companyId);
-		List<SellerSetting> sel=settingService.findByCompanyId(companyId);
-		for(SellerSetting compId:sel){
-           if(companyId!=compId.getCompanyId()){
-        	 sellerSetting=new SellerSetting();
-       	    sellerSetting.setComapnyId(company.getId());
-       		sellerSetting.setSellerTransFee(sellerDTO.getSellerTransFee());
-       		sellerSetting.setSellerFinFee(sellerDTO.getSellerFinFee());
-       		sellerSetting.setCreateDate(new Date());
-            settingService.saveSellerSettings(sellerSetting);
-           }
-           else {
-			sellerSetting=settingService.findBySellerId(compId.getId());
-			sellerSetting.setComapnyId(companyId);
-       		sellerSetting.setSellerTransFee(sellerDTO.getSellerTransFee());
-            sellerSetting.setSellerFinFee(sellerDTO.getSellerFinFee());
-			settingService.updateSellerSettings(sellerSetting);
-		}
-	}
 		
-	response.setRenderParameter("render", "sellerSetings");
+	   sellerDTO.setCompany(companyService.loadById(companyId));
+	   settingService.saveSellerSettings(sellerDTO);
+	   response.setRenderParameter("render", "sellerSetings");
 		
 	}
 	
@@ -196,34 +186,22 @@ public class WhiteHallSettingController {
 	
 
 	@ResourceMapping
-	public void fetchSettings(ResourceRequest request, ResourceResponse response)throws IOException {
+    public void fetchSettings(ResourceRequest request, ResourceResponse response)throws IOException {
 	
 
 		long userSelection =Long.valueOf(ParamUtil.getString(request, "userSelection",""));
-		BigDecimal transaction=null;
-		BigDecimal finance=null;
 		String settingmodel=null;
 		System.out.println("userSelections::::"+userSelection);
-		List<SellerSetting> sellerList=settingService.findByCompanyId(userSelection);
-		for(SellerSetting sell:sellerList){
-			if(sell.getCompanyId()==userSelection){
-				transaction=sell.getSellerTransFee();
-				finance=sell.getSellerFinFee();
-				Gson gson=new Gson();
-				settingmodel=gson.toJson(sell);
-			}
+		try {
+		SellerSetting sellerList=settingService.getSellerSetting(userSelection);
+		Gson gson=new Gson();
+	    settingmodel=gson.toJson(sellerList);
+	    response.getWriter().println(settingmodel);
+		} catch (Exception e) {
+			_log.error("Error occured while fetching company information"+e.getMessage());
+			response.setProperty(ResourceResponse.HTTP_STATUS_CODE, "400");
 		}
-	
 		
-        
-		response.getWriter().println(settingmodel);
-		
-
-		/*if(userSelection.equals(LanguageUtil.get(getPortletConfig(request), request.getLocale(), INVESTOR))){
-			List<InvestorDTO> investorList=investorService.getInvestorDetails();
-			modelMap.put("investorList", investorList);
-			viewName=INVESTOR;
-		}		*/
 	}
 	
 	private PortletConfig getPortletConfig(PortletRequest request) {

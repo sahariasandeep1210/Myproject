@@ -1,5 +1,7 @@
 package com.tf.service;
 
+import java.util.List;
+
 import com.tf.model.SellerSetting;
 
 import java.util.List;
@@ -13,4 +15,8 @@ public interface SettingService {
 	public SellerSetting findBySellerId(Long id);
 	public List<SellerSetting> getSellers();
 	public List<Object[]> getSellersName();
+	
+	List<SellerSetting> getSellersSetting();
+	public SellerSetting getSellerSetting(long sellerCmpId);
+
 }

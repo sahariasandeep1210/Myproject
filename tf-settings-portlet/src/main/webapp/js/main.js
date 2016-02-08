@@ -14,6 +14,18 @@ $(document).ready(function() {
 	});
 	
 	
+	$("#exportSellers").click(function(){
+		/* window.open('data:application/vnd.ms-excel,' + $('#dvData').html());
+		 e.preventDefault();*/	
+		
+		$('#settingListTable').tableExport({
+			type : 'excel',
+			escape : 'false',
+			fileName: 'sellerList',
+			worksheetName: 'SellerSetting List'
+		});
+		
+	});
 	
 	
 	

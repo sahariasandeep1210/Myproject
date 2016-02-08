@@ -1,6 +1,44 @@
 $(document).ready(function(){
 	$(".historyRow").hide();
+	$("#buttonDiv").hide();
 
+	$("#sellerTradeList").click(function(){
+		/* window.open('data:application/vnd.ms-excel,' + $('#dvData').html());
+		 e.preventDefault();*/	
+		
+		$('#sellerListTable').tableExport({
+			type : 'excel',
+			escape : 'false',
+			fileName: 'sellerList',
+			worksheetName: 'SellerList'
+		});
+		
+	});
+	
+	
+	$('input[type=radio][name="trade"]').change(function() {
+		//this logic can be changed to ajax implementation
+		var currentStatus=$(this).attr('status-attr');
+		var tradeID=$(this).val();
+		var updatedStatus="";
+        if (currentStatus == 'Live') {
+        	updatedStatus='Allotment Paid';
+        }else if (currentStatus == 'Allotment Paid') {
+        	updatedStatus='Supplier Paid';
+        }else if (currentStatus == 'Hold') {
+        	updatedStatus='Allotment Paid';
+        }else if (currentStatus == 'Supplier Paid') {
+        	updatedStatus='SCF Repayment';
+        }else if (currentStatus == 'SCF Repayment') {
+        	updatedStatus='Investor Paid';
+        }else if (currentStatus == 'Investor Paid') {
+        	updatedStatus='Settled';
+        }
+        $("#buttonDiv").show();
+        $("#tradeID").val(tradeID);
+        $("#updateStatus").val(updatedStatus);
+        
+    });
 	
 	$("#SellerPaymentDate").datepicker({
 		changeMonth : true,
@@ -97,6 +135,8 @@ $(document).ready(function(){
    	   }
    	  
      });
+    
+    
 	
 	$("#closingDate").datepicker({
 		changeMonth : true,
@@ -128,6 +168,14 @@ $(document).ready(function(){
 	$("#tradeAdd,#tradeback").click(function(){
 		var url = $(this).attr('data-url');
 		submitTradeForms(url);
+	});
+	
+	$("#updateStatus").click(function(){
+		var url = $(this).attr('data-url');
+		var updatedStatus=$(this).val();
+		$("#status").val(updatedStatus);
+		document.forms["scfTradeList"].action = url;
+		document.forms["scfTradeList"].submit();
 	});
 
 
@@ -185,7 +233,7 @@ function ajaxindicatorstart(text)
     $('#resultLoading .bg').height('100%');
     $('#resultLoading').fadeIn(300);
     $('body').css('cursor', 'wait');
-}
+}  
 
 function ajaxindicatorstop()
 {
@@ -205,6 +253,7 @@ function changeExpandIcon(tradeID){
 	
 }
 
+$('table').tablesorter();
 
 $(document).ajaxStart(function () {
 		//show ajax indicator

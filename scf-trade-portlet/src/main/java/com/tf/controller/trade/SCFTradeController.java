@@ -92,6 +92,7 @@ public class SCFTradeController {
 	
 	@Autowired
 	protected AllotmentService allotmentService;
+	
 	@Autowired
     protected LiferayUtility liferayUtility;
 	
@@ -130,7 +131,7 @@ public class SCFTradeController {
 		String viewName="";
 		ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);
 		PermissionChecker permissionChecker = themeDisplay.getPermissionChecker();
-		String regNum= liferayUtility.getWhiteHallComapanyRegNo(request);
+		
 		
 		if(permissionChecker.isOmniadmin() ){
 			scftrades=scfTradeService.getScfTrades();
@@ -139,10 +140,8 @@ public class SCFTradeController {
 			long companyId=userService.getCompanybyUserID(themeDisplay.getUserId()).getId();
 			scftrades=scfTradeService.getScfTrades(companyId);
 			viewName="tradelist";
-		}
-		/*  code changes done seller trade screen*/
-		else if(request.isUserInRole(Constants.SELLER_ADMIN)){
-			
+		}else if(request.isUserInRole(Constants.SELLER_ADMIN)){
+			String regNum= liferayUtility.getWhiteHallComapanyRegNo(request);		
 			List<Invoice> registrationNumber=invoiceService.findByRegNum(regNum);
 			scftrades = new ArrayList<SCFTrade>();
 	         for(Invoice regNumber : registrationNumber){
@@ -152,7 +151,7 @@ public class SCFTradeController {
 	        		 scftrades.add(trade);
 	        	 }
 	         }
-   	  viewName="sellertradelist";
+	         viewName="sellertradelist";
 		}
 		model.put("trades", scftrades);
 		return new ModelAndView(viewName, model);
@@ -276,6 +275,18 @@ public class SCFTradeController {
 		scfTrade.setUpdatDate(new Date());
 		//scfTrade.getInvoices().addAll(scfTrade.getInvoices());
 		scfTradeService.update(scfTrade);
+	}
+	
+	@ActionMapping(params="action=updateStatus")
+	protected void saveTarde(ModelMap model,ActionRequest request,
+												 ActionResponse response) throws Exception{
+		Long tradeID=ParamUtil.getLong(request, "tradeID");
+		String status=ParamUtil.getString(request, "status");
+		SCFTrade scfTrade=scfTradeService.findById(tradeID);
+		scfTrade.setStatus(status);
+		scfTradeService.update(scfTrade);
+		System.out.println("tradeID::"+tradeID+" status "+status);		
+		
 	}
 
 	private SCFTrade transformTOScfTrade(SCFTradeDTO scfTradeDTO) {
