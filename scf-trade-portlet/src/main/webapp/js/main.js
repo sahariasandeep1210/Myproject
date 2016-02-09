@@ -255,13 +255,6 @@ function changeExpandIcon(tradeID){
 
 $('table').tablesorter();
 
-$(document).ajaxStart(function () {
-		//show ajax indicator
-	ajaxindicatorstart('loading history data.. please wait..');
-}).ajaxStop(function () {
-	//hide ajax indicator
-	ajaxindicatorstop();
-});
 
 
 function setPage(pageNumber){
@@ -270,3 +263,40 @@ function setPage(pageNumber){
 	document.forms["scfSellerTradeList"].action = actionUrl;
 	document.forms["scfSellerTradeList"].submit();	
 }
+
+
+
+
+
+$("#search").keyup(function() {
+	var tradeURL=$("#tradeURL").val();
+		var searchval=$(this).val();
+
+	  			$.ajax({ 
+					url: tradeURL, 
+					type: 'POST', 
+					datatype:'json', 
+
+					cache: false,
+					data: { 
+						searchSelection: searchval 					
+						  }, 
+					success: function(data){
+						$("#sellerListTable").html(data);
+						
+						/*var setting=jQuery.parseJSON(data);
+						console.log("::settingObject::"+setting);
+
+						$("#transaction").val(setting.sellerTransFee);
+						$("#finance").val(setting.sellerFinFee);*/
+								
+					} ,
+					error: function(jqXHR, textStatus, errorThrown) {
+						ajaxindicatorstop();
+						
+					}
+					});	
+		
+	});
+	
+

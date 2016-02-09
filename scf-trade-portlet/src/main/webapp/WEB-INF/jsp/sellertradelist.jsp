@@ -2,6 +2,7 @@
 <liferay-theme:defineObjects />
 <%@ taglib uri="http://whitehall.com/jsp/tld/p" prefix="p"%>
 
+<portlet:resourceURL  var="tradeURL"></portlet:resourceURL>
 
 <style>
 .aui input, .aui textarea, .aui .uneditable-input {
@@ -20,12 +21,13 @@
 		id="scfSellerTradeList">
 		<input type="hidden" name="currentPage" 	id="currentPage"    	value="${paginationModel.currentPage}" />
 	    <input type="hidden" name="pageSize" 		id="pageSize" 			value="${paginationModel.pageSize}" />
-	    	<input type="hidden" name="defaultURL" 		id="defaultURL" 		value="${defaultRenderURL}" />
+	    <input type="hidden" name="defaultURL" 		id="defaultURL" 		value="${defaultRenderURL}" />
+	     <input type="hidden" id="tradeURL" name="tradeURL" value="${tradeURL}"/>
 	    
 		
 		<div class="row-fluid">
 			<div class="search-seller">
-				<input type="text" name="Search" placeholder="Search Here">
+				<input type="text" name="Search" placeholder="Search Here" id="search">
 
 			</div>
 		</div>
@@ -52,7 +54,7 @@
 						<th>Trade #</th>
 						<th>Scf Company</th>
 						<th>Trade Value</th>
-						<th>Trade Status</th>
+						<th>Status</th>
 						<th>Duration</th>
 						<th width="8%">Opening Date</th>
 						<th width="8%">Maturity Date</th>
@@ -71,8 +73,8 @@
 						<c:when test="${fn:length(trades) gt 0}">
 							<c:forEach items="${trades}" var="trade">
 								<tr>
-									<td><a href="javascript:void(0);"
-										onclick="window.location.href='${supplierURL}&tradeID=${trade.id}'">${trade.id}</a></td>
+									<td><span class='underline'><a href="javascript:void(0);"
+										onclick="window.location.href='${supplierURL}&tradeID=${trade.id}'">${trade.id}</a></span></td>
 										<td>${trade.company.name}</td>
 									<td>${trade.tradeAmount}</td>
 									<td>${trade.status}</td>

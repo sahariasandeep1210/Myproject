@@ -2,21 +2,19 @@
 
 <%@include file="tabview.jsp"%>
 
-<%-- <portlet:resourceURL var="settingURL"></portlet:resourceURL>
- --%>
 <div class="row-fluid">
 				<div class="span12" >
 					<div class="span4"><h4>Manage General Settings</h4></div>	
 								
 				</div>
 </div>
-<div class="row-fluid">
+<%-- <div class="row-fluid">
 				<div class="span12 borderdiv" >
 					<div class="span12"><h6>Manage Whitehall platfrom related settings</h6></div>		
 								
 				</div>
 </div>
-<%-- <form >
+<form >
 <input type="hidden" id="settingURL" name="settingURL" value="${settingURL}"/>
 <div class="row-fluid">
 	<div class="span6" >
@@ -32,10 +30,10 @@
 	
 </div>
 
-</form> --%>
+</form>
 
 <div class="row-fluid settingDiv" id="investorDiv" >
 	
 	
 	
-</div> 
+</div>  --%>

@@ -29,11 +29,29 @@ $(document).ready(function() {
 	});
 	
 	
-	
-	$("#sellerCompany").change(function() {
+
+
+function enableTab(){
+	var curentTab=$("#currentTab").val();
+	if(curentTab=='generalsetting'){
+		$("#generalSettings").addClass("active");
+	}else if(curentTab=='investor'){
+		$("#investorSettings").addClass("active");
+	}else if(curentTab=='seller'){
+		$("#sellerSetings").addClass("active");
+	}
+	else{
+		$("#investorSettings").addClass("active");
+	}	
+}
+
+
+
+
+$("#sellerCompany").change(function() {
 	var settingURL=$("#settingURL").val();
 		var userSel=$(this).val();
-	  	   
+
 	  			$.ajax({ 
 					url: settingURL, 
 					type: 'POST', 
@@ -60,23 +78,7 @@ $(document).ready(function() {
 	});
 	
 	
+	
 });
 
 
-
-
-
-
-function enableTab(){
-	var curentTab=$("#currentTab").val();
-	if(curentTab=='generalsetting'){
-		$("#generalSettings").addClass("active");
-	}else if(curentTab=='investor'){
-		$("#investorSettings").addClass("active");
-	}else if(curentTab=='seller'){
-		$("#sellerSetings").addClass("active");
-	}
-	else{
-		$("#investorSettings").addClass("active");
-	}	
-}

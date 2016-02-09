@@ -18,6 +18,10 @@ public class AllotmentServiceImpl implements AllotmentService{
 	public List<Allotment> getALlotmentsbyTrade(long tradeID) {
 		// TODO Auto-generated method stub
 		return allotmentDAO.getALlotmentsbyTrade(tradeID);
+	
+	}
+	public List<Allotment> groupAllotmentbyBps(){
+		return allotmentDAO.groupAllotmentbyBps();
 	}
 
 }

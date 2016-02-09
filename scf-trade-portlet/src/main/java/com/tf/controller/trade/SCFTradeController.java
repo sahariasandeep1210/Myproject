@@ -22,7 +22,6 @@ import com.tf.model.Allotment;
 import com.tf.model.Company;
 import com.tf.model.Invoice;
 import com.tf.model.SCFTrade;
-import com.tf.persistance.util.CompanyStatus;
 import com.tf.persistance.util.Constants;
 import com.tf.persistance.util.InvoiceStatus;
 import com.tf.persistance.util.TradeStatus;
@@ -65,8 +64,6 @@ import org.springframework.web.portlet.ModelAndView;
 import org.springframework.web.portlet.bind.annotation.ActionMapping;
 import org.springframework.web.portlet.bind.annotation.RenderMapping;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
-
-import com.tf.util.model.PaginationModel;
 
 /**
  * This controller is responsible for request/response handling on
@@ -150,22 +147,22 @@ public class SCFTradeController {
 			viewName="tradelist";
 		}else if(request.isUserInRole(Constants.SELLER_ADMIN)){
 			String regNum= liferayUtility.getWhiteHallComapanyRegNo(request);
-			   long companyId=liferayUtility.getWhitehallCompanyID(request);
-
+			long companyId=liferayUtility.getWhitehallCompanyID(request);
 			List<Invoice> registrationNumber=invoiceService.findByRegNum(regNum);
 			scftrades = new ArrayList<SCFTrade>();
 	         for(Invoice regNumber : registrationNumber){
 	        	 scfTrade=regNumber.getScfTrade();
 	        	 List<SCFTrade> intrimTrades = scfTradeService.getScfTradesByTradeId(scfTrade.getId());
+	        	 System.out.println("DDDD123:"+intrimTrades);
 	        	 for (SCFTrade trade : intrimTrades){
 	        		 scftrades.add(trade);
 	        	 }
 	         }
-	         Long noOfRecords=0l;
+	        Long noOfRecords=0l;
 	 		PaginationModel paginationModel = paginationUtil.preparePaginationModel(request);
 	 		list=scfTradeService.getScfTrades(companyId,paginationModel.getStartIndex(),paginationModel.getPageSize());
 	 		noOfRecords=scfTradeService.getScfTradesCount(companyId);
-           paginationUtil.setPaginationInfo(noOfRecords,paginationModel);
+            paginationUtil.setPaginationInfo(noOfRecords,paginationModel);
     		model.put("paginationModel", paginationModel);
 
 	       viewName="sellertradelist";
@@ -203,10 +200,9 @@ public class SCFTradeController {
 	@RenderMapping(params="render=singleTrade")
 	protected ModelAndView renderSingleTrade(ModelMap model,
 			RenderRequest request, RenderResponse response){
-
-	   Long tradeID = ParamUtil.getLong(request, "tradeID"); 
+       Long tradeID = ParamUtil.getLong(request, "tradeID"); 
 	   SCFTrade scfTrade=scfTradeService.findById(tradeID);
-	   List<Allotment>  allotmentList=allotmentService.getALlotmentsbyTrade(tradeID);
+	   List<Allotment> allotmentList=allotmentService.getALlotmentsbyTrade(tradeID);
 	   long companyId=liferayUtility.getWhitehallCompanyID(request);
 	   Company company=companyService.findById(companyId);
        model.put("allotments", allotmentList);
@@ -359,6 +355,13 @@ public class SCFTradeController {
 		sb.append(themeDisplay.getScopeGroupId());
 		return sb.toString();
 	}
+	@ResourceMapping
+    public void search(ResourceRequest request, ResourceResponse response)throws IOException {
 	
+
+		long searchSelection =Long.valueOf(ParamUtil.getString(request, "searchSelection",""));
+		System.out.println("userSelections::::"+searchSelection);
+		
+	}
 
 }

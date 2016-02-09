@@ -109,4 +109,13 @@ AUI().ready(
 	}
 );
 
+$(document).ajaxStart(function () {
+	//show ajax indicator
+ajaxindicatorstart('loading history data.. please wait..');
+}).ajaxStop(function () {
+//hide ajax indicator
+ajaxindicatorstop();
+});
+
+
 

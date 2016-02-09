@@ -437,13 +437,6 @@ function ajaxindicatorstop()
     $('body').css('cursor', 'default');
 }
 
-$(document).ajaxStart(function () {
-		//show ajax indicator
-	ajaxindicatorstart('loading company data.. please wait..');
-}).ajaxStop(function () {
-	//hide ajax indicator
-	ajaxindicatorstop();
-});
 
 function dateFormatter (dateObject) {
     var d = new Date(dateObject);

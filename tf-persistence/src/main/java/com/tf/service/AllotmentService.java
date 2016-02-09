@@ -7,5 +7,6 @@ import com.tf.model.Allotment;
 public interface AllotmentService {
 	
 	public List<Allotment> getALlotmentsbyTrade(long tradeID);
+	public List<Allotment> groupAllotmentbyBps();
 
 }
