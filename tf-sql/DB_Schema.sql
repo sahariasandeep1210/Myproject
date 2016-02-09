@@ -378,7 +378,7 @@ CREATE TABLE tf_seller_setting (
   id  BIGINT(20) NOT NULL AUTO_INCREMENT,
   company_Id BIGINT(20) NOT NULL ,  
   seller_transaction_fee  DECIMAL(10,2),  
-  seller_finance_fee  DECIMAL(10,4),   \
+  seller_finance_fee  DECIMAL(10,4),   
   create_date DATE,
   update_date DATE, 
   PRIMARY KEY (id),  
@@ -452,3 +452,17 @@ CREATE TABLE tf_trade_audit(
   MODIFY COLUMN  investor_gross_profit  DECIMAL(10,2), 
   MODIFY COLUMN  whitehall_profit_share  DECIMAL(10,2),    
   MODIFY COLUMN  investor_net_profit  DECIMAL(10,2);
+  
+  
+DROP TABLE IF EXISTS tf_general_setting;
+CREATE TABLE tf_general_setting (
+  id  BIGINT(20) NOT NULL AUTO_INCREMENT,
+  whitehall_share  DECIMAL(10,2), 
+  vat  DECIMAL(10,2), 
+  seller_transaction_fee  DECIMAL(10,2),  
+  seller_finance_fee  DECIMAL(10,4),   
+  create_date DATE,
+  update_date DATE, 
+  PRIMARY KEY (id),  
+  UNIQUE KEY id_UNIQUE (id) 
+) ;

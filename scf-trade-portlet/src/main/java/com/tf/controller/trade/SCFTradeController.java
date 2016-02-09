@@ -137,6 +137,7 @@ public class SCFTradeController {
 		SCFTrade scfTrade=null;
 		String viewName="";
 		ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);
+
 		PermissionChecker permissionChecker = themeDisplay.getPermissionChecker();
 		List<SCFTrade> list=null;
 		
@@ -359,20 +360,5 @@ public class SCFTradeController {
 		return sb.toString();
 	}
 	
-	private List<SCFTrade> prepareTradesList(RenderRequest request,
-			List<SCFTrade> tradeList, ThemeDisplay themeDisplay,ModelMap model) {
-		   long companyId=liferayUtility.getWhitehallCompanyID(request);
-
-		Long noOfRecords=0l;
-		PaginationModel paginationModel = paginationUtil.preparePaginationModel(request);
-		tradeList=scfTradeService.getScfTrades(companyId,paginationModel.getStartIndex(),paginationModel.getPageSize());
-		noOfRecords=scfTradeService.getScfTradesCount(companyId);
-
-		paginationUtil.setPaginationInfo(noOfRecords,paginationModel);
-		model.put("paginationModel", paginationModel);
-
-        return tradeList;
-		
-	}
 
 }
