@@ -262,3 +262,11 @@ $(document).ajaxStart(function () {
 	//hide ajax indicator
 	ajaxindicatorstop();
 });
+
+
+function setPage(pageNumber){
+	$("#currentPage").val(pageNumber);
+	var actionUrl=$("#defaultURL").val();
+	document.forms["scfSellerTradeList"].action = actionUrl;
+	document.forms["scfSellerTradeList"].submit();	
+}

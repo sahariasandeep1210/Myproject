@@ -31,8 +31,8 @@ public class SettingServiceImpl implements SettingService {
 	public List<SellerSetting> findByCompanyId(Long companyId)  {
 		return settingDAO.findByCompanyId(companyId);
 	}
-	public void updateSellerSettings(SellerSetting sellerSetting) {
-		 settingDAO.updateSellerSettings(sellerSetting);
+	public void updateSellerSettings(SellerSetting sell) {
+		 settingDAO.updateSellerSettings(sell);
 	}
 	public SellerSetting findBySellerId(Long id){
 		return settingDAO.findBySellerId(id);

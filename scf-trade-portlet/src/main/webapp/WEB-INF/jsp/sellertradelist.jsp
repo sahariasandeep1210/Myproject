@@ -1,5 +1,7 @@
 <%@include file="init.jsp"%>
 <liferay-theme:defineObjects />
+<%@ taglib uri="http://whitehall.com/jsp/tld/p" prefix="p"%>
+
 
 <style>
 .aui input, .aui textarea, .aui .uneditable-input {
@@ -16,6 +18,11 @@
 
 	<form:form commandName="scfSellerTradeModel" method="post" action=" "
 		id="scfSellerTradeList">
+		<input type="hidden" name="currentPage" 	id="currentPage"    	value="${paginationModel.currentPage}" />
+	    <input type="hidden" name="pageSize" 		id="pageSize" 			value="${paginationModel.pageSize}" />
+	    	<input type="hidden" name="defaultURL" 		id="defaultURL" 		value="${defaultRenderURL}" />
+	    
+		
 		<div class="row-fluid">
 			<div class="search-seller">
 				<input type="text" name="Search" placeholder="Search Here">
@@ -99,3 +106,4 @@
 
 	</form:form>
 </div>
+	<p:paginate  paginationModel="${paginationModel}"/>

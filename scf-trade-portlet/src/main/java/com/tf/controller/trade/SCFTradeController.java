@@ -22,6 +22,7 @@ import com.tf.model.Allotment;
 import com.tf.model.Company;
 import com.tf.model.Invoice;
 import com.tf.model.SCFTrade;
+import com.tf.persistance.util.CompanyStatus;
 import com.tf.persistance.util.Constants;
 import com.tf.persistance.util.InvoiceStatus;
 import com.tf.persistance.util.TradeStatus;
@@ -32,7 +33,9 @@ import com.tf.service.SCFTradeService;
 import com.tf.service.UserService;
 import com.tf.util.LiferayUtility;
 import com.tf.util.MyCustomNumberEditor;
+import com.tf.util.PaginationUtil;
 import com.tf.util.SCFTradeDTO;
+import com.tf.util.model.PaginationModel;
 
 import java.beans.PropertyEditorSupport;
 import java.io.IOException;
@@ -62,6 +65,8 @@ import org.springframework.web.portlet.ModelAndView;
 import org.springframework.web.portlet.bind.annotation.ActionMapping;
 import org.springframework.web.portlet.bind.annotation.RenderMapping;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
+
+import com.tf.util.model.PaginationModel;
 
 /**
  * This controller is responsible for request/response handling on
@@ -96,6 +101,8 @@ public class SCFTradeController {
 	@Autowired
     protected LiferayUtility liferayUtility;
 	
+	@Autowired
+	protected PaginationUtil paginationUtil;
 	
 	@InitBinder
 	public void binder(WebDataBinder binder) {
@@ -131,7 +138,7 @@ public class SCFTradeController {
 		String viewName="";
 		ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);
 		PermissionChecker permissionChecker = themeDisplay.getPermissionChecker();
-		
+		List<SCFTrade> list=null;
 		
 		if(permissionChecker.isOmniadmin() ){
 			scftrades=scfTradeService.getScfTrades();
@@ -141,7 +148,9 @@ public class SCFTradeController {
 			scftrades=scfTradeService.getScfTrades(companyId);
 			viewName="tradelist";
 		}else if(request.isUserInRole(Constants.SELLER_ADMIN)){
-			String regNum= liferayUtility.getWhiteHallComapanyRegNo(request);		
+			String regNum= liferayUtility.getWhiteHallComapanyRegNo(request);
+			   long companyId=liferayUtility.getWhitehallCompanyID(request);
+
 			List<Invoice> registrationNumber=invoiceService.findByRegNum(regNum);
 			scftrades = new ArrayList<SCFTrade>();
 	         for(Invoice regNumber : registrationNumber){
@@ -151,9 +160,19 @@ public class SCFTradeController {
 	        		 scftrades.add(trade);
 	        	 }
 	         }
-	         viewName="sellertradelist";
+	         Long noOfRecords=0l;
+	 		PaginationModel paginationModel = paginationUtil.preparePaginationModel(request);
+	 		list=scfTradeService.getScfTrades(companyId,paginationModel.getStartIndex(),paginationModel.getPageSize());
+	 		noOfRecords=scfTradeService.getScfTradesCount(companyId);
+           paginationUtil.setPaginationInfo(noOfRecords,paginationModel);
+    		model.put("paginationModel", paginationModel);
+
+	       viewName="sellertradelist";
 		}
 		model.put("trades", scftrades);
+		model.put("trades", scftrades);
+
+
 		return new ModelAndView(viewName, model);
 	}
 	@RenderMapping(params="render=createTrade")
@@ -338,6 +357,22 @@ public class SCFTradeController {
 		sb.append("&groupId=");
 		sb.append(themeDisplay.getScopeGroupId());
 		return sb.toString();
+	}
+	
+	private List<SCFTrade> prepareTradesList(RenderRequest request,
+			List<SCFTrade> tradeList, ThemeDisplay themeDisplay,ModelMap model) {
+		   long companyId=liferayUtility.getWhitehallCompanyID(request);
+
+		Long noOfRecords=0l;
+		PaginationModel paginationModel = paginationUtil.preparePaginationModel(request);
+		tradeList=scfTradeService.getScfTrades(companyId,paginationModel.getStartIndex(),paginationModel.getPageSize());
+		noOfRecords=scfTradeService.getScfTradesCount(companyId);
+
+		paginationUtil.setPaginationInfo(noOfRecords,paginationModel);
+		model.put("paginationModel", paginationModel);
+
+        return tradeList;
+		
 	}
 
 }

@@ -137,14 +137,13 @@ public class WhiteHallSettingController {
 												 ActionRequest request,
 												 ActionResponse response) throws Exception {
 	   long companyId=ParamUtil.getLong(request, "sellerCompany");
-	   sellerDTO.setCompany(companyService.loadById(companyId));
+	   SellerSetting sellerLists = settingService.getSellerSetting(companyId);
+	   sellerDTO.setId(sellerLists.getId());
+       sellerDTO.setCompany(companyService.loadById(companyId));
 	   settingService.saveSellerSettings(sellerDTO);
 	   response.setRenderParameter("render", "sellerSetings");
-		
-	}
-	
 
-	
+	}
 	
 
 	@ResourceMapping

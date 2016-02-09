@@ -7,11 +7,13 @@ import java.util.Set;
 import org.hibernate.FetchMode;
 import org.hibernate.Hibernate;
 import org.hibernate.criterion.CriteriaSpecification;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.tf.dao.SCFTradeDAO;
+import com.tf.model.Company;
 import com.tf.model.Invoice;
 import com.tf.model.SCFTrade;
 
@@ -103,4 +105,35 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 		}
 		
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<SCFTrade> getScfTrades(Long companyID,int startIndex,int pageSize) {
+		_log.debug("Inside getCompanies ");
+		try {
+			
+			List<SCFTrade> results = (List<SCFTrade>) sessionFactory.getCurrentSession().createCriteria(SCFTrade.class).add(Restrictions.eq("company.id", companyID)).setFirstResult(startIndex).setMaxResults(pageSize).list();
+			_log.debug("GetCompanies successful, result size: "
+					+ results.size());
+			return results;
+		} catch (RuntimeException re) {
+			_log.error("GetCompanies failed", re);
+			throw re;
+		}
+	}
+	@SuppressWarnings("unchecked")
+	public Long getScfTradesCount(Long companyID) {
+		_log.debug("Inside getCompanies ");
+		try {
+			
+			Long resultCount = (Long) sessionFactory.getCurrentSession().createCriteria(SCFTrade.class).add(Restrictions.eq("company.id", companyID)).setProjection(Projections.rowCount()).uniqueResult();
+			_log.debug("Companies Count "	+ resultCount);
+			return resultCount;
+		} catch (RuntimeException re) {
+			_log.error("Companies Count failed", re);
+			throw re;
+		}
+	}
+	
+	
+	
 }

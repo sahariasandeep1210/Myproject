@@ -356,6 +356,7 @@ public class CompanyController extends BaseController {
 	private List<Company> prepareCompanyList(RenderRequest request,
 			List<Company> companyList, ThemeDisplay themeDisplay,ModelMap model) {
 		Long noOfRecords=0l;
+		
 		PaginationModel paginationModel = paginationUtil.preparePaginationModel(request);
 		if(getPermissionChecker(request).isOmniadmin()  || request.isUserInRole(Constants.WHITEHALL_ADMIN)){
 			companyList = companyService.getCompaniesByStatus(CompanyStatus.DELETED.getValue(),paginationModel.getStartIndex(),paginationModel.getPageSize());
