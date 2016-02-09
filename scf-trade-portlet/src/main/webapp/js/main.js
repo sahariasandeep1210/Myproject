@@ -96,6 +96,9 @@ $(document).ready(function(){
     $('#scfTradeList').on('click', '.breakdown', function() {
    	   var breakdownURL=$(this).attr('data-url'); 
    	   var tradeID=$(this).attr('tradeID');
+   	   //resting icon
+   	   $("[id$='_icon']").removeClass('fa-minus-square');
+   	   $("[id$='_icon']").addClass('fa-plus-square');	 
    	   //hiding all other history rows
    	   $(".historyRow").hide();
    	   if($(this).parent().parent().hasClass("highlightedClass")){
