@@ -130,8 +130,7 @@ public class SCFTradeController {
 		SCFTrade scfTrade=null;
 		String viewName="";
 		ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);
-		PermissionChecker permissionChecker = themeDisplay.getPermissionChecker();
-		
+		PermissionChecker permissionChecker = themeDisplay.getPermissionChecker();		
 		
 		if(permissionChecker.isOmniadmin() ){
 			scftrades=scfTradeService.getScfTrades();

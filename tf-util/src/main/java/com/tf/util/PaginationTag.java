@@ -51,18 +51,16 @@ public class PaginationTag extends SimpleTagSupport {
         System.out.println("pageNumber is:" + pageNumber);
         System.out.println("totalPage is:" + totalPage);
         try {
-        	String disabledClass=BLANK;
-        	//this code needs to optomized
-        	if(paginationModel.isFirstPage()){
-        		disabledClass=DISABLED;
-        	}else{
-        		disabledClass=BLANK;
-        	}
-        	
+        	        	
         	getJspContext().getOut().write("<div class=\"pagination pagination-centered\">");
         		getJspContext().getOut().write("<ul>");
 			        	if (totalPage != 1){
-			        		getJspContext().getOut().write("<li class=\""+disabledClass+"\"><a  href=\"javascript:void(0);\">«</a></li>");
+			        		if(paginationModel.isFirstPage()){
+			        			getJspContext().getOut().write("<li class=\"disabled\" ><a class=\"disabled\" href=\"javascript:void(0);\">«</a></li>");
+			        		}else{
+			        			getJspContext().getOut().write("<li  onclick=\"setPage("+(pageNumber-1)+")\"><a  href=\"javascript:void(0);\">«</a></li>");
+			        		}
+			        		
 			        		// getJspContext().getOut().write(" <li class=\"disabled\"><a href=\"javascript:void(0);\"  aria-label=\"Previous\"><span aria-hidden=\"true\">&laquo;</span></a></li>");
 			        		if (pageNumber > 5){
 			        			getJspContext().getOut().write("<li><a href=\"javascript:void(0);\" onclick=\"setPage(1)\">1</a></li>");
@@ -83,11 +81,11 @@ public class PaginationTag extends SimpleTagSupport {
 							}
 			        		//this code needs to optimized
 			            	if(paginationModel.isLastPage()){
-			            		disabledClass=DISABLED;
+			            		getJspContext().getOut().write("<li class=\"disabled\"  ><a  class=\"disabled\"  href=\"javascript:void(0);\" >»</a></li>");
 			            	}else{
-			            		disabledClass=BLANK;
+			            		getJspContext().getOut().write("<li  onclick=\"setPage("+(pageNumber+1)+")\" ><a  href=\"javascript:void(0);\" >»</a></li>");
 			            	}
-			        		getJspContext().getOut().write("<li  class=\""+disabledClass+"\"><a  href=\"javascript:void(0);\">»</a></li>");
+			        		
 			        		//getJspContext().getOut().write("<li><a  href=\"javascript:void(0);\" aria-label=\"Next\"><span aria-hidden=\"true\">»</span></a></li>");
 			        		
 			        	}
