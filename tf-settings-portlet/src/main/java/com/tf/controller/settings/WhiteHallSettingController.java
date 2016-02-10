@@ -149,19 +149,47 @@ public class WhiteHallSettingController {
 												 ModelMap model, 
 												 ActionRequest request,
 												 ActionResponse response) throws Exception {
-	   SellerSetting sellerSetting;
+	   /*SellerSetting sellerSetting;
 	   long companyId=ParamUtil.getLong(request, "sellerCompany");
-	   System.out.println("copDDD:"+companyId);
 	   SellerSetting sellerLists = settingService.getSellerSetting(companyId);
-       System.out.println("ddd:"+sellerLists);
+	   List<SellerSetting> sellers=settingService.getSellerList(companyId);
+ 
+	   if(null==sellerLists.getId()){
+	   
+		   sellerDTO.setCompany(companyService.loadById(companyId));
+		   sellerDTO.setCreateDate(new Date());
+	       settingService.saveSellerSettings(sellerDTO);
+	    }
+	   else{
+		   System.out.println("DDDDDD"+sellerLists.getId());
+		   sellerSetting=settingService.findBySellerId(sellerLists.getId());
+		   sellerSetting.setUpdateDate(new Date());
+		   settingService.updateSellerSettings(sellerSetting);
+	   }*/
+		SellerSetting sellerLists=null;
+		long companyId=ParamUtil.getLong(request, "sellerCompany");
+	    SellerSetting sellerList = settingService.getSellerSetting(companyId);
+	    System.out.println("12:"+sellerDTO);
+	    if(null == sellerList){
+		    System.out.println("123:"+sellerDTO);
 
-	   sellerSetting =new SellerSetting();
-	   sellerSetting.setSellerFinFee(sellerDTO.getSellerFinFee());
-	   sellerSetting.setSellerTransFee(sellerDTO.getSellerTransFee());
-	   sellerSetting.setCompany(companyService.loadById(companyId));
-	   settingService.saveSellerSettings(sellerSetting);
-	   sellerSetting=settingService.findBySellerId(sellerLists.getId());
+	     sellerLists = new SellerSetting();
+	     sellerLists.setCompany(companyService.loadById(companyId));
+	     sellerLists.setCreateDate(new Date());
+	    sellerLists.setSellerTransFee(sellerDTO.getSellerTransFee());
+	    sellerLists.setSellerFinFee(sellerDTO.getSellerFinFee());
+	     settingService.saveSellerSettings(sellerLists);
+	     }
+	    else{
+		    System.out.println("124:"+sellerDTO);
 
+	    	sellerLists=settingService.findBySellerId(sellerList.getId());
+	    	sellerLists.setSellerTransFee(sellerDTO.getSellerTransFee());
+            sellerLists.setSellerFinFee(sellerDTO.getSellerFinFee());
+		    sellerLists.setUpdateDate(new Date());
+
+	        settingService.saveSellerSettings(sellerLists);
+	        }
 }
 	
 

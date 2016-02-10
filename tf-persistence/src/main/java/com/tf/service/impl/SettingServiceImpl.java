@@ -15,9 +15,9 @@ public class SettingServiceImpl implements SettingService {
 	@Autowired
 	private SettingDAO settingDAO;
 
-	public void saveSellerSettings(SellerSetting sellerSetting) {
+	public void saveSellerSettings(SellerSetting sellerLists) {
 		
-		settingDAO.saveSellerSettings(sellerSetting);
+		settingDAO.saveSellerSettings(sellerLists);
 	}
 	public List<SellerSetting> getSellers(){
 		return settingDAO.getSellers();
@@ -35,7 +35,9 @@ public class SettingServiceImpl implements SettingService {
 	public List<Object[]> getSellersName(){
 		return settingDAO.getSellersName();
 	}
-
+	public List<SellerSetting> getSellerList(long companyId){
+		return settingDAO.getSellerList(companyId);
+	}
 	/*public List<SellerSetting> getSellerSettings() {
 		return settingDAO.getSellerSettings();		
 	}

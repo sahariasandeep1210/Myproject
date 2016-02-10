@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface SettingDAO {
 	
-	public void saveSellerSettings(SellerSetting sellerSetting);
+	public void saveSellerSettings(SellerSetting sellerLists);
 
 	public void updateSellerSettings(SellerSetting sellerSetting) ;
 	public SellerSetting getSellerSettings();
@@ -14,7 +14,7 @@ public interface SettingDAO {
 	public SellerSetting findBySellerId(Long id);
 	public List<SellerSetting> getSellers();
 	public List<Object[]> getSellersName();
-
+	public List<SellerSetting> getSellerList(long companyId);
 	
 	public List<SellerSetting> getSellersSetting();
 

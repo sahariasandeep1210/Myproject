@@ -36,23 +36,15 @@ public class SettingDAOImpl  extends BaseDAOImpl<Object, Long>   implements Sett
 	
 	
 
-	public void saveSellerSettings(SellerSetting sellerSetting) {
+	public void saveSellerSettings(SellerSetting sellerLists) {
 
 		_log.debug("persisting Seller Settings instance");
 		try {
 			
 			Session session=sessionFactory.getCurrentSession();
-			if(sellerSetting.getId()==null || sellerSetting.getId()==0){
-				sellerSetting.setCreateDate(new Date());
-
-			}
-			else{
-				sellerSetting.setUpdateDate(new Date());
-
-			}
-            session.saveOrUpdate(sellerSetting);
+			session.saveOrUpdate(sellerLists);
 		
-			_log.debug("persist successful"+sellerSetting);
+			_log.debug("persist successful"+sellerLists);
 		} catch (RuntimeException re) {
 			_log.error("persist failed", re);
 			throw re;
@@ -105,7 +97,14 @@ public class SettingDAOImpl  extends BaseDAOImpl<Object, Long>   implements Sett
 			throw re;
 		}
 	}
-	
+	public List<SellerSetting> getSellerList(long companyId){
+		     _log.debug("Inside getSellerList ");
+		
+		List<SellerSetting> results=(List<SellerSetting>) sessionFactory.getCurrentSession().createCriteria(SellerSetting.class).add(Restrictions.eq("companyId", Long.valueOf(companyId))).list();
+		  return results;
+
+		
+}
 	 
 
 
