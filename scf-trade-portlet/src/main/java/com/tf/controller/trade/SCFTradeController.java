@@ -150,6 +150,7 @@ public class SCFTradeController {
 		}else if(request.isUserInRole(Constants.SELLER_ADMIN)){
 			
 			tradeList=prepareTradeList(request,tradeList,themeDisplay,model);
+
 			String regNum= liferayUtility.getWhiteHallComapanyRegNo(request);
 			List<Invoice> registrationNumber=invoiceService.findByRegNum(regNum);
 			scftrades = new ArrayList<SCFTrade>();

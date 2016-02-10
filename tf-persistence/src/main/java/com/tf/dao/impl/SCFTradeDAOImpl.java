@@ -111,7 +111,7 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 		_log.debug("Inside getCompanies ");
 		try {
 			
-			List<SCFTrade> results = (List<SCFTrade>) sessionFactory.getCurrentSession().createCriteria(SCFTrade.class).add(Restrictions.eq("company.id", companyID)).setFirstResult(startIndex).setMaxResults(pageSize).list();
+			List<SCFTrade> results = (List<SCFTrade>) sessionFactory.getCurrentSession().createCriteria(SCFTrade.class).add(Restrictions.ne("company.id", companyID)).setFirstResult(startIndex).setMaxResults(pageSize).list();
 			_log.debug("GetCompanies successful, result size: "
 					+ results.size());
 			return results;
@@ -125,7 +125,7 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 		_log.debug("Inside getCompanies ");
 		try {
 			
-			Long resultCount = (Long) sessionFactory.getCurrentSession().createCriteria(SCFTrade.class).add(Restrictions.eq("company.id", companyID)).setProjection(Projections.rowCount()).uniqueResult();
+			Long resultCount = (Long) sessionFactory.getCurrentSession().createCriteria(SCFTrade.class).add(Restrictions.ne("company.id", companyID)).setProjection(Projections.rowCount()).uniqueResult();
 			_log.debug("Companies Count "	+ resultCount);
 			return resultCount;
 		} catch (RuntimeException re) {
