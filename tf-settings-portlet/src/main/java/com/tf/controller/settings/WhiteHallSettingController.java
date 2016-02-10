@@ -8,15 +8,18 @@ import com.liferay.portal.kernel.util.JavaConstants;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.tf.dto.InvestorModel;
 import com.tf.model.Company;
+import com.tf.model.GeneralSetting;
 import com.tf.model.SellerSetting;
 import com.tf.persistance.util.CompanyTypes;
 import com.tf.persistance.util.InvestorDTO;
 import com.tf.service.CompanyService;
+import com.tf.service.GeneralSettingService;
 import com.tf.service.InvestorService;
 import com.tf.service.SettingService;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.portlet.ActionRequest;
@@ -64,11 +67,13 @@ public class WhiteHallSettingController {
 	
 	@Autowired
 	private CompanyService companyService;
+	@Autowired
+	private GeneralSettingService generalSettingService;
 
 	
 	
 	@RenderMapping(params = "render=generalsetting")
-	protected ModelAndView renderGenraletings(ModelMap model,RenderRequest request, RenderResponse response) throws Exception {		
+	protected ModelAndView renderGenraletings(@ModelAttribute("generalSettingModel")GeneralSetting  generalSettingModel,ModelMap model,RenderRequest request, RenderResponse response) throws Exception {		
 		_log.info("Render WhiteHall Settings Screen");
 		try {			
 			model.put(ACTIVETAB, GENERAL_SETTINGS);
@@ -104,6 +109,16 @@ public class WhiteHallSettingController {
 		
 	}
 	
+	@ActionMapping(params="action=saveGeneralSettings")
+	protected void saveGeneralSettings(@ModelAttribute("generalSettingModel")GeneralSetting  generalSettingModel,
+												 ModelMap model,
+												 ActionRequest request,
+												 ActionResponse response) throws Exception {
+		generalSettingService.saveGeneralSettings(generalSettingModel);
+		response.setRenderParameter("render", "generalSettings");
+		
+	}
+	
 	@RenderMapping(params = "render=sellerSetings")
 	protected ModelAndView renderSellerSetings(@ModelAttribute("sellerDTO")SellerSetting  sellerDTO,ModelMap model,RenderRequest request, RenderResponse response) throws Exception {		
 		_log.info("Render WhiteHall Settings Screen");
@@ -134,16 +149,20 @@ public class WhiteHallSettingController {
 												 ModelMap model, 
 												 ActionRequest request,
 												 ActionResponse response) throws Exception {
+	   SellerSetting sellerSetting;
 	   long companyId=ParamUtil.getLong(request, "sellerCompany");
-       sellerDTO.setCompany(companyService.loadById(companyId));
-	   settingService.saveSellerSettings(sellerDTO);
+	   System.out.println("copDDD:"+companyId);
 	   SellerSetting sellerLists = settingService.getSellerSetting(companyId);
-      
-	   sellerDTO.setId(sellerLists.getId());
-     
-	   response.setRenderParameter("render", "sellerSetings");
+       System.out.println("ddd:"+sellerLists);
 
-	}
+	   sellerSetting =new SellerSetting();
+	   sellerSetting.setSellerFinFee(sellerDTO.getSellerFinFee());
+	   sellerSetting.setSellerTransFee(sellerDTO.getSellerTransFee());
+	   sellerSetting.setCompany(companyService.loadById(companyId));
+	   settingService.saveSellerSettings(sellerSetting);
+	   sellerSetting=settingService.findBySellerId(sellerLists.getId());
+
+}
 	
 
 	@ResourceMapping

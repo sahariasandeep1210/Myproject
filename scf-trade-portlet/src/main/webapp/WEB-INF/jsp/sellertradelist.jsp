@@ -3,6 +3,8 @@
 <%@ taglib uri="http://whitehall.com/jsp/tld/p" prefix="p"%>
 
 <portlet:resourceURL  var="tradeURL"></portlet:resourceURL>
+<portlet:renderURL var="defaultRenderURL" />
+
 
 <style>
 .aui input, .aui textarea, .aui .uneditable-input {
@@ -18,11 +20,12 @@
 
 
 	<form:form commandName="scfSellerTradeModel" method="post" action=" "
-		id="scfSellerTradeList">
+		id="sellerList" name="sellerList" autocomplete="off">
 		<input type="hidden" name="currentPage" 	id="currentPage"    	value="${paginationModel.currentPage}" />
 	    <input type="hidden" name="pageSize" 		id="pageSize" 			value="${paginationModel.pageSize}" />
+	    <input type="hidden" name="noOfRecords" 	id="noOfRecords"    	value="${paginationModel.noOfRecords}" />
 	    <input type="hidden" name="defaultURL" 		id="defaultURL" 		value="${defaultRenderURL}" />
-	     <input type="hidden" id="tradeURL" name="tradeURL" value="${tradeURL}"/>
+	    <input type="hidden" id="tradeURL" name="tradeURL" value="${tradeURL}"/>
 	    
 		
 		<div class="row-fluid">
@@ -41,7 +44,7 @@
 			<div class="span6">
 				<div class="span12">
 					<h5 style="float: right !important;">
-						<a href="#" style="color: #295780; font-weight: bold;" id="sellerTradeList"> Export</a>
+						<a href="#" style="color: #295780; font-weight: bold;" id="exportSeller"> Export</a>
 					</h5>
 				</div>
 			</div>
@@ -105,7 +108,6 @@
 				</tbody>
 			</table>
 		</div>
-
 	</form:form>
 </div>
 	<p:paginate  paginationModel="${paginationModel}"/>

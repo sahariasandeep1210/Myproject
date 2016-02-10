@@ -12,6 +12,12 @@ $(document).ready(function() {
 		document.forms["settingForm"].action = updateURL;
 		document.forms["settingForm"].submit();
 	});
+	
+	$("#updateGeneralSettings").click(function (){
+		var updateURL=$("#saveSettingURL").val();
+		document.forms["generalSettingForm"].action = updateURL;
+		document.forms["generalSettingForm"].submit();
+	});
 	 $('table').tablesorter();
 
 	

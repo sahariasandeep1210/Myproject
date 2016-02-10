@@ -135,7 +135,8 @@ public class SCFTradeController {
 		SCFTrade scfTrade=null;
 		String viewName="";
 		ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);
-
+		List<SCFTrade> tradeList = new ArrayList<SCFTrade>();
+		
 		PermissionChecker permissionChecker = themeDisplay.getPermissionChecker();
 		List<SCFTrade> list=null;
 		
@@ -147,31 +148,26 @@ public class SCFTradeController {
 			scftrades=scfTradeService.getScfTrades(companyId);
 			viewName="tradelist";
 		}else if(request.isUserInRole(Constants.SELLER_ADMIN)){
+			
+			tradeList=prepareTradeList(request,tradeList,themeDisplay,model);
 			String regNum= liferayUtility.getWhiteHallComapanyRegNo(request);
-			long companyId=liferayUtility.getWhitehallCompanyID(request);
 			List<Invoice> registrationNumber=invoiceService.findByRegNum(regNum);
 			scftrades = new ArrayList<SCFTrade>();
 	         for(Invoice regNumber : registrationNumber){
 	        	 scfTrade=regNumber.getScfTrade();
 	        	 List<SCFTrade> intrimTrades = scfTradeService.getScfTradesByTradeId(scfTrade.getId());
-	        	 System.out.println("DDDD123:"+intrimTrades);
 	        	 for (SCFTrade trade : intrimTrades){
 	        		 scftrades.add(trade);
 	        	 }
 	         }
-	        Long noOfRecords=0l;
-	 		PaginationModel paginationModel = paginationUtil.preparePaginationModel(request);
-	 		list=scfTradeService.getScfTrades(companyId,paginationModel.getStartIndex(),paginationModel.getPageSize());
-	 		noOfRecords=scfTradeService.getScfTradesCount(companyId);
-            paginationUtil.setPaginationInfo(noOfRecords,paginationModel);
-    		model.put("paginationModel", paginationModel);
+	        
 
 	       viewName="sellertradelist";
 		}
 		model.put("trades", scftrades);
 		model.put("trades", scftrades);
-
-
+          
+ 
 		return new ModelAndView(viewName, model);
 	}
 	@RenderMapping(params="render=createTrade")
@@ -368,5 +364,17 @@ public class SCFTradeController {
 		viewName="sellertradelist";
 		return new ModelAndView(viewName, model);
 	}
+	private List<SCFTrade> prepareTradeList(RenderRequest request,
+			List<SCFTrade> tradeList, ThemeDisplay themeDisplay,ModelMap model)
+	{
+		Long noOfRecords=0l;
+		long companyId=userService.getCompanyIDbyUserID(themeDisplay.getUserId());
+        PaginationModel paginationModel = paginationUtil.preparePaginationModel(request);
+ 		tradeList=scfTradeService.getScfTrades(companyId,paginationModel.getStartIndex(),paginationModel.getPageSize());
+ 		noOfRecords=scfTradeService.getScfTradesCount(companyId);
+        paginationUtil.setPaginationInfo(noOfRecords,paginationModel);
+		model.put("paginationModel", paginationModel);
+		return tradeList;
 
+	}
 }

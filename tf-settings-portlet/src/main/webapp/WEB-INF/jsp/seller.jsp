@@ -12,7 +12,7 @@
 		class="form-horizontal" name="settingForm">
 		<input type="hidden" value="${saveSellerSettings}" id="saveURL" />
 		<input type="hidden" value="${sellerDTO.id}" name="id" />
-		
+ 		
      <input type="hidden" id="settingURL" name="settingURL" value="${settingURL}"/>
 
        <div class="row-fluid">

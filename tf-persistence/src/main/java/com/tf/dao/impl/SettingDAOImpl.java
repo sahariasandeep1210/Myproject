@@ -36,14 +36,23 @@ public class SettingDAOImpl  extends BaseDAOImpl<Object, Long>   implements Sett
 	
 	
 
-	public void saveSellerSettings(SellerSetting sellerDTO) {
+	public void saveSellerSettings(SellerSetting sellerSetting) {
 
 		_log.debug("persisting Seller Settings instance");
 		try {
+			
 			Session session=sessionFactory.getCurrentSession();
-            session.saveOrUpdate(sellerDTO);
+			if(sellerSetting.getId()==null || sellerSetting.getId()==0){
+				sellerSetting.setCreateDate(new Date());
+
+			}
+			else{
+				sellerSetting.setUpdateDate(new Date());
+
+			}
+            session.saveOrUpdate(sellerSetting);
 		
-			_log.debug("persist successful"+sellerDTO);
+			_log.debug("persist successful"+sellerSetting);
 		} catch (RuntimeException re) {
 			_log.error("persist failed", re);
 			throw re;
@@ -52,13 +61,13 @@ public class SettingDAOImpl  extends BaseDAOImpl<Object, Long>   implements Sett
 		
 	}
 
-	public void updateSellerSettings(SellerSetting sell) {
+	public void updateSellerSettings(SellerSetting sellerSetting) {
 		try {
 		Session session=sessionFactory.getCurrentSession();
 		SellerSetting seller;
-		seller=findBySellerId(sell.getId());
-		seller.setSellerTransFee(sell.getSellerTransFee());
-		seller.setSellerFinFee(sell.getSellerFinFee());
+		seller=findBySellerId(sellerSetting.getId());
+		seller.setSellerTransFee(sellerSetting.getSellerTransFee());
+		seller.setSellerFinFee(sellerSetting.getSellerFinFee());
 		seller.setUpdateDate(new Date());
 	    session.update(seller);
 

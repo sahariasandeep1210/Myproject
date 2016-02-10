@@ -1,8 +1,26 @@
 $(document).ready(function(){
 	$(".historyRow").hide();
 	$("#buttonDiv").hide();
+	 $("#pageSize").val($("#currPageSize").val());
 
-	$("#sellerTradeList").click(function(){
+	 $("#pageSize").change(function (){
+			var noOfRecords=parseInt($("#noOfRecords").val());
+			var pageSize=parseInt($("#currPageSize").val());
+			var newPageSize=parseInt($(this).val());
+			$("#currentPage").val(1);
+			if(noOfRecords<pageSize && newPageSize>pageSize){
+				return;
+			}else{
+				var actionUrl=$("#defaultURL").val();
+				document.forms["sellerList"].action = actionUrl;
+				document.forms["sellerList"].submit();	
+			}
+			
+			
+			
+		});
+	 
+	$("#exportSeller").click(function(){
 		/* window.open('data:application/vnd.ms-excel,' + $('#dvData').html());
 		 e.preventDefault();*/	
 		
@@ -263,8 +281,8 @@ $('table').tablesorter();
 function setPage(pageNumber){
 	$("#currentPage").val(pageNumber);
 	var actionUrl=$("#defaultURL").val();
-	document.forms["scfSellerTradeList"].action = actionUrl;
-	document.forms["scfSellerTradeList"].submit();	
+	document.forms["sellerList"].action = actionUrl;
+	document.forms["sellerList"].submit();	
 }
 
 
@@ -285,7 +303,7 @@ $("#search").keyup(function() {
 						searchSelection: searchval 					
 						  }, 
 					success: function(data){
-						$("#scfSellerTradeList").html(data);
+						$("#sellerList").html(data);
 						
 					} ,
 					error: function(jqXHR, textStatus, errorThrown) {

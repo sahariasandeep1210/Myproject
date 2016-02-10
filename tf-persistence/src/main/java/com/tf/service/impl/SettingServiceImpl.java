@@ -4,7 +4,6 @@ import com.tf.dao.SettingDAO;
 import com.tf.model.SellerSetting;
 import com.tf.service.SettingService;
 
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,13 +15,9 @@ public class SettingServiceImpl implements SettingService {
 	@Autowired
 	private SettingDAO settingDAO;
 
-	public void saveSellerSettings(SellerSetting sellerDTO) {
-		if(sellerDTO.getId()==null || sellerDTO.getId()==0){
-			sellerDTO.setCreateDate(new Date());
-		}else{
-			sellerDTO.setUpdateDate(new Date());
-		}
-		settingDAO.saveSellerSettings(sellerDTO);
+	public void saveSellerSettings(SellerSetting sellerSetting) {
+		
+		settingDAO.saveSellerSettings(sellerSetting);
 	}
 	public List<SellerSetting> getSellers(){
 		return settingDAO.getSellers();
@@ -31,8 +26,8 @@ public class SettingServiceImpl implements SettingService {
 	public List<SellerSetting> findByCompanyId(Long companyId)  {
 		return settingDAO.findByCompanyId(companyId);
 	}
-	public void updateSellerSettings(SellerSetting sell) {
-		 settingDAO.updateSellerSettings(sell);
+	public void updateSellerSettings(SellerSetting sellerSetting) {
+		 settingDAO.updateSellerSettings(sellerSetting);
 	}
 	public SellerSetting findBySellerId(Long id){
 		return settingDAO.findBySellerId(id);
