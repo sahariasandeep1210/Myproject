@@ -86,7 +86,7 @@
                                 <tr>
                                     <td>${allotment.allotmentAmount}</td>
                                     <td>${allotment.marketDiscount}</td>
-                                    <td>${allotment.marketDiscount}</td>
+                                    <td>${allotment.noOfdays}</td>
                                     <td>${allotment.whitehallProfitShare }</td>
                                     <td>${allotment.investorNetProfit }</td>
                                     <td><fmt:formatDate value="${allotment.allotmentDate}"

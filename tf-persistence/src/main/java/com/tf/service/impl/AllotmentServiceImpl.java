@@ -20,8 +20,8 @@ public class AllotmentServiceImpl implements AllotmentService{
 		return allotmentDAO.getALlotmentsbyTrade(tradeID);
 	
 	}
-	public List<Allotment> groupAllotmentbyBps(){
-		return allotmentDAO.groupAllotmentbyBps();
+	public List<Allotment> groupAllotmentbyBps(long tradeID){
+		return allotmentDAO.groupAllotmentbyBps(tradeID);
 	}
 
 }

@@ -1,6 +1,9 @@
 package com.tf.dao.impl;
 
 import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -11,6 +14,7 @@ import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.Transformers;
+import org.joda.time.format.DateTimeFormatter;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +27,26 @@ public class AllotmentDAOImpl extends BaseDAOImpl<Allotment, Long>   implements 
 	
 	@SuppressWarnings("unchecked")
 	public List<Allotment> getALlotmentsbyTrade(long tradeID){
+		_log.debug("Inside getALlotmentsbyTrade ");
+		try {
+			
+			List<Allotment> allotmentList = (List<Allotment>)sessionFactory.getCurrentSession().createCriteria(Allotment.class).add(Restrictions.eq("scfTrade.id", tradeID)).list();
+			              
+			
+			_log.debug("getALlotmentsbyTrade successful, result size: "
+					+ allotmentList.size());
+			return allotmentList;
+
+		} catch (RuntimeException re) {
+			_log.error("getALlotmentsbyTrade failed", re);
+			throw re;
+		}
+		
+		
+		
+	}
+
+	public List<Allotment> groupAllotmentbyBps(long tradeID) {
 		List<Allotment>  allotmentList=new ArrayList<Allotment>();
 		Allotment allotment;
 		List<Object[]> rows=new ArrayList<Object[]>();
@@ -37,15 +61,19 @@ public class AllotmentDAOImpl extends BaseDAOImpl<Allotment, Long>   implements 
 			prList.add(Projections.sum("allotmentAmount"));
 			prList.add(Projections.sum("whitehallProfitShare"));
 			prList.add(Projections.sum("investorNetProfit"));
+			prList.add(Projections.property("noOfdays"));
 			prList.add(Projections.property("allotmentDate"));
 			cr.setProjection(prList);
 			rows = cr.list();
+			DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
 			for(Object[] row:rows){
 				allotment=new Allotment();
 				allotment.setMarketDiscount(Integer.valueOf(row[0].toString()));
 				allotment.setAllotmentAmount(new BigDecimal (row[1].toString()));
 				allotment.setWhitehallProfitShare(new BigDecimal(row[2].toString()) );
 				allotment.setInvestorNetProfit(new BigDecimal (row[3].toString()));
+				allotment.setNoOfdays(Integer.valueOf(row[4].toString()));
+				allotment.setAllotmentDate( formatter.parse(row[5].toString()));
 				allotmentList.add(allotment);
 			}
 			_log.debug("getALlotmentsbyTrade successful, result size: "
@@ -55,8 +83,12 @@ public class AllotmentDAOImpl extends BaseDAOImpl<Allotment, Long>   implements 
 			_log.error("getALlotmentsbyTrade failed", re);
 			throw re;
 		}
-		return allotmentList;
+		catch (ParseException pe ) {
+			_log.error("getALlotmentsbyTrade failed" +pe.getMessage());
+			
+		}
 		
+		return allotmentList;
 	}
 
 	public List<Allotment> groupAllotmentbyBps() {

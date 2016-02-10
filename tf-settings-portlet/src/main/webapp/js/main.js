@@ -50,8 +50,12 @@ function enableTab(){
 
 $("#sellerCompany").change(function() {
 	var settingURL=$("#settingURL").val();
-		var userSel=$(this).val();
-
+	var userSel=$(this).val();
+	if(userSel === 'undefined' || (! userSel )|| userSel === null){
+		$("#transaction").val('');
+		$("#finance").val('');
+	}else{
+	
 	  			$.ajax({ 
 					url: settingURL, 
 					type: 'POST', 
@@ -67,14 +71,17 @@ $("#sellerCompany").change(function() {
 
 						$("#transaction").val(setting.sellerTransFee);
 						$("#finance").val(setting.sellerFinFee);
+						
 								
 					} ,
 					error: function(jqXHR, textStatus, errorThrown) {
 						ajaxindicatorstop();
+
 						
 					}
-					});	
-		
+	  			
+	  		});	
+	    }
 	});
 	
 	

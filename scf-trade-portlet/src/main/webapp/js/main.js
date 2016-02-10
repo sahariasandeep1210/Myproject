@@ -282,14 +282,8 @@ $("#search").keyup(function() {
 						searchSelection: searchval 					
 						  }, 
 					success: function(data){
-						$("#sellerListTable").html(data);
+						$("#scfSellerTradeList").html(data);
 						
-						/*var setting=jQuery.parseJSON(data);
-						console.log("::settingObject::"+setting);
-
-						$("#transaction").val(setting.sellerTransFee);
-						$("#finance").val(setting.sellerFinFee);*/
-								
 					} ,
 					error: function(jqXHR, textStatus, errorThrown) {
 						ajaxindicatorstop();

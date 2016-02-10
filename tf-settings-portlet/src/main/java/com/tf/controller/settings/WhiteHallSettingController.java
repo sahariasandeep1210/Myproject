@@ -114,16 +114,14 @@ public class WhiteHallSettingController {
 
 			String companyType = CompanyTypes.SELLER.getValue();			
 			companyList = companyService.getCompanies(companyType);
-			model.put("companyList", companyList);
-
-            model.put(ACTIVETAB, SELLER);	
+			
 
 			companyList=companyService.getCompanies(CompanyTypes.SELLER.getValue());
-			model.put("companyList", companyList);
-			model.put(ACTIVETAB, SELLER);
 			List<SellerSetting> sellerSettings=settingService.getSellersSetting();				
-			model.put("sellerDTO", sellerDTO);	
-			model.put("sellerSettings", sellerSettings);	
+			model.put("sellerSettings", sellerSettings);
+			model.put("companyList", companyList);
+            model.put(ACTIVETAB, SELLER);	
+
 		} catch (Exception e) {
 			SessionErrors.add(request, "default-error-message");
 			_log.error("WhiteHallSettingController.renderSellerSetings() - error occured while rendering Whitehall Settings Screen"+e.getMessage());
@@ -137,10 +135,12 @@ public class WhiteHallSettingController {
 												 ActionRequest request,
 												 ActionResponse response) throws Exception {
 	   long companyId=ParamUtil.getLong(request, "sellerCompany");
-	   SellerSetting sellerLists = settingService.getSellerSetting(companyId);
-	   sellerDTO.setId(sellerLists.getId());
        sellerDTO.setCompany(companyService.loadById(companyId));
 	   settingService.saveSellerSettings(sellerDTO);
+	   SellerSetting sellerLists = settingService.getSellerSetting(companyId);
+      
+	   sellerDTO.setId(sellerLists.getId());
+     
 	   response.setRenderParameter("render", "sellerSetings");
 
 	}

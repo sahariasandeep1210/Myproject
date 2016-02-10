@@ -22,6 +22,7 @@ import com.tf.model.Allotment;
 import com.tf.model.Company;
 import com.tf.model.Invoice;
 import com.tf.model.SCFTrade;
+import com.tf.model.SellerSetting;
 import com.tf.persistance.util.Constants;
 import com.tf.persistance.util.InvoiceStatus;
 import com.tf.persistance.util.TradeStatus;
@@ -202,7 +203,7 @@ public class SCFTradeController {
 			RenderRequest request, RenderResponse response){
        Long tradeID = ParamUtil.getLong(request, "tradeID"); 
 	   SCFTrade scfTrade=scfTradeService.findById(tradeID);
-	   List<Allotment> allotmentList=allotmentService.getALlotmentsbyTrade(tradeID);
+	   List<Allotment> allotmentList=allotmentService.groupAllotmentbyBps(tradeID);
 	   long companyId=liferayUtility.getWhitehallCompanyID(request);
 	   Company company=companyService.findById(companyId);
        model.put("allotments", allotmentList);
@@ -356,12 +357,16 @@ public class SCFTradeController {
 		return sb.toString();
 	}
 	@ResourceMapping
-    public void search(ResourceRequest request, ResourceResponse response)throws IOException {
+    public ModelAndView search(ResourceRequest request, ResourceResponse response, ModelMap model)throws IOException {
 	
-
-		long searchSelection =Long.valueOf(ParamUtil.getString(request, "searchSelection",""));
+		String viewName="";
+        long searchSelection =Long.valueOf(ParamUtil.getString(request, "searchSelection",""));
 		System.out.println("userSelections::::"+searchSelection);
-		
+		List<SCFTrade> sellerList=scfTradeService.getScfTradesByTradeId(searchSelection);
+		System.out.println("userSelections"+sellerList);
+        model.put("sellerList", sellerList);
+		viewName="sellertradelist";
+		return new ModelAndView(viewName, model);
 	}
 
 }
