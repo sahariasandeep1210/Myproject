@@ -24,6 +24,7 @@ public class PaginationUtil {
 	
 	public  PaginationModel setPaginationInfo(Long noOfRecords,PaginationModel paginationModel) {
 		//needs to changed from actual count method
+		paginationModel.setNoOfRecords(noOfRecords);
 		int noOfPages=(int)Math.ceil(noOfRecords * 1.0/paginationModel.getPageSize());
 		paginationModel.setNoOfPages(noOfPages);
 		

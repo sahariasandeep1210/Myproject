@@ -21,7 +21,8 @@
 		action="${createURL}" id="companyList" autocomplete="off" name="companyList">
 		
 	<input type="hidden" name="currentPage" 	id="currentPage"    	value="${paginationModel.currentPage}" />
-	<input type="hidden" name="pageSize" 		id="pageSize" 			value="${paginationModel.pageSize}" />
+	<input type="hidden" name="currPageSize" 	id="currPageSize"    	value="${paginationModel.pageSize}" /> 
+	<input type="hidden" name="noOfRecords" 	id="noOfRecords"    	value="${paginationModel.noOfRecords}" />
 	<input type="hidden" name="defaultURL" 		id="defaultURL" 		value="${defaultRenderURL}" />
 
 		<div class="row-fluid">
@@ -32,6 +33,7 @@
 						<%-- <h6 style="float: right !important;"><a href="${createURL}" style="color: #295780;font-weight: bold;"><i class="fa fa fa-plus"></i> Add Company</a></h6> --%>
 					</div>
 					<div class="span6">
+						
 						<div class="span12">
 							<h5 style="float: right !important;">
 								<a href="javascript:;"
@@ -92,6 +94,24 @@
 					class="btn btn-primary" style="color: #fff; font-weight: bold;"><i
 					class="fa fa fa-plus" ></i>
 					Add Company</a>
+			</div>
+				<div class="span6" >
+					<div class="span5" >
+					</div>
+					<div class="span7" >
+											<label> Show &nbsp;</label>
+											<select id="pageSize" class="paginationselect" name="pageSize">
+												<option value="5">5</option>
+												<option value="10">10</option>
+												<option value="20">20</option>
+												<option value="30">30</option>
+												<option value="45">45</option>
+												<option value="60">60</option>
+												<option value="75">75</option>
+												<option value="100">100</option>
+											</select> 
+											<label>&nbsp; Results per page </label>
+				</div>
 			</div>
 		</div>
 		</c:if>

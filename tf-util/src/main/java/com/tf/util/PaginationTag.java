@@ -22,7 +22,7 @@ public class PaginationTag extends SimpleTagSupport {
     //pagination model
     private PaginationModel paginationModel;
     //default page Size 
-    final int PAGINATION_INTERVAL = 5;
+    private int PAGINATION_INTERVAL = 5;
     
  
 
@@ -38,6 +38,7 @@ public class PaginationTag extends SimpleTagSupport {
 		this.paginationModel = paginationModel;
 		this.pageNumber = paginationModel.getCurrentPage();
 		this.totalPage = paginationModel.getNoOfPages();
+		this.PAGINATION_INTERVAL=paginationModel.getPageSize();
 	}
 	
 

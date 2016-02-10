@@ -10,8 +10,10 @@ import java.io.Serializable;
  *
  */
 public class PaginationModel  implements Serializable{
+
 	
-	private static final long serialVersionUID = 5667536631070363869L;
+	private static final long serialVersionUID = -432953919701484360L;
+	
 	
 	
 	private int 		startIndex;
@@ -20,6 +22,7 @@ public class PaginationModel  implements Serializable{
 	private int 		noOfPages;
 	private boolean 	firstPage;
 	private boolean 	lastPage;
+	private long 		noOfRecords;
 
 	
 	
@@ -75,13 +78,23 @@ public class PaginationModel  implements Serializable{
 		this.lastPage = lastPage;
 	}
 
+	public long getNoOfRecords() {
+		return noOfRecords;
+	}
+
+	public void setNoOfRecords(long noOfRecords) {
+		this.noOfRecords = noOfRecords;
+	}
+
 	@Override
 	public String toString() {
 		return "PaginationModel [startIndex=" + startIndex + ", pageSize="
 				+ pageSize + ", currentPage=" + currentPage + ", noOfPages="
 				+ noOfPages + ", firstPage=" + firstPage + ", lastPage="
-				+ lastPage + "]";
+				+ lastPage + ", noOfRecords=" + noOfRecords + "]";
 	}
+
+	
 	
 
 }

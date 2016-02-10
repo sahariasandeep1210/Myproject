@@ -4,11 +4,28 @@ $(function() {
 	
 	//enableDisableoptions();
 	
-	
+	 $("#pageSize").val($("#currPageSize").val());
 	$("#errorMsg").hide(); 
 	
 	$("#telNo").inputmask("999-999-9999");
 	$("#userTelNo").inputmask("999-999-9999");
+	
+	$("#pageSize").change(function (){
+		var noOfRecords=parseInt($("#noOfRecords").val());
+		var pageSize=parseInt($("#currPageSize").val());
+		var newPageSize=parseInt($(this).val());
+		$("#currentPage").val(1);
+		if(noOfRecords<pageSize && newPageSize>pageSize){
+			return;
+		}else{
+			var actionUrl=$("#defaultURL").val();
+			document.forms["companyList"].action = actionUrl;
+			document.forms["companyList"].submit();	
+		}
+		
+		
+		
+	});
 	
 	$("#exportCompanies").click(function(){
 		/* window.open('data:application/vnd.ms-excel,' + $('#dvData').html());
