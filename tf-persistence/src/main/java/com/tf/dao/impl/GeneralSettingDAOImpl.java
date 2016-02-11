@@ -1,15 +1,11 @@
 package com.tf.dao.impl;
 
-import com.tf.dao.GeneralSettingDAO;
-import com.tf.model.Company;
-import com.tf.model.GeneralSetting;
-import com.tf.model.SellerSetting;
-
-import java.util.List;
-
 import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.tf.dao.GeneralSettingDAO;
+import com.tf.model.GeneralSetting;
 
 @Repository
 @Transactional
@@ -19,12 +15,10 @@ public class GeneralSettingDAOImpl extends BaseDAOImpl<GeneralSetting, Long>  im
 	}
 	
 	
-	public List<GeneralSetting> getGeneralSettings() {
+	public GeneralSetting getGeneralSetting() {
 		try{
-			List<GeneralSetting> list =(List<GeneralSetting>) sessionFactory.getCurrentSession().createCriteria(GeneralSetting.class).list();
-
-			_log.debug("getGeneralSettings successful, result size: "
-					+ list.size());
+			 GeneralSetting list =(GeneralSetting) sessionFactory.getCurrentSession().createCriteria(GeneralSetting.class).uniqueResult();
+			_log.debug("getGeneralSettings successful, result size: "+ list);
 			return list;
 		}
 		catch(RuntimeException re) {

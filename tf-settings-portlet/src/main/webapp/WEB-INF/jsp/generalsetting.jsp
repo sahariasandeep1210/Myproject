@@ -31,12 +31,11 @@
 							</tr>
 						</thead>
 						<tbody>
-						    <c:forEach items="${lists}" var="list"> 
 							<tr>
 							     <td>Whitehall Profit Share %</td>
 							      <td>
 							      <input type="text"
-												value="${list.whitehalShare}"
+												value="${generalSetting.whitehalShare}"
 												name="whitehalShare" id="profit">
 							    </td> 
 							</tr>
@@ -44,7 +43,7 @@
 							     <td>VAT</td>
 							      <td>
 							         <input type="text"
-												value="${list.vat }"
+												value="${generalSetting.vat }"
 												name="vat" id="vat">
 							      
 							      </td>
@@ -53,7 +52,7 @@
 							     <td>Seller Transaction Fee</td>
 							      <td>
 							      <input type="text"
-												value="${list.sellerTransFee }"
+												value="${generalSetting.sellerTransFee }"
 												name="sellerTransFee" id="transaction">
 							       
 							      </td>
@@ -62,12 +61,11 @@
 							     <td>Seller Finance Fee</td>
 							      <td>
 							      <input type="text"
-												value="${list.sellerFinFee }"
+												value="${generalSetting.sellerFinFee }"
 												name="sellerFinFee" id="finance">
 							         
 							      </td>
 							</tr>
-						 </c:forEach>
 							
 					</tbody>
 					</table>

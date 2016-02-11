@@ -76,11 +76,9 @@ public class WhiteHallSettingController {
 	protected ModelAndView renderGenraletings(@ModelAttribute("generalSettingModel")GeneralSetting  generalSettingModel,ModelMap model,RenderRequest request, RenderResponse response) throws Exception {		
 		_log.info("Render WhiteHall Settings Screen");
 		try {			
-			List<GeneralSetting> lists=generalSettingService.getGeneralSettings();
-			System.out.println("DDDD:"+lists);
+			GeneralSetting generalSetting=generalSettingService.getGeneralSetting();
 			model.put(ACTIVETAB, GENERAL_SETTINGS);
-			model.put("List", lists);
-
+			model.put("generalSetting", generalSetting);
 		} catch (Exception e) {
 			SessionErrors.add(request, "default-error-message");
 			_log.error("WhiteHallSettingController.renderSellerSetings() - error occured while rendering Whitehall Settings Screen"+e.getMessage());
