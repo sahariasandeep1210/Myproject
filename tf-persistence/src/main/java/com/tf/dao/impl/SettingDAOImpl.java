@@ -57,7 +57,7 @@ public class SettingDAOImpl  extends BaseDAOImpl<Object, Long>   implements Sett
 		try {
 		Session session=sessionFactory.getCurrentSession();
 		SellerSetting seller;
-		seller=findBySellerId(sellerSetting.getId());
+		seller=getSellerSetting(sellerSetting.getId());
 		seller.setSellerTransFee(sellerSetting.getSellerTransFee());
 		seller.setSellerFinFee(sellerSetting.getSellerFinFee());
 		seller.setUpdateDate(new Date());
@@ -97,14 +97,12 @@ public class SettingDAOImpl  extends BaseDAOImpl<Object, Long>   implements Sett
 			throw re;
 		}
 	}
+	
 	public List<SellerSetting> getSellerList(long companyId){
-		     _log.debug("Inside getSellerList ");
-		
+		     _log.debug("Inside getSellerList ");		
 		List<SellerSetting> results=(List<SellerSetting>) sessionFactory.getCurrentSession().createCriteria(SellerSetting.class).add(Restrictions.eq("companyId", Long.valueOf(companyId))).list();
-		  return results;
-
-		
-}
+		  return results;	
+	}
 	 
 
 
@@ -127,18 +125,8 @@ public class SettingDAOImpl  extends BaseDAOImpl<Object, Long>   implements Sett
 		}
 	}
 	
-	public SellerSetting findBySellerId(Long id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	public SellerSetting getSellerSettings() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	public List<SellerSetting> getSellerSetting() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
+
 	
 	
 }

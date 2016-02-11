@@ -5,16 +5,12 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.hibernate.Criteria;
-import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
-import org.hibernate.transform.Transformers;
-import org.joda.time.format.DateTimeFormatter;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -46,6 +42,7 @@ public class AllotmentDAOImpl extends BaseDAOImpl<Allotment, Long>   implements 
 		
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<Allotment> groupAllotmentbyBps(long tradeID) {
 		List<Allotment>  allotmentList=new ArrayList<Allotment>();
 		Allotment allotment;
@@ -64,8 +61,8 @@ public class AllotmentDAOImpl extends BaseDAOImpl<Allotment, Long>   implements 
 			prList.add(Projections.property("noOfdays"));
 			prList.add(Projections.property("allotmentDate"));
 			cr.setProjection(prList);
-			rows = cr.list();
-			DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+			rows = (List<Object[]>) cr.list();
+			DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSSSS");
 			for(Object[] row:rows){
 				allotment=new Allotment();
 				allotment.setMarketDiscount(Integer.valueOf(row[0].toString()));
@@ -73,7 +70,7 @@ public class AllotmentDAOImpl extends BaseDAOImpl<Allotment, Long>   implements 
 				allotment.setWhitehallProfitShare(new BigDecimal(row[2].toString()) );
 				allotment.setInvestorNetProfit(new BigDecimal (row[3].toString()));
 				allotment.setNoOfdays(Integer.valueOf(row[4].toString()));
-				allotment.setAllotmentDate( formatter.parse(row[5].toString()));
+				allotment.setAllotmentDate(formatter.parse(row[5].toString()));
 				allotmentList.add(allotment);
 			}
 			_log.debug("getALlotmentsbyTrade successful, result size: "
@@ -91,9 +88,6 @@ public class AllotmentDAOImpl extends BaseDAOImpl<Allotment, Long>   implements 
 		return allotmentList;
 	}
 
-	public List<Allotment> groupAllotmentbyBps() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
 	
 }

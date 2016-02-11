@@ -21,7 +21,7 @@
 			<select id="sellerCompany" name="sellerCompany"  placeholder="Seller Company">
 				<option value="">---Select---</option>
 				<c:forEach var="company" items="${companyList}">
-					<option value="${company.id}">${company.name}</option>
+					<option value="${company.id}"  <c:if test="${ company.id eq sellerCompany}">selected="selected" </c:if>>${company.name}</option>
 				</c:forEach>			
 			</select>
            </div>

@@ -12,8 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.tf.dao.CompanyDAO;
 import com.tf.model.Company;
-import com.tf.model.InvestorPortfolio;
-import com.tf.model.SCFTrade;
 import com.tf.model.User;
 import com.tf.persistance.util.CompanyStatus;
 

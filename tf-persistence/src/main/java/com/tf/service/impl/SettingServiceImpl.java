@@ -15,10 +15,10 @@ public class SettingServiceImpl implements SettingService {
 	@Autowired
 	private SettingDAO settingDAO;
 
-	public void saveSellerSettings(SellerSetting sellerLists) {
-		
+	public void saveSellerSettings(SellerSetting sellerLists) {		
 		settingDAO.saveSellerSettings(sellerLists);
 	}
+	
 	public List<SellerSetting> getSellers(){
 		return settingDAO.getSellers();
 	}
@@ -26,31 +26,27 @@ public class SettingServiceImpl implements SettingService {
 	public List<SellerSetting> findByCompanyId(Long companyId)  {
 		return settingDAO.findByCompanyId(companyId);
 	}
+	
 	public void updateSellerSettings(SellerSetting sellerSetting) {
 		 settingDAO.updateSellerSettings(sellerSetting);
 	}
-	public SellerSetting findBySellerId(Long id){
-		return settingDAO.findBySellerId(id);
-	}
+	
 	public List<Object[]> getSellersName(){
 		return settingDAO.getSellersName();
 	}
+	
 	public List<SellerSetting> getSellerList(long companyId){
 		return settingDAO.getSellerList(companyId);
 	}
-	/*public List<SellerSetting> getSellerSettings() {
-		return settingDAO.getSellerSettings();		
-	}
-*/
+	
 	public List<SellerSetting> getSellersSetting(){
 		return settingDAO.getSellersSetting();
 	}
+	
 	public SellerSetting getSellerSetting(long sellerCmpId) {
 		return settingDAO.getSellerSetting(sellerCmpId);
 	}
-	public SellerSetting getSellerSettings() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
+	
 
 }

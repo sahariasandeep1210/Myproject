@@ -126,11 +126,6 @@ public class WhiteHallSettingController {
 		try {			
 			
 			List<Company> companyList = new ArrayList<Company>();
-
-			String companyType = CompanyTypes.SELLER.getValue();			
-			companyList = companyService.getCompanies(companyType);
-			
-
 			companyList=companyService.getCompanies(CompanyTypes.SELLER.getValue());
 			List<SellerSetting> sellerSettings=settingService.getSellersSetting();				
 			model.put("sellerSettings", sellerSettings);
@@ -148,49 +143,30 @@ public class WhiteHallSettingController {
 	protected void saveSellerSettings(@ModelAttribute("sellerDTO")SellerSetting  sellerDTO,
 												 ModelMap model, 
 												 ActionRequest request,
-												 ActionResponse response) throws Exception {
-	   /*SellerSetting sellerSetting;
-	   long companyId=ParamUtil.getLong(request, "sellerCompany");
-	   SellerSetting sellerLists = settingService.getSellerSetting(companyId);
-	   List<SellerSetting> sellers=settingService.getSellerList(companyId);
- 
-	   if(null==sellerLists.getId()){
-	   
-		   sellerDTO.setCompany(companyService.loadById(companyId));
-		   sellerDTO.setCreateDate(new Date());
-	       settingService.saveSellerSettings(sellerDTO);
-	    }
-	   else{
-		   System.out.println("DDDDDD"+sellerLists.getId());
-		   sellerSetting=settingService.findBySellerId(sellerLists.getId());
-		   sellerSetting.setUpdateDate(new Date());
-		   settingService.updateSellerSettings(sellerSetting);
-	   }*/
-		SellerSetting sellerLists=null;
-		long companyId=ParamUtil.getLong(request, "sellerCompany");
-	    SellerSetting sellerList = settingService.getSellerSetting(companyId);
-	    System.out.println("12:"+sellerDTO);
-	    if(null == sellerList){
-		    System.out.println("123:"+sellerDTO);
-
-	     sellerLists = new SellerSetting();
-	     sellerLists.setCompany(companyService.loadById(companyId));
-	     sellerLists.setCreateDate(new Date());
-	    sellerLists.setSellerTransFee(sellerDTO.getSellerTransFee());
-	    sellerLists.setSellerFinFee(sellerDTO.getSellerFinFee());
-	     settingService.saveSellerSettings(sellerLists);
-	     }
-	    else{
-		    System.out.println("124:"+sellerDTO);
-
-	    	sellerLists=settingService.findBySellerId(sellerList.getId());
-	    	sellerLists.setSellerTransFee(sellerDTO.getSellerTransFee());
-            sellerLists.setSellerFinFee(sellerDTO.getSellerFinFee());
-		    sellerLists.setUpdateDate(new Date());
-
-	        settingService.saveSellerSettings(sellerLists);
-	        }
-}
+												 ActionResponse response) throws Exception {		
+		long companyId=ParamUtil.getLong(request, "sellerCompany",0l);		
+		if(companyId!=0){
+			SellerSetting sellerLists =settingService.getSellerSetting(companyId);
+			if(sellerLists ==null){
+		    	//create scenario
+		    	sellerLists = new SellerSetting();
+		    	sellerLists.setCompany(companyService.loadById(companyId));
+		    	sellerLists.setCreateDate(new Date());
+		    	sellerLists.setSellerTransFee(sellerDTO.getSellerTransFee());
+		    	sellerLists.setSellerFinFee(sellerDTO.getSellerFinFee());
+		    	settingService.saveSellerSettings(sellerLists);
+		     }
+		    else{
+		    	//update scenario
+		    	sellerLists.setSellerTransFee(sellerDTO.getSellerTransFee());
+	            sellerLists.setSellerFinFee(sellerDTO.getSellerFinFee());
+			    sellerLists.setUpdateDate(new Date());
+		        settingService.saveSellerSettings(sellerLists);
+		        }
+		}
+		model.put("sellerCompany",companyId);
+	    response.setRenderParameter("render", "sellerSetings");
+	}
 	
 
 	@ResourceMapping
