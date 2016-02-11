@@ -31,45 +31,44 @@
 							</tr>
 						</thead>
 						<tbody>
-						 <c:choose>
-						   <c:when test="">
-						    <c:forEach items="" var="test"> 
+						    <c:forEach items="${lists}" var="list"> 
 							<tr>
 							     <td>Whitehall Profit Share %</td>
 							      <td>
-							       <form:input path="whitehalShare"  id="profit" />
+							      <input type="text"
+												value="${list.whitehalShare}"
+												name="whitehalShare" id="profit">
 							    </td> 
 							</tr>
 							<tr>
 							     <td>VAT</td>
 							      <td>
-							        <form:input path="vat"  id="vat" />
+							         <input type="text"
+												value="${list.vat }"
+												name="vat" id="vat">
 							      
 							      </td>
 							</tr>
 							<tr>
 							     <td>Seller Transaction Fee</td>
 							      <td>
-							         <form:input path="sellerTransFee"  id="transaction" />
+							      <input type="text"
+												value="${list.sellerTransFee }"
+												name="sellerTransFee" id="transaction">
 							       
 							      </td>
 							</tr>
 							<tr>
 							     <td>Seller Finance Fee</td>
 							      <td>
-							         <form:input path="sellerFinFee"  id="finance" />
+							      <input type="text"
+												value="${list.sellerFinFee }"
+												name="sellerFinFee" id="finance">
 							         
 							      </td>
 							</tr>
 						 </c:forEach>
-							</c:when> 
-						<c:otherwise>
- 								<tr>
-										<td colspan="3" align="center" style="text-align: center;">
-											<liferay-ui:message key='investor.not.found' />
-										</td>
-									</tr>						</c:otherwise>		
-  								</c:choose>
+							
 					</tbody>
 					</table>
 				</div>

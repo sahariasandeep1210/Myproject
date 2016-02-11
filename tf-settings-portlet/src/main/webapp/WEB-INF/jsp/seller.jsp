@@ -9,7 +9,7 @@
 <div class="container-fluid">
 	
 	<form:form method="post" commandName="sellerDTO"
-		class="form-horizontal" name="settingForm">
+		class="form-horizontal" name="settingForm" id="sellerSetting">
 		<input type="hidden" value="${saveSellerSettings}" id="saveURL" />
 		<input type="hidden" value="${sellerDTO.id}" name="id" />
  		

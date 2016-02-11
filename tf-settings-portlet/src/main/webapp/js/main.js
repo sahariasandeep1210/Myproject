@@ -11,6 +11,7 @@ $(document).ready(function() {
 		var updateURL=$("#saveURL").val();
 		document.forms["settingForm"].action = updateURL;
 		document.forms["settingForm"].submit();
+
 	});
 	
 	$("#updateGeneralSettings").click(function (){
@@ -57,11 +58,16 @@ function enableTab(){
 $("#sellerCompany").change(function() {
 	var settingURL=$("#settingURL").val();
 	var userSel=$(this).val();
+alert(userSel);
 	if(userSel === 'undefined' || (! userSel )|| userSel === null){
+		alert(userSel);
+
 		$("#transaction").val('');
 		$("#finance").val('');
+
 	}else{
-	
+		alert(userSel);
+
 	  			$.ajax({ 
 					url: settingURL, 
 					type: 'POST', 
@@ -73,12 +79,9 @@ $("#sellerCompany").change(function() {
 						  }, 
 					success: function(data){
 						var setting=jQuery.parseJSON(data);
-						console.log("::settingObject::"+setting);
-
+						alert(setting);
 						$("#transaction").val(setting.sellerTransFee);
 						$("#finance").val(setting.sellerFinFee);
-						
-								
 					} ,
 					error: function(jqXHR, textStatus, errorThrown) {
 						ajaxindicatorstop();
@@ -87,6 +90,8 @@ $("#sellerCompany").change(function() {
 					}
 	  			
 	  		});	
+	  			
+
 	    }
 	});
 	

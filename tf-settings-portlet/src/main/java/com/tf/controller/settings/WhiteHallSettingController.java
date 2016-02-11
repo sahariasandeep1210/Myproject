@@ -76,7 +76,11 @@ public class WhiteHallSettingController {
 	protected ModelAndView renderGenraletings(@ModelAttribute("generalSettingModel")GeneralSetting  generalSettingModel,ModelMap model,RenderRequest request, RenderResponse response) throws Exception {		
 		_log.info("Render WhiteHall Settings Screen");
 		try {			
+			List<GeneralSetting> lists=generalSettingService.getGeneralSettings();
+			System.out.println("DDDD:"+lists);
 			model.put(ACTIVETAB, GENERAL_SETTINGS);
+			model.put("List", lists);
+
 		} catch (Exception e) {
 			SessionErrors.add(request, "default-error-message");
 			_log.error("WhiteHallSettingController.renderSellerSetings() - error occured while rendering Whitehall Settings Screen"+e.getMessage());
@@ -115,6 +119,7 @@ public class WhiteHallSettingController {
 												 ActionRequest request,
 												 ActionResponse response) throws Exception {
 		generalSettingService.saveGeneralSettings(generalSettingModel);
+		
 		response.setRenderParameter("render", "generalSettings");
 		
 	}
@@ -146,22 +151,22 @@ public class WhiteHallSettingController {
 												 ActionResponse response) throws Exception {		
 		long companyId=ParamUtil.getLong(request, "sellerCompany",0l);		
 		if(companyId!=0){
-			SellerSetting sellerLists =settingService.getSellerSetting(companyId);
-			if(sellerLists ==null){
+			SellerSetting sellerSetting =settingService.getSellerSetting(companyId);
+			if(sellerSetting ==null){
 		    	//create scenario
-		    	sellerLists = new SellerSetting();
-		    	sellerLists.setCompany(companyService.loadById(companyId));
-		    	sellerLists.setCreateDate(new Date());
-		    	sellerLists.setSellerTransFee(sellerDTO.getSellerTransFee());
-		    	sellerLists.setSellerFinFee(sellerDTO.getSellerFinFee());
-		    	settingService.saveSellerSettings(sellerLists);
+				sellerSetting = new SellerSetting();
+				sellerSetting.setCompany(companyService.loadById(companyId));
+				sellerSetting.setCreateDate(new Date());
+				sellerSetting.setSellerTransFee(sellerDTO.getSellerTransFee());
+				sellerSetting.setSellerFinFee(sellerDTO.getSellerFinFee());
+		    	settingService.saveSellerSettings(sellerSetting);
 		     }
 		    else{
 		    	//update scenario
-		    	sellerLists.setSellerTransFee(sellerDTO.getSellerTransFee());
-	            sellerLists.setSellerFinFee(sellerDTO.getSellerFinFee());
-			    sellerLists.setUpdateDate(new Date());
-		        settingService.saveSellerSettings(sellerLists);
+		    	sellerSetting.setSellerTransFee(sellerDTO.getSellerTransFee());
+		    	sellerSetting.setSellerFinFee(sellerDTO.getSellerFinFee());
+		    	sellerSetting.setUpdateDate(new Date());
+		        settingService.saveSellerSettings(sellerSetting);
 		        }
 		}
 		model.put("sellerCompany",companyId);
@@ -175,7 +180,7 @@ public class WhiteHallSettingController {
 
 		long userSelection =Long.valueOf(ParamUtil.getString(request, "userSelection",""));
 		String settingmodel=null;
-		System.out.println("userSelections::::"+userSelection);
+		System.out.println("userSelections222::::"+userSelection);
 		try {
 		SellerSetting sellerList = settingService.getSellerSetting(userSelection);
 		SellerSetting cloneSellerList = new SellerSetting();
@@ -185,6 +190,7 @@ public class WhiteHallSettingController {
 		Gson gson=new Gson();
 	    settingmodel=gson.toJson(cloneSellerList);
 	    response.getWriter().println(settingmodel);
+		
 		} catch (Exception e) {
 			_log.error("Error occured while fetchSettings"+e.getMessage());
 			response.setProperty(ResourceResponse.HTTP_STATUS_CODE, "400");

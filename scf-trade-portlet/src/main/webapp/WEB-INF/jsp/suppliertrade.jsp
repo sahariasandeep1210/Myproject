@@ -100,6 +100,15 @@
                 </tbody>
             </table>
         </div>
+        <div class="row-fluid">
+            <div class="span6">
+                <div class="span6">
+                    <h5>Invoices within Trade</h5>
+                </div>
+            </div>
+        </div>
+               <%@include file="invoicelisttable.jsp"%>
+        
     </form:form>
 </div>
 

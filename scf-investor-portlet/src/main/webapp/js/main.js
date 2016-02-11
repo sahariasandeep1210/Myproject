@@ -4,7 +4,8 @@ $(document).ready(function() {
 	  $("#saveProtfolios").hide(); 
 	  $(".historyRow").hide();
 	  $("#errorMsg").hide(); 
-	  
+	  enableTab();
+
 	  
 	  $('#investorModel').on('keypress', '.addprotfolio input', function(e) {
 		  
@@ -123,6 +124,20 @@ $(document).ready(function() {
     	  }  	  
     	  
       });
+      
+    
+        $("#balanceDate").datepicker({
+  		changeMonth : true,
+  		changeYear : true,
+  		showOn : "button",
+  		maxDate : '0',
+  		buttonImage : "/tf-theme/images/calendar.jpg",
+  		buttonImageOnly : true,
+  		buttonText : "Select date"
+  	});
+  	
+  	 
+  });
       
       $('#investorModel').on('click', '#editCancel', function() {
     	    $("#errorMsg").hide(); 
@@ -312,13 +327,17 @@ $(document).ready(function() {
           }
       });
 	
-	
-	
-	
-
-});
-
-
+function enableTab(){
+	var curentTab=$("#currentTab").val();
+	if(curentTab=='allinvestorprotfolios'){
+		$("#investorProtfoliosList").addClass("active");
+	}else if(curentTab=='investorbalance'){
+		$("#investorbalanceList").addClass("active");
+	}
+	else{
+		$("#investorProtfoliosList").addClass("active");
+	}
+}	
 
 function confirmEdit(){
 	 $(".addprotfolio").remove();

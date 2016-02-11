@@ -26,6 +26,7 @@
         <input type="hidden" name="noOfRecords"     id="noOfRecords"        value="${paginationModel.noOfRecords}" />
         <input type="hidden" name="defaultURL"         id="defaultURL"         value="${defaultRenderURL}" />
         <input type="hidden" id="tradeURL" name="tradeURL" value="${tradeURL}"/>
+        <input type="hidden" id="invoices" name="invoices" value="${trade.invoices}">
         
         
         <div class="row-fluid">
@@ -96,17 +97,19 @@
                                     <td>${trade.sellerNetAllotment}</td>
 
                                 </tr>
-
+ 
                             </c:forEach>
-</c:when>
- 					<c:otherwise>
- 					<tr>							<td colspan="9" align="center">No records found!</td>
+                                 </c:when>
+ 					       <c:otherwise>
+ 					       <tr>							
+ 					          <td colspan="9" align="center">No records found!</td>
  							</tr>
 						</c:otherwise>
 					</c:choose>
 				</tbody>
 			</table>
 		</div>
+		
  	</form:form>
  </div>
  	<p:paginate  paginationModel="${paginationModel}"/>

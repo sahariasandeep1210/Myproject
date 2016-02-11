@@ -1,4 +1,5 @@
 <%@ include file="init.jsp"%>
+<%@include file="tabview.jsp"%>
 
 
 <div class="row-fluid">

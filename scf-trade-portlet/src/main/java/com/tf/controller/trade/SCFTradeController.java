@@ -22,6 +22,7 @@ import com.tf.model.Allotment;
 import com.tf.model.Company;
 import com.tf.model.Invoice;
 import com.tf.model.SCFTrade;
+import com.google.gson.Gson;
 import com.tf.model.SellerSetting;
 import com.tf.persistance.util.Constants;
 import com.tf.persistance.util.InvoiceStatus;
@@ -206,6 +207,8 @@ public class SCFTradeController {
        model.put("allotments", allotmentList);
        model.put("trades", scfTrade);
        model.put("companyname", company); 
+		model.put("invoiceList", scfTrade.getInvoices());	
+
 		return new ModelAndView("suppliertrade",model);
 	}
 	
@@ -354,16 +357,26 @@ public class SCFTradeController {
 		return sb.toString();
 	}
 	@ResourceMapping
-    public ModelAndView search(ResourceRequest request, ResourceResponse response, ModelMap model)throws IOException {
-	
-		String viewName="";
+    public void search(ResourceRequest request, ResourceResponse response)throws IOException {
+		String settingmodel=null;
+
         long searchSelection =Long.valueOf(ParamUtil.getString(request, "searchSelection",""));
 		System.out.println("userSelections::::"+searchSelection);
-		List<SCFTrade> sellerList=scfTradeService.getScfTradesByTradeId(searchSelection);
+		try {
+	    		
+		SCFTrade sellerList=scfTradeService.findById(searchSelection);
+		
 		System.out.println("userSelections"+sellerList);
-        model.put("sellerList", sellerList);
-		viewName="sellertradelist";
-		return new ModelAndView(viewName, model);
+		Gson gson=new Gson();
+		settingmodel=gson.toJson(sellerList);
+	    response.getWriter().println(settingmodel);
+		System.out.println("userSelections"+settingmodel);
+
+		}catch(Exception e){
+			_log.error("Error occured while fetchSettings"+e.getMessage());
+			response.setProperty(ResourceResponse.HTTP_STATUS_CODE, "400");
+		}
+
 	}
 	private List<SCFTrade> prepareTradeList(RenderRequest request,
 			List<SCFTrade> tradeList, ThemeDisplay themeDisplay,ModelMap model)

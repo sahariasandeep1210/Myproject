@@ -27,12 +27,14 @@ import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.security.permission.PermissionChecker;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.tf.controller.investor.util.InvestorDTO;
 import com.tf.model.Company;
+import com.tf.model.GeneralSetting;
 import com.tf.model.InvestorPortfolio;
 import com.tf.model.InvestorPortfolioHistory;
 import com.tf.service.CompanyService;
@@ -54,6 +56,11 @@ public class InvestorController {
 	protected Log _log = LogFactoryUtil.getLog(InvestorController.class);
 	private static final int MINDISCOUNT=400;
 	private static final int MAXDISCOUNT=600;
+	private  final static String ACTIVETAB			 		="activetab";	
+	private static final String Investor_Protfolios 			= "allinvestorprotfolios";
+	private static final String Investor_Balance 			= "investorbalance";
+
+
 	
 	@Autowired
 	protected  UserService userService; 
@@ -67,6 +74,28 @@ public class InvestorController {
 	@Autowired
 	protected  InvestorHistoryService investorHistoryService; 
 	
+	
+	
+	
+	
+	@RenderMapping(params = "render=investorProtfolios")
+	protected ModelAndView renderInvestorProtfolios(@ModelAttribute("investorDTO")InvestorDTO  investorDTO,ModelMap model,RenderRequest request, RenderResponse response) throws Exception {		
+		_log.info("Render InvestorController ");
+		model.put(ACTIVETAB, Investor_Protfolios);
+		if(getPermissionChecker(request).isOmniadmin() ){
+			List<InvestorPortfolio> list =investorService.findAllInvestorProtFolios();
+			model.put("investorList", list);	
+		}
+		return new ModelAndView(Investor_Protfolios, model);		
+	}
+	
+	@RenderMapping(params = "render=investorBalance")
+	protected ModelAndView renderinvestorbalance(ModelMap model,RenderRequest request, RenderResponse response) throws Exception {		
+		_log.info("Render InvestorController");
+		model.put(ACTIVETAB, Investor_Balance);
+	    return new ModelAndView(Investor_Balance, model);		
+	}
+	
 	@RenderMapping
 	protected ModelAndView renderInvestorInfo(@ModelAttribute("investorDTO")InvestorDTO  investorDTO,ModelMap model,RenderRequest request, RenderResponse response) throws Exception {		
 		_log.info("Render Investor Protfolio");
@@ -76,10 +105,10 @@ public class InvestorController {
 		 String viewName=prepareInvestorProtfolioInformation(request,investorDTO, model, themeDisplay,
 				investorId, investorPortfolioList);		
 		prepareDiscountList(model);
+
 		return new ModelAndView(viewName, model);		
 	}
-
-
+	
 
 	private String prepareInvestorProtfolioInformation(RenderRequest request,InvestorDTO investorDTO,
 			ModelMap model, ThemeDisplay themeDisplay, long investorId,

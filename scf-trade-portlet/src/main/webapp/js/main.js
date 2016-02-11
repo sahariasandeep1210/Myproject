@@ -292,7 +292,7 @@ function setPage(pageNumber){
 $("#search").keyup(function() {
 	var tradeURL=$("#tradeURL").val();
 		var searchval=$(this).val();
-
+		
 	  			$.ajax({ 
 					url: tradeURL, 
 					type: 'POST', 
@@ -304,14 +304,16 @@ $("#search").keyup(function() {
 						  }, 
 					success: function(data){
 						$("#sellerList").html(data);
+				   		   $("#sellerListTable").slideToggle();
+
 						
 					} ,
 					error: function(jqXHR, textStatus, errorThrown) {
 						ajaxindicatorstop();
 						
 					}
-					});	
-		
+	  					});	
+		  
 	});
 	
 

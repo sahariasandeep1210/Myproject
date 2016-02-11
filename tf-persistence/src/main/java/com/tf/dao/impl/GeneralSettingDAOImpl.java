@@ -5,6 +5,8 @@ import com.tf.model.Company;
 import com.tf.model.GeneralSetting;
 import com.tf.model.SellerSetting;
 
+import java.util.List;
+
 import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,6 +17,21 @@ public class GeneralSettingDAOImpl extends BaseDAOImpl<GeneralSetting, Long>  im
 	public GeneralSettingDAOImpl(){
 		super(GeneralSetting.class);
 	}
+	
+	
+	public List<GeneralSetting> getGeneralSettings() {
+		try{
+			List<GeneralSetting> list =(List<GeneralSetting>) sessionFactory.getCurrentSession().createCriteria(GeneralSetting.class).list();
+
+			_log.debug("getGeneralSettings successful, result size: "
+					+ list.size());
+			return list;
+		}
+		catch(RuntimeException re) {
+			_log.error("getGeneralSettings failed", re);
+			throw re;
+		}
+}
 	
 	public void saveGeneralSettings(GeneralSetting generalSettingModel) {
 		_log.debug("persisting General Settings instance");
@@ -31,8 +48,5 @@ public class GeneralSettingDAOImpl extends BaseDAOImpl<GeneralSetting, Long>  im
 
 	}
 
-	public void saveGeneralSettings(SellerSetting generalSettingModel) {
-		// TODO Auto-generated method stub
-		
-	}
+	
 }
