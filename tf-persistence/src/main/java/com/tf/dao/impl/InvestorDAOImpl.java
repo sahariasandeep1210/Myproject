@@ -184,6 +184,25 @@ public class InvestorDAOImpl extends BaseDAOImpl<InvestorPortfolio, Long>   impl
 		}
 	}
 	
+	public Map<String,BigDecimal>  getProtfolioTotals() {
+		try {
+			Map<String,BigDecimal> map =new HashMap<String,BigDecimal>();
+				
+				Query query =sessionFactory.getCurrentSession().createQuery("SELECT SUM(myCreditLine) AS totalMyCreditLine,SUM(availToInvest ) AS availinvest,SUM(amountInvested) AS amountInvested FROM InvestorPortfolio ");
+						
+			    List<Object[]> list = query.list();
+			        for(Object[] arr : list){
+			        	map.put("myCreditLine",arr[0]!=null?new BigDecimal(arr[0].toString()):BigDecimal.ZERO);
+			        	map.put("availToInvest",arr[1]!=null?new BigDecimal(arr[1].toString()):BigDecimal.ZERO);
+			        	map.put("amountInvested",arr[2]!=null?new BigDecimal(arr[2].toString()):BigDecimal.ZERO);
+			        } 
+			return map;
+		} catch (RuntimeException re) {
+			_log.error("get failed", re);
+			throw re;
+		}
+	}
+	
 	public List<Long> getInvestorsScfCompanies(long investorID) {
 		List<Long> list = new ArrayList<Long>();
 		try {

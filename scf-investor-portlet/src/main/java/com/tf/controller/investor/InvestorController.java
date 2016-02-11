@@ -57,7 +57,7 @@ public class InvestorController {
 	private static final int MINDISCOUNT=400;
 	private static final int MAXDISCOUNT=600;
 	private  final static String ACTIVETAB			 		="activetab";	
-	private static final String Investor_Protfolios 			= "allinvestorprotfolios";
+	private static final String Investor_Protfolios 		= "allinvestorprotfolios";
 	private static final String Investor_Balance 			= "investorbalance";
 
 
@@ -84,6 +84,8 @@ public class InvestorController {
 		model.put(ACTIVETAB, Investor_Protfolios);
 		if(getPermissionChecker(request).isOmniadmin() ){
 			List<InvestorPortfolio> list =investorService.findAllInvestorProtFolios();
+			Map<String,BigDecimal> totalsMap=investorService.getProtfolioTotals();
+			model.put("totalsMap", totalsMap);
 			model.put("investorList", list);	
 		}
 		return new ModelAndView(Investor_Protfolios, model);		
@@ -116,6 +118,8 @@ public class InvestorController {
 		String viewName="investorprotfolio";
 		if(getPermissionChecker(request).isOmniadmin() ){
 			List<InvestorPortfolio> list =investorService.findAllInvestorProtFolios();
+			Map<String,BigDecimal> totalsMap=investorService.getProtfolioTotals();
+			model.put("totalsMap", totalsMap);	
 			model.put("investorList", list);	
 			viewName="allinvestorprotfolios";
 		}else{

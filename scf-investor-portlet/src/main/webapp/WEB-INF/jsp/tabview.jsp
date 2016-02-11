@@ -16,6 +16,6 @@
 	
 <li class="tab" id="investorProtfoliosList"><a href="${investorProtfoliosURL}">Investor Protfolios </a></li>
 <li class="tab" id="investorbalanceList"><a
-			href="${investorbalanceURL}">Investor Balance </a></li>
+			href="${investorbalanceURL}">Investor Balance Sheet</a></li>
 			
 </ul>

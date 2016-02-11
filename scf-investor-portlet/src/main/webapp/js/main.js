@@ -5,7 +5,7 @@ $(document).ready(function() {
 	  $(".historyRow").hide();
 	  $("#errorMsg").hide(); 
 	  enableTab();
-
+	 // $('table').tablesorter();
 	  
 	  $('#investorModel').on('keypress', '.addprotfolio input', function(e) {
 		  

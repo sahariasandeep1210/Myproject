@@ -47,10 +47,18 @@
 
 						<c:when test="${fn:length(investorList) gt 0}">
 							<c:set var="currentInvestor" value="" />
-
+								<tr>
+									<td class="highlightrow">Totals</td>
+									<td></td>
+									<td><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalsMap.myCreditLine}" /></td>
+									<td></td>
+									<td><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalsMap.amountInvested}" /></td>
+									<td><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalsMap.availToInvest}" /></td>
+									<!-- <td></td> -->
+								</tr>
 							<c:forEach items="${investorList}" var="investorProt"
 								varStatus="loop">
-								<c:if
+							<%-- 	<c:if
 									test="${currentInvestor ne investorProt.investor.company.name}">
 									<tr class="highlightrow">
 										<td colspan="6">${investorProt.investor.company.name}</td>
@@ -58,7 +66,7 @@
 									</tr>
 									<c:set var="currentInvestor"
 										value="${investorProt.investor.company.name}" />
-								</c:if>
+								</c:if> --%>
 								<tr>
 									<td>${investorProt.investor.company.name}</td>
 									<td>${investorProt.company.name}</td>

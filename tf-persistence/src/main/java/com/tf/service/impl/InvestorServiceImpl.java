@@ -133,4 +133,8 @@ public class InvestorServiceImpl implements InvestorService {
 	public BigDecimal  getWhiteHallShare(long id){
 		return investorDAO.getWhiteHallShare(id);		
 	}
+	
+	public Map<String,BigDecimal>  getProtfolioTotals(){
+		return investorDAO.getProtfolioTotals();	
+	}
 }

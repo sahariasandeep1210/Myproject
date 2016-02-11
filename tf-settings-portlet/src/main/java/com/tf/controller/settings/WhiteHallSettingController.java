@@ -1,22 +1,5 @@
 package com.tf.controller.settings;
 
-import com.google.gson.Gson;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.servlet.SessionErrors;
-import com.liferay.portal.kernel.util.JavaConstants;
-import com.liferay.portal.kernel.util.ParamUtil;
-import com.tf.dto.InvestorModel;
-import com.tf.model.Company;
-import com.tf.model.GeneralSetting;
-import com.tf.model.SellerSetting;
-import com.tf.persistance.util.CompanyTypes;
-import com.tf.persistance.util.InvestorDTO;
-import com.tf.service.CompanyService;
-import com.tf.service.GeneralSettingService;
-import com.tf.service.InvestorService;
-import com.tf.service.SettingService;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -24,8 +7,6 @@ import java.util.List;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
-import javax.portlet.PortletConfig;
-import javax.portlet.PortletRequest;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 import javax.portlet.ResourceRequest;
@@ -40,6 +21,22 @@ import org.springframework.web.portlet.ModelAndView;
 import org.springframework.web.portlet.bind.annotation.ActionMapping;
 import org.springframework.web.portlet.bind.annotation.RenderMapping;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
+
+import com.google.gson.Gson;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.servlet.SessionErrors;
+import com.liferay.portal.kernel.util.ParamUtil;
+import com.tf.dto.InvestorModel;
+import com.tf.model.Company;
+import com.tf.model.GeneralSetting;
+import com.tf.model.SellerSetting;
+import com.tf.persistance.util.CompanyTypes;
+import com.tf.persistance.util.InvestorDTO;
+import com.tf.service.CompanyService;
+import com.tf.service.GeneralSettingService;
+import com.tf.service.InvestorService;
+import com.tf.service.SettingService;
 
 /**
  * This controller is responsible for request/response handling on
@@ -178,7 +175,6 @@ public class WhiteHallSettingController {
 
 		long userSelection =Long.valueOf(ParamUtil.getString(request, "userSelection",""));
 		String settingmodel=null;
-		System.out.println("userSelections222::::"+userSelection);
 		try {
 		SellerSetting sellerList = settingService.getSellerSetting(userSelection);
 		SellerSetting cloneSellerList = new SellerSetting();
@@ -187,19 +183,12 @@ public class WhiteHallSettingController {
 		cloneSellerList.setSellerTransFee(sellerList.getSellerTransFee());
 		Gson gson=new Gson();
 	    settingmodel=gson.toJson(cloneSellerList);
-	    response.getWriter().println(settingmodel);
-		
+	    response.getWriter().println(settingmodel);		
 		} catch (Exception e) {
 			_log.error("Error occured while fetchSettings"+e.getMessage());
 			response.setProperty(ResourceResponse.HTTP_STATUS_CODE, "400");
 		}
 		
-	}
-	
-	private PortletConfig getPortletConfig(PortletRequest request) {
-		PortletConfig portletConfig = (PortletConfig) request.getAttribute(JavaConstants.JAVAX_PORTLET_CONFIG); 
-		return portletConfig;
-	}
-	
+	}	
 	
 }

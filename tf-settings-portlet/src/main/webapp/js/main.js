@@ -58,16 +58,11 @@ function enableTab(){
 $("#sellerCompany").change(function() {
 	var settingURL=$("#settingURL").val();
 	var userSel=$(this).val();
-alert(userSel);
 	if(userSel === 'undefined' || (! userSel )|| userSel === null){
-		alert(userSel);
-
 		$("#transaction").val('');
 		$("#finance").val('');
 
 	}else{
-		alert(userSel);
-
 	  			$.ajax({ 
 					url: settingURL, 
 					type: 'POST', 
@@ -79,7 +74,6 @@ alert(userSel);
 						  }, 
 					success: function(data){
 						var setting=jQuery.parseJSON(data);
-						alert(setting);
 						$("#transaction").val(setting.sellerTransFee);
 						$("#finance").val(setting.sellerFinFee);
 					} ,
@@ -87,8 +81,7 @@ alert(userSel);
 						ajaxindicatorstop();
 
 						
-					}
-	  			
+					}	  			
 	  		});	
 	  			
 

@@ -39,5 +39,7 @@ public interface InvestorService {
 	public void updateInvestorDetails(List<InvestorDTO> investors); 
 	
 	public BigDecimal  getWhiteHallShare(long id);
+	
+	public Map<String,BigDecimal>  getProtfolioTotals();
 
 }
