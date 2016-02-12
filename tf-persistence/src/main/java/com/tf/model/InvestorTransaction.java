@@ -11,13 +11,15 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="tf_investor_transcation")
+@Table(name="tf_investor_transaction")
 public class InvestorTransaction implements Serializable {
+
+	
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1126018750466379591L;
+	private static final long serialVersionUID = 1234933124020707177L;
 
 	@Id
     @Column(name="id")

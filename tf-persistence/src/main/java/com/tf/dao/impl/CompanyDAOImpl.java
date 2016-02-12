@@ -235,7 +235,7 @@ public class CompanyDAOImpl  extends BaseDAOImpl<Company, Long>   implements Com
 		List<Object[]> rows=new ArrayList<Object[]>();
       
 		try{
-			String sql="select company.idcompany,company.NAME from  tf_investor inv ,tf_company company where inv.company_id=company.idcompany";
+			String sql="select  company.idcompany,company.NAME ,inv.investor_id from  tf_investor inv ,tf_company company where inv.company_id=company.idcompany";
 			Query query = sessionFactory.getCurrentSession().createSQLQuery(sql);
 		     rows=query.list();
 		     for(Object[]row:rows){

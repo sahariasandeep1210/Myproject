@@ -468,8 +468,8 @@ CREATE TABLE tf_general_setting (
 ) ;
 
 
-DROP TABLE IF EXISTS tf_investor_transcation;
-CREATE TABLE tf_investor_transcation (
+DROP TABLE IF EXISTS tf_investor_transaction;
+CREATE TABLE tf_investor_transaction (
   id  BIGINT(20) NOT NULL AUTO_INCREMENT,
   investor_id  BIGINT(20) NOT NULL,  
   amount  DECIMAL(10,2),  
@@ -479,8 +479,8 @@ CREATE TABLE tf_investor_transcation (
   reference VARCHAR(250) DEFAULT NULL,  
   PRIMARY KEY (id),  
   UNIQUE KEY id_UNIQUE (id),
-  KEY fk_tf_investor_transcation_investor_id (investor_id),  
-  CONSTRAINT fk_investor_transcation_investor_id FOREIGN KEY (investor_id) REFERENCES tf_investor (investor_id),
-  KEY `fk_investor_transcation_trade_id` (`trade_id`),
-  CONSTRAINT `tf_investor_transcation_ibfk_1` FOREIGN KEY (`trade_id`) REFERENCES `scf_trade` (`id`)
+  KEY fk_tf_investor_transaction_investor_id (investor_id),  
+  CONSTRAINT fk_investor_transaction_investor_id FOREIGN KEY (investor_id) REFERENCES tf_investor (investor_id),
+  KEY `fk_investor_transaction_trade_id` (`trade_id`),
+  CONSTRAINT `tf_investor_transaction_ibfk_1` FOREIGN KEY (`trade_id`) REFERENCES `scf_trade` (`id`)
 ) ;

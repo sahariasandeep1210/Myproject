@@ -96,11 +96,10 @@ public class InvestorController {
 	}
 	
 	@RenderMapping(params = "render=investorBalance")
-	protected ModelAndView renderinvestorbalance(ModelMap model,RenderRequest request, RenderResponse response) throws Exception {		
+	protected ModelAndView renderinvestorbalance(@ModelAttribute("investorBalanceModel")InvestorTransaction  investorBalanceModel,ModelMap model,RenderRequest request, RenderResponse response) throws Exception {		
 		_log.info("Render InvestorController");
 		List<Company> companies = null;
 		companies=companyService.getcompanies();
-		System.out.println("DDDD:"+companies);
 	    model.put("companies", companies);
 		model.put(ACTIVETAB, Investor_Balance);
 	    return new ModelAndView(Investor_Balance, model);		
@@ -112,8 +111,7 @@ public class InvestorController {
 												 ActionRequest request,
 												 ActionResponse response) throws Exception {
 		investorTransactionService.saveInvestorBalance(investorBalanceModel);
-		
-		response.setRenderParameter("render", "Investorbalance");
+		response.setRenderParameter("render", "investorbalance");
 		
 	}
 	

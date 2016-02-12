@@ -4,12 +4,13 @@
 <portlet:actionURL var="saveInvestorBalance">
 	<portlet:param name="action" value="saveInvestorBalance" />
 </portlet:actionURL>
-<div class="container-fluid">
+<%-- <portlet:resourceURL var="balanceURL"></portlet:resourceURL>
+ --%><div class="container-fluid">
  <form:form method="post" commandName="investorBalanceModel"
 		class="form-horizontal" name="investorBalanceForm" id="investorBalance">
-		      <input type="hidden" id="balanceURL" name="balanceURL" value="${balanceURL}"/>
-		      <input type="hidden" value="${saveInvestorBalance}" id="saveInvestorBalanceURL" />
-		      		<input type="hidden" value="${investorBalanceModel.id}" name="id" />
+<%-- 		      <input type="hidden" id="balanceURL" name="balanceURL" value="${balanceURL}"/>
+ --%>		      <input type="hidden" value="${saveInvestorBalance}" id="saveInvestorBalanceURL" />
+		      <input type="hidden" value="${investorBalanceModel.id}" name="id" />
 		      
 		      
 		<div class="row-fluid">
@@ -54,15 +55,19 @@
        <div class="row-fluid">
 			<div class="span6">
 				<label class="span6">Transaction Amount :</label>
-				<input type="text" value="" name="amount" id="transactionAmount" class="span6">
+					<form:input path="amount" cssClass="span9" id="transactionAmount"/>
 				
+<!-- 				<input type="text" value="" name="amount" id="transactionAmount" class="span6">
+ -->				
 			</div>
 		</div>
 		 <div class="row-fluid">
 			<div class="span6">
 				<label class="span6">Date:</label>
-				<input type="text" name="transcationDate"  id="balanceDate" class="span6"/>
-
+				<form:input path="transcationDate" cssClass="span9" id="balanceDate"/>
+				
+<!-- 				<input type="text" name="transcationDate"   class="span6"/>
+ -->
 			</div>
 			</div> 
 		<div class="row-fluid">
