@@ -78,6 +78,8 @@ $("#sellerCompany").change(function() {
 						$("#finance").val(setting.sellerFinFee);
 					} ,
 					error: function(jqXHR, textStatus, errorThrown) {
+						$("#transaction").val("");
+						$("#finance").val("");
 						ajaxindicatorstop();
 
 						

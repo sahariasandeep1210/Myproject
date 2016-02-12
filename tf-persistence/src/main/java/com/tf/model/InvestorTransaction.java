@@ -12,7 +12,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="tf_investor_transcation")
-public class InvestorTranscation implements Serializable {
+public class InvestorTransaction implements Serializable {
 
 	/**
 	 * 
@@ -42,7 +42,7 @@ public class InvestorTranscation implements Serializable {
 	@Column(name="reference") 
 	private String reference;
 	
-	public InvestorTranscation(){
+	public InvestorTransaction(){
 		
 	}
 	

@@ -7,14 +7,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.hibernate.FetchMode;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.criterion.CriteriaSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.tf.dao.InvestorDAO;
 import com.tf.dao.UserDAO;
+import com.tf.model.Allotment;
 import com.tf.model.Investor;
 import com.tf.model.InvestorPortfolio;
 import com.tf.persistance.util.DashboardModel;
@@ -370,6 +373,8 @@ public class InvestorDAOImpl extends BaseDAOImpl<InvestorPortfolio, Long>   impl
 		
 	
 	}
+	
+	
 
 
 }

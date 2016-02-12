@@ -27,7 +27,7 @@ public interface CompanyService {
 	public Company  loadCompanyId(long id);
 	public List<Company> getCompaniesById(Long id);
 
-	
+	public List<Company> getcompanies();
 	public Company loadById(long id);
 	
 

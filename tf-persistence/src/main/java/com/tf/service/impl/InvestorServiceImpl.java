@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.tf.dao.InvestorDAO;
 import com.tf.dao.InvestorHistoryDAO;
+import com.tf.model.Investor;
 import com.tf.model.InvestorPortfolio;
 import com.tf.model.InvestorPortfolioHistory;
 import com.tf.persistance.util.DashboardModel;

@@ -35,11 +35,14 @@ import com.liferay.portal.theme.ThemeDisplay;
 import com.tf.controller.investor.util.InvestorDTO;
 import com.tf.model.Company;
 import com.tf.model.GeneralSetting;
+import com.tf.model.Investor;
 import com.tf.model.InvestorPortfolio;
 import com.tf.model.InvestorPortfolioHistory;
+import com.tf.model.InvestorTransaction;
 import com.tf.service.CompanyService;
 import com.tf.service.InvestorHistoryService;
 import com.tf.service.InvestorService;
+import com.tf.service.InvestorTransactionService;
 import com.tf.service.UserService;
 
 /**
@@ -73,7 +76,8 @@ public class InvestorController {
 	
 	@Autowired
 	protected  InvestorHistoryService investorHistoryService; 
-	
+	@Autowired
+	protected InvestorTransactionService investorTransactionService;
 	
 	
 	
@@ -94,8 +98,23 @@ public class InvestorController {
 	@RenderMapping(params = "render=investorBalance")
 	protected ModelAndView renderinvestorbalance(ModelMap model,RenderRequest request, RenderResponse response) throws Exception {		
 		_log.info("Render InvestorController");
+		List<Company> companies = null;
+		companies=companyService.getcompanies();
+		System.out.println("DDDD:"+companies);
+	    model.put("companies", companies);
 		model.put(ACTIVETAB, Investor_Balance);
 	    return new ModelAndView(Investor_Balance, model);		
+	}
+	
+	@ActionMapping(params="action=saveInvestorBalance")
+	protected void saveInvestorBalance(@ModelAttribute("investorBalanceModel")InvestorTransaction  investorBalanceModel,
+												 ModelMap model,
+												 ActionRequest request,
+												 ActionResponse response) throws Exception {
+		investorTransactionService.saveInvestorBalance(investorBalanceModel);
+		
+		response.setRenderParameter("render", "Investorbalance");
+		
 	}
 	
 	@RenderMapping

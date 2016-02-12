@@ -218,7 +218,11 @@ $(document).ready(function() {
     	  
       });
     
-      
+      $("#updatebalance").click(function (){
+  		var updateURL=$("#saveInvestorBalanceURL").val();
+  		document.forms["investorBalanceForm"].action = updateURL;
+  		document.forms["investorBalanceForm"].submit();
+  	});
       
       
       
@@ -434,4 +438,38 @@ function ajaxindicatorstop()
     $('#resultLoading').fadeOut(300);
     $('body').css('cursor', 'default');
 }
+$("#investorName").change(function() {
+	var balanceURL=$("#balanceURL").val();
+	var balanceSel=$(this).val();
+	if(balanceSel === 'undefined' || (! balanceSel )|| balanceSel === null){
+		
+
+	}else{
+	  			$.ajax({ 
+					url: balanceURL, 
+					type: 'POST', 
+					datatype:'json', 
+
+					cache: false,
+					data: { 
+						balanceSelection: balanceSel 					
+						  }, 
+					success: function(data){
+						
+					} ,
+					error: function(jqXHR, textStatus, errorThrown) {
+						ajaxindicatorstop();
+
+						
+					}	  			
+	  		});	
+	  			
+
+	    }
+	});
+	
+	
+	
+
+
 

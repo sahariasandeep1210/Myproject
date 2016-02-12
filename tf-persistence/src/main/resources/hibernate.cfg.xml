@@ -26,7 +26,7 @@
 		<mapping class="com.tf.model.SellerSetting" /> 
 		<mapping class="com.tf.model.TradeAudit" />  
 		<mapping class="com.tf.model.GeneralSetting" />
-		<mapping class="com.tf.model.InvestorTranscation" />
+		<mapping class="com.tf.model.InvestorTransaction" />
 	</session-factory>
 
 </hibernate-configuration>

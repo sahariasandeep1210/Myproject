@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import org.hibernate.Query;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.Transformers;
@@ -11,7 +12,9 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.tf.dao.CompanyDAO;
+import com.tf.model.Allotment;
 import com.tf.model.Company;
+import com.tf.model.Investor;
 import com.tf.model.User;
 import com.tf.persistance.util.CompanyStatus;
 
@@ -224,6 +227,30 @@ public class CompanyDAOImpl  extends BaseDAOImpl<Company, Long>   implements Com
 		}
 		
 	}
-
+	@SuppressWarnings("unchecked")
+	public List<Company> getcompanies(){
+		_log.debug("Inside getInvestors  ");
+		List<Company> CompanyList=new ArrayList<Company>();
+		Company company;
+		List<Object[]> rows=new ArrayList<Object[]>();
+      
+		try{
+			String sql="select company.idcompany,company.NAME from  tf_investor inv ,tf_company company where inv.company_id=company.idcompany";
+			Query query = sessionFactory.getCurrentSession().createSQLQuery(sql);
+		     rows=query.list();
+		     for(Object[]row:rows){
+		    	 company=new Company();
+		    	 company.setId(Long.valueOf(row[0].toString()));
+		    	 company.setName(row[1].toString());
+		    	 CompanyList.add(company);
+		     }
+		_log.debug("getInvestors successful, result size: "
+				+ CompanyList.size());
+		return CompanyList;
+	} catch (RuntimeException re) {
+		_log.error("getInvestors failed", re);
+		throw re;
+	}
+	}
 
 }

@@ -70,5 +70,7 @@ public class CompanyServiceImpl implements CompanyService {
 	public Company loadById(long id) {
 		 return companyDAO.loadById(id);
 	}
-
+	public List<Company> getcompanies(){
+		return companyDAO.getcompanies();
+	}
 }
