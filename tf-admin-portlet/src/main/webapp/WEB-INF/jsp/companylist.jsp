@@ -65,24 +65,33 @@
 					</tr>
 				</thead>
 				<tbody>
-					<c:forEach items="${allCompanies}" var="company">
-						<tr onclick="window.location.href='${createURL}&companyID=${company.id}'">
-							<td>${company.name} </td>
-							<td>${company.regNumber}</td>
-							<td>${company.addRegistered}</td>
-							<td><fmt:formatDate pattern="dd-MM-yyyy" value="${company.dateestablished}" /></td>
-							<td>${company.website}</td>
-							<td>${company.telnumber}</td>
-							<td>${company.activestatus}</td>							
-							<%-- <td>
-								<button class="btn deleteButton" data-title="Delete" type="button"
-									tradeId="${trade.id}">
-									<i class="fa fa-trash fa-2"></i>
-								</button>
-							</td> --%>
-
-						</tr>
-					</c:forEach>
+					<c:choose>
+						<c:when test="${fn:length(allCompanies) gt 0}">
+							<c:forEach items="${allCompanies}" var="company">
+								<tr onclick="window.location.href='${createURL}&companyID=${company.id}'">
+									<td>${company.name} </td>
+									<td>${company.regNumber}</td>
+									<td>${company.addRegistered}</td>
+									<td><fmt:formatDate pattern="dd-MM-yyyy" value="${company.dateestablished}" /></td>
+									<td>${company.website}</td>
+									<td>${company.telnumber}</td>
+									<td>${company.activestatus}</td>							
+									<%-- <td>
+										<button class="btn deleteButton" data-title="Delete" type="button"
+											tradeId="${trade.id}">
+											<i class="fa fa-trash fa-2"></i>
+										</button>
+									</td> --%>
+		
+								</tr>
+							</c:forEach>
+						 </c:when>
+						 <c:otherwise>
+							<tr>
+								<td colspan="7" align="center">No Record Found!</td>
+							</tr>
+						</c:otherwise>
+				</c:choose>
 				</tbody>
 			</table>
 		</div>
@@ -96,9 +105,9 @@
 					Add Company</a>
 			</div>
 				<div class="span6" >
-					<div class="span5" >
+					<div class="span4" >
 					</div>
-					<div class="span7" >
+					<div class="span8" >
 											<label> Show &nbsp;</label>
 											<select id="pageSize" class="paginationselect" name="pageSize">
 												<option value="5">5</option>
