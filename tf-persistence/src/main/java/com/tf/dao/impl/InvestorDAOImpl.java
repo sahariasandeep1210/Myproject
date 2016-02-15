@@ -11,6 +11,8 @@ import org.hibernate.FetchMode;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.CriteriaSpecification;
+import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +22,7 @@ import com.tf.dao.UserDAO;
 import com.tf.model.Allotment;
 import com.tf.model.Investor;
 import com.tf.model.InvestorPortfolio;
+import com.tf.model.SCFTrade;
 import com.tf.persistance.util.DashboardModel;
 import com.tf.persistance.util.InvestorDTO;
 import com.tf.persistance.util.InvestorProtfolioDTO;
@@ -90,17 +93,17 @@ public class InvestorDAOImpl extends BaseDAOImpl<InvestorPortfolio, Long>   impl
 		
 	}
 	public Long getInvestorIDByCompanyId(long companyId) {
-		Long investorID=null;
 		try {
-			if(companyId!=0){
+			
 				
-				investorID = (Long) sessionFactory.getCurrentSession().createQuery("select investor.investorId from Investor investor where investor.company.id = :id").setLong("id",companyId).uniqueResult();
+			Long	investorID = (Long) sessionFactory.getCurrentSession().createQuery("select investor.investorId from Investor investor where investor.company.id = :id").setLong("id",companyId).uniqueResult();
+
 				if (investorID == null) {
 					_log.debug("get successful, no instance found");
 				} else {
 					_log.debug("get successful, instance found");
 				}
-			}
+			
 			return investorID;
 		} catch (RuntimeException re) {
 			_log.error("get failed", re);

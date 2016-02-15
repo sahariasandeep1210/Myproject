@@ -1,28 +1,30 @@
-<%@include file="init.jsp"%>
-<%@include file="tabview.jsp"%>
 
-<portlet:actionURL var="saveInvestorBalance">
-	<portlet:param name="action" value="saveInvestorBalance" />
+<%@include file="init.jsp"%>
+ <%@include file="tabview.jsp"%> 
+
+
+
+<portlet:actionURL var="addInvtranscationURL">
+	<portlet:param name="action" value="addInvtranscation"/>
 </portlet:actionURL>
 
 <portlet:renderURL var="cashReportURL">
     <portlet:param name="render" value="cashReport" />
 </portlet:renderURL>
 
- <div class="container-fluid">
+<div class="container-fluid">
  <form:form method="post" commandName="investorBalanceModel"
-		class="form-horizontal" name="investorBalanceForm" id="investorBalance">
-              <input type="hidden" value="${saveInvestorBalance}" id="saveInvestorBalanceURL" />
+		class="form-horizontal" name="investorBalanceForm" id="investorBalanceForm" action="${addInvtranscationURL}">
 		      <input type="hidden" value="${investorBalanceModel.id}" name="id" />
 		      
 		      
 		<div class="row-fluid">
           <div class="span6">
               <label class="span6">Investor Name :</label>
-			<select id="investorName " name="investorName"  placeholder="investorName">
+			<select id="investorName " name="investorName"  >
 				<option value="">---Select---</option>
 			<c:forEach var="company" items="${companies}">
-			     <option value="${company.id}"<c:if test="${ company.id eq investorName}">selected="selected" </c:if>>${company.name}</option>
+			     <option value="${company.id}">${company.name}</option>
 			</c:forEach>
 			</select>
            </div>
@@ -52,7 +54,7 @@
 		<div class="row-fluid">
           <div class="span6">
               <label class="span6">Action :</label>
-			<select id="action " name="action"  placeholder="action">
+			<select id="transcationType " name="transcationType" >
 				<option value="">---Select---</option>
 					<option value="0" >Deposit </option>
 					<option value="1" >Withdrawl </option>
@@ -65,8 +67,7 @@
 				<label class="span6">Transaction Amount :</label>
 					<form:input path="amount" cssClass="span9" id="transactionAmount"/>
 				
-<!-- 				<input type="text" value="" name="amount" id="transactionAmount" class="span6">
- -->				
+				
 			</div>
 		</div>
 		 <div class="row-fluid">
@@ -74,9 +75,7 @@
 				<label class="span6">Date:</label>
 				<form:input path="transcationDate" cssClass="span9" id="balanceDate"/>
 				
-<!-- 				<input type="text" name="transcationDate"   class="span6"/>
- -->
-			</div>
+	</div>
 			</div> 
 		<div class="row-fluid">
 			<div class="span6" id="buttons">
@@ -98,6 +97,15 @@
 						
 					</tr>
 				</thead>
+				<tbody>
+					<c:forEach items="${investorTransactions}" var="investorTransaction">
+						<tr>
+							
+							<td>${investorTransaction.amount}</td>
+							<td>${investorTransaction.transcationDate}</td>
+						</tr>
+					</c:forEach>
+				</tbody>
 				</table>
 	</div>
 		</form:form>
