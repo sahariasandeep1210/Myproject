@@ -89,6 +89,25 @@ public class InvestorDAOImpl extends BaseDAOImpl<InvestorPortfolio, Long>   impl
 		}
 		
 	}
+	public Long getInvestorIDByCompanyId(long companyId) {
+		Long investorID=null;
+		try {
+			if(companyId!=0){
+				
+				investorID = (Long) sessionFactory.getCurrentSession().createQuery("select investor.investorId from Investor investor where investor.company.id = :id").setLong("id",companyId).uniqueResult();
+				if (investorID == null) {
+					_log.debug("get successful, no instance found");
+				} else {
+					_log.debug("get successful, instance found");
+				}
+			}
+			return investorID;
+		} catch (RuntimeException re) {
+			_log.error("get failed", re);
+			throw re;
+		}
+		
+	}
 
 
 	public DashboardModel  getDashBoardInformation() {

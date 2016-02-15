@@ -138,4 +138,7 @@ public class InvestorServiceImpl implements InvestorService {
 	public Map<String,BigDecimal>  getProtfolioTotals(){
 		return investorDAO.getProtfolioTotals();	
 	}
+	public Long getInvestorIDByCompanyId(long companyId) {
+		return investorDAO.getInvestorIDByCompanyId(companyId);
+	}
 }

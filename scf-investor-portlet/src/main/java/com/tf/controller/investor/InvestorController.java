@@ -59,9 +59,10 @@ public class InvestorController {
 	protected Log _log = LogFactoryUtil.getLog(InvestorController.class);
 	private static final int MINDISCOUNT=400;
 	private static final int MAXDISCOUNT=600;
-	private  final static String ACTIVETAB			 		="activetab";	
 	private static final String Investor_Protfolios 		= "allinvestorprotfolios";
 	private static final String Investor_Balance 			= "investorbalance";
+	private  final static String ACTIVETAB			 		="activetab";	
+
 
 
 	
@@ -110,8 +111,11 @@ public class InvestorController {
 												 ModelMap model,
 												 ActionRequest request,
 												 ActionResponse response) throws Exception {
+		long companyId=ParamUtil.getLong(request, "investorName");
+		long investorId=investorService.getInvestorIDByCompanyId(companyId);
+		investorBalanceModel.setInvestorID(investorId);
 		investorTransactionService.saveInvestorBalance(investorBalanceModel);
-		response.setRenderParameter("render", "investorbalance");
+		response.setRenderParameter("render", "investorbalanceList");
 		
 	}
 	

@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC
+    "-//Hibernate/Hibernate Configuration DTD//EN"
+    "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+
+
+<hibernate-configuration>
+	<session-factory>
+		<mapping class="com.tf.model.Company" />
+		<mapping class="com.tf.model.User" />
+		<mapping class="com.tf.model.CompanyType" />
+		<mapping class="com.tf.model.PurchaseOrderModel" />
+		<mapping class="com.tf.model.PODocument" />
+		<mapping class="com.tf.model.Trade" />
+		<mapping class="com.tf.model.Invoice" />
+		<mapping class="com.tf.model.InvoiceDocument" /> 
+		<mapping class="com.tf.model.SCFTrade" />  
+		<mapping class="com.tf.model.InvoiceCompany" />  
+		<mapping class="com.tf.model.Address" />  
+		<mapping class="com.tf.model.Officer" /> 
+		<mapping class="com.tf.model.OfficerAddress" /> 
+		<mapping class="com.tf.model.Investor" />
+		<mapping class="com.tf.model.InvestorPortfolio" /> 
+		<mapping class="com.tf.model.Allotment" /> 
+		<mapping class="com.tf.model.InvestorPortfolioHistory" /> 
+		<mapping class="com.tf.model.SellerSetting" /> 
+		<mapping class="com.tf.model.TradeAudit" />  
+		<mapping class="com.tf.model.GeneralSetting" />
+		<mapping class="com.tf.model.InvestorTransaction" />
+	</session-factory>
+
+</hibernate-configuration>

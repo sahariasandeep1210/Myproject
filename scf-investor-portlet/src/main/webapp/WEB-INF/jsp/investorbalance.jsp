@@ -4,12 +4,10 @@
 <portlet:actionURL var="saveInvestorBalance">
 	<portlet:param name="action" value="saveInvestorBalance" />
 </portlet:actionURL>
-<%-- <portlet:resourceURL var="balanceURL"></portlet:resourceURL>
- --%><div class="container-fluid">
+ <div class="container-fluid">
  <form:form method="post" commandName="investorBalanceModel"
 		class="form-horizontal" name="investorBalanceForm" id="investorBalance">
-<%-- 		      <input type="hidden" id="balanceURL" name="balanceURL" value="${balanceURL}"/>
- --%>		      <input type="hidden" value="${saveInvestorBalance}" id="saveInvestorBalanceURL" />
+              <input type="hidden" value="${saveInvestorBalance}" id="saveInvestorBalanceURL" />
 		      <input type="hidden" value="${investorBalanceModel.id}" name="id" />
 		      
 		      
@@ -19,7 +17,7 @@
 			<select id="investorName " name="investorName"  placeholder="investorName">
 				<option value="">---Select---</option>
 			<c:forEach var="company" items="${companies}">
-			     <option value="${company.id}">${company.name}</option>
+			     <option value="${company.id}"<c:if test="${ company.id eq investorName}">selected="selected" </c:if>>${company.name}</option>
 			</c:forEach>
 			</select>
            </div>
