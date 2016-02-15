@@ -379,29 +379,35 @@ public class CompanyController extends BaseController {
 				.preparePaginationModel(request);
 		if (getPermissionChecker(request).isOmniadmin()
 				|| request.isUserInRole(Constants.WHITEHALL_ADMIN)) {
+			_log.info("User is Omni Admin");
 			companyList = companyService.getCompaniesByStatus(
 					CompanyStatus.DELETED.getValue(),
 					paginationModel.getStartIndex(),
 					paginationModel.getPageSize());
+			_log.info("Comany List:::"+companyList);
 			noOfRecords = companyService
 					.getCompaniesCount(CompanyStatus.DELETED.getValue());
+			_log.info("noOfRecords:::"+noOfRecords);
 
 		} else if (request.isUserInRole(Constants.SCF_ADMIN)) {
+			_log.info("User is SCF Admin");
 			long companyId = userService.getCompanyIDbyUserID(themeDisplay
 					.getUserId());
 			Company cmpObject = companyService.findById(companyId);
 			companyList.add(cmpObject);
 			noOfRecords = 1l;
 		} else {
+			_log.info("User is Seler Admin");
 			long companyId = userService.getCompanyIDbyUserID(themeDisplay
 					.getUserId());
 			Company cmpObject = companyService.findById(companyId);
 			companyList.add(cmpObject);
 			noOfRecords = 1l;
 		}
-		System.out.println("Paginationss:" + paginationModel);
+		System.out.println("Paginations:" + paginationModel);
 
 		paginationUtil.setPaginationInfo(noOfRecords, paginationModel);
+		_log.info("PaginationModel:::"+paginationModel);
 		model.put("paginationModel", paginationModel);
 		return companyList;
 	}

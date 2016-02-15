@@ -5,6 +5,7 @@
 <%
 String regPortletId="tfregistrationportlet_WAR_tfregistrationportlet";
 long regPortletPlid= PortalUtil.getPlidFromPortletId(themeDisplay.getScopeGroupId(),false, regPortletId);
+
 %>
 
 <liferay-portlet:renderURL portletName="tfregistrationportlet_WAR_tfregistrationportlet"   var="createCompanyURL" plid="<%=regPortletPlid%>"   windowState="<%=WindowState.NORMAL.toString()%>">

@@ -49,7 +49,7 @@ public class CompanyDAOImpl  extends BaseDAOImpl<Company, Long>   implements Com
 		try {
 			
 			Long resultCount = (Long) sessionFactory.getCurrentSession().createCriteria(Company.class).add(Restrictions.ne("activestatus", status)).setProjection(Projections.rowCount()).uniqueResult();
-			_log.debug("Companies Count "	+ resultCount);
+			_log.info("Companies Count:: "	+ resultCount);
 			return resultCount;
 		} catch (RuntimeException re) {
 			_log.error("Companies Count failed", re);

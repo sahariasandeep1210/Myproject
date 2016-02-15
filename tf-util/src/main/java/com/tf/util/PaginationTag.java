@@ -5,6 +5,8 @@ import java.io.IOException;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.SimpleTagSupport;
 
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.tf.util.model.PaginationModel;
  
 /**
@@ -12,6 +14,9 @@ import com.tf.util.model.PaginationModel;
  *
  */
 public class PaginationTag extends SimpleTagSupport {
+	
+	
+	protected Log _log = LogFactoryUtil.getLog(PaginationTag.class.getName());
  
 	private static final String BLANK 	 = "";
 	private static final String DISABLED = "disabled";
@@ -50,12 +55,15 @@ public class PaginationTag extends SimpleTagSupport {
     @Override
     public void doTag() throws JspException, IOException {
         System.out.println("pageNumber is:" + pageNumber);
+       
         System.out.println("totalPage is:" + totalPage);
+        _log.info("pageNumber is:" + pageNumber);
+        _log.info("totalPage is:" + totalPage);
         try {
         	        	
         	getJspContext().getOut().write("<div class=\"pagination pagination-centered\">");
         		getJspContext().getOut().write("<ul>");
-			        	if (totalPage != 1){
+			        	if (totalPage > 1){
 			        		if(paginationModel.isFirstPage()){
 			        			getJspContext().getOut().write("<li class=\"disabled\" ><a class=\"disabled\" href=\"javascript:void(0);\">«</a></li>");
 			        		}else{
