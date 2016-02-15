@@ -246,6 +246,9 @@ $("#toDate").datepicker({
       $("#updatebalance").click(function (){
   		document.forms["investorBalanceForm"].submit();
   	});
+      $("#cancelSetting").click(function (){
+    		document.forms["investorBalanceForm"].reset();
+    	});
       
       
       

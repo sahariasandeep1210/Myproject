@@ -200,16 +200,31 @@ public class InvestorController {
 												 ModelMap model,
 												 ActionRequest request,
 												 ActionResponse response) throws Exception {
-		List<Investor> investors = new ArrayList<Investor>();
 
 		long companyId=ParamUtil.getLong(request, "investorName");
-		System.out.println("companyIdsss1:"+companyId);
-		
-	    Long investor= investorService.getInvestorIDByCompanyId(companyId);
-		System.out.println("DDDDDD"+investor);
-		investorBalanceModel.setInvestorID(investor);
-	   investorTransactionService.saveInvestorBalance(investorBalanceModel);
-		response.setRenderParameter("render", "investorbalance");
+		if(companyId!=0){
+
+		Long investor= investorService.getInvestorIDByCompanyId(companyId);
+		InvestorTransaction investorTransaction=investorTransactionService.getInvestorTransaction( Long.valueOf(investor));
+		System.out.println("DDDD:"+investorTransaction);
+
+		if(investorTransaction ==null){
+         investorTransaction = new InvestorTransaction();
+         
+		investorTransaction.setInvestorID(investor);
+		investorTransaction.setAmount(investorBalanceModel.getAmount());
+		investorTransaction.setTranscationType(investorBalanceModel.getTranscationType());
+		investorTransaction.setTranscationDate(investorBalanceModel.getTranscationDate());
+	    investorTransactionService.saveInvestorBalance(investorTransaction);
+		   }
+		else{
+			investorTransaction.setAmount(investorBalanceModel.getAmount());
+			investorTransaction.setTranscationType(investorBalanceModel.getTranscationType());
+			investorTransaction.setTranscationDate(investorBalanceModel.getTranscationDate());
+			investorTransactionService.saveInvestorBalance(investorTransaction);
+		 }
+		}
+		response.setRenderParameter("render", "investorbalanceList");
 		
 	}
 	

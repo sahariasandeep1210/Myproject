@@ -4,10 +4,12 @@ import com.tf.dao.InvestorTransactionDAO;
 import com.tf.dao.impl.BaseDAOImpl;
 import com.tf.model.GeneralSetting;
 import com.tf.model.InvestorTransaction;
+import com.tf.model.SellerSetting;
 
 import java.util.List;
 
 import org.hibernate.Session;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,12 +31,12 @@ public class InvestorTransactionDAOImpl extends BaseDAOImpl<InvestorTransaction,
 			throw re;
 		}
 }
-	public void saveInvestorBalance(InvestorTransaction investorBalanceModel) {
+	public void saveInvestorBalance(InvestorTransaction investorTransaction) {
 		_log.debug("persisting InvestorBalance instance");
 		try{
 		Session session=sessionFactory.getCurrentSession();
-		session.saveOrUpdate(investorBalanceModel);
-		_log.debug("persist successful"+investorBalanceModel);
+		session.saveOrUpdate(investorTransaction);
+		_log.debug("persist successful"+investorTransaction);
 
 		}catch(RuntimeException re) {
 			_log.error("persist failed", re);
@@ -42,6 +44,16 @@ public class InvestorTransactionDAOImpl extends BaseDAOImpl<InvestorTransaction,
 			
 		}
 
+	}
+	public InvestorTransaction getInvestorTransaction(long investorId) {
+		_log.debug("Inside getInvestorTransaction ");
+		try {			
+			InvestorTransaction investorTransaction = (InvestorTransaction) sessionFactory.getCurrentSession().createCriteria(InvestorTransaction.class).add(Restrictions.eq("investorID", investorId)).uniqueResult();		
+			return investorTransaction;
+		} catch (RuntimeException re) {
+			_log.error("getInvestorTransaction failed", re);
+			throw re;
+		}
 	}
 	
 }

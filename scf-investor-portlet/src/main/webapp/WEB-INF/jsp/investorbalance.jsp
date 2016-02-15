@@ -1,4 +1,5 @@
 
+<%@page import="com.tf.persistance.util.TranscationStatus"%>
 <%@include file="init.jsp"%>
  <%@include file="tabview.jsp"%> 
 
@@ -56,8 +57,8 @@
               <label class="span6">Action :</label>
 			<select id="transcationType " name="transcationType" >
 				<option value="">---Select---</option>
-					<option value="0" >Deposit </option>
-					<option value="1" >Withdrawl </option>
+					<option value="<%=TranscationStatus.DEPOSIT.getValue() %>" >Deposit </option>
+					<option value="<%=TranscationStatus.WITHDRAWAL.getValue()%>" >Withdrawl </option>
 					
 			</select>
            </div>
@@ -101,8 +102,13 @@
 					<c:forEach items="${investorTransactions}" var="investorTransaction">
 						<tr>
 							
+							<td></td>
+							<td></td>
+							<td></td>
+							<td>${investorTransaction.transcationType}</td>
 							<td>${investorTransaction.amount}</td>
-							<td>${investorTransaction.transcationDate}</td>
+							<td><fmt:formatDate pattern="dd-MM-yyyy" value="${investorTransaction.transcationDate}" /></td>
+							
 						</tr>
 					</c:forEach>
 				</tbody>

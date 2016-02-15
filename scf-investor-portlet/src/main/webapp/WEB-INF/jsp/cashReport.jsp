@@ -1,3 +1,5 @@
+<%@page import="com.tf.persistance.util.TranscationStatus"%>
+<%@page import="org.springframework.transaction.TransactionStatus"%>
 <%@include file="init.jsp"%>
 
 
@@ -45,9 +47,12 @@
               <label class="span6">Select Transaction Type :</label>
 			<select id="transaction " name="transaction">
 				<option value="">---Select---</option>
-					<option value="0" >Deposit </option>
-					<option value="1" >Withdrawl </option>
-					
+					<option value="<%=TranscationStatus.DEPOSIT.getValue()%>" >Deposit</option>
+					<option value="<%=TranscationStatus.WITHDRAWAL.getValue()%>" >WithDrawal</option>
+					<option value="<%=TranscationStatus.INVESTMENT.getValue()%>" >Investment</option>
+					<option value="<%=TranscationStatus.REPAYMENT.getValue()%>" >Repayment</option>
+					<option value="<%=TranscationStatus.PROFIT.getValue()%>" >Profit</option>
+					<option value="<%=TranscationStatus.WHITEHALL_FEE.getValue()%>" >WhiteHallFee</option>					
 			</select>
            </div>
        </div>
@@ -78,4 +83,8 @@
 				</table>
 	</div>
 	</form:form>
+</div>
+
+<div class="back-actions">
+    <a href="/group/guest/portfolio" class="btn btn-primary btn-lg">Back</a>
 </div>

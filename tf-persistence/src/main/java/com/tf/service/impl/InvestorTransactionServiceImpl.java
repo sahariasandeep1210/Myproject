@@ -15,10 +15,13 @@ public class InvestorTransactionServiceImpl implements InvestorTransactionServic
 	@Autowired
 	private InvestorTransactionDAO investorTransactionDAO; 
 
-	public void saveInvestorBalance(InvestorTransaction investorBalanceModel){
-		 investorTransactionDAO.saveInvestorBalance(investorBalanceModel);
+	public void saveInvestorBalance(InvestorTransaction investorTransaction){
+		 investorTransactionDAO.saveInvestorBalance(investorTransaction);
 	}
 	public List<InvestorTransaction> getInvestorTransactions() {
 		return investorTransactionDAO.getInvestorTransactions();
+	}
+	public InvestorTransaction getInvestorTransaction(long investorId){
+		return investorTransactionDAO.getInvestorTransaction(investorId);
 	}
 }
