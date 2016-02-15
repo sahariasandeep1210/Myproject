@@ -27,15 +27,12 @@ import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.security.permission.PermissionChecker;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.tf.controller.investor.util.InvestorDTO;
 import com.tf.model.Company;
-import com.tf.model.GeneralSetting;
-import com.tf.model.Investor;
 import com.tf.model.InvestorPortfolio;
 import com.tf.model.InvestorPortfolioHistory;
 import com.tf.model.InvestorTransaction;
@@ -59,10 +56,9 @@ public class InvestorController {
 	protected Log _log = LogFactoryUtil.getLog(InvestorController.class);
 	private static final int MINDISCOUNT=400;
 	private static final int MAXDISCOUNT=600;
+	private  final static String ACTIVETAB			 		="activetab";	
 	private static final String Investor_Protfolios 		= "allinvestorprotfolios";
 	private static final String Investor_Balance 			= "investorbalance";
-	private  final static String ACTIVETAB			 		="activetab";	
-
 
 
 	
@@ -106,18 +102,7 @@ public class InvestorController {
 	    return new ModelAndView(Investor_Balance, model);		
 	}
 	
-	@ActionMapping(params="action=saveInvestorBalance")
-	protected void saveInvestorBalance(@ModelAttribute("investorBalanceModel")InvestorTransaction  investorBalanceModel,
-												 ModelMap model,
-												 ActionRequest request,
-												 ActionResponse response) throws Exception {
-		long companyId=ParamUtil.getLong(request, "investorName");
-		long investorId=investorService.getInvestorIDByCompanyId(companyId);
-		investorBalanceModel.setInvestorID(investorId);
-		investorTransactionService.saveInvestorBalance(investorBalanceModel);
-		response.setRenderParameter("render", "investorbalanceList");
-		
-	}
+	
 	
 	@RenderMapping
 	protected ModelAndView renderInvestorInfo(@ModelAttribute("investorDTO")InvestorDTO  investorDTO,ModelMap model,RenderRequest request, RenderResponse response) throws Exception {		
@@ -195,6 +180,16 @@ public class InvestorController {
 		investorService.addInvestorPortfolios(investorDTO.getInvestorModel(), investorID);	
 		
 	}	
+	
+	@ActionMapping(params="action=addInvtranscation")
+	protected void addInvestorBalance(@ModelAttribute("investorBalanceModel")InvestorTransaction  investorBalanceModel,
+												 ModelMap model,
+												 ActionRequest request,
+												 ActionResponse response) throws Exception {
+		investorTransactionService.saveInvestorBalance(investorBalanceModel);
+		response.setRenderParameter("render", "investorbalance");
+		
+	}
 	
 	@ActionMapping(params="action=editProtfolio")
 	protected void add(ModelMap model, 

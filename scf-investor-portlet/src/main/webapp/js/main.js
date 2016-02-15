@@ -219,8 +219,6 @@ $(document).ready(function() {
       });
     
       $("#updatebalance").click(function (){
-  		var updateURL=$("#saveInvestorBalanceURL").val();
-  		document.forms["investorBalanceForm"].action = updateURL;
   		document.forms["investorBalanceForm"].submit();
   	});
       
