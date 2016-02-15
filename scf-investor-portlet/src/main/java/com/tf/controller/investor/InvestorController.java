@@ -133,6 +133,13 @@ public class InvestorController {
 	}
 	
 
+	@RenderMapping(params="render=cashReport")
+	protected ModelAndView renderSingleTrade(ModelMap model,
+			RenderRequest request, RenderResponse response){
+		
+		return new ModelAndView("cashReport",model);
+	}
+	
 	private String prepareInvestorProtfolioInformation(RenderRequest request,InvestorDTO investorDTO,
 			ModelMap model, ThemeDisplay themeDisplay, long investorId,
 			List<InvestorPortfolio> investorPortfolioList) {

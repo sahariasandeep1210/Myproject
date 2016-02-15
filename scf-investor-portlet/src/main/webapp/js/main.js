@@ -138,6 +138,31 @@ $(document).ready(function() {
   	
   	 
   });
+
+$("#fromDate").datepicker({
+		changeMonth : true,
+		changeYear : true,
+		showOn : "button",
+		maxDate : '0',
+		buttonImage : "/tf-theme/images/calendar.jpg",
+		buttonImageOnly : true,
+		buttonText : "Select date"
+	});
+	
+	 
+
+$("#toDate").datepicker({
+		changeMonth : true,
+		changeYear : true,
+		showOn : "button",
+		maxDate : '0',
+		buttonImage : "/tf-theme/images/calendar.jpg",
+		buttonImageOnly : true,
+		buttonText : "Select date"
+	});
+	
+	 
+
       
       $('#investorModel').on('click', '#editCancel', function() {
     	    $("#errorMsg").hide(); 

@@ -4,6 +4,11 @@
 <portlet:actionURL var="saveInvestorBalance">
 	<portlet:param name="action" value="saveInvestorBalance" />
 </portlet:actionURL>
+
+<portlet:renderURL var="cashReportURL">
+    <portlet:param name="render" value="cashReport" />
+</portlet:renderURL>
+
  <div class="container-fluid">
  <form:form method="post" commandName="investorBalanceModel"
 		class="form-horizontal" name="investorBalanceForm" id="investorBalance">
@@ -27,6 +32,11 @@
 			<div class="span6">
 				<label class="span6">Cash Position:</label>
 				   
+	         </div>
+	         
+	         <div class="span6">
+	             <a href="javascript:void(0);" onclick="window.location.href='${cashReportURL}&investorID='">Cash Report</a>
+	         
 	         </div>
 		</div>
 		<div class="row-fluid">
