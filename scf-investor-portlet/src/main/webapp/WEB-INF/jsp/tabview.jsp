@@ -15,7 +15,7 @@
 <ul class="nav nav-tabs">
 	
 <li class="tab" id="investorProtfoliosList"><a href="${investorProtfoliosURL}">Investor Protfolios </a></li>
-<li class="tab" id="investorbalanceList"><a
+<li class="tab" id="invbalList"><a
 			href="${investorbalanceURL}">Investor Balance Sheet</a></li>
 			
 </ul>

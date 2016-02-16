@@ -8,7 +8,13 @@
 <form:form method="post" commandName="cashReportModel"
 		class="form-horizontal" name="cashReportForm" id="cashReport">      
 		
-       
+       		<div class="row-fluid">
+       		 <div class="span6">
+				<label class="span6">Investor Name:</label>
+				   ${companyname.name} 
+	          </div>
+	         
+       </div>
 		<div class="row-fluid">
 			<div class="span6">
 				<label class="span6">Cash Position:</label>
@@ -32,11 +38,11 @@
 	  <div class="row-fluid">
 	         <div class="span6">
                 <label class="span6">Select Date Range :</label>
-               From:<br><input name="fromDate" class="span9" id="fromDate"/>
+              <input name="fromDate" class="span9" id="fromDate" placeholder="From"/>
              </div>
 		<div class="span6">
                 
-               To:<br><input name="toDate" Class="span9" id="toDate"/>
+              <input name="toDate" Class="span9" id="toDate" placeholder="To"/>
                 
 	     </div>
 	  </div>

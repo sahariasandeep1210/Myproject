@@ -43,6 +43,8 @@ import com.tf.service.InvestorHistoryService;
 import com.tf.service.InvestorService;
 import com.tf.service.InvestorTransactionService;
 import com.tf.service.UserService;
+import com.tf.util.PaginationUtil;
+import com.tf.util.model.PaginationModel;
 
 /**
  * This controller is responsible for request/response handling on
@@ -62,7 +64,8 @@ public class InvestorController {
 	private static final String Investor_Protfolios 		= "allinvestorprotfolios";
 	private static final String Investor_Balance 			= "investorbalance";
 
-
+	@Autowired
+	protected PaginationUtil paginationUtil;
 	
 	@Autowired
 	protected  UserService userService; 
@@ -102,7 +105,6 @@ public class InvestorController {
 
 		companies=companyService.getcompanies();
 		investorTransactions=investorTransactionService.getInvestorTransactions();
-		System.out.println("DD:"+investorTransactions);
 		model.put("investorTransactions",investorTransactions );
 	    model.put("companies", companies);
 		model.put(ACTIVETAB, Investor_Balance);
@@ -128,7 +130,9 @@ public class InvestorController {
 	@RenderMapping(params="render=cashReport")
 	protected ModelAndView renderSingleTrade(ModelMap model,
 			RenderRequest request, RenderResponse response){
-		
+	    Long companyId = ParamUtil.getLong(request, "investorID"); 
+		Company company=companyService.findById(companyId);
+        model.put("companyname", company);
 		return new ModelAndView("cashReport",model);
 	}
 	
@@ -224,8 +228,30 @@ public class InvestorController {
 			investorTransactionService.saveInvestorBalance(investorTransaction);
 		 }
 		}
-		response.setRenderParameter("render", "investorbalanceList");
+        response.setRenderParameter("render", "investorBalance");
 		
+	}
+	@ActionMapping(params="getBy=getInvestorDetails")
+	protected void getInvestorDetails(ModelMap model , ActionRequest request,ActionResponse response){
+		List<InvestorTransaction> investorList = new ArrayList<InvestorTransaction>();
+        
+		Long investorId=null;
+		long companyId=ParamUtil.getLong(request, "investorName");
+		if(companyId > 0){
+			investorId= investorService.getInvestorIDByCompanyId(companyId);
+			InvestorTransaction investorTransaction=investorTransactionService.getInvestorTransaction( Long.valueOf(investorId));
+			model.put("investorTransaction", investorTransaction);
+			Long noOfRecords=0l;
+	        PaginationModel paginationModel = paginationUtil.preparePaginationModel(request);
+	        investorList=investorTransactionService.getInvestors(investorId, paginationModel.getStartIndex(), paginationModel.getPageSize());
+	 		noOfRecords=investorTransactionService.getInvestorsCount(investorId);
+	        paginationUtil.setPaginationInfo(noOfRecords,paginationModel);
+			model.put("paginationModel", paginationModel);
+			model.put("investorList", investorList);
+		}
+		model.put("investorName", companyId);
+		
+        response.setRenderParameter("render", "investorBalance");
 	}
 	
 	@ActionMapping(params="action=editProtfolio")
@@ -327,7 +353,6 @@ public class InvestorController {
 		PermissionChecker permissionChecker = themeDisplay.getPermissionChecker();
 		return permissionChecker;	
 	}
-	
-	
+
 	
 }

@@ -244,7 +244,9 @@ $("#toDate").datepicker({
       });
     
       $("#updatebalance").click(function (){
-  		document.forms["investorBalanceForm"].submit();
+  		var updateURL=$("#getInvBalanceDetails").val();
+		document.forms["investorBalanceForm"].action = updateURL;
+        document.forms["investorBalanceForm"].submit();
   	});
       $("#cancelSetting").click(function (){
     		document.forms["investorBalanceForm"].reset();
@@ -362,7 +364,7 @@ function enableTab(){
 	if(curentTab=='allinvestorprotfolios'){
 		$("#investorProtfoliosList").addClass("active");
 	}else if(curentTab=='investorbalance'){
-		$("#investorbalanceList").addClass("active");
+		$("#invbalList").addClass("active");
 	}
 	else{
 		$("#investorProtfoliosList").addClass("active");
@@ -464,6 +466,14 @@ function ajaxindicatorstop()
     $('#resultLoading').fadeOut(300);
     $('body').css('cursor', 'default');
 }
+
+function setPage(pageNumber){
+	$("#currentPage").val(pageNumber);
+	var actionUrl=$("#defaultURL").val();
+	document.forms["sellerList"].action = actionUrl;
+	document.forms["sellerList"].submit();	
+}
+
 $("#investorName").change(function() {
 	var balanceURL=$("#balanceURL").val();
 	var balanceSel=$(this).val();

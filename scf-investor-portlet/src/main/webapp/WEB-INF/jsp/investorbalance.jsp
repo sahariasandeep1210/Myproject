@@ -1,3 +1,4 @@
+<%@ taglib uri="http://whitehall.com/jsp/tld/p" prefix="p"%>
 
 <%@page import="com.tf.persistance.util.TranscationStatus"%>
 <%@include file="init.jsp"%>
@@ -13,24 +14,30 @@
     <portlet:param name="render" value="cashReport" />
 </portlet:renderURL>
 
+<portlet:actionURL var="getInvestorDetailsURL">
+  <portlet:param name="getBy" value="getInvestorDetails"/>
+</portlet:actionURL>
+
 <div class="container-fluid">
  <form:form method="post" commandName="investorBalanceModel"
-		class="form-horizontal" name="investorBalanceForm" id="investorBalanceForm" action="${addInvtranscationURL}">
+		class="form-horizontal" name="investorBalanceForm" id="investorBalanceForm" action="${getInvestorDetailsURL}">
 		      <input type="hidden" value="${investorBalanceModel.id}" name="id" />
-		      
+		     <input type="hidden" value="${addInvtranscationURL}" id="getInvBalanceDetails" />
+		     <input type="hidden" name="currentPage"  id="currentPage"   value="${paginationModel.currentPage}" />
+		      <input type="hidden" name="noOfRecords"  id="noOfRecords"  value="${paginationModel.noOfRecords}" />
+		     
 		      
 		<div class="row-fluid">
           <div class="span6">
               <label class="span6">Investor Name :</label>
-			<select id="investorName " name="investorName"  >
-				<option value="">---Select---</option>
+			<select id="investorName " name="investorName"  onchange="this.form.submit()" >
+				<option value="0">---Select---</option>
 			<c:forEach var="company" items="${companies}">
-			     <option value="${company.id}">${company.name}</option>
+			     <option value="${company.id}" <c:if test="${ company.id eq investorName}">selected="selected" </c:if>>${company.name}</option>
 			</c:forEach>
 			</select>
            </div>
        </div>
-       
 		<div class="row-fluid">
 			<div class="span6">
 				<label class="span6">Cash Position:</label>
@@ -38,7 +45,7 @@
 	         </div>
 	         
 	         <div class="span6">
-	             <a href="javascript:void(0);" onclick="window.location.href='${cashReportURL}&investorID='">Cash Report</a>
+	             <a href="javascript:void(0);" onclick="window.location.href='${cashReportURL}&investorID=${investorName}'">Cash Report</a>
 	         
 	         </div>
 		</div>
@@ -85,34 +92,35 @@
 		 </div>
 	</div>
 	<br>
-	<div class="table-responsive">
+	
+ <c:if test="${not empty investorTransaction}">
+<div class="table-responsive">
 			<table class="table  tablesorter table-bordered" id="settingListTable">
 				<thead>
 					<tr>
-					    <th>Cash Position</th>
-						<th>Receivables Position</th>
-						<th>Total Asset Value</th>
+					   
+						<th>Date</th>
 						<th>Transaction Type</th>
-						<th>Transaction Amount</th>	
-						<th>Transaction Date</th>	
+						<th>TRADE ID</th>
+						<th> Amount</th>	
+						<th>Reference</th>	
 						
 					</tr>
 				</thead>
 				<tbody>
-					<c:forEach items="${investorTransactions}" var="investorTransaction">
 						<tr>
-							
-							<td></td>
-							<td></td>
-							<td></td>
-							<td>${investorTransaction.transcationType}</td>
-							<td>${investorTransaction.amount}</td>
 							<td><fmt:formatDate pattern="dd-MM-yyyy" value="${investorTransaction.transcationDate}" /></td>
-							
+							<td>${investorTransaction.transcationType}</td>
+							<td></td>
+							<td>${investorTransaction.amount}</td>
+							<td></td>
 						</tr>
-					</c:forEach>
 				</tbody>
 				</table>
+			
 	</div>
-		</form:form>
- </div>
+	 	<p:paginate  paginationModel="${paginationModel}"/>
+	
+	 </c:if>
+ </form:form>
+</div>	
