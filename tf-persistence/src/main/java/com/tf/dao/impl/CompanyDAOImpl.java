@@ -229,7 +229,7 @@ public class CompanyDAOImpl  extends BaseDAOImpl<Company, Long>   implements Com
 	}
 	@SuppressWarnings("unchecked")
 	public List<Company> getcompanies(){
-		_log.debug("Inside getInvestors  ");
+		_log.debug("Inside getcompanies  ");
 		List<Company> CompanyList=new ArrayList<Company>();
 		Company company;
 		List<Object[]> rows=new ArrayList<Object[]>();
@@ -244,7 +244,7 @@ public class CompanyDAOImpl  extends BaseDAOImpl<Company, Long>   implements Com
 		    	 company.setName(row[1].toString());
 		    	 CompanyList.add(company);
 		     }
-		_log.debug("getInvestors successful, result size: "
+		_log.debug("getcompanies successful, result size: "
 				+ CompanyList.size());
 		return CompanyList;
 	} catch (RuntimeException re) {

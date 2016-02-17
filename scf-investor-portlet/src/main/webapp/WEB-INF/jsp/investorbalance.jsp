@@ -1,4 +1,3 @@
-<%@ taglib uri="http://whitehall.com/jsp/tld/p" prefix="p"%>
 
 <%@page import="com.tf.persistance.util.TranscationStatus"%>
 <%@include file="init.jsp"%>
@@ -17,13 +16,14 @@
 <portlet:actionURL var="getInvestorDetailsURL">
   <portlet:param name="getBy" value="getInvestorDetails"/>
 </portlet:actionURL>
+<div class="alert alert-danger" id="errorMsg"><i class="icon-remove-sign icon-2"></i> </div>
 
 <div class="container-fluid">
  <form:form method="post" commandName="investorBalanceModel"
 		class="form-horizontal" name="investorBalanceForm" id="investorBalanceForm" action="${getInvestorDetailsURL}">
 		      <input type="hidden" value="${investorBalanceModel.id}" name="id" />
 		     <input type="hidden" value="${addInvtranscationURL}" id="getInvBalanceDetails" />
-		     <input type="hidden" name="currentPage"  id="currentPage"   value="${paginationModel.currentPage}" />
+ 		     <input type="hidden" name="currentPage"  id="currentPage"   value="${paginationModel.currentPage}" />
 		      <input type="hidden" name="noOfRecords"  id="noOfRecords"  value="${paginationModel.noOfRecords}" />
 		     
 		      
@@ -87,13 +87,12 @@
 			</div> 
 		<div class="row-fluid">
 			<div class="span6" id="buttons">
-				<input type="button" value="Submit" id="updatebalance" class="btn btn-primary" />
+				<input type="button" value="Submit"  data-url="${addInvtranscationURL}" id="updatebalance" class="btn btn-primary" />
 				<input type="button" value="Cancel" id="cancelSetting" class="btn btn-primary" />
 		 </div>
 	</div>
 	<br>
-	
- <c:if test="${not empty investorTransaction}">
+ <c:if test="${not empty investorTransactions}">
 <div class="table-responsive">
 			<table class="table  tablesorter table-bordered" id="settingListTable">
 				<thead>
@@ -108,6 +107,8 @@
 					</tr>
 				</thead>
 				<tbody>
+				     <c:forEach items="${investorTransactions}" var="investorTransaction">
+				    
 						<tr>
 							<td><fmt:formatDate pattern="dd-MM-yyyy" value="${investorTransaction.transcationDate}" /></td>
 							<td>${investorTransaction.transcationType}</td>
@@ -115,12 +116,13 @@
 							<td>${investorTransaction.amount}</td>
 							<td></td>
 						</tr>
+						</c:forEach>
 				</tbody>
 				</table>
 			
 	</div>
-	 	<p:paginate  paginationModel="${paginationModel}"/>
-	
+	      	<p:paginate  paginationModel="${paginationModel}"/>
+	      
 	 </c:if>
  </form:form>
 </div>	

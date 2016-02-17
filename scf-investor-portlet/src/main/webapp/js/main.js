@@ -1,9 +1,11 @@
+var errormessage="Some required information is missing or incomplete. Please correct your entries and try again.";
+
 $(document).ready(function() {
-	
 	  investorIndex = 0;
 	  $("#saveProtfolios").hide(); 
 	  $(".historyRow").hide();
 	  $("#errorMsg").hide(); 
+
 	  enableTab();
 	 // $('table').tablesorter();
 	  
@@ -243,11 +245,41 @@ $("#toDate").datepicker({
     	  
       });
     
-      $("#updatebalance").click(function (){
+ /* $("#updatebalance").click(function (){
   		var updateURL=$("#getInvBalanceDetails").val();
 		document.forms["investorBalanceForm"].action = updateURL;
         document.forms["investorBalanceForm"].submit();
-  	});
+  });*/
+  
+  /*$("#updatebalance").click(function (){
+		var updateURL=$("#getInvBalanceDetails").val();
+		document.forms["investorBalanceForm"].action = updateURL;
+      document.forms["investorBalanceForm"].submit();
+});*/
+  
+
+ $("#updatebalance").click(function() {
+
+	var error_free = true;
+	error_free = validateInvestorInfo(error_free);
+	if (error_free) {
+		var url = $(this).attr('data-url');
+		alert(url);
+		submitInvestorBalanceForm(url)
+	}
+
+});
+      
+  function submitInvestorBalanceForm(url) {
+		document.forms["investorBalanceForm"].action = url;
+		document.forms["investorBalanceForm"].submit();
+	}
+  
+  $("#cashReport").click(function (){
+		var updateURL=$("#getCashReports").val();
+		document.forms["cashReportForm"].action = updateURL;
+      document.forms["cashReportForm"].submit();
+});
       $("#cancelSetting").click(function (){
     		document.forms["investorBalanceForm"].reset();
     	});
@@ -473,6 +505,33 @@ function setPage(pageNumber){
 	document.forms["sellerList"].action = actionUrl;
 	document.forms["sellerList"].submit();	
 }
+
+
+function validateInvestorInfo(error_free) {
+	var errormess="Please Fill Required Fields and try again.";
+
+	var elements = [];
+	elements[0] = "transactionAmount";
+	elements[1] = "balanceDate";
+	$("#errorMsg").hide();
+	$("#errorMsg").html();
+	for (i = 0; i < elements.length; i++) {
+		var element = $("#" + elements[i]);
+		var eleValue = element.val();
+		if (eleValue == '' || eleValue == null || (element.is('select') && element[0].selectedIndex == 0)) {
+			element.addClass("error_show");
+			error_free = false;
+			$("#errorMsg").show();
+			$("#errorMsg").html(errormess);
+		} else {
+			element.removeClass("error_show");
+		}
+	}
+	return error_free;
+}
+
+
+
 
 $("#investorName").change(function() {
 	var balanceURL=$("#balanceURL").val();

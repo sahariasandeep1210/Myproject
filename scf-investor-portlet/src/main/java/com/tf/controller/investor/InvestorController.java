@@ -2,6 +2,8 @@ package com.tf.controller.investor;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -101,11 +103,11 @@ public class InvestorController {
 	protected ModelAndView renderinvestorbalance(@ModelAttribute("investorBalanceModel")InvestorTransaction  investorBalanceModel,ModelMap model,RenderRequest request, RenderResponse response) throws Exception {		
 		_log.info("Render InvestorController");
 		List<Company> companies = null;
-		List<InvestorTransaction> investorTransactions = null;
+		List<InvestorTransaction> investorsTransactions = null;
 
 		companies=companyService.getcompanies();
-		investorTransactions=investorTransactionService.getInvestorTransactions();
-		model.put("investorTransactions",investorTransactions );
+		investorsTransactions=investorTransactionService.getInvestorTransactions();
+		model.put("investorsTransactions",investorsTransactions );
 	    model.put("companies", companies);
 		model.put(ACTIVETAB, Investor_Balance);
 	    return new ModelAndView(Investor_Balance, model);		
@@ -130,9 +132,22 @@ public class InvestorController {
 	@RenderMapping(params="render=cashReport")
 	protected ModelAndView renderSingleTrade(ModelMap model,
 			RenderRequest request, RenderResponse response){
-	    Long companyId = ParamUtil.getLong(request, "investorID"); 
+		List<InvestorTransaction> investorList = new ArrayList<InvestorTransaction>();
+        Long companyId = ParamUtil.getLong(request, "investorID"); 
+		if(companyId > 0){
+
 		Company company=companyService.findById(companyId);
+		Long investor= investorService.getInvestorIDByCompanyId(companyId);
+		List<InvestorTransaction> investorTransactions=investorTransactionService.getInvestorTransaction( Long.valueOf(investor));
+		Long noOfRecords=0l;
+        PaginationModel paginationModel = paginationUtil.preparePaginationModel(request);
+        investorList=investorTransactionService.getInvestors(investor, paginationModel.getStartIndex(), paginationModel.getPageSize());
+ 		noOfRecords=investorTransactionService.getInvestorsCount(investor);
+        paginationUtil.setPaginationInfo(noOfRecords,paginationModel);
+		model.put("paginationModel", paginationModel);
         model.put("companyname", company);
+        model.put("investorTransactions", investorTransactions);
+		}
 		return new ModelAndView("cashReport",model);
 	}
 	
@@ -209,26 +224,25 @@ public class InvestorController {
 		if(companyId!=0){
 
 		Long investor= investorService.getInvestorIDByCompanyId(companyId);
-		InvestorTransaction investorTransaction=investorTransactionService.getInvestorTransaction( Long.valueOf(investor));
-		System.out.println("DDDD:"+investorTransaction);
+        investorBalanceModel.setInvestorID(investor);
+	    investorTransactionService.saveInvestorBalance(investorBalanceModel);
+		}
+        response.setRenderParameter("render", "investorBalance");
 
-		if(investorTransaction ==null){
-         investorTransaction = new InvestorTransaction();
+         /*investorTransaction = new InvestorTransaction();
          
 		investorTransaction.setInvestorID(investor);
 		investorTransaction.setAmount(investorBalanceModel.getAmount());
 		investorTransaction.setTranscationType(investorBalanceModel.getTranscationType());
-		investorTransaction.setTranscationDate(investorBalanceModel.getTranscationDate());
-	    investorTransactionService.saveInvestorBalance(investorTransaction);
-		   }
-		else{
+		investorTransaction.setTranscationDate(investorBalanceModel.getTranscationDate());*/
+		   
+		/*else{
 			investorTransaction.setAmount(investorBalanceModel.getAmount());
 			investorTransaction.setTranscationType(investorBalanceModel.getTranscationType());
 			investorTransaction.setTranscationDate(investorBalanceModel.getTranscationDate());
 			investorTransactionService.saveInvestorBalance(investorTransaction);
-		 }
-		}
-        response.setRenderParameter("render", "investorBalance");
+		 }*/
+		
 		
 	}
 	@ActionMapping(params="getBy=getInvestorDetails")
@@ -239,8 +253,7 @@ public class InvestorController {
 		long companyId=ParamUtil.getLong(request, "investorName");
 		if(companyId > 0){
 			investorId= investorService.getInvestorIDByCompanyId(companyId);
-			InvestorTransaction investorTransaction=investorTransactionService.getInvestorTransaction( Long.valueOf(investorId));
-			model.put("investorTransaction", investorTransaction);
+			List<InvestorTransaction> investorTransactions=investorTransactionService.getInvestorTransaction( Long.valueOf(investorId));
 			Long noOfRecords=0l;
 	        PaginationModel paginationModel = paginationUtil.preparePaginationModel(request);
 	        investorList=investorTransactionService.getInvestors(investorId, paginationModel.getStartIndex(), paginationModel.getPageSize());
@@ -248,10 +261,35 @@ public class InvestorController {
 	        paginationUtil.setPaginationInfo(noOfRecords,paginationModel);
 			model.put("paginationModel", paginationModel);
 			model.put("investorList", investorList);
+			model.put("investorTransactions", investorTransactions);
+
 		}
 		model.put("investorName", companyId);
 		
         response.setRenderParameter("render", "investorBalance");
+	}
+	
+	@ActionMapping(params="cash=getCashReport")
+	protected void getCashReport( ModelMap model,ActionRequest request,ActionResponse response) throws Exception {
+		long companyId=ParamUtil.getLong(request, "companyId");
+		Long investorId=investorService.getInvestorIDByCompanyId(companyId);
+		System.out.println("InvestorIDDD:"+investorId);
+        String transactionType=ParamUtil.getString(request, "transaction");
+        System.out.println("transactionType:"+transactionType);
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        String from=ParamUtil.getString(request, "fromDate");
+        System.out.println("from:"+from);
+        String to=ParamUtil.getString(request, "toDate");
+        System.out.println("toDate:"+to);
+        Date fromDate=df.parse(from);
+        Date toDate=df.parse(to);
+        System.out.println("fromdate:"+fromDate);
+        System.out.println("toDate:"+toDate);
+
+        List<InvestorTransaction> invList=investorTransactionService.getInvestorTransactionByTransactionType(investorId, transactionType, fromDate, toDate);
+        System.out.println("DDDDB:"+invList);
+        response.setRenderParameter("render", "cashReport");
+
 	}
 	
 	@ActionMapping(params="action=editProtfolio")

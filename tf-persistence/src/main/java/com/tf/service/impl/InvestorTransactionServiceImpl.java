@@ -4,6 +4,7 @@ import com.tf.dao.InvestorTransactionDAO;
 import com.tf.model.InvestorTransaction;
 import com.tf.service.InvestorTransactionService;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,13 +16,13 @@ public class InvestorTransactionServiceImpl implements InvestorTransactionServic
 	@Autowired
 	private InvestorTransactionDAO investorTransactionDAO; 
 
-	public void saveInvestorBalance(InvestorTransaction investorTransaction){
-		 investorTransactionDAO.saveInvestorBalance(investorTransaction);
+	public void saveInvestorBalance(InvestorTransaction investorBalanceModel){
+		 investorTransactionDAO.saveInvestorBalance(investorBalanceModel);
 	}
 	public List<InvestorTransaction> getInvestorTransactions() {
 		return investorTransactionDAO.getInvestorTransactions();
 	}
-	public InvestorTransaction getInvestorTransaction(long investorId){
+	public List<InvestorTransaction> getInvestorTransaction(long investorId){
 		return investorTransactionDAO.getInvestorTransaction(investorId);
 	}
 	public List<InvestorTransaction> getInvestors(Long investorId,int startIndex,int pageSize){
@@ -29,5 +30,8 @@ public class InvestorTransactionServiceImpl implements InvestorTransactionServic
 	}
 	public Long getInvestorsCount(Long investorId){
 		return investorTransactionDAO.getInvestorsCount(investorId);
+	}
+	public List<InvestorTransaction> getInvestorTransactionByTransactionType(long investorId,String transactionType,Date frmDate,Date toDate){
+		return investorTransactionDAO.getInvestorTransactionByTransactionType(investorId, transactionType, frmDate, toDate);
 	}
 }
