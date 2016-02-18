@@ -100,7 +100,7 @@ public class BaseController {
 	private   Map<Long, String> initialzeCompanyTypeMap() {
 		List<CompanyType> companyTypes= companyTypeService.getAllCompanyType();
 		Map<Long,String> cmpTypeMap=new LinkedHashMap<Long, String>();
-		cmpTypeMap.put(0l, "Select");
+		cmpTypeMap.put(null, "Select");
 		for(CompanyType companyType : companyTypes){
 			cmpTypeMap.put(companyType.getId(), companyType.getName());
 		}

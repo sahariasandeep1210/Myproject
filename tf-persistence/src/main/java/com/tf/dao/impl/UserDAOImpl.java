@@ -89,6 +89,7 @@ public class UserDAOImpl extends BaseDAOImpl<User, Long>  implements UserDAO{
 			}
 			return list;
 		} catch (RuntimeException re) {
+			re.printStackTrace();
 			_log.error("get failed", re);
 			throw re;
 		}

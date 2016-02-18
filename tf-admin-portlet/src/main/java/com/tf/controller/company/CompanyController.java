@@ -69,7 +69,7 @@ public class CompanyController extends BaseController {
 	protected ModelAndView renderCompanyList(
 			@ModelAttribute("companyModel") Company company, ModelMap model,
 			RenderRequest request, RenderResponse response) throws Exception {
-		_log.info("Render Company List");
+		_log.info("CompanyController :: Render Company List");
 		try {
 			List<Company> companyList = new ArrayList<Company>();
 			ThemeDisplay themeDisplay = (ThemeDisplay) request
@@ -108,6 +108,7 @@ public class CompanyController extends BaseController {
 			model.put("currentUser", themeDispay.getRealUser());
 			model.put("users", users);
 		} catch (Exception e) {
+			e.printStackTrace();
 			SessionErrors.add(request, "default-error-message");
 			_log.error("CompanyController.createCompany() - error occured while rendering add company screen"
 					+ e.getMessage());
@@ -134,7 +135,12 @@ public class CompanyController extends BaseController {
 				Company cmp = companyService.findById(company.getId());
 				company.setUsers(cmp.getUsers());
 				company.getAddress().setId(cmp.getAddress().getId());
-				company.setCompanyType(cmp.getCompanyType());
+				//company should only be updated by omni admin after registration
+				if (getPermissionChecker(request).isOmniadmin()
+						|| request.isUserInRole(Constants.WHITEHALL_ADMIN)){
+					company.setCompanyType(company.getCompanyType());
+				}
+				
 			} else {
 				company.getAddress().setCompany(company);
 				// WIP to refractor this code.

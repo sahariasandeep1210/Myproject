@@ -355,6 +355,8 @@ function validateCompanyInfo(error_free) {
 	elements[5] = "country";
 	elements[6] = "postalCode";
 	elements[7] = "telNo";
+	elements[8] = "companyType";
+	
 	$("#errorMsg").hide();
 	$("#errorMsg").html();
 	for (i = 0; i < elements.length; i++) {
@@ -380,6 +382,7 @@ function validateUserInfo(error_free){
 	elements[3] = "lastname";
 	elements[4] = "email";
 	elements[5] = "userTelNo";
+	
 	
 	$("#errorMsg").hide();
 	$("#errorMsg").html();

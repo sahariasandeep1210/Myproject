@@ -33,6 +33,7 @@ public class OfficerDAOImpl extends BaseDAOImpl<Officer, Long> implements  Offic
 			}
 			return list;
 		} catch (RuntimeException re) {
+			re.printStackTrace();
 			_log.error("get failed", re);
 			throw re;
 		}
