@@ -151,7 +151,7 @@ public class RegistrationController extends BaseController {
 		ServiceContext serviceContext = ServiceContextFactory.getInstance(
 				com.liferay.portal.model.User.class.getName(), request);
 		loginURL = registrationService.registerCompany(registration, themeDisplay, user,
-				serviceContext);
+				serviceContext,request);
 		response.sendRedirect(loginURL.toString());
 	}
 

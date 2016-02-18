@@ -337,6 +337,8 @@ function validateCompanyInfo(error_free) {
 	elements[5] = "country";
 	elements[6] = "postalCode";
 	elements[7] = "telNo";
+	elements[8] = "companyType";
+	
 	$("#errorMsg").hide();
 	$("#errorMsg").html();
 	for (i = 0; i < elements.length; i++) {

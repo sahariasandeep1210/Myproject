@@ -4,18 +4,23 @@ import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import javax.portlet.PortletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.model.Role;
 import com.liferay.portal.service.RoleLocalServiceUtil;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.service.UserServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
+import com.liferay.portal.util.PortalUtil;
 import com.tf.model.Company;
 import com.tf.model.Investor;
 import com.tf.model.User;
@@ -30,10 +35,12 @@ public class RegistrationServiceImpl implements RegistrationService {
 	
 	@Autowired
 	private CompanyService companyService;
+	
+	protected Log _log = LogFactoryUtil.getLog(RegistrationServiceImpl.class.getName());
 
 	@Transactional
 	public String registerCompany(Registration registration,
-			ThemeDisplay themeDisplay, User user, ServiceContext serviceContext)
+			ThemeDisplay themeDisplay, User user, ServiceContext serviceContext,PortletRequest request)
 			throws PortalException, SystemException {
 		StringBuilder loginURL;
 		com.liferay.portal.model.User lruser = addLiferayUser(user, serviceContext,themeDisplay);
@@ -60,6 +67,8 @@ public class RegistrationServiceImpl implements RegistrationService {
 		company=companyService.registerCompany(company);
 		loginURL = new StringBuilder("/web/guest/home");
 		loginURL.append("?registration=success");
+		PortalUtil.getHttpServletRequest(request).getSession().setAttribute("LIFERAY_SHARED_userPasswd", lruser.getPasswordUnencrypted());
+		_log.info("User Password :: "+lruser.getPasswordUnencrypted());
 		return loginURL.toString();
 	}
 	

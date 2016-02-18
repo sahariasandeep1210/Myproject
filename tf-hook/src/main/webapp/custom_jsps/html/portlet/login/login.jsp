@@ -23,9 +23,13 @@
 	String registration = PortalUtil.getOriginalServletRequest(req)
 			.getParameter("registration");
 	req.setAttribute("registration", registration);
+	String userPasswd=(String)request.getSession().getAttribute("LIFERAY_SHARED_userPasswd");
+	request.getSession().removeAttribute("LIFERAY_SHARED_userPasswd");
 %>
 <c:if test="${registration eq 'success'}">
-		<div class="alert alert-success"><i class="icon-ok icon-2"></i> Congratulations! You have successfully registered.Please check your email for login instruction.</div>
+		<div class="alert alert-success"><i class="icon-ok icon-2"></i>			
+				<%= LanguageUtil.get(pageContext, "registration.sucessful") %> <%= userPasswd %>	
+		</div>
 	</c:if>
 <c:choose>
 	<c:when test="<%= themeDisplay.isSignedIn() %>">
