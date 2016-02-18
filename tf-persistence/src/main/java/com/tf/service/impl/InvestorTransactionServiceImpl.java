@@ -25,10 +25,10 @@ public class InvestorTransactionServiceImpl implements InvestorTransactionServic
 	public List<InvestorTransaction> getInvestorTransaction(long investorId){
 		return investorTransactionDAO.getInvestorTransaction(investorId);
 	}
-	public List<InvestorTransaction> getInvestors(Long investorId,int startIndex,int pageSize){
+	public List<InvestorTransaction> getInvestors(long investorId,int startIndex,int pageSize){
 		return investorTransactionDAO.getInvestors(investorId, startIndex, pageSize);
 	}
-	public Long getInvestorsCount(Long investorId){
+	public Long getInvestorsCount(long investorId){
 		return investorTransactionDAO.getInvestorsCount(investorId);
 	}
 	public List<InvestorTransaction> getInvestorTransactionByTransactionType(long investorId,String transactionType,Date frmDate,Date toDate){

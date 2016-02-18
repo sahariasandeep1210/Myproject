@@ -1,14 +1,7 @@
 package com.tf.dao.impl;
 
 import com.tf.dao.InvestorTransactionDAO;
-import com.tf.dao.impl.BaseDAOImpl;
-import com.tf.model.Allotment;
-import com.tf.model.Company;
-import com.tf.model.GeneralSetting;
 import com.tf.model.InvestorTransaction;
-import com.tf.model.SCFTrade;
-import com.tf.model.SellerSetting;
-
 import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -18,7 +11,6 @@ import java.util.Date;
 import java.util.List;
 
 import org.hibernate.Criteria;
-import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
@@ -69,11 +61,11 @@ public class InvestorTransactionDAOImpl extends BaseDAOImpl<InvestorTransaction,
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<InvestorTransaction> getInvestors(Long investorId,int startIndex,int pageSize) {
+	public List<InvestorTransaction> getInvestors(long investorId,int startIndex,int pageSize) {
 		_log.debug("Inside getInvestors ");
 		try {
 			
-			List<InvestorTransaction> results = (List<InvestorTransaction>) sessionFactory.getCurrentSession().createCriteria(InvestorTransaction.class).add(Restrictions.ne("investorID", investorId)).setFirstResult(startIndex).setMaxResults(pageSize).list();
+			List<InvestorTransaction> results = (List<InvestorTransaction>) sessionFactory.getCurrentSession().createCriteria(InvestorTransaction.class).add(Restrictions.eq("investorID", investorId)).setFirstResult(startIndex).setMaxResults(pageSize).list();
 			_log.debug("getInvestors successful, result size: "
 					+ results.size());
 			return results;
@@ -82,11 +74,11 @@ public class InvestorTransactionDAOImpl extends BaseDAOImpl<InvestorTransaction,
 			throw re;
 		}
 	}
-	public Long getInvestorsCount(Long investorId) {
+	public Long getInvestorsCount(long investorId) {
 		_log.debug("Inside getInvestorsCount ");
 		try {
 			
-			Long resultCount = (Long) sessionFactory.getCurrentSession().createCriteria(InvestorTransaction.class).add(Restrictions.ne("investorID", investorId)).setProjection(Projections.rowCount()).uniqueResult();
+			Long resultCount = (Long) sessionFactory.getCurrentSession().createCriteria(InvestorTransaction.class).add(Restrictions.eq("investorID", investorId)).setProjection(Projections.rowCount()).uniqueResult();
 			_log.debug("getInvestorsCount  "	+ resultCount);
 			return resultCount;
 		} catch (RuntimeException re) {
@@ -103,15 +95,26 @@ public class InvestorTransactionDAOImpl extends BaseDAOImpl<InvestorTransaction,
 		List<Object[]> rows=new ArrayList<Object[]>();
 		
 		try {
-		String sql="select inv.transcation_date,inv.transcation_type,inv.trade_id,inv.amount,inv.reference from tf_investor_transaction inv  where inv.transcation_type='deposit' and inv.transcation_date BETWEEN  '2016-02-12' AND '2016-02-14'";
-		Criteria cr = sessionFactory.getCurrentSession().createCriteria(InvestorTransaction.class).add(Restrictions.eq("investorID", investorId));
-		cr.add(Restrictions.eq("transcationType", transactionType));
-		cr.add(Restrictions.ge("transcationDate", frmDate));
-		cr.add(Restrictions.lt("transcationDate", toDate));
-		cr.add(Restrictions.between("transcationDate", frmDate, toDate));
-	    List<InvestorTransaction> dhanush= cr.list();
-	    System.out.println("DDD00:"+dhanush);
-		DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+		Criteria cr = sessionFactory.getCurrentSession().createCriteria(InvestorTransaction.class);
+        cr.add(Restrictions.eq("investorID", investorId));
+		if(transactionType!=null){
+			_log.info("Transaction Type is " + transactionType);
+			cr.add(Restrictions.eq("transcationType", transactionType));
+         }
+		
+		if(frmDate!=null){
+			_log.info("From Date " + frmDate);
+			cr.add(Restrictions.ge("transcationDate", frmDate));
+         }
+		if(toDate!=null){
+			_log.info("To Date"+toDate);
+			
+			cr.add(Restrictions.le("transcationDate",toDate));
+		}
+		
+		investorTransactionList = cr.list();
+	    System.out.println("DDD00:"+investorTransactionList);
+		/*DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 
 	     for(Object[]row:rows){
 	    	 investorTransaction = new InvestorTransaction();
@@ -121,19 +124,15 @@ public class InvestorTransactionDAOImpl extends BaseDAOImpl<InvestorTransaction,
              investorTransaction.setAmount(new BigDecimal(row[3].toString()));
              investorTransaction.setReference(row[4].toString());
              investorTransactionList.add(investorTransaction);
-	     }
+	     }*/
 	     _log.debug("getInvestorTransactionByTransactionType, result size: "
-					+ dhanush.size());
+					+ investorTransactionList.size());
 	     
-
-		} catch (RuntimeException re) {
+       } catch (RuntimeException re) {
 			_log.error("getInvestorTransactionByTransactionType failed", re);
 			throw re;
 		}
-		catch (ParseException pe ) {
-			_log.error("getInvestorTransactionByTransactionType failed" +pe.getMessage());
-			
-		}
+		
 		return investorTransactionList;
 	
 	}

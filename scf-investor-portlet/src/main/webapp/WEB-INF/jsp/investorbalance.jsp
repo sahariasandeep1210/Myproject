@@ -1,9 +1,6 @@
-
 <%@page import="com.tf.persistance.util.TranscationStatus"%>
 <%@include file="init.jsp"%>
  <%@include file="tabview.jsp"%> 
-
-
 
 <portlet:actionURL var="addInvtranscationURL">
 	<portlet:param name="action" value="addInvtranscation"/>
@@ -16,6 +13,9 @@
 <portlet:actionURL var="getInvestorDetailsURL">
   <portlet:param name="getBy" value="getInvestorDetails"/>
 </portlet:actionURL>
+<portlet:renderURL var="defaultRenderURL" />
+
+
 <div class="alert alert-danger" id="errorMsg"><i class="icon-remove-sign icon-2"></i> </div>
 
 <div class="container-fluid">
@@ -25,6 +25,8 @@
 		     <input type="hidden" value="${addInvtranscationURL}" id="getInvBalanceDetails" />
  		     <input type="hidden" name="currentPage"  id="currentPage"   value="${paginationModel.currentPage}" />
 		      <input type="hidden" name="noOfRecords"  id="noOfRecords"  value="${paginationModel.noOfRecords}" />
+		      	<input type="hidden" name="defaultURL" 	id="defaultURL" value="${getInvestorDetailsURL}" />
+		      
 		     
 		      
 		<div class="row-fluid">
@@ -63,9 +65,9 @@
           <div class="span6">
               <label class="span6">Action :</label>
 			<select id="transcationType " name="transcationType" >
-				<option value="">---Select---</option>
+				<option value=" ">---Select---</option>
 					<option value="<%=TranscationStatus.DEPOSIT.getValue() %>" >Deposit </option>
-					<option value="<%=TranscationStatus.WITHDRAWAL.getValue()%>" >Withdrawl </option>
+					<option value="<%=TranscationStatus.WITHDRAWAL.getValue()%>">Withdrawl </option>
 					
 			</select>
            </div>
@@ -92,9 +94,25 @@
 		 </div>
 	</div>
 	<br>
- <c:if test="${not empty investorTransactions}">
+	
+ <c:if test="${not empty investorList}">
+ <div class="row-fluid">
+       <div class="span6">
+         <div class="span12">
+          </div>
+        </div>
+         <div class="span6">
+	
+				<div class="span12">
+					<h5 style="float: right !important;">
+						<a href="javascript:;" style="color: #295780; font-weight: bold;" id="exportBalances"> Export</a>
+					</h5>
+				</div>
+			</div>
+</div>	
+
 <div class="table-responsive">
-			<table class="table  tablesorter table-bordered" id="settingListTable">
+			<table class="table  tablesorter table-bordered" id="balanceListTable">
 				<thead>
 					<tr>
 					   
@@ -107,7 +125,7 @@
 					</tr>
 				</thead>
 				<tbody>
-				     <c:forEach items="${investorTransactions}" var="investorTransaction">
+				     <c:forEach items="${investorList}" var="investorTransaction">
 				    
 						<tr>
 							<td><fmt:formatDate pattern="dd-MM-yyyy" value="${investorTransaction.transcationDate}" /></td>

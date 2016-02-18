@@ -9,8 +9,8 @@ public interface InvestorTransactionDAO extends BaseDAO<InvestorTransaction, Lon
 	public void saveInvestorBalance(InvestorTransaction investorBalanceModel);
 	public List<InvestorTransaction> getInvestorTransactions() ;
 	public List<InvestorTransaction> getInvestorTransaction(long investorId);
-	public List<InvestorTransaction> getInvestors(Long investorId,int startIndex,int pageSize);
-	public Long getInvestorsCount(Long investorId);
+	public List<InvestorTransaction> getInvestors(long investorId,int startIndex,int pageSize);
+	public Long getInvestorsCount(long investorId);
 	public List<InvestorTransaction> getInvestorTransactionByTransactionType(long investorId,String transactionType,Date frmDate,Date toDate);
 	
 }

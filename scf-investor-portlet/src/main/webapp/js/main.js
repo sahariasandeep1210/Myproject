@@ -1,13 +1,26 @@
-var errormessage="Some required information is missing or incomplete. Please correct your entries and try again.";
 
 $(document).ready(function() {
 	  investorIndex = 0;
 	  $("#saveProtfolios").hide(); 
 	  $(".historyRow").hide();
 	  $("#errorMsg").hide(); 
-
+   
 	  enableTab();
-	 // $('table').tablesorter();
+	  $('table').tablesorter();
+	  
+	  $("#exportBalances").click(function(){
+			/* window.open('data:application/vnd.ms-excel,' + $('#dvData').html());
+			 e.preventDefault();*/	
+			
+			$('#balanceListTable').tableExport({
+				type : 'excel',
+				escape : 'false',
+				fileName: 'balanceList',
+				worksheetName: 'BalanceList'
+			});
+			
+		});
+		
 	  
 	  $('#investorModel').on('keypress', '.addprotfolio input', function(e) {
 		  
@@ -251,11 +264,7 @@ $("#toDate").datepicker({
         document.forms["investorBalanceForm"].submit();
   });*/
   
-  /*$("#updatebalance").click(function (){
-		var updateURL=$("#getInvBalanceDetails").val();
-		document.forms["investorBalanceForm"].action = updateURL;
-      document.forms["investorBalanceForm"].submit();
-});*/
+
   
 
  $("#updatebalance").click(function() {
@@ -264,8 +273,7 @@ $("#toDate").datepicker({
 	error_free = validateInvestorInfo(error_free);
 	if (error_free) {
 		var url = $(this).attr('data-url');
-		alert(url);
-		submitInvestorBalanceForm(url)
+		submitInvestorBalanceForm(url);
 	}
 
 });
@@ -502,10 +510,16 @@ function ajaxindicatorstop()
 function setPage(pageNumber){
 	$("#currentPage").val(pageNumber);
 	var actionUrl=$("#defaultURL").val();
-	document.forms["sellerList"].action = actionUrl;
-	document.forms["sellerList"].submit();	
+	document.forms["investorBalanceForm"].action = actionUrl;
+	document.forms["investorBalanceForm"].submit();	
 }
-
+/*function setPage(pageNumber){
+	$("#currentPage").val(pageNumber);
+	var actionUrl=$("#defaultCashURL").val();
+	document.forms["cashReportForm"].action = actionUrl;
+	document.forms["cashReportForm"].submit();	
+}
+*/
 
 function validateInvestorInfo(error_free) {
 	var errormess="Please Fill Required Fields and try again.";
@@ -513,12 +527,14 @@ function validateInvestorInfo(error_free) {
 	var elements = [];
 	elements[0] = "transactionAmount";
 	elements[1] = "balanceDate";
+   elements[2] = "transcationType";
+
 	$("#errorMsg").hide();
 	$("#errorMsg").html();
 	for (i = 0; i < elements.length; i++) {
 		var element = $("#" + elements[i]);
 		var eleValue = element.val();
-		if (eleValue == '' || eleValue == null || (element.is('select') && element[0].selectedIndex == 0)) {
+		if (eleValue == '' || eleValue == null || (element.is('select') && element[0].selectedIndex == "")) {
 			element.addClass("error_show");
 			error_free = false;
 			$("#errorMsg").show();

@@ -5,17 +5,28 @@
 <portlet:actionURL var="getCashURL">
   <portlet:param name="cash" value="getCashReport"/>
 </portlet:actionURL>
+
+<portlet:renderURL var="backURL">
+<portlet:param name="jspPage" value="/WEB-INF/jsp/investorbalance.jsp"/>
+</portlet:renderURL>
+
+
 <portlet:renderURL var="cashURL">
 <portlet:param name="render" value="cashReport"/>
-
 </portlet:renderURL>
+
+<portlet:renderURL var="defaultRenderURL" />
+
 <div class="container-fluid">
 
 <form:form method="post" commandName="cashReportModel"
 		class="form-horizontal" name="cashReportForm" id="cashReportForm"> 
 		      <input type="hidden" value="${getCashURL}" id="getCashReports" />
 		      <input type="hidden" name="currentPage"  id="currentPage"   value="${paginationModel.currentPage}" />
-		      <input type="hidden" name="noOfRecords"  id="noOfRecords"  value="${paginationModel.noOfRecords}" />
+		      <input type="hidden" name="noOfRecords"  id="noOfRecords"   value="${paginationModel.noOfRecords}" />
+		      <input type="hidden" name="defaultCashURL"   id="defaultCashURL" 	  value="${defaultRenderURL}" />
+		      
+		      
 		      <input type="hidden" name="companyId" value="${companyname.id}">
        		<div class="row-fluid">
        		 <div class="span6">
@@ -97,7 +108,9 @@
 					</tr>
 				</thead>
 				<tbody>
-				   		<c:forEach items="${investorTransactions}" var="investorTransaction">
+				   <c:choose>
+                        <c:when test="${fn:length(investorList) gt 0}">
+				   		<c:forEach items="${investorList}" var="investorTransaction">
 				   
 						<tr>
 							<td><fmt:formatDate pattern="dd-MM-yyyy" value="${investorTransaction.transcationDate}" /></td>
@@ -107,6 +120,28 @@
 							<td></td>
 						</tr>
 						</c:forEach>
+						 </c:when>
+				   
+						<c:when test="${fn:length(invList) gt 0}">
+						 
+						
+				   		<c:forEach items="${invList}" var="inv">
+				   
+						<tr>
+							<td><fmt:formatDate pattern="dd-MM-yyyy" value="${inv.transcationDate}" /></td>
+							<td>${inv.transcationType}</td>
+							<td></td>
+							<td>${inv.amount}</td>
+							<td></td>
+						</tr>
+						</c:forEach>
+						</c:when>
+						<c:otherwise>
+ 					       <tr>							
+ 					          <td colspan="9" align="center">No records found!</td>
+ 							</tr>
+						</c:otherwise>
+				</c:choose>
 				</tbody>
 		</table>
 	</div>
@@ -115,5 +150,5 @@
 	      	<p:paginate  paginationModel="${paginationModel}"/>
 
 <div class="back-actions">
-    <a href="/group/guest/portfolio" class="btn btn-primary btn-lg">Back</a>
+    <a href="<%=backURL.toString()%>" class="btn btn-primary btn-lg">Back</a>
 </div>
