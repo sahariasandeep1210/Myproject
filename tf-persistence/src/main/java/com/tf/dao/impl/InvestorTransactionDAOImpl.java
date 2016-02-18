@@ -91,8 +91,6 @@ public class InvestorTransactionDAOImpl extends BaseDAOImpl<InvestorTransaction,
 	public List<InvestorTransaction> getInvestorTransactionByTransactionType(long investorId,String transactionType,Date frmDate,Date toDate){
 		_log.debug("Inside getInvestorTransactionByTransactionType  ");
 		List<InvestorTransaction> investorTransactionList=new ArrayList<InvestorTransaction>();
-		InvestorTransaction investorTransaction;
-		List<Object[]> rows=new ArrayList<Object[]>();
 		
 		try {
 		Criteria cr = sessionFactory.getCurrentSession().createCriteria(InvestorTransaction.class);
@@ -113,18 +111,6 @@ public class InvestorTransactionDAOImpl extends BaseDAOImpl<InvestorTransaction,
 		}
 		
 		investorTransactionList = cr.list();
-	    System.out.println("DDD00:"+investorTransactionList);
-		/*DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-
-	     for(Object[]row:rows){
-	    	 investorTransaction = new InvestorTransaction();
-	    	 investorTransaction.setTranscationDate(formatter.parse(row[0].toString()));
-             investorTransaction.setTranscationType(row[1].toString());
-             investorTransaction.setTradeID(Long.valueOf(row[2].toString()));
-             investorTransaction.setAmount(new BigDecimal(row[3].toString()));
-             investorTransaction.setReference(row[4].toString());
-             investorTransactionList.add(investorTransaction);
-	     }*/
 	     _log.debug("getInvestorTransactionByTransactionType, result size: "
 					+ investorTransactionList.size());
 	     

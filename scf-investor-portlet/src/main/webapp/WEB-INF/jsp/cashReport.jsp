@@ -6,9 +6,9 @@
   <portlet:param name="cash" value="getCashReport"/>
 </portlet:actionURL>
 
-<portlet:renderURL var="backURL">
-<portlet:param name="jspPage" value="/WEB-INF/jsp/investorbalance.jsp"/>
-</portlet:renderURL>
+<portlet:actionURL var="backURL">
+<portlet:param name="page" value="cashBack"/>
+</portlet:actionURL>
 
 
 <portlet:renderURL var="cashURL">
@@ -150,5 +150,5 @@
 	      	<p:paginate  paginationModel="${paginationModel}"/>
 
 <div class="back-actions">
-    <a href="<%=backURL.toString()%>" class="btn btn-primary btn-lg">Back</a>
+    <a href="javascript:void(0);" onclick="window.location.href='${backURL}&investorID=${companyname.id}'"  class="btn btn-primary btn-lg">Back</a>
 </div>

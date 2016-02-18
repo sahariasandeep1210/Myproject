@@ -527,8 +527,8 @@ function validateInvestorInfo(error_free) {
 	var elements = [];
 	elements[0] = "transactionAmount";
 	elements[1] = "balanceDate";
-   elements[2] = "transcationType";
-
+/*   elements[2] = "transcationType";
+*/
 	$("#errorMsg").hide();
 	$("#errorMsg").html();
 	for (i = 0; i < elements.length; i++) {
