@@ -2,10 +2,7 @@ package com.tf.dao.impl;
 
 import com.tf.dao.InvestorTransactionDAO;
 import com.tf.model.InvestorTransaction;
-import java.math.BigDecimal;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -16,6 +13,7 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 @Repository
 @Transactional
@@ -86,31 +84,59 @@ public class InvestorTransactionDAOImpl extends BaseDAOImpl<InvestorTransaction,
 			throw re;
 		}
 	}
+	public Long getInvestorsCounts(String transactionType,Date frmDate,Date toDate) {
+		_log.debug("Inside getInvestorsCount ");
+		try {
+			
+			Criteria cr = sessionFactory.getCurrentSession().createCriteria(InvestorTransaction.class);
+			if(!StringUtils.isEmpty(transactionType)){
+				_log.info("Transaction Type is " + transactionType);
+				cr.add(Restrictions.eq("transcationType", transactionType));
+			}
+			if(!StringUtils.isEmpty(frmDate)){
+				_log.info("From Date " + frmDate);
+				cr.add(Restrictions.ge("transcationDate", frmDate));
+	         }
+			if(!StringUtils.isEmpty(toDate)){
+				_log.info("To Date"+toDate);
+				
+				cr.add(Restrictions.le("transcationDate",toDate));
+			}
+			Long resultCount=(Long) cr.setProjection(Projections.rowCount()).uniqueResult();
+					
+					
+			_log.debug("getInvestorsCount  "	+ resultCount);
+			return resultCount;
+		} catch (RuntimeException re) {
+			_log.error("getInvestorsCount failed", re);
+			throw re;
+		}
+	}
 	
 	@SuppressWarnings("unchecked")
-	public List<InvestorTransaction> getInvestorTransactionByTransactionType(long investorId,String transactionType,Date frmDate,Date toDate){
+	public List<InvestorTransaction> getInvestorTransactionByTransactionType(long investorId,String transactionType,Date frmDate,Date toDate,int startIndex,int pageSize){
 		_log.debug("Inside getInvestorTransactionByTransactionType  ");
 		List<InvestorTransaction> investorTransactionList=new ArrayList<InvestorTransaction>();
 		
 		try {
 		Criteria cr = sessionFactory.getCurrentSession().createCriteria(InvestorTransaction.class);
         cr.add(Restrictions.eq("investorID", investorId));
-		if(transactionType!=null){
+		if(!StringUtils.isEmpty(transactionType)){
 			_log.info("Transaction Type is " + transactionType);
 			cr.add(Restrictions.eq("transcationType", transactionType));
          }
 		
-		if(frmDate!=null){
+		if(!StringUtils.isEmpty(frmDate)){
 			_log.info("From Date " + frmDate);
 			cr.add(Restrictions.ge("transcationDate", frmDate));
          }
-		if(toDate!=null){
+		if(!StringUtils.isEmpty(toDate)){
 			_log.info("To Date"+toDate);
 			
 			cr.add(Restrictions.le("transcationDate",toDate));
 		}
 		
-		investorTransactionList = cr.list();
+		investorTransactionList = cr.setFirstResult(startIndex).setMaxResults(pageSize).list();
 	     _log.debug("getInvestorTransactionByTransactionType, result size: "
 					+ investorTransactionList.size());
 	     

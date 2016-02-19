@@ -1,18 +1,15 @@
 <%@page import="com.tf.persistance.util.TranscationStatus"%>
 <%@page import="org.springframework.transaction.TransactionStatus"%>
+<%@include file="tabview1.jsp"%>
+
 <%@include file="init.jsp"%>
 
-<portlet:actionURL var="getCashURL">
-  <portlet:param name="cash" value="getCashReport"/>
+<portlet:actionURL var="fetchCashURL">
+  <portlet:param name="fetch" value="fetchCashReport"/>
 </portlet:actionURL>
 
-<portlet:actionURL var="backURL">
-<portlet:param name="page" value="cashBack"/>
-</portlet:actionURL>
-
-
-<portlet:renderURL var="cashURL">
-<portlet:param name="render" value="cashReport"/>
+<portlet:renderURL var="casURL">
+<portlet:param name="render" value="casReport"/>
 </portlet:renderURL>
 
 <portlet:renderURL var="defaultRenderURL" />
@@ -22,7 +19,7 @@
 <form:form method="post" commandName="cashReportModel"
 		class="form-horizontal" name="cashReportForm" id="cashReportForm"> 
 		      <input type="hidden" value="${getCashURL}" id="getCashReports" />
-		      <input type="hidden" name="curentPage"  id="curentPage"   value="${paginationModel.currentPage}" />
+		      <input type="hidden" name="currentPage"  id="currentPage"   value="${paginationModel.currentPage}" />
 		      <input type="hidden" name="noOfRecords"  id="noOfRecords"   value="${paginationModel.noOfRecords}" />
 		      <input type="hidden" name="defaultCashURL"   id="defaultCashURL" 	  value="${defaultRenderURL}" />
 		      
@@ -94,7 +91,6 @@
 		 </div>
 	</div>
 		<br>
-	      <c:if test="${fn:length(investorList) gt 0}">
 	
 	<div class="table-responsive">
 			<table class="table  tablesorter table-bordered" id="cashReportTable">
@@ -109,10 +105,9 @@
 					</tr>
 				</thead>
 				<tbody>
-
-                   
-				   		
-				   <c:forEach items="${investorList}" var="investorTransaction">
+				   <c:choose>
+                        <c:when test="${fn:length(investorList) gt 0}">
+				   		<c:forEach items="${investorList}" var="investorTransaction">
 				   
 						<tr>
 							<td><fmt:formatDate pattern="dd-MM-yyyy" value="${investorTransaction.transcationDate}" /></td>
@@ -120,31 +115,11 @@
 							<td></td>
 							<td>${investorTransaction.amount}</td>
 							<td></td>
-					   </tr>
-					</c:forEach>
-						
-				 </tbody>
-		</table>
-	</div>
-	       <p:paginate  paginationModel="${paginationModel}"/>
-	
-</c:if>
-	
-	<c:if test="${fn:length(invList) gt 0}">
-	
-				   <div class="table-responsive">
-			<table class="table  tablesorter table-bordered" id="cashReportTable">
-				<thead>
-					<tr>
-					    <th>Date</th>
-						<th>Transaction Type</th>
-						<th>TRADE ID</th>
-						<th>Amount</th>
-						<th>Reference</th>	
-						
-					</tr>
-				</thead>
-				<tbody>
+						</tr>
+						</c:forEach>
+						 </c:when>
+				   
+						<c:when test="${fn:length(invList) gt 0}">
 						     <c:forEach items="${invList}" var="inv">
 				   
 						    <tr>
@@ -155,18 +130,16 @@
 							    <td></td>
 						</tr>
 						</c:forEach>
-						
-						
+						</c:when>
+						<c:otherwise>
+ 					       <tr>							
+ 					          <td colspan="9" align="center">No records found!</td>
+ 							</tr>
+						</c:otherwise>
+				</c:choose>
 				</tbody>
 		</table>
 	</div>
-	       <p:paginate  paginationModel="${paginationModel}"/>
-	
-		</c:if>
-	
 	</form:form>
 </div>
-        
-<div class="back-actions">
-    <a href="javascript:void(0);" onclick="window.location.href='${backURL}&investorID=${companyname.id}'"  class="btn btn-primary btn-lg">Back</a>
-</div>
+	  <p:paginate  paginationModel="${paginationModel}"/>

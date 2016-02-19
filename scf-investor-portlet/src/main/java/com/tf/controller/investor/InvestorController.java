@@ -3,6 +3,7 @@ package com.tf.controller.investor;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.security.permission.PermissionChecker;
 import com.liferay.portal.theme.ThemeDisplay;
@@ -11,6 +12,7 @@ import com.tf.model.Company;
 import com.tf.model.InvestorPortfolio;
 import com.tf.model.InvestorPortfolioHistory;
 import com.tf.model.InvestorTransaction;
+import com.tf.persistance.util.Constants;
 import com.tf.service.CompanyService;
 import com.tf.service.InvestorHistoryService;
 import com.tf.service.InvestorService;
@@ -39,6 +41,7 @@ import javax.portlet.ResourceResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.portlet.ModelAndView;
@@ -63,6 +66,8 @@ public class InvestorController {
 	private  final static String ACTIVETAB			 		="activetab";	
 	private static final String Investor_Protfolios 		= "allinvestorprotfolios";
 	private static final String Investor_Balance 			= "investorbalance";
+	private static final String Cash_Report 			= "casReport";
+
 
 	@Autowired
 	protected PaginationUtil paginationUtil;
@@ -111,7 +116,33 @@ public class InvestorController {
 	    return new ModelAndView(Investor_Balance, model);		
 	}
 	
+	@RenderMapping(params = "report=casReport")
+	protected ModelAndView rendercasReport(ModelMap model,RenderRequest request, RenderResponse response) throws Exception {	
+		List<InvestorTransaction> investorList = new ArrayList<InvestorTransaction>();
+		ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);
+        long companyId=userService.getCompanybyUserID(themeDisplay.getUserId()).getId();
+        if(request.isUserInRole(Constants.PRIMARY_INVESTOR_ADMIN)){
+		if(companyId > 0){
+
+		Company company=companyService.findById(companyId);
+		Long investor= investorService.getInvestorIDByCompanyId(companyId);
+		List<InvestorTransaction> investorTransactions=investorTransactionService.getInvestorTransaction( Long.valueOf(investor));
+		Long noOfRecords=0l;
+        PaginationModel paginationModel = paginationUtil.preparePaginationModel(request);
+        investorList=investorTransactionService.getInvestors(investor, paginationModel.getStartIndex(), paginationModel.getPageSize());
+ 		noOfRecords=investorTransactionService.getInvestorsCount(investor);
+        paginationUtil.setPaginationInfo(noOfRecords,paginationModel);
+		model.put("paginationModel", paginationModel);
+        model.put("companyname", company);
+        model.put("investorList", investorList);
+        model.put("investorTransactions", investorTransactions);
+		model.put(ACTIVETAB, Cash_Report);
+
+		}
+       }	
+		return new ModelAndView(Cash_Report,model);
 	
+	}
 	
 	@RenderMapping
 	protected ModelAndView renderInvestorInfo(@ModelAttribute("investorDTO")InvestorDTO  investorDTO,ModelMap model,RenderRequest request, RenderResponse response) throws Exception {		
@@ -172,7 +203,36 @@ public class InvestorController {
 		}
 		return new ModelAndView("cashReport",model);
 	}
-	
+	@RenderMapping(params="render=invesProt")
+	protected ModelAndView renderInvesProt(InvestorDTO investorDTO,ModelMap model,
+			RenderRequest request, RenderResponse response){
+		ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);
+		long investorId=01;
+		List<InvestorPortfolio> investorPortfolioList=null;
+		String viewName="investorprotfolio";
+		List<Company> companyList = new ArrayList<Company>();
+		companyList = companyService.getCompanies("5");
+		Map<Long,List<InvestorPortfolio>>  map=investorService.getInvestorPortfolioByUserId(themeDisplay.getUserId());
+		for(Map.Entry<Long, List<InvestorPortfolio>> entry : map.entrySet()){
+			investorId=entry.getKey();
+			model.put("investorID", investorId);
+			investorPortfolioList=entry.getValue();		
+		}
+		Map<String,BigDecimal> totalsMap=investorService.getProtfolioTotals(investorId);
+		Map<Long,BigDecimal> totalCreditMap=investorService.findTotalCreditLine(investorId);
+		setTotalCreditLine(totalCreditMap,investorPortfolioList);
+		companyList=prepareCompanyList(companyList,investorPortfolioList);
+		model.put("investorHistoryList", investorPortfolioList);	
+		model.put(ACTIVETAB, viewName);
+
+		model.put("totalsMap", totalsMap);	
+		model.put("investorDTO", investorDTO);		
+		model.put("companyList", companyList);
+		
+		return new ModelAndView(viewName,model);
+
+	}
+
 	private String prepareInvestorProtfolioInformation(RenderRequest request,InvestorDTO investorDTO,
 			ModelMap model, ThemeDisplay themeDisplay, long investorId,
 			List<InvestorPortfolio> investorPortfolioList) {
@@ -280,47 +340,82 @@ public class InvestorController {
 			model.put("paginationModel", paginationModel);
 			model.put("investorList", investorList);
 			model.put("investorTransactions", investorTransactions);
-
-		}
-		model.put("investorName", companyId);
+			model.put("investorName", companyId);
+         }
 		
         response.setRenderParameter("render", "investorBalance");
 	}
 	
 	@ActionMapping(params="cash=getCashReport")
 	protected void getCashReport( ModelMap model,ActionRequest request,ActionResponse response) throws Exception {
-		List<InvestorTransaction> invesList = new ArrayList<InvestorTransaction>();
+		List<InvestorTransaction> investorList = new ArrayList<InvestorTransaction>();
+		DateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
 
-		Date fromDate=new Date();
+		Date fromDate=formatter.parse("2/1/1970");
 		Date toDate=new Date();
 		long companyId=ParamUtil.getLong(request, "companyId");
 		Company company=companyService.findById(companyId);
-
+		String transactionType=ParamUtil.getString(request, "transaction");
 		Long investorId=investorService.getInvestorIDByCompanyId(companyId);
-        String transactionType=ParamUtil.getString(request, "transaction");
-		DateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
         String from=ParamUtil.getString(request, "fromDate");
         String to=ParamUtil.getString(request, "toDate");
-        if(from != ""){
+        if(!StringUtils.isEmpty(from)){
         fromDate=formatter.parse(from);
         }
-        else{
-        	fromDate=formatter.parse("1/2/1970");
+        if(!StringUtils.isEmpty(to)){
+            toDate=formatter.parse(to);
+       }
+        
+    
+        Long noOfRecords=0l;
+        PaginationModel paginationModel = paginationUtil.preparePaginationModel(request);
+        investorList=investorTransactionService.getInvestors(investorId, paginationModel.getStartIndex(), paginationModel.getPageSize());
+		noOfRecords=investorTransactionService.getInvestorsCounts(transactionType, fromDate, toDate);
+        paginationUtil.setPaginationInfo(noOfRecords,paginationModel);
+        List<InvestorTransaction> invList=investorTransactionService.getInvestorTransactionByTransactionType(investorId, transactionType, fromDate, toDate,paginationModel.getStartIndex(), paginationModel.getPageSize());
+		model.put("paginationModel", paginationModel);
+
+        model.put("invList", invList);
+        model.put("companyname", company);
+        if(invList.isEmpty()){
+            model.put("investorList", investorList);
         }
-        if(to != ""){
+        response.setRenderParameter("render", "cashReport");
+
+	}
+	@ActionMapping(params="fetch=fetchCashReport")
+	protected void fetchCashReport( ModelMap model,ActionRequest request,ActionResponse response) throws Exception {
+		List<InvestorTransaction> investorList = new ArrayList<InvestorTransaction>();
+		DateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+		Date fromDate=formatter.parse("2/1/1970");
+		Date toDate=new Date();
+		ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);
+        long companyId=userService.getCompanybyUserID(themeDisplay.getUserId()).getId();		
+        Company company=companyService.findById(companyId);
+		Long investorId=investorService.getInvestorIDByCompanyId(companyId);
+        String transactionType=ParamUtil.getString(request, "transaction");
+        String from=ParamUtil.getString(request, "fromDate");
+        String to=ParamUtil.getString(request, "toDate");
+        if(!StringUtils.isEmpty(from)){
+        fromDate=formatter.parse(from);
+        }
+        if(!StringUtils.isEmpty(to)){
             toDate=formatter.parse(to);
        }
         
         Long noOfRecords=0l;
         PaginationModel paginationModel = paginationUtil.preparePaginationModel(request);
-        invesList=investorTransactionService.getInvestors(investorId, paginationModel.getStartIndex(), paginationModel.getPageSize());
- 		noOfRecords=investorTransactionService.getInvestorsCount(investorId);
+        investorList=investorTransactionService.getInvestors(investorId, paginationModel.getStartIndex(), paginationModel.getPageSize());
+		noOfRecords=investorTransactionService.getInvestorsCounts(transactionType, fromDate, toDate);
         paginationUtil.setPaginationInfo(noOfRecords,paginationModel);
 		model.put("paginationModel", paginationModel);
-        List<InvestorTransaction> invList=investorTransactionService.getInvestorTransactionByTransactionType(investorId, transactionType, fromDate, toDate);
+        List<InvestorTransaction> invList=investorTransactionService.getInvestorTransactionByTransactionType(investorId, transactionType, fromDate, toDate,paginationModel.getStartIndex(), paginationModel.getPageSize());
         model.put("invList", invList);
         model.put("companyname", company);
-        response.setRenderParameter("render", "cashReport");
+        if(invList.isEmpty()){
+            model.put("investorList", investorList);
+        }
+        response.setRenderParameter("render", "casReport");
 
 	}
 	

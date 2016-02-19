@@ -1,4 +1,5 @@
 <%@ include file="init.jsp"%>
+<%@include file="tabview1.jsp"%>
 
 <portlet:actionURL var="updateProtfolioURL">
 	<portlet:param name="action" value="updateProtfolio"/>

@@ -405,10 +405,19 @@ function enableTab(){
 		$("#investorProtfoliosList").addClass("active");
 	}else if(curentTab=='investorbalance'){
 		$("#invbalList").addClass("active");
+	}else if (curentTab=='casReport') {
+		$("#casList").addClass("active");
 	}
+	else if (curentTab=='investorprotfolio') {
+		$("#invesProtList").addClass("active");
+	}
+	
+	
 	else{
 		$("#investorProtfoliosList").addClass("active");
+		$("#invesProtList").addClass("active");
 	}
+	 
 }	
 
 function confirmEdit(){
@@ -508,18 +517,20 @@ function ajaxindicatorstop()
 }
 
 function setPage(pageNumber){
+
 	$("#currentPage").val(pageNumber);
 	var actionUrl=$("#defaultURL").val();
 	document.forms["investorBalanceForm"].action = actionUrl;
 	document.forms["investorBalanceForm"].submit();	
-}
-/*function setPage(pageNumber){
-	$("#currentPage").val(pageNumber);
+	
+	/*$("#curentPage").val(pageNumber);
 	var actionUrl=$("#defaultCashURL").val();
 	document.forms["cashReportForm"].action = actionUrl;
-	document.forms["cashReportForm"].submit();	
+	document.forms["cashReportForm"].submit();	*/
+	
+	
 }
-*/
+
 
 function validateInvestorInfo(error_free) {
 	var errormess="Please Fill Required Fields and try again.";

@@ -45,11 +45,13 @@
 				<label class="span6">Cash Position:</label>
 				   
 	         </div>
+	          <c:if test="${not empty investorName}">
 	         
 	         <div class="span6">
 	             <a href="javascript:void(0);" onclick="window.location.href='${cashReportURL}&investorID=${investorName}'">Cash Report</a>
 	         
 	         </div>
+	         </c:if>
 		</div>
 		<div class="row-fluid">
 			<div class="span6">
@@ -75,7 +77,7 @@
        <div class="row-fluid">
 			<div class="span6">
 				<label class="span6">Transaction Amount :</label>
-					<form:input path="amount" cssClass="span9" id="transactionAmount"/>
+				   <input type="text" name="amount" id="transactionAmount" class="span9">
 				
 				
 			</div>
@@ -83,7 +85,8 @@
 		 <div class="row-fluid">
 			<div class="span6">
 				<label class="span6">Date:</label>
-				<form:input path="transcationDate" cssClass="span9" id="balanceDate"/>
+				   <input type="text" name="transcationDate" id="balanceDate" class="span9">
+				
 				
 	</div>
 			</div> 
