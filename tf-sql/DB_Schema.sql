@@ -484,3 +484,8 @@ CREATE TABLE tf_investor_transaction (
   KEY `fk_investor_transaction_trade_id` (`trade_id`),
   CONSTRAINT `tf_investor_transaction_ibfk_1` FOREIGN KEY (`trade_id`) REFERENCES `scf_trade` (`id`)
 ) ;
+
+ALTER TABLE tf_allotments
+  ADD status    VARCHAR(100) DEFAULT NULL;
+
+

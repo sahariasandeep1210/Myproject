@@ -133,9 +133,9 @@
 						<tr>
 							<td><fmt:formatDate pattern="dd-MM-yyyy" value="${investorTransaction.transcationDate}" /></td>
 							<td>${investorTransaction.transcationType}</td>
-							<td></td>
+							<td>${investorTransaction.tradeID}</td>
 							<td>${investorTransaction.amount}</td>
-							<td></td>
+							<td>${investorTransaction.reference}</td>
 						</tr>
 						</c:forEach>
 				</tbody>

@@ -23,7 +23,7 @@ import javax.persistence.TemporalType;
 public class Allotment implements Serializable {
 	
 
-	private static final long serialVersionUID = -4644634014660010781L;
+	private static final long serialVersionUID = -5853890898773320771L;
 
 	@Id
     @Column(name="allotment_id")
@@ -65,7 +65,10 @@ public class Allotment implements Serializable {
 	
 	@Column(name="allotment_date")
 	@Temporal(TemporalType.TIMESTAMP)
-	private Date allotmentDate;
+	private Date allotmentDate;	
+	
+	@Column(name="status")
+	private String status;
 	
 	public Allotment() {
 	}
@@ -166,6 +169,14 @@ public class Allotment implements Serializable {
 		this.investorNetProfit = investorNetProfit;
 	}
 
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
 	@Override
 	public String toString() {
 		return "Allotment [allotmentId=" + allotmentId + ", scfTrade="
@@ -176,7 +187,8 @@ public class Allotment implements Serializable {
 				+ ", investorGrossProfit=" + investorGrossProfit
 				+ ", whitehallProfitShare=" + whitehallProfitShare
 				+ ", investorNetProfit=" + investorNetProfit
-				+ ", allotmentDate=" + allotmentDate + "]";
+				+ ", allotmentDate=" + allotmentDate + ", status=" + status
+				+ "]";
 	}
 	
 

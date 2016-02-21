@@ -344,8 +344,9 @@ public class InvoiceController {
 		String invoiceIds= ParamUtil.getString(request, "invoices");
 		if(!StringUtils.isNullOrEmpty(invoiceIds)){
 			long companyId = liferayUtility.getWhitehallCompanyID(request);
+			long userId=userService.getUserbyLiferayUserID(liferayUtility.getLiferayUserID(request));
 			List<String> invoicesIdList=Arrays.asList(invoiceIds.split(","));
-			invoiceService.triggerAllotment(invoicesIdList,companyId);
+			invoiceService.triggerAllotment(invoicesIdList,companyId,userId);
 		}
 		
 	}	
