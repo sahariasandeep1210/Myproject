@@ -27,6 +27,7 @@ import com.tf.model.Allotment;
 import com.tf.model.Company;
 import com.tf.model.Invoice;
 import com.tf.model.SCFTrade;
+import com.tf.model.TradeAudit;
 import com.tf.persistance.util.AllotmentEngine;
 import com.tf.persistance.util.InvestorProtfolioDTO;
 import com.tf.persistance.util.InvoiceStatus;
@@ -146,7 +147,7 @@ public class InvoiceServiceImpl implements InvoiceService{
 	}
 	
 	@Transactional
-	public void triggerAllotment(List<String> invoiceIds,long sellerCmpId){		
+	public void triggerAllotment(List<String> invoiceIds,long sellerCmpId,long userId){		
 		Date date=new Date();
 		Company company=null;
 		Invoice invoice;
@@ -182,15 +183,13 @@ public class InvoiceServiceImpl implements InvoiceService{
 		updateTradeinfoToInvovices(invoicesList, scfTrade);
 		List<InvestorProtfolioDTO> list=investorDAO.findInvestorByRate(company.getId());
 		list=getSameRateCountStamp(list);
-		List<Allotment> allotments = allotmentEngine.tradeAllotment(list, scfTrade,sellerCmpId);
-		System.out.println("------------------------------------------------------------------------------------)");
-		for(Allotment allotment : allotments){
-			System.out.println("allotment::::::::"+allotment);
-			allotmentDAO.saveEntity(allotment);
-		}	
+		allotmentEngine.tradeAllotment(list, scfTrade,sellerCmpId,userId);
+	
 		//now allotment is done so changing trade status to Live
 		scfTrade.setStatus(TradeStatus.LIVE.getValue());
 		scfTradeService.update(scfTrade);
+		
+	
 		System.out.println("************************************ ALLOTMENTS END ************************************** \n ");	
 	}
 

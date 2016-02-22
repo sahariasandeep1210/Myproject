@@ -9,11 +9,16 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.tf.dao.AllotmentDAO;
 import com.tf.dao.InvestorDAO;
+import com.tf.dao.InvestorTransactionDAO;
+import com.tf.dao.TradeAuditDAO;
 import com.tf.model.Allotment;
 import com.tf.model.InvestorPortfolio;
+import com.tf.model.InvestorTransaction;
 import com.tf.model.SCFTrade;
 import com.tf.model.SellerSetting;
+import com.tf.model.TradeAudit;
 import com.tf.service.InvestorService;
 import com.tf.service.SettingService;
 
@@ -35,12 +40,23 @@ public class AllotmentEngine {
 	@Autowired
 	private SettingService settingService;
 	
-	public List<Allotment> tradeAllotment(List<InvestorProtfolioDTO> investorsList,SCFTrade trade,long sellerCmpId){
+	@Autowired
+	private AllotmentDAO allotmentDAO;
+	
+	@Autowired
+	private TradeAuditDAO tradeAuditDAO;
+	
+	@Autowired
+	private InvestorTransactionDAO investorTransactionDAO;
+	
+	public void  tradeAllotment(List<InvestorProtfolioDTO> investorsList,SCFTrade trade,long sellerCmpId,long userId){
 
 		List<InvestorProtfolioDTO> investors = investorsList;
 		Allotment allotment ; 
+		InvestorTransaction invTranscation;
 
-		List<Allotment> allotments = new ArrayList<Allotment>(); 
+		List<Allotment> allotments				  = new ArrayList<Allotment>(); 
+		List<InvestorTransaction> invTranscations = new ArrayList<InvestorTransaction>(); 
 
 		BigDecimal currentAllotment =		BigDecimal.ZERO; 
 		
@@ -61,9 +77,12 @@ public class AllotmentEngine {
 			}
 
 			allotment = new Allotment(); 
+			invTranscation=new InvestorTransaction();
+			
 
 			allotment.setInvestorPortfolio(investorDAO.loadInvestorPortfolio(investor.getInvestorProtId()));
 			allotment.setScfTrade(trade);
+			invTranscation.setTradeID(trade.getId());
 
 			if(sameRateCount <= 1 ){
 
@@ -79,17 +98,26 @@ public class AllotmentEngine {
 					currentAllotment = investor.getAvailToInvest();
 				}
 			}
+			Date date=new Date();
 			setInvestmentInfo(currentAllotment, investor);
 			allotment.setNoOfdays(trade.getDuration());
 			allotment.setMarketDiscount(investor.getDiscountRate());
 			allotment.setAllotmentAmount(currentAllotment);
 			allotment.setAllotmentDate(new Date());
-			
+			allotment.setStatus(TranscationStatus.INVESTED.getValue());			
 			//Calculate investor and Whitehall Share
 			allotment.setInvestorGrossProfit(calculateInvestorGrossProfit(currentAllotment,investor.getDiscountRate(),trade.getDuration()));
 			allotment.setWhitehallProfitShare(calculateWhiteHallShare(allotment.getInvestorGrossProfit(),investorService.getWhiteHallShare(investor.getInvestorId())));
 			allotment.setInvestorNetProfit(calculateInvestorNetProfit(allotment.getInvestorGrossProfit(),allotment.getWhitehallProfitShare()));
 			allotments.add(allotment);
+			
+			// adding transaction information
+			invTranscation.setAmount(currentAllotment);
+			invTranscation.setInvestorID(investor.getInvestorId());
+			invTranscation.setReference("Trade Allotment");
+			invTranscation.setTranscationDate(date);
+			invTranscation.setTranscationType(TranscationStatus.INVESTED.getValue());
+			invTranscations.add(invTranscation);
 			
 			investorTotalGross=investorTotalGross.add(allotment.getInvestorGrossProfit());
 			whitehallTotal=whitehallTotal.add(allotment.getWhitehallProfitShare());
@@ -104,6 +132,7 @@ public class AllotmentEngine {
 
 		}
 		
+	
 		System.out.println("************************************ ALLOTMENTS BEGIN ************************************** \n");
 		
 		//updating investment information
@@ -127,8 +156,26 @@ public class AllotmentEngine {
 		trade.setSellerNetAllotment(calculateSellerNetAllotment(tradeAmount,trade.getInvestorTotalProfit(),trade.getWhitehallNetReceivable()));
 		System.out.println("Trade to update ::::::::::::::::::::::::::::::"+trade);
 		
-		return allotments; 
+		
+		System.out.println("------------------------------------------------------------------------------------)");
+		//saving allotment information to databse
+		for(Allotment altment : allotments){
+			System.out.println("allotment::::::::"+altment);
+			allotmentDAO.saveEntity(altment);
+		}	
+		
+		//saving transaction information
+		
+		for(InvestorTransaction investorTransaction : invTranscations){
+			System.out.println("InvestorTransaction::::::::"+investorTransaction);
+			investorTransactionDAO.saveEntity(investorTransaction);
+		}
+		
+		saveTradeAudit(trade, userId, sellerSetting);
+		
 	}
+
+
 
 	private void setInvestmentInfo(BigDecimal currentAllotment,InvestorProtfolioDTO investor) {
 		if(investor.getAvailToInvest()==null){
@@ -176,6 +223,18 @@ public class AllotmentEngine {
 		BigDecimal SellerNetAllotment=tradeAmount.subtract((investorTotalProfit.add(WhitehallNetReceivable)));
 		SellerNetAllotment.setScale(2, RoundingMode.CEILING);
 		return SellerNetAllotment;
+	}
+	
+	private void saveTradeAudit(SCFTrade trade, long userId,
+			SellerSetting sellerSetting) {
+		//creating trade audit
+		TradeAudit tradeAudit=new TradeAudit();
+		tradeAudit.setCreateDate(new Date());
+		tradeAudit.setTradeID(trade.getId());
+		tradeAudit.setSellerFinFee(sellerSetting.getSellerFinFee());
+		tradeAudit.setSellerTransFee(sellerSetting.getSellerTransFee());
+		tradeAudit.setUserID(userId);
+		tradeAuditDAO.saveEntity(tradeAudit);
 	}
 
 

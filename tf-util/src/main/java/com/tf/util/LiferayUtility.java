@@ -67,8 +67,14 @@ public class LiferayUtility {
 	
 	public ThemeDisplay getThemeDisplay(PortletRequest request){
 		ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);
+		
 		return themeDisplay;
 	}
+	
+	public long getLiferayUserID(PortletRequest request){
+		return getThemeDisplay(request).getRealUserId();
+	}
+	
 	
 	public Long getWhitehallCompanyID(PortletRequest request){
 		long companyID=userService.getCompanyIDbyUserID(getThemeDisplay(request).getUserId());

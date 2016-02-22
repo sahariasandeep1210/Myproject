@@ -5,8 +5,8 @@ public enum TranscationStatus {
 	
 	DEPOSIT("Deposit"),
 	WITHDRAWAL("Withdrawal"),
-	INVESTMENT("Investment"),
-	REPAYMENT("Repayment"),
+	INVESTED("Invested"),
+	REPAID("Repaid"),
 	PROFIT("Profit"),
 	WHITEHALL_FEE("Whitehall Fee");
 		
