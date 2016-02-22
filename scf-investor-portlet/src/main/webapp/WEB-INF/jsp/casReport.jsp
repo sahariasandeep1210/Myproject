@@ -74,8 +74,8 @@
 				<option value="">---Select---</option>
 					<option value="<%=TranscationStatus.DEPOSIT.getValue()%>" >Deposit</option>
 					<option value="<%=TranscationStatus.WITHDRAWAL.getValue()%>" >WithDrawal</option>
-					<option value="<%=TranscationStatus.INVESTMENT.getValue()%>" >Investment</option>
-					<option value="<%=TranscationStatus.REPAYMENT.getValue()%>" >Repayment</option>
+					<option value="<%=TranscationStatus.INVESTED.getValue()%>" >Investment</option>
+					<option value="<%=TranscationStatus.REPAID.getValue()%>" >Repayment</option>
 					<option value="<%=TranscationStatus.PROFIT.getValue()%>" >Profit</option>
 					<option value="<%=TranscationStatus.WHITEHALL_FEE.getValue()%>" >WhiteHallFee</option>					
 			</select>

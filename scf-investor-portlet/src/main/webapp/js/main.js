@@ -148,7 +148,8 @@ $(document).ready(function() {
   		buttonImage : "/tf-theme/images/calendar.jpg",
   		buttonImageOnly : true,
   		buttonText : "Select date"
-  	});
+  		
+    });
   	
   	 
   });
@@ -157,10 +158,15 @@ $("#fromDate").datepicker({
 		changeMonth : true,
 		changeYear : true,
 		showOn : "button",
-		maxDate : '0',
+		
 		buttonImage : "/tf-theme/images/calendar.jpg",
 		buttonImageOnly : true,
-		buttonText : "Select date"
+		buttonText : "Select date",
+	    onSelect: function(selected) {
+  				$("#toDate").datepicker("option","minDate", selected)
+  				  
+  		   }
+			
 	});
 	
 	 
@@ -169,10 +175,13 @@ $("#toDate").datepicker({
 		changeMonth : true,
 		changeYear : true,
 		showOn : "button",
-		maxDate : '0',
 		buttonImage : "/tf-theme/images/calendar.jpg",
 		buttonImageOnly : true,
-		buttonText : "Select date"
+		buttonText : "Select date",
+		onSelect: function(selected) {
+  				$("#fromDate").datepicker("option","maxDate", selected)
+  				  
+  		   }
 	});
 	
 	 
@@ -271,7 +280,7 @@ $("#toDate").datepicker({
 	var error_free = true;
 	error_free = validateInvestorInfo(error_free);
 	if (error_free) {
-		var url = $(this).attr('data-url');
+		var url = $("#getInvBalanceDetails").val();
 		submitInvestorBalanceForm(url);
 	}
 
@@ -541,10 +550,10 @@ function validateInvestorInfo(error_free) {
 	var errormess="Please Fill Required Fields and try again.";
 
 	var elements = [];
-/*	   elements[0] = "transactionType";
-*/
-	elements[0] = "transactionAmount";
-	elements[1] = "balanceDate";
+	   elements[0] = "transactionType";
+
+	elements[1] = "transactionAmount";
+	elements[2] = "balanceDate";
 
 	$("#errorMsg").hide();
 	$("#errorMsg").html();

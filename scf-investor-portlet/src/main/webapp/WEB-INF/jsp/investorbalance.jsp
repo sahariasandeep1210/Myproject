@@ -66,7 +66,7 @@
 		<div class="row-fluid">
           <div class="span6">
               <label class="span6">Action :</label>
-			<select id="transactionType " name="transcationType" >
+			<select id="transactionType" name="transcationType" >
 				<option value=" ">---Select---</option>
 					<option value="<%=TranscationStatus.DEPOSIT.getValue() %>" >Deposit </option>
 					<option value="<%=TranscationStatus.WITHDRAWAL.getValue()%>">Withdrawl </option>
@@ -92,7 +92,7 @@
 			</div> 
 		<div class="row-fluid">
 			<div class="span6" id="buttons">
-				<input type="button" value="Submit"  data-url="${addInvtranscationURL}" id="updatebalance" class="btn btn-primary" />
+				<input type="button" value="Submit"   id="updatebalance" class="btn btn-primary" />
 				<input type="button" value="Cancel" id="cancelSetting" class="btn btn-primary" />
 		 </div>
 	</div>
