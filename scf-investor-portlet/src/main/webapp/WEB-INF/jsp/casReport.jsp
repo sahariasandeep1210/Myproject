@@ -16,9 +16,10 @@
 
 <div class="container-fluid">
 
-<form:form method="post" commandName="cashReportModel"
-		class="form-horizontal" name="cashReportForm" id="cashReportForm"> 
-		      <input type="hidden" value="${getCashURL}" id="getCashReports" />
+<form:form method="post" commandName="casReportModel"
+		class="form-horizontal" name="casReportForm" id="casReportForm"> 
+				      <input type="hidden" value="${fetchCashURL}" id="getCasReports" />
+		
 		      <input type="hidden" name="currentPage"  id="currentPage"   value="${paginationModel.currentPage}" />
 		      <input type="hidden" name="noOfRecords"  id="noOfRecords"   value="${paginationModel.noOfRecords}" />
 		      <input type="hidden" name="defaultCashURL"   id="defaultCashURL" 	  value="${defaultRenderURL}" />
@@ -87,7 +88,7 @@
 	 </div>
 	 <div class="row-fluid">
 			<div class="span6" id="buttons">
-				<input type="button" value="Submit" id="cashReport" class="btn btn-primary" />
+				<input type="button" value="Submit" id="casReport" class="btn btn-primary" />
 		 </div>
 	</div>
 		<br>
@@ -131,11 +132,7 @@
 						</tr>
 						</c:forEach>
 						</c:when>
-						<c:otherwise>
- 					       <tr>							
- 					          <td colspan="9" align="center">No records found!</td>
- 							</tr>
-						</c:otherwise>
+						
 				</c:choose>
 				</tbody>
 		</table>

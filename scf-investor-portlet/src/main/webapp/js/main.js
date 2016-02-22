@@ -4,7 +4,6 @@ $(document).ready(function() {
 	  $("#saveProtfolios").hide(); 
 	  $(".historyRow").hide();
 	  $("#errorMsg").hide(); 
-   
 	  enableTab();
 	  $('table').tablesorter();
 	  
@@ -288,6 +287,11 @@ $("#toDate").datepicker({
 		document.forms["cashReportForm"].action = updateURL;
       document.forms["cashReportForm"].submit();
 });
+  $("#casReport").click(function (){
+		var updateURL=$("#getCasReports").val();
+		document.forms["casReportForm"].action = updateURL;
+    document.forms["casReportForm"].submit();
+});
       $("#cancelSetting").click(function (){
     		document.forms["investorBalanceForm"].reset();
     	});
@@ -517,18 +521,19 @@ function ajaxindicatorstop()
 }
 
 function setPage(pageNumber){
-
+	var curentTab=$("#currentTab").val();
+	if(curentTab=='investorbalance'){
 	$("#currentPage").val(pageNumber);
 	var actionUrl=$("#defaultURL").val();
 	document.forms["investorBalanceForm"].action = actionUrl;
 	document.forms["investorBalanceForm"].submit();	
-	
-	/*$("#curentPage").val(pageNumber);
+  }else{
+	$("#curentPage").val(pageNumber);
 	var actionUrl=$("#defaultCashURL").val();
 	document.forms["cashReportForm"].action = actionUrl;
-	document.forms["cashReportForm"].submit();	*/
+	document.forms["cashReportForm"].submit();	
 	
-	
+  }
 }
 
 
@@ -536,16 +541,17 @@ function validateInvestorInfo(error_free) {
 	var errormess="Please Fill Required Fields and try again.";
 
 	var elements = [];
+/*	   elements[0] = "transactionType";
+*/
 	elements[0] = "transactionAmount";
 	elements[1] = "balanceDate";
-/*   elements[2] = "transcationType";
-*/
+
 	$("#errorMsg").hide();
 	$("#errorMsg").html();
 	for (i = 0; i < elements.length; i++) {
 		var element = $("#" + elements[i]);
 		var eleValue = element.val();
-		if (eleValue == '' || eleValue == null || (element.is('select') && element[0].selectedIndex == "")) {
+		if (eleValue == '' || eleValue == null || (element.is('select') && element[0].selectedIndex == 0)) {
 			element.addClass("error_show");
 			error_free = false;
 			$("#errorMsg").show();
@@ -556,42 +562,3 @@ function validateInvestorInfo(error_free) {
 	}
 	return error_free;
 }
-
-
-
-
-$("#investorName").change(function() {
-	var balanceURL=$("#balanceURL").val();
-	var balanceSel=$(this).val();
-	if(balanceSel === 'undefined' || (! balanceSel )|| balanceSel === null){
-		
-
-	}else{
-	  			$.ajax({ 
-					url: balanceURL, 
-					type: 'POST', 
-					datatype:'json', 
-
-					cache: false,
-					data: { 
-						balanceSelection: balanceSel 					
-						  }, 
-					success: function(data){
-						
-					} ,
-					error: function(jqXHR, textStatus, errorThrown) {
-						ajaxindicatorstop();
-
-						
-					}	  			
-	  		});	
-	  			
-
-	    }
-	});
-	
-	
-	
-
-
-

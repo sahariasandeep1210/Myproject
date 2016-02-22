@@ -66,7 +66,7 @@
 		<div class="row-fluid">
           <div class="span6">
               <label class="span6">Action :</label>
-			<select id="transcationType " name="transcationType" >
+			<select id="transactionType " name="transcationType" >
 				<option value=" ">---Select---</option>
 					<option value="<%=TranscationStatus.DEPOSIT.getValue() %>" >Deposit </option>
 					<option value="<%=TranscationStatus.WITHDRAWAL.getValue()%>">Withdrawl </option>

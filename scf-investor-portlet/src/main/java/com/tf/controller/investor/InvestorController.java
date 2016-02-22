@@ -200,6 +200,8 @@ public class InvestorController {
         model.put("companyname", company);
         model.put("investorList", investorList);
         model.put("investorTransactions", investorTransactions);
+	    model.put("investorName", companyId);
+
 		}
 		return new ModelAndView("cashReport",model);
 	}
@@ -385,6 +387,7 @@ public class InvestorController {
 	}
 	@ActionMapping(params="fetch=fetchCashReport")
 	protected void fetchCashReport( ModelMap model,ActionRequest request,ActionResponse response) throws Exception {
+		System.out.println("Hi i am fetch Cash Report");
 		List<InvestorTransaction> investorList = new ArrayList<InvestorTransaction>();
 		DateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
 		Date fromDate=formatter.parse("2/1/1970");
@@ -408,14 +411,15 @@ public class InvestorController {
         investorList=investorTransactionService.getInvestors(investorId, paginationModel.getStartIndex(), paginationModel.getPageSize());
 		noOfRecords=investorTransactionService.getInvestorsCounts(transactionType, fromDate, toDate);
         paginationUtil.setPaginationInfo(noOfRecords,paginationModel);
-		model.put("paginationModel", paginationModel);
         List<InvestorTransaction> invList=investorTransactionService.getInvestorTransactionByTransactionType(investorId, transactionType, fromDate, toDate,paginationModel.getStartIndex(), paginationModel.getPageSize());
         model.put("invList", invList);
+		model.put("paginationModel", paginationModel);
+
         model.put("companyname", company);
         if(invList.isEmpty()){
             model.put("investorList", investorList);
         }
-        response.setRenderParameter("render", "casReport");
+        response.setRenderParameter("report", "casReport");
 
 	}
 	

@@ -15,8 +15,8 @@
 <portlet:param name="render" value="cashReport"/>
 </portlet:renderURL>
 
-<portlet:renderURL var="defaultRenderURL" />
-
+<portlet:renderURL var="defaultRenderURL">
+</portlet:renderURL>
 <div class="container-fluid">
 
 <form:form method="post" commandName="cashReportModel"
