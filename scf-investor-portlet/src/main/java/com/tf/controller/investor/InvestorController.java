@@ -371,9 +371,9 @@ public class InvestorController {
         Long noOfRecords=0l;
         PaginationModel paginationModel = paginationUtil.preparePaginationModel(request);
         investorList=investorTransactionService.getInvestors(investorId, paginationModel.getStartIndex(), paginationModel.getPageSize());
-		noOfRecords=investorTransactionService.getInvestorsCounts(transactionType, fromDate, toDate);
-        paginationUtil.setPaginationInfo(noOfRecords,paginationModel);
         List<InvestorTransaction> invList=investorTransactionService.getInvestorTransactionByTransactionType(investorId, transactionType, fromDate, toDate,paginationModel.getStartIndex(), paginationModel.getPageSize());
+		noOfRecords=investorTransactionService.getInvestorsCounts(investorId,transactionType, fromDate, toDate);
+        paginationUtil.setPaginationInfo(noOfRecords,paginationModel);
 		model.put("paginationModel", paginationModel);
 
         model.put("invList", invList);
@@ -398,6 +398,7 @@ public class InvestorController {
         String transactionType=ParamUtil.getString(request, "transaction");
         String from=ParamUtil.getString(request, "fromDate");
         String to=ParamUtil.getString(request, "toDate");
+
         if(!StringUtils.isEmpty(from)){
         fromDate=formatter.parse(from);
         }
@@ -408,7 +409,7 @@ public class InvestorController {
         Long noOfRecords=0l;
         PaginationModel paginationModel = paginationUtil.preparePaginationModel(request);
         investorList=investorTransactionService.getInvestors(investorId, paginationModel.getStartIndex(), paginationModel.getPageSize());
-		noOfRecords=investorTransactionService.getInvestorsCounts(transactionType, fromDate, toDate);
+		noOfRecords=investorTransactionService.getInvestorsCounts(investorId,transactionType, fromDate, toDate);
         paginationUtil.setPaginationInfo(noOfRecords,paginationModel);
         List<InvestorTransaction> invList=investorTransactionService.getInvestorTransactionByTransactionType(investorId, transactionType, fromDate, toDate,paginationModel.getStartIndex(), paginationModel.getPageSize());
         model.put("invList", invList);

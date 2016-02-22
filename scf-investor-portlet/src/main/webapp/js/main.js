@@ -169,8 +169,6 @@ $("#fromDate").datepicker({
 			
 	});
 	
-	 
-
 $("#toDate").datepicker({
 		changeMonth : true,
 		changeYear : true,
@@ -185,8 +183,6 @@ $("#toDate").datepicker({
 	});
 	
 	 
-
-      
       $('#investorModel').on('click', '#editCancel', function() {
     	    $("#errorMsg").hide(); 
     	   
@@ -297,9 +293,9 @@ $("#toDate").datepicker({
       document.forms["cashReportForm"].submit();
 });
   $("#casReport").click(function (){
-		var updateURL=$("#getCasReports").val();
+		var updateURL=$("#getCasReport").val();
 		document.forms["casReportForm"].action = updateURL;
-    document.forms["casReportForm"].submit();
+        document.forms["casReportForm"].submit();
 });
       $("#cancelSetting").click(function (){
     		document.forms["investorBalanceForm"].reset();

@@ -8,9 +8,6 @@
   <portlet:param name="fetch" value="fetchCashReport"/>
 </portlet:actionURL>
 
-<portlet:renderURL var="casURL">
-<portlet:param name="render" value="casReport"/>
-</portlet:renderURL>
 
 <portlet:renderURL var="defaultRenderURL" />
 
@@ -18,11 +15,11 @@
 
 <form:form method="post" commandName="casReportModel"
 		class="form-horizontal" name="casReportForm" id="casReportForm"> 
-				      <input type="hidden" value="${fetchCashURL}" id="getCasReports" />
+				      <input type="hidden" value="${fetchCashURL}" id="getCasReport" />
 		
 		      <input type="hidden" name="currentPage"  id="currentPage"   value="${paginationModel.currentPage}" />
 		      <input type="hidden" name="noOfRecords"  id="noOfRecords"   value="${paginationModel.noOfRecords}" />
-		      <input type="hidden" name="defaultCashURL"   id="defaultCashURL" 	  value="${defaultRenderURL}" />
+		      <input type="hidden" name="defaultCasURL"   id="defaultCasURL" 	  value="${defaultRenderURL}" />
 		      
 		      
 		      <input type="hidden" name="companyId" value="${companyname.id}">

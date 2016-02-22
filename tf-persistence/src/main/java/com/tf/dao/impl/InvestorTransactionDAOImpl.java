@@ -84,11 +84,13 @@ public class InvestorTransactionDAOImpl extends BaseDAOImpl<InvestorTransaction,
 			throw re;
 		}
 	}
-	public Long getInvestorsCounts(String transactionType,Date frmDate,Date toDate) {
+	public Long getInvestorsCounts(long investorId,String transactionType,Date frmDate,Date toDate) {
 		_log.debug("Inside getInvestorsCount ");
 		try {
 			
 			Criteria cr = sessionFactory.getCurrentSession().createCriteria(InvestorTransaction.class);
+	        cr.add(Restrictions.eq("investorID", investorId));
+
 			if(!StringUtils.isEmpty(transactionType)){
 				_log.info("Transaction Type is " + transactionType);
 				cr.add(Restrictions.eq("transcationType", transactionType));
