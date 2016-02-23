@@ -9,6 +9,9 @@
 <portlet:renderURL var="cashReportURL">
     <portlet:param name="render" value="cashReport" />
 </portlet:renderURL>
+<portlet:renderURL var="receivableReportURL">
+    <portlet:param name="receivable" value="receivableReport" />
+</portlet:renderURL>
 
 <portlet:actionURL var="getInvestorDetailsURL">
   <portlet:param name="getBy" value="getInvestorDetails"/>
@@ -49,7 +52,11 @@
 	         
 	         <div class="span6">
 	             <a href="javascript:void(0);" onclick="window.location.href='${cashReportURL}&investorID=${investorName}'">Cash Report</a>
-	         
+	              
+	         </div>
+	         <div class="span6">
+	             <a href="javascript:void(0);" onclick="window.location.href='${receivableReportURL}&investorID=${investorName}'">Current Receivable</a>
+	              
 	         </div>
 	         </c:if>
 		</div>

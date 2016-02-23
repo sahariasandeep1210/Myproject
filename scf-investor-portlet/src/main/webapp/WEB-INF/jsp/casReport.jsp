@@ -8,7 +8,6 @@
   <portlet:param name="fetch" value="fetchCashReport"/>
 </portlet:actionURL>
 
-
 <portlet:renderURL var="defaultRenderURL" />
 
 <div class="container-fluid">

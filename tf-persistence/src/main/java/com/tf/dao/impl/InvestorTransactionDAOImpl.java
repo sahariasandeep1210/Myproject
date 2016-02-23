@@ -1,6 +1,7 @@
 package com.tf.dao.impl;
 
 import com.tf.dao.InvestorTransactionDAO;
+import com.tf.model.InvestorPortfolio;
 import com.tf.model.InvestorTransaction;
 
 import java.util.ArrayList;
@@ -149,6 +150,18 @@ public class InvestorTransactionDAOImpl extends BaseDAOImpl<InvestorTransaction,
 		
 		return investorTransactionList;
 	
+	}
+	public List<Long> getInvestorPortfolioId(long investorId) {
+		_log.debug("Inside getInvestorPortfolioId  ");
+		try{
+			String sql="Select inv.investor_portfolio_id from tf_investor_portfolio inv where inv.investor_id = :id";
+			List<Long> results= (List<Long>) sessionFactory.getCurrentSession().createSQLQuery(sql).setLong("id", investorId).list();
+		_log.debug("getInvestorPortfolioId  "	+ results);
+		return results;
+	} catch (RuntimeException re) {
+		_log.error("getInvestorPortfolioId failed", re);
+		throw re;
+	}
 	}
 	
 }

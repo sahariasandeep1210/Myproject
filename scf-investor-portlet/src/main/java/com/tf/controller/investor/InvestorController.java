@@ -129,6 +129,7 @@ public class InvestorController {
 		Long noOfRecords=0l;
         PaginationModel paginationModel = paginationUtil.preparePaginationModel(request);
         investorList=investorTransactionService.getInvestors(investor, paginationModel.getStartIndex(), paginationModel.getPageSize());
+        System.out.println("D12:"+investorList);
  		noOfRecords=investorTransactionService.getInvestorsCount(investor);
         paginationUtil.setPaginationInfo(noOfRecords,paginationModel);
 		model.put("paginationModel", paginationModel);
@@ -143,6 +144,17 @@ public class InvestorController {
 	
 	}
 	
+	@RenderMapping(params = "receivable=receivableReport")
+	protected ModelAndView receivableReport(ModelMap model,RenderRequest request, RenderResponse response) throws Exception {		
+        Long companyId = ParamUtil.getLong(request, "investorID"); 
+		Long investorId= investorService.getInvestorIDByCompanyId(companyId);
+		List<Long> investorPortId=investorTransactionService.getInvestorPortfolioId(investorId);
+		
+        System.out.println("investorPortId:"+investorPortId);
+		return new ModelAndView("receivableReport", model);		
+
+	}
+
 	@RenderMapping
 	protected ModelAndView renderInvestorInfo(@ModelAttribute("investorDTO")InvestorDTO  investorDTO,ModelMap model,RenderRequest request, RenderResponse response) throws Exception {		
 		_log.info("Render Investor Protfolio");
@@ -386,7 +398,6 @@ public class InvestorController {
 	}
 	@ActionMapping(params="fetch=fetchCashReport")
 	protected void fetchCashReport( ModelMap model,ActionRequest request,ActionResponse response) throws Exception {
-		System.out.println("Hi i am fetch Cash Report");
 		List<InvestorTransaction> investorList = new ArrayList<InvestorTransaction>();
 		DateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
 		Date fromDate=formatter.parse("2/1/1970");
@@ -412,6 +423,7 @@ public class InvestorController {
 		noOfRecords=investorTransactionService.getInvestorsCounts(investorId,transactionType, fromDate, toDate);
         paginationUtil.setPaginationInfo(noOfRecords,paginationModel);
         List<InvestorTransaction> invList=investorTransactionService.getInvestorTransactionByTransactionType(investorId, transactionType, fromDate, toDate,paginationModel.getStartIndex(), paginationModel.getPageSize());
+        System.out.println("DDD34:"+invList);
         model.put("invList", invList);
 		model.put("paginationModel", paginationModel);
 
@@ -420,6 +432,7 @@ public class InvestorController {
             model.put("investorList", investorList);
         }
         response.setRenderParameter("report", "casReport");
+        
 
 	}
 	
