@@ -76,10 +76,12 @@
 				<option value="">---Select---</option>
 					<option value="<%=TranscationStatus.DEPOSIT.getValue()%>" <c:if test="${ transactionType eq 'Deposit'}">selected="selected" </c:if>>Deposit</option>
 					<option value="<%=TranscationStatus.WITHDRAWAL.getValue()%>" <c:if test="${ transactionType eq 'Withdrawal'}">selected="selected" </c:if>>WithDrawal</option>
-					<option value="<%=TranscationStatus.INVESTED.getValue()%>" >Investment</option>
-					<option value="<%=TranscationStatus.REPAID.getValue()%>">Repayment</option>
-					<option value="<%=TranscationStatus.PROFIT.getValue()%>" >Profit</option>
-					<option value="<%=TranscationStatus.WHITEHALL_FEE.getValue()%>">WhiteHallFee</option>					
+					<option value="<%=TranscationStatus.ALLOTED.getValue()%>" <c:if test="${ transactionType eq 'Alloted'}">selected="selected" </c:if>>Alloted</option>
+					<option value="<%=TranscationStatus.INVESTED.getValue()%>" <c:if test="${ transactionType eq 'Invested'}">selected="selected" </c:if>>Invested</option>
+					<option value="<%=TranscationStatus.REPAID.getValue()%>" <c:if test="${ transactionType eq 'Repaid'}">selected="selected" </c:if>>Repaid</option>
+					<option value="<%=TranscationStatus.PROFIT.getValue()%>" <c:if test="${ transactionType eq 'Profit'}">selected="selected" </c:if>>Profit</option>	
+					<option value="<%=TranscationStatus.WHITEHALL_FEE.getValue()%>" <c:if test="${ transactionType eq 'Whitehall Fee'}">selected="selected" </c:if>>Whitehall Fee</option>					
+									
 			</select>
            </div>
        </div>
