@@ -386,6 +386,9 @@ public class InvestorController {
 		noOfRecords=investorTransactionService.getInvestorsCounts(investorId,transactionType, fromDate, toDate);
         paginationUtil.setPaginationInfo(noOfRecords,paginationModel);
 		model.put("paginationModel", paginationModel);
+        model.put("transactionType", transactionType);
+        model.put("from", from);
+        model.put("to", to);
 
         model.put("invList", invList);
         for(com.tf.persistance.util.InvestorDTO inv:investors){
@@ -396,9 +399,8 @@ public class InvestorController {
 
         }
        } 	
-        if(invList.isEmpty()){
-            model.put("investorList", investorList);
-        }
+        
+        
         response.setRenderParameter("render", "cashReport");
 
 	}

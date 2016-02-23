@@ -59,11 +59,11 @@
 	  <div class="row-fluid">
 	         <div class="span6">
                 <label class="span6">Select Date Range :</label>
-              <input name="fromDate" class="span9" id="fromDate" placeholder="From"/>
+              <input name="fromDate" class="span9" id="fromDate" placeholder="From" />
              </div>
 		<div class="span6">
                 
-              <input name="toDate" Class="span9" id="toDate" placeholder="To"/>
+              <input name="toDate" Class="span9" id="toDate" placeholder="To" />
                 
 	     </div>
 	  </div>
@@ -74,12 +74,12 @@
               <label class="span6">Select Transaction Type :</label>
 			<select id="transaction " name="transaction">
 				<option value="">---Select---</option>
-					<option value="<%=TranscationStatus.DEPOSIT.getValue()%>" >Deposit</option>
-					<option value="<%=TranscationStatus.WITHDRAWAL.getValue()%>" >WithDrawal</option>
+					<option value="<%=TranscationStatus.DEPOSIT.getValue()%>" <c:if test="${ transactionType eq 'Deposit'}">selected="selected" </c:if>>Deposit</option>
+					<option value="<%=TranscationStatus.WITHDRAWAL.getValue()%>" <c:if test="${ transactionType eq 'Withdrawal'}">selected="selected" </c:if>>WithDrawal</option>
 					<option value="<%=TranscationStatus.INVESTED.getValue()%>" >Investment</option>
-					<option value="<%=TranscationStatus.REPAID.getValue()%>" >Repayment</option>
+					<option value="<%=TranscationStatus.REPAID.getValue()%>">Repayment</option>
 					<option value="<%=TranscationStatus.PROFIT.getValue()%>" >Profit</option>
-					<option value="<%=TranscationStatus.WHITEHALL_FEE.getValue()%>" >WhiteHallFee</option>					
+					<option value="<%=TranscationStatus.WHITEHALL_FEE.getValue()%>">WhiteHallFee</option>					
 			</select>
            </div>
        </div>
@@ -163,6 +163,27 @@
 	       <p:paginate  paginationModel="${paginationModel}"/>
 	
 		</c:if>
+			<c:if test="${ empty invList }">
+			    <div class="table-responsive">
+			<table class="table  tablesorter table-bordered" id="cashReportTable">
+				<thead>
+					<tr>
+					    <th>Date</th>
+						<th>Transaction Type</th>
+						<th>TRADE ID</th>
+						<th>Amount</th>
+						<th>Reference</th>	
+						
+					</tr>
+				</thead>
+				<tbody>
+				      <tr>							
+ 					      <td colspan="9" align="center">No records found!</td>
+ 					 </tr>
+				</tbody>
+				</table>
+				</div>
+		    </c:if>
 	
 	</form:form>
 </div>
