@@ -1,7 +1,10 @@
 package com.tf.service.impl;
 
+import com.tf.dao.InvestorDAO;
 import com.tf.dao.InvestorTransactionDAO;
+import com.tf.model.Investor;
 import com.tf.model.InvestorTransaction;
+import com.tf.persistance.util.TranscationStatus;
 import com.tf.service.InvestorTransactionService;
 
 import java.util.Date;
@@ -15,8 +18,20 @@ public class InvestorTransactionServiceImpl implements InvestorTransactionServic
 	
 	@Autowired
 	private InvestorTransactionDAO investorTransactionDAO; 
+	
+	@Autowired
+	private InvestorDAO investorDAO; 
 
 	public void saveInvestorBalance(InvestorTransaction investorBalanceModel){
+		if(TranscationStatus.DEPOSIT.getValue().equals(investorBalanceModel.getTranscationType())){
+			Investor inv=investorDAO.findByInvestorId(investorBalanceModel.getInvestorID());
+			inv.setCashPosition(inv.getCashPosition()!=null?inv.getCashPosition().add(investorBalanceModel.getAmount()) :investorBalanceModel.getAmount());
+			investorDAO.updateInvestor(inv);
+		}else if(TranscationStatus.WITHDRAWAL.getValue().equals(investorBalanceModel.getTranscationType())){
+			Investor inv=investorDAO.findByInvestorId(investorBalanceModel.getInvestorID());
+			inv.setCashPosition(inv.getCashPosition()!=null?inv.getCashPosition().subtract(investorBalanceModel.getAmount()) :investorBalanceModel.getAmount());
+			investorDAO.updateInvestor(inv);
+		}
 		 investorTransactionDAO.saveInvestorBalance(investorBalanceModel);
 	}
 	public List<InvestorTransaction> getInvestorTransactions() {

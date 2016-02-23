@@ -90,7 +90,7 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 			throw re;
 		}
 	}
-	/* New method added for getting the trades for seller  */
+	
 	public List<SCFTrade> getScfTradesByTradeId(Long tradeId){		
 		_log.debug("Inside getScfTrades ");
 		try {

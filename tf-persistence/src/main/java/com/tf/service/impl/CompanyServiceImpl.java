@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.tf.dao.CompanyDAO;
 import com.tf.dao.UserDAO;
 import com.tf.model.Company;
+import com.tf.persistance.util.InvestorDTO;
 import com.tf.service.CompanyService;
 
 
@@ -60,9 +61,11 @@ public class CompanyServiceImpl implements CompanyService {
 	public Long getCompaniesCount(String status) {
 		return companyDAO.getCompaniesCount(status);	
 	}
+	
 	public Company  loadCompanyId(long id){
 		return companyDAO.loadCompanyId(id);
 	}
+	
 	public List<Company> getCompaniesById(Long id){
 		return companyDAO.getCompaniesById(id);
 	}
@@ -70,7 +73,8 @@ public class CompanyServiceImpl implements CompanyService {
 	public Company loadById(long id) {
 		 return companyDAO.loadById(id);
 	}
-	public List<Company> getcompanies(){
-		return companyDAO.getcompanies();
+	
+	public List<InvestorDTO> getInvestors(){
+		return companyDAO.getInvestors();
 	}
 }

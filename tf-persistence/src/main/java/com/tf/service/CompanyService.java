@@ -3,6 +3,7 @@ package com.tf.service;
 import java.util.List;
 
 import com.tf.model.Company;
+import com.tf.persistance.util.InvestorDTO;
 
 public interface CompanyService {
 	
@@ -25,9 +26,11 @@ public interface CompanyService {
 	public Long getCompaniesCount(String status) ;
 
 	public Company  loadCompanyId(long id);
+	
 	public List<Company> getCompaniesById(Long id);
 
-	public List<Company> getcompanies();
+	public List<InvestorDTO> getInvestors();
+	
 	public Company loadById(long id);
 	
 

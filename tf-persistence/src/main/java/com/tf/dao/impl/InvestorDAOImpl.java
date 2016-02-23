@@ -163,7 +163,7 @@ public class InvestorDAOImpl extends BaseDAOImpl<InvestorPortfolio, Long>   impl
 		
 	}
 	
-	private Investor findByInvestorId(long id) {
+	public Investor findByInvestorId(long id) {
 		_log.debug("getting Investor instance with id: " + id);
 		try {
 			Investor instance = (Investor) sessionFactory.getCurrentSession().get(
@@ -385,12 +385,18 @@ public class InvestorDAOImpl extends BaseDAOImpl<InvestorPortfolio, Long>   impl
 		} catch (RuntimeException re) {
 			_log.error("get failed", re);
 			throw re;
-		}
-		
-	
+		}	
 	}
 	
+	public void updateInvestor(Investor investor){
+		try {
+			sessionFactory.getCurrentSession().update(investor);			
+			_log.debug("Investor updated successful");
+		} catch (RuntimeException re) {
+			_log.error("update failed", re);
+			throw re;
+		}	
 	
-
+	}
 
 }

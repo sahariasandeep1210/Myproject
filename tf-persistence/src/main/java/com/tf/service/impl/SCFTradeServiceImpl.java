@@ -6,8 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.tf.dao.InvestorTransactionDAO;
 import com.tf.dao.SCFTradeDAO;
+import com.tf.model.InvestorTransaction;
 import com.tf.model.SCFTrade;
+import com.tf.persistance.util.TranscationStatus;
 import com.tf.service.SCFTradeService;
 
 
@@ -17,6 +20,9 @@ public class SCFTradeServiceImpl  implements SCFTradeService{
 	
 	@Autowired
 	private SCFTradeDAO scfTradeDAO;
+	
+	@Autowired
+	private InvestorTransactionDAO investorTransactionDAO;
 
 	public List<SCFTrade> getScfTrades() {
 		return scfTradeDAO.getScfTrades();
@@ -35,6 +41,15 @@ public class SCFTradeServiceImpl  implements SCFTradeService{
 	}
 	
 	public void update(SCFTrade scfTrade){
+		if("Allotment Paid".equalsIgnoreCase(scfTrade.getStatus())){
+			List<InvestorTransaction> transcations=investorTransactionDAO.getInvestorTransactionByTrade(scfTrade.getId());
+			for(InvestorTransaction investorTransaction : transcations){
+				//adding investment entries
+				investorTransaction.setId(null);
+				investorTransaction.setTranscationType(TranscationStatus.INVESTED.getValue());
+				investorTransactionDAO.saveEntity(investorTransaction);
+			}
+		}
 		scfTradeDAO.update(scfTrade);
 	}
 	public List<SCFTrade> getScfTradesByTradeId(Long tradeId){

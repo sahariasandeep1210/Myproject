@@ -104,7 +104,7 @@ public class AllotmentEngine {
 			allotment.setMarketDiscount(investor.getDiscountRate());
 			allotment.setAllotmentAmount(currentAllotment);
 			allotment.setAllotmentDate(new Date());
-			allotment.setStatus(TranscationStatus.INVESTED.getValue());			
+			allotment.setStatus(TranscationStatus.ALLOTED.getValue());			
 			//Calculate investor and Whitehall Share
 			allotment.setInvestorGrossProfit(calculateInvestorGrossProfit(currentAllotment,investor.getDiscountRate(),trade.getDuration()));
 			allotment.setWhitehallProfitShare(calculateWhiteHallShare(allotment.getInvestorGrossProfit(),investorService.getWhiteHallShare(investor.getInvestorId())));
@@ -116,7 +116,7 @@ public class AllotmentEngine {
 			invTranscation.setInvestorID(investor.getInvestorId());
 			invTranscation.setReference("Trade Allotment");
 			invTranscation.setTranscationDate(date);
-			invTranscation.setTranscationType(TranscationStatus.INVESTED.getValue());
+			invTranscation.setTranscationType(TranscationStatus.ALLOTED.getValue());
 			invTranscations.add(invTranscation);
 			
 			investorTotalGross=investorTotalGross.add(allotment.getInvestorGrossProfit());

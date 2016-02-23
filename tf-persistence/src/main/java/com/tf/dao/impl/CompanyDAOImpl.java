@@ -12,16 +12,15 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.tf.dao.CompanyDAO;
-import com.tf.model.Allotment;
 import com.tf.model.Company;
-import com.tf.model.Investor;
 import com.tf.model.User;
 import com.tf.persistance.util.CompanyStatus;
+import com.tf.persistance.util.InvestorDTO;
 
 
 @Repository
 @Transactional
-public class CompanyDAOImpl  extends BaseDAOImpl<Company, Long>   implements CompanyDAO{
+public class CompanyDAOImpl  extends BaseDAOImpl<Company, Long>   implements CompanyDAO {
 	
 	
 	public CompanyDAOImpl() {
@@ -228,25 +227,24 @@ public class CompanyDAOImpl  extends BaseDAOImpl<Company, Long>   implements Com
 		
 	}
 	@SuppressWarnings("unchecked")
-	public List<Company> getcompanies(){
-		_log.debug("Inside getcompanies  ");
-		List<Company> CompanyList=new ArrayList<Company>();
-		Company company;
-		List<Object[]> rows=new ArrayList<Object[]>();
-      
+	public List<InvestorDTO> getInvestors(){
+		_log.debug("Inside getInvestors  ");
+		List<InvestorDTO> investors=new ArrayList<InvestorDTO>();
+		InvestorDTO investorDTO;
+		List<Object[]> rows=new ArrayList<Object[]>();      
 		try{
-			String sql="select  company.idcompany,company.NAME ,inv.investor_id from  tf_investor inv ,tf_company company where inv.company_id=company.idcompany";
+			String sql="select  inv.investor_id, company.name from  tf_investor inv ,tf_company company where inv.company_id=company.idcompany";
 			Query query = sessionFactory.getCurrentSession().createSQLQuery(sql);
-		     rows=query.list();
-		     for(Object[]row:rows){
-		    	 company=new Company();
-		    	 company.setId(Long.valueOf(row[0].toString()));
-		    	 company.setName(row[1].toString());
-		    	 CompanyList.add(company);
+		    rows=query.list();
+		    for(Object[] row : rows){
+		    	 investorDTO=new InvestorDTO();
+		    	 investorDTO.setInvestorID(Long.valueOf(row[0].toString()));
+		    	 investorDTO.setName(row[1].toString());
+		    	 investors.add(investorDTO);
 		     }
-		_log.debug("getcompanies successful, result size: "
-				+ CompanyList.size());
-		return CompanyList;
+		_log.debug("getInvestors successful, result size: "
+				+ investors.size());
+		return investors;
 	} catch (RuntimeException re) {
 		_log.error("getInvestors failed", re);
 		throw re;

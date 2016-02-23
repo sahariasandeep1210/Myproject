@@ -27,7 +27,7 @@ import javax.persistence.Table;
 public class Investor  implements Serializable{
 	
 
-	private static final long serialVersionUID = 8925874161289925325L;
+	private static final long serialVersionUID = 3707331929949302107L;
 
 
 	@Id
@@ -51,7 +51,10 @@ public class Investor  implements Serializable{
 	private Date updateDate;
 	
 	@OneToMany(mappedBy = "investor",cascade=CascadeType.ALL)      
-	private Set<InvestorPortfolio> investorPortfolios;
+	private Set<InvestorPortfolio> investorPortfolios;  
+	
+	@Column(name="cash_position")
+	private BigDecimal cashPosition;
 	
 	public Investor() {
 		// TODO Auto-generated constructor stub
@@ -105,12 +108,23 @@ public class Investor  implements Serializable{
 		this.updateDate = updateDate;
 	}
 
+	public BigDecimal getCashPosition() {
+		return cashPosition;
+	}
+
+	public void setCashPosition(BigDecimal cashPosition) {
+		this.cashPosition = cashPosition;
+	}
+
 	@Override
 	public String toString() {
 		return "Investor [investorId=" + investorId + ", company=" + company
 				+ ", createDate=" + createDate + ", whitehallShare="
 				+ whitehallShare + ", updateDate=" + updateDate
-				+ ", investorPortfolios=" + investorPortfolios + "]";
-	}	
+				+ ", investorPortfolios=" + investorPortfolios
+				+ ", cashPosition=" + cashPosition + "]";
+	}
+
+	
 
 }
