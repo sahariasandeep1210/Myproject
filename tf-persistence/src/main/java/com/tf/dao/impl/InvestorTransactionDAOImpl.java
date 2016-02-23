@@ -150,5 +150,15 @@ public class InvestorTransactionDAOImpl extends BaseDAOImpl<InvestorTransaction,
 		return investorTransactionList;
 	
 	}
+	public List<InvestorTransaction> getInvestorTransactionByTrade(long tradeID) {
+		_log.debug("Inside getInvestorTransaction ");
+		try {			
+			List<InvestorTransaction>  investorTransaction = (List<InvestorTransaction>) sessionFactory.getCurrentSession().createCriteria(InvestorTransaction.class).add(Restrictions.eq("tradeID", tradeID)).list();		
+			return investorTransaction;
+		} catch (RuntimeException re) {
+			_log.error("getInvestorTransaction failed", re);
+			throw re;
+		}
+	}
 	
 }

@@ -228,7 +228,7 @@ public class CompanyDAOImpl  extends BaseDAOImpl<Company, Long>   implements Com
 		
 	}
 	@SuppressWarnings("unchecked")
-	public List<Company> getcompanies(){
+	public List<Company> getInvestors(){
 		_log.debug("Inside getcompanies  ");
 		List<Company> CompanyList=new ArrayList<Company>();
 		Company company;

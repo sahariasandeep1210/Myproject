@@ -123,7 +123,6 @@ public class InvestorServiceImpl implements InvestorService {
 	}
 
 	public List<InvestorDTO> getInvestorDetails() {
-		// TODO Auto-generated method stub
 		return investorDAO.getInvestorDetails();
 	}
 

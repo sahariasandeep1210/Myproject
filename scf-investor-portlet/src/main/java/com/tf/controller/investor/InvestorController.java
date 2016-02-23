@@ -65,7 +65,7 @@ public class InvestorController {
 	private  final static String ACTIVETAB			 		="activetab";	
 	private static final String Investor_Protfolios 		= "allinvestorprotfolios";
 	private static final String Investor_Balance 			= "investorbalance";
-	private static final String Cash_Report 			= "casReport";
+	private static final String Cash_Report 				= "casReport";
 
 
 	@Autowired
@@ -82,6 +82,7 @@ public class InvestorController {
 	
 	@Autowired
 	protected  InvestorHistoryService investorHistoryService; 
+	
 	@Autowired
 	protected InvestorTransactionService investorTransactionService;
 	
@@ -106,8 +107,7 @@ public class InvestorController {
 		_log.info("Render InvestorController");
 		List<Company> companies = null;
 		List<InvestorTransaction> investorsTransactions = null;
-
-		companies=companyService.getcompanies();
+		companies=companyService.getInvestors();
 		investorsTransactions=investorTransactionService.getInvestorTransactions();
 		model.put("investorsTransactions",investorsTransactions );
 	    model.put("companies", companies);
@@ -326,13 +326,12 @@ public class InvestorController {
 	}
 	@ActionMapping(params="getBy=getInvestorDetails")
 	protected void getInvestorDetails(ModelMap model , ActionRequest request,ActionResponse response){
-		List<InvestorTransaction> investorList = new ArrayList<InvestorTransaction>();
-        
+		List<InvestorTransaction> investorList = new ArrayList<InvestorTransaction>();        
 		Long investorId=null;
 		long companyId=ParamUtil.getLong(request, "investorName");
 		if(companyId > 0){
 			investorId= investorService.getInvestorIDByCompanyId(companyId);
-			List<InvestorTransaction> investorTransactions=investorTransactionService.getInvestorTransaction( Long.valueOf(investorId));
+			List<InvestorTransaction> investorTransactions=investorTransactionService.getInvestorTransaction(Long.valueOf(investorId));
 			Long noOfRecords=0l;
 	        PaginationModel paginationModel = paginationUtil.preparePaginationModel(request);
 	        investorList=investorTransactionService.getInvestors(investorId, paginationModel.getStartIndex(), paginationModel.getPageSize());
@@ -341,7 +340,7 @@ public class InvestorController {
 			model.put("paginationModel", paginationModel);
 			model.put("investorList", investorList);
 			model.put("investorTransactions", investorTransactions);
-			model.put("investorName", companyId);
+			model.put("investorName", companyId);			
          }
 		
         response.setRenderParameter("render", "investorBalance");

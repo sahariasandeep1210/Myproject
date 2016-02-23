@@ -5,6 +5,7 @@ public enum TranscationStatus {
 	
 	DEPOSIT("Deposit"),
 	WITHDRAWAL("Withdrawal"),
+	ALLOTED("Alloted"),
 	INVESTED("Invested"),
 	REPAID("Repaid"),
 	PROFIT("Profit"),

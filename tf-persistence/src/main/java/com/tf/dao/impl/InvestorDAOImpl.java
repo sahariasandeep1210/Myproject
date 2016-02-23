@@ -7,22 +7,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.hibernate.FetchMode;
 import org.hibernate.Query;
 import org.hibernate.Session;
-import org.hibernate.criterion.CriteriaSpecification;
-import org.hibernate.criterion.Projections;
-import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.tf.dao.InvestorDAO;
 import com.tf.dao.UserDAO;
-import com.tf.model.Allotment;
 import com.tf.model.Investor;
 import com.tf.model.InvestorPortfolio;
-import com.tf.model.SCFTrade;
 import com.tf.persistance.util.DashboardModel;
 import com.tf.persistance.util.InvestorDTO;
 import com.tf.persistance.util.InvestorProtfolioDTO;
@@ -169,7 +163,7 @@ public class InvestorDAOImpl extends BaseDAOImpl<InvestorPortfolio, Long>   impl
 		
 	}
 	
-	private Investor findByInvestorId(long id) {
+	public Investor findByInvestorId(long id) {
 		_log.debug("getting Investor instance with id: " + id);
 		try {
 			Investor instance = (Investor) sessionFactory.getCurrentSession().get(
@@ -391,12 +385,18 @@ public class InvestorDAOImpl extends BaseDAOImpl<InvestorPortfolio, Long>   impl
 		} catch (RuntimeException re) {
 			_log.error("get failed", re);
 			throw re;
-		}
-		
-	
+		}	
 	}
 	
+	public void updateInvestor(Investor investor){
+		try {
+			sessionFactory.getCurrentSession().update(investor);			
+			_log.debug("Investor updated successful");
+		} catch (RuntimeException re) {
+			_log.error("update failed", re);
+			throw re;
+		}	
 	
-
+	}
 
 }

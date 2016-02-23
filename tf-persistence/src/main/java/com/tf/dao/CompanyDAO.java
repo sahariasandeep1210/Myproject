@@ -23,7 +23,10 @@ public interface CompanyDAO extends BaseDAO<Company, Long>{
 	public List<Company> getCompanies(String companyType);
 	
 	public Long getCompaniesCount(String status);
+	
 	public Company  loadCompanyId(long id);
+	
 	public List<Company> getCompaniesById(Long id);
-	public List<Company> getcompanies();
+	
+	public List<Company> getInvestors();
 }

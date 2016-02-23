@@ -71,6 +71,6 @@ public class CompanyServiceImpl implements CompanyService {
 		 return companyDAO.loadById(id);
 	}
 	public List<Company> getcompanies(){
-		return companyDAO.getcompanies();
+		return companyDAO.getInvestors();
 	}
 }

@@ -44,8 +44,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
@@ -135,10 +138,9 @@ public class SCFTradeController {
 		SCFTrade scfTrade=null;
 		String viewName="";
 		ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);
-		List<SCFTrade> tradeList = new ArrayList<SCFTrade>();
+		List<SCFTrade> tradeList=new ArrayList<SCFTrade>();
 		
 		PermissionChecker permissionChecker = themeDisplay.getPermissionChecker();
-		List<SCFTrade> list=null;
 		
 		if(permissionChecker.isOmniadmin() ){
 			scftrades=scfTradeService.getScfTrades();
@@ -152,20 +154,19 @@ public class SCFTradeController {
 			tradeList=prepareTradeList(request,tradeList,themeDisplay,model);
 
 			String regNum= liferayUtility.getWhiteHallComapanyRegNo(request);
-			List<Invoice> registrationNumber=invoiceService.findByRegNum(regNum);
-			scftrades = new ArrayList<SCFTrade>();
-	         for(Invoice regNumber : registrationNumber){
-	        	 scfTrade=regNumber.getScfTrade();
+			List<Invoice> invoices=invoiceService.findByRegNum(regNum);
+			Set<SCFTrade> tradeSet = new LinkedHashSet<SCFTrade>();
+	         for(Invoice inv : invoices){
+	        	 scfTrade=inv.getScfTrade();
 	        	 List<SCFTrade> intrimTrades = scfTradeService.getScfTradesByTradeId(scfTrade.getId());
 	        	 for (SCFTrade trade : intrimTrades){
-	        		 scftrades.add(trade);
+	        		 tradeSet.add(trade);
 	        	 }
 	         }
 	        
-
+	        scftrades=new ArrayList<SCFTrade>(tradeSet);
 	       viewName="sellertradelist";
 		}
-		model.put("trades", scftrades);
 		model.put("trades", scftrades);
           
  
@@ -360,7 +361,6 @@ public class SCFTradeController {
 		String settingmodel=null;
 
         long searchSelection =Long.valueOf(ParamUtil.getString(request, "searchSelection",""));
-		System.out.println("userSelections::::"+searchSelection);
 		try {
 	    		
 		SCFTrade sellerList=scfTradeService.findById(searchSelection);
