@@ -61,4 +61,10 @@ public class SCFTradeServiceImpl  implements SCFTradeService{
 	public Long getScfTradesCount(Long companyID){
 		return scfTradeDAO.getScfTradesCount(companyID);
 	}
+	public Long getScfTradeCount(Long tradeId){
+		return scfTradeDAO.getScfTradeCount(tradeId);
+	}
+	public List<SCFTrade> getScfTradeList(Long tradeId,int startIndex,int pageSize){
+		return scfTradeDAO.getScfTradeList(tradeId, startIndex, pageSize);
+	}
 }

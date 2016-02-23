@@ -96,7 +96,6 @@
 		 </div>
 	</div>
 		<br>
-	      <c:if test="${not empty investorList }">
 	
 	<div class="table-responsive">
 			<table class="table  tablesorter table-bordered" id="cashReportTable">
@@ -111,84 +110,54 @@
 					</tr>
 				</thead>
 				<tbody>
-
+                      <c:choose>
                    
-				   		
-				   <c:forEach items="${investorList}" var="investorTransaction">
-				   
-						<tr>
-							<td><fmt:formatDate pattern="dd-MM-yyyy" value="${investorTransaction.transcationDate}" /></td>
-							<td>${investorTransaction.transcationType}</td>
-							<td></td>
-							<td>${investorTransaction.amount}</td>
-							<td></td>
-					   </tr>
-					</c:forEach>
-						
-				 </tbody>
-		</table>
-	</div>
-	       <p:paginate  paginationModel="${paginationModel}"/>
-	
-</c:if>
-	
-	<c:if test="${not empty invList }">
-	
-				   <div class="table-responsive">
-			<table class="table  tablesorter table-bordered" id="cashReportTable">
-				<thead>
-					<tr>
-					    <th>Date</th>
-						<th>Transaction Type</th>
-						<th>TRADE ID</th>
-						<th>Amount</th>
-						<th>Reference</th>	
-						
-					</tr>
-				</thead>
-				<tbody>
-						     <c:forEach items="${invList}" var="inv">
-				   
-						    <tr>
-							   <td><fmt:formatDate pattern="dd-MM-yyyy" value="${inv.transcationDate}" /></td>
-							    <td>${inv.transcationType}</td>
-							      <td></td>
-							     <td>${inv.amount}</td>
-							    <td></td>
-						</tr>
+                       <c:when test="${fn:length(investorList) gt 0}">
+                    
+
+						<c:forEach items="${investorList}" var="investorTransaction">
+
+							<tr>
+								<td><fmt:formatDate pattern="dd-MM-yyyy"
+										value="${investorTransaction.transcationDate}" /></td>
+								<td>${investorTransaction.transcationType}</td>
+								<td></td>
+								<td>${investorTransaction.amount}</td>
+								<td></td>
+							</tr>
 						</c:forEach>
-						
-						
+						</c:when>
+						 <c:when test="${fn:length(invList) gt 0}">
+
+
+						<c:forEach items="${invList}" var="inv">
+
+							<tr>
+								<td><fmt:formatDate pattern="dd-MM-yyyy"
+										value="${inv.transcationDate}" /></td>
+								<td>${inv.transcationType}</td>
+								<td></td>
+								<td>${inv.amount}</td>
+								<td></td>
+							</tr>
+						</c:forEach>
+						</c:when>
+					   <c:otherwise>
+
+						<tr>
+							<td colspan="9" align="center">No records found!</td>
+						</tr>
+                     </c:otherwise>
+
+              </c:choose>
 				</tbody>
+				 
 		</table>
+		
 	</div>
-	       <p:paginate  paginationModel="${paginationModel}"/>
-	
-		</c:if>
-			<c:if test="${ empty invList }">
-			    <div class="table-responsive">
-			<table class="table  tablesorter table-bordered" id="cashReportTable">
-				<thead>
-					<tr>
-					    <th>Date</th>
-						<th>Transaction Type</th>
-						<th>TRADE ID</th>
-						<th>Amount</th>
-						<th>Reference</th>	
-						
-					</tr>
-				</thead>
-				<tbody>
-				      <tr>							
- 					      <td colspan="9" align="center">No records found!</td>
- 					 </tr>
-				</tbody>
-				</table>
-				</div>
-		    </c:if>
-	
-	</form:form>
+</form:form>
 </div>
+        <p:paginate  paginationModel="${paginationModel}"/>
         
 <div class="back-actions">
     <a href="javascript:void(0);" onclick="window.location.href='${backURL}&investorID=${investorId}'"  class="btn btn-primary btn-lg">Back</a>

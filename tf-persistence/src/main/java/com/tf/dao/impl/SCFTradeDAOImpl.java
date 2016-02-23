@@ -105,6 +105,21 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 		}
 		
 	}
+	@SuppressWarnings("unchecked")
+	public List<SCFTrade> getScfTradeList(Long tradeId,int startIndex,int pageSize){		
+		_log.debug("Inside getScfTrades ");
+		try {
+			
+			List<SCFTrade> results = (List<SCFTrade>) sessionFactory.getCurrentSession().createCriteria(SCFTrade.class).add(Restrictions.eq("id", tradeId)).setFirstResult(startIndex).setMaxResults(pageSize).list();
+			_log.debug("getScfTrades successful, result size: "
+					+ results.size());
+			return results;
+		} catch (RuntimeException re) {
+			_log.error("getScfTrades failed", re);
+			throw re;
+		}
+		
+	}
 	
 	@SuppressWarnings("unchecked")
 	public List<SCFTrade> getScfTrades(Long companyID,int startIndex,int pageSize) {
@@ -120,12 +135,24 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 			throw re;
 		}
 	}
-	@SuppressWarnings("unchecked")
 	public Long getScfTradesCount(Long companyID) {
 		_log.debug("Inside getCompanies ");
 		try {
 			
 			Long resultCount = (Long) sessionFactory.getCurrentSession().createCriteria(SCFTrade.class).add(Restrictions.ne("company.id", companyID)).setProjection(Projections.rowCount()).uniqueResult();
+			_log.debug("Companies Count "	+ resultCount);
+			return resultCount;
+		} catch (RuntimeException re) {
+			_log.error("Companies Count failed", re);
+			throw re;
+		}
+	}
+	
+	public Long getScfTradeCount(Long tradeId) {
+		_log.debug("Inside getCompanies ");
+		try {
+			
+			Long resultCount = (Long) sessionFactory.getCurrentSession().createCriteria(SCFTrade.class).add(Restrictions.eq("id", tradeId)).setProjection(Projections.rowCount()).uniqueResult();
 			_log.debug("Companies Count "	+ resultCount);
 			return resultCount;
 		} catch (RuntimeException re) {

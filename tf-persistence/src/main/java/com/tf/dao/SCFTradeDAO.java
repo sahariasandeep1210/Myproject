@@ -17,5 +17,7 @@ public interface SCFTradeDAO  extends BaseDAO<SCFTrade, Serializable>{
 	public List<SCFTrade> getScfTradesByTradeId(Long tradeId);
 	public List<SCFTrade> getScfTrades(Long companyID,int startIndex,int pageSize) ;
 	public Long getScfTradesCount(Long companyID);
+	public Long getScfTradeCount(Long tradeId);
+	public List<SCFTrade> getScfTradeList(Long tradeId,int startIndex,int pageSize);
 
 }
