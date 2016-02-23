@@ -8,6 +8,7 @@ import com.liferay.portal.security.permission.PermissionChecker;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.tf.controller.investor.util.InvestorDTO;
 import com.tf.model.Company;
+import com.tf.model.Investor;
 import com.tf.model.InvestorPortfolio;
 import com.tf.model.InvestorPortfolioHistory;
 import com.tf.model.InvestorTransaction;
@@ -144,11 +145,8 @@ public class InvestorController {
 	
 	@RenderMapping(params = "receivable=receivableReport")
 	protected ModelAndView receivableReport(ModelMap model,RenderRequest request, RenderResponse response) throws Exception {		
-        Long companyId = ParamUtil.getLong(request, "investorID"); 
-		Long investorId= investorService.getInvestorIDByCompanyId(companyId);
+        Long investorId = ParamUtil.getLong(request, "investorID"); 
 		List<Long> investorPortId=investorTransactionService.getInvestorPortfolioId(investorId);
-		
-        System.out.println("investorPortId:"+investorPortId);
 		return new ModelAndView("receivableReport", model);		
 
 	}
@@ -168,10 +166,12 @@ public class InvestorController {
 	@ActionMapping(params="page=cashBack")
 	protected void pageBack(ModelMap model,
 			ActionRequest request, ActionResponse response){
-		
-		List<InvestorTransaction> investorList = new ArrayList<InvestorTransaction>();
+		List<com.tf.persistance.util.InvestorDTO> investors = null;
 
+		List<InvestorTransaction> investorList = new ArrayList<InvestorTransaction>();
+        investors=companyService.getInvestors();
         Long investorID = ParamUtil.getLong(request, "investorID"); 
+       
         if(investorID > 0){
     		Long noOfRecords=0l;
             PaginationModel paginationModel = paginationUtil.preparePaginationModel(request);
@@ -182,7 +182,16 @@ public class InvestorController {
             model.put("investorList", investorList);
 		    model.put("investorID", investorID);
 		    model.put(ACTIVETAB, Investor_Balance);
+		   
         }
+        for(com.tf.persistance.util.InvestorDTO inv:investors){
+        	if(inv.getInvestorID()==investorID){
+                model.put("investorID", inv.getInvestorID());
+
+        }
+       } 	
+        
+        
         response.setRenderParameter("render", "investorBalance");
 	}
 
@@ -190,18 +199,26 @@ public class InvestorController {
 	protected ModelAndView renderSingleTrade(ModelMap model,
 			RenderRequest request, RenderResponse response){
 		List<InvestorTransaction> investorList = new ArrayList<InvestorTransaction>();
+		List<com.tf.persistance.util.InvestorDTO> investors = null;
+        investors=companyService.getInvestors();
         Long investorID = ParamUtil.getLong(request, "investorID"); 
 		if(investorID > 0){		
-		List<InvestorTransaction> investorTransactions=investorTransactionService.getInvestorTransaction( Long.valueOf(investorID));
 		Long noOfRecords=0l;
         PaginationModel paginationModel = paginationUtil.preparePaginationModel(request);
         investorList=investorTransactionService.getInvestors(investorID, paginationModel.getStartIndex(), paginationModel.getPageSize());
  		noOfRecords=investorTransactionService.getInvestorsCount(investorID);
+ 		System.out.println("noOfRecordsss"+noOfRecords);
         paginationUtil.setPaginationInfo(noOfRecords,paginationModel);
 		model.put("paginationModel", paginationModel);
         model.put("investorList", investorList);
-        model.put("investorTransactions", investorTransactions);
 	    model.put("investorID", investorID);
+	    for(com.tf.persistance.util.InvestorDTO inv:investors){
+        	if(inv.getInvestorID()==investorID){
+                model.put("companyname", inv.getName());
+                model.put("investorId", inv.getInvestorID());
+
+        }
+       } 	
 
 		}
 		return new ModelAndView("cashReport",model);
@@ -329,7 +346,6 @@ public class InvestorController {
 		List<InvestorTransaction> investorList = new ArrayList<InvestorTransaction>();        
 		long investorID=ParamUtil.getLong(request, "investorID");
 		if(investorID > 0){
-			List<InvestorTransaction> investorTransactions=investorTransactionService.getInvestorTransaction(Long.valueOf(investorID));
 			Long noOfRecords=0l;
 	        PaginationModel paginationModel = paginationUtil.preparePaginationModel(request);
 	        investorList=investorTransactionService.getInvestors(investorID, paginationModel.getStartIndex(), paginationModel.getPageSize());
@@ -337,7 +353,6 @@ public class InvestorController {
 	        paginationUtil.setPaginationInfo(noOfRecords,paginationModel);
 			model.put("paginationModel", paginationModel);
 			model.put("investorList", investorList);
-			model.put("investorTransactions", investorTransactions);
 			model.put("investorID", investorID);			
          }
 		
@@ -348,13 +363,12 @@ public class InvestorController {
 	protected void getCashReport( ModelMap model,ActionRequest request,ActionResponse response) throws Exception {
 		List<InvestorTransaction> investorList = new ArrayList<InvestorTransaction>();
 		DateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
-
+		List<com.tf.persistance.util.InvestorDTO> investors = null;
+        investors=companyService.getInvestors();
 		Date fromDate=formatter.parse("2/1/1970");
 		Date toDate=new Date();
-		long companyId=ParamUtil.getLong(request, "companyId");
-		Company company=companyService.findById(companyId);
+		long investorId=ParamUtil.getLong(request, "investorID");
 		String transactionType=ParamUtil.getString(request, "transaction");
-		Long investorId=investorService.getInvestorIDByCompanyId(companyId);
         String from=ParamUtil.getString(request, "fromDate");
         String to=ParamUtil.getString(request, "toDate");
         if(!StringUtils.isEmpty(from)){
@@ -374,7 +388,14 @@ public class InvestorController {
 		model.put("paginationModel", paginationModel);
 
         model.put("invList", invList);
-        model.put("companyname", company);
+        for(com.tf.persistance.util.InvestorDTO inv:investors){
+        	if(inv.getInvestorID()==investorId){
+                model.put("companyname", inv.getName());
+                model.put("investorId", inv.getInvestorID());
+
+
+        }
+       } 	
         if(invList.isEmpty()){
             model.put("investorList", investorList);
         }
@@ -388,8 +409,9 @@ public class InvestorController {
 		Date fromDate=formatter.parse("2/1/1970");
 		Date toDate=new Date();
 		ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);
-        long companyId=userService.getCompanybyUserID(themeDisplay.getUserId()).getId();		
-        Company company=companyService.findById(companyId);
+		long companyId=ParamUtil.getLong(request, "companyId");
+/*        long companyId=userService.getCompanybyUserID(themeDisplay.getUserId()).getId();		
+*/      Company company=companyService.findById(companyId);
 		Long investorId=investorService.getInvestorIDByCompanyId(companyId);
         String transactionType=ParamUtil.getString(request, "transaction");
         String from=ParamUtil.getString(request, "fromDate");
@@ -411,7 +433,6 @@ public class InvestorController {
         System.out.println("DDD34:"+invList);
         model.put("invList", invList);
 		model.put("paginationModel", paginationModel);
-
         model.put("companyname", company);
         if(invList.isEmpty()){
             model.put("investorList", investorList);

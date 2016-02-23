@@ -15,8 +15,7 @@
 <portlet:param name="render" value="cashReport"/>
 </portlet:renderURL>
 
-<portlet:renderURL var="defaultRenderURL">
-</portlet:renderURL>
+
 <div class="container-fluid">
 
 <form:form method="post" commandName="cashReportModel"
@@ -24,14 +23,15 @@
 		      <input type="hidden" value="${getCashURL}" id="getCashReports" />
 		      <input type="hidden" name="curentPage"  id="curentPage"   value="${paginationModel.currentPage}" />
 		      <input type="hidden" name="noOfRecords"  id="noOfRecords"   value="${paginationModel.noOfRecords}" />
-		      <input type="hidden" name="defaultCashURL"   id="defaultCashURL" 	  value="${defaultRenderURL}" />
+		      <input type="hidden" name="defaultCashURL"   id="defaultCashURL" 	  value="${cashURL}" />
+		      <input type="hidden" name="investorID" value="${investorId}">
 		      
 		      
-		      <input type="hidden" name="companyId" value="${companyname.id}">
-       		<div class="row-fluid">
+		      
+		      <div class="row-fluid">
        		 <div class="span6">
 				<label class="span6">Investor Name:</label>
-				   ${companyname.name} 
+				   ${companyname} 
 	          </div>
 	         
        </div>
@@ -94,7 +94,7 @@
 		 </div>
 	</div>
 		<br>
-	      <c:if test="${fn:length(investorList) gt 0}">
+	      <c:if test="${not empty investorList }">
 	
 	<div class="table-responsive">
 			<table class="table  tablesorter table-bordered" id="cashReportTable">
@@ -130,7 +130,7 @@
 	
 </c:if>
 	
-	<c:if test="${fn:length(invList) gt 0}">
+	<c:if test="${not empty invList }">
 	
 				   <div class="table-responsive">
 			<table class="table  tablesorter table-bordered" id="cashReportTable">
@@ -168,5 +168,5 @@
 </div>
         
 <div class="back-actions">
-    <a href="javascript:void(0);" onclick="window.location.href='${backURL}&investorID=${companyname.id}'"  class="btn btn-primary btn-lg">Back</a>
+    <a href="javascript:void(0);" onclick="window.location.href='${backURL}&investorID=${investorId}'"  class="btn btn-primary btn-lg">Back</a>
 </div>

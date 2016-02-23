@@ -16,7 +16,6 @@
 <portlet:actionURL var="getInvestorDetailsURL">
   <portlet:param name="getBy" value="getInvestorDetails"/>
 </portlet:actionURL>
-<portlet:renderURL var="defaultRenderURL" />
 
 
 <div class="alert alert-danger" id="errorMsg"><i class="icon-remove-sign icon-2"></i> </div>
@@ -54,17 +53,20 @@
 	             <a href="javascript:void(0);" onclick="window.location.href='${cashReportURL}&investorID=${investorID}'">Cash Report</a>
 	              
 	         </div>
-	         <div class="span6">
-	             <a href="javascript:void(0);" onclick="window.location.href='${receivableReportURL}&investorID=${investorName}'">Current Receivable</a>
-	              
 	         
-	         </div>
 	         </c:if>
 		</div>
 		<div class="row-fluid">
 			<div class="span6">
 				<label class="span6">Receivables Position:</label>
 			</div>
+		   <c:if test="${not empty investorID}">
+			
+			<div class="span6">
+	             <a href="javascript:void(0);" onclick="window.location.href='${receivableReportURL}&investorID=${investorID}'">Current Receivable</a>
+	              
+	        </div>
+	        </c:if>
 		</div>
 		<div class="row-fluid">
 			<div class="span6">
