@@ -105,12 +105,12 @@ public class InvestorController {
 	@RenderMapping(params = "render=investorBalance")
 	protected ModelAndView renderinvestorbalance(@ModelAttribute("investorBalanceModel")InvestorTransaction  investorBalanceModel,ModelMap model,RenderRequest request, RenderResponse response) throws Exception {		
 		_log.info("Render InvestorController");
-		List<Company> companies = null;
+		List<com.tf.persistance.util.InvestorDTO> investors = null;
 		List<InvestorTransaction> investorsTransactions = null;
-		companies=companyService.getInvestors();
+		investors=companyService.getInvestors();
 		investorsTransactions=investorTransactionService.getInvestorTransactions();
 		model.put("investorsTransactions",investorsTransactions );
-	    model.put("companies", companies);
+	    model.put("investors", investors);
 		model.put(ACTIVETAB, Investor_Balance);
 	    return new ModelAndView(Investor_Balance, model);		
 	}
@@ -125,7 +125,6 @@ public class InvestorController {
 
 		Company company=companyService.findById(companyId);
 		Long investor= investorService.getInvestorIDByCompanyId(companyId);
-		List<InvestorTransaction> investorTransactions=investorTransactionService.getInvestorTransaction( Long.valueOf(investor));
 		Long noOfRecords=0l;
         PaginationModel paginationModel = paginationUtil.preparePaginationModel(request);
         investorList=investorTransactionService.getInvestors(investor, paginationModel.getStartIndex(), paginationModel.getPageSize());
@@ -134,7 +133,6 @@ public class InvestorController {
 		model.put("paginationModel", paginationModel);
         model.put("companyname", company);
         model.put("investorList", investorList);
-        model.put("investorTransactions", investorTransactions);
 		model.put(ACTIVETAB, Cash_Report);
 
 		}
@@ -161,20 +159,16 @@ public class InvestorController {
 		
 		List<InvestorTransaction> investorList = new ArrayList<InvestorTransaction>();
 
-        Long companyId = ParamUtil.getLong(request, "investorID"); 
-        if(companyId > 0){
-
-    		Company company=companyService.findById(companyId);
-    		Long investor= investorService.getInvestorIDByCompanyId(companyId);
+        Long investorID = ParamUtil.getLong(request, "investorID"); 
+        if(investorID > 0){
     		Long noOfRecords=0l;
             PaginationModel paginationModel = paginationUtil.preparePaginationModel(request);
-            investorList=investorTransactionService.getInvestors(investor, paginationModel.getStartIndex(), paginationModel.getPageSize());
-     		noOfRecords=investorTransactionService.getInvestorsCount(investor);
+            investorList=investorTransactionService.getInvestors(investorID, paginationModel.getStartIndex(), paginationModel.getPageSize());
+     		noOfRecords=investorTransactionService.getInvestorsCount(investorID);
             paginationUtil.setPaginationInfo(noOfRecords,paginationModel);
     		model.put("paginationModel", paginationModel);
-            model.put("companyname", company);
             model.put("investorList", investorList);
-		    model.put("investorName", companyId);
+		    model.put("investorID", investorID);
 		    model.put(ACTIVETAB, Investor_Balance);
         }
         response.setRenderParameter("render", "investorBalance");
@@ -184,22 +178,18 @@ public class InvestorController {
 	protected ModelAndView renderSingleTrade(ModelMap model,
 			RenderRequest request, RenderResponse response){
 		List<InvestorTransaction> investorList = new ArrayList<InvestorTransaction>();
-        Long companyId = ParamUtil.getLong(request, "investorID"); 
-		if(companyId > 0){
-
-		Company company=companyService.findById(companyId);
-		Long investor= investorService.getInvestorIDByCompanyId(companyId);
-		List<InvestorTransaction> investorTransactions=investorTransactionService.getInvestorTransaction( Long.valueOf(investor));
+        Long investorID = ParamUtil.getLong(request, "investorID"); 
+		if(investorID > 0){		
+		List<InvestorTransaction> investorTransactions=investorTransactionService.getInvestorTransaction( Long.valueOf(investorID));
 		Long noOfRecords=0l;
         PaginationModel paginationModel = paginationUtil.preparePaginationModel(request);
-        investorList=investorTransactionService.getInvestors(investor, paginationModel.getStartIndex(), paginationModel.getPageSize());
- 		noOfRecords=investorTransactionService.getInvestorsCount(investor);
+        investorList=investorTransactionService.getInvestors(investorID, paginationModel.getStartIndex(), paginationModel.getPageSize());
+ 		noOfRecords=investorTransactionService.getInvestorsCount(investorID);
         paginationUtil.setPaginationInfo(noOfRecords,paginationModel);
 		model.put("paginationModel", paginationModel);
-        model.put("companyname", company);
         model.put("investorList", investorList);
         model.put("investorTransactions", investorTransactions);
-	    model.put("investorName", companyId);
+	    model.put("investorID", investorID);
 
 		}
 		return new ModelAndView("cashReport",model);
@@ -304,22 +294,20 @@ public class InvestorController {
 												 ActionResponse response) throws Exception {
 		List<InvestorTransaction> investorList = new ArrayList<InvestorTransaction>();
 
-		long companyId=ParamUtil.getLong(request, "investorName");
+		Long investorID=ParamUtil.getLong(request, "investorID",0l);
 		
-		if(companyId!=0){
-
-		Long investor= investorService.getInvestorIDByCompanyId(companyId);
-        investorBalanceModel.setInvestorID(investor);
+		if(investorID!=0 ){
+        investorBalanceModel.setInvestorID(investorID);
 	    investorTransactionService.saveInvestorBalance(investorBalanceModel);
 	    Long noOfRecords=0l;
         PaginationModel paginationModel = paginationUtil.preparePaginationModel(request);
-        investorList=investorTransactionService.getInvestors(investor, paginationModel.getStartIndex(), paginationModel.getPageSize());
- 		noOfRecords=investorTransactionService.getInvestorsCount(investor);
+        investorList=investorTransactionService.getInvestors(investorID, paginationModel.getStartIndex(), paginationModel.getPageSize());
+ 		noOfRecords=investorTransactionService.getInvestorsCount(investorID);
         paginationUtil.setPaginationInfo(noOfRecords,paginationModel);
 		model.put("paginationModel", paginationModel);
 		model.put("investorList", investorList);
 		}
-	    model.put("investorName", companyId);
+	    model.put("investorID", investorID);
 
         response.setRenderParameter("render", "investorBalance");
 
@@ -327,20 +315,18 @@ public class InvestorController {
 	@ActionMapping(params="getBy=getInvestorDetails")
 	protected void getInvestorDetails(ModelMap model , ActionRequest request,ActionResponse response){
 		List<InvestorTransaction> investorList = new ArrayList<InvestorTransaction>();        
-		Long investorId=null;
-		long companyId=ParamUtil.getLong(request, "investorName");
-		if(companyId > 0){
-			investorId= investorService.getInvestorIDByCompanyId(companyId);
-			List<InvestorTransaction> investorTransactions=investorTransactionService.getInvestorTransaction(Long.valueOf(investorId));
+		long investorID=ParamUtil.getLong(request, "investorID");
+		if(investorID > 0){
+			List<InvestorTransaction> investorTransactions=investorTransactionService.getInvestorTransaction(Long.valueOf(investorID));
 			Long noOfRecords=0l;
 	        PaginationModel paginationModel = paginationUtil.preparePaginationModel(request);
-	        investorList=investorTransactionService.getInvestors(investorId, paginationModel.getStartIndex(), paginationModel.getPageSize());
-	 		noOfRecords=investorTransactionService.getInvestorsCount(investorId);
+	        investorList=investorTransactionService.getInvestors(investorID, paginationModel.getStartIndex(), paginationModel.getPageSize());
+	 		noOfRecords=investorTransactionService.getInvestorsCount(investorID);
 	        paginationUtil.setPaginationInfo(noOfRecords,paginationModel);
 			model.put("paginationModel", paginationModel);
 			model.put("investorList", investorList);
 			model.put("investorTransactions", investorTransactions);
-			model.put("investorName", companyId);			
+			model.put("investorID", investorID);			
          }
 		
         response.setRenderParameter("render", "investorBalance");

@@ -3,6 +3,7 @@ package com.tf.dao;
 import java.util.List;
 
 import com.tf.model.Company;
+import com.tf.persistance.util.InvestorDTO;
 
 public interface CompanyDAO extends BaseDAO<Company, Long>{
 	
@@ -28,5 +29,5 @@ public interface CompanyDAO extends BaseDAO<Company, Long>{
 	
 	public List<Company> getCompaniesById(Long id);
 	
-	public List<Company> getInvestors();
+	public List<InvestorDTO> getInvestors();
 }

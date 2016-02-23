@@ -4,13 +4,18 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 
 public class InvestorDTO  implements Serializable {
-	private static final long serialVersionUID = -2665768060498858807L;
+	
+	
+	private static final long serialVersionUID = -8427199293490117782L;
+	
+	
 	private Long investorID;
 	private String name;
 	private BigDecimal whitehallShare;
+	private BigDecimal cashPosition;
 	
 	public InvestorDTO() {
-		// TODO Auto-generated constructor stub
+		
 	}
 
 	public Long getInvestorID() {
@@ -37,13 +42,20 @@ public class InvestorDTO  implements Serializable {
 		this.whitehallShare = whitehallShare;
 	}
 
+	public BigDecimal getCashPosition() {
+		return cashPosition;
+	}
+
+	public void setCashPosition(BigDecimal cashPosition) {
+		this.cashPosition = cashPosition;
+	}
+
 	@Override
 	public String toString() {
 		return "InvestorDTO [investorID=" + investorID + ", name=" + name
-				+ ", whitehallShare=" + whitehallShare + "]";
+				+ ", whitehallShare=" + whitehallShare + ", cashPosition="
+				+ cashPosition + "]";
 	}
-	
-	
 	
 	
 

@@ -32,10 +32,10 @@
 		<div class="row-fluid">
           <div class="span6">
               <label class="span6">Investor Name :</label>
-			<select id="investorName " name="investorName"  onchange="this.form.submit()" >
+			<select id="investorID " name="investorID"  onchange="this.form.submit()" >
 				<option value="0">---Select---</option>
-			<c:forEach var="company" items="${companies}">
-			     <option value="${company.id}" <c:if test="${ company.id eq investorName}">selected="selected" </c:if>>${company.name}</option>
+			<c:forEach var="investor" items="${investors}">
+			     <option value="${investor.investorID}" <c:if test="${ investor.investorID eq investorID}">selected="selected" </c:if>>${investor.name}</option>
 			</c:forEach>
 			</select>
            </div>
@@ -45,10 +45,10 @@
 				<label class="span6">Cash Position:</label>
 				   
 	         </div>
-	          <c:if test="${not empty investorName}">
+	          <c:if test="${not empty investorID}">
 	         
 	         <div class="span6">
-	             <a href="javascript:void(0);" onclick="window.location.href='${cashReportURL}&investorID=${investorName}'">Cash Report</a>
+	             <a href="javascript:void(0);" onclick="window.location.href='${cashReportURL}&investorID=${investorID}'">Cash Report</a>
 	         
 	         </div>
 	         </c:if>
