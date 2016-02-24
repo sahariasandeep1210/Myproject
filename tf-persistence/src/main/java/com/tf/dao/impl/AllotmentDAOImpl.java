@@ -41,6 +41,27 @@ public class AllotmentDAOImpl extends BaseDAOImpl<Allotment, Long>   implements 
 		
 		
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Allotment> getALlotmentByPortId(long portId){
+		_log.debug("Inside getALlotmentByPortId ");
+		try {
+			
+			List<Allotment> allotmentList = (List<Allotment>)sessionFactory.getCurrentSession().createCriteria(Allotment.class).add(Restrictions.eq("investorPortfolio.investorProtId", portId)).list();
+			              
+			
+			_log.debug("getALlotmentByPortId successful, result size: "
+					+ allotmentList.size());
+			return allotmentList;
+
+		} catch (RuntimeException re) {
+			_log.error("getALlotmentByPortId failed", re);
+			throw re;
+		}
+		
+		
+		
+	}
 
 	@SuppressWarnings("unchecked")
 	public List<Allotment> groupAllotmentbyBps(long tradeID) {

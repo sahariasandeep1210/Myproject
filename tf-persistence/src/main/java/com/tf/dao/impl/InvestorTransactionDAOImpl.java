@@ -1,6 +1,7 @@
 package com.tf.dao.impl;
 
 import com.tf.dao.InvestorTransactionDAO;
+import com.tf.model.Allotment;
 import com.tf.model.InvestorPortfolio;
 import com.tf.model.InvestorTransaction;
 
@@ -151,13 +152,17 @@ public class InvestorTransactionDAOImpl extends BaseDAOImpl<InvestorTransaction,
 		return investorTransactionList;
 	
 	}
-	public List<Long> getInvestorPortfolioId(long investorId) {
+	
+	@SuppressWarnings("unchecked")
+	public List<InvestorPortfolio> getInvestorPortfolioId(long investorId) {
 		_log.debug("Inside getInvestorPortfolioId  ");
 		try{
-			String sql="Select inv.investor_portfolio_id from tf_investor_portfolio inv where inv.investor_id = :id";
-			List<Long> results= (List<Long>) sessionFactory.getCurrentSession().createSQLQuery(sql).setLong("id", investorId).list();
-		_log.debug("getInvestorPortfolioId  "	+ results);
-		return results;
+			/*String sql="Select inv.investor_portfolio_id,inv.company_id from tf_investor_portfolio inv where inv.investor_id = :id";
+			List<InvestorPortfolio> results= (List<InvestorPortfolio>) sessionFactory.getCurrentSession().createSQLQuery(sql).setLong("id", investorId).list();*/
+			List<InvestorPortfolio> InvestorPortfolioList = (List<InvestorPortfolio>)sessionFactory.getCurrentSession().createCriteria(InvestorPortfolio.class).add(Restrictions.eq("investor.id", investorId)).list();
+
+		_log.debug("getInvestorPortfolioId  "	+ InvestorPortfolioList);
+		return InvestorPortfolioList;
 	} catch (RuntimeException re) {
 		_log.error("getInvestorPortfolioId failed", re);
 		throw re;

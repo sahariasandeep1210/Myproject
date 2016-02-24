@@ -7,28 +7,35 @@ import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.security.permission.PermissionChecker;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.tf.controller.investor.util.InvestorDTO;
+import com.tf.model.Allotment;
 import com.tf.model.Company;
-import com.tf.model.Investor;
 import com.tf.model.InvestorPortfolio;
 import com.tf.model.InvestorPortfolioHistory;
 import com.tf.model.InvestorTransaction;
+import com.tf.model.SCFTrade;
 import com.tf.persistance.util.Constants;
+import com.tf.persistance.util.InvestorModelDTO;
+import com.tf.service.AllotmentService;
 import com.tf.service.CompanyService;
 import com.tf.service.InvestorHistoryService;
 import com.tf.service.InvestorService;
 import com.tf.service.InvestorTransactionService;
+import com.tf.service.SCFTradeService;
 import com.tf.service.UserService;
 import com.tf.util.PaginationUtil;
 import com.tf.util.model.PaginationModel;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
@@ -67,6 +74,11 @@ public class InvestorController {
 	private static final String Investor_Protfolios 		= "allinvestorprotfolios";
 	private static final String Investor_Balance 			= "investorbalance";
 	private static final String Cash_Report 				= "casReport";
+	private static final BigDecimal mul_Value=new BigDecimal(1.025);
+	private static final BigDecimal mul_minValue=new BigDecimal(1.025);
+	private static final BigDecimal YEAR=new BigDecimal(365/45);
+
+
 
 
 	@Autowired
@@ -77,6 +89,8 @@ public class InvestorController {
 	
 	@Autowired
 	protected  InvestorService investorService;
+	@Autowired
+	protected  AllotmentService allotmentService;
 	
 	@Autowired
 	protected  CompanyService companyService; 
@@ -87,8 +101,8 @@ public class InvestorController {
 	@Autowired
 	protected InvestorTransactionService investorTransactionService;
 	
-	
-	
+	@Autowired
+	protected SCFTradeService scfTradeService;
 	
 	@RenderMapping(params = "render=investorProtfolios")
 	protected ModelAndView renderInvestorProtfolios(@ModelAttribute("investorDTO")InvestorDTO  investorDTO,ModelMap model,RenderRequest request, RenderResponse response) throws Exception {		
@@ -145,10 +159,38 @@ public class InvestorController {
 	
 	@RenderMapping(params = "receivable=receivableReport")
 	protected ModelAndView receivableReport(ModelMap model,RenderRequest request, RenderResponse response) throws Exception {		
-        Long investorId = ParamUtil.getLong(request, "investorID"); 
-		List<Long> investorPortId=investorTransactionService.getInvestorPortfolioId(investorId);
-		return new ModelAndView("receivableReport", model);		
+		List<SCFTrade> scftrades=null;
+		List<com.tf.persistance.util.InvestorModelDTO>  dtos = null;
+		com.tf.persistance.util.InvestorModelDTO dto;
+		SCFTrade scfTrade=null;
+		Company company=null;
 
+		Long investorId = ParamUtil.getLong(request, "investorID"); 
+		List<InvestorPortfolio> investors=investorTransactionService.getInvestorPortfolioId(investorId);
+		Set<com.tf.persistance.util.InvestorModelDTO> dtos2 = new LinkedHashSet<com.tf.persistance.util.InvestorModelDTO>();
+        for(InvestorPortfolio investor:investors){
+		          List<Allotment> allotmentList=allotmentService.getALlotmentByPortId(investor.getInvestorProtId());
+			
+			for(Allotment allots:allotmentList){
+				scfTrade=allots.getScfTrade();
+				List<SCFTrade> scTrade=scfTradeService.getScfTradesByTradeId(scfTrade.getId());
+				for(SCFTrade scf:scTrade){
+					company=scf.getCompany();
+					List<Company> comp=companyService.getCompaniesById(company.getId());
+					for(Company com:comp){
+				dto = new InvestorModelDTO();
+                dto=getAllotments(dto, allots);
+                dto.setClosingDate(scf.getClosingDate());
+                dto.setName(com.getName());
+                dtos2.add(dto);
+					}
+				}
+			}
+		}
+
+        dtos=new ArrayList<com.tf.persistance.util.InvestorModelDTO>(dtos2);
+		model.put("dtos", dtos);
+		return new ModelAndView("receivableReport", model);		
 	}
 
 	@RenderMapping
@@ -361,7 +403,6 @@ public class InvestorController {
 	
 	@ActionMapping(params="cash=getCashReport")
 	protected void getCashReport( ModelMap model,ActionRequest request,ActionResponse response) throws Exception {
-		List<InvestorTransaction> investorList = new ArrayList<InvestorTransaction>();
 		DateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
 		List<com.tf.persistance.util.InvestorDTO> investors = null;
         investors=companyService.getInvestors();
@@ -381,7 +422,6 @@ public class InvestorController {
     
         Long noOfRecords=0l;
         PaginationModel paginationModel = paginationUtil.preparePaginationModel(request);
-        investorList=investorTransactionService.getInvestors(investorId, paginationModel.getStartIndex(), paginationModel.getPageSize());
         List<InvestorTransaction> invList=investorTransactionService.getInvestorTransactionByTransactionType(investorId, transactionType, fromDate, toDate,paginationModel.getStartIndex(), paginationModel.getPageSize());
 		noOfRecords=investorTransactionService.getInvestorsCounts(investorId,transactionType, fromDate, toDate);
         paginationUtil.setPaginationInfo(noOfRecords,paginationModel);
@@ -410,7 +450,6 @@ public class InvestorController {
 		DateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
 		Date fromDate=formatter.parse("2/1/1970");
 		Date toDate=new Date();
-		ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);
 		long companyId=ParamUtil.getLong(request, "companyId");
 /*        long companyId=userService.getCompanybyUserID(themeDisplay.getUserId()).getId();		
 */      Company company=companyService.findById(companyId);
@@ -543,6 +582,31 @@ public class InvestorController {
 		PermissionChecker permissionChecker = themeDisplay.getPermissionChecker();
 		return permissionChecker;	
 	}
+	private com.tf.persistance.util.InvestorModelDTO getAllotments(
+			com.tf.persistance.util.InvestorModelDTO dto, Allotment allots)
+	{
+		BigDecimal majurityGross = BigDecimal.ZERO; 
+		BigDecimal Finance = BigDecimal.ZERO; 
+		BigDecimal majurityNet = BigDecimal.ZERO; 
+		BigDecimal returnAmount = BigDecimal.ZERO; 
+		BigDecimal returns = BigDecimal.ZERO; 
+		majurityGross=allots.getAllotmentAmount().multiply(mul_Value);
+		majurityGross.setScale(2, RoundingMode.CEILING);
+		Finance=majurityGross.subtract(allots.getAllotmentAmount()).multiply(mul_minValue);
+		Finance.setScale(2, RoundingMode.CEILING);
+		majurityNet=majurityGross.subtract(Finance);
+		returnAmount=majurityNet.subtract(allots.getAllotmentAmount());
+		returns=majurityNet.subtract(allots.getAllotmentAmount()).multiply(YEAR).divide(allots.getAllotmentAmount());
+		dto.setAllotmentDate(allots.getAllotmentDate());
+        dto.setNoOfdays(allots.getNoOfdays());		
+        dto.setAllotmentAmount(allots.getAllotmentAmount());
+        dto.setMajurityGross(majurityGross);
+        dto.setFinanceFee(Finance);
+        dto.setMajurityNet(majurityNet);
+        dto.setReturnAmount(returnAmount);
+        dto.setReturns(returns);
+        return dto;
 
+	}
 	
 }

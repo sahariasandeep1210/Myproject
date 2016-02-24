@@ -3,6 +3,7 @@ package com.tf.service.impl;
 import com.tf.dao.InvestorDAO;
 import com.tf.dao.InvestorTransactionDAO;
 import com.tf.model.Investor;
+import com.tf.model.InvestorPortfolio;
 import com.tf.model.InvestorTransaction;
 import com.tf.persistance.util.TranscationStatus;
 import com.tf.service.InvestorTransactionService;
@@ -52,7 +53,7 @@ public class InvestorTransactionServiceImpl implements InvestorTransactionServic
 	public Long getInvestorsCounts(long investorId,String transactionType,Date frmDate,Date toDate){
 		return investorTransactionDAO.getInvestorsCounts(investorId,transactionType, frmDate, toDate);
 	}
-	public List<Long> getInvestorPortfolioId(long investorId){
+	public List<InvestorPortfolio> getInvestorPortfolioId(long investorId){
 		return investorTransactionDAO.getInvestorPortfolioId(investorId);
 	}
 }

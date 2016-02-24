@@ -23,21 +23,34 @@
 					</tr>
 				</thead>
 				<tbody>
-				    
+				<c:choose>
+                        <c:when test="${fn:length(dtos) gt 0}">
+                             <c:forEach items="${dtos}" var="allotment">
+				            
 						<tr>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
+							<td>${allotment.name}</td>
+                            <td><fmt:formatDate value="${allotment.allotmentDate}"
+                                            pattern="dd-MM-yyyy" /></td>
+                            <td><fmt:formatDate pattern="dd-MM-yyyy"
+                                value="${allotment.closingDate}" /></td>							
+                            <td>${allotment.noOfdays}</td>
+							<td>${allotment.allotmentAmount}</td>
+							<td>${allotment.majurityGross}</td>
+							<td>${allotment.financeFee}</td>
+							<td>${allotment.majurityNet}</td>
+							<td>${allotment.returnAmount}</td>
+							<td>${allotment.returns}</td>
+							<td>${allotment.status}</td>
 							
 						</tr>
+						</c:forEach>
+                                </c:when>
+ 					       <c:otherwise>
+ 					       <tr>							
+ 					          <td colspan="9" align="center">No records found!</td>
+ 							</tr>
+						</c:otherwise>
+					</c:choose>
 				</tbody>
 				</table>
 			

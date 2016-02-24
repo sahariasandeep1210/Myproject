@@ -1,5 +1,6 @@
 package com.tf.dao;
 
+import com.tf.model.InvestorPortfolio;
 import com.tf.model.InvestorTransaction;
 
 import java.util.Date;
@@ -20,7 +21,7 @@ public interface InvestorTransactionDAO extends BaseDAO<InvestorTransaction, Lon
 	public List<InvestorTransaction> getInvestorTransactionByTransactionType(long investorId,String transactionType,Date frmDate,Date toDate,int startIndex,int pageSize);
 	
 	public Long getInvestorsCounts(long investorId,String transactionType,Date frmDate,Date toDate);
-	public List<Long> getInvestorPortfolioId(long investorId);
+	public List<InvestorPortfolio> getInvestorPortfolioId(long investorId);
 	
 	public List<InvestorTransaction> getInvestorTransactionByTrade(long tradeID);
 }

@@ -102,6 +102,7 @@ public class SCFTradeController {
 	@Autowired
     protected LiferayUtility liferayUtility;
 	
+	
 	@Autowired
 	protected PaginationUtil paginationUtil;
 	
