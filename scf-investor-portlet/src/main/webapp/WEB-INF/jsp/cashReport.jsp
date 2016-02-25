@@ -19,7 +19,7 @@
 <div class="container-fluid">
 
 <form:form method="post" commandName="cashReportModel"
-		class="form-horizontal" name="cashReportForm" id="cashReportForm"> 
+		class="form-horizontal" autocomplete="off" name="cashReportForm" id="cashReportForm"> 
 		      <input type="hidden" value="${getCashURL}" id="getCashReports" />
 		      <input type="hidden" name="curentPage"  id="curentPage"   value="${paginationModel.currentPage}" />
 		      <input type="hidden" name="noOfRecords"  id="noOfRecords"   value="${paginationModel.noOfRecords}" />

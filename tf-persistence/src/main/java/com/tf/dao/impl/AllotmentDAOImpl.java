@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.tf.dao.AllotmentDAO;
 import com.tf.model.Allotment;
+import com.tf.model.InvestorTransaction;
 
 @Repository
 @Transactional
@@ -43,11 +44,11 @@ public class AllotmentDAOImpl extends BaseDAOImpl<Allotment, Long>   implements 
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Allotment> getALlotmentByPortId(long portId){
+	public List<Allotment> getALlotmentByPortId(long portId,int startIndex,int pageSize){
 		_log.debug("Inside getALlotmentByPortId ");
 		try {
 			
-			List<Allotment> allotmentList = (List<Allotment>)sessionFactory.getCurrentSession().createCriteria(Allotment.class).add(Restrictions.eq("investorPortfolio.investorProtId", portId)).list();
+			List<Allotment> allotmentList = (List<Allotment>)sessionFactory.getCurrentSession().createCriteria(Allotment.class).add(Restrictions.eq("investorPortfolio.investorProtId", portId)).setFirstResult(startIndex).setMaxResults(pageSize).list();
 			              
 			
 			_log.debug("getALlotmentByPortId successful, result size: "
@@ -109,6 +110,17 @@ public class AllotmentDAOImpl extends BaseDAOImpl<Allotment, Long>   implements 
 		return allotmentList;
 	}
 
-	
+	public Long getAllotsCount(long allotId) {
+		_log.debug("Inside getAllotsCount ");
+		try {
+			
+			Long resultCount = (Long) sessionFactory.getCurrentSession().createCriteria(Allotment.class).add(Restrictions.eq("allotmentId", allotId)).setProjection(Projections.rowCount()).uniqueResult();
+			_log.debug("getAllotsCount  "	+ resultCount);
+			return resultCount;
+		} catch (RuntimeException re) {
+			_log.error("getAllotsCount failed", re);
+			throw re;
+		}
+	}
 	
 }

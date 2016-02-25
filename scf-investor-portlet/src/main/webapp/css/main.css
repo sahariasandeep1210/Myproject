@@ -250,4 +250,21 @@
 
 
 
+table.addtextCenter{
+	width:90%;
+	margin: 50px 0px;
+}
+table.addtextCenter td {
+    text-align: center;
+}
+
+#exportReceivable{
+	color: #295780; 
+	font-weight: bold;
+	position: absolute;
+	right: 71px;
+}
+.total{
+	font-weight: bold;
+}
 

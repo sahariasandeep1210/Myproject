@@ -8,14 +8,23 @@ $(document).ready(function() {
 	  $('table').tablesorter();
 	  
 	  $("#exportBalances").click(function(){
-			/* window.open('data:application/vnd.ms-excel,' + $('#dvData').html());
-			 e.preventDefault();*/	
 			
 			$('#balanceListTable').tableExport({
 				type : 'excel',
 				escape : 'false',
 				fileName: 'balanceList',
 				worksheetName: 'BalanceList'
+			});
+			
+		});
+		
+	  $("#exportReceivable").click(function(){
+			
+		$('#receivableReportTable').tableExport({
+				type : 'excel',
+				escape : 'false',
+				fileName: 'ReceivableReport',
+				worksheetName: 'ReceivableReport'
 			});
 			
 		});
@@ -532,12 +541,18 @@ function setPage(pageNumber){
 	var actionUrl=$("#defaultURL").val();
 	document.forms["investorBalanceForm"].action = actionUrl;
 	document.forms["investorBalanceForm"].submit();	
-  }else{
+  }/*else if(){
 	$("#curentPage").val(pageNumber);
 	var actionUrl=$("#defaultCashURL").val();
 	document.forms["cashReportForm"].action = actionUrl;
 	document.forms["cashReportForm"].submit();	
 	
+  }*/else{
+       
+	    $("#currentPages").val(pageNumber);
+		var actionUrl=$("#defaultRenderURL").val();
+		document.forms["receivableReportForm"].action = actionUrl;
+		document.forms["receivableReportForm"].submit();	
   }
 }
 

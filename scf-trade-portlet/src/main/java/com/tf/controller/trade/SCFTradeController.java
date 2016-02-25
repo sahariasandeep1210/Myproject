@@ -44,7 +44,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -140,7 +139,9 @@ public class SCFTradeController {
 		String viewName="";
 		ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);
 		List<SCFTrade> tradeList=new ArrayList<SCFTrade>();
-		
+		Long noOfRecords=0l;
+        PaginationModel paginationModel = paginationUtil.preparePaginationModel(request);
+
 		PermissionChecker permissionChecker = themeDisplay.getPermissionChecker();
 		
 		if(permissionChecker.isOmniadmin() ){
@@ -152,19 +153,24 @@ public class SCFTradeController {
 			viewName="tradelist";
 		}else if(request.isUserInRole(Constants.SELLER_ADMIN)){
 			
-			tradeList=prepareTradeList(request,tradeList,themeDisplay,model);
 
 			String regNum= liferayUtility.getWhiteHallComapanyRegNo(request);
 			List<Invoice> invoices=invoiceService.findByRegNum(regNum);
 			Set<SCFTrade> tradeSet = new LinkedHashSet<SCFTrade>();
+
 	         for(Invoice inv : invoices){
 	        	 scfTrade=inv.getScfTrade();
-	        	 List<SCFTrade> intrimTrades = scfTradeService.getScfTradesByTradeId(scfTrade.getId());
+	        	 List<SCFTrade> intrimTrades = scfTradeService.getScfTradeList(scfTrade.getId(), paginationModel.getStartIndex(), paginationModel.getPageSize());
+        		 noOfRecords=scfTradeService.getScfTradeCount(scfTrade.getId());
+
 	        	 for (SCFTrade trade : intrimTrades){
 	        		 tradeSet.add(trade);
 	        	 }
 	         }
-	        
+    		 System.out.println("noOfRecords:"+noOfRecords);
+    	     paginationUtil.setPaginationInfo(noOfRecords,paginationModel);
+    	    model.put("paginationModel", paginationModel);
+
 	        scftrades=new ArrayList<SCFTrade>(tradeSet);
 	       viewName="sellertradelist";
 		}

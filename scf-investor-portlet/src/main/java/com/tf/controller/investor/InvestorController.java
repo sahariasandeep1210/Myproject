@@ -143,7 +143,6 @@ public class InvestorController {
 		Long noOfRecords=0l;
         PaginationModel paginationModel = paginationUtil.preparePaginationModel(request);
         investorList=investorTransactionService.getInvestors(investor, paginationModel.getStartIndex(), paginationModel.getPageSize());
-        System.out.println("D12:"+investorList);
  		noOfRecords=investorTransactionService.getInvestorsCount(investor);
         paginationUtil.setPaginationInfo(noOfRecords,paginationModel);
 		model.put("paginationModel", paginationModel);
@@ -164,14 +163,28 @@ public class InvestorController {
 		com.tf.persistance.util.InvestorModelDTO dto;
 		SCFTrade scfTrade=null;
 		Company company=null;
+		BigDecimal totalAllotAmount = BigDecimal.ZERO; 
+		BigDecimal totalMajurity = BigDecimal.ZERO; 
+		BigDecimal majurityGross = BigDecimal.ZERO; 
+		BigDecimal majurityNet = BigDecimal.ZERO; 
+		BigDecimal returnAmount = BigDecimal.ZERO; 
 
+		BigDecimal totalFinance= BigDecimal.ZERO; 
+		BigDecimal totalNet = BigDecimal.ZERO; 
+		BigDecimal totalAmount= BigDecimal.ZERO; 
+		BigDecimal Finance = BigDecimal.ZERO; 
+
+		Long noOfRecords=0l;
+        PaginationModel paginationModel = paginationUtil.preparePaginationModel(request);
 		Long investorId = ParamUtil.getLong(request, "investorID"); 
 		List<InvestorPortfolio> investors=investorTransactionService.getInvestorPortfolioId(investorId);
 		Set<com.tf.persistance.util.InvestorModelDTO> dtos2 = new LinkedHashSet<com.tf.persistance.util.InvestorModelDTO>();
         for(InvestorPortfolio investor:investors){
-		          List<Allotment> allotmentList=allotmentService.getALlotmentByPortId(investor.getInvestorProtId());
-			
+		          List<Allotment> allotmentList=allotmentService.getALlotmentByPortId(investor.getInvestorProtId(), paginationModel.getStartIndex(), paginationModel.getPageSize());
+
 			for(Allotment allots:allotmentList){
+				  noOfRecords=allotmentService.getAllotsCount(allots.getAllotmentId());
+
 				scfTrade=allots.getScfTrade();
 				List<SCFTrade> scTrade=scfTradeService.getScfTradesByTradeId(scfTrade.getId());
 				for(SCFTrade scf:scTrade){
@@ -185,10 +198,32 @@ public class InvestorController {
                 dtos2.add(dto);
 					}
 				}
+		
+			 majurityGross=allots.getAllotmentAmount().multiply(mul_Value).setScale(2, RoundingMode.CEILING);
+			 Finance=majurityGross.subtract(allots.getAllotmentAmount()).multiply(mul_minValue).setScale(2, RoundingMode.CEILING);
+
+			 majurityNet=majurityGross.subtract(Finance).setScale(2,RoundingMode.CEILING);
+			  returnAmount=majurityNet.subtract(allots.getAllotmentAmount()).setScale(2, RoundingMode.CEILING);
+
+             totalAllotAmount=totalAllotAmount.add(allots.getAllotmentAmount());
+             totalMajurity=totalMajurity.add(allots.getAllotmentAmount().multiply(mul_Value).setScale(2,RoundingMode.CEILING));
+             totalFinance=totalFinance.add(Finance);
+             totalNet=totalNet.add(majurityNet);
+             totalAmount=totalAmount.add(returnAmount);
 			}
 		}
+        System.out.println("noof:"+noOfRecords);
+        paginationUtil.setPaginationInfo(noOfRecords,paginationModel);
 
         dtos=new ArrayList<com.tf.persistance.util.InvestorModelDTO>(dtos2);
+        model.put("totalAllotAmount",totalAllotAmount);
+        model.put("totalMajurity",totalMajurity);
+        model.put("totalFinance",totalFinance);
+        model.put("totalNet",totalNet);
+        model.put("totalAmount",totalAmount);
+
+		model.put("paginationModel", paginationModel);
+
 		model.put("dtos", dtos);
 		return new ModelAndView("receivableReport", model);		
 	}
@@ -590,13 +625,12 @@ public class InvestorController {
 		BigDecimal majurityNet = BigDecimal.ZERO; 
 		BigDecimal returnAmount = BigDecimal.ZERO; 
 		BigDecimal returns = BigDecimal.ZERO; 
-		majurityGross=allots.getAllotmentAmount().multiply(mul_Value);
-		majurityGross.setScale(2, RoundingMode.CEILING);
-		Finance=majurityGross.subtract(allots.getAllotmentAmount()).multiply(mul_minValue);
-		Finance.setScale(2, RoundingMode.CEILING);
-		majurityNet=majurityGross.subtract(Finance);
-		returnAmount=majurityNet.subtract(allots.getAllotmentAmount());
-		returns=majurityNet.subtract(allots.getAllotmentAmount()).multiply(YEAR).divide(allots.getAllotmentAmount());
+        
+		majurityGross=allots.getAllotmentAmount().multiply(mul_Value).setScale(2, RoundingMode.CEILING);
+		Finance=majurityGross.subtract(allots.getAllotmentAmount()).multiply(mul_minValue).setScale(2, RoundingMode.CEILING);
+		majurityNet=majurityGross.subtract(Finance).setScale(2,RoundingMode.CEILING);
+		returnAmount=majurityNet.subtract(allots.getAllotmentAmount()).setScale(2, RoundingMode.CEILING);
+		returns=majurityNet.subtract(allots.getAllotmentAmount()).multiply(YEAR).divide(allots.getAllotmentAmount()).setScale(2,RoundingMode.HALF_UP);
 		dto.setAllotmentDate(allots.getAllotmentDate());
         dto.setNoOfdays(allots.getNoOfdays());		
         dto.setAllotmentAmount(allots.getAllotmentAmount());
@@ -606,6 +640,7 @@ public class InvestorController {
         dto.setReturnAmount(returnAmount);
         dto.setReturns(returns);
         return dto;
+        
 
 	}
 	

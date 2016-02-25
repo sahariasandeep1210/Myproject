@@ -23,8 +23,11 @@ public class AllotmentServiceImpl implements AllotmentService{
 	public List<Allotment> groupAllotmentbyBps(long tradeID){
 		return allotmentDAO.groupAllotmentbyBps(tradeID);
 	}
-	public List<Allotment> getALlotmentByPortId(long portId){
-		return allotmentDAO.getALlotmentByPortId(portId);
+	public List<Allotment> getALlotmentByPortId(long portId,int startIndex,int pageSize){
+		return allotmentDAO.getALlotmentByPortId(portId,startIndex,pageSize);
+	}
+	public Long getAllotsCount(long allotId){
+		return allotmentDAO.getAllotsCount(allotId);
 	}
 
 }
