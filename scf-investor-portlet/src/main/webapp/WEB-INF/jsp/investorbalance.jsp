@@ -9,6 +9,7 @@
 <portlet:renderURL var="cashReportURL">
     <portlet:param name="render" value="cashReport" />
 </portlet:renderURL>
+
 <portlet:renderURL var="receivableReportURL">
     <portlet:param name="receivable" value="receivableReport" />
 </portlet:renderURL>
@@ -45,7 +46,7 @@
 		<div class="row-fluid">
 			<div class="span6">
 				<label class="span6">Cash Position:</label>
-				   
+				   ${investor.cashPosition}
 	         </div>
 	          <c:if test="${not empty investorID}">
 	         
@@ -59,6 +60,7 @@
 		<div class="row-fluid">
 			<div class="span6">
 				<label class="span6">Receivables Position:</label>
+				${totalReceivablesPosition}
 			</div>
 		   <c:if test="${not empty investorID}">
 			
@@ -71,6 +73,7 @@
 		<div class="row-fluid">
 			<div class="span6">
 				<label class="span6">Total Asset Value:</label>
+				  ${totalAsset}
 			</div>
 		</div>
 		<div class="row-fluid">

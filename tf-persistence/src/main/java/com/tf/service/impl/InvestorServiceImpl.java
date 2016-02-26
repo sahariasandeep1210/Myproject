@@ -140,4 +140,7 @@ public class InvestorServiceImpl implements InvestorService {
 	public Long getInvestorIDByCompanyId(long companyId) {
 		return investorDAO.getInvestorIDByCompanyId(companyId);
 	}
+	public Investor findByInvestorId(long id){
+		return investorDAO.findByInvestorId(id);
+	}
 }

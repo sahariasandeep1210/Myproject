@@ -1,6 +1,10 @@
 <%@include file="init.jsp"%>
 <portlet:renderURL var="renderURL"/>
 
+<portlet:actionURL var="backURL">
+<portlet:param name="page" value="cashBack"/>
+</portlet:actionURL>
+
 <div class="container-fluid">
 
 <form:form method="post" commandName="receivableReportModel"
@@ -8,6 +12,8 @@
                 <input type="hidden" name="currentPages"  id="curentPages"   value="${paginationModel.currentPage}" />
                 <input type="hidden" name="noOfRecords"  id="noOfRecords"   value="${paginationModel.noOfRecords}" />
                 <input type="hidden" name="defaultRenderURL"   id="defaultRenderURL" 	  value="${renderURL}" />
+                <input type="hidden" name="investorID" value="${investorId}">
+                
                  
  
 	<div class="row-fluid">
@@ -131,4 +137,6 @@
 	</form:form>
 	</div>	
 	        <p:paginate  paginationModel="${paginationModel}"/>
-	
+	<div class="back-actions">
+    <a href="javascript:void(0);" onclick="window.location.href='${backURL}&investorID=${investorId}'"  class="btn btn-primary btn-lg">Back</a>
+</div>

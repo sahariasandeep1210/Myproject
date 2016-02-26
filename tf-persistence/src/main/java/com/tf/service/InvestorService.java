@@ -43,5 +43,6 @@ public interface InvestorService {
 	
 	public Map<String,BigDecimal>  getProtfolioTotals();
 	public Long getInvestorIDByCompanyId(long companyId);
+	public Investor findByInvestorId(long id);
 
 }

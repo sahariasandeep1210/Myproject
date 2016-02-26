@@ -38,19 +38,25 @@
 		<div class="row-fluid">
 			<div class="span6">
 				<label class="span6">Cash Position:</label>
+				   	${investor.cashPosition}
 				   
 	        </div>
 	    </div>
 	    <div class="row-fluid">
 			<div class="span6">
-				<label class="span6">Total Asset Value:</label>
-			</div>
-	    </div>
-		<div class="row-fluid">
-			<div class="span6">
 				<label class="span6">Receivables Position:</label>
+				   				${totalReceivablesPosition}
+				   
 			</div>
 		</div>
+	    <div class="row-fluid">
+			<div class="span6">
+				<label class="span6">Total Asset Value:</label>
+				    				  ${totalAsset}
+				    
+			</div>
+	    </div>
+		
 		<div class="row-fluid">
 			<div class="span6">
 				<label class="span6">Current Balance :</label>
@@ -158,6 +164,7 @@
 </form:form>
 </div>
         <p:paginate  paginationModel="${paginationModel}"/>
+        
         
 <div class="back-actions">
     <a href="javascript:void(0);" onclick="window.location.href='${backURL}&investorID=${investorId}'"  class="btn btn-primary btn-lg">Back</a>

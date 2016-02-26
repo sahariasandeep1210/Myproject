@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.tf.dao.AllotmentDAO;
 import com.tf.model.Allotment;
+import com.tf.model.Company;
 import com.tf.model.InvestorTransaction;
 
 @Repository
@@ -62,6 +63,21 @@ public class AllotmentDAOImpl extends BaseDAOImpl<Allotment, Long>   implements 
 		
 		
 		
+	}
+	@SuppressWarnings("unchecked")
+	public List<Allotment> getAllotmentByStatus(String status){
+		_log.debug("Inside getAllotmentByStatus ");
+		try {
+			
+			List<Allotment> results = (List<Allotment>) sessionFactory.getCurrentSession().createCriteria(Allotment.class)
+					.add(Restrictions.eq("status", status)).list();
+			_log.debug("getAllotmentByStatus successful, result size: "
+					+ results.size());
+			return results;
+		} catch (RuntimeException re) {
+			_log.error("getAllotmentByStatus failed", re);
+			throw re;
+		}
 	}
 
 	@SuppressWarnings("unchecked")
@@ -121,6 +137,27 @@ public class AllotmentDAOImpl extends BaseDAOImpl<Allotment, Long>   implements 
 			_log.error("getAllotsCount failed", re);
 			throw re;
 		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Allotment> getALlotmentByPortId(long portId){
+		_log.debug("Inside getALlotmentByPortId ");
+		try {
+			
+			List<Allotment> allotmentList = (List<Allotment>)sessionFactory.getCurrentSession().createCriteria(Allotment.class).add(Restrictions.eq("investorPortfolio.investorProtId", portId)).list();
+			              
+			
+			_log.debug("getALlotmentByPortId successful, result size: "
+					+ allotmentList.size());
+			return allotmentList;
+
+		} catch (RuntimeException re) {
+			_log.error("getALlotmentByPortId failed", re);
+			throw re;
+		}
+		
+		
+		
 	}
 	
 }
