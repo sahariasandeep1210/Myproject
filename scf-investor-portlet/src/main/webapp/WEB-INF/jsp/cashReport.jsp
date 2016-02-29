@@ -11,8 +11,8 @@
 </portlet:actionURL>
 
 
-<portlet:renderURL var="cashURL">
-<portlet:param name="render" value="cashReport"/>
+<portlet:renderURL var="cashReportURL">
+    <portlet:param name="render" value="cashReport" />
 </portlet:renderURL>
 
 
@@ -21,9 +21,11 @@
 <form:form method="post" commandName="cashReportModel"
 		class="form-horizontal" autocomplete="off" name="cashReportForm" id="cashReportForm"> 
 		      <input type="hidden" value="${getCashURL}" id="getCashReports" />
-		      <input type="hidden" name="curentPage"  id="curentPage"   value="${paginationModel.currentPage}" />
+		      <input type="hidden" name="currentPage"  id="currentPage"   value="${paginationModel.currentPage}" />
 		      <input type="hidden" name="noOfRecords"  id="noOfRecords"   value="${paginationModel.noOfRecords}" />
-		      <input type="hidden" name="defaultCashURL"   id="defaultCashURL" 	  value="${cashURL}" />
+		      <input type="hidden" name="defaultCashURL"   id="defaultCashURL" 	  value="${cashReportURL}" />
+		      <input type="hidden" name="getCashs"   id="getCashs" 	  value="${getCashURL}" />
+		      
 		      <input type="hidden" name="investorID" value="${investorId}">
 		      
 		      

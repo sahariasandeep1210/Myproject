@@ -3,7 +3,20 @@ $(document).ready(function() {
 	enableTab();
 	$("#createTrade").hide(); 
 	$("#requestFinance").hide();
-	
+	$("#errorMsg").hide(); 
+	 $('table').tablesorter();
+	 
+	 $("#exportInvoices").click(function(){
+			
+			$('#invoiceListTable').tableExport({
+				type : 'excel',
+				escape : 'false',
+				fileName: 'invoiceList',
+				worksheetName: 'InvoicesList'
+			});
+			
+	});
+
 	$('ul.nav-pills li a').click(function (e) {
 		  $('ul.nav-pills li.active').removeClass('active');
 		  $(this).parent('li').addClass('active');
@@ -93,8 +106,8 @@ $(document).ready(function() {
 	}); 
 	$("#invoiceback").click(function() {
 		 var url = $(this).attr('data-url');
-		 document.forms["createInvoice"].action = url;
-		document.forms["createInvoice"].submit();
+		 document.forms["createInvoiceForm"].action = url;
+		document.forms["createInvoiceForm"].submit();
 		
 	});
 	
@@ -135,6 +148,58 @@ function enableTab(){
 	}else{
 		$("#invoiceList").addClass("active");
 	}
+}
+
+$("#invoiceAdd").click(function(){
+	var error_free = true;
+	error_free = validateInvoice(error_free);
+	if (error_free) {
+		var url = $(this).attr('data-url');
+		submitInvoiceForms(url);
+	}
 	
+});
+function submitInvoiceForms(url) {
+	document.forms["createInvoiceForm"].action = url;
+	document.forms["createInvoiceForm"].submit();
+}
+
+function validateInvoice(error_free) {
+	var errormessage="Some required information is missing or incomplete. Please correct your entries and try again.";
+	var elements = [];
 	
+	elements[0] = "invoiceNumber";
+	
+	elements[1] = "invoiceDate";
+	elements[2] = "sellerRegNo";
+	elements[3] = "sellerVatNumber";
+	elements[4] = "invoiceAmount";
+	elements[5] = "vatAmount";
+	elements[6] = "duration";
+	elements[7] = "paymentDate";
+	elements[8] = "currency";
+	
+	elements[9] ="scfCompany";
+	
+	elements[10] = "dueDate";
+	elements[11] ="invoiceDesc";
+	
+	$("#errorMsg").hide();
+	$("#errorMsg").html();
+	
+	for (i = 0; i < elements.length; i++) {
+		var element = $("#" + elements[i]);
+		if(element.length){
+			var eleValue = element.val();
+			if (eleValue == '' || eleValue == null || (element.is('select') && element[0].selectedIndex == 0)) {
+				element.addClass("error_show");
+				error_free = false;
+				$("#errorMsg").show();
+				$("#errorMsg").html(errormessage);
+			} else {
+				element.removeClass("error_show");
+			}
+		}	
+	}
+	return error_free;
 }

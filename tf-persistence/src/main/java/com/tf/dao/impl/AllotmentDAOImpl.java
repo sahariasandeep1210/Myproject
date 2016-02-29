@@ -1,5 +1,8 @@
 package com.tf.dao.impl;
 
+import com.tf.dao.AllotmentDAO;
+import com.tf.model.Allotment;
+
 import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -13,11 +16,6 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.tf.dao.AllotmentDAO;
-import com.tf.model.Allotment;
-import com.tf.model.Company;
-import com.tf.model.InvestorTransaction;
 
 @Repository
 @Transactional

@@ -5,11 +5,12 @@
 
 <portlet:renderURL var="invoiceListURL"></portlet:renderURL>
 
+<div class="alert alert-danger" id="errorMsg"><i class="icon-remove-sign icon-2"></i> </div>
+
 <div class="container-fluid">
-	<form:form commandName="invoiceModel" method="post"
-		action="${createInvoiceURL}" id="createInvoice" 
-		name="createInvoice" >
-		
+	<form:form commandName="invoiceModel" method="post" id="createInvoiceForm" 
+		name="createInvoiceForm"  action="${createInvoiceURL}">
+		<input type="hidden" name="invoiceId"  value="${invoiceModel.id}">
 		<div class="span12">
 					<div class="span12" style="border-bottom: 1px solid #003d59; margin-bottom: 35px">
 						<h4 >Create Invoice</h4>
@@ -24,7 +25,8 @@
 			</div>
 			<div class="span6">
 				<label class="span6">Invoice Date:</label>
-				<form:input path="invoiceDate" cssClass="span5" id="invoiceDate" />
+				<fmt:formatDate pattern="dd-MM-yyyy" value="${invoiceModel.invoiceDate}" var="invoiceDat"/>
+				<form:input path="invoiceDate" cssClass="span5" id="invoiceDate" value="${invoiceDat}" />
 
 			</div>
 
@@ -53,7 +55,6 @@
 				<form:input path="vatAmount" cssClass="span6"  id="vatAmount"/>
 
 			</div>
-		<%-- 	--%>
 
 		</div>
 				<div class="row-fluid">
@@ -64,7 +65,8 @@
 			</div>
 			<div class="span6">
 				<label class="span6">Payment Date:</label>
-				<form:input path="paymentDate" cssClass="span5" id="paymentDate" />
+				<fmt:formatDate pattern="dd-MM-yyyy" value="${invoiceModel.paymentDate}" var="paymentDat"/>
+				<form:input path="paymentDate" cssClass="span5" id="paymentDate" value="${paymentDat}" />
 
 			</div>
 
@@ -79,7 +81,7 @@
 			<select id="scfCompany" name="scfCompany"  placeholder="SCF Company">
 				<option value="">---Select---</option>
 				<c:forEach var="company" items="${companyList}">
-					<option value="${company.id}">${company.name}</option>
+					<option value="${company.id}" <c:if test="${ company.id eq invoiceModel.companyId}">selected="selected" </c:if>>${company.name}</option>
 				</c:forEach>			
 			</select>
 			</div>	
@@ -88,7 +90,9 @@
 		<div class="row-fluid">
 				<div class="span6">
 				<label class="span6">Due Date:</label>
-				<form:input path="dueDate" cssClass="span5" id="dueDate" />
+				 <fmt:formatDate pattern="dd-MM-yyyy" value="${invoiceModel.dueDate}" var="dueDat"/>
+				
+				<form:input path="dueDate" cssClass="span5" id="dueDate" value="${dueDat}" />
 
 			</div>
 			<div class="span6">
@@ -107,19 +111,15 @@
 						<input type="button" value="Delete" class="btn btn-danger" onclick="deleteInvoice()" />
 					</c:when>
 					<c:otherwise>
-						<input type="submit" value="Add Invoice" class="btn btn-primary"
-							data-url="${saveIcreateInvoiceURLnvoiceURL}" id="invoiceAdd" />
+						<input type="button" value="Add Invoice" class="btn btn-primary"
+							data-url="${createInvoiceURL}" id="invoiceAdd" />
 							
 					</c:otherwise>
 
 				</c:choose>
 
-
 			<input type="button" value="Go Back" class="btn btn-primary"
 						data-url="${invoiceListURL}" id="invoiceback" />
-				
-
-				
 			</div>
 		</div>
 	</form:form>

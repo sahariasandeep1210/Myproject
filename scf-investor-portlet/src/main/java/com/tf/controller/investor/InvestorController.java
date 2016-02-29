@@ -332,8 +332,8 @@ public class InvestorController {
         PaginationModel paginationModel = paginationUtil.preparePaginationModel(request);
         investorList=investorTransactionService.getInvestors(investorID, paginationModel.getStartIndex(), paginationModel.getPageSize());
  		noOfRecords=investorTransactionService.getInvestorsCount(investorID);
- 		System.out.println("noOfRecordsss"+noOfRecords);
         paginationUtil.setPaginationInfo(noOfRecords,paginationModel);
+        System.out.println("Paginationsss:"+paginationModel);
 		model.put("paginationModel", paginationModel);
         model.put("investorList", investorList);
 	    model.put("investorID", investorID);
@@ -509,6 +509,8 @@ public class InvestorController {
 	        investorList=investorTransactionService.getInvestors(investorID, paginationModel.getStartIndex(), paginationModel.getPageSize());
 	 		noOfRecords=investorTransactionService.getInvestorsCount(investorID);
 	        paginationUtil.setPaginationInfo(noOfRecords,paginationModel);
+	        System.out.println("Paginationsss:"+paginationModel);
+
 			model.put("paginationModel", paginationModel);
 			model.put("investorList", investorList);
 			model.put("investorID", investorID);	
@@ -557,9 +559,6 @@ public class InvestorController {
         paginationUtil.setPaginationInfo(noOfRecords,paginationModel);
 		model.put("paginationModel", paginationModel);
         model.put("transactionType", transactionType);
-        model.put("from", from);
-        model.put("to", to);
-
         model.put("invList", invList);
         for(com.tf.persistance.util.InvestorDTO inv:investors){
         	if(inv.getInvestorID()==investorId){
@@ -572,7 +571,6 @@ public class InvestorController {
         model.put("investor", investor);
 		model.put("totalReceivablesPosition", totalReceivablesPosition);	
 		model.put("totalAsset", totalAsset);
-        
         response.setRenderParameter("render", "cashReport");
 
 	}

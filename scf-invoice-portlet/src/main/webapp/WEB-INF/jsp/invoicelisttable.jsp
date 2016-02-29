@@ -1,7 +1,26 @@
 <%@include file="init.jsp"%>
+	<portlet:renderURL var="invoiceURL">
+	    <portlet:param name="render" value="updateInvoices"/>
+	</portlet:renderURL>
+<div class="container-fluid">
+
+	<div class="row-fluid">
+       <div class="span6">
+         <div class="span12">
+          </div>
+        </div>
+         <div class="span6">
+	
+				<div class="span12">
+					<h5 style="float: right !important;">
+						<a href="javascript:;" style="color: #295780; font-weight: bold;" id="exportInvoices"> Export</a>
+					</h5>
+				</div>
+			</div>
+</div>	
 	
 	<div class="table-responsive">
-			<table class="table table-hover tablesorter table-bordered">
+			<table class="table table-hover tablesorter table-bordered"  id="invoiceListTable">
 				<thead>
 					<tr>
 					<c:if test="${defaultRender}">
@@ -39,7 +58,8 @@
 										</c:choose>
 									</td>
 								</c:if>
-								<td>${invoice.invoiceNumber}</td>
+								<td><span class='underline'><a href="javascript:void(0);"
+                                        onclick="window.location.href='${invoiceURL}&invoiceID=${invoice.id}'">${invoice.invoiceNumber}</a></span></td>
 								<td><fmt:formatDate pattern="dd-MM-yyyy" value="${invoice.invoiceDate}" /></td>
 								<td>${invoice.invoiceAmount}</td>
 								<td>${invoice.duration}</td>
@@ -58,3 +78,4 @@
 				</tbody>
 			</table>
 		</div>
+</div>		

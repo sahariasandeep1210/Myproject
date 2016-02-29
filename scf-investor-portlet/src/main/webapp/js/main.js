@@ -534,26 +534,30 @@ function ajaxindicatorstop()
     $('body').css('cursor', 'default');
 }
 
+
 function setPage(pageNumber){
-	var curentTab=$("#currentTab").val();
-	if(curentTab=='investorbalance'){
 	$("#currentPage").val(pageNumber);
 	var actionUrl=$("#defaultURL").val();
 	document.forms["investorBalanceForm"].action = actionUrl;
 	document.forms["investorBalanceForm"].submit();	
-  }/*else if(){
-	$("#curentPage").val(pageNumber);
+  
+	$("#currentPage").val(pageNumber);
 	var actionUrl=$("#defaultCashURL").val();
 	document.forms["cashReportForm"].action = actionUrl;
 	document.forms["cashReportForm"].submit();	
-	
-  }*/else{
        
-	    $("#currentPages").val(pageNumber);
-		var actionUrl=$("#defaultRenderURL").val();
-		document.forms["receivableReportForm"].action = actionUrl;
-		document.forms["receivableReportForm"].submit();	
-  }
+	 $("#currentPage").val(pageNumber);
+	var actionUrl=$("#defaultRenderURL").val();
+   document.forms["receivableReportForm"].action = actionUrl;
+   document.forms["receivableReportForm"].submit();	
+   
+   $("#currentPage").val(pageNumber);
+  var actionUrl=$("#getCashs").val();
+  document.forms["cashReportForm"].action = actionUrl;
+  document.forms["cashReportForm"].submit();	
+  
+   
+  
 }
 
 

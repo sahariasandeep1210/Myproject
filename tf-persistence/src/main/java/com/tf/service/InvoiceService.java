@@ -31,5 +31,7 @@ public interface InvoiceService {
 	public void triggerAllotment(List<String> invoiceIds,long sellerCompanyID,long userId);
 	
 	public List<Invoice> findByRegNum(String regNum);
+	
+	public List<Invoice> getInvoicesById(long id);
 
 }

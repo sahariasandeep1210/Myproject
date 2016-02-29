@@ -1,6 +1,8 @@
 package com.tf.controller.invoice;
 
 import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -17,6 +19,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.hibernate.id.insert.Binder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -47,6 +50,7 @@ import com.tf.model.Company;
 import com.tf.model.Invoice;
 import com.tf.model.InvoiceDocument;
 import com.tf.persistance.util.Constants;
+import com.tf.persistance.util.InvestorDTO;
 import com.tf.persistance.util.InvoiceStatus;
 import com.tf.service.CompanyService;
 import com.tf.service.InvoiceDocumentService;
@@ -139,6 +143,7 @@ public class InvoiceController {
 
 	private Invoice transfromInvoiceDtoToInvoiceModel(InvoiceDTO invoice) {
 		Invoice invoiceModel= new Invoice();
+		invoiceModel.setId(invoice.getId());
 		invoiceModel.setInvoiceNumber(invoice.getInvoiceNumber());
 		invoiceModel.setInvoiceDate(invoice.getInvoiceDate());
 		invoiceModel.setSellerCompanyRegistrationNumber(invoice.getSellerRegNo());
@@ -155,8 +160,38 @@ public class InvoiceController {
 		invoiceModel.setScfCompany(scfCompany);
 		return invoiceModel;
 	}
+	@RenderMapping(params = "render=updateInvoices")
+	protected ModelAndView renderupdateInvoices(
+			@ModelAttribute("invoiceModel") InvoiceDTO invoiceModel, ModelMap model,
+			RenderRequest request, RenderResponse response) throws Exception {
+		List<Company> companyList = companyService.getCompanies("5");
+		long invoiceId=ParamUtil.getLong(request, "invoiceID");
+		if(invoiceId >0){
+		List<Invoice> invoices=invoiceService.getInvoicesById(invoiceId);
+		for(Invoice invoice:invoices){
+			Company	scfCompanies=invoice.getScfCompany();
+			invoiceModel.setId(invoice.getId());
+			invoiceModel.setCompanyId(scfCompanies.getId());
+			invoiceModel.setInvoiceNumber(invoice.getInvoiceNumber());
+			invoiceModel.setInvoiceDate((invoice.getInvoiceDate()));
+			invoiceModel.setSellerRegNo(invoice.getSellerCompanyRegistrationNumber());
+			invoiceModel.setSellerVatNumber(invoice.getSellerCompanyVatNumber());
+			invoiceModel.setCurrency(invoice.getCurrency());
+			invoiceModel.setDueDate(invoice.getDueDate());
+			invoiceModel.setDuration(invoice.getDuration());
+			invoiceModel.setInvoiceAmount(invoice.getInvoiceAmount());
+			invoiceModel.setPaymentDate(invoice.getPayment_date());
+            invoiceModel.setVatAmount(invoice.getVatAmount());
+            model.put("scfCompanies", scfCompanies);
+		}
+		model.put("invoices", invoices);
 
-
+	}			
+		model.put("companyList", companyList);
+		model.put("invoiceModel", invoiceModel);
+	    return new ModelAndView("createinvoice",model);
+		
+	}
 	@RenderMapping
 	protected ModelAndView renderInvoiceList(
 			RenderRequest request, RenderResponse response,ModelMap model) throws Exception {

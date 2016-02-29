@@ -9,7 +9,7 @@
 
 <form:form method="post" commandName="receivableReportModel"
 		class="form-horizontal" name="receivableReportForm" id="receivableReportForm" autocomplete="off"> 
-                <input type="hidden" name="currentPages"  id="curentPages"   value="${paginationModel.currentPage}" />
+                <input type="hidden" name="currentPage"  id="currentPage"   value="${paginationModel.currentPage}" />
                 <input type="hidden" name="noOfRecords"  id="noOfRecords"   value="${paginationModel.noOfRecords}" />
                 <input type="hidden" name="defaultRenderURL"   id="defaultRenderURL" 	  value="${renderURL}" />
                 <input type="hidden" name="investorID" value="${investorId}">
