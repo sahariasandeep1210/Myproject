@@ -16,6 +16,7 @@ import com.tf.model.InvestorTransaction;
 import com.tf.model.SCFTrade;
 import com.tf.persistance.util.Constants;
 import com.tf.persistance.util.InvestorModelDTO;
+import com.tf.persistance.util.TranscationStatus;
 import com.tf.service.AllotmentService;
 import com.tf.service.CompanyService;
 import com.tf.service.InvestorHistoryService;
@@ -268,27 +269,20 @@ public class InvestorController {
 		BigDecimal receivablesPosition= BigDecimal.ZERO; 
 		BigDecimal totalReceivablesPosition = BigDecimal.ZERO; 
 		BigDecimal totalAsset = BigDecimal.ZERO; 
-		BigDecimal totals = BigDecimal.ZERO; 
 		List<InvestorTransaction> investorList = new ArrayList<InvestorTransaction>();
         investors=companyService.getInvestors();
         Long investorID = ParamUtil.getLong(request, "investorID"); 
        
         if(investorID > 0){
-        	Investor investor=investorService.findByInvestorId(investorID);
-			List<InvestorPortfolio> invs=investorTransactionService.getInvestorPortfolioId(investorID);
-			for(InvestorPortfolio inves:invs){
-				List<Allotment> allotments=allotmentService.getALlotmentByPortId(inves.getInvestorProtId());
-				for(Allotment allots:allotments){
-					List<Allotment> allotment=allotmentService.getAllotmentByStatus(allots.getStatus());
-					
-				 for(Allotment allot:allotment){
-					 receivablesPosition=allot.getAllotmentAmount().add(allot.getInvestorNetProfit());
-					 totalReceivablesPosition=totalReceivablesPosition.add(receivablesPosition);
-					 totals=investor.getCashPosition().add(receivablesPosition);
-					 totalAsset=totalAsset.add(totals);
-				 }
-				}
-			}
+        	Investor investor=investorService.findByInvestorId(investorID);	
+        	investor.setCashPosition(investor.getCashPosition()!=null?investor.getCashPosition():BigDecimal.ZERO);
+        	//block also needs to be optimized. right now putting quick fix for Dhanush code
+			List<Allotment> allotments=allotmentService.getAllotmentByInvestorAndStatus(investorID,TranscationStatus.INVESTED.getValue());				
+			 for(Allotment allot:allotments){
+				 receivablesPosition=allot.getAllotmentAmount().add(allot.getInvestorNetProfit());
+				 totalReceivablesPosition=totalReceivablesPosition.add(receivablesPosition);
+			 }
+			totalAsset=investor.getCashPosition().add(totalReceivablesPosition);
     		Long noOfRecords=0l;
             PaginationModel paginationModel = paginationUtil.preparePaginationModel(request);
             investorList=investorTransactionService.getInvestors(investorID, paginationModel.getStartIndex(), paginationModel.getPageSize());
@@ -320,27 +314,20 @@ public class InvestorController {
 		BigDecimal receivablesPosition= BigDecimal.ZERO; 
 		BigDecimal totalReceivablesPosition = BigDecimal.ZERO; 
 		BigDecimal totalAsset = BigDecimal.ZERO; 
-		BigDecimal totals = BigDecimal.ZERO; 
 		List<InvestorTransaction> investorList = new ArrayList<InvestorTransaction>();
 		List<com.tf.persistance.util.InvestorDTO> investors = null;
         investors=companyService.getInvestors();
         Long investorID = ParamUtil.getLong(request, "investorID"); 
 		if(investorID > 0){		
-			Investor investor=investorService.findByInvestorId(investorID);
-			List<InvestorPortfolio> invs=investorTransactionService.getInvestorPortfolioId(investorID);
-			for(InvestorPortfolio inves:invs){
-				List<Allotment> allotments=allotmentService.getALlotmentByPortId(inves.getInvestorProtId());
-				for(Allotment allots:allotments){
-					List<Allotment> allotment=allotmentService.getAllotmentByStatus(allots.getStatus());
-					
-				 for(Allotment allot:allotment){
-					 receivablesPosition=allot.getAllotmentAmount().add(allot.getInvestorNetProfit());
-					 totalReceivablesPosition=totalReceivablesPosition.add(receivablesPosition);
-					 totals=investor.getCashPosition().add(receivablesPosition);
-					 totalAsset=totalAsset.add(totals);
-				 }
-				}
-			}
+			Investor investor=investorService.findByInvestorId(investorID);	
+        	investor.setCashPosition(investor.getCashPosition()!=null?investor.getCashPosition():BigDecimal.ZERO);
+        	//block also needs to be optimized. right now putting quick fix for Dhanush code
+			List<Allotment> allotments=allotmentService.getAllotmentByInvestorAndStatus(investorID,TranscationStatus.INVESTED.getValue());				
+			 for(Allotment allot:allotments){
+				 receivablesPosition=allot.getAllotmentAmount().add(allot.getInvestorNetProfit());
+				 totalReceivablesPosition=totalReceivablesPosition.add(receivablesPosition);
+			 }
+		totalAsset=investor.getCashPosition().add(totalReceivablesPosition);
 		Long noOfRecords=0l;
         PaginationModel paginationModel = paginationUtil.preparePaginationModel(request);
         investorList=investorTransactionService.getInvestors(investorID, paginationModel.getStartIndex(), paginationModel.getPageSize());
@@ -462,19 +449,34 @@ public class InvestorController {
 												 ActionRequest request,
 												 ActionResponse response) throws Exception {
 		List<InvestorTransaction> investorList = new ArrayList<InvestorTransaction>();
-
 		Long investorID=ParamUtil.getLong(request, "investorID",0l);
 		
 		if(investorID!=0 ){
-        investorBalanceModel.setInvestorID(investorID);
-	    investorTransactionService.saveInvestorBalance(investorBalanceModel);
-	    Long noOfRecords=0l;
-        PaginationModel paginationModel = paginationUtil.preparePaginationModel(request);
-        investorList=investorTransactionService.getInvestors(investorID, paginationModel.getStartIndex(), paginationModel.getPageSize());
- 		noOfRecords=investorTransactionService.getInvestorsCount(investorID);
-        paginationUtil.setPaginationInfo(noOfRecords,paginationModel);
-		model.put("paginationModel", paginationModel);
-		model.put("investorList", investorList);
+			BigDecimal receivablesPosition= BigDecimal.ZERO; 
+			BigDecimal totalReceivablesPosition = BigDecimal.ZERO; 
+			BigDecimal totalAsset = BigDecimal.ZERO; 
+			Investor investor=investorService.findByInvestorId(investorID);	
+        	investor.setCashPosition(investor.getCashPosition()!=null?investor.getCashPosition():BigDecimal.ZERO);
+        	//block also needs to be optimized. right now putting quick fix for Dhanush code
+			List<Allotment> allotments=allotmentService.getAllotmentByInvestorAndStatus(investorID,TranscationStatus.INVESTED.getValue());				
+			 for(Allotment allot:allotments){
+				 receivablesPosition=allot.getAllotmentAmount().add(allot.getInvestorNetProfit());
+				 totalReceivablesPosition=totalReceivablesPosition.add(receivablesPosition);
+			 }
+			totalAsset=investor.getCashPosition().add(totalReceivablesPosition);
+			model.put("investor", investor);
+			model.put("totalReceivablesPosition", totalReceivablesPosition);	
+			model.put("totalAsset", totalAsset);
+				
+	        investorBalanceModel.setInvestorID(investorID);
+		    investorTransactionService.saveInvestorBalance(investorBalanceModel);
+		    Long noOfRecords=0l;
+	        PaginationModel paginationModel = paginationUtil.preparePaginationModel(request);
+	        investorList=investorTransactionService.getInvestors(investorID, paginationModel.getStartIndex(), paginationModel.getPageSize());
+	 		noOfRecords=investorTransactionService.getInvestorsCount(investorID);
+	        paginationUtil.setPaginationInfo(noOfRecords,paginationModel);
+			model.put("paginationModel", paginationModel);
+			model.put("investorList", investorList);
 		}
 	    model.put("investorID", investorID);
 
@@ -486,27 +488,21 @@ public class InvestorController {
 		BigDecimal receivablesPosition= BigDecimal.ZERO; 
 		BigDecimal totalReceivablesPosition = BigDecimal.ZERO; 
 		BigDecimal totalAsset = BigDecimal.ZERO; 
-		BigDecimal totals = BigDecimal.ZERO; 
 
 
 		List<InvestorTransaction> investorList = new ArrayList<InvestorTransaction>();        
 		long investorID=ParamUtil.getLong(request, "investorID");
 		if(investorID > 0){
-			Investor investor=investorService.findByInvestorId(investorID);
-			List<InvestorPortfolio> investors=investorTransactionService.getInvestorPortfolioId(investorID);
-			for(InvestorPortfolio inves:investors){
-				List<Allotment> allotments=allotmentService.getALlotmentByPortId(inves.getInvestorProtId());
-				for(Allotment allots:allotments){
-					List<Allotment> allotment=allotmentService.getAllotmentByStatus(allots.getStatus());
-					
-				 for(Allotment allot:allotment){
-					 receivablesPosition=allot.getAllotmentAmount().add(allot.getInvestorNetProfit());
-					 totalReceivablesPosition=totalReceivablesPosition.add(receivablesPosition);
-					 totals=investor.getCashPosition().add(receivablesPosition);
-					 totalAsset=totalAsset.add(totals);
-				 }
-				}
-			}
+			Investor investor=investorService.findByInvestorId(investorID);	
+        	investor.setCashPosition(investor.getCashPosition()!=null?investor.getCashPosition():BigDecimal.ZERO);
+        	//block also needs to be optimized. right now putting quick fix for Dhanush code
+			List<Allotment> allotments=allotmentService.getAllotmentByInvestorAndStatus(investorID,TranscationStatus.INVESTED.getValue());				
+			 for(Allotment allot:allotments){
+				 receivablesPosition=allot.getAllotmentAmount().add(allot.getInvestorNetProfit());
+				 totalReceivablesPosition=totalReceivablesPosition.add(receivablesPosition);
+				
+			 }
+			totalAsset=investor.getCashPosition().add(totalReceivablesPosition);
 			Long noOfRecords=0l;
 	        PaginationModel paginationModel = paginationUtil.preparePaginationModel(request);
 	        investorList=investorTransactionService.getInvestors(investorID, paginationModel.getStartIndex(), paginationModel.getPageSize());
@@ -528,7 +524,6 @@ public class InvestorController {
 		BigDecimal receivablesPosition= BigDecimal.ZERO; 
 		BigDecimal totalReceivablesPosition = BigDecimal.ZERO; 
 		BigDecimal totalAsset = BigDecimal.ZERO; 
-		BigDecimal totals = BigDecimal.ZERO; 
 		DateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
 		List<com.tf.persistance.util.InvestorDTO> investors = null;
         investors=companyService.getInvestors();
@@ -545,21 +540,15 @@ public class InvestorController {
             toDate=formatter.parse(to);
        }
         
-        Investor investor=investorService.findByInvestorId(investorId);
-		List<InvestorPortfolio> invs=investorTransactionService.getInvestorPortfolioId(investorId);
-		for(InvestorPortfolio inves:invs){
-			List<Allotment> allotments=allotmentService.getALlotmentByPortId(inves.getInvestorProtId());
-			for(Allotment allots:allotments){
-				List<Allotment> allotment=allotmentService.getAllotmentByStatus(allots.getStatus());
-				
-			 for(Allotment allot:allotment){
+        	Investor investor=investorService.findByInvestorId(investorId);	
+        	investor.setCashPosition(investor.getCashPosition()!=null?investor.getCashPosition():BigDecimal.ZERO);
+        	//block also needs to be optimized. right now putting quick fix for Dhanush code
+			List<Allotment> allotments=allotmentService.getAllotmentByInvestorAndStatus(investorId,TranscationStatus.INVESTED.getValue());				
+			 for(Allotment allot:allotments){
 				 receivablesPosition=allot.getAllotmentAmount().add(allot.getInvestorNetProfit());
 				 totalReceivablesPosition=totalReceivablesPosition.add(receivablesPosition);
-				 totals=investor.getCashPosition().add(receivablesPosition);
-				 totalAsset=totalAsset.add(totals);
 			 }
-			}
-		}
+		totalAsset=investor.getCashPosition().add(totalReceivablesPosition);
         Long noOfRecords=0l;
         PaginationModel paginationModel = paginationUtil.preparePaginationModel(request);
         List<InvestorTransaction> invList=investorTransactionService.getInvestorTransactionByTransactionType(investorId, transactionType, fromDate, toDate,paginationModel.getStartIndex(), paginationModel.getPageSize());

@@ -139,6 +139,8 @@ public class CompanyController extends BaseController {
 				if (getPermissionChecker(request).isOmniadmin()
 						|| request.isUserInRole(Constants.WHITEHALL_ADMIN)){
 					company.setCompanyType(company.getCompanyType());
+				}else{
+					company.setCompanyType(cmp.getCompanyType());
 				}
 				
 			} else {
@@ -402,8 +404,16 @@ public class CompanyController extends BaseController {
 			Company cmpObject = companyService.findById(companyId);
 			companyList.add(cmpObject);
 			noOfRecords = 1l;
+		} else if (request.isUserInRole(Constants.PRIMARY_INVESTOR_ADMIN)){
+			_log.info("User is Primary Investor Admin");
+			long companyId = userService.getCompanyIDbyUserID(themeDisplay
+					.getUserId());
+			Company cmpObject = companyService.findById(companyId);
+			companyList.add(cmpObject);
+			noOfRecords = 1l;
+			
 		} else {
-			_log.info("User is Seler Admin");
+			_log.info("User is Seller Admin");
 			long companyId = userService.getCompanyIDbyUserID(themeDisplay
 					.getUserId());
 			Company cmpObject = companyService.findById(companyId);

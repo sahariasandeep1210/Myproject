@@ -312,7 +312,7 @@ public class SCFTradeController {
 		scfTrade.setInsuranceDocType(mimeType);
 		scfTrade.setUpdatDate(new Date());
 		// scfTrade.getInvoices().addAll(scfTrade.getInvoices());
-		scfTradeService.update(scfTrade);
+		scfTradeService.updateTrade(scfTrade);
 	}
 
 	@ActionMapping(params = "action=updateStatus")
@@ -322,7 +322,7 @@ public class SCFTradeController {
 		String status = ParamUtil.getString(request, "status");
 		SCFTrade scfTrade = scfTradeService.findById(tradeID);
 		scfTrade.setStatus(status);
-		scfTradeService.update(scfTrade);
+		scfTradeService.updateTrade(scfTrade);
 		System.out.println("tradeID::" + tradeID + " status " + status);
 
 	}

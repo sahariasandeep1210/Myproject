@@ -63,7 +63,7 @@
 									<td>${trade.investorTotalGross}</td>
 									<td>${trade.whitehallTotalShare}</td>
 									<td>${trade.investorTotalProfit}</td>
-									<td>${trade.sellerFees}</td>
+									<td>${trade.sellerFees + trade.sellerTransFee}</td>
 									<td>${trade.whitehallTotalProfit}</td>
 									<td>${trade.sellerNetAllotment}</td>	
 									<td>${trade.status}</td>						

@@ -1,10 +1,5 @@
 package com.tf.dao.impl;
 
-import com.tf.dao.InvestorTransactionDAO;
-import com.tf.model.Allotment;
-import com.tf.model.InvestorPortfolio;
-import com.tf.model.InvestorTransaction;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -16,6 +11,10 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
+
+import com.tf.dao.InvestorTransactionDAO;
+import com.tf.model.InvestorPortfolio;
+import com.tf.model.InvestorTransaction;
 
 @Repository
 @Transactional
@@ -157,8 +156,7 @@ public class InvestorTransactionDAOImpl extends BaseDAOImpl<InvestorTransaction,
 	public List<InvestorPortfolio> getInvestorPortfolioId(long investorId) {
 		_log.debug("Inside getInvestorPortfolioId  ");
 		try{
-			/*String sql="Select inv.investor_portfolio_id,inv.company_id from tf_investor_portfolio inv where inv.investor_id = :id";
-			List<InvestorPortfolio> results= (List<InvestorPortfolio>) sessionFactory.getCurrentSession().createSQLQuery(sql).setLong("id", investorId).list();*/
+			
 			List<InvestorPortfolio> InvestorPortfolioList = (List<InvestorPortfolio>)sessionFactory.getCurrentSession().createCriteria(InvestorPortfolio.class).add(Restrictions.eq("investor.id", investorId)).list();
 
 		_log.debug("getInvestorPortfolioId  "	+ InvestorPortfolioList);

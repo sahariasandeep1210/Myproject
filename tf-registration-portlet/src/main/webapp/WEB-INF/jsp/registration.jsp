@@ -15,7 +15,7 @@
 
 <portlet:resourceURL id="fetchCompanyDetails" var="fetchCompanyDetails" ></portlet:resourceURL> 
 
-<div class="alert alert-danger" id="errorMsg"><i class="icon-remove-sign icon-2"></i> </div>
+<div class="" id="errorMsg"><i class="icon-remove-sign icon-2"></i> </div>
 
 <liferay-ui:error 	key="error-user-email">
 	<liferay-ui:message key="user.email.error"  arguments="${registration.user.email}"></liferay-ui:message>

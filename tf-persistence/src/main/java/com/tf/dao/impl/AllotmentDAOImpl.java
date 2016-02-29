@@ -140,13 +140,14 @@ public class AllotmentDAOImpl extends BaseDAOImpl<Allotment, Long>   implements 
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Allotment> getALlotmentByPortId(long portId){
+	public List<Allotment> getAllotmentByInvestorAndStatus(long invId,String status){
 		_log.debug("Inside getALlotmentByPortId ");
 		try {
 			
-			List<Allotment> allotmentList = (List<Allotment>)sessionFactory.getCurrentSession().createCriteria(Allotment.class).add(Restrictions.eq("investorPortfolio.investorProtId", portId)).list();
-			              
-			
+			Criteria criteria  = sessionFactory.getCurrentSession().createCriteria(Allotment.class);
+			criteria.createAlias("investorPortfolio", "prot");  // here i changed 
+			criteria.createAlias("prot.investor", "investor");  //  here i have changed 			
+			List<Allotment> allotmentList=(List<Allotment>)criteria.add(Restrictions.eq("investor.investorId", invId)).add(Restrictions.eq("status", status)).list();		
 			_log.debug("getALlotmentByPortId successful, result size: "
 					+ allotmentList.size());
 			return allotmentList;

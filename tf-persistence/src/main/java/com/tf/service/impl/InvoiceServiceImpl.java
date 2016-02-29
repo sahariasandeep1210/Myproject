@@ -187,7 +187,7 @@ public class InvoiceServiceImpl implements InvoiceService{
 	
 		//now allotment is done so changing trade status to Live
 		scfTrade.setStatus(TradeStatus.LIVE.getValue());
-		scfTradeService.update(scfTrade);
+		scfTradeService.updateTrade(scfTrade);
 		
 	
 		System.out.println("************************************ ALLOTMENTS END ************************************** \n ");	

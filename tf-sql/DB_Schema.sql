@@ -488,7 +488,7 @@ CREATE TABLE tf_investor_transaction (
 ALTER TABLE tf_allotments
   ADD status    VARCHAR(100) DEFAULT NULL;
   
-ALTER TABLE CREATE TABLE tf_investor
+ALTER TABLE  tf_investor
     ADD cash_position  DECIMAL(10,2) AFTER update_date;   
 
 

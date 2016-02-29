@@ -19,7 +19,7 @@
 
 <portlet:resourceURL id="fetchOfficerInfo" var="fetchOfficerInfoURL" ></portlet:resourceURL> 
 
-<div class="alert alert-danger" id="errorMsg"><i class="icon-remove-sign icon-2"></i> </div>
+<div class="" id="errorMsg"><i class="icon-remove-sign icon-2"></i> </div>
 
 <div class="container-fluid">
 	<form:form commandName="userModel" method="post"

@@ -29,8 +29,8 @@ public class AllotmentServiceImpl implements AllotmentService{
 	public Long getAllotsCount(long allotId){
 		return allotmentDAO.getAllotsCount(allotId);
 	}
-	public List<Allotment> getALlotmentByPortId(long portId){
-		return allotmentDAO.getALlotmentByPortId(portId);
+	public List<Allotment> getAllotmentByInvestorAndStatus(long invId,String status){
+		return allotmentDAO.getAllotmentByInvestorAndStatus(invId,status);
 	}
 	public List<Allotment> getAllotmentByStatus(String status){
 		return allotmentDAO.getAllotmentByStatus(status);

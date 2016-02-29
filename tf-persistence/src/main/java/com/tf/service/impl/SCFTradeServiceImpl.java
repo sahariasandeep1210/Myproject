@@ -1,13 +1,16 @@
 package com.tf.service.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.tf.dao.AllotmentDAO;
 import com.tf.dao.InvestorTransactionDAO;
 import com.tf.dao.SCFTradeDAO;
+import com.tf.model.Allotment;
 import com.tf.model.InvestorTransaction;
 import com.tf.model.SCFTrade;
 import com.tf.persistance.util.TranscationStatus;
@@ -23,6 +26,9 @@ public class SCFTradeServiceImpl  implements SCFTradeService{
 	
 	@Autowired
 	private InvestorTransactionDAO investorTransactionDAO;
+	
+	@Autowired
+	private AllotmentDAO allotmentDAO;
 
 	public List<SCFTrade> getScfTrades() {
 		return scfTradeDAO.getScfTrades();
@@ -40,17 +46,32 @@ public class SCFTradeServiceImpl  implements SCFTradeService{
 		return scfTradeDAO.getScfTrades(companyID);		
 	}
 	
-	public void update(SCFTrade scfTrade){
-		if("Allotment Paid".equalsIgnoreCase(scfTrade.getStatus())){
+	public void updateTrade(SCFTrade scfTrade){
+		scfTradeDAO.update(scfTrade);
+		if("Allotment Paid".equalsIgnoreCase(scfTrade.getStatus())){			
 			List<InvestorTransaction> transcations=investorTransactionDAO.getInvestorTransactionByTrade(scfTrade.getId());
+			List<Allotment> allotments=allotmentDAO.getALlotmentsbyTrade(scfTrade.getId());
+			
+			//updating allotment status to Invested
+			for(Allotment allotment : allotments){
+				allotment.setStatus(TranscationStatus.INVESTED.getValue());
+				allotmentDAO.update(allotment);
+			}
+			Date date=new Date();
+			//adding transaction information
 			for(InvestorTransaction investorTransaction : transcations){
 				//adding investment entries
-				investorTransaction.setId(null);
-				investorTransaction.setTranscationType(TranscationStatus.INVESTED.getValue());
-				investorTransactionDAO.saveEntity(investorTransaction);
+				InvestorTransaction invTransaction=new InvestorTransaction();
+				invTransaction.setInvestorID(investorTransaction.getInvestorID());
+				invTransaction.setAmount(investorTransaction.getAmount());
+				invTransaction.setTranscationType(TranscationStatus.INVESTED.getValue());
+				invTransaction.setTranscationDate(date);
+				invTransaction.setTradeID(investorTransaction.getTradeID());
+				invTransaction.setReference("Invested");
+				investorTransactionDAO.saveEntity(invTransaction);
 			}
 		}
-		scfTradeDAO.update(scfTrade);
+		
 	}
 	public List<SCFTrade> getScfTradesByTradeId(Long tradeId){
 		return scfTradeDAO.getScfTradesByTradeId(tradeId);

@@ -42,7 +42,9 @@ public interface InvestorService {
 	public BigDecimal  getWhiteHallShare(long id);
 	
 	public Map<String,BigDecimal>  getProtfolioTotals();
+	
 	public Long getInvestorIDByCompanyId(long companyId);
+	
 	public Investor findByInvestorId(long id);
 
 }

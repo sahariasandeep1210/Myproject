@@ -361,15 +361,17 @@ function validateCompanyInfo(error_free) {
 	$("#errorMsg").html();
 	for (i = 0; i < elements.length; i++) {
 		var element = $("#" + elements[i]);
-		var eleValue = element.val();
-		if (eleValue == '' || eleValue == null || (element.is('select') && element[0].selectedIndex == 0)) {
-			element.addClass("error_show");
-			error_free = false;
-			$("#errorMsg").show();
-			$("#errorMsg").html(errormessage);
-		} else {
-			element.removeClass("error_show");
-		}
+		if(element.length){
+			var eleValue = element.val();
+			if (eleValue == '' || eleValue == null || (element.is('select') && element[0].selectedIndex == 0)) {
+				element.addClass("error_show");
+				error_free = false;
+				$("#errorMsg").show();
+				$("#errorMsg").html(errormessage);
+			} else {
+				element.removeClass("error_show");
+			}
+		}	
 	}
 	return error_free;
 }

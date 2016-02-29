@@ -90,10 +90,10 @@
                                     <td><fmt:formatDate pattern="dd-MM-yyyy"
                                             value="${trade.sellerPaymentDate}" /></td>
                                     <td>${trade.sellerTransFee }</td>
-                                    <td>${trade.investorTotalGross}</td>
                                     <td>${trade.sellerFees}</td>
+                                    <td>${trade.investorTotalGross}</td>
                                     <td></td>
-                                    <td>${trade.sellerNetAllotment}</td>
+                                    <td>${trade.sellerTransFee + trade.sellerFees + trade.investorTotalGross}</td>
                                     <td>${trade.sellerNetAllotment}</td>
 
                                 </tr>

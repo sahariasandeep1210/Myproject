@@ -340,6 +340,7 @@ function validateCompanyInfo(error_free) {
 	elements[8] = "companyType";
 	
 	$("#errorMsg").hide();
+	$("#errorMsg").removeClass("alert alert-danger");
 	$("#errorMsg").html();
 	for (i = 0; i < elements.length; i++) {
 		var element = $("#" + elements[i]);
@@ -348,6 +349,7 @@ function validateCompanyInfo(error_free) {
 			element.addClass("error_show");
 			error_free = false;
 			$("#errorMsg").show();
+			$("#errorMsg").addClass("alert alert-danger");
 			$("#errorMsg").html(errormessage);
 		} else {
 			element.removeClass("error_show");
@@ -366,6 +368,7 @@ function validateUserInfo(error_free){
 	elements[5] = "userTelNo";
 	
 	$("#errorMsg").hide();
+	$("#errorMsg").removeClass("alert alert-danger");
 	$("#errorMsg").html();
 	
 	for (i = 0; i < elements.length; i++) {
@@ -375,6 +378,7 @@ function validateUserInfo(error_free){
 			element.addClass("error_show");
 			error_free = false;
 			$("#errorMsg").show();
+			$("#errorMsg").addClass("alert alert-danger");
 			$("#errorMsg").html(errormessage);
 		} else {
 			element.removeClass("error_show");
