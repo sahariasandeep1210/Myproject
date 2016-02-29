@@ -57,11 +57,7 @@
 			</div>
 	    </div>
 		
-		<div class="row-fluid">
-			<div class="span6">
-				<label class="span6">Current Balance :</label>
-			</div>
-		</div>
+		
 	  <div class="row-fluid">
 	         <div class="span6">
                 <label class="span6">Select Date Range :</label>
