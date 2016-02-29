@@ -15,10 +15,17 @@ public interface SCFTradeService  {
 	public List<SCFTrade> getScfTrades(Long companyID);
 	
 	public void updateTrade(SCFTrade scfTrade);
+	
 	public List<SCFTrade> getScfTradesByTradeId(Long tradeId);
+	
 	public List<SCFTrade> getScfTrades(Long companyID,int startIndex,int pageSize) ;
+	
 	public Long getScfTradesCount(Long companyID);
+	
 	public Long getScfTradeCount(Long tradeId);
+	
 	public List<SCFTrade> getScfTradeList(Long tradeId,int startIndex,int pageSize);
+	
+	public void updateTradeLifeCycle(SCFTrade scfTrade);
 
 }

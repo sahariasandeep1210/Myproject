@@ -163,9 +163,7 @@ public class SCFTradeController {
 				List<SCFTrade> intrimTrades = scfTradeService.getScfTradeList(
 						scfTrade.getId(), paginationModel.getStartIndex(),
 						paginationModel.getPageSize());
-				noOfRecords = scfTradeService
-						.getScfTradeCount(scfTrade.getId());
-
+				noOfRecords = scfTradeService.getScfTradeCount(scfTrade.getId());
 				for (SCFTrade trade : intrimTrades) {
 					tradeSet.add(trade);
 				}
@@ -322,7 +320,7 @@ public class SCFTradeController {
 		String status = ParamUtil.getString(request, "status");
 		SCFTrade scfTrade = scfTradeService.findById(tradeID);
 		scfTrade.setStatus(status);
-		scfTradeService.updateTrade(scfTrade);
+		scfTradeService.updateTradeLifeCycle(scfTrade);
 		System.out.println("tradeID::" + tradeID + " status " + status);
 
 	}

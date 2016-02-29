@@ -8,9 +8,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.tf.dao.AllotmentDAO;
+import com.tf.dao.InvestorDAO;
 import com.tf.dao.InvestorTransactionDAO;
 import com.tf.dao.SCFTradeDAO;
 import com.tf.model.Allotment;
+import com.tf.model.Investor;
 import com.tf.model.InvestorTransaction;
 import com.tf.model.SCFTrade;
 import com.tf.persistance.util.TranscationStatus;
@@ -29,6 +31,9 @@ public class SCFTradeServiceImpl  implements SCFTradeService{
 	
 	@Autowired
 	private AllotmentDAO allotmentDAO;
+	
+	@Autowired
+	private InvestorDAO investorDAO;
 
 	public List<SCFTrade> getScfTrades() {
 		return scfTradeDAO.getScfTrades();
@@ -47,6 +52,11 @@ public class SCFTradeServiceImpl  implements SCFTradeService{
 	}
 	
 	public void updateTrade(SCFTrade scfTrade){
+		scfTradeDAO.update(scfTrade);		
+	}
+	
+	
+	public void updateTradeLifeCycle(SCFTrade scfTrade){
 		scfTradeDAO.update(scfTrade);
 		if("Allotment Paid".equalsIgnoreCase(scfTrade.getStatus())){			
 			List<InvestorTransaction> transcations=investorTransactionDAO.getInvestorTransactionByTrade(scfTrade.getId());
@@ -63,6 +73,12 @@ public class SCFTradeServiceImpl  implements SCFTradeService{
 				//adding investment entries
 				InvestorTransaction invTransaction=new InvestorTransaction();
 				invTransaction.setInvestorID(investorTransaction.getInvestorID());
+				
+				//updating investor Cash Position
+				Investor inv=investorDAO.findByInvestorId(investorTransaction.getInvestorID());
+				inv.setCashPosition(inv.getCashPosition().subtract(investorTransaction.getAmount()));
+				investorDAO.updateInvestor(inv);
+				
 				invTransaction.setAmount(investorTransaction.getAmount());
 				invTransaction.setTranscationType(TranscationStatus.INVESTED.getValue());
 				invTransaction.setTranscationDate(date);
@@ -73,6 +89,7 @@ public class SCFTradeServiceImpl  implements SCFTradeService{
 		}
 		
 	}
+	
 	public List<SCFTrade> getScfTradesByTradeId(Long tradeId){
 		return scfTradeDAO.getScfTradesByTradeId(tradeId);
 	}
