@@ -452,6 +452,16 @@ public class InvestorController {
 		Long investorID=ParamUtil.getLong(request, "investorID",0l);
 		
 		if(investorID!=0 ){
+			
+				
+	        investorBalanceModel.setInvestorID(investorID);
+		    investorTransactionService.saveInvestorBalance(investorBalanceModel);
+		    Long noOfRecords=0l;
+	        PaginationModel paginationModel = paginationUtil.preparePaginationModel(request);
+	        investorList=investorTransactionService.getInvestors(investorID, paginationModel.getStartIndex(), paginationModel.getPageSize());
+	 		noOfRecords=investorTransactionService.getInvestorsCount(investorID);
+	        paginationUtil.setPaginationInfo(noOfRecords,paginationModel);
+			model.put("paginationModel", paginationModel);
 			BigDecimal receivablesPosition= BigDecimal.ZERO; 
 			BigDecimal totalReceivablesPosition = BigDecimal.ZERO; 
 			BigDecimal totalAsset = BigDecimal.ZERO; 
@@ -467,15 +477,6 @@ public class InvestorController {
 			model.put("investor", investor);
 			model.put("totalReceivablesPosition", totalReceivablesPosition);	
 			model.put("totalAsset", totalAsset);
-				
-	        investorBalanceModel.setInvestorID(investorID);
-		    investorTransactionService.saveInvestorBalance(investorBalanceModel);
-		    Long noOfRecords=0l;
-	        PaginationModel paginationModel = paginationUtil.preparePaginationModel(request);
-	        investorList=investorTransactionService.getInvestors(investorID, paginationModel.getStartIndex(), paginationModel.getPageSize());
-	 		noOfRecords=investorTransactionService.getInvestorsCount(investorID);
-	        paginationUtil.setPaginationInfo(noOfRecords,paginationModel);
-			model.put("paginationModel", paginationModel);
 			model.put("investorList", investorList);
 		}
 	    model.put("investorID", investorID);
