@@ -93,7 +93,7 @@ public class AllotmentEngine {
 				}
 			}else if (sameRateCount > 1){
 
-				currentAllotment = pendingAllotment.divide(new BigDecimal(sameRateCount)) ;
+				currentAllotment = pendingAllotment.divide(new BigDecimal(sameRateCount),6, RoundingMode.HALF_UP) ;
 				if(investor.getAvailToInvest().compareTo(currentAllotment)==-1  ){
 					currentAllotment = investor.getAvailToInvest();
 				}
