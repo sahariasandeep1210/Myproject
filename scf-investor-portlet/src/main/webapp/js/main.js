@@ -536,26 +536,31 @@ function ajaxindicatorstop()
 
 
 function setPage(pageNumber){
+	if($("#balanceListTable").length){
 	$("#currentPage").val(pageNumber);
 	var actionUrl=$("#defaultURL").val();
 	document.forms["investorBalanceForm"].action = actionUrl;
 	document.forms["investorBalanceForm"].submit();	
-  
+	
+	}else if($("#cashReportTable").length) {
+		
 	$("#currentPage").val(pageNumber);
 	var actionUrl=$("#defaultCashURL").val();
 	document.forms["cashReportForm"].action = actionUrl;
 	document.forms["cashReportForm"].submit();	
-       
+	
+	}else if($("#receivableReportTable").length){
 	 $("#currentPage").val(pageNumber);
 	var actionUrl=$("#defaultRenderURL").val();
    document.forms["receivableReportForm"].action = actionUrl;
    document.forms["receivableReportForm"].submit();	
    
+	}else{
    $("#currentPage").val(pageNumber);
   var actionUrl=$("#getCashs").val();
   document.forms["cashReportForm"].action = actionUrl;
   document.forms["cashReportForm"].submit();	
-  
+	}
    
   
 }
