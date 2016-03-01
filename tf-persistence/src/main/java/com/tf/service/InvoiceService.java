@@ -32,6 +32,6 @@ public interface InvoiceService {
 	
 	public List<Invoice> findByRegNum(String regNum);
 	
-	public List<Invoice> getInvoicesById(long id);
+	public Invoice getInvoicesById(long id);
 
 }

@@ -1,9 +1,13 @@
 package com.tf.dao.impl;
 
+import com.tf.dao.SCFTradeDAO;
+import com.tf.model.Allotment;
+import com.tf.model.SCFTrade;
+
 import java.io.Serializable;
 import java.util.List;
-import java.util.Set;
 
+import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
 import org.hibernate.Hibernate;
 import org.hibernate.criterion.CriteriaSpecification;
@@ -11,11 +15,6 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.tf.dao.SCFTradeDAO;
-import com.tf.model.Company;
-import com.tf.model.Invoice;
-import com.tf.model.SCFTrade;
 
 @Repository
 @Transactional
@@ -161,6 +160,40 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<SCFTrade> getScfTradesByRegNumAndTradeId(String regNum,int startIndex,int pageSize){
+		_log.debug("Inside getScfTradesByRegNumAndTradeId ");
+		try {
+			
+			Criteria criteria  = sessionFactory.getCurrentSession().createCriteria(SCFTrade.class);
+			criteria.createAlias("invoices", "inv");  
+			List<SCFTrade> tradeList=(List<SCFTrade>)criteria.add(Restrictions.eq("inv.sellerCompanyRegistrationNumber", regNum)).setFirstResult(startIndex).setMaxResults(pageSize).list();		
+			_log.debug("getScfTradesByRegNumAndTradeId successful, result size: "
+					+ tradeList.size());
+			return tradeList;
+
+		} catch (RuntimeException re) {
+			_log.error("getScfTradesByRegNumAndTradeId failed", re);
+			throw re;
+		}
+		
+		
+		
+	}
 	
-	
+	public Long getScfTradeCounts(String regNum) {
+		_log.debug("Inside getScfTradeCounts ");
+		try {
+			Criteria criteria  = sessionFactory.getCurrentSession().createCriteria(SCFTrade.class);
+			criteria.createAlias("invoices", "inv");  
+
+			
+			Long resultCount = (Long) criteria.add(Restrictions.eq("inv.sellerCompanyRegistrationNumber", regNum)).setProjection(Projections.rowCount()).uniqueResult();
+			_log.debug("getScfTradeCounts Count "	+ resultCount);
+			return resultCount;
+		} catch (RuntimeException re) {
+			_log.error("getScfTradeCounts Count failed", re);
+			throw re;
+		}
+	}
 }

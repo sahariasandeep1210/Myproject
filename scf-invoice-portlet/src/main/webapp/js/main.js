@@ -6,6 +6,14 @@ $(document).ready(function() {
 	$("#errorMsg").hide(); 
 	 $('table').tablesorter();
 	 
+	 $("#invoiceUpdate").click(function (){
+			var updateURL=$("#updateInvoiceURL").val();
+			document.forms["createInvoiceForm"].action = updateURL;
+			document.forms["createInvoiceForm"].submit();
+
+		});
+		
+	 
 	 $("#exportInvoices").click(function(){
 			
 			$('#invoiceListTable').tableExport({
@@ -154,7 +162,7 @@ $("#invoiceAdd").click(function(){
 	var error_free = true;
 	error_free = validateInvoice(error_free);
 	if (error_free) {
-		var url = $(this).attr('data-url');
+		var url =$("#addInvoiceURL").val();
 		submitInvoiceForms(url);
 	}
 	

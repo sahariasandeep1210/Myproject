@@ -21,8 +21,9 @@ public interface SCFTradeService  {
 	public List<SCFTrade> getScfTrades(Long companyID,int startIndex,int pageSize) ;
 	
 	public Long getScfTradesCount(Long companyID);
-	
+	public List<SCFTrade> getScfTradesByRegNumAndTradeId(String regNum,int startIndex,int pageSize);
 	public Long getScfTradeCount(Long tradeId);
+	public Long getScfTradeCounts(String regNum);
 	
 	public List<SCFTrade> getScfTradeList(Long tradeId,int startIndex,int pageSize);
 	

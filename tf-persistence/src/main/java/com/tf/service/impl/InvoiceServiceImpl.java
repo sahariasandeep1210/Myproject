@@ -253,7 +253,7 @@ public class InvoiceServiceImpl implements InvoiceService{
 	public List<Invoice> findByRegNum(String regNum) {
 		return invoiceDAO.findByRegNum(regNum);
 	}
-	public List<Invoice> getInvoicesById(long id){
+	public Invoice getInvoicesById(long id){
 		return invoiceDAO.getInvoicesById(id);
 	}
 	

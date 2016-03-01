@@ -155,25 +155,12 @@ public class SCFTradeController {
 		} else if (request.isUserInRole(Constants.SELLER_ADMIN)) {
 
 			String regNum = liferayUtility.getWhiteHallComapanyRegNo(request);
-			List<Invoice> invoices = invoiceService.findByRegNum(regNum);
-			Set<SCFTrade> tradeSet = new LinkedHashSet<SCFTrade>();
-
-			for (Invoice inv : invoices) {
-				scfTrade = inv.getScfTrade();
-				List<SCFTrade> intrimTrades = scfTradeService.getScfTradeList(
-						scfTrade.getId(), paginationModel.getStartIndex(),
+			scftrades=scfTradeService.getScfTradesByRegNumAndTradeId(regNum,paginationModel.getStartIndex(),
 						paginationModel.getPageSize());
-				noOfRecords = scfTradeService.getScfTradeCount(scfTrade.getId());
-				for (SCFTrade trade : intrimTrades) {
-					tradeSet.add(trade);
-				}
-			}
-			System.out.println("noOfRecords:" + noOfRecords);
+			noOfRecords = scfTradeService.getScfTradeCounts(regNum);
 			paginationUtil.setPaginationInfo(noOfRecords, paginationModel);
 			model.put("paginationModel", paginationModel);
-
-			scftrades = new ArrayList<SCFTrade>(tradeSet);
-			viewName = "sellertradelist";
+     		viewName = "sellertradelist";
 		}
 		model.put("trades", scftrades);
 

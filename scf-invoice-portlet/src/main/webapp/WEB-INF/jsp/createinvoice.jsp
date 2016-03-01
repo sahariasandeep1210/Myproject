@@ -3,6 +3,11 @@
 	<portlet:param name="action" value="addInvoice" />
 </portlet:actionURL>
 
+<portlet:actionURL var="updateInvoiceURL">
+	<portlet:param name="update" value="updateInvoice" />
+</portlet:actionURL>
+
+
 <portlet:renderURL var="invoiceListURL"></portlet:renderURL>
 
 <div class="alert alert-danger" id="errorMsg"><i class="icon-remove-sign icon-2"></i> </div>
@@ -10,6 +15,8 @@
 <div class="container-fluid">
 	<form:form commandName="invoiceModel" method="post" id="createInvoiceForm" 
 		name="createInvoiceForm"  action="${createInvoiceURL}">
+				<input type="hidden" id="updateInvoiceURL"  value="${updateInvoiceURL}">
+		
 		<input type="hidden" name="invoiceId"  value="${invoiceModel.id}">
 		<div class="span12">
 					<div class="span12" style="border-bottom: 1px solid #003d59; margin-bottom: 35px">
@@ -25,8 +32,7 @@
 			</div>
 			<div class="span6">
 				<label class="span6">Invoice Date:</label>
-				<fmt:formatDate pattern="dd-MM-yyyy" value="${invoiceModel.invoiceDate}" var="invoiceDat"/>
-				<form:input path="invoiceDate" cssClass="span5" id="invoiceDate" value="${invoiceDat}" />
+				<form:input path="invoiceDate" cssClass="span5" id="invoiceDate" />
 
 			</div>
 
@@ -65,8 +71,7 @@
 			</div>
 			<div class="span6">
 				<label class="span6">Payment Date:</label>
-				<fmt:formatDate pattern="dd-MM-yyyy" value="${invoiceModel.paymentDate}" var="paymentDat"/>
-				<form:input path="paymentDate" cssClass="span5" id="paymentDate" value="${paymentDat}" />
+				<form:input path="paymentDate" cssClass="span5" id="paymentDate"  />
 
 			</div>
 
@@ -90,9 +95,8 @@
 		<div class="row-fluid">
 				<div class="span6">
 				<label class="span6">Due Date:</label>
-				 <fmt:formatDate pattern="dd-MM-yyyy" value="${invoiceModel.dueDate}" var="dueDat"/>
 				
-				<form:input path="dueDate" cssClass="span5" id="dueDate" value="${dueDat}" />
+				<form:input path="dueDate" cssClass="span5" id="dueDate" />
 
 			</div>
 			<div class="span6">
@@ -106,8 +110,8 @@
 			<div class="span6">
 				<c:choose>
 					<c:when test="${invoiceModel.id !=null && invoiceModel.id !=0}">
-						<input type="submit" value="Update" class="btn btn-primary"
-							data-url="${createInvoiceURL}" id="invoiceUpdate" />
+						<input type="button" value="Update" class="btn btn-primary"
+							 id="invoiceUpdate" />
 						<input type="button" value="Delete" class="btn btn-danger" onclick="deleteInvoice()" />
 					</c:when>
 					<c:otherwise>

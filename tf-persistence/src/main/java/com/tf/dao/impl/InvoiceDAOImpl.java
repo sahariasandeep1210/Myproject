@@ -20,16 +20,16 @@ public class InvoiceDAOImpl  extends BaseDAOImpl<Invoice, Long> implements Invoi
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Invoice> getInvoicesById(long id){
+	public Invoice getInvoicesById(long id){
 		_log.debug("Inside getInvoicesById ");
 		try {
 			
-			List<Invoice> invoiceList = (List<Invoice>)sessionFactory.getCurrentSession().createCriteria(Invoice.class).add(Restrictions.eq("id", id)).list();
+			Invoice invoice = (Invoice)sessionFactory.getCurrentSession().createCriteria(Invoice.class).add(Restrictions.eq("id", id)).uniqueResult();
 			              
 			
 			_log.debug("getInvoicesById successful, result size: "
-					+ invoiceList.size());
-			return invoiceList;
+					+ invoice);
+			return invoice;
 
 		} catch (RuntimeException re) {
 			_log.error("getInvoicesById failed", re);

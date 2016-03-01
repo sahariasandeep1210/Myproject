@@ -1,34 +1,5 @@
 package com.tf.controller.invoice;
 
-import java.math.BigDecimal;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-
-import javax.portlet.ActionRequest;
-import javax.portlet.ActionResponse;
-import javax.portlet.RenderRequest;
-import javax.portlet.RenderResponse;
-
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.hibernate.id.insert.Binder;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.portlet.ModelAndView;
-import org.springframework.web.portlet.bind.annotation.ActionMapping;
-import org.springframework.web.portlet.bind.annotation.RenderMapping;
-
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.repository.model.FileEntry;
@@ -50,13 +21,42 @@ import com.tf.model.Company;
 import com.tf.model.Invoice;
 import com.tf.model.InvoiceDocument;
 import com.tf.persistance.util.Constants;
-import com.tf.persistance.util.InvestorDTO;
 import com.tf.persistance.util.InvoiceStatus;
 import com.tf.service.CompanyService;
 import com.tf.service.InvoiceDocumentService;
 import com.tf.service.InvoiceService;
 import com.tf.service.UserService;
 import com.tf.util.LiferayUtility;
+
+import java.beans.PropertyEditorSupport;
+import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+
+import javax.portlet.ActionRequest;
+import javax.portlet.ActionResponse;
+import javax.portlet.RenderRequest;
+import javax.portlet.RenderResponse;
+
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.portlet.ModelAndView;
+import org.springframework.web.portlet.bind.annotation.ActionMapping;
+import org.springframework.web.portlet.bind.annotation.RenderMapping;
 
 /**
  * This controller is responsible for request/response handling on
@@ -85,6 +85,34 @@ public class InvoiceController {
 	
 	@Autowired
 	protected LiferayUtility liferayUtility;
+	
+	
+
+	@InitBinder
+	public void binder(WebDataBinder binder) {
+
+		binder.registerCustomEditor(Date.class, new PropertyEditorSupport() {
+			public void setAsText(String value) {
+				try {
+					setValue(new SimpleDateFormat("MM/dd/yyyy").parse(value));
+				} catch (Exception e) {
+					setValue(value);
+				}
+			}
+
+			public String getAsText() {
+				if (getValue() != null) {
+					return new SimpleDateFormat("MM/dd/yyyy")
+							.format((Date) getValue());
+				} else {
+					return null;
+				}
+			}
+		});
+		
+	}
+	
+	
 
 	@RenderMapping(params = "render=invoiceDocuments")
 	protected ModelAndView renderInvoiceDocumentList(
@@ -126,12 +154,48 @@ public class InvoiceController {
 		model.put("companyList", companyList);
 		return new ModelAndView("createinvoice", model);
 	}
-	
+	@ActionMapping(params = "update=updateInvoice")
+	protected void updateInvoice(
+			@ModelAttribute("invoiceModel") InvoiceDTO invoice, ModelMap model,
+			ActionRequest request, ActionResponse response) {
+		long invoiceId=ParamUtil.getLong(request, "invoiceId");
+		Invoice invs=invoiceService.getInvoicesById(invoiceId);
+        if(invs == null){
+        	Invoice invoiceModel = transfromInvoiceDtoToInvoiceModel(invoice);
+			List<Invoice> invoices = new ArrayList<Invoice>();
+			invoices.add(invoiceModel);
+			invoiceService.addInvoices(invoices);
+        }
+        else{
+        	Invoice invoiceModel= new Invoice();
+    		invoiceModel.setId(invs.getId());
+    		invoiceModel.setInvoiceNumber(invoice.getInvoiceNumber());
+    		invoiceModel.setInvoiceDate(invoice.getInvoiceDate());
+    		invoiceModel.setSellerCompanyRegistrationNumber(invoice.getSellerRegNo());
+    		invoiceModel.setSellerCompanyVatNumber(invoice.getSellerVatNumber());
+    		invoiceModel.setInvoiceAmount(invoice.getInvoiceAmount());
+    		invoiceModel.setVatAmount(invoice.getInvoiceAmount());
+    		invoiceModel.setInvoiceDesc(invoice.getInvoiceDesc());
+    		invoiceModel.setDuration(invoice.getDuration());
+    		invoiceModel.setPayment_date(invoice.getPaymentDate());
+    		invoiceModel.setCurrency(invoice.getCurrency());
+    		invoiceModel.setStatus(InvoiceStatus.NEW.getValue());
+    		invoiceModel.setDueDate(invoice.getDueDate());
+    		Company scfCompany=companyService.findById(invoice.getScfCompany());
+    		invoiceModel.setScfCompany(scfCompany);
+    		List<Invoice> invoices = new ArrayList<Invoice>();
+			invoices.add(invoiceModel);
+			invoiceService.addInvoices(invoices);
+
+        }
+	}
 	@ActionMapping(params = "action=addInvoice")
 	protected void addInvoice(
 			@ModelAttribute("invoiceModel") InvoiceDTO invoice, ModelMap model,
 			ActionRequest request, ActionResponse response) {
 		try {
+			  System.out.println("Invoicesss:"+invoice);
+			 
 			Invoice invoiceModel = transfromInvoiceDtoToInvoiceModel(invoice);
 			List<Invoice> invoices = new ArrayList<Invoice>();
 			invoices.add(invoiceModel);
@@ -167,8 +231,8 @@ public class InvoiceController {
 		List<Company> companyList = companyService.getCompanies("5");
 		long invoiceId=ParamUtil.getLong(request, "invoiceID");
 		if(invoiceId >0){
-		List<Invoice> invoices=invoiceService.getInvoicesById(invoiceId);
-		for(Invoice invoice:invoices){
+		Invoice invoice=invoiceService.getInvoicesById(invoiceId);
+		
 			Company	scfCompanies=invoice.getScfCompany();
 			invoiceModel.setId(invoice.getId());
 			invoiceModel.setCompanyId(scfCompanies.getId());
@@ -183,8 +247,8 @@ public class InvoiceController {
 			invoiceModel.setPaymentDate(invoice.getPayment_date());
             invoiceModel.setVatAmount(invoice.getVatAmount());
             model.put("scfCompanies", scfCompanies);
-		}
-		model.put("invoices", invoices);
+		
+		model.put("invoices", invoice);
 
 	}			
 		model.put("companyList", companyList);
