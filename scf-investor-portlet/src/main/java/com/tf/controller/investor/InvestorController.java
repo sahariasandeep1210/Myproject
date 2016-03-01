@@ -724,7 +724,7 @@ public class InvestorController {
 		majurityGross=allots.getAllotmentAmount().add(allots.getInvestorGrossProfit()).setScale(2, RoundingMode.CEILING);
 		majurityNet=majurityGross.subtract(allots.getWhitehallProfitShare()).setScale(2,RoundingMode.CEILING);
 		returnAmount=majurityNet.subtract(allots.getAllotmentAmount()).setScale(2, RoundingMode.CEILING);
-		returns=((majurityNet.subtract(allots.getAllotmentAmount())).multiply(YEAR)).divide(allots.getAllotmentAmount()).setScale(2,RoundingMode.CEILING);
+		returns=((majurityNet.subtract(allots.getAllotmentAmount())).multiply(YEAR)).divide(allots.getAllotmentAmount(),6, RoundingMode.HALF_UP).setScale(2,RoundingMode.CEILING);
 		dto.setAllotmentDate(allots.getAllotmentDate());
         dto.setNoOfdays(allots.getNoOfdays());		
         dto.setAllotmentAmount(allots.getAllotmentAmount());

@@ -182,7 +182,7 @@ function validateInvoice(error_free) {
 	elements[9] ="scfCompany";
 	
 	elements[10] = "dueDate";
-	elements[11] ="invoiceDesc";
+	
 	
 	$("#errorMsg").hide();
 	$("#errorMsg").html();
