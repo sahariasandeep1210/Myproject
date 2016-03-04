@@ -2,9 +2,25 @@ $(document).ready(function() {
 
 	enableTab();
 	$("#createTrade").hide(); 
+	 $("#pageSize").val($("#currPageSize").val());
 	$("#requestFinance").hide();
 	$("#errorMsg").hide(); 
 	 $('table').tablesorter();
+	 
+	 $("#pageSize").change(function (){
+			var noOfRecords=parseInt($("#noOfRecords").val());
+			var pageSize=parseInt($("#currPageSize").val());
+			var newPageSize=parseInt($(this).val());
+			$("#currentPage").val(1);
+			if(noOfRecords<pageSize && newPageSize>pageSize){
+				return;
+			}else{
+				var actionUrl=$("#defaultURL").val();
+				document.forms["invoicelist"].action = actionUrl;
+				document.forms["invoicelist"].submit();	
+			}
+		});
+	  
 	 
 	 $("#invoiceUpdate").click(function (){
 			var updateURL=$("#updateInvoiceURL").val();
@@ -210,4 +226,11 @@ function validateInvoice(error_free) {
 		}	
 	}
 	return error_free;
+}
+
+function setPage(pageNumber){
+	$("#currentPage").val(pageNumber);
+	var actionUrl=$("#defaultURL").val();
+	document.forms["invoicelist"].action = actionUrl;
+	document.forms["invoicelist"].submit();	
 }

@@ -15,6 +15,8 @@
     <portlet:param name="render" value="cashReport" />
 </portlet:renderURL>
 
+	<portlet:renderURL var="defaultRenderURL" />
+
 
 <div class="container-fluid">
 
@@ -22,6 +24,7 @@
 		class="form-horizontal" autocomplete="off" name="cashReportForm" id="cashReportForm"> 
 		      <input type="hidden" value="${getCashURL}" id="getCashReports" />
 		      <input type="hidden" name="currentPage"  id="currentPage"   value="${paginationModel.currentPage}" />
+		      <input type="hidden" name="currPageSize" 	id="currPageSize"    	value="${paginationModel.pageSize}" /> 
 		      <input type="hidden" name="noOfRecords"  id="noOfRecords"   value="${paginationModel.noOfRecords}" />
 		      <input type="hidden" name="defaultCashURL"   id="defaultCashURL" 	  value="${cashReportURL}" />
 		      <input type="hidden" name="getCashs"   id="getCashs" 	  value="${getCashURL}" />
@@ -80,7 +83,6 @@
 				<option value="">---Select---</option>
 					<option value="<%=TranscationStatus.DEPOSIT.getValue()%>" <c:if test="${ transactionType eq 'Deposit'}">selected="selected" </c:if>>Deposit</option>
 					<option value="<%=TranscationStatus.WITHDRAWAL.getValue()%>" <c:if test="${ transactionType eq 'Withdrawal'}">selected="selected" </c:if>>WithDrawal</option>
-					<option value="<%=TranscationStatus.ALLOTED.getValue()%>" <c:if test="${ transactionType eq 'Alloted'}">selected="selected" </c:if>>Alloted</option>
 					<option value="<%=TranscationStatus.INVESTED.getValue()%>" <c:if test="${ transactionType eq 'Invested'}">selected="selected" </c:if>>Invested</option>
 					<option value="<%=TranscationStatus.REPAID.getValue()%>" <c:if test="${ transactionType eq 'Repaid'}">selected="selected" </c:if>>Repaid</option>
 					<option value="<%=TranscationStatus.PROFIT.getValue()%>" <c:if test="${ transactionType eq 'Profit'}">selected="selected" </c:if>>Profit</option>	
@@ -125,9 +127,9 @@
 								<td><fmt:formatDate pattern="dd-MM-yyyy"
 										value="${investorTransaction.transcationDate}" /></td>
 								<td>${investorTransaction.transcationType}</td>
-								<td></td>
+								<td>${investorTransaction.tradeID}</td>
 								<td>${investorTransaction.amount}</td>
-								<td></td>
+								<td>${investorTransaction.reference}</td>
 							</tr>
 						</c:forEach>
 						</c:when>
@@ -159,7 +161,26 @@
 		</table>
 		
 	</div>
-</form:form>
+		<div class="row-fluid">
+			<div class="span6"></div>
+			<div class="span6">
+				<div class="span4"></div>
+				<div class="span8">
+					<label> Show &nbsp;</label> <select id="pageSize"
+						class="paginationselect" name="pageSize">
+						<option value="5">5</option>
+						<option value="10">10</option>
+						<option value="20">20</option>
+						<option value="30">30</option>
+						<option value="45">45</option>
+						<option value="60">60</option>
+						<option value="75">75</option>
+						<option value="100">100</option>
+					</select> <label>&nbsp; Results per page </label>
+				</div>
+			</div>
+		</div>
+	</form:form>
 </div>
         <p:paginate  paginationModel="${paginationModel}"/>
         

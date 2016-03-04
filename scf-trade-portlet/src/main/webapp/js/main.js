@@ -277,7 +277,6 @@ function changeExpandIcon(tradeID){
 $('table').tablesorter();
 
 
-
 function setPage(pageNumber){
 	$("#currentPage").val(pageNumber);
 	var actionUrl=$("#defaultURL").val();

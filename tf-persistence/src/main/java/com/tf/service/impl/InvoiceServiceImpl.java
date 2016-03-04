@@ -1,4 +1,19 @@
 package com.tf.service.impl;
+import com.tf.dao.AllotmentDAO;
+import com.tf.dao.InvestorDAO;
+import com.tf.dao.InvoiceDAO;
+import com.tf.dao.SCFTradeDAO;
+import com.tf.dao.UserDAO;
+import com.tf.model.Company;
+import com.tf.model.Invoice;
+import com.tf.model.SCFTrade;
+import com.tf.persistance.util.AllotmentEngine;
+import com.tf.persistance.util.InvestorProtfolioDTO;
+import com.tf.persistance.util.InvoiceStatus;
+import com.tf.persistance.util.TradeStatus;
+import com.tf.service.InvoiceService;
+import com.tf.service.SCFTradeService;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -12,28 +27,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.joda.time.Days;
-import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.tf.dao.AllotmentDAO;
-import com.tf.dao.InvestorDAO;
-import com.tf.dao.InvoiceDAO;
-import com.tf.dao.SCFTradeDAO;
-import com.tf.dao.UserDAO;
-import com.tf.model.Allotment;
-import com.tf.model.Company;
-import com.tf.model.Invoice;
-import com.tf.model.SCFTrade;
-import com.tf.model.TradeAudit;
-import com.tf.persistance.util.AllotmentEngine;
-import com.tf.persistance.util.InvestorProtfolioDTO;
-import com.tf.persistance.util.InvoiceStatus;
-import com.tf.persistance.util.TradeStatus;
-import com.tf.service.InvoiceService;
-import com.tf.service.SCFTradeService;
 
 @Service
 public class InvoiceServiceImpl implements InvoiceService{
@@ -64,9 +60,13 @@ public class InvoiceServiceImpl implements InvoiceService{
 		
 	}
 
-	public List<Invoice> getInvoices() {
-		List<Invoice> invoices=invoiceDAO.getInvoices();
+	public List<Invoice> getInvoices(int startIndex,int pageSize) {
+		List<Invoice> invoices=invoiceDAO.getInvoices( startIndex, pageSize);
 		return invoices;
+	}
+	public Long getInvoicesCount(){
+		Long long1=invoiceDAO.getInvoicesCount();
+		return  long1;
 	}
 	
 	public Map<Company,BigDecimal> getInvoicesAmount(String invoiceIds){
@@ -103,20 +103,22 @@ public class InvoiceServiceImpl implements InvoiceService{
 		
 	}
 	
-	public List<Invoice> getInvoices(long userId){
+	public List<Invoice> getInvoices(long userId,int startIndex,int pageSize){
 		long companyId=userDAO.getCompanyIDbyUserID(userId);
-		return invoiceDAO.getInvoices(companyId);
+		return invoiceDAO.getInvoices(companyId,startIndex,pageSize);
 	}
 
 	
-	public List<Invoice> getInvoicesByCompanyNumber(String companyNumber){
-		return invoiceDAO.getInvoicesByCompanyNumber(companyNumber);
+	public List<Invoice> getInvoicesByCompanyNumber(String companyNumber,int startIndex,int pageSize){
+		return invoiceDAO.getInvoicesByCompanyNumber(companyNumber,startIndex,pageSize);
 	}
 	
 	public List<Invoice> getInvoicesByCompanyNoAndStatus(String companyNumber,String status){
 		return invoiceDAO.getInvoicesByCompanyNoAndStatus(companyNumber,status);
 	}
-	
+	public Long getInvoiceCounts(String regNum){
+		return invoiceDAO.getInvoiceCounts(regNum);
+	}
 	
 	public void updateInvoicesStatus(List<String> invoiceIds,String status){
 		Invoice invoice;
@@ -256,6 +258,9 @@ public class InvoiceServiceImpl implements InvoiceService{
 	public Invoice getInvoicesById(long id){
 		return invoiceDAO.getInvoicesById(id);
 	}
-	
+	public Long getInvsCounts(long userId){
+		long companyId=userDAO.getCompanyIDbyUserID(userId);
+		return invoiceDAO.getInvsCounts(companyId);
+	}
 	
 }

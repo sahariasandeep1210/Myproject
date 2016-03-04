@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
@@ -63,9 +64,14 @@ public class InvestorTransactionDAOImpl extends BaseDAOImpl<InvestorTransaction,
 	public List<InvestorTransaction> getInvestors(long investorId,int startIndex,int pageSize) {
 		_log.debug("Inside getInvestors ");
 		try {
+			Criteria criteria=sessionFactory.getCurrentSession().createCriteria(InvestorTransaction.class);
+
+			List<InvestorTransaction> results =(List<InvestorTransaction>) criteria.add(Restrictions.eq("investorID", investorId)).addOrder(Order.desc("transcationDate")).setFirstResult(startIndex).setMaxResults(pageSize).list();
 			
-			List<InvestorTransaction> results = (List<InvestorTransaction>) sessionFactory.getCurrentSession().createCriteria(InvestorTransaction.class).add(Restrictions.eq("investorID", investorId)).setFirstResult(startIndex).setMaxResults(pageSize).list();
-			_log.debug("getInvestors successful, result size: "
+			
+			
+/*			List<InvestorTransaction> results = (List<InvestorTransaction>) sessionFactory.getCurrentSession().createCriteria(InvestorTransaction.class).add(Restrictions.eq("investorID", investorId)).setFirstResult(startIndex).setMaxResults(pageSize).list();
+*/			_log.debug("getInvestors successful, result size: "
 					+ results.size());
 			return results;
 		} catch (RuntimeException re) {

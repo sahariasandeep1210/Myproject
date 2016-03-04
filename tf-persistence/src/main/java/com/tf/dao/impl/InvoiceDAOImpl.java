@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,7 +20,6 @@ public class InvoiceDAOImpl  extends BaseDAOImpl<Invoice, Long> implements Invoi
 		super(Invoice.class);
 	}
 	
-	@SuppressWarnings("unchecked")
 	public Invoice getInvoicesById(long id){
 		_log.debug("Inside getInvoicesById ");
 		try {
@@ -55,10 +55,11 @@ public class InvoiceDAOImpl  extends BaseDAOImpl<Invoice, Long> implements Invoi
 	}
 
 	
-	public List<Invoice> getInvoices(){
+	@SuppressWarnings("unchecked")
+	public List<Invoice> getInvoices(int startIndex,int pageSize){
 		_log.debug("Inside getInvoice ");
 		try {
-			List<Invoice> results = (List<Invoice>) sessionFactory.getCurrentSession().createQuery("from Invoice").list();
+			List<Invoice> results = (List<Invoice>) sessionFactory.getCurrentSession().createQuery("from Invoice").setFirstResult(startIndex).setMaxResults(pageSize).list();
 			_log.debug("GetCompanies successful, result size: "
 					+ results.size());
 			return results;
@@ -68,6 +69,20 @@ public class InvoiceDAOImpl  extends BaseDAOImpl<Invoice, Long> implements Invoi
 		}
 	}
 	
+	public Long getInvoicesCount() {
+		_log.debug("Inside getCompanies ");
+		try {
+			
+			Long resultCount = (Long) sessionFactory.getCurrentSession().createCriteria(Invoice.class).setProjection(Projections.rowCount()).uniqueResult();
+			_log.info("Companies Count:: "	+ resultCount);
+			return resultCount;
+		} catch (RuntimeException re) {
+			_log.error("Companies Count failed", re);
+			throw re;
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
 	public List<Invoice> getInvoicesAmount(List<Long> invoiceIds){
 		_log.debug("Inside getInvoice ");
 		try {
@@ -84,12 +99,13 @@ public class InvoiceDAOImpl  extends BaseDAOImpl<Invoice, Long> implements Invoi
 		}
 	}
 	
-	public List<Invoice> getInvoices(long companyID){
+	@SuppressWarnings("unchecked")
+	public List<Invoice> getInvoices(long companyID,int startIndex,int pageSize){
 		
 		_log.debug("Inside getInvoices ");
 		try {
 			
-			List<Invoice> results = (List<Invoice>) sessionFactory.getCurrentSession().createCriteria(Invoice.class).add(Restrictions.eq("scfCompany.id", companyID)).list();
+			List<Invoice> results = (List<Invoice>) sessionFactory.getCurrentSession().createCriteria(Invoice.class).add(Restrictions.eq("scfCompany.id", companyID)).setFirstResult(startIndex).setMaxResults(pageSize).list();
 			_log.debug("getInvoices successful, result size: "
 					+ results.size());
 			return results;
@@ -100,12 +116,13 @@ public class InvoiceDAOImpl  extends BaseDAOImpl<Invoice, Long> implements Invoi
 		
 	}
 	
-	public List<Invoice> getInvoicesByCompanyNumber(String companyNumber){
+	@SuppressWarnings("unchecked")
+	public List<Invoice> getInvoicesByCompanyNumber(String companyNumber,int startIndex,int pageSize){
 		
 		_log.debug("Inside getInvoicesByCompanyNumber ");
 		try {
 			
-			List<Invoice> results = (List<Invoice>) sessionFactory.getCurrentSession().createCriteria(Invoice.class).add(Restrictions.eq("sellerCompanyRegistrationNumber", companyNumber)).list();
+			List<Invoice> results = (List<Invoice>) sessionFactory.getCurrentSession().createCriteria(Invoice.class).add(Restrictions.eq("sellerCompanyRegistrationNumber", companyNumber)).setFirstResult(startIndex).setMaxResults(pageSize).list();
 			_log.debug("getInvoicesByCompanyNumber successful, result size: "
 					+ results.size());
 			return results;
@@ -116,6 +133,7 @@ public class InvoiceDAOImpl  extends BaseDAOImpl<Invoice, Long> implements Invoi
 		
 	}
 	
+	@SuppressWarnings("unchecked")
 	public List<Invoice> getInvoicesByCompanyNoAndStatus(String companyNumber,String status){
 		
 		_log.debug("Inside getInvoicesByCompanyNumber ");
@@ -149,6 +167,7 @@ public class InvoiceDAOImpl  extends BaseDAOImpl<Invoice, Long> implements Invoi
 	}
 	
 	/* New method added for finding the RegistrationNumber */
+	@SuppressWarnings("unchecked")
 	public List<Invoice> findByRegNum(String regNum) {
 		try{
 			List<Invoice> invoices=(List<Invoice>) sessionFactory.getCurrentSession().createCriteria(Invoice.class)
@@ -165,5 +184,30 @@ public class InvoiceDAOImpl  extends BaseDAOImpl<Invoice, Long> implements Invoi
 		_log.error("get failed", e);
 		throw e;
 	}
+	}
+	public Long getInvoiceCounts(String regNum) {
+		_log.debug("Inside getInvoiceCounts ");
+		try {
+		
+			Long resultCount = (Long) sessionFactory.getCurrentSession().createCriteria(Invoice.class).add(Restrictions.eq("sellerCompanyRegistrationNumber", regNum)).setProjection(Projections.rowCount()).uniqueResult();
+			_log.debug("getInvoiceCounts  "	+ resultCount);
+			return resultCount;
+		} catch (RuntimeException re) {
+			_log.error("getInvoiceCounts Count failed", re);
+			throw re;
+		}
+	}
+	
+	public Long getInvsCounts(long companyID) {
+		_log.debug("Inside getInvoiceCounts ");
+		try {
+		
+			Long resultCount = (Long) sessionFactory.getCurrentSession().createCriteria(Invoice.class).add(Restrictions.eq("scfCompany.id", companyID)).setProjection(Projections.rowCount()).uniqueResult();
+			_log.debug("getInvoiceCounts  "	+ resultCount);
+			return resultCount;
+		} catch (RuntimeException re) {
+			_log.error("getInvoiceCounts Count failed", re);
+			throw re;
+		}
 	}
 }

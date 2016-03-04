@@ -59,9 +59,13 @@ long plid= PortalUtil.getPlidFromPortletId(themeDisplay.getScopeGroupId(),true, 
 </div>
 
 	<form name="invoicelist" method="post" action="${invoiceDocumentsURL}" id="invoicelist">
-	<input type="hidden" name="invoices" id="invoices">
-	<input type="hidden" name="companyId" id="companyId">
-		  <%@include file="invoicelisttable.jsp"%>
+	         <input type="hidden" name="invoices" id="invoices">
+	         <input type="hidden" name="companyId" id="companyId">
+	         <input type="hidden" name="currentPage"   id="currentPage"        value="${paginationModel.currentPage}" />
+             <input type="hidden" name="currPageSize" 	id="currPageSize"    	value="${paginationModel.pageSize}" /> 
+             <input type="hidden" name="noOfRecords"   id="noOfRecords"        value="${paginationModel.noOfRecords}" />
+             <input type="hidden" name="defaultURL"    id="defaultURL"         value="${defaultRenderURL}" />
+		      <%@include file="invoicelisttable.jsp"%>
 
 		<div class="row-fluid">
 		<!-- 	<input type="submit" value="Upload Invoice Document" class="btn btn-primary"
@@ -79,6 +83,22 @@ long plid= PortalUtil.getPlidFromPortletId(themeDisplay.getScopeGroupId(),true, 
 					</c:otherwise>				
 				</c:choose>
 				</div>
+				<div class="span6">
+				<div class="span4"></div>
+				<div class="span8">
+					<label> Show &nbsp;</label> <select id="pageSize"
+						class="paginationselect" name="pageSize">
+						<option value="5">5</option>
+						<option value="10">10</option>
+						<option value="20">20</option>
+						<option value="30">30</option>
+						<option value="45">45</option>
+						<option value="60">60</option>
+						<option value="75">75</option>
+						<option value="100">100</option>
+					</select> <label>&nbsp; Results per page </label>
+				</div>
+			</div>
 				
 				
 		</div>
@@ -91,6 +111,7 @@ long plid= PortalUtil.getPlidFromPortletId(themeDisplay.getScopeGroupId(),true, 
 
 </div>
 
-
+      	        <p:paginate  paginationModel="${paginationModel}"/>
+      
 
 

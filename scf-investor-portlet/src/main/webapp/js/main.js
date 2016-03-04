@@ -1,11 +1,28 @@
 
 $(document).ready(function() {
+	
 	  investorIndex = 0;
+	  $("#pageSize").val($("#currPageSize").val());
 	  $("#saveProtfolios").hide(); 
 	  $(".historyRow").hide();
 	  $("#errorMsg").hide(); 
 	  enableTab();
 	  $('table').tablesorter();
+	  
+	  $("#pageSize").change(function (){
+			var noOfRecords=parseInt($("#noOfRecords").val());
+			var pageSize=parseInt($("#currPageSize").val());
+			var newPageSize=parseInt($(this).val());
+			$("#currentPage").val(1);
+			if(noOfRecords<pageSize && newPageSize>pageSize){
+				return;
+			}else{
+				var actionUrl=$("#defaultCashURL").val();
+				var actionUrl=$("#getCashs").val();
+				document.forms["cashReportForm"].action = actionUrl;
+				document.forms["cashReportForm"].submit();	
+			}
+		});
 	  
 	  $("#exportBalances").click(function(){
 			
@@ -271,13 +288,6 @@ $("#toDate").datepicker({
     	  
       });
     
- /* $("#updatebalance").click(function (){
-  		var updateURL=$("#getInvBalanceDetails").val();
-		document.forms["investorBalanceForm"].action = updateURL;
-        document.forms["investorBalanceForm"].submit();
-  });*/
-  
-
   
 
  $("#updatebalance").click(function() {
@@ -546,6 +556,7 @@ function setPage(pageNumber){
 		
 	$("#currentPage").val(pageNumber);
 	var actionUrl=$("#defaultCashURL").val();
+	var actionUrl=$("#getCashs").val();
 	document.forms["cashReportForm"].action = actionUrl;
 	document.forms["cashReportForm"].submit();	
 	
@@ -555,14 +566,7 @@ function setPage(pageNumber){
    document.forms["receivableReportForm"].action = actionUrl;
    document.forms["receivableReportForm"].submit();	
    
-	}else{
-   $("#currentPage").val(pageNumber);
-  var actionUrl=$("#getCashs").val();
-  document.forms["cashReportForm"].action = actionUrl;
-  document.forms["cashReportForm"].submit();	
 	}
-   
-  
 }
 
 

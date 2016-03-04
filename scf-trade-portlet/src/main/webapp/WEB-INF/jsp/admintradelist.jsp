@@ -39,6 +39,7 @@
 				<thead>
 					<tr>
 						<th width="3%"></th>
+						<th>Trade #</th>
 					    <th>SCF Company</th>
 					    <th>Allotment</th>
 					    <th>BPS</th>
@@ -56,8 +57,11 @@
 						<c:when test="${fn:length(trades) gt 0}">
 							<c:forEach items="${trades}" var="trade">
 								<tr>
+									
 									<td width="3%"><input type="radio" value="${trade.id}" name="trade"  status-attr="${trade.status}" <c:if test="${trade.status eq 'Settled' || trade.status eq 'Closed'}">disabled="disabled"</c:if> ></td>
-									<td class="underline"><strong><a href="javascript:void(0);"  onclick="window.location.href='${createURL}&tradeID=${trade.id}'">${trade.company.name} ( ${trade.duration} Days )</a></strong></td>
+									 <td class="underline"><a href="javascript:void(0);"
+                                        onclick="window.location.href='${createURL}&tradeID=${trade.id}'">${trade.id}</a></td>
+									<td><strong>${trade.company.name} ( ${trade.duration} Days )</strong></td>
 									<td>${trade.tradeAmount}</td>
 									<td></td>
 									<td>${trade.investorTotalGross}</td>
@@ -73,6 +77,7 @@
 										<tr>
 											<td></td>
 											<td></td>
+											<td>${allotment.investorPortfolio.investor.company.name}</td> 
 											<td>${allotment.allotmentAmount}</td>
 											<td>${allotment.marketDiscount}</td>
 											<td>${allotment.investorGrossProfit}</td>

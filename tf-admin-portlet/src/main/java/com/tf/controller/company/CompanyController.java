@@ -420,7 +420,6 @@ public class CompanyController extends BaseController {
 			companyList.add(cmpObject);
 			noOfRecords = 1l;
 		}
-		System.out.println("Paginations:" + paginationModel);
 
 		paginationUtil.setPaginationInfo(noOfRecords, paginationModel);
 		_log.info("PaginationModel:::"+paginationModel);

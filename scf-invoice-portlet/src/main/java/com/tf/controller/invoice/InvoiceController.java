@@ -27,6 +27,8 @@ import com.tf.service.InvoiceDocumentService;
 import com.tf.service.InvoiceService;
 import com.tf.service.UserService;
 import com.tf.util.LiferayUtility;
+import com.tf.util.PaginationUtil;
+import com.tf.util.model.PaginationModel;
 
 import java.beans.PropertyEditorSupport;
 import java.math.BigDecimal;
@@ -86,6 +88,8 @@ public class InvoiceController {
 	@Autowired
 	protected LiferayUtility liferayUtility;
 	
+	@Autowired
+	protected PaginationUtil paginationUtil;
 	
 
 	@InitBinder
@@ -261,26 +265,44 @@ public class InvoiceController {
 			RenderRequest request, RenderResponse response,ModelMap model) throws Exception {
 		try {
 			List<Invoice> invoices = new ArrayList<Invoice>();
+			Long noOfRecords = 0l;
+			PaginationModel paginationModel = paginationUtil
+					.preparePaginationModel(request);
 			ThemeDisplay themeDisplay = (ThemeDisplay) request
 					.getAttribute(WebKeys.THEME_DISPLAY);
 			if (liferayUtility.getPermissionChecker(request).isOmniadmin()
 					|| request.isUserInRole(Constants.WHITEHALL_ADMIN)) {
-				invoices = invoiceService.getInvoices();
+				invoices = invoiceService.getInvoices(paginationModel.getStartIndex(),
+						paginationModel.getPageSize());
+				noOfRecords = invoiceService.getInvoicesCount();
+				
+				
 				model.put("userType", Constants.ADMIN);
 			} else if (request.isUserInRole(Constants.SCF_ADMIN)) {
+				
 				invoices = invoiceService.getInvoices(themeDisplay.getUser()
+						.getUserId(),paginationModel.getStartIndex(),
+						paginationModel.getPageSize());
+				noOfRecords = invoiceService.getInvsCounts(themeDisplay.getUser()
 						.getUserId());
+
 				model.put("userType", Constants.SCF_ADMIN);
 			} else if (request.isUserInRole(Constants.SELLER_ADMIN)) {
 				long companyId = userService.getCompanyIDbyUserID(themeDisplay
 						.getUserId());
 				invoices = invoiceService
 						.getInvoicesByCompanyNumber(companyService.findById(
+								companyId).getRegNumber(),paginationModel.getStartIndex(),
+								paginationModel.getPageSize());
+				noOfRecords = invoiceService.getInvoiceCounts(companyService.findById(
 								companyId).getRegNumber());
+
 				model.put("userType", Constants.SELLER_ADMIN);
 			}
 			request.getPortletSession().removeAttribute("invoiceDTO");
 			request.getPortletSession().removeAttribute("invoiceList");
+			paginationUtil.setPaginationInfo(noOfRecords, paginationModel);
+			model.put("paginationModel", paginationModel);
 			model.put("invoicesList", invoices);
 			model.put("defaultRender", Boolean.TRUE);
 			model.put(ACTIVETAB, "invoiceslist");
