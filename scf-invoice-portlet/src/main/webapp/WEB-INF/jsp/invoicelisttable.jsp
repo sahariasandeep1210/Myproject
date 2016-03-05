@@ -34,8 +34,8 @@
 					<th>Amount</th>
 					<th>Duration</th>
 					<th>Invoice Company</th>
-					<th>Due date</th>
-					<th>Status</th>
+<!-- 					<th>Due date</th>
+ -->					<th>Status</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -81,8 +81,8 @@
 								<td>${invoice.invoiceAmount}</td>
 								<td>${invoice.duration}</td>
 								<td>${invoice.scfCompany.name}</td>
-								<td><fmt:formatDate pattern="dd-MM-yyyy"
-										value="${invoice.dueDate}" /></td>
+								<%-- <td><fmt:formatDate pattern="dd-MM-yyyy"
+										value="${invoice.dueDate}" /></td> --%>
 								<td>${invoice.status}</td>
 							</tr>
 						</c:forEach>

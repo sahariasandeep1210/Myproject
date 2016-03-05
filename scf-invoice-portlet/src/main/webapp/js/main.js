@@ -28,6 +28,13 @@ $(document).ready(function() {
 			document.forms["createInvoiceForm"].submit();
 
 		});
+	 
+	 $("#invoiceAdd").click(function (){
+			var updateURL=$("#updateInvoiceURL").val();
+			document.forms["createInvoiceForm"].action = updateURL;
+			document.forms["createInvoiceForm"].submit();
+
+		});
 		
 	 
 	 $("#exportInvoices").click(function(){
@@ -193,20 +200,12 @@ function validateInvoice(error_free) {
 	var elements = [];
 	
 	elements[0] = "invoiceNumber";
-	
-	elements[1] = "invoiceDate";
-	elements[2] = "sellerRegNo";
-	elements[3] = "sellerVatNumber";
-	elements[4] = "invoiceAmount";
-	elements[5] = "vatAmount";
-	elements[6] = "duration";
-	elements[7] = "paymentDate";
-	elements[8] = "currency";
-	
-	elements[9] ="scfCompany";
-	
-	elements[10] = "dueDate";
-	
+	elements[1] = "sellerRegNo";
+	elements[2] = "invoiceAmount";
+	elements[3] = "currency";
+	elements[4] = "invoiceDate";
+	elements[5] = "paymentDate";
+	elements[6] ="scfCompany";
 	
 	$("#errorMsg").hide();
 	$("#errorMsg").html();

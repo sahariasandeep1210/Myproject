@@ -17,9 +17,9 @@
 <div class="container-fluid">
 	<form:form commandName="invoiceModel" method="post"
 		id="createInvoiceForm" name="createInvoiceForm"
-		action="${createInvoiceURL}">
+		>
 		<input type="hidden" id="updateInvoiceURL" value="${updateInvoiceURL}">
-
+        
 		<input type="hidden" name="invoiceId" value="${invoiceModel.id}">
 		<div class="span12">
 			<div class="span12"
@@ -111,7 +111,7 @@
 					</c:when>
 					<c:otherwise>
 						<input type="button" value="Add Invoice" class="btn btn-primary"
-							data-url="${createInvoiceURL}" id="invoiceAdd" />
+							data-url="${updateInvoiceURL}" id="invoiceAdd" />
 
 					</c:otherwise>
 

@@ -22,7 +22,7 @@
     <form:form commandName="scfSellerTradeModel" method="post" action=" "
         id="sellerList" name="sellerList" autocomplete="off">
         <input type="hidden" name="currentPage"     id="currentPage"        value="${paginationModel.currentPage}" />
-        <input type="hidden" name="pageSize"         id="pageSize"             value="${paginationModel.pageSize}" />
+        <input type="hidden" name="currPageSize"         id="currPageSize"             value="${paginationModel.pageSize}" />
         <input type="hidden" name="noOfRecords"     id="noOfRecords"        value="${paginationModel.noOfRecords}" />
         <input type="hidden" name="defaultURL"         id="defaultURL"         value="${defaultRenderURL}" />
         <input type="hidden" id="tradeURL" name="tradeURL" value="${tradeURL}"/>

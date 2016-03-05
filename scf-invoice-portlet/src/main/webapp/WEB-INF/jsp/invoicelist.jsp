@@ -18,7 +18,9 @@
 <portlet:renderURL var="createInvoiceURL">
 	<portlet:param name="render" value="createInvoice" />
 </portlet:renderURL>
-
+<portlet:renderURL var="defaultRenderURL">
+  
+</portlet:renderURL>
 <liferay-ui:error key="default-error-message" 		message="default.error.message" /> 
 
 

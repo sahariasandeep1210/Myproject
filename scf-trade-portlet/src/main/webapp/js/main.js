@@ -1,7 +1,7 @@
 $(document).ready(function(){
 	$(".historyRow").hide();
 	$("#buttonDiv").hide();
-	 $("#pageSize").val($("#currPageSize").val());
+	$("#pageSize").val($("#currPageSize").val());
 
 	 $("#pageSize").change(function (){
 			var noOfRecords=parseInt($("#noOfRecords").val());

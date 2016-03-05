@@ -219,7 +219,6 @@ public class InvoiceController {
 		invoiceModel.setInvoiceAmount(invoice.getInvoiceAmount());
 		invoiceModel.setVatAmount(invoice.getInvoiceAmount());
 		invoiceModel.setInvoiceDesc(invoice.getInvoiceDesc());
-		invoiceModel.setDuration(invoice.getDuration());
 		invoiceModel.setPayment_date(invoice.getPaymentDate());
 		invoiceModel.setCurrency(invoice.getCurrency());
 		invoiceModel.setStatus(InvoiceStatus.NEW.getValue());
@@ -246,6 +245,8 @@ public class InvoiceController {
 			invoiceModel.setSellerVatNumber(invoice.getSellerCompanyVatNumber());
 			invoiceModel.setCurrency(invoice.getCurrency());
 			invoiceModel.setDueDate(invoice.getDueDate());
+/*		    invoiceModel.setDuration(invoice.getDuration());
+*/
 			invoiceModel.setDuration(invoice.getDuration());
 			invoiceModel.setInvoiceAmount(invoice.getInvoiceAmount());
 			invoiceModel.setPaymentDate(invoice.getPayment_date());
