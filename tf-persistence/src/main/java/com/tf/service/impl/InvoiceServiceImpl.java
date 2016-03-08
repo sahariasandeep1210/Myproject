@@ -1,19 +1,4 @@
 package com.tf.service.impl;
-import com.tf.dao.AllotmentDAO;
-import com.tf.dao.InvestorDAO;
-import com.tf.dao.InvoiceDAO;
-import com.tf.dao.SCFTradeDAO;
-import com.tf.dao.UserDAO;
-import com.tf.model.Company;
-import com.tf.model.Invoice;
-import com.tf.model.SCFTrade;
-import com.tf.persistance.util.AllotmentEngine;
-import com.tf.persistance.util.InvestorProtfolioDTO;
-import com.tf.persistance.util.InvoiceStatus;
-import com.tf.persistance.util.TradeStatus;
-import com.tf.service.InvoiceService;
-import com.tf.service.SCFTradeService;
-
 import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -32,6 +17,21 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.tf.dao.AllotmentDAO;
+import com.tf.dao.InvestorDAO;
+import com.tf.dao.InvoiceDAO;
+import com.tf.dao.SCFTradeDAO;
+import com.tf.dao.UserDAO;
+import com.tf.model.Company;
+import com.tf.model.Invoice;
+import com.tf.model.SCFTrade;
+import com.tf.persistance.util.AllotmentEngine;
+import com.tf.persistance.util.InvestorProtfolioDTO;
+import com.tf.persistance.util.InvoiceStatus;
+import com.tf.persistance.util.TradeStatus;
+import com.tf.service.InvoiceService;
+import com.tf.service.SCFTradeService;
 
 @Service
 public class InvoiceServiceImpl implements InvoiceService{
@@ -160,8 +160,6 @@ public class InvoiceServiceImpl implements InvoiceService{
 		Invoice invoice;
 		Date paymentdate=null;
 		Date financedate=null;
-
-		int duration=0;
 		
 		BigDecimal tradeAmount=BigDecimal.ZERO;
 		List<Date> holidayList =new ArrayList<Date>();
@@ -177,7 +175,6 @@ public class InvoiceServiceImpl implements InvoiceService{
 			invoicesList.add(invoice);			
 		}		
 		SCFTrade scfTrade = new SCFTrade();
-		String name=company.getName();
 /*		scfTrade.setId(Long.valueOf(generateId(date, name)));
 */		//dates logic
 		scfTrade.setOpeningDate(date);
@@ -286,6 +283,7 @@ public class InvoiceServiceImpl implements InvoiceService{
 		}
 		return c.getTime();		
 	}
+	
 	public List<Invoice> findByRegNum(String regNum) {
 		return invoiceDAO.findByRegNum(regNum);
 	}
@@ -302,7 +300,7 @@ public class InvoiceServiceImpl implements InvoiceService{
 	public Invoice getInvoicesBytradeId(long id){
 		return invoiceDAO.getInvoicesBytradeId(id);
 	}
-	public Invoice getInvoicesByInvoiceId(long id){
-		return invoiceDAO.getInvoicesByInvoiceId(id);
+	public Invoice getInvoicesByInvoiceNumber(long id){
+		return invoiceDAO.getInvoicesByInvoiceNumber(id);
 	}
 }

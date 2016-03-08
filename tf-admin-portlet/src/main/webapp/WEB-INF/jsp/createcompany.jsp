@@ -26,6 +26,7 @@
 <liferay-ui:error 	key="error-company-registration">
 	<liferay-ui:message key="company.duplicate.registration.no"  arguments="${companyModel.regNumber}"></liferay-ui:message>
 </liferay-ui:error> 
+
 <liferay-ui:error key="default-error-message" 		message="default.error.message" /> 
 
 <div class="alert alert-danger" id="errorMsg"><i class="icon-remove-sign icon-2"></i> </div>

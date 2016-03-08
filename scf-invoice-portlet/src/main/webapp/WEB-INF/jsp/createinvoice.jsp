@@ -34,7 +34,7 @@
 		<div class="row-fluid">
 			<div class="span6">
 				<label class="span6">Invoice Number:</label>
-				<form:input path="invoiceNumber" cssClass="span6" id="invoiceNumber" />
+				<form:input path="invoiceNumber" cssClass="span6" id="invoiceNumber"  />
 
 			</div>
 			<div class="span6">
