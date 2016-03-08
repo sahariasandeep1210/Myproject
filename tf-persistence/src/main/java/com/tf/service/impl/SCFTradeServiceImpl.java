@@ -14,6 +14,7 @@ import com.tf.dao.SCFTradeDAO;
 import com.tf.model.Allotment;
 import com.tf.model.Investor;
 import com.tf.model.InvestorTransaction;
+import com.tf.model.Invoice;
 import com.tf.model.SCFTrade;
 import com.tf.persistance.util.TranscationStatus;
 import com.tf.service.SCFTradeService;
@@ -102,13 +103,15 @@ public class SCFTradeServiceImpl  implements SCFTradeService{
 	public Long getScfTradeCount(Long tradeId){
 		return scfTradeDAO.getScfTradeCount(tradeId);
 	}
-	public List<SCFTrade> getScfTradeList(Long tradeId,int startIndex,int pageSize){
-		return scfTradeDAO.getScfTradeList(tradeId, startIndex, pageSize);
+	public List<SCFTrade> getScfTradeList(String RegNum,int startIndex,int pageSize){
+		List<SCFTrade> scfTrades=scfTradeDAO.getScfTradeList( RegNum, startIndex, pageSize);
+		return scfTrades;
 	}
-	public List<SCFTrade> getScfTradesByRegNumAndTradeId(String regNum,int startIndex,int pageSize){
-		return scfTradeDAO.getScfTradesByRegNumAndTradeId(regNum, startIndex, pageSize);
-	}
+	
 	public Long getScfTradeCounts(String regNum){
 		return scfTradeDAO.getScfTradeCounts(regNum);
+	}
+	public SCFTrade findByQueryId(String tradeId){
+		return scfTradeDAO.findByQueryId(tradeId);
 	}
 }

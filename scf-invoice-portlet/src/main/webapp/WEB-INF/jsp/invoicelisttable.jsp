@@ -48,26 +48,26 @@
 											<c:when
 												test="${ userType eq 'Seller Admin' && invoice.status eq 'New'}">
 												<input type="checkbox" value="${invoice.id}"
-													name="invoiceId" date-attr="${invoice.dueDate}"
+													name="invoiceId" date-attr="${invoice.financeDate}"
 													scfcompany-attr="${invoice.scfCompany.id}"
 													<c:if test="${invoice.scfTrade.id ne null}">disabled="disabled"</c:if>>
 											</c:when>
 											<c:when
 												test="${userType eq 'Seller Admin' && invoice.status ne 'New'}">
 												<input type="checkbox" name="invoiceId"
-													date-attr="${invoice.dueDate}"
+													date-attr="${invoice.financeDate}"
 													scfcompany-attr="${invoice.scfCompany.id}"
 													disabled="disabled">
 											</c:when>
 											<c:when test="${invoice.status eq 'New'}">
 												<input type="checkbox" name="invoiceId"
-													date-attr="${invoice.dueDate}"
+													date-attr="${invoice.financeDate}"
 													scfcompany-attr="${invoice.scfCompany.id}"
 													disabled="disabled">
 											</c:when>
 											<c:otherwise>
 												<input type="checkbox" value="${invoice.id}"
-													name="invoiceId" date-attr="${invoice.dueDate}"
+													name="invoiceId" date-attr="${invoice.financeDate}"
 													scfcompany-attr="${invoice.scfCompany.id}"
 													<c:if test="${invoice.scfTrade.id ne null}">disabled="disabled"</c:if>>
 											</c:otherwise>
@@ -81,8 +81,8 @@
 								<td>${invoice.invoiceAmount}</td>
 								<td>${invoice.duration}</td>
 								<td>${invoice.scfCompany.name}</td>
-								<%-- <td><fmt:formatDate pattern="dd-MM-yyyy"
-										value="${invoice.dueDate}" /></td> --%>
+								<%--  <td><fmt:formatDate pattern="dd-MM-yyyy"
+										value="${invoice.financeDate}" /></td>  --%>
 								<td>${invoice.status}</td>
 							</tr>
 						</c:forEach>

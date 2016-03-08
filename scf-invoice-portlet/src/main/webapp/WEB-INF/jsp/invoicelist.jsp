@@ -22,6 +22,7 @@
   
 </portlet:renderURL>
 <liferay-ui:error key="default-error-message" 		message="default.error.message" /> 
+<liferay-ui:success key="success.finance.message"  message="" />
 
 
 <%

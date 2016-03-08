@@ -135,6 +135,7 @@ public class InvestorController {
 	protected ModelAndView rendercasReport(ModelMap model,RenderRequest request, RenderResponse response) throws Exception {	
 		List<InvestorTransaction> investorList = new ArrayList<InvestorTransaction>();
 		ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);
+		
         long companyId=userService.getCompanybyUserID(themeDisplay.getUserId()).getId();
         if(request.isUserInRole(Constants.PRIMARY_INVESTOR_ADMIN)){
 		if(companyId > 0){
@@ -335,7 +336,6 @@ public class InvestorController {
         paginationUtil.setPaginationInfo(noOfRecords,paginationModel);
         System.out.println("Paginationsss:"+paginationModel);
 		model.put("paginationModel", paginationModel);
-        model.put("investorList", investorList);
 	    model.put("investorID", investorID);
 	    for(com.tf.persistance.util.InvestorDTO inv:investors){
         	if(inv.getInvestorID()==investorID){
@@ -344,6 +344,9 @@ public class InvestorController {
 
         }
        } 	
+        model.put("investorList", investorList);
+        model.put("investorId", investorID);
+
 	    model.put("investor", investor);
 		model.put("totalReceivablesPosition", totalReceivablesPosition);	
 		model.put("totalAsset", totalAsset);

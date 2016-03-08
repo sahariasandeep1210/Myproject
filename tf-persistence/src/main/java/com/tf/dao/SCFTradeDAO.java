@@ -3,6 +3,7 @@ package com.tf.dao;
 import java.io.Serializable;
 import java.util.List;
 
+import com.tf.model.Invoice;
 import com.tf.model.SCFTrade;
 
 public interface SCFTradeDAO  extends BaseDAO<SCFTrade, Serializable>{
@@ -18,7 +19,7 @@ public interface SCFTradeDAO  extends BaseDAO<SCFTrade, Serializable>{
 	public List<SCFTrade> getScfTrades(Long companyID,int startIndex,int pageSize) ;
 	public Long getScfTradesCount(Long companyID);
 	public Long getScfTradeCount(Long tradeId);
-	public List<SCFTrade> getScfTradeList(Long tradeId,int startIndex,int pageSize);
-	public List<SCFTrade> getScfTradesByRegNumAndTradeId(String regNum,int startIndex,int pageSize);
+	public List<SCFTrade> getScfTradeList(String RegNum,int startIndex,int pageSize);
 	public Long getScfTradeCounts(String regNum);
+	public SCFTrade findByQueryId(String tradeId);
 }

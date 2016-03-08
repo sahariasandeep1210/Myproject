@@ -15,6 +15,8 @@ import com.tf.service.InvoiceService;
 import com.tf.service.SCFTradeService;
 
 import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -56,8 +58,11 @@ public class InvoiceServiceImpl implements InvoiceService{
 	private AllotmentDAO allotmentDAO;
 
 	public void addInvoices(List<Invoice> invoice) {
+		
+		 
 		 invoiceDAO.addInvoices(invoice);
 		
+		 
 	}
 
 	public List<Invoice> getInvoices(int startIndex,int pageSize) {
@@ -155,11 +160,14 @@ public class InvoiceServiceImpl implements InvoiceService{
 		Invoice invoice;
 		Date paymentdate=null;
 		int duration=0;
+		
 		BigDecimal tradeAmount=BigDecimal.ZERO;
 		List<Date> holidayList =new ArrayList<Date>();
 		List<Invoice> invoicesList=new ArrayList<Invoice>();
 		for(String id :invoiceIds){ 
 			invoice=invoiceDAO.findById(Long.valueOf(id));
+			invoice.setFinanceDate(nextWorkingDate(date,holidayList));
+			
 			company=invoice.getScfCompany();
 			paymentdate=invoice.getPayment_date();
 			duration=invoice.getDuration();
@@ -167,7 +175,9 @@ public class InvoiceServiceImpl implements InvoiceService{
 			invoicesList.add(invoice);			
 		}		
 		SCFTrade scfTrade = new SCFTrade();
-		//dates logic
+		String name=company.getName();
+/*		scfTrade.setId(Long.valueOf(generateId(date, name)));
+*/		//dates logic
 		scfTrade.setOpeningDate(date);
 		scfTrade.setSellerPaymentDate(nextWorkingDate(date, holidayList));
 		scfTrade.setInvestorPaymentDate(nextWorkingDate(paymentdate, holidayList));
@@ -235,7 +245,16 @@ public class InvoiceServiceImpl implements InvoiceService{
 		return newInvestorList;
 
 	}
-	
+	private  String generateId(Date date,String name){
+		int count=1;
+	    DateFormat df = new SimpleDateFormat("yyMM");
+	    String companyName=name.substring(0, 3);
+	    String yMon=df.format(date);
+	    String id=companyName+yMon;
+		SCFTrade scfTrade =scfTradeDAO.findByQueryId(id);
+		System.out.println("scfTrade"+scfTrade);
+		return id;
+	}
 	private  Date nextWorkingDate(Date date,List<Date> holidayList) {
 		Calendar c = Calendar.getInstance();
 		c.setTime(date);
@@ -261,6 +280,9 @@ public class InvoiceServiceImpl implements InvoiceService{
 	public Long getInvsCounts(long userId){
 		long companyId=userDAO.getCompanyIDbyUserID(userId);
 		return invoiceDAO.getInvsCounts(companyId);
+	}
+	public List<Invoice> getInvoicesByRegNum(String regNum){
+		return invoiceDAO.getInvoicesByRegNum(regNum);
 	}
 	
 }

@@ -1,6 +1,7 @@
 <%@page import="com.tf.persistance.util.TranscationStatus"%>
 <%@page import="org.springframework.transaction.TransactionStatus"%>
 <%@include file="init.jsp"%>
+<liferay-theme:defineObjects />
 
 <portlet:actionURL var="getCashURL">
   <portlet:param name="cash" value="getCashReport"/>
@@ -102,7 +103,6 @@
 		 </div>
 	</div>
 		<br>
-	
 	<div class="table-responsive">
 			<table class="table  tablesorter table-bordered" id="cashReportTable">
 				<thead>
@@ -126,7 +126,16 @@
 							<tr>
 								<td><fmt:formatDate pattern="dd-MM-yyyy"
 										value="${investorTransaction.transcationDate}" /></td>
-								<td>${investorTransaction.transcationType}</td>
+								<td>${investorTransaction.transcationType}
+								  <c:choose>
+											<c:when test="${investorTransaction.transcationType eq 'Deposit' ||investorTransaction.transcationType eq 'Repaid' || investorTransaction.transcationType eq 'Profit' }">
+												<img height="30" width="30" src="${themeDisplay.pathThemeImages}/green.png" style=" float: right; vertical-align: middle; font-size: 20px"/>
+											</c:when>
+											<c:otherwise>
+												<img height="30" width="30" src="${themeDisplay.pathThemeImages}/red.png" style=" float: right; vertical-align: middle; font-size: 20px"/>
+											</c:otherwise>										
+										</c:choose>
+								</td>
 								<td>${investorTransaction.tradeID}</td>
 								<td>${investorTransaction.amount}</td>
 								<td>${investorTransaction.reference}</td>
@@ -141,7 +150,16 @@
 							<tr>
 								<td><fmt:formatDate pattern="dd-MM-yyyy"
 										value="${inv.transcationDate}" /></td>
-								<td>${inv.transcationType}</td>
+								<td>${inv.transcationType}
+								    <c:choose>
+											<c:when test="${inv.transcationType eq 'Deposit' ||inv.transcationType eq 'Repaid' || inv.transcationType eq 'Profit' }">
+												<img height="30" width="30" src="${themeDisplay.pathThemeImages}/green.png" style=" float: right; vertical-align: middle; font-size: 20px"/>
+											</c:when>
+											<c:otherwise>
+												<img height="30" width="30" src="${themeDisplay.pathThemeImages}/red.png" style=" float: right; vertical-align: middle; font-size: 20px"/>
+											</c:otherwise>										
+										</c:choose>
+								</td>
 								<td></td>
 								<td>${inv.amount}</td>
 								<td></td>

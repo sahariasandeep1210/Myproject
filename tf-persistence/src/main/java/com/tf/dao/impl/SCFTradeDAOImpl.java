@@ -2,15 +2,25 @@ package com.tf.dao.impl;
 
 import com.tf.dao.SCFTradeDAO;
 import com.tf.model.Allotment;
+import com.tf.model.Invoice;
 import com.tf.model.SCFTrade;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
 import org.hibernate.Hibernate;
+import org.hibernate.Query;
+import org.hibernate.SQLQuery;
 import org.hibernate.criterion.CriteriaSpecification;
+import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Projection;
+import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
@@ -105,14 +115,35 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 		
 	}
 	@SuppressWarnings("unchecked")
-	public List<SCFTrade> getScfTradeList(Long tradeId,int startIndex,int pageSize){		
+	public List<SCFTrade> getScfTradeList(String RegNum,int startIndex,int pageSize){		
 		_log.debug("Inside getScfTrades ");
 		try {
+			Criteria criteria = sessionFactory.getCurrentSession().createCriteria(SCFTrade.class);
+			criteria.createAlias("invoices", "inv");
+			ProjectionList prList = Projections.projectionList();
+             prList.add((Projections.distinct(Projections.property("inv.scfTrade"))));
+             criteria.setProjection(prList);
+			List<SCFTrade> scftrades=(List<SCFTrade>)criteria.add(Restrictions.eq("inv.sellerCompanyRegistrationNumber", RegNum))
+					.setFirstResult(startIndex)
+					.setMaxResults(pageSize).list();
 			
-			List<SCFTrade> results = (List<SCFTrade>) sessionFactory.getCurrentSession().createCriteria(SCFTrade.class).add(Restrictions.eq("id", tradeId)).setFirstResult(startIndex).setMaxResults(pageSize).list();
+			
+			/*Set<SCFTrade> tradeSet = new LinkedHashSet<SCFTrade>();
+             SCFTrade scfTrade=null;
+			for (Invoice inv : invoice) {
+				scfTrade = inv.getScfTrade();
+				System.out.println("Dhanush:"+scfTrade);
+			List<SCFTrade> results = (List<SCFTrade>) sessionFactory.getCurrentSession().createCriteria(SCFTrade.class).add(Restrictions.eq("id", scfTrade.getId())).setFirstResult(startIndex).setMaxResults(pageSize).list();
+			for (SCFTrade trade : results) {
+				tradeSet.add(trade);
+			}
+		}	
+			scftrades = new ArrayList<SCFTrade>(tradeSet);
+*/
 			_log.debug("getScfTrades successful, result size: "
-					+ results.size());
-			return results;
+					
+					+ scftrades.size());
+			return scftrades;
 		} catch (RuntimeException re) {
 			_log.error("getScfTrades failed", re);
 			throw re;
@@ -134,6 +165,8 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 			throw re;
 		}
 	}
+	
+	
 	public Long getScfTradesCount(Long companyID) {
 		_log.debug("Inside getCompanies ");
 		try {
@@ -160,40 +193,41 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
-	public List<SCFTrade> getScfTradesByRegNumAndTradeId(String regNum,int startIndex,int pageSize){
-		_log.debug("Inside getScfTradesByRegNumAndTradeId ");
-		try {
-			
-			Criteria criteria  = sessionFactory.getCurrentSession().createCriteria(SCFTrade.class);
-			criteria.createAlias("invoices", "inv");  
-			List<SCFTrade> tradeList=(List<SCFTrade>)criteria.add(Restrictions.eq("inv.sellerCompanyRegistrationNumber", regNum)).setFirstResult(startIndex).setMaxResults(pageSize).list();		
-			_log.debug("getScfTradesByRegNumAndTradeId successful, result size: "
-					+ tradeList.size());
-			return tradeList;
-
-		} catch (RuntimeException re) {
-			_log.error("getScfTradesByRegNumAndTradeId failed", re);
-			throw re;
-		}
-		
-		
-		
-	}
+	
 	
 	public Long getScfTradeCounts(String regNum) {
 		_log.debug("Inside getScfTradeCounts ");
 		try {
 			Criteria criteria  = sessionFactory.getCurrentSession().createCriteria(SCFTrade.class);
-			criteria.createAlias("invoices", "inv");  
+			criteria.createAlias("invoices", "inv");
 
-			
 			Long resultCount = (Long) criteria.add(Restrictions.eq("inv.sellerCompanyRegistrationNumber", regNum)).setProjection(Projections.rowCount()).uniqueResult();
+					++resultCount;
+				
 			_log.debug("getScfTradeCounts Count "	+ resultCount);
 			return resultCount;
 		} catch (RuntimeException re) {
 			_log.error("getScfTradeCounts Count failed", re);
 			throw re;
 		}
+	}
+	
+	public SCFTrade findByQueryId(String tradeId) {
+		_log.debug("Inside findByQueryId ");
+        try{
+          SCFTrade scfTrade=null;
+        String sql="select id from scf_trade where id = (select max(id) from scf_trade where id like'%" + tradeId +"%\')";
+       //String sql="select id from scf_trade where id like (select max(id) from scf_trade where id like  1% ');";
+		  Query query = sessionFactory.getCurrentSession().createSQLQuery(sql);
+		  scfTrade = (SCFTrade) query.uniqueResult();
+	
+		  _log.debug("findByQueryId " + scfTrade);
+
+		  return scfTrade;
+	} catch (RuntimeException re) {
+		_log.error("findByQueryId  failed", re);
+		throw re;
+	}
+		
 	}
 }

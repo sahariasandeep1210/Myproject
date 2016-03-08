@@ -22,5 +22,6 @@ public interface InvoiceDAO extends BaseDAO<Invoice, Long> {
 	public void updateInvoices(List<Invoice> invoices);
 	public List<Invoice> findByRegNum(String regNum);
 	public Invoice getInvoicesById(long id);
+	public List<Invoice> getInvoicesByRegNum(String regNum);
 
 }

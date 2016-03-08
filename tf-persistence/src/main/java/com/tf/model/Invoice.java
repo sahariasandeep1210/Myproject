@@ -59,8 +59,8 @@ public class Invoice implements Serializable {
     @JoinColumn(name = "scf_company")  
 	private Company scfCompany;
 	
-	@Column(name = "due_date")
-	private Date dueDate;
+	@Column(name = "finance_date")
+	private Date financeDate;
 	
 	@Column(name = "status")
 	private String status;
@@ -172,12 +172,12 @@ public class Invoice implements Serializable {
 		this.scfCompany = scfCompany;
 	}
 
-	public Date getDueDate() {
-		return dueDate;
+	public Date getFinanceDate() {
+		return financeDate;
 	}
 
-	public void setDueDate(Date dueDate) {
-		this.dueDate = dueDate;
+	public void setFinanceDate(Date financeDate) {
+		this.financeDate = financeDate;
 	}
 
 	public SCFTrade getScfTrade() {

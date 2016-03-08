@@ -5,6 +5,7 @@ import com.tf.model.Invoice;
 
 import java.util.List;
 
+import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.Projections;
@@ -209,5 +210,26 @@ public class InvoiceDAOImpl  extends BaseDAOImpl<Invoice, Long> implements Invoi
 			_log.error("getInvoiceCounts Count failed", re);
 			throw re;
 		}
+	}
+	
+	
+	@SuppressWarnings("unchecked")
+	public List<Invoice> getInvoicesByRegNum(String regNum){
+		_log.debug("Inside getScfTradesByRegNumAndTradeId ");
+		try {
+			Criteria criteria  = sessionFactory.getCurrentSession().createCriteria(Invoice.class);
+			criteria.createAlias("invoices", "inv");
+			List<Invoice> invList=(List<Invoice>)criteria.add(Restrictions.eq("inv.sellerCompanyRegistrationNumber", regNum)).list();
+			_log.debug("getScfTradesByRegNumAndTradeId successful, result size: "
+					+ invList.size());
+			return invList;
+
+		} catch (RuntimeException re) {
+			_log.error("getScfTradesByRegNumAndTradeId failed", re);
+			throw re;
+		}
+		
+		
+		
 	}
 }

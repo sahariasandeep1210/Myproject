@@ -41,13 +41,10 @@ import java.beans.PropertyEditorSupport;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
@@ -133,6 +130,8 @@ public class SCFTradeController {
 	protected ModelAndView renderTradeList(ModelMap model,
 			RenderRequest request, RenderResponse response) throws Exception {
 		List<SCFTrade> scftrades = null;
+		List<Invoice> invoices = null;
+
 		SCFTrade scfTrade = null;
 		String viewName = "";
 		ThemeDisplay themeDisplay = (ThemeDisplay) request
@@ -155,8 +154,7 @@ public class SCFTradeController {
 		} else if (request.isUserInRole(Constants.SELLER_ADMIN)) {
 
 			String regNum = liferayUtility.getWhiteHallComapanyRegNo(request);
-			scftrades=scfTradeService.getScfTradesByRegNumAndTradeId(regNum,paginationModel.getStartIndex(),
-						paginationModel.getPageSize());
+			scftrades=scfTradeService.getScfTradeList(regNum, paginationModel.getStartIndex(), paginationModel.getPageSize());
 			noOfRecords = scfTradeService.getScfTradeCounts(regNum);
 			paginationUtil.setPaginationInfo(noOfRecords, paginationModel);
 			model.put("paginationModel", paginationModel);

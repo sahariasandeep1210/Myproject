@@ -29,7 +29,7 @@ public interface InvoiceService {
 	public void updateInvoicesStatusWithTrade(List<String> invoiceIds,String status,Long tradeLong);
 	
 	public void triggerAllotment(List<String> invoiceIds,long sellerCompanyID,long userId);
-	
+	public List<Invoice> getInvoicesByRegNum(String regNum);
 	public List<Invoice> findByRegNum(String regNum);
 	public Long getInvoicesCount();
 	public Invoice getInvoicesById(long id);

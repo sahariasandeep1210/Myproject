@@ -274,7 +274,13 @@ function changeExpandIcon(tradeID){
 	
 }
 
-$('table').tablesorter();
+$('table').tablesorter(
+		
+		{  
+			theme : 'blue',
+			headers: { 0: { sorter: false} }
+		
+		});
 
 
 function setPage(pageNumber){

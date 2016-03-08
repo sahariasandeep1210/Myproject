@@ -5,6 +5,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.repository.model.Folder;
 import com.liferay.portal.kernel.servlet.SessionErrors;
+import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.util.MimeTypesUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -184,7 +185,6 @@ public class InvoiceController {
     		invoiceModel.setPayment_date(invoice.getPaymentDate());
     		invoiceModel.setCurrency(invoice.getCurrency());
     		invoiceModel.setStatus(InvoiceStatus.NEW.getValue());
-    		invoiceModel.setDueDate(invoice.getDueDate());
     		Company scfCompany=companyService.findById(invoice.getScfCompany());
     		invoiceModel.setScfCompany(scfCompany);
     		List<Invoice> invoices = new ArrayList<Invoice>();
@@ -222,7 +222,6 @@ public class InvoiceController {
 		invoiceModel.setPayment_date(invoice.getPaymentDate());
 		invoiceModel.setCurrency(invoice.getCurrency());
 		invoiceModel.setStatus(InvoiceStatus.NEW.getValue());
-		invoiceModel.setDueDate(invoice.getDueDate());
 		Company scfCompany=companyService.findById(invoice.getScfCompany());
 		invoiceModel.setScfCompany(scfCompany);
 		return invoiceModel;
@@ -244,7 +243,6 @@ public class InvoiceController {
 			invoiceModel.setSellerRegNo(invoice.getSellerCompanyRegistrationNumber());
 			invoiceModel.setSellerVatNumber(invoice.getSellerCompanyVatNumber());
 			invoiceModel.setCurrency(invoice.getCurrency());
-			invoiceModel.setDueDate(invoice.getDueDate());
 /*		    invoiceModel.setDuration(invoice.getDuration());
 */
 			invoiceModel.setDuration(invoice.getDuration());
@@ -381,8 +379,8 @@ public class InvoiceController {
 						} else if (index == 9) {
 							invoiceModel.setCurrency(cell.getStringCellValue());
 						}else if (index == 10) {
-							invoiceModel.setDueDate(cell.getDateCellValue());
-						}
+/*							invoiceModel.setDueDate(cell.getDateCellValue());
+*/						}
 						
 						invoiceModel.setStatus(InvoiceStatus.NEW.getValue());
 						index++;
@@ -470,7 +468,7 @@ public class InvoiceController {
 			List<String> invoicesIdList=Arrays.asList(invoiceIds.split(","));
 			invoiceService.triggerAllotment(invoicesIdList,companyId,userId);
 		}
-		
+		SessionMessages.add(request, "success.finance.message");
 	}	
 	
 	protected Log _log = LogFactoryUtil.getLog(InvoiceController.class.getName());

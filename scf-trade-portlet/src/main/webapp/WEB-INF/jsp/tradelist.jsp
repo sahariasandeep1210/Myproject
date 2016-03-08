@@ -38,6 +38,8 @@
 				<thead>
 					<tr>
 					<!-- 	<th>SCF Trade</th> -->
+					
+					    <th>Trade #</th>
 					    <th>SCF Company</th>
 					    <th>Duration</th>
 						<th>Opening Date</th>
@@ -53,7 +55,9 @@
 							<c:forEach items="${trades}" var="trade">
 								<tr>
 									<%-- <td>${trade.scfTrade}</td> --%>
-									<td><a href="javascript:void(0);"  onclick="window.location.href='${createURL}&tradeID=${trade.id}'">${trade.company.name}</a></td>
+									<td class="underline"><a href="javascript:void(0);"
+                                        onclick="window.location.href='${createURL}&tradeID=${trade.id}'">${trade.id}</a></td>
+									<td>${trade.company.name}</td>
 									<td>${trade.duration}</td>
 									<td><fmt:formatDate pattern="dd-MM-yyyy" value="${trade.openingDate}" /></td>
 									<td><fmt:formatDate pattern="dd-MM-yyyy" value="${trade.closingDate}" /></td>

@@ -110,12 +110,13 @@
 			</table>
 		</div>
 		<div class="row-fluid">
-			<div class="span6"></div>
+			<div class="span6">
+		  </div>
 			<div class="span6">
 				<div class="span4"></div>
 				<div class="span8">
-					<label> Show &nbsp;</label> <select id="pageSize"
-						class="paginationselect" name="pageSize">
+					<label> Show &nbsp;</label> 
+					<select id="pageSize" class="paginationselect" name="pageSize">
 						<option value="5">5</option>
 						<option value="10">10</option>
 						<option value="20">20</option>
@@ -124,7 +125,8 @@
 						<option value="60">60</option>
 						<option value="75">75</option>
 						<option value="100">100</option>
-					</select> <label>&nbsp; Results per page </label>
+					</select> 
+					<label>&nbsp; Results per page </label>
 				</div>
 			</div>
 		</div>

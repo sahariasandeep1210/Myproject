@@ -491,4 +491,5 @@ ALTER TABLE tf_allotments
 ALTER TABLE  tf_investor
     ADD cash_position  DECIMAL(10,2) AFTER update_date;   
 
+	ALTER TABLE scf_invoice CHANGE due_date finance_date Date;
 

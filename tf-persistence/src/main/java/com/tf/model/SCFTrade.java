@@ -26,7 +26,7 @@ public class SCFTrade  implements Serializable{
 
 	@Id
     @Column(name="id")
-    @GeneratedValue
+   @GeneratedValue
 	private Long id;
 	
 	@Column(name="scf_trade")

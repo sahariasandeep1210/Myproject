@@ -38,7 +38,7 @@
 			<table class="table  tablesorter table-bordered" id="tradeListTable">
 				<thead>
 					<tr>
-						<th width="3%"></th>
+						<th width="3%" ></th>
 						<th>Trade #</th>
 					    <th>SCF Company</th>
 					    <th>Allotment</th>
