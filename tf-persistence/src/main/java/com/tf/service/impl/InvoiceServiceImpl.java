@@ -159,6 +159,8 @@ public class InvoiceServiceImpl implements InvoiceService{
 		Company company=null;
 		Invoice invoice;
 		Date paymentdate=null;
+		Date financedate=null;
+
 		int duration=0;
 		
 		BigDecimal tradeAmount=BigDecimal.ZERO;
@@ -167,10 +169,10 @@ public class InvoiceServiceImpl implements InvoiceService{
 		for(String id :invoiceIds){ 
 			invoice=invoiceDAO.findById(Long.valueOf(id));
 			invoice.setFinanceDate(nextWorkingDate(date,holidayList));
-			
 			company=invoice.getScfCompany();
 			paymentdate=invoice.getPayment_date();
-			duration=invoice.getDuration();
+			financedate=invoice.getFinanceDate();
+			invoice.setDuration(duration(paymentdate,financedate));
 			tradeAmount=tradeAmount.add(invoice.getInvoiceAmount());
 			invoicesList.add(invoice);			
 		}		
@@ -182,7 +184,7 @@ public class InvoiceServiceImpl implements InvoiceService{
 		scfTrade.setSellerPaymentDate(nextWorkingDate(date, holidayList));
 		scfTrade.setInvestorPaymentDate(nextWorkingDate(paymentdate, holidayList));
 		//Days duration= Days.daysBetween(new LocalDate(scfTrade.getOpeningDate()), new LocalDate(scfTrade.getInvestorPaymentDate()));
-		scfTrade.setDuration(duration);
+		scfTrade.setDuration(duration(paymentdate,financedate));
 		scfTrade.setClosingDate(nextWorkingDate(scfTrade.getInvestorPaymentDate(), holidayList));
 		
 		scfTrade.setCompany(company);
@@ -255,6 +257,19 @@ public class InvoiceServiceImpl implements InvoiceService{
 		System.out.println("scfTrade"+scfTrade);
 		return id;
 	}
+	private  int duration(Date paymentdate,Date financedate){
+		Calendar c1 = Calendar.getInstance();
+		Calendar c2 = Calendar.getInstance();
+		c1.setTime(paymentdate);
+		c2.setTime(financedate);
+		Date d1=c1.getTime();
+		Date d2=c2.getTime();
+        long diff=d1.getTime()-d2.getTime();
+        int noofdays=(int)(diff/(1000*24*60*60));
+        return noofdays;
+		
+		
+	}
 	private  Date nextWorkingDate(Date date,List<Date> holidayList) {
 		Calendar c = Calendar.getInstance();
 		c.setTime(date);
@@ -284,5 +299,10 @@ public class InvoiceServiceImpl implements InvoiceService{
 	public List<Invoice> getInvoicesByRegNum(String regNum){
 		return invoiceDAO.getInvoicesByRegNum(regNum);
 	}
-	
+	public Invoice getInvoicesBytradeId(long id){
+		return invoiceDAO.getInvoicesBytradeId(id);
+	}
+	public Invoice getInvoicesByInvoiceId(long id){
+		return invoiceDAO.getInvoicesByInvoiceId(id);
+	}
 }

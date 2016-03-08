@@ -29,13 +29,13 @@ $(document).ready(function() {
 
 		});
 	 
-	 $("#invoiceAdd").click(function (){
+	 /*$("#invoiceAdd").click(function (){
 			var updateURL=$("#updateInvoiceURL").val();
 			document.forms["createInvoiceForm"].action = updateURL;
 			document.forms["createInvoiceForm"].submit();
 
 		});
-		
+		*/
 	 
 	 $("#exportInvoices").click(function(){
 			

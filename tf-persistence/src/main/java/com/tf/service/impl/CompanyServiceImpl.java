@@ -77,4 +77,7 @@ public class CompanyServiceImpl implements CompanyService {
 	public List<InvestorDTO> getInvestors(){
 		return companyDAO.getInvestors();
 	}
+	public Company getCompaniesByRegNum(String RegNum){
+		return companyDAO.getCompaniesByRegNum(RegNum);
+	}
 }

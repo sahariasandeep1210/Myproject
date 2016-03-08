@@ -200,7 +200,6 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 		try {
 			Criteria criteria  = sessionFactory.getCurrentSession().createCriteria(SCFTrade.class);
 			criteria.createAlias("invoices", "inv");
-
 			Long resultCount = (Long) criteria.add(Restrictions.eq("inv.sellerCompanyRegistrationNumber", regNum)).setProjection(Projections.rowCount()).uniqueResult();
 					++resultCount;
 				

@@ -13,12 +13,15 @@
 <div class="alert alert-danger" id="errorMsg">
 	<i class="icon-remove-sign icon-2"></i>
 </div>
+<liferay-ui:error key="message" message="${message}" /> 
+
 
 <div class="container-fluid">
 	<form:form commandName="invoiceModel" method="post"
 		id="createInvoiceForm" name="createInvoiceForm"
 		>
 		<input type="hidden" id="updateInvoiceURL" value="${updateInvoiceURL}">
+        <input type="hidden" id="addInvoiceURL" value="${updateInvoiceURL}">
         
 		<input type="hidden" name="invoiceId" value="${invoiceModel.id}">
 		<div class="span12">
@@ -110,8 +113,7 @@
 							onclick="deleteInvoice()" />
 					</c:when>
 					<c:otherwise>
-						<input type="button" value="Add Invoice" class="btn btn-primary"
-							data-url="${updateInvoiceURL}" id="invoiceAdd" />
+						<input type="button" value="Add Invoice" class="btn btn-primary" id="invoiceAdd" />
 
 					</c:otherwise>
 

@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.tf.dao.CompanyDAO;
 import com.tf.model.Company;
+import com.tf.model.Invoice;
 import com.tf.model.User;
 import com.tf.persistance.util.CompanyStatus;
 import com.tf.persistance.util.InvestorDTO;
@@ -212,6 +213,7 @@ public class CompanyDAOImpl  extends BaseDAOImpl<Company, Long>   implements Com
 	}
 	
 	
+	
 	public List<Company> getCompaniesById(Long id){		
 		_log.debug("Inside getCompaniesById ");
 		try {
@@ -249,6 +251,19 @@ public class CompanyDAOImpl  extends BaseDAOImpl<Company, Long>   implements Com
 		_log.error("getInvestors failed", re);
 		throw re;
 	}
+	}
+	
+	public Company getCompaniesByRegNum(String RegNum){
+		try{
+			Company company = (Company)sessionFactory.getCurrentSession().createCriteria(Company.class).add(Restrictions.eq("regNumber", RegNum)).uniqueResult();
+		_log.debug("getCompaniesByRegNum successful, result size: "
+				+ company);
+		return company;
+
+	} catch (RuntimeException re) {
+		_log.error("getCompaniesByRegNum failed", re);
+		throw re;
+	 }
 	}
 
 }

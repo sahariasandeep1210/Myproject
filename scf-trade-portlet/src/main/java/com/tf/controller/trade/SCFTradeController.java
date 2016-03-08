@@ -171,6 +171,9 @@ public class SCFTradeController {
 			ModelMap model, RenderRequest request, RenderResponse response)
 			throws Exception {
 		Long tradeID = ParamUtil.getLong(request, "tradeID");
+		Invoice invoice=invoiceService.getInvoicesBytradeId(tradeID);
+		Company company=companyService.getCompaniesByRegNum(invoice.getSellerCompanyRegistrationNumber());
+		System.out.println("Dhanush123:"+invoice);
 		if (tradeID == null || tradeID == 0) {
 			String invoiceIds = ParamUtil.getString(request, "invoices");
 			Map<Company, BigDecimal> invoiceMap = invoiceService
@@ -188,6 +191,8 @@ public class SCFTradeController {
 
 		}
 		model.put("scfTradeModel", scfTradeDTO);
+		model.put("company", company);
+
 		return new ModelAndView("createscftrade", model);
 
 	}

@@ -32,6 +32,7 @@ public interface CompanyService {
 	public List<InvestorDTO> getInvestors();
 	
 	public Company loadById(long id);
+	public Company getCompaniesByRegNum(String RegNum);
 	
 
 }

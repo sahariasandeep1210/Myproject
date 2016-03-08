@@ -163,9 +163,17 @@ public class InvoiceController {
 	protected void updateInvoice(
 			@ModelAttribute("invoiceModel") InvoiceDTO invoice, ModelMap model,
 			ActionRequest request, ActionResponse response) {
+		Invoice invs=null;
+		String message=null;
 		long invoiceId=ParamUtil.getLong(request, "invoiceId");
-		Invoice invs=invoiceService.getInvoicesById(invoiceId);
-        if(invs == null){
+		invs=invoiceService.getInvoicesById(invoiceId);
+		Invoice result=invoiceService.getInvoicesByInvoiceId(invoice.getInvoiceNumber());
+		System.out.println("Re");
+		if(result.getInvoiceNumber() == invoice.getInvoiceNumber()){
+			Company scfCompany=companyService.findById(invoice.getScfCompany());
+		    message="We already have same"+ result.getInvoiceNumber()+"for"+ scfCompany.getName()+" in our system.Please check your details";
+		}
+         if(invs == null){
         	Invoice invoiceModel = transfromInvoiceDtoToInvoiceModel(invoice);
 			List<Invoice> invoices = new ArrayList<Invoice>();
 			invoices.add(invoiceModel);
@@ -192,6 +200,7 @@ public class InvoiceController {
 			invoiceService.addInvoices(invoices);
 
         }
+         SessionErrors.add(request, message);
 	}
 	@ActionMapping(params = "action=addInvoice")
 	protected void addInvoice(

@@ -47,6 +47,13 @@
 
 		</div> --%>
 		<div class="row-fluid">
+		<div class="span6">
+				<label class="span6">Supplier Name:</label>
+				   ${company.name}
+
+			</div>
+		</div>	
+		<div class="row-fluid">
 			<div class="span6">
 				<label class="span6">Duration:</label>
 				<form:input path="duration" cssClass="span6"  id="duration"/>

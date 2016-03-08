@@ -19,7 +19,7 @@ public interface InvoiceService {
 	public Set<Invoice> getInvoices(String invoiceIds);
 
 	public List<Invoice> getInvoices(long companyID,int startIndex,int pageSize);
-
+	public Invoice getInvoicesBytradeId(long id);
 	public List<Invoice> getInvoicesByCompanyNumber(String companyNumber,int startIndex,int pageSize);
 	
 	public List<Invoice> getInvoicesByCompanyNoAndStatus(String companyNumber,String status);
@@ -27,7 +27,7 @@ public interface InvoiceService {
 	public void updateInvoicesStatus(List<String> invoiceIds,String Status);
 	
 	public void updateInvoicesStatusWithTrade(List<String> invoiceIds,String status,Long tradeLong);
-	
+	public Invoice getInvoicesByInvoiceId(long id);
 	public void triggerAllotment(List<String> invoiceIds,long sellerCompanyID,long userId);
 	public List<Invoice> getInvoicesByRegNum(String regNum);
 	public List<Invoice> findByRegNum(String regNum);

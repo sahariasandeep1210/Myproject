@@ -40,7 +40,18 @@ public class InvoiceDAOImpl  extends BaseDAOImpl<Invoice, Long> implements Invoi
 		
 		
 	}
-	
+	public Invoice getInvoicesBytradeId(long id){
+		try{
+		Invoice invoice = (Invoice)sessionFactory.getCurrentSession().createCriteria(Invoice.class).add(Restrictions.eq("scfTrade.id", id)).uniqueResult();
+		_log.debug("getInvoicesBytradeId successful, result size: "
+				+ invoice);
+		return invoice;
+
+	} catch (RuntimeException re) {
+		_log.error("getInvoicesBytradeId failed", re);
+		throw re;
+	 }
+	}
 
 	public void addInvoices(List<Invoice> invoices) {
 		try {
@@ -229,7 +240,17 @@ public class InvoiceDAOImpl  extends BaseDAOImpl<Invoice, Long> implements Invoi
 			throw re;
 		}
 		
-		
-		
+	}
+	public Invoice getInvoicesByInvoiceId(long id){
+		try{
+		Invoice invoice = (Invoice)sessionFactory.getCurrentSession().createCriteria(Invoice.class).add(Restrictions.eq("invoiceNumber", id)).uniqueResult();
+		_log.debug("getInvoicesByInvoiceId successful, result size: "
+				+ invoice);
+		return invoice;
+
+	} catch (RuntimeException re) {
+		_log.error("getInvoicesByInvoiceId failed", re);
+		throw re;
+	 }
 	}
 }
