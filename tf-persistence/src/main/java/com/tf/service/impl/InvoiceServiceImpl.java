@@ -1,19 +1,4 @@
 package com.tf.service.impl;
-import com.tf.dao.AllotmentDAO;
-import com.tf.dao.InvestorDAO;
-import com.tf.dao.InvoiceDAO;
-import com.tf.dao.SCFTradeDAO;
-import com.tf.dao.UserDAO;
-import com.tf.model.Company;
-import com.tf.model.Invoice;
-import com.tf.model.SCFTrade;
-import com.tf.persistance.util.AllotmentEngine;
-import com.tf.persistance.util.InvestorProtfolioDTO;
-import com.tf.persistance.util.InvoiceStatus;
-import com.tf.persistance.util.TradeStatus;
-import com.tf.service.InvoiceService;
-import com.tf.service.SCFTradeService;
-
 import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -28,10 +13,24 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import com.tf.dao.AllotmentDAO;
+import com.tf.dao.InvestorDAO;
+import com.tf.dao.InvoiceDAO;
+import com.tf.dao.SCFTradeDAO;
+import com.tf.dao.UserDAO;
+import com.tf.model.Company;
+import com.tf.model.Invoice;
+import com.tf.model.SCFTrade;
+import com.tf.persistance.util.AllotmentEngine;
+import com.tf.persistance.util.InvestorProtfolioDTO;
+import com.tf.persistance.util.InvoiceStatus;
+import com.tf.persistance.util.TradeStatus;
+import com.tf.service.InvoiceService;
+import com.tf.service.SCFTradeService;
 
 @Service
 public class InvoiceServiceImpl implements InvoiceService{
@@ -160,8 +159,6 @@ public class InvoiceServiceImpl implements InvoiceService{
 		Invoice invoice;
 		Date paymentdate=null;
 		Date financedate=null;
-
-		int duration=0;
 		
 		BigDecimal tradeAmount=BigDecimal.ZERO;
 		List<Date> holidayList =new ArrayList<Date>();
@@ -180,6 +177,7 @@ public class InvoiceServiceImpl implements InvoiceService{
 		String name=company.getName();
 		scfTrade.setScfId(generateId(date, name));
 		//dates logic
+	//dates logic
 		scfTrade.setOpeningDate(date);
 		scfTrade.setSellerPaymentDate(nextWorkingDate(date, holidayList));
 		scfTrade.setInvestorPaymentDate(nextWorkingDate(paymentdate, holidayList));
@@ -249,7 +247,6 @@ public class InvoiceServiceImpl implements InvoiceService{
 
 	}
 	private  String generateId(Date date,String name){
-		int count=1;
 	    DateFormat df = new SimpleDateFormat("yyMM");
 	    DateFormat dfm = new SimpleDateFormat("MM");
 		DateFormat dfy = new SimpleDateFormat("yy");
@@ -264,14 +261,11 @@ public class InvoiceServiceImpl implements InvoiceService{
 		String yr = scfTrade.substring(3, 5);
 		String month = scfTrade.substring(5, 7);
 		String flastcount = scfTrade.substring(7);
-		System.out.print("\n\ncmp - "+cmp);
-		System.out.print("\nyr - "+yr);
-		System.out.print("\nmonth - "+month);
-		System.out.print("\nflastcount - "+flastcount);
 		String cm=dfm.format(date);
 		String cy=dfy.format(date);
 		String statusmonth = "";
 		String statusyr = "";
+		StringBuilder sb = new StringBuilder();
 		  if(Integer.valueOf(yr) == Integer.valueOf(cy)){
 			  statusyr = "C";
 		  }else if(Integer.valueOf(yr) > Integer.valueOf(cy)){
@@ -282,30 +276,15 @@ public class InvoiceServiceImpl implements InvoiceService{
 		  }else if(Integer.valueOf(month) > Integer.valueOf(cm) ){			  
 			  statusmonth = "N";
 		  }
-		  
 		  String newFormatCode = "";
-		  
 		  if(statusmonth.equals("C") && statusyr.equals("C")){
 			  String tmp = "";
-			  if(flastcount.length() == 1){
-				  tmp = "0000" + flastcount +1;
-			  }else if(flastcount.length() == 2){
-				  tmp = "000" + flastcount +1;
-			  }else if(flastcount.length() == 3){
-				  tmp = "00" + flastcount +1;
-			  }else if(flastcount.length() == 4){
-				  tmp = "0" + flastcount +1;
-			  }	  
-			 
-		  newFormatCode = cmp + yr + month + tmp;
-		  System.out.println("Dhanush:"+newFormatCode);
+			  int iit = Integer.valueOf(flastcount) + 1;
+			  String tempp = String.valueOf(iit);	  
+		      newFormatCode =sb.append(cmp).append(yr).append(month).append(StringUtils.leftPad(tempp, 5, '0')).toString();
 		  }else if(statusmonth.equals("N") && statusyr.equals("C")){
-			  newFormatCode = cmp + yr + month + "00001";
+			  newFormatCode = sb.append(cmp).append(yr).append(month).append("00001").toString();
 		  }
-		 
-		  System.out.print("\nnewFormatCode - "+newFormatCode);
-		  
-		System.out.println("scfTrade"+scfTrade);
 		return newFormatCode;
 	}
 	private  int duration(Date paymentdate,Date financedate){
@@ -337,6 +316,7 @@ public class InvoiceServiceImpl implements InvoiceService{
 		}
 		return c.getTime();		
 	}
+	
 	public List<Invoice> findByRegNum(String regNum) {
 		return invoiceDAO.findByRegNum(regNum);
 	}
@@ -353,7 +333,8 @@ public class InvoiceServiceImpl implements InvoiceService{
 	public Invoice getInvoicesBytradeId(long id){
 		return invoiceDAO.getInvoicesBytradeId(id);
 	}
-	public Invoice getInvoicesByInvoiceId(long id){
-		return invoiceDAO.getInvoicesByInvoiceId(id);
+	public Invoice getInvoicesByInvoiceNumber(long id){
+		return invoiceDAO.getInvoicesByInvoiceNumber(id);
 	}
+	
 }

@@ -56,7 +56,7 @@
 								<tr>
 									<%-- <td>${trade.scfTrade}</td> --%>
 									<td class="underline"><a href="javascript:void(0);"
-                                        onclick="window.location.href='${createURL}&tradeID=${trade.id}'">${trade.id}</a></td>
+                                        onclick="window.location.href='${createURL}&tradeID=${trade.id}'">${trade.scfId}</a></td>
 									<td>${trade.company.name}</td>
 									<td>${trade.duration}</td>
 									<td><fmt:formatDate pattern="dd-MM-yyyy" value="${trade.openingDate}" /></td>

@@ -22,9 +22,9 @@
   
 </portlet:renderURL>
 <liferay-ui:error key="default-error-message" 		message="default.error.message" /> 
-<liferay-ui:success key="success.finance.message"  message="Your finance has been allotted successfully on" />
 
-<liferay-ui:error key="message" message="We already have same" /> 
+<liferay-ui:success key="invoice.success.trade" message="invoice.success.trade" /> 
+${financeDate}
 
 <%
 List<Portlet> portletList = PortletLocalServiceUtil.getPortlets();

@@ -23,15 +23,12 @@ public class InvoiceDAOImpl  extends BaseDAOImpl<Invoice, Long> implements Invoi
 	
 	public Invoice getInvoicesById(long id){
 		_log.debug("Inside getInvoicesById ");
-		try {
-			
-			Invoice invoice = (Invoice)sessionFactory.getCurrentSession().createCriteria(Invoice.class).add(Restrictions.eq("id", id)).uniqueResult();
-			              
+		try {			
+			Invoice invoice = (Invoice)sessionFactory.getCurrentSession().createCriteria(Invoice.class).add(Restrictions.eq("id", id)).uniqueResult();		              
 			
 			_log.debug("getInvoicesById successful, result size: "
 					+ invoice);
 			return invoice;
-
 		} catch (RuntimeException re) {
 			_log.error("getInvoicesById failed", re);
 			throw re;
@@ -241,15 +238,15 @@ public class InvoiceDAOImpl  extends BaseDAOImpl<Invoice, Long> implements Invoi
 		}
 		
 	}
-	public Invoice getInvoicesByInvoiceId(long id){
+	public Invoice getInvoicesByInvoiceNumber(long id){
 		try{
 		Invoice invoice = (Invoice)sessionFactory.getCurrentSession().createCriteria(Invoice.class).add(Restrictions.eq("invoiceNumber", id)).uniqueResult();
-		_log.debug("getInvoicesByInvoiceId successful, result size: "
+		_log.debug("getInvoicesByInvoiceNumber successful, result size: "
 				+ invoice);
 		return invoice;
 
 	} catch (RuntimeException re) {
-		_log.error("getInvoicesByInvoiceId failed", re);
+		_log.error("getInvoicesByInvoiceNumber failed", re);
 		throw re;
 	 }
 	}

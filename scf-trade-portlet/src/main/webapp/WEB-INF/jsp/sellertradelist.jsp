@@ -78,7 +78,7 @@
                             <c:forEach items="${trades}" var="trade">
                                 <tr>
                                     <td><span class='underline'><a href="javascript:void(0);"
-                                        onclick="window.location.href='${supplierURL}&tradeID=${trade.id}'">${trade.id}</a></span></td>
+                                        onclick="window.location.href='${supplierURL}&tradeID=${trade.id}'">${trade.scfId}</a></span></td>
                                         <td>${trade.company.name}</td>
                                     <td>${trade.tradeAmount}</td>
                                     <td>${trade.status}</td>

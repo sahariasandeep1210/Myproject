@@ -159,52 +159,58 @@ public class InvoiceController {
 		model.put("companyList", companyList);
 		return new ModelAndView("createinvoice", model);
 	}
+	
 	@ActionMapping(params = "update=updateInvoice")
 	protected void updateInvoice(
 			@ModelAttribute("invoiceModel") InvoiceDTO invoice, ModelMap model,
 			ActionRequest request, ActionResponse response) {
-		Invoice invs=null;
-		
-		long invoiceId=ParamUtil.getLong(request, "invoiceId");
+		 Invoice invs=null;
+		 Company company=null;
+         Long invoiceId=ParamUtil.getLong(request, "invoiceId",0l);	
+
 		try{
-		invs=invoiceService.getInvoicesById(invoiceId);
-		Invoice result=invoiceService.getInvoicesByInvoiceId(invoice.getInvoiceNumber());
-		/*System.out.println("Re");
-		if(result.getInvoiceNumber() == invoice.getInvoiceNumber()){
-			Company scfCompany=companyService.findById(invoice.getScfCompany());
-		    message="We already have same"+ result.getInvoiceNumber()+"for"+ scfCompany.getName()+" in our system.Please check your details";
-		}*/
-         if(invs == null){
+		      invs=invoiceService.getInvoicesById(invoiceId);
+		      company =invs.getScfCompany();
+
+		/* if( invs.getInvoiceNumber()==invoice.getInvoiceNumber() && company.getId() == invoice.getCompanyId()&& invoiceId !=invs.getId()){
+			 SessionErrors.add(request, "invoice.duplicate.error");
+			 model.put("invoice", invoice);
+		     response.setRenderParameter("render", "createInvoice");
+
+		 }*/
+		       
+		  if (invoiceId==0l){
+			 //add operation.			
         	Invoice invoiceModel = transfromInvoiceDtoToInvoiceModel(invoice);
 			List<Invoice> invoices = new ArrayList<Invoice>();
 			invoices.add(invoiceModel);
 			invoiceService.addInvoices(invoices);
         }
-        else{
-        	Invoice invoiceModel= new Invoice();
-    		invoiceModel.setId(invs.getId());
-    		invoiceModel.setInvoiceNumber(invoice.getInvoiceNumber());
-    		invoiceModel.setInvoiceDate(invoice.getInvoiceDate());
-    		invoiceModel.setSellerCompanyRegistrationNumber(invoice.getSellerRegNo());
-    		invoiceModel.setSellerCompanyVatNumber(invoice.getSellerVatNumber());
-    		invoiceModel.setInvoiceAmount(invoice.getInvoiceAmount());
-    		invoiceModel.setVatAmount(invoice.getInvoiceAmount());
-    		invoiceModel.setInvoiceDesc(invoice.getInvoiceDesc());
-    		invoiceModel.setDuration(invoice.getDuration());
-    		invoiceModel.setPayment_date(invoice.getPaymentDate());
-    		invoiceModel.setCurrency(invoice.getCurrency());
-    		invoiceModel.setStatus(InvoiceStatus.NEW.getValue());
+        else {
+        	//update operation validation not required
+        	Invoice inv= invoiceService.getInvoicesById(invoiceId);
+        	inv.setInvoiceNumber(invoice.getInvoiceNumber());
+        	inv.setInvoiceDate(invoice.getInvoiceDate());
+        	inv.setSellerCompanyRegistrationNumber(invoice.getSellerRegNo());
+        	inv.setInvoiceAmount(invoice.getInvoiceAmount());
+        	inv.setInvoiceDesc(invoice.getInvoiceDesc());
+        	inv.setDuration(invoice.getDuration());
+        	inv.setPayment_date(invoice.getPaymentDate());
+    		inv.setCurrency(invoice.getCurrency());
+    		inv.setInvoiceDesc(invoice.getInvoiceDesc());
     		Company scfCompany=companyService.findById(invoice.getScfCompany());
-    		invoiceModel.setScfCompany(scfCompany);
+    		inv.setScfCompany(scfCompany);
     		List<Invoice> invoices = new ArrayList<Invoice>();
-			invoices.add(invoiceModel);
+			invoices.add(inv);
 			invoiceService.addInvoices(invoices);
 
         }
 	}catch(Exception e){ 
+		 
 			_log.error(e.getMessage());
 		  
 		}
+        
 	}
 	@ActionMapping(params = "action=addInvoice")
 	protected void addInvoice(
@@ -230,7 +236,6 @@ public class InvoiceController {
 		invoiceModel.setSellerCompanyRegistrationNumber(invoice.getSellerRegNo());
 		invoiceModel.setSellerCompanyVatNumber(invoice.getSellerVatNumber());
 		invoiceModel.setInvoiceAmount(invoice.getInvoiceAmount());
-		invoiceModel.setVatAmount(invoice.getInvoiceAmount());
 		invoiceModel.setInvoiceDesc(invoice.getInvoiceDesc());
 		invoiceModel.setPayment_date(invoice.getPaymentDate());
 		invoiceModel.setCurrency(invoice.getCurrency());
@@ -475,13 +480,16 @@ public class InvoiceController {
 	protected void requestFinance(ModelMap model,
 			ActionRequest request, ActionResponse response) throws Exception {
 		String invoiceIds= ParamUtil.getString(request, "invoices");
+		Date financeDate=null;
 		if(!StringUtils.isNullOrEmpty(invoiceIds)){
 			long companyId = liferayUtility.getWhitehallCompanyID(request);
 			long userId=userService.getUserbyLiferayUserID(liferayUtility.getLiferayUserID(request));
 			List<String> invoicesIdList=Arrays.asList(invoiceIds.split(","));
-			invoiceService.triggerAllotment(invoicesIdList,companyId,userId);
+			financeDate=invoiceService.triggerAllotment(invoicesIdList,companyId,userId);
 		}
-		SessionMessages.add(request, "success.finance.message");
+		
+		SessionMessages.add(request, "invoice.success.trade");
+		model.put("financeDate", financeDate);
 	}	
 	
 	protected Log _log = LogFactoryUtil.getLog(InvoiceController.class.getName());

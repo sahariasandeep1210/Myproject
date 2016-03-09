@@ -23,9 +23,10 @@
 <portlet:resourceURL id="fetchCompanyDetails" var="fetchCompanyDetails" ></portlet:resourceURL> 
 <portlet:resourceURL id="fetchOfficers" var="fetchOfficers" ></portlet:resourceURL> 
 
-<liferay-ui:error 	key="error-company-registration">
+<liferay-ui:error 	key="invoice.duplicate.error">
 	<liferay-ui:message key="company.duplicate.registration.no"  arguments="${companyModel.regNumber}"></liferay-ui:message>
 </liferay-ui:error> 
+
 <liferay-ui:error key="default-error-message" 		message="default.error.message" /> 
 
 <div class="alert alert-danger" id="errorMsg"><i class="icon-remove-sign icon-2"></i> </div>

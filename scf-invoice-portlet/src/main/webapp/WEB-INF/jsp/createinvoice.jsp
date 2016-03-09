@@ -7,8 +7,12 @@
 	<portlet:param name="update" value="updateInvoice" />
 </portlet:actionURL>
 
-
 <portlet:renderURL var="invoiceListURL"></portlet:renderURL>
+
+
+<liferay-ui:error 	key="invoice.duplicate.error">
+	<liferay-ui:message key="invoice.duplicate.number.company"  arguments="${invoice.invoiceNumber}"></liferay-ui:message>
+</liferay-ui:error> 
 
 <div class="alert alert-danger" id="errorMsg">
 	<i class="icon-remove-sign icon-2"></i>
@@ -33,7 +37,7 @@
 		<div class="row-fluid">
 			<div class="span6">
 				<label class="span6">Invoice Number:</label>
-				<form:input path="invoiceNumber" cssClass="span6" id="invoiceNumber" />
+				<form:input path="invoiceNumber" cssClass="span6" id="invoiceNumber"  />
 
 			</div>
 			<div class="span6">

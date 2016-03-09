@@ -46,13 +46,7 @@
 			</div>
 
 		</div> --%>
-		<div class="row-fluid">
-		<div class="span6">
-				<label class="span6">Supplier Name:</label>
-				   ${company.name}
-
-			</div>
-		</div>	
+		
 		<div class="row-fluid">
 			<div class="span6">
 				<label class="span6">Duration:</label>
@@ -185,9 +179,6 @@
 					data-url="${defaultRender}" id="tradeback" />
 			</div>
 		</div>
-		
-
-
 
 	</form:form>
 

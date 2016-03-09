@@ -5,6 +5,7 @@
 				<thead>
 					<tr>										
 						<th>Invoice Number</th>
+						<th>Seller Company</th>
 						<th>Date</th>
 						<th>Amount</th>
 						<th>Duration</th>
@@ -16,6 +17,7 @@
 						<c:forEach items="${invoiceList}" var="invoice">
 							<tr>						
 								<td>${invoice.invoiceNumber}</td>
+								<td>${company.name}</td>
 								<td><fmt:formatDate pattern="dd-MM-yyyy" value="${invoice.invoiceDate}" /></td>
 								<td>${invoice.invoiceAmount}</td>
 								<td>${invoice.duration}</td>

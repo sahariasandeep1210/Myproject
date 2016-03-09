@@ -87,8 +87,11 @@ public class InvestorTransactionDAOImpl extends BaseDAOImpl<InvestorTransaction,
 	public Long getInvestorsCount(long investorId) {
 		_log.debug("Inside getInvestorsCount ");
 		try {
-			
-			Long resultCount = (Long) sessionFactory.getCurrentSession().createCriteria(InvestorTransaction.class).add(Restrictions.eq("investorID", investorId)).setProjection(Projections.rowCount()).uniqueResult();
+			String type="Alloted";
+			Long resultCount = (Long) sessionFactory.getCurrentSession().createCriteria(InvestorTransaction.class)
+					.add(Restrictions.eq("investorID", investorId))
+					.add(Restrictions.ne("transcationType", type))
+					.setProjection(Projections.rowCount()).uniqueResult();
 			_log.debug("getInvestorsCount  "	+ resultCount);
 			return resultCount;
 		} catch (RuntimeException re) {

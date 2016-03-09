@@ -60,7 +60,7 @@
 									
 									<td width="3%"><input type="radio" value="${trade.id}" name="trade"  status-attr="${trade.status}" <c:if test="${trade.status eq 'Settled' || trade.status eq 'Closed'}">disabled="disabled"</c:if> ></td>
 									 <td class="underline"><a href="javascript:void(0);"
-                                        onclick="window.location.href='${createURL}&tradeID=${trade.id}'">${trade.id}</a></td>
+                                        onclick="window.location.href='${createURL}&tradeID=${trade.id}'">${trade.scfId}</a></td>
 									<td><strong>${trade.company.name} ( ${trade.duration} Days )</strong></td>
 									<td>${trade.tradeAmount}</td>
 									<td></td>
