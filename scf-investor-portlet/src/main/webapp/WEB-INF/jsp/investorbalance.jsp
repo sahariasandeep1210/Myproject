@@ -1,6 +1,8 @@
 <%@page import="com.tf.persistance.util.TranscationStatus"%>
 <%@include file="init.jsp"%>
- <%@include file="tabview.jsp"%> 
+<%@include file="tabview.jsp"%> 
+<liferay-theme:defineObjects />
+ 
 
 <portlet:actionURL var="addInvtranscationURL">
 	<portlet:param name="action" value="addInvtranscation"/>
@@ -145,7 +147,17 @@
 				    
 						<tr>
 							<td><fmt:formatDate pattern="dd-MM-yyyy" value="${investorTransaction.transcationDate}" /></td>
-							<td>${investorTransaction.transcationType}</td>
+							<td>
+							${investorTransaction.transcationType}
+							  <c:choose>
+									<c:when test="${investorTransaction.transcationType eq 'Deposit' ||investorTransaction.transcationType eq 'Repaid' || investorTransaction.transcationType eq 'Profit' }">
+												<img height="30" width="30" src="${themeDisplay.pathThemeImages}/green.png" style=" float: right; vertical-align: middle; font-size: 20px"/>
+									</c:when>
+								  <c:otherwise>
+												<img height="30" width="30" src="${themeDisplay.pathThemeImages}/red.png" style=" float: right; vertical-align: middle; font-size: 20px"/>
+											</c:otherwise>										
+									</c:choose>
+							</td>
 							<td>${investorTransaction.tradeID}</td>
 							<td>${investorTransaction.amount}</td>
 							<td>${investorTransaction.reference}</td>

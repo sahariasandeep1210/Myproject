@@ -13,7 +13,6 @@
 <div class="alert alert-danger" id="errorMsg">
 	<i class="icon-remove-sign icon-2"></i>
 </div>
-<liferay-ui:error key="message" message="${message}" /> 
 
 
 <div class="container-fluid">

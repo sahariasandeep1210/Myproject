@@ -64,9 +64,14 @@ public class InvestorTransactionDAOImpl extends BaseDAOImpl<InvestorTransaction,
 	public List<InvestorTransaction> getInvestors(long investorId,int startIndex,int pageSize) {
 		_log.debug("Inside getInvestors ");
 		try {
+			String type="Alloted";
 			Criteria criteria=sessionFactory.getCurrentSession().createCriteria(InvestorTransaction.class);
 
-			List<InvestorTransaction> results =(List<InvestorTransaction>) criteria.add(Restrictions.eq("investorID", investorId)).addOrder(Order.desc("transcationDate")).setFirstResult(startIndex).setMaxResults(pageSize).list();
+			List<InvestorTransaction> results =(List<InvestorTransaction>) criteria
+					.add(Restrictions.eq("investorID", investorId))
+	                .add(Restrictions.ne("transcationType", type))
+					.addOrder(Order.desc("transcationDate"))
+					.setFirstResult(startIndex).setMaxResults(pageSize).list();
 			
 			
 			

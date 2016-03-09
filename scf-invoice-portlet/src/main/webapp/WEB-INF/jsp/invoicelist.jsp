@@ -24,6 +24,7 @@
 <liferay-ui:error key="default-error-message" 		message="default.error.message" /> 
 <liferay-ui:success key="success.finance.message"  message="Your finance has been allotted successfully on" />
 
+<liferay-ui:error key="message" message="We already have same" /> 
 
 <%
 List<Portlet> portletList = PortletLocalServiceUtil.getPortlets();

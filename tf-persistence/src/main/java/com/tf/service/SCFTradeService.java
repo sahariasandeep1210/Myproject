@@ -24,7 +24,7 @@ public interface SCFTradeService  {
 	public Long getScfTradesCount(Long companyID);
 	public Long getScfTradeCount(Long tradeId);
 	public Long getScfTradeCounts(String regNum);
-	public SCFTrade findByQueryId(String tradeId);
+	public String findByQueryId(String tradeId);
 	public List<SCFTrade> getScfTradeList(String RegNum,int startIndex,int pageSize);
 	
 	public void updateTradeLifeCycle(SCFTrade scfTrade);

@@ -111,7 +111,7 @@ public class SCFTradeServiceImpl  implements SCFTradeService{
 	public Long getScfTradeCounts(String regNum){
 		return scfTradeDAO.getScfTradeCounts(regNum);
 	}
-	public SCFTrade findByQueryId(String tradeId){
+	public String findByQueryId(String tradeId){
 		return scfTradeDAO.findByQueryId(tradeId);
 	}
 }

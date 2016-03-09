@@ -32,6 +32,9 @@ public class SCFTrade  implements Serializable{
 	@Column(name="scf_trade")
 	private String scfTrade;
 	
+	@Column(name="scf_id")
+	private String scfId;
+	
 	@Column(name="duration")
 	private Integer duration;
 	
@@ -151,6 +154,14 @@ public class SCFTrade  implements Serializable{
 
 	public void setScfTrade(String scfTrade) {
 		this.scfTrade = scfTrade;
+	}
+
+	public String getScfId() {
+		return scfId;
+	}
+
+	public void setScfId(String scfId) {
+		this.scfId = scfId;
 	}
 
 	public Integer getDuration() {

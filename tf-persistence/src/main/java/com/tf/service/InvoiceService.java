@@ -1,6 +1,7 @@
 package com.tf.service;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -28,7 +29,7 @@ public interface InvoiceService {
 	
 	public void updateInvoicesStatusWithTrade(List<String> invoiceIds,String status,Long tradeLong);
 	public Invoice getInvoicesByInvoiceId(long id);
-	public void triggerAllotment(List<String> invoiceIds,long sellerCompanyID,long userId);
+	public Date triggerAllotment(List<String> invoiceIds,long sellerCompanyID,long userId);
 	public List<Invoice> getInvoicesByRegNum(String regNum);
 	public List<Invoice> findByRegNum(String regNum);
 	public Long getInvoicesCount();

@@ -30,7 +30,7 @@
 						<th></th>
 					</c:if>
 					<th>Invoice Number</th>
-					<th>Date</th>
+					<th>PaymentDate</th>
 					<th>Amount</th>
 					<th>Duration</th>
 					<th>Invoice Company</th>
@@ -77,7 +77,7 @@
 										href="javascript:void(0);"
 										onclick="window.location.href='${invoiceURL}&invoiceID=${invoice.id}'">${invoice.invoiceNumber}</a></span></td>
 								<td><fmt:formatDate pattern="dd-MM-yyyy"
-										value="${invoice.invoiceDate}" /></td>
+										value="${invoice.payment_date}" /></td>
 								<td>${invoice.invoiceAmount}</td>
 								<td>${invoice.duration}</td>
 								<td>${invoice.scfCompany.name}</td>

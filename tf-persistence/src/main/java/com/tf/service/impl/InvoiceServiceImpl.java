@@ -154,7 +154,7 @@ public class InvoiceServiceImpl implements InvoiceService{
 	}
 	
 	@Transactional
-	public void triggerAllotment(List<String> invoiceIds,long sellerCmpId,long userId){		
+	public Date triggerAllotment(List<String> invoiceIds,long sellerCmpId,long userId){		
 		Date date=new Date();
 		Company company=null;
 		Invoice invoice;
@@ -178,8 +178,8 @@ public class InvoiceServiceImpl implements InvoiceService{
 		}		
 		SCFTrade scfTrade = new SCFTrade();
 		String name=company.getName();
-/*		scfTrade.setId(Long.valueOf(generateId(date, name)));
-*/		//dates logic
+		scfTrade.setScfId(generateId(date, name));
+		//dates logic
 		scfTrade.setOpeningDate(date);
 		scfTrade.setSellerPaymentDate(nextWorkingDate(date, holidayList));
 		scfTrade.setInvestorPaymentDate(nextWorkingDate(paymentdate, holidayList));
@@ -202,9 +202,10 @@ public class InvoiceServiceImpl implements InvoiceService{
 		//now allotment is done so changing trade status to Live
 		scfTrade.setStatus(TradeStatus.LIVE.getValue());
 		scfTradeService.updateTrade(scfTrade);
-		
 	
-		System.out.println("************************************ ALLOTMENTS END ************************************** \n ");	
+		System.out.println("************************************ ALLOTMENTS END ************************************** \n ");
+		return financedate;
+
 	}
 
 	private void updateTradeinfoToInvovices(List<Invoice> invoicesList,
@@ -250,12 +251,62 @@ public class InvoiceServiceImpl implements InvoiceService{
 	private  String generateId(Date date,String name){
 		int count=1;
 	    DateFormat df = new SimpleDateFormat("yyMM");
+	    DateFormat dfm = new SimpleDateFormat("MM");
+		DateFormat dfy = new SimpleDateFormat("yy");
 	    String companyName=name.substring(0, 3);
 	    String yMon=df.format(date);
 	    String id=companyName+yMon;
-		SCFTrade scfTrade =scfTradeDAO.findByQueryId(id);
+		String scfTrade =scfTradeDAO.findByQueryId(id);
+		if(scfTrade==null || scfTrade.isEmpty()){
+			return id+"00001";
+		}
+		String cmp = scfTrade.substring(0, 3);
+		String yr = scfTrade.substring(3, 5);
+		String month = scfTrade.substring(5, 7);
+		String flastcount = scfTrade.substring(7);
+		System.out.print("\n\ncmp - "+cmp);
+		System.out.print("\nyr - "+yr);
+		System.out.print("\nmonth - "+month);
+		System.out.print("\nflastcount - "+flastcount);
+		String cm=dfm.format(date);
+		String cy=dfy.format(date);
+		String statusmonth = "";
+		String statusyr = "";
+		  if(Integer.valueOf(yr) == Integer.valueOf(cy)){
+			  statusyr = "C";
+		  }else if(Integer.valueOf(yr) > Integer.valueOf(cy)){
+			  statusyr = "N";
+		  }
+		  if(Integer.valueOf(month) == Integer.valueOf(cm) ){			  
+			  statusmonth = "C";
+		  }else if(Integer.valueOf(month) > Integer.valueOf(cm) ){			  
+			  statusmonth = "N";
+		  }
+		  
+		  String newFormatCode = "";
+		  
+		  if(statusmonth.equals("C") && statusyr.equals("C")){
+			  String tmp = "";
+			  if(flastcount.length() == 1){
+				  tmp = "0000" + flastcount +1;
+			  }else if(flastcount.length() == 2){
+				  tmp = "000" + flastcount +1;
+			  }else if(flastcount.length() == 3){
+				  tmp = "00" + flastcount +1;
+			  }else if(flastcount.length() == 4){
+				  tmp = "0" + flastcount +1;
+			  }	  
+			 
+		  newFormatCode = cmp + yr + month + tmp;
+		  System.out.println("Dhanush:"+newFormatCode);
+		  }else if(statusmonth.equals("N") && statusyr.equals("C")){
+			  newFormatCode = cmp + yr + month + "00001";
+		  }
+		 
+		  System.out.print("\nnewFormatCode - "+newFormatCode);
+		  
 		System.out.println("scfTrade"+scfTrade);
-		return id;
+		return newFormatCode;
 	}
 	private  int duration(Date paymentdate,Date financedate){
 		Calendar c1 = Calendar.getInstance();

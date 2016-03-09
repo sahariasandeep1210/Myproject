@@ -6,7 +6,10 @@ import com.tf.model.Invoice;
 import com.tf.model.SCFTrade;
 
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -211,16 +214,15 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 		}
 	}
 	
-	public SCFTrade findByQueryId(String tradeId) {
+	public String findByQueryId(String tradeId) {
 		_log.debug("Inside findByQueryId ");
         try{
-          SCFTrade scfTrade=null;
-        String sql="select id from scf_trade where id = (select max(id) from scf_trade where id like'%" + tradeId +"%\')";
+        	String scfTrade=null;
+        String sql="select scf_id from scf_trade where scf_id = (select max(scf_id) from scf_trade where scf_id like'%" + tradeId +"%\')";
        //String sql="select id from scf_trade where id like (select max(id) from scf_trade where id like  1% ');";
 		  Query query = sessionFactory.getCurrentSession().createSQLQuery(sql);
-		  scfTrade = (SCFTrade) query.uniqueResult();
-	
-		  _log.debug("findByQueryId " + scfTrade);
+		  scfTrade = (String) query.uniqueResult();
+		  _log.debug("findByQueryId: " + scfTrade);
 
 		  return scfTrade;
 	} catch (RuntimeException re) {
