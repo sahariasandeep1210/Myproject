@@ -1,4 +1,6 @@
 <%@include file="init.jsp"%>
+<%@ taglib uri="http://whitehall.com/jsp/tld/p" prefix="p"%>
+
 <liferay-theme:defineObjects />
 <portlet:renderURL var="createURL">
 	<portlet:param name="render" value="createTrade" />
@@ -9,8 +11,7 @@
 	<portlet:param name="action" value="updateStatus" />
 </portlet:actionURL>
 
-
-
+<portlet:renderURL var="defaultRenderURL" />
 
 
 <div class="container-fluid">
@@ -18,6 +19,11 @@
 
 	<form:form commandName="scfTradeModel" method="post"
 		action="${createURL}" id="scfTradeList"  name="scfTradeList" >
+		 <input type="hidden" name="currentPage"     id="currentPage"        value="${paginationModel.currentPage}" />
+        <input type="hidden" name="curPageSize"         id="curPageSize"   value="${paginationModel.pageSize}" />
+        <input type="hidden" name="noOfRecords"     id="noOfRecords"         value="${paginationModel.noOfRecords}" />
+         <input type="hidden" name="defaultURL"         id="defaultURL"      value="${defaultRenderURL}" />
+        
 		<input type="hidden" id="tradeID" name="tradeID">
 		<input type="hidden" id="status" name="status">
 			<div class="row-fluid">
@@ -38,7 +44,7 @@
 			<table class="table  tablesorter table-bordered" id="tradeListTable">
 				<thead>
 					<tr>
-						<th width="3%" ></th>
+						<th width="3%" class="hide-tablesorter" ></th>
 						<th>Trade #</th>
 					    <th>SCF Company</th>
 					    <th>Allotment</th>
@@ -105,12 +111,36 @@
 			</table>
 		</div>
 		</div>
+		
 		<div class="row-fluid" id="buttonDiv">
 			<div class="span3">
 							<input type="button" value="Update Status" class="btn btn-primary span6" id="updateStatus"  data-url="${updateStatusURL}" />			
 			</div>	
 		</div>
-		
+		<div class="row-fluid">
+			<div class="span6">
+		  </div>
+			<div class="span6">
+				<div class="span4"></div>
+				<div class="span8">
+					<label  class="diplay-inline"> Show &nbsp;</label> 
+					<select id="pagSize" class="paginationselect" name="pageSize">
+						<option value="5">5</option>
+						<option value="10">10</option>
+						<option value="20">20</option>
+						<option value="30">30</option>
+						<option value="45">45</option>
+						<option value="60">60</option>
+						<option value="75">75</option>
+						<option value="100">100</option>
+					</select> 
+					<label  class="diplay-inline">&nbsp; Results per page </label>
+				</div>
+			</div>
+		</div>
 
 	</form:form>
 </div>
+
+ 	<p:paginate  paginationModel="${paginationModel}"/>
+

@@ -66,3 +66,11 @@
 .underline {
     text-decoration: underline;
 }
+
+.hide-tablesorter:after{
+	visibility:hidden;
+}
+
+.diplay-inline{
+	display:inline-block !important;
+}

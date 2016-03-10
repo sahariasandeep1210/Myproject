@@ -1,8 +1,12 @@
 <%@include file="init.jsp"%>
+<%@ taglib uri="http://whitehall.com/jsp/tld/p" prefix="p"%>
+
 <liferay-theme:defineObjects />
 <portlet:renderURL var="createURL">
 	<portlet:param name="render" value="createTrade" />
 </portlet:renderURL>
+<portlet:renderURL var="defaultRenderURL" />
+
 
 <portlet:resourceURL id="breakdownURL" var="breakdownURL" ></portlet:resourceURL> 
 
@@ -19,6 +23,11 @@
 
 	<form:form commandName="scfTradeModel" method="post"
 		action="${createURL}" id="scfTradeList"  >
+		
+		<input type="hidden" name="currentPage"     id="currentPage"        value="${paginationModel.currentPage}" />
+        <input type="hidden" name="currPageSizes"         id="currPageSizes"   value="${paginationModel.pageSize}" />
+        <input type="hidden" name="noOfRecords"     id="noOfRecords"         value="${paginationModel.noOfRecords}" />
+         <input type="hidden" name="defaultURL"         id="defaultURL"      value="${defaultRenderURL}" />
 			<div class="row-fluid">
 			<div class="span6">
 				<div class="span3">
@@ -89,6 +98,28 @@
 				</tbody>
 			</table>
 		</div>
+		<div class="row-fluid">
+			<div class="span6">
+		  </div>
+			<div class="span6">
+				<div class="span4"></div>
+				<div class="span8">
+					<label  class="diplay-inline"> Show &nbsp;</label> 
+					<select id="pgSize" class="paginationselect" name="pageSize">
+						<option value="5">5</option>
+						<option value="10">10</option>
+						<option value="20">20</option>
+						<option value="30">30</option>
+						<option value="45">45</option>
+						<option value="60">60</option>
+						<option value="75">75</option>
+						<option value="100">100</option>
+					</select> 
+					<label  class="diplay-inline">&nbsp; Results per page </label>
+				</div>
+			</div>
+		</div>
 
 	</form:form>
 </div>
+ 	<p:paginate  paginationModel="${paginationModel}"/>

@@ -333,8 +333,8 @@ public class InvoiceServiceImpl implements InvoiceService{
 	public Invoice getInvoicesBytradeId(long id){
 		return invoiceDAO.getInvoicesBytradeId(id);
 	}
-	public Invoice getInvoicesByInvoiceNumber(long id){
-		return invoiceDAO.getInvoicesByInvoiceNumber(id);
+	public Invoice getInvoicesByInvoiceNumAndCompanyId(long id,long companyId){
+	return invoiceDAO.getInvoicesByInvoiceNumAndCompanyId(id,companyId);
 	}
 	
 }

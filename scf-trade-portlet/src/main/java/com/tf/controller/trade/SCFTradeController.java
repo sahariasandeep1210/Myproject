@@ -144,23 +144,29 @@ public class SCFTradeController {
 				.getPermissionChecker();
 
 		if (permissionChecker.isOmniadmin()) {
-			scftrades = scfTradeService.getScfTrades();
+			scftrades = scfTradeService.getScfTrades(paginationModel.getStartIndex(),
+					paginationModel.getPageSize());
+			noOfRecords = scfTradeService.getScfTradesCount();
+
 			viewName = "admintradelist";
 		} else if (request.isUserInRole(Constants.SCF_ADMIN)) {
 			long companyId = userService.getCompanybyUserID(
 					themeDisplay.getUserId()).getId();
-			scftrades = scfTradeService.getScfTrades(companyId);
+			scftrades = scfTradeService.getScfTrades(companyId,paginationModel.getStartIndex(),
+					paginationModel.getPageSize());
+			noOfRecords=scfTradeService.getScfTradesCount(companyId);
 			viewName = "tradelist";
 		} else if (request.isUserInRole(Constants.SELLER_ADMIN)) {
 
 			String regNum = liferayUtility.getWhiteHallComapanyRegNo(request);
 			scftrades=scfTradeService.getScfTradeList(regNum, paginationModel.getStartIndex(), paginationModel.getPageSize());
 			noOfRecords = scfTradeService.getScfTradeCounts(regNum);
-			paginationUtil.setPaginationInfo(noOfRecords, paginationModel);
-			model.put("paginationModel", paginationModel);
      		viewName = "sellertradelist";
 		}
 		model.put("trades", scftrades);
+		paginationUtil.setPaginationInfo(noOfRecords, paginationModel);
+        System.out.println("paginationsss:"+paginationModel);
+		model.put("paginationModel", paginationModel);
 
 		return new ModelAndView(viewName, model);
 	}

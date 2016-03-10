@@ -1,17 +1,19 @@
 <%@include file="init.jsp"%>
-<portlet:actionURL var="createInvoiceURL">
+<%-- <portlet:actionURL var="createInvoiceURL">
 	<portlet:param name="action" value="addInvoice" />
-</portlet:actionURL>
+</portlet:actionURL> --%>
 
 <portlet:actionURL var="updateInvoiceURL">
 	<portlet:param name="update" value="updateInvoice" />
 </portlet:actionURL>
-
+<portlet:renderURL var="createInvoiceURL">
+  <portlet:param name="render" value="createInvoice"/>
+</portlet:renderURL>
 <portlet:renderURL var="invoiceListURL"></portlet:renderURL>
 
 
 <liferay-ui:error 	key="invoice.duplicate.error">
-	<liferay-ui:message key="invoice.duplicate.number.company"  arguments="${invoice.invoiceNumber}"></liferay-ui:message>
+	<liferay-ui:message key="invoice.duplicate.number.company"  arguments="${invoice.invoiceNumber}}"></liferay-ui:message>
 </liferay-ui:error> 
 
 <div class="alert alert-danger" id="errorMsg">

@@ -100,3 +100,10 @@
     text-decoration: underline;
 }
 /* css changes for seller trade end*/
+
+.hide-tablesorter:after{
+	visibility:hidden;
+}
+.diplay-inline{
+	display:inline-block !important;
+}

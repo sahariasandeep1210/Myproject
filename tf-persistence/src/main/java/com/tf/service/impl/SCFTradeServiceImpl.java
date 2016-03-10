@@ -36,8 +36,8 @@ public class SCFTradeServiceImpl  implements SCFTradeService{
 	@Autowired
 	private InvestorDAO investorDAO;
 
-	public List<SCFTrade> getScfTrades() {
-		return scfTradeDAO.getScfTrades();
+	public List<SCFTrade> getScfTrades(int startIndex,int pageSize) {
+		return scfTradeDAO.getScfTrades(startIndex,pageSize);
 	}
 	
 	public SCFTrade save(SCFTrade scfTrade){
@@ -113,5 +113,12 @@ public class SCFTradeServiceImpl  implements SCFTradeService{
 	}
 	public String findByQueryId(String tradeId){
 		return scfTradeDAO.findByQueryId(tradeId);
+	}
+	
+	public Long getScfTradesCount(){
+		return scfTradeDAO.getScfTradesCount();
+	}
+	public Long getScfTradesCountByCompanyId(Long companyID){
+		return scfTradeDAO.getScfTradesCount(companyID);
 	}
 }

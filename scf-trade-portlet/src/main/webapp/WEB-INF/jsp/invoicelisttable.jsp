@@ -1,7 +1,24 @@
 	<%@include file="init.jsp"%>
 	
+	
+	<div class="row-fluid">
+            <div class="span6">
+                <div class="span3">
+                </div>
+            </div>
+
+            <div class="span6">
+                <div class="span12">
+                    <h5 style="float: right !important;">
+                        <a href="#" style="color: #295780; font-weight: bold;" id="exportTradeInvoice"> Export</a>
+                    </h5>
+                </div>
+            </div>
+        </div>
+	
+	
 	<div class="table-responsive">
-			<table class="table table-hover tablesorter table-bordered">
+			<table class="table table-hover tablesorter table-bordered" id="tradeInvoiceTable"> 
 				<thead>
 					<tr>										
 						<th>Invoice Number</th>

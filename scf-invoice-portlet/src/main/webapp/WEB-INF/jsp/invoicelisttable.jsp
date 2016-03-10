@@ -27,7 +27,7 @@
 			<thead>
 				<tr>
 					<c:if test="${defaultRender}">
-						<th></th>
+						<th class="hide-tablesorter"></th>
 					</c:if>
 					<th>Invoice Number</th>
 					<th>PaymentDate</th>

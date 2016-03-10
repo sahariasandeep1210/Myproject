@@ -21,6 +21,7 @@ import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.Distinct;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Projection;
 import org.hibernate.criterion.ProjectionList;
@@ -38,16 +39,30 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 	}
 
 	
-	public List<SCFTrade>  getScfTrades(){
+	@SuppressWarnings("unchecked")
+	public List<SCFTrade>  getScfTrades(int startIndex,int pageSize){
 		_log.debug("Inside getScfTrades  ");
 		try {
 			List<SCFTrade> results = (List<SCFTrade>) sessionFactory.getCurrentSession().createCriteria(SCFTrade.class).setFetchMode("invoices",FetchMode.JOIN).setFetchMode("allotments", FetchMode.JOIN)
-					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY).list();
+					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY).setFirstResult(startIndex).setMaxResults(pageSize).list();
 			_log.debug("getScfTrades successful, result size: "
 					+ results.size());
 			return results;
 		} catch (RuntimeException re) {
 			_log.error("getScfTrades failed", re);
+			throw re;
+		}
+	}
+	
+	public Long getScfTradesCount() {
+		_log.debug("Inside getScfTradesCount ");
+		try {
+			
+			Long resultCount = (Long) sessionFactory.getCurrentSession().createCriteria(SCFTrade.class).setProjection(Projections.rowCount()).uniqueResult();
+			_log.info("getScfTradesCount Count:: "	+ resultCount);
+			return resultCount;
+		} catch (RuntimeException re) {
+			_log.error("getScfTradesCount Count failed", re);
 			throw re;
 		}
 	}
@@ -65,6 +80,7 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 		return scfTrade;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public List<SCFTrade> getScfTrades(Long companyID){		
 		_log.debug("Inside getScfTrades ");
 		try {
@@ -87,10 +103,7 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 			SCFTrade instance = (SCFTrade) sessionFactory.getCurrentSession().get(
 					"com.tf.model.SCFTrade", id);
 			Hibernate.initialize(instance.getInvoices());
-			//Set<Invoice> invoices= instance.getInvoices();
 			
-			//_log.info("Invoices Size:::"+invoices.size());
-			//instance.setInvoices(invoices);
 			if (instance == null) {
 				_log.debug("get successful, no instance found");
 			} else {
@@ -156,19 +169,31 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 	
 	@SuppressWarnings("unchecked")
 	public List<SCFTrade> getScfTrades(Long companyID,int startIndex,int pageSize) {
-		_log.debug("Inside getCompanies ");
+		_log.debug("Inside getScfTrades ");
 		try {
 			
-			List<SCFTrade> results = (List<SCFTrade>) sessionFactory.getCurrentSession().createCriteria(SCFTrade.class).add(Restrictions.ne("company.id", companyID)).setFirstResult(startIndex).setMaxResults(pageSize).list();
-			_log.debug("GetCompanies successful, result size: "
+			List<SCFTrade> results = (List<SCFTrade>) sessionFactory.getCurrentSession().createCriteria(SCFTrade.class).add(Restrictions.ne("company.id", companyID)).setFetchMode("invoices",FetchMode.JOIN).
+					setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY).setFirstResult(startIndex).setMaxResults(pageSize).list();
+			_log.debug("getScfTrades successful, result size: "
 					+ results.size());
 			return results;
 		} catch (RuntimeException re) {
-			_log.error("GetCompanies failed", re);
+			_log.error("getScfTrades failed", re);
 			throw re;
 		}
 	}
-	
+	public Long getScfTradesCountByCompanyId(Long companyID) {
+		_log.debug("Inside getScfTradesCountByCompanyId ");
+		try {
+			
+			Long resultCount = (Long) sessionFactory.getCurrentSession().createCriteria(SCFTrade.class).add(Restrictions.ne("company.id", companyID)).setProjection(Projections.rowCount()).uniqueResult();
+			_log.info("getScfTradesCountByCompanyId Count:: "	+ resultCount);
+			return resultCount;
+		} catch (RuntimeException re) {
+			_log.error("getScfTradesCountByCompanyId Count failed", re);
+			throw re;
+		}
+	}
 	
 	public Long getScfTradesCount(Long companyID) {
 		_log.debug("Inside getCompanies ");
@@ -203,8 +228,9 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 		try {
 			Criteria criteria  = sessionFactory.getCurrentSession().createCriteria(SCFTrade.class);
 			criteria.createAlias("invoices", "inv");
-			Long resultCount = (Long) criteria.add(Restrictions.eq("inv.sellerCompanyRegistrationNumber", regNum)).setProjection(Projections.rowCount()).uniqueResult();
-					++resultCount;
+			Long resultCount = (Long) criteria.add(Restrictions.eq("inv.sellerCompanyRegistrationNumber", regNum))
+					            .setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY)
+					            .setProjection(Projections.rowCount()).uniqueResult();
 				
 			_log.debug("getScfTradeCounts Count "	+ resultCount);
 			return resultCount;
@@ -218,8 +244,7 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 		_log.debug("Inside findByQueryId ");
         try{
         	String scfTrade=null;
-        String sql="select scf_id from scf_trade where scf_id = (select max(scf_id) from scf_trade where scf_id like'%" + tradeId +"%\')";
-       //String sql="select id from scf_trade where id like (select max(id) from scf_trade where id like  1% ');";
+          String sql="select scf_id from scf_trade where scf_id = (select max(scf_id) from scf_trade where scf_id like'%" + tradeId +"%\')";
 		  Query query = sessionFactory.getCurrentSession().createSQLQuery(sql);
 		  scfTrade = (String) query.uniqueResult();
 		  _log.debug("findByQueryId: " + scfTrade);

@@ -18,6 +18,7 @@ import com.liferay.portlet.documentlibrary.model.DLFolderConstants;
 import com.liferay.portlet.documentlibrary.service.DLAppServiceUtil;
 import com.mysql.jdbc.StringUtils;
 import com.tf.dto.InvoiceDTO;
+
 import com.tf.model.Company;
 import com.tf.model.Invoice;
 import com.tf.model.InvoiceDocument;
@@ -164,47 +165,45 @@ public class InvoiceController {
 	protected void updateInvoice(
 			@ModelAttribute("invoiceModel") InvoiceDTO invoice, ModelMap model,
 			ActionRequest request, ActionResponse response) {
-		 Invoice invs=null;
-		 Company company=null;
-         Long invoiceId=ParamUtil.getLong(request, "invoiceId",0l);	
-
+         Long invoiceId=ParamUtil.getLong(request, "invoiceId",0);	
+         long scfCompanyId=ParamUtil.getLong(request, "scfCompany");
+         System.out.println("scfCompanyId:::"+scfCompanyId);
+         System.out.println("invoiceId:::"+invoiceId);
+         
 		try{
-		      invs=invoiceService.getInvoicesById(invoiceId);
-		      company =invs.getScfCompany();
+			Invoice invoice2=invoiceService.getInvoicesByInvoiceNumAndCompanyId(invoice.getInvoiceNumber(), scfCompanyId);
+		    if(invoice2 !=null && invoiceId !=invoice2.getId()){
+		        SessionErrors.add(request, "invoice.duplicate.error");
+			    model.put("invoice", invoice);
+			    model.put("company", companyService.findById(scfCompanyId));
+		        response.setRenderParameter("render", "createInvoice");
 
-		/* if( invs.getInvoiceNumber()==invoice.getInvoiceNumber() && company.getId() == invoice.getCompanyId()&& invoiceId !=invs.getId()){
-			 SessionErrors.add(request, "invoice.duplicate.error");
-			 model.put("invoice", invoice);
-		     response.setRenderParameter("render", "createInvoice");
-
-		 }*/
-		       
-		  if (invoiceId==0l){
-			 //add operation.			
-        	Invoice invoiceModel = transfromInvoiceDtoToInvoiceModel(invoice);
-			List<Invoice> invoices = new ArrayList<Invoice>();
-			invoices.add(invoiceModel);
-			invoiceService.addInvoices(invoices);
-        }
-        else {
-        	//update operation validation not required
-        	Invoice inv= invoiceService.getInvoicesById(invoiceId);
-        	inv.setInvoiceNumber(invoice.getInvoiceNumber());
-        	inv.setInvoiceDate(invoice.getInvoiceDate());
-        	inv.setSellerCompanyRegistrationNumber(invoice.getSellerRegNo());
-        	inv.setInvoiceAmount(invoice.getInvoiceAmount());
-        	inv.setInvoiceDesc(invoice.getInvoiceDesc());
-        	inv.setDuration(invoice.getDuration());
-        	inv.setPayment_date(invoice.getPaymentDate());
-    		inv.setCurrency(invoice.getCurrency());
-    		inv.setInvoiceDesc(invoice.getInvoiceDesc());
-    		Company scfCompany=companyService.findById(invoice.getScfCompany());
-    		inv.setScfCompany(scfCompany);
-    		List<Invoice> invoices = new ArrayList<Invoice>();
-			invoices.add(inv);
-			invoiceService.addInvoices(invoices);
-
-        }
+			 }else{
+				 if(invoiceId > 0){
+					 // Update record
+			        	Invoice inv= invoiceService.getInvoicesById(invoiceId);
+			        	inv.setInvoiceNumber(invoice.getInvoiceNumber());
+			        	inv.setInvoiceDate(invoice.getInvoiceDate());
+			        	inv.setSellerCompanyRegistrationNumber(invoice.getSellerRegNo());
+			        	inv.setInvoiceAmount(invoice.getInvoiceAmount());
+			        	inv.setInvoiceDesc(invoice.getInvoiceDesc());
+			        	inv.setDuration(invoice.getDuration());
+			        	inv.setPayment_date(invoice.getPaymentDate());
+			    		inv.setCurrency(invoice.getCurrency());
+			    		inv.setInvoiceDesc(invoice.getInvoiceDesc());
+			    		Company scfCompany=companyService.findById(invoice.getScfCompany());
+			    		inv.setScfCompany(scfCompany);
+			    		List<Invoice> invoices = new ArrayList<Invoice>();
+						invoices.add(inv);
+						invoiceService.addInvoices(invoices);
+				 
+				 }else{
+		        	 Invoice invoiceModel = transfromInvoiceDtoToInvoiceModel(invoice);
+					 List<Invoice> invoices = new ArrayList<Invoice>();
+					 invoices.add(invoiceModel);
+					 invoiceService.addInvoices(invoices);
+				 }
+			 }
 	}catch(Exception e){ 
 		 
 			_log.error(e.getMessage());

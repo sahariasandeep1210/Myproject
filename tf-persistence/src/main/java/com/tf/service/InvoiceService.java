@@ -33,8 +33,7 @@ public interface InvoiceService {
 	
 	public Date triggerAllotment(List<String> invoiceIds,long sellerCompanyID,long userId);
 	
-	public Invoice getInvoicesByInvoiceNumber(long id);
-	
+	public Invoice getInvoicesByInvoiceNumAndCompanyId(long id,long companyId);	
 	
 
 	public List<Invoice> getInvoicesByRegNum(String regNum);

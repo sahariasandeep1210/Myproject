@@ -2,7 +2,23 @@ $(document).ready(function(){
 	$(".historyRow").hide();
 	$("#buttonDiv").hide();
 	$("#pageSize").val($("#currPageSize").val());
+	$("#pagSize").val($("#curPageSize").val());
+	$("#pgSize").val($("#currPageSizes").val());
 
+
+	$("#pgSize").change(function (){
+		var noOfRecords=parseInt($("#noOfRecords").val());
+		var pageSize=parseInt($("#currPageSizes").val());
+		var newPageSize=parseInt($(this).val());
+		$("#currentPage").val(1);
+		if(noOfRecords<pageSize && newPageSize>pageSize){
+			return;
+		}else {
+			var actionUrl=$("#defaultURL").val();
+			document.forms["scfTradeList"].action = actionUrl;
+			document.forms["scfTradeList"].submit();	
+		}
+	});
 	 $("#pageSize").change(function (){
 			var noOfRecords=parseInt($("#noOfRecords").val());
 			var pageSize=parseInt($("#currPageSize").val());
@@ -10,25 +26,43 @@ $(document).ready(function(){
 			$("#currentPage").val(1);
 			if(noOfRecords<pageSize && newPageSize>pageSize){
 				return;
-			}else{
+			}else {
 				var actionUrl=$("#defaultURL").val();
 				document.forms["sellerList"].action = actionUrl;
 				document.forms["sellerList"].submit();	
 			}
-			
-			
-			
+		});
+	 
+	 $("#pagSize").change(function (){
+			var noOfRecords=parseInt($("#noOfRecords").val());
+			var pageSize=parseInt($("#curPageSize").val());
+			var newPageSize=parseInt($(this).val());
+			$("#currentPage").val(1);
+			if(noOfRecords<pageSize && newPageSize>pageSize){
+				return;
+			}else {
+				var actionUrl=$("#defaultURL").val();
+				document.forms["scfTradeList"].action = actionUrl;
+				document.forms["scfTradeList"].submit();	
+			}
 		});
 	 
 	$("#exportSeller").click(function(){
-		/* window.open('data:application/vnd.ms-excel,' + $('#dvData').html());
-		 e.preventDefault();*/	
-		
 		$('#sellerListTable').tableExport({
 			type : 'excel',
 			escape : 'false',
 			fileName: 'sellerList',
 			worksheetName: 'SellerList'
+		});
+		
+	});
+	
+	$("#exportTradeInvoice").click(function(){	
+		$('#tradeInvoiceTable').tableExport({
+			type : 'excel',
+			escape : 'false',
+			fileName: 'InvoiceList',
+			worksheetName: 'InvoiceList'
 		});
 		
 	});
@@ -284,10 +318,23 @@ $('table').tablesorter(
 
 
 function setPage(pageNumber){
+	if($("#sellerListTable").length){
 	$("#currentPage").val(pageNumber);
 	var actionUrl=$("#defaultURL").val();
 	document.forms["sellerList"].action = actionUrl;
 	document.forms["sellerList"].submit();	
+   }else if($("#tradeListTable").length){
+		$("#currentPage").val(pageNumber);
+		var actionUrl=$("#defaultURL").val();
+		document.forms["scfTradeList"].action = actionUrl;
+		document.forms["scfTradeList"].submit();	
+   }else{
+		$("#currentPage").val(pageNumber);
+		var actionUrl=$("#defaultURL").val();
+		document.forms["scfTradeList"].action = actionUrl;
+		document.forms["scfTradeList"].submit();
+   }
+	
 }
 
 

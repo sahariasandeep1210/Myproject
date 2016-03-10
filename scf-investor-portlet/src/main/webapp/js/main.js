@@ -556,10 +556,13 @@ function setPage(pageNumber){
 		
 	$("#currentPage").val(pageNumber);
 	var actionUrl=$("#defaultCashURL").val();
-	var actionUrl=$("#getCashs").val();
 	document.forms["cashReportForm"].action = actionUrl;
 	document.forms["cashReportForm"].submit();	
-	
+	}else if($("#cashReportTable").length) {
+		$("#currentPage").val(pageNumber);
+		var actionUrl=$("#getCashs").val();
+		document.forms["cashReportForm"].action = actionUrl;
+		document.forms["cashReportForm"].submit();
 	}else if($("#receivableReportTable").length){
 	 $("#currentPage").val(pageNumber);
 	var actionUrl=$("#defaultRenderURL").val();

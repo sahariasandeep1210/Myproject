@@ -115,7 +115,7 @@
 			<div class="span6">
 				<div class="span4"></div>
 				<div class="span8">
-					<label> Show &nbsp;</label> 
+					<label  class="diplay-inline"> Show &nbsp;</label> 
 					<select id="pageSize" class="paginationselect" name="pageSize">
 						<option value="5">5</option>
 						<option value="10">10</option>
@@ -126,7 +126,7 @@
 						<option value="75">75</option>
 						<option value="100">100</option>
 					</select> 
-					<label>&nbsp; Results per page </label>
+					<label  class="diplay-inline">&nbsp; Results per page </label>
 				</div>
 			</div>
 		</div>

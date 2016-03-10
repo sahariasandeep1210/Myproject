@@ -238,7 +238,7 @@ public class InvoiceDAOImpl  extends BaseDAOImpl<Invoice, Long> implements Invoi
 		}
 		
 	}
-	public Invoice getInvoicesByInvoiceNumber(long id){
+	public Invoice getInvoicesByInvoiceNumAndCompanyId(long id,long companyId){
 		try{
 		Invoice invoice = (Invoice)sessionFactory.getCurrentSession().createCriteria(Invoice.class).add(Restrictions.eq("invoiceNumber", id)).uniqueResult();
 		_log.debug("getInvoicesByInvoiceNumber successful, result size: "
@@ -250,4 +250,5 @@ public class InvoiceDAOImpl  extends BaseDAOImpl<Invoice, Long> implements Invoi
 		throw re;
 	 }
 	}
+	
 }

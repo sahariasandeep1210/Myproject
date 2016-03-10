@@ -335,6 +335,9 @@ public class InvestorController {
  		noOfRecords=investorTransactionService.getInvestorsCount(investorID);
         paginationUtil.setPaginationInfo(noOfRecords,paginationModel);
         System.out.println("Paginationsss:"+paginationModel);
+        for(InvestorTransaction lis:investorList)
+        System.out.println("investorListfromCashReport:"+lis.getTranscationType());
+
 		model.put("paginationModel", paginationModel);
 	    model.put("investorID", investorID);
 	    for(com.tf.persistance.util.InvestorDTO inv:investors){

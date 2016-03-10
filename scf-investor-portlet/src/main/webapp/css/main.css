@@ -268,3 +268,6 @@ table.addtextCenter td {
 	font-weight: bold;
 }
 
+.diplay-inline{
+	display:inline-block !important;
+}
