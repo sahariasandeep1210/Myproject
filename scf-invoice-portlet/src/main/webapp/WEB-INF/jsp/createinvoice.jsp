@@ -13,7 +13,7 @@
 
 
 <liferay-ui:error 	key="invoice.duplicate.error">
-	<liferay-ui:message key="invoice.duplicate.number.company"  arguments="${invoice.invoiceNumber}}"></liferay-ui:message>
+	<liferay-ui:message key="invoice.duplicate.number.company"  arguments="${invoice.invoiceNumber}"></liferay-ui:message>
 </liferay-ui:error> 
 
 <div class="alert alert-danger" id="errorMsg">

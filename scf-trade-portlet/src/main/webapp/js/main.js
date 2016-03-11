@@ -5,6 +5,13 @@ $(document).ready(function(){
 	$("#pagSize").val($("#curPageSize").val());
 	$("#pgSize").val($("#currPageSizes").val());
 
+	
+	 $("#historyReport").click(function (){
+			var updateURL=$("#getTradeHistorys").val();
+			document.forms["tradehistoryForm"].action = updateURL;
+	      document.forms["tradehistoryForm"].submit();
+	});
+	enableTab();
 
 	$("#pgSize").change(function (){
 		var noOfRecords=parseInt($("#noOfRecords").val());
@@ -53,6 +60,24 @@ $(document).ready(function(){
 			escape : 'false',
 			fileName: 'sellerList',
 			worksheetName: 'SellerList'
+		});
+		
+	});
+	$("#exportSingleTradeHistory").click(function(){
+		$('#singleTradeHistoryTable').tableExport({
+			type : 'excel',
+			escape : 'false',
+			fileName: 'singleTradeHistoryList',
+			worksheetName: 'singleTradeHistoryList'
+		});
+		
+	});
+	$("#exportTradeHistory").click(function(){
+		$('#tradeHistoryTable').tableExport({
+			type : 'excel',
+			escape : 'false',
+			fileName: 'TradeHistory',
+			worksheetName: 'TradeHistory'
 		});
 		
 	});
@@ -308,13 +333,7 @@ function changeExpandIcon(tradeID){
 	
 }
 
-$('table').tablesorter(
-		
-		{  
-			theme : 'blue',
-			headers: { 0: { sorter: false} }
-		
-		});
+$('table').tablesorter();
 
 
 function setPage(pageNumber){
@@ -328,7 +347,18 @@ function setPage(pageNumber){
 		var actionUrl=$("#defaultURL").val();
 		document.forms["scfTradeList"].action = actionUrl;
 		document.forms["scfTradeList"].submit();	
-   }else{
+   }else if($("#tradeHisTable").length){
+	   $("#currentPage").val(pageNumber);
+		var actionUrl=$("#defaultURL").val();
+		document.forms["tradehistoryForm"].action = actionUrl;
+		document.forms["tradehistoryForm"].submit();	
+   }else if($("#singleTradeHistoryTable").length){
+	   $("#currentPage").val(pageNumber);
+		var actionUrl=$("#defaultURL").val();
+		document.forms["singlehistoryForm"].action = actionUrl;
+		document.forms["singlehistoryForm"].submit();	
+  }
+   else{
 		$("#currentPage").val(pageNumber);
 		var actionUrl=$("#defaultURL").val();
 		document.forms["scfTradeList"].action = actionUrl;
@@ -341,31 +371,44 @@ function setPage(pageNumber){
 
 
 
-$("#search").keyup(function() {
-	var tradeURL=$("#tradeURL").val();
-		var searchval=$(this).val();
-		
-	  			$.ajax({ 
-					url: tradeURL, 
-					type: 'POST', 
-					datatype:'json', 
 
-					cache: false,
-					data: { 
-						searchSelection: searchval 					
-						  }, 
-					success: function(data){
-						$("#sellerList").html(data);
-				   		   $("#sellerListTable").slideToggle();
-
-						
-					} ,
-					error: function(jqXHR, textStatus, errorThrown) {
-						ajaxindicatorstop();
-						
-					}
-	  					});	
-		  
-	});
 	
+function enableTab(){
+	var curentTab=$("#currentTab").val();
+	if(curentTab=='admintradelist'){
+		$("#scftradesTab").addClass("active");
+	}else if(curentTab=='tradehistory'){
+		$("#tradehis").addClass("active");
+	}else{
+		$("#scftradesTab").addClass("active");
+	}
+}
+
+$("#fromDate").datepicker({
+	changeMonth : true,
+	changeYear : true,
+	showOn : "button",
+	
+	buttonImage : "/tf-theme/images/calendar.jpg",
+	buttonImageOnly : true,
+	buttonText : "Select date",
+    onSelect: function(selected) {
+				$("#toDate").datepicker("option","minDate", selected)
+				  
+		   }
+});
+
+$("#toDate").datepicker({
+	changeMonth : true,
+	changeYear : true,
+	showOn : "button",
+	buttonImage : "/tf-theme/images/calendar.jpg",
+	buttonImageOnly : true,
+	buttonText : "Select date",
+	onSelect: function(selected) {
+				$("#fromDate").datepicker("option","maxDate", selected)
+				  
+		   }
+});
+
 

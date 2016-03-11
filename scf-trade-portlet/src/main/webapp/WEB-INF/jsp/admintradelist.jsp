@@ -1,6 +1,8 @@
 <%@include file="init.jsp"%>
 <%@ taglib uri="http://whitehall.com/jsp/tld/p" prefix="p"%>
 
+<%@include file="tabview.jsp"%>
+
 <liferay-theme:defineObjects />
 <portlet:renderURL var="createURL">
 	<portlet:param name="render" value="createTrade" />

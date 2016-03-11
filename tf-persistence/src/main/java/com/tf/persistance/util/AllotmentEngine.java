@@ -1,5 +1,20 @@
 package com.tf.persistance.util;
 
+import com.tf.dao.AllotmentDAO;
+import com.tf.dao.InvestorDAO;
+import com.tf.dao.InvestorTransactionDAO;
+import com.tf.dao.TradeAuditDAO;
+import com.tf.model.Allotment;
+import com.tf.model.GeneralSetting;
+import com.tf.model.InvestorPortfolio;
+import com.tf.model.InvestorTransaction;
+import com.tf.model.SCFTrade;
+import com.tf.model.SellerSetting;
+import com.tf.model.TradeAudit;
+import com.tf.service.GeneralSettingService;
+import com.tf.service.InvestorService;
+import com.tf.service.SettingService;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
@@ -8,19 +23,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import com.tf.dao.AllotmentDAO;
-import com.tf.dao.InvestorDAO;
-import com.tf.dao.InvestorTransactionDAO;
-import com.tf.dao.TradeAuditDAO;
-import com.tf.model.Allotment;
-import com.tf.model.InvestorPortfolio;
-import com.tf.model.InvestorTransaction;
-import com.tf.model.SCFTrade;
-import com.tf.model.SellerSetting;
-import com.tf.model.TradeAudit;
-import com.tf.service.InvestorService;
-import com.tf.service.SettingService;
 
 @Component
 public class AllotmentEngine {
@@ -35,10 +37,16 @@ public class AllotmentEngine {
 	private InvestorDAO investorDAO;
 	
 	@Autowired
+	private InSuffcientFund fund ;
+	
+	@Autowired
 	private InvestorService investorService;
 	
 	@Autowired
 	private SettingService settingService;
+	
+	@Autowired
+	private GeneralSettingService generalSettingService ;
 	
 	@Autowired
 	private AllotmentDAO allotmentDAO;
@@ -49,7 +57,7 @@ public class AllotmentEngine {
 	@Autowired
 	private InvestorTransactionDAO investorTransactionDAO;
 	
-	public void  tradeAllotment(List<InvestorProtfolioDTO> investorsList,SCFTrade trade,long sellerCmpId,long userId){
+	public void  tradeAllotment(List<InvestorProtfolioDTO> investorsList,SCFTrade trade,long sellerCmpId,long userId) throws InSuffcientFund{
 
 		List<InvestorProtfolioDTO> investors = investorsList;
 		Allotment allotment ; 
@@ -64,7 +72,8 @@ public class AllotmentEngine {
 		BigDecimal whitehallTotal =			BigDecimal.ZERO; 
 		BigDecimal investorTotalNet =		BigDecimal.ZERO; 
 		BigDecimal sellerFees =				BigDecimal.ZERO;		
-		
+		SellerSetting sellerSetting = null;
+		GeneralSetting generalSetting = null;
 		int sameRateCount = 0; 
 
 		BigDecimal tradeAmount = trade.getTradeAmount(); 
@@ -98,6 +107,13 @@ public class AllotmentEngine {
 					currentAllotment = investor.getAvailToInvest();
 				}
 			}
+			System.out.println("CurrentAllotment::"+currentAllotment);
+               if (currentAllotment.compareTo(pendingAllotment) ==0){
+				
+					throw new InSuffcientFund("Finance allotment failed for <SCF Company Name>'s  invoice.Please contact whileHall admin for more details.");
+				
+			}
+			
 			Date date=new Date();
 			setInvestmentInfo(currentAllotment, investor);
 			allotment.setNoOfdays(trade.getDuration());
@@ -141,15 +157,24 @@ public class AllotmentEngine {
 			investorPortfolio.setAvailToInvest(investor.getAvailToInvest());
 			investorPortfolio.setAmountInvested(investor.getAmountInvested());
 		}
-		SellerSetting sellerSetting=settingService.getSellerSetting(sellerCmpId);
-		sellerFees=calculateSellerFees(trade.getDuration(), tradeAmount,sellerSetting);
-		
+		sellerSetting=settingService.getSellerSetting(sellerCmpId);
+
+		if( sellerSetting != null){
+		    sellerFees=calculateSellerFees(trade.getDuration(), tradeAmount,sellerSetting);
+		}else{
+		    generalSetting=generalSettingService.getGeneralSetting();
+			sellerFees=calculateSellerFeesByGeneralSetting(trade.getDuration(), tradeAmount,generalSetting);
+		}
 		//setting back to Trade
 		trade.setInvestorTotalGross(investorTotalGross);
 		trade.setWhitehallTotalShare(whitehallTotal);
 		trade.setInvestorTotalProfit(investorTotalNet);
 		trade.setSellerFees(sellerFees);
-		trade.setSellerTransFee(sellerSetting.getSellerTransFee());
+		if(sellerSetting != null){
+		  trade.setSellerTransFee(sellerSetting.getSellerTransFee());
+		}else{
+			trade.setSellerTransFee(generalSetting.getSellerTransFee());
+		}
 		trade.setWhitehallTotalProfit(calculateWhitehallTotalProfit(whitehallTotal,sellerFees,trade.getSellerTransFee()));
 		//here we need to add VAT as well
 		trade.setWhitehallNetReceivable(calculateWhitehallTotalProfit(whitehallTotal,sellerFees,trade.getSellerTransFee()));
@@ -171,7 +196,7 @@ public class AllotmentEngine {
 			investorTransactionDAO.saveEntity(investorTransaction);
 		}
 		
-		saveTradeAudit(trade, userId, sellerSetting);
+			saveTradeAudit(trade, userId, sellerSetting,generalSetting);
 		
 	}
 
@@ -212,6 +237,11 @@ public class AllotmentEngine {
 		sellerFees.setScale(2, RoundingMode.CEILING);
 		return sellerFees;
 	}
+	private BigDecimal calculateSellerFeesByGeneralSetting(Integer duration,BigDecimal tradeAmount,GeneralSetting generalSetting){		
+		BigDecimal sellerFees=((new BigDecimal(duration).multiply(generalSetting.getSellerFinFee())).divide(TEN_THOUSAND,6, RoundingMode.HALF_UP)).multiply(tradeAmount);
+		sellerFees.setScale(2, RoundingMode.CEILING);
+		return sellerFees;
+	}
 	
 	private BigDecimal calculateWhitehallTotalProfit(BigDecimal whitehallTotal,BigDecimal sellerFees,BigDecimal sellerTransFee){		
 		BigDecimal WhitehallTotalProfit=whitehallTotal.add(sellerFees).add(sellerTransFee);
@@ -226,16 +256,22 @@ public class AllotmentEngine {
 	}
 	
 	private void saveTradeAudit(SCFTrade trade, long userId,
-			SellerSetting sellerSetting) {
+			SellerSetting sellerSetting,GeneralSetting setting) {
 		//creating trade audit
 		TradeAudit tradeAudit=new TradeAudit();
 		tradeAudit.setCreateDate(new Date());
 		tradeAudit.setTradeID(trade.getId());
+		if(sellerSetting != null){
 		tradeAudit.setSellerFinFee(sellerSetting.getSellerFinFee());
 		tradeAudit.setSellerTransFee(sellerSetting.getSellerTransFee());
+		}else{
+			tradeAudit.setSellerFinFee(setting.getSellerFinFee());
+			tradeAudit.setSellerTransFee(setting.getSellerTransFee());
+		}
 		tradeAudit.setUserID(userId);
 		tradeAuditDAO.saveEntity(tradeAudit);
 	}
 
+	 
 
 }

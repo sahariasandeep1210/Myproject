@@ -18,11 +18,11 @@ import com.liferay.portlet.documentlibrary.model.DLFolderConstants;
 import com.liferay.portlet.documentlibrary.service.DLAppServiceUtil;
 import com.mysql.jdbc.StringUtils;
 import com.tf.dto.InvoiceDTO;
-
 import com.tf.model.Company;
 import com.tf.model.Invoice;
 import com.tf.model.InvoiceDocument;
 import com.tf.persistance.util.Constants;
+import com.tf.persistance.util.InSuffcientFund;
 import com.tf.persistance.util.InvoiceStatus;
 import com.tf.service.CompanyService;
 import com.tf.service.InvoiceDocumentService;
@@ -76,7 +76,10 @@ public class InvoiceController {
 	private  final static String ACTIVETAB="activetab";	
 
 	@Autowired
-	protected UserService userService;	
+	protected UserService userService;
+	
+	@Autowired
+	private InSuffcientFund fund ;
 	
 	@Autowired
 	protected InvoiceService invoiceService;
@@ -480,16 +483,20 @@ public class InvoiceController {
 			ActionRequest request, ActionResponse response) throws Exception {
 		String invoiceIds= ParamUtil.getString(request, "invoices");
 		Date financeDate=null;
+		try{
 		if(!StringUtils.isNullOrEmpty(invoiceIds)){
 			long companyId = liferayUtility.getWhitehallCompanyID(request);
 			long userId=userService.getUserbyLiferayUserID(liferayUtility.getLiferayUserID(request));
 			List<String> invoicesIdList=Arrays.asList(invoiceIds.split(","));
 			financeDate=invoiceService.triggerAllotment(invoicesIdList,companyId,userId);
 		}
-		
 		SessionMessages.add(request, "invoice.success.trade");
 		model.put("financeDate", financeDate);
+	}catch(InSuffcientFund e){
+		SessionErrors.add(request, "invoice.allotment.error");
+		   e.getMessage();
 	}	
+}
 	
 	protected Log _log = LogFactoryUtil.getLog(InvoiceController.class.getName());
 }

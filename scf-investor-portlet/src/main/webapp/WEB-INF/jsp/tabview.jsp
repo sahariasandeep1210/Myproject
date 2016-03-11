@@ -1,4 +1,3 @@
-<%@page import="com.tf.persistance.util.Constants"%>
 <%@include file="init.jsp"%>
 <portlet:renderURL var="investorProtfoliosURL">
 	<portlet:param name="render" value="investorProtfolios" />

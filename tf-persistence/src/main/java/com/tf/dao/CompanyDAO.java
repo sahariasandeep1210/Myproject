@@ -30,4 +30,5 @@ public interface CompanyDAO extends BaseDAO<Company, Long>{
 	public List<Company> getCompaniesById(Long id);
 	
 	public List<InvestorDTO> getInvestors();
+	public Company getCompaniesByName(String name);
 }

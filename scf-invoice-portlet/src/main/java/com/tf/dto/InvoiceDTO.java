@@ -8,11 +8,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 public class InvoiceDTO  implements Serializable{
 
-	
-	
-
-	
-	
 	/**
 	 * 
 	 */

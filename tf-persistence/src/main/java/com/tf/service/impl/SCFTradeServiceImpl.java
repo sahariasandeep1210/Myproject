@@ -121,4 +121,19 @@ public class SCFTradeServiceImpl  implements SCFTradeService{
 	public Long getScfTradesCountByCompanyId(Long companyID){
 		return scfTradeDAO.getScfTradesCount(companyID);
 	}
+	public List<SCFTrade> getTradeHistoryByComapnyId(long companyId,int startIndex,int pageSize){
+		return scfTradeDAO.getTradeHistoryByComapnyId(companyId, startIndex, pageSize);
+	}
+	 public  List<SCFTrade> getTradeHistoryList(int startIndex,int pageSize){
+		 return scfTradeDAO.getTradeHistoryList( startIndex, pageSize);
+	 }
+	 public Long getScfTradesHistoryCount() {
+		 return scfTradeDAO.getScfTradesHistoryCount();
+	 }
+	 public Long getHistoryCount(long companyId){
+		 return scfTradeDAO.getHistoryCount(companyId);
+	 }
+	 public List<SCFTrade> getScfTradeByScfCompany(long scfCompany,Date frmDate,Date toDate){
+		 return scfTradeDAO.getScfTradeByScfCompany(scfCompany, frmDate, toDate);
+	 }
 }

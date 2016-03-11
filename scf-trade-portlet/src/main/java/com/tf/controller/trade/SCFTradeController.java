@@ -21,11 +21,14 @@ import com.liferay.portlet.documentlibrary.service.DLAppServiceUtil;
 import com.mysql.jdbc.StringUtils;
 import com.tf.model.Allotment;
 import com.tf.model.Company;
+import com.tf.model.Investor;
+import com.tf.model.InvestorTransaction;
 import com.tf.model.Invoice;
 import com.tf.model.SCFTrade;
 import com.tf.persistance.util.Constants;
 import com.tf.persistance.util.InvoiceStatus;
 import com.tf.persistance.util.TradeStatus;
+import com.tf.persistance.util.TranscationStatus;
 import com.tf.service.AllotmentService;
 import com.tf.service.CompanyService;
 import com.tf.service.InvoiceService;
@@ -40,6 +43,7 @@ import com.tf.util.model.PaginationModel;
 import java.beans.PropertyEditorSupport;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
@@ -78,6 +82,7 @@ public class SCFTradeController {
 
 	protected Log _log = LogFactoryUtil.getLog(SCFTradeController.class
 			.getName());
+	private  final static String ACTIVETAB="activetab";	
 
 	@Autowired
 	private SCFTradeService scfTradeService;
@@ -147,6 +152,8 @@ public class SCFTradeController {
 			scftrades = scfTradeService.getScfTrades(paginationModel.getStartIndex(),
 					paginationModel.getPageSize());
 			noOfRecords = scfTradeService.getScfTradesCount();
+			model.put("userType", Constants.ADMIN);
+			model.put(ACTIVETAB, "admintradelist");
 
 			viewName = "admintradelist";
 		} else if (request.isUserInRole(Constants.SCF_ADMIN)) {
@@ -164,6 +171,7 @@ public class SCFTradeController {
      		viewName = "sellertradelist";
 		}
 		model.put("trades", scftrades);
+
 		paginationUtil.setPaginationInfo(noOfRecords, paginationModel);
         System.out.println("paginationsss:"+paginationModel);
 		model.put("paginationModel", paginationModel);
@@ -171,6 +179,47 @@ public class SCFTradeController {
 		return new ModelAndView(viewName, model);
 	}
 
+	@RenderMapping(params = "render=tradeHistory")
+	protected ModelAndView renderTradeHistory(
+			@ModelAttribute("tradehistoryModel") SCFTradeDTO scfTradeDTO,
+			ModelMap model, RenderRequest request, RenderResponse response)
+			throws Exception {
+		 List<SCFTrade> scfTrades=null;
+		 Long noOfRecords = 0l;
+		 PaginationModel paginationModel = paginationUtil
+					.preparePaginationModel(request);
+		 noOfRecords = scfTradeService.getScfTradesCount();
+		scfTrades=scfTradeService.getTradeHistoryList(paginationModel.getStartIndex(),
+				paginationModel.getPageSize());
+		System.out.println("noOfRecordsSSSSS:"+scfTrades);
+		paginationUtil.setPaginationInfo(noOfRecords, paginationModel);
+        System.out.println("paginationsss:"+paginationModel);
+		model.put("paginationModel", paginationModel);
+		model.put(ACTIVETAB, "tradehistory");
+		model.put("scfTradesHistory", scfTrades);
+
+		model.put("userType", Constants.ADMIN);
+
+	    return new ModelAndView("tradehistory", model);	
+	}
+	@RenderMapping(params = "render=singleHistory")
+	protected ModelAndView rendersingleHistory(ModelMap model,
+			RenderRequest request, RenderResponse response) {
+		 List<SCFTrade> scfTrades=null;
+		 Long noOfRecords = 0l;
+		 PaginationModel paginationModel = paginationUtil
+					.preparePaginationModel(request);
+		Long compID = ParamUtil.getLong(request, "compID");
+		scfTrades=scfTradeService.getTradeHistoryByComapnyId(compID,paginationModel.getStartIndex(),
+				paginationModel.getPageSize());
+		noOfRecords=scfTradeService.getHistoryCount(compID);		
+		paginationUtil.setPaginationInfo(noOfRecords, paginationModel);
+        System.out.println("paginationsss:"+paginationModel);
+		model.put("paginationModel", paginationModel);
+		model.put("scfTradesHistory", scfTrades);
+
+		return new ModelAndView("singlehistorytrade", model);
+	}
 	@RenderMapping(params = "render=createTrade")
 	protected ModelAndView renderCreateTrade(
 			@ModelAttribute("scfTradeModel") SCFTradeDTO scfTradeDTO,
@@ -397,5 +446,52 @@ public class SCFTradeController {
 		}
 
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	@ActionMapping(params="trade=getTradeHistory")
+	protected void getCashReport( ModelMap model,ActionRequest request,ActionResponse response) throws Exception {
+		
+		DateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+		Date fromDate=formatter.parse("2/1/1970");
+		Date toDate=new Date();
+		String companyName=ParamUtil.getString(request, "Search");
+		Company company = companyService.getCompaniesByName(companyName);
+		long scfCompanyId=company.getId();
+        String from=ParamUtil.getString(request, "fromDate");
+        String to=ParamUtil.getString(request, "toDate");
+        if(!StringUtils.isNullOrEmpty(from)){
+        fromDate=formatter.parse(from);
+        }
+        if(!StringUtils.isNullOrEmpty(to)){
+            toDate=formatter.parse(to);
+       }
+		List<SCFTrade>	scfTrades=scfTradeService.getScfTradeByScfCompany(scfCompanyId, fromDate, toDate); 
+        System.out.println("DhanushSuccess:"+scfTrades);
+       
+       } 	
+ 
 
 }
+	
+	
+
+

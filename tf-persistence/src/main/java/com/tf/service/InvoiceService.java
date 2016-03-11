@@ -8,6 +8,7 @@ import java.util.Set;
 
 import com.tf.model.Company;
 import com.tf.model.Invoice;
+import com.tf.persistance.util.InSuffcientFund;
 
 public interface InvoiceService {
 
@@ -31,7 +32,7 @@ public interface InvoiceService {
 	
 	public void updateInvoicesStatusWithTrade(List<String> invoiceIds,String status,Long tradeLong);
 	
-	public Date triggerAllotment(List<String> invoiceIds,long sellerCompanyID,long userId);
+	public Date triggerAllotment(List<String> invoiceIds,long sellerCompanyID,long userId) throws InSuffcientFund;
 	
 	public Invoice getInvoicesByInvoiceNumAndCompanyId(long id,long companyId);	
 	

@@ -265,5 +265,17 @@ public class CompanyDAOImpl  extends BaseDAOImpl<Company, Long>   implements Com
 		throw re;
 	 }
 	}
+	public Company getCompaniesByName(String name){
+		try{
+			Company company = (Company)sessionFactory.getCurrentSession().createCriteria(Company.class).add(Restrictions.eq("name", name)).uniqueResult();
+		_log.debug("getCompaniesByRegNum successful, result size: "
+				+ company);
+		return company;
+
+	} catch (RuntimeException re) {
+		_log.error("getCompaniesByRegNum failed", re);
+		throw re;
+	 }
+	}
 
 }

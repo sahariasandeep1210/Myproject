@@ -80,4 +80,8 @@ public class CompanyServiceImpl implements CompanyService {
 	public Company getCompaniesByRegNum(String RegNum){
 		return companyDAO.getCompaniesByRegNum(RegNum);
 	}
+	
+	public Company getCompaniesByName(String name){
+		return companyDAO.getCompaniesByName(name);
+	}
 }

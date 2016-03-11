@@ -25,6 +25,10 @@
 
 <liferay-ui:success key="invoice.success.trade" message="invoice.success.trade" /> 
 
+<liferay-ui:error 	key="invoice.allotment.error">
+	<liferay-ui:message key="invoice.allotment.failture"  arguments="${invoice.invoiceNumber}"></liferay-ui:message>
+</liferay-ui:error> 
+
 <%
 List<Portlet> portletList = PortletLocalServiceUtil.getPortlets();
 String portletId = null;

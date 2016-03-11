@@ -2,10 +2,12 @@ package com.tf.dao.impl;
 
 import com.tf.dao.SCFTradeDAO;
 import com.tf.model.Allotment;
+import com.tf.model.InvestorTransaction;
 import com.tf.model.Invoice;
 import com.tf.model.SCFTrade;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -29,6 +31,7 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 @Repository
 @Transactional
@@ -256,4 +259,133 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 	}
 		
 	}
+	
+	
+	@SuppressWarnings("unchecked")
+	public List<SCFTrade> getTradeHistoryByComapnyId(long companyId,int startIndex,int pageSize){
+		_log.debug("Inside getTradeHistoryByComapnyId ");
+		List<SCFTrade>  scfTrades=new ArrayList<SCFTrade>();
+	    SCFTrade scfTrade;
+		try {
+			String query = "select distinct trd.id as TradeID, trd.company_id as CompanyID, (select name from tf_company where idcompany = company_id) as Company, trd.status Status,trd.trade_amount, (select count(trade_id) from scf_invoice where trade_id = trd.id) Invocies, cmp.name SellerCompany from scf_trade trd, scf_invoice inv, tf_company cmp where company_id = "+companyId+" and inv.trade_id = trd.id and cmp.regnumber =  inv.seller_company_registration_number LIMIT " + startIndex + "," + pageSize; 
+			List<Object[]> resultscheck = (List<Object[]>) sessionFactory.getCurrentSession().createSQLQuery(query).list();
+			 for(Object[] row:resultscheck){
+					scfTrade = new SCFTrade();
+					scfTrade.setId(Long.valueOf((row[0].toString())));
+					scfTrade.setTradeNotes(row[2].toString());
+                    scfTrade.setStatus(row[3].toString());
+					scfTrade.setTradeAmount(new BigDecimal (row[4].toString()));
+					scfTrade.setDuration(Integer.valueOf(row[5].toString()));
+					scfTrade.setInsuranceDocName(row[6].toString());
+					scfTrades.add(scfTrade);
+				}
+			
+			_log.debug("getTradeHistoryByComapnyId successful, result size: "
+					+ scfTrades.size());
+			return scfTrades;
+
+		} catch (RuntimeException re) {
+			_log.error("getTradeHistoryByComapnyId failed", re);
+			throw re;
+		}
+		
+		
+	}
+	 @SuppressWarnings("unchecked")
+	public List<SCFTrade> getTradeHistoryList(int startIndex,int pageSize){
+		 _log.debug("Inside getTradeHistoryList ");
+
+		    List<SCFTrade>  scfTrades=new ArrayList<SCFTrade>();
+		    SCFTrade scfTrade;
+		 try{
+		 String qry = "select (select name from tf_company where idcompany = company_id) as company, "
+				 		+"sum(trade_amount) as trade_amount, (select count(trade_id) from scf_invoice where scf_company= company_id) as trades, "
+				 		+"company_id from tradedb.scf_trade group by company_id LIMIT " + startIndex + "," + pageSize;
+/*		 Criteria criteria = (Criteria) sessionFactory.getCurrentSession().createSQLQuery(qry);
+*/		 
+		 List<Object[]> resultscheck = (List<Object[]>) sessionFactory.getCurrentSession().createSQLQuery(qry).list();
+			for(Object[] row:resultscheck){
+				scfTrade = new SCFTrade();
+				scfTrade.setTradeNotes(row[0].toString());
+				scfTrade.setTradeAmount(new BigDecimal (row[1].toString()));
+				scfTrade.setDuration(Integer.valueOf(row[2].toString()));
+				scfTrade.setInsuranceDocId(Long.valueOf(row[3].toString()));
+				scfTrades.add(scfTrade);
+			}
+
+	     _log.debug("getTradeHistoryList successful, result size: "
+					+ scfTrades.size());
+	     return scfTrades;
+		 }catch(RuntimeException re){
+			 _log.error("getTradeHistoryList failed", re);
+				throw re;
+		 }
+	 }
+	 public Long getScfTradesHistoryCount() {
+			_log.debug("Inside getScfTradesHistoryCount ");
+			try {
+				
+				String qry = "select (select name from tf_company where idcompany = company_id) as company, "
+				 		+"sum(trade_amount) as trade_amount, (select count(trade_id) from scf_invoice where scf_company= company_id) as trades, "
+				 		+"company_id from tradedb.scf_trade group by company_id;";
+				Long resultscheck = Long.valueOf(( sessionFactory.getCurrentSession().createSQLQuery(qry)).list().size());
+				_log.info("getScfTradesHistoryCount Count:: "	+ resultscheck);
+				return resultscheck;
+			} catch (RuntimeException re) {
+				_log.error("getScfTradesHistoryCount Count failed", re);
+				throw re;
+			}
+		}
+	 public Long getHistoryCount(long companyId) {
+			_log.debug("Inside getScfTradesHistoryCount ");
+			try {
+				
+				String query = "select distinct trd.id as TradeID, trd.company_id as CompanyID, (select name from tf_company where idcompany = company_id) as Company, trd.status Status,trd.trade_amount, (select count(trade_id) from scf_invoice where trade_id = trd.id) Invocies, cmp.name SellerCompany from scf_trade trd, scf_invoice inv, tf_company cmp where company_id = "+companyId+" and inv.trade_id = trd.id and cmp.regnumber =  inv.seller_company_registration_number "; 
+				Long resultscheck = Long.valueOf((sessionFactory.getCurrentSession().createSQLQuery(query)).list().size());
+				_log.info("getScfTradesHistoryCount Count:: "	+ resultscheck);
+				return resultscheck;
+			} catch (RuntimeException re) {
+				_log.error("getScfTradesHistoryCount Count failed", re);
+				throw re;
+			}
+		}
+	 
+	 
+	 @SuppressWarnings("unchecked")
+		public List<SCFTrade> getScfTradeByScfCompany(long scfCompany,Date frmDate,Date toDate){
+			_log.debug("Inside getScfTradeByScfCompany  ");
+			List<SCFTrade> historyList=new ArrayList<SCFTrade>();
+			
+			try {
+				String qry = "select (select name from tf_company where idcompany = company_id) as company, "
+				 		+"sum(trade_amount) as trade_amount, (select count(trade_id) from scf_invoice where scf_company= company_id) as trades, "
+				 		+"company_id from tradedb.scf_trade group by company_id"; 
+		  Query resultscheck =  (Query) sessionFactory.getCurrentSession().createSQLQuery(qry);
+			if(!StringUtils.isEmpty(scfCompany)){
+				_log.info("scfCompany is " + scfCompany);
+/*				  resultscheck.setParameter("company_id", scfCompany);
+*/	         }
+			
+			if(!StringUtils.isEmpty(frmDate)){
+				_log.info("From Date " + frmDate);
+				  resultscheck.setParameter("openingDate", frmDate);
+	         }
+			if(!StringUtils.isEmpty(toDate)){
+				_log.info("To Date"+toDate);
+				
+                resultscheck.setParameter("closingDate",toDate);
+			}
+			
+			historyList = resultscheck.list();
+		     _log.debug("getScfTradeByScfCompany, result size: "
+						+ historyList.size());
+		     
+	       } catch (RuntimeException re) {
+				_log.error("getScfTradeByScfCompany failed", re);
+				throw re;
+			}
+			
+			return historyList;
+		
+		}
 }

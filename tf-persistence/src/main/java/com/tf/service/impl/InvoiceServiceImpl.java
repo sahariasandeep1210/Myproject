@@ -1,4 +1,20 @@
 package com.tf.service.impl;
+import com.tf.dao.AllotmentDAO;
+import com.tf.dao.InvestorDAO;
+import com.tf.dao.InvoiceDAO;
+import com.tf.dao.SCFTradeDAO;
+import com.tf.dao.UserDAO;
+import com.tf.model.Company;
+import com.tf.model.Invoice;
+import com.tf.model.SCFTrade;
+import com.tf.persistance.util.AllotmentEngine;
+import com.tf.persistance.util.InSuffcientFund;
+import com.tf.persistance.util.InvestorProtfolioDTO;
+import com.tf.persistance.util.InvoiceStatus;
+import com.tf.persistance.util.TradeStatus;
+import com.tf.service.InvoiceService;
+import com.tf.service.SCFTradeService;
+
 import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -13,24 +29,11 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import com.tf.dao.AllotmentDAO;
-import com.tf.dao.InvestorDAO;
-import com.tf.dao.InvoiceDAO;
-import com.tf.dao.SCFTradeDAO;
-import com.tf.dao.UserDAO;
-import com.tf.model.Company;
-import com.tf.model.Invoice;
-import com.tf.model.SCFTrade;
-import com.tf.persistance.util.AllotmentEngine;
-import com.tf.persistance.util.InvestorProtfolioDTO;
-import com.tf.persistance.util.InvoiceStatus;
-import com.tf.persistance.util.TradeStatus;
-import com.tf.service.InvoiceService;
-import com.tf.service.SCFTradeService;
 
 @Service
 public class InvoiceServiceImpl implements InvoiceService{
@@ -52,6 +55,9 @@ public class InvoiceServiceImpl implements InvoiceService{
 	
 	@Autowired
 	private AllotmentEngine allotmentEngine;
+	
+	@Autowired
+	private com.tf.persistance.util.InSuffcientFund fund ;
 	
 	@Autowired
 	private AllotmentDAO allotmentDAO;
@@ -153,7 +159,7 @@ public class InvoiceServiceImpl implements InvoiceService{
 	}
 	
 	@Transactional
-	public Date triggerAllotment(List<String> invoiceIds,long sellerCmpId,long userId){		
+	public Date triggerAllotment(List<String> invoiceIds,long sellerCmpId,long userId) throws InSuffcientFund   {		
 		Date date=new Date();
 		Company company=null;
 		Invoice invoice;

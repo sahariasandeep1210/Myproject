@@ -34,5 +34,5 @@ public interface CompanyService {
 	public Company loadById(long id);
 	public Company getCompaniesByRegNum(String RegNum);
 	
-
+	public Company getCompaniesByName(String name);
 }

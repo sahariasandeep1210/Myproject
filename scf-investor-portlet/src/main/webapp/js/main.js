@@ -439,8 +439,6 @@ function enableTab(){
 	else if (curentTab=='investorprotfolio') {
 		$("#invesProtList").addClass("active");
 	}
-	
-	
 	else{
 		$("#investorProtfoliosList").addClass("active");
 		$("#invesProtList").addClass("active");
