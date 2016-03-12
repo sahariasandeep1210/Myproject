@@ -11,6 +11,12 @@ $(document).ready(function(){
 			document.forms["tradehistoryForm"].action = updateURL;
 	      document.forms["tradehistoryForm"].submit();
 	});
+	 
+	 $("#sellerReport").click(function (){
+			var updateURL=$("#getTradeSellerHis").val();
+			document.forms["singlehistoryForm"].action = updateURL;
+	      document.forms["singlehistoryForm"].submit();
+	});
 	enableTab();
 
 	$("#pgSize").change(function (){

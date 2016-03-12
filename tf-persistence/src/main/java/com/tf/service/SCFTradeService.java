@@ -14,9 +14,9 @@ public interface SCFTradeService  {
 	public List<SCFTrade> getTradeHistoryByComapnyId(long companyId,int startIndex,int pageSize);
 	public SCFTrade findById(long id);
 	public Long getScfTradesCount();
-	public List<SCFTrade> getScfTradeByScfCompany(long scfCompany,Date frmDate,Date toDate);
+	public SCFTrade getScfTradeByScfCompany(long scfCompany,Date frmDate,Date toDate);
 	public List<SCFTrade> getScfTrades(Long companyID);
-	
+	public List<SCFTrade> getScfTradeSellerCompany(String scfCompany,Date frmDate,Date toDate,String status);
 	public void updateTrade(SCFTrade scfTrade);
 	
 	public List<SCFTrade> getScfTradesByTradeId(Long tradeId);

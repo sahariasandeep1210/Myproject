@@ -112,6 +112,7 @@ public class InvestorDAOImpl extends BaseDAOImpl<InvestorPortfolio, Long>   impl
 			DashboardModel dasboardModel =new DashboardModel();
 				
 				Query query =sessionFactory.getCurrentSession().createQuery("SELECT SUM(myCreditLine) AS totalcap,SUM(availToInvest ) AS availinvest,SUM(amountInvested) AS amountInvested FROM InvestorPortfolio ");
+				
 				 List<Object[]> list = query.list();
 			        for(Object[] arr : list){
 			        	dasboardModel.setInvestmentCap(arr[0]!=null?Long.valueOf(arr[0].toString()):0);
