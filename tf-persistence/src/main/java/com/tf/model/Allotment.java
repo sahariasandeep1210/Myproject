@@ -23,7 +23,9 @@ import javax.persistence.TemporalType;
 public class Allotment implements Serializable {
 	
 
-	private static final long serialVersionUID = -5853890898773320771L;
+	private static final long serialVersionUID = 3564399664962374854L;
+	
+	
 
 	@Id
     @Column(name="allotment_id")
@@ -32,7 +34,10 @@ public class Allotment implements Serializable {
 	
 	@ManyToOne(cascade=CascadeType.ALL)	
     @JoinColumn(name = "trade_id")
-	private  SCFTrade scfTrade;
+	private  SCFTrade scfTrade;	
+	
+	@Column(name="investor_id")
+	private Long investorID;
 	
 	@OneToOne(cascade=CascadeType.ALL)
 	@JoinColumn(name = "investor_portfolio_id")  
@@ -177,10 +182,19 @@ public class Allotment implements Serializable {
 		this.status = status;
 	}
 
+	public Long getInvestorID() {
+		return investorID;
+	}
+
+	public void setInvestorID(Long investorID) {
+		this.investorID = investorID;
+	}
+
 	@Override
 	public String toString() {
 		return "Allotment [allotmentId=" + allotmentId + ", scfTrade="
-				+ scfTrade + ", investorPortfolio=" + investorPortfolio
+				+ scfTrade + ", investorID=" + investorID
+				+ ", investorPortfolio=" + investorPortfolio
 				+ ", allotmentAmount=" + allotmentAmount + ", noOfdays="
 				+ noOfdays + ", isPrimary=" + isPrimary + ", userId=" + userId
 				+ ", marketDiscount=" + marketDiscount
@@ -190,6 +204,8 @@ public class Allotment implements Serializable {
 				+ ", allotmentDate=" + allotmentDate + ", status=" + status
 				+ "]";
 	}
+
+	
 	
 
 }

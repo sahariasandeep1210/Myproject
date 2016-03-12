@@ -492,7 +492,27 @@ ALTER TABLE tf_allotments
   ADD scf_id    VARCHAR(100) DEFAULT NULL;
   
 ALTER TABLE  tf_investor
-    ADD cash_position  DECIMAL(10,2) AFTER update_date;   
+ADD cash_position  DECIMAL(10,2) AFTER update_date; 
+  
+ALTER TABLE scf_invoice CHANGE due_date finance_date Date;
 
-	ALTER TABLE scf_invoice CHANGE due_date finance_date Date;
+DROP TABLE IF EXISTS tf_whitehall_transaction;
+CREATE TABLE tf_whitehall_transaction (
+  id  BIGINT(20) NOT NULL AUTO_INCREMENT,  
+  amount  DECIMAL(10,2),  
+  transcation_type  VARCHAR(100) DEFAULT NULL,  
+  transcation_date DATETIME DEFAULT NULL,  
+  trade_id BIGINT(20), 
+  reference VARCHAR(250) DEFAULT NULL,  
+  company_id BIGINT(20), 
+  company_type VARCHAR(100) DEFAULT NULL, 
+  PRIMARY KEY (id),  
+  UNIQUE KEY id_UNIQUE (id), 
+  KEY `fk_whitehall_transaction_trade_id` (`trade_id`),
+  CONSTRAINT `tf_whitehall_transaction_ibfk_1` FOREIGN KEY (`trade_id`) REFERENCES `scf_trade` (`id`),
+  KEY `fk_whitehall_transaction_company_id` (`company_id`),
+  CONSTRAINT `tf_whitehall_transaction_cmpIDfk_1` FOREIGN KEY (`company_id`) REFERENCES `tf_company` (`idcompany`)
+) ;
 
+ALTER TABLE tf_allotments ADD investor_id BIGINT(20) DEFAULT NULL after trade_id;
+ALTER TABLE tf_allotments ADD CONSTRAINT fk_investor_id FOREIGN KEY (investor_id) REFERENCES tf_investor(investor_id);

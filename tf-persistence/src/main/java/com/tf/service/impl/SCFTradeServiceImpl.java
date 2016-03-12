@@ -1,5 +1,6 @@
 package com.tf.service.impl;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -11,11 +12,13 @@ import com.tf.dao.AllotmentDAO;
 import com.tf.dao.InvestorDAO;
 import com.tf.dao.InvestorTransactionDAO;
 import com.tf.dao.SCFTradeDAO;
+import com.tf.dao.WhiteHallTransactionDAO;
 import com.tf.model.Allotment;
 import com.tf.model.Investor;
 import com.tf.model.InvestorTransaction;
-import com.tf.model.Invoice;
 import com.tf.model.SCFTrade;
+import com.tf.model.WhiteHallTransaction;
+import com.tf.persistance.util.TradeStatus;
 import com.tf.persistance.util.TranscationStatus;
 import com.tf.service.SCFTradeService;
 
@@ -35,6 +38,11 @@ public class SCFTradeServiceImpl  implements SCFTradeService{
 	
 	@Autowired
 	private InvestorDAO investorDAO;
+	
+	@Autowired
+	private WhiteHallTransactionDAO whiteHallTransactionDAO;
+	
+	
 
 	public List<SCFTrade> getScfTrades(int startIndex,int pageSize) {
 		return scfTradeDAO.getScfTrades(startIndex,pageSize);
@@ -59,15 +67,9 @@ public class SCFTradeServiceImpl  implements SCFTradeService{
 	
 	public void updateTradeLifeCycle(SCFTrade scfTrade){
 		scfTradeDAO.update(scfTrade);
-		if("Allotment Paid".equalsIgnoreCase(scfTrade.getStatus())){			
+		if(TradeStatus.ALLOTMENT_PAID.getValue().equalsIgnoreCase(scfTrade.getStatus())){			
 			List<InvestorTransaction> transcations=investorTransactionDAO.getInvestorTransactionByTrade(scfTrade.getId());
-			List<Allotment> allotments=allotmentDAO.getALlotmentsbyTrade(scfTrade.getId());
-			
-			//updating allotment status to Invested
-			for(Allotment allotment : allotments){
-				allotment.setStatus(TranscationStatus.INVESTED.getValue());
-				allotmentDAO.update(allotment);
-			}
+			updateAllotments(scfTrade,TranscationStatus.INVESTED.getValue());
 			Date date=new Date();
 			//adding transaction information
 			for(InvestorTransaction investorTransaction : transcations){
@@ -78,6 +80,7 @@ public class SCFTradeServiceImpl  implements SCFTradeService{
 				//updating investor Cash Position
 				Investor inv=investorDAO.findByInvestorId(investorTransaction.getInvestorID());
 				inv.setCashPosition(inv.getCashPosition().subtract(investorTransaction.getAmount()));
+				inv.setUpdateDate(date);
 				investorDAO.updateInvestor(inv);
 				
 				invTransaction.setAmount(investorTransaction.getAmount());
@@ -87,8 +90,121 @@ public class SCFTradeServiceImpl  implements SCFTradeService{
 				invTransaction.setReference("Invested");
 				investorTransactionDAO.saveEntity(invTransaction);
 			}
+		} else if (TradeStatus.SUPPLIER_PAID.getValue().equalsIgnoreCase(scfTrade.getStatus())){
+			updateAllotments(scfTrade,TradeStatus.SUPPLIER_PAID.getValue());			
+			//adding whitehall Transaction
+			WhiteHallTransaction whtTransaction=new WhiteHallTransaction();
+			whtTransaction.setAmount(scfTrade.getSellerNetAllotment());
+			whtTransaction.setReference("Supplier paid by Whitehall Admin");
+			whtTransaction.setTranscationDate(new Date());
+			whtTransaction.setTradeID(scfTrade.getId());
+			whtTransaction.setTranscationType(TradeStatus.SUPPLIER_PAID.getValue());
+			whiteHallTransactionDAO.update(whtTransaction);
+			
+		}  else if (TradeStatus.SCF_REPAYMENT.getValue().equalsIgnoreCase(scfTrade.getStatus())){
+			updateAllotments(scfTrade,TradeStatus.SCF_REPAYMENT.getValue());			
+			
+			//adding whitehall Transaction
+			WhiteHallTransaction whtTransaction=new WhiteHallTransaction();
+			whtTransaction.setAmount(scfTrade.getTradeAmount());
+			whtTransaction.setReference("SCF Company Paid to Whitehall Admin");
+			whtTransaction.setTranscationDate(new Date());
+			whtTransaction.setTradeID(scfTrade.getId());
+			whtTransaction.setTranscationType(TradeStatus.SCF_REPAYMENT.getValue());
+			whiteHallTransactionDAO.update(whtTransaction);
+			
+		} else if (TradeStatus.INVESTOR_PAID.getValue().equalsIgnoreCase(scfTrade.getStatus())){
+			updateAllotmentInvPaid(scfTrade,TradeStatus.INVESTOR_PAID.getValue());			
+			
+			//adding whitehall Transaction
+			WhiteHallTransaction whtTransaction=new WhiteHallTransaction();
+			whtTransaction.setAmount(scfTrade.getTradeAmount());
+			whtTransaction.setReference("SCF Company Paid to Whitehall Admin");
+			whtTransaction.setTranscationDate(new Date());
+			whtTransaction.setTradeID(scfTrade.getId());
+			whtTransaction.setTranscationType(TradeStatus.SCF_REPAYMENT.getValue());
+			whiteHallTransactionDAO.update(whtTransaction);
+			
 		}
 		
+		//saving  updated information
+		updateTrade(scfTrade);
+		
+		
+		
+	}
+
+	/**
+	 * This method will updated allotment status based on Trade current state
+	 * @param scfTrade
+	 */
+	private void updateAllotments(SCFTrade scfTrade,String status) {
+		List<Allotment> allotments=allotmentDAO.getALlotmentsbyTrade(scfTrade.getId());		
+		//updating allotment status to Invested
+		for(Allotment allotment : allotments){			
+			//updating allotment Status
+			allotment.setStatus(status);
+			allotmentDAO.update(allotment);		
+			
+		}
+	}
+	
+	/**
+	 * This method will updated allotment status based on Trade current state
+	 * @param scfTrade
+	 */
+	private void updateAllotmentInvPaid(SCFTrade scfTrade,String status) {
+		List<Allotment> allotments=allotmentDAO.getALlotmentsbyTrade(scfTrade.getId());		
+		//updating allotment status to Invested
+		Date date=new Date();
+		long investortID=0l;
+		for(Allotment allotment : allotments){
+			//updating allotment Status
+			allotment.setStatus(status);
+			allotmentDAO.update(allotment);
+			investortID=allotment.getInvestorID();
+			
+			
+			//updating investor Cash Position
+			Investor inv=investorDAO.findByInvestorId(investortID);
+			//this would be some of actual allotment amount and Investor net profit
+			BigDecimal netAmmount=allotment.getAllotmentAmount().add(allotment.getInvestorNetProfit());
+			inv.setCashPosition(inv.getCashPosition().add(netAmmount));
+			inv.setUpdateDate(date);
+			investorDAO.updateInvestor(inv);
+			
+			//Adding repaid Transaction
+			InvestorTransaction invTransactionRepaid=new InvestorTransaction();
+			invTransactionRepaid.setInvestorID(investortID);			
+			invTransactionRepaid.setAmount(allotment.getAllotmentAmount());
+			invTransactionRepaid.setTranscationType(TranscationStatus.REPAID.getValue());
+			invTransactionRepaid.setTranscationDate(date);
+			invTransactionRepaid.setTradeID(scfTrade.getId());
+			invTransactionRepaid.setReference(TranscationStatus.REPAID.getValue());
+			investorTransactionDAO.saveEntity(invTransactionRepaid);
+			
+			
+			//Adding profit Transaction
+			InvestorTransaction invTransactionProfit=new InvestorTransaction();
+			invTransactionProfit.setInvestorID(investortID);			
+			invTransactionProfit.setAmount(allotment.getInvestorGrossProfit());
+			invTransactionProfit.setTranscationType(TranscationStatus.PROFIT.getValue());
+			invTransactionProfit.setTranscationDate(date);
+			invTransactionProfit.setTradeID(scfTrade.getId());
+			invTransactionProfit.setReference(TranscationStatus.PROFIT.getValue());
+			investorTransactionDAO.saveEntity(invTransactionProfit);
+			
+			
+			//Adding  Whitehall feeTransaction
+			InvestorTransaction invTransactionFee=new InvestorTransaction();
+			invTransactionFee.setInvestorID(investortID);			
+			invTransactionFee.setAmount(allotment.getWhitehallProfitShare());
+			invTransactionFee.setTranscationType(TranscationStatus.WHITEHALL_FEE.getValue());
+			invTransactionFee.setTranscationDate(date);
+			invTransactionFee.setTradeID(scfTrade.getId());
+			invTransactionFee.setReference(TranscationStatus.WHITEHALL_FEE.getValue());
+			investorTransactionDAO.saveEntity(invTransactionFee);
+		}
 	}
 	
 	public List<SCFTrade> getScfTradesByTradeId(Long tradeId){
