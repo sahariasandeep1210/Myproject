@@ -4,25 +4,25 @@
 <log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
 
 	<appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
-		<param name="Threshold" value="DEBUG"/>
+		<param name="Threshold" value="ERROR"/>
 		<layout class="org.apache.log4j.PatternLayout">
 			<param name="ConversionPattern" value="%p [%t] %c{1}.%M(%L) | %m%n" />
 		</layout>
 	</appender>
 
 	<logger name="org.springframework">
-		<level value="WARN" />
+		<level value="ERROR" />
 	</logger>
 
 	
 
 	<logger name="java.sql">
-		<level value="DEBUG" />
+		<level value="ERROR" />
 		<appender-ref ref="CONSOLE" />
 	</logger>
 
 	<root>
-		<level value="DEBUG" />
+		<level value="ERROR" />
 		<appender-ref ref="CONSOLE" />
 	</root>
 

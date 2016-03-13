@@ -67,6 +67,7 @@ public class SCFTradeServiceImpl  implements SCFTradeService{
 	
 	public void updateTradeLifeCycle(SCFTrade scfTrade){
 		scfTradeDAO.update(scfTrade);
+		boolean tradeUpdate=Boolean.FALSE;
 		if(TradeStatus.ALLOTMENT_PAID.getValue().equalsIgnoreCase(scfTrade.getStatus())){			
 			List<InvestorTransaction> transcations=investorTransactionDAO.getInvestorTransactionByTrade(scfTrade.getId());
 			updateAllotments(scfTrade,TranscationStatus.INVESTED.getValue());
@@ -90,6 +91,7 @@ public class SCFTradeServiceImpl  implements SCFTradeService{
 				invTransaction.setReference("Invested");
 				investorTransactionDAO.saveEntity(invTransaction);
 			}
+			tradeUpdate=Boolean.TRUE;
 		} else if (TradeStatus.SUPPLIER_PAID.getValue().equalsIgnoreCase(scfTrade.getStatus())){
 			updateAllotments(scfTrade,TradeStatus.SUPPLIER_PAID.getValue());			
 			//adding whitehall Transaction
@@ -99,7 +101,8 @@ public class SCFTradeServiceImpl  implements SCFTradeService{
 			whtTransaction.setTranscationDate(new Date());
 			whtTransaction.setTradeID(scfTrade.getId());
 			whtTransaction.setTranscationType(TradeStatus.SUPPLIER_PAID.getValue());
-			whiteHallTransactionDAO.update(whtTransaction);
+			whiteHallTransactionDAO.saveEntity(whtTransaction);
+			tradeUpdate=Boolean.TRUE;
 			
 		}  else if (TradeStatus.SCF_REPAYMENT.getValue().equalsIgnoreCase(scfTrade.getStatus())){
 			updateAllotments(scfTrade,TradeStatus.SCF_REPAYMENT.getValue());			
@@ -111,24 +114,41 @@ public class SCFTradeServiceImpl  implements SCFTradeService{
 			whtTransaction.setTranscationDate(new Date());
 			whtTransaction.setTradeID(scfTrade.getId());
 			whtTransaction.setTranscationType(TradeStatus.SCF_REPAYMENT.getValue());
-			whiteHallTransactionDAO.update(whtTransaction);
+			whiteHallTransactionDAO.saveEntity(whtTransaction);
+			tradeUpdate=Boolean.TRUE;
 			
 		} else if (TradeStatus.INVESTOR_PAID.getValue().equalsIgnoreCase(scfTrade.getStatus())){
 			updateAllotmentInvPaid(scfTrade,TradeStatus.INVESTOR_PAID.getValue());			
 			
-			//adding whitehall Transaction
+			//Adding Whitehall investor paid  Transaction
 			WhiteHallTransaction whtTransaction=new WhiteHallTransaction();
 			whtTransaction.setAmount(scfTrade.getTradeAmount());
 			whtTransaction.setReference("SCF Company Paid to Whitehall Admin");
 			whtTransaction.setTranscationDate(new Date());
 			whtTransaction.setTradeID(scfTrade.getId());
-			whtTransaction.setTranscationType(TradeStatus.SCF_REPAYMENT.getValue());
-			whiteHallTransactionDAO.update(whtTransaction);
+			whtTransaction.setTranscationType(TradeStatus.INVESTOR_PAID.getValue());
+			whiteHallTransactionDAO.saveEntity(whtTransaction);
 			
+			//Adding Whitehall investor profit paid  Transaction
+			WhiteHallTransaction whtTransactionInvProfit=new WhiteHallTransaction();
+			whtTransactionInvProfit.setAmount(allotmentDAO.getTotalInvestorProfitForTrade(scfTrade.getId()));
+			whtTransactionInvProfit.setReference("SCF Company Paid to Whitehall Admin");
+			whtTransactionInvProfit.setTranscationDate(new Date());
+			whtTransactionInvProfit.setTradeID(scfTrade.getId());
+			whtTransactionInvProfit.setTranscationType(TradeStatus.INVESTOR_PAID.getValue());
+			whiteHallTransactionDAO.saveEntity(whtTransactionInvProfit);
+			tradeUpdate=Boolean.TRUE;
+		} else if(TradeStatus.SETTLED.getValue().equalsIgnoreCase(scfTrade.getStatus())){
+			updateAllotments(scfTrade,TradeStatus.SETTLED.getValue());
 		}
 		
-		//saving  updated information
-		updateTrade(scfTrade);
+		
+		
+		if(tradeUpdate){
+			//saving  updated information
+			updateTrade(scfTrade);
+		}
+		
 		
 		
 		

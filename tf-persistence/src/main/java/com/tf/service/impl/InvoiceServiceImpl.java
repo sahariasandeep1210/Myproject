@@ -62,11 +62,9 @@ public class InvoiceServiceImpl implements InvoiceService{
 	@Autowired
 	private AllotmentDAO allotmentDAO;
 
-	public void addInvoices(List<Invoice> invoice) {
-		
+	public void addInvoices(List<Invoice> invoice) {		
 		 
-		 invoiceDAO.addInvoices(invoice);
-		
+		 invoiceDAO.addInvoices(invoice);	
 		 
 	}
 
@@ -158,7 +156,7 @@ public class InvoiceServiceImpl implements InvoiceService{
 		
 	}
 	
-	@Transactional
+	@Transactional(rollbackFor={Exception.class,InSuffcientFund.class})
 	public Date triggerAllotment(List<String> invoiceIds,long sellerCmpId,long userId) throws InSuffcientFund   {		
 		Date date=new Date();
 		Company company=null;
@@ -326,21 +324,31 @@ public class InvoiceServiceImpl implements InvoiceService{
 	public List<Invoice> findByRegNum(String regNum) {
 		return invoiceDAO.findByRegNum(regNum);
 	}
+	
 	public Invoice getInvoicesById(long id){
 		return invoiceDAO.getInvoicesById(id);
 	}
+	
 	public Long getInvsCounts(long userId){
 		long companyId=userDAO.getCompanyIDbyUserID(userId);
 		return invoiceDAO.getInvsCounts(companyId);
 	}
+	
 	public List<Invoice> getInvoicesByRegNum(String regNum){
 		return invoiceDAO.getInvoicesByRegNum(regNum);
 	}
+	
 	public Invoice getInvoicesBytradeId(long id){
 		return invoiceDAO.getInvoicesBytradeId(id);
 	}
+	
 	public Invoice getInvoicesByInvoiceNumAndCompanyId(long id,long companyId){
-	return invoiceDAO.getInvoicesByInvoiceNumAndCompanyId(id,companyId);
+		return invoiceDAO.getInvoicesByInvoiceNumAndCompanyId(id,companyId);
 	}
+	
+	public Invoice findById(Long id){
+		return invoiceDAO.findById(id); 
+	}
+	
 	
 }

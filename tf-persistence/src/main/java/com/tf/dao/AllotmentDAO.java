@@ -2,6 +2,7 @@ package com.tf.dao;
 
 import com.tf.model.Allotment;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public interface AllotmentDAO   extends BaseDAO<Allotment, Long> {
@@ -17,5 +18,7 @@ public interface AllotmentDAO   extends BaseDAO<Allotment, Long> {
 	public List<Allotment> getAllotmentByInvestorAndStatus(long invId,String status);
 	
 	public List<Allotment> getAllotmentByStatus(String status);
+	
+	public BigDecimal getTotalInvestorProfitForTrade(long tradeID);
 
 }
