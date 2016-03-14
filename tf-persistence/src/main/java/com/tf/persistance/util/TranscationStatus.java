@@ -8,7 +8,7 @@ public enum TranscationStatus {
 	ALLOTED("Alloted"),
 	INVESTED("Invested"),
 	REPAID("Repaid"),
-	PROFIT("Profit"),
+	PROFIT("Profit"),	
 	WHITEHALL_FEE("Whitehall Fee");
 		
 	private final String value;

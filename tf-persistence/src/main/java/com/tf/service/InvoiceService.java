@@ -34,8 +34,7 @@ public interface InvoiceService {
 	
 	public Date triggerAllotment(List<String> invoiceIds,long sellerCompanyID,long userId) throws InSuffcientFund;
 	
-	public Invoice getInvoicesByInvoiceNumAndCompanyId(long id,long companyId);	
-	
+	public Invoice getInvoicesByInvoiceNumAndCompanyId(long id,long companyId);		
 
 	public List<Invoice> getInvoicesByRegNum(String regNum);
 	
@@ -48,5 +47,7 @@ public interface InvoiceService {
 	public Long getInvoiceCounts(String regNum);
 	
 	public Long getInvsCounts(long companyID);
+	
+	public Invoice findById(Long id); 
 
 }

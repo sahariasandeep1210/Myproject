@@ -1,5 +1,7 @@
 package com.tf.util;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.portlet.ActionRequest;
@@ -88,6 +90,12 @@ public class LiferayUtility {
 	
 	public PermissionChecker getPermissionChecker(PortletRequest request) {	
 		return getThemeDisplay(request).getPermissionChecker();
+	}
+	
+	public String getDate(Date date) {	
+		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+		String format = formatter.format(date);
+		return format;
 	}
 	
 	public  String getDocumentURL(ThemeDisplay themeDisplay, FileEntry fileEntry) {

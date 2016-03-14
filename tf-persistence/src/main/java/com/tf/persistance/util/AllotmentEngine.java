@@ -107,12 +107,7 @@ public class AllotmentEngine {
 					currentAllotment = investor.getAvailToInvest();
 				}
 			}
-			System.out.println("CurrentAllotment::"+currentAllotment);
-               if (currentAllotment.compareTo(pendingAllotment) ==0){
-				
-					throw new InSuffcientFund("Finance allotment failed for <SCF Company Name>'s  invoice.Please contact whileHall admin for more details.");
-				
-			}
+			System.out.println("CurrentAllotment::"+currentAllotment);              
 			
 			Date date=new Date();
 			setInvestmentInfo(currentAllotment, investor);
@@ -146,6 +141,11 @@ public class AllotmentEngine {
 				break;
 			}
 
+		}
+		
+		//At this time pending allotment should be 0 if not it means insufficient allotment 
+		 if (pendingAllotment.compareTo(BigDecimal.ZERO)  > 0 ){				
+				throw new InSuffcientFund("Finance allotment failed for <SCF Company Name>'s  invoice.Please contact whileHall admin for more details.");			
 		}
 		
 	

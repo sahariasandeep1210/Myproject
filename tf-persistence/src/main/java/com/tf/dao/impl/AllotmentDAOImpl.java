@@ -153,10 +153,36 @@ public class AllotmentDAOImpl extends BaseDAOImpl<Allotment, Long>   implements 
 		} catch (RuntimeException re) {
 			_log.error("getALlotmentByPortId failed", re);
 			throw re;
-		}
+		}	
 		
+	}
+	
+	
+	@SuppressWarnings("unchecked")
+	public BigDecimal getTotalInvestorProfitForTrade(long tradeID) {
 		
+		BigDecimal totalNetProfit=BigDecimal.ZERO;
 		
+		List<Object[]> rows=new ArrayList<Object[]>();
+		
+		_log.debug("Inside getTotalInvestorProfitForTrade ");
+		try {
+			
+			Criteria cr = sessionFactory.getCurrentSession().createCriteria(Allotment.class).add(Restrictions.eq("scfTrade.id", tradeID));			              
+			ProjectionList prList = Projections.projectionList();		
+			prList.add(Projections.sum("investorNetProfit"));			
+			cr.setProjection(prList);
+			rows = (List<Object[]>) cr.list();
+			for(Object[] row:rows){
+				totalNetProfit=row[1] !=null ?new BigDecimal(row[1].toString()):BigDecimal.ZERO;
+			}			
+			
+		} catch (RuntimeException re) {
+			_log.error("getTotalInvestorProfitForTrade failed", re);
+			throw re;
+		}		
+		
+		return totalNetProfit;
 	}
 	
 }

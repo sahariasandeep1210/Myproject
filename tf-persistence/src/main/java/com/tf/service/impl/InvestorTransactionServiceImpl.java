@@ -35,24 +35,31 @@ public class InvestorTransactionServiceImpl implements InvestorTransactionServic
 		}
 		 investorTransactionDAO.saveInvestorBalance(investorBalanceModel);
 	}
+	
 	public List<InvestorTransaction> getInvestorTransactions() {
 		return investorTransactionDAO.getInvestorTransactions();
 	}
+	
 	public List<InvestorTransaction> getInvestorTransaction(long investorId){
 		return investorTransactionDAO.getInvestorTransaction(investorId);
 	}
+	
 	public List<InvestorTransaction> getInvestors(long investorId,int startIndex,int pageSize){
 		return investorTransactionDAO.getInvestors(investorId, startIndex, pageSize);
 	}
+	
 	public Long getInvestorsCount(long investorId){
 		return investorTransactionDAO.getInvestorsCount(investorId);
 	}
+	
 	public List<InvestorTransaction> getInvestorTransactionByTransactionType(long investorId,String transactionType,Date frmDate,Date toDate,int startIndex,int pageSize){
 		return investorTransactionDAO.getInvestorTransactionByTransactionType(investorId, transactionType, frmDate, toDate, startIndex, pageSize);
 	}
+	
 	public Long getInvestorsCounts(long investorId,String transactionType,Date frmDate,Date toDate){
 		return investorTransactionDAO.getInvestorsCounts(investorId,transactionType, frmDate, toDate);
 	}
+	
 	public List<InvestorPortfolio> getInvestorPortfolioId(long investorId){
 		return investorTransactionDAO.getInvestorPortfolioId(investorId);
 	}

@@ -1,11 +1,13 @@
 package com.tf.controller.invoice;
 
+import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.repository.model.Folder;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.servlet.SessionMessages;
+import com.liferay.portal.kernel.util.JavaConstants;
 import com.liferay.portal.kernel.util.MimeTypesUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -43,6 +45,7 @@ import java.util.List;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
+import javax.portlet.PortletConfig;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 
@@ -493,18 +496,23 @@ public class InvoiceController {
 			ActionRequest request, ActionResponse response) throws Exception {
 		String invoiceIds= ParamUtil.getString(request, "invoices");
 		Date financeDate=null;
+		List<String> invoicesIdList=null;
 		try{
 		if(!StringUtils.isNullOrEmpty(invoiceIds)){
 			long companyId = liferayUtility.getWhitehallCompanyID(request);
 			long userId=userService.getUserbyLiferayUserID(liferayUtility.getLiferayUserID(request));
-			List<String> invoicesIdList=Arrays.asList(invoiceIds.split(","));
+			invoicesIdList=Arrays.asList(invoiceIds.split(","));
 			financeDate=invoiceService.triggerAllotment(invoicesIdList,companyId,userId);
 		}
+		
+		PortletConfig portletConfig = (PortletConfig)request.getAttribute(JavaConstants.JAVAX_PORTLET_CONFIG);
 		SessionMessages.add(request, "invoice.success.trade");
-		model.put("financeDate", financeDate);
+		model.put("successMessage", LanguageUtil.get(portletConfig, request.getLocale(), "invoice.success.trade") + liferayUtility.getDate(financeDate));
 	}catch(InSuffcientFund e){
+		Invoice invoice=invoiceService.findById(Long.valueOf(invoicesIdList.get(0)));
+		model.put("scfCompany", invoice.getScfCompany().getName());
 		SessionErrors.add(request, "invoice.allotment.error");
-		   e.getMessage();
+		e.getMessage();
 	}	
 }
 	
