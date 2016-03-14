@@ -178,13 +178,14 @@ public class InvoiceController {
          
 		try{
 			Invoice invoice2=invoiceService.getInvoicesByInvoiceNumAndCompanyId(invoice.getInvoiceNumber(), scfCompanyId);
-			Invoice invoice3=invoiceService.getInvoicesById(invoiceId);
 			System.out.println("invoice2:"+invoice2);
 
 			Company company = companyService.findById(scfCompanyId);
 		    if(invoice2 !=null && invoiceId !=invoice2.getId() ){
 
+		        PortletConfig portletConfig = (PortletConfig)request.getAttribute(JavaConstants.JAVAX_PORTLET_CONFIG);
 		        SessionErrors.add(request, "invoice.duplicate.error");
+				model.put("errorMessage", LanguageUtil.get(portletConfig, request.getLocale(), "invoice.duplicate.number.company")+invoice.getInvoiceNumber()+LanguageUtil.get(portletConfig, request.getLocale(), "invoice.duplicate.number")+company.getName()+LanguageUtil.get(portletConfig, request.getLocale(), "invoice.duplicate.message"));
 			    model.put("invoice", invoice);
 			    model.put("company",company );
 		        response.setRenderParameter("render", "createInvoice");
@@ -192,7 +193,6 @@ public class InvoiceController {
 			 }else{
 				 if(invoiceId > 0){
 					 // Update record
-					 System.out.println("Iam in");
 
 			        	Invoice inv= invoiceService.getInvoicesById(invoiceId);
 			        	inv.setInvoiceNumber(invoice.getInvoiceNumber());
@@ -211,10 +211,8 @@ public class InvoiceController {
 						invoiceService.addInvoices(invoices);
 				 
 				 }else{
-					 System.out.println("Iam");
 		        	 Invoice invoiceModel = transfromInvoiceDtoToInvoiceModel(invoice);
 					 System.out.println("Iam:::"+invoiceModel);
-
 					 List<Invoice> invoices = new ArrayList<Invoice>();
 					 invoices.add(invoiceModel);
 					 invoiceService.addInvoices(invoices);
@@ -245,7 +243,6 @@ public class InvoiceController {
 
 	private Invoice transfromInvoiceDtoToInvoiceModel(InvoiceDTO invoice) {
 		Invoice invoiceModel= new Invoice();
-		invoiceModel.setId(invoice.getId());
 		invoiceModel.setInvoiceNumber(invoice.getInvoiceNumber());
 		invoiceModel.setInvoiceDate(invoice.getInvoiceDate());
 		invoiceModel.setSellerCompanyRegistrationNumber(invoice.getSellerRegNo());

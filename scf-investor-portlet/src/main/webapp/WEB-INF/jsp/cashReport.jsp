@@ -32,8 +32,6 @@
 		      
 		      <input type="hidden" name="investorID" value="${investorId}">
 		      
-		      
-		      
 		      <div class="row-fluid">
        		 <div class="span6">
 				<label class="span6">Investor Name:</label>

@@ -363,7 +363,12 @@ function setPage(pageNumber){
 		var actionUrl=$("#defaultURL").val();
 		document.forms["singlehistoryForm"].action = actionUrl;
 		document.forms["singlehistoryForm"].submit();	
-  }
+  }else if($("#singleTradeHistoryTable").length){
+	   $("#currentPage").val(pageNumber);
+		var actionUrl=$("#getSellerHistoryURL").val();
+		document.forms["singlehistoryForm"].action = actionUrl;
+		document.forms["singlehistoryForm"].submit();	
+ }
    else{
 		$("#currentPage").val(pageNumber);
 		var actionUrl=$("#defaultURL").val();

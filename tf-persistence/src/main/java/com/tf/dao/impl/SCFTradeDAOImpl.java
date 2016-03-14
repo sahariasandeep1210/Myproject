@@ -260,6 +260,7 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 			 for(Object[] row:resultscheck){
 					scfTrade = new SCFTrade();
 					scfTrade.setId(Long.valueOf((row[0].toString())));
+					scfTrade.setInsuranceDocId(Long.valueOf(row[1].toString()));
 					scfTrade.setTradeNotes(row[2].toString());
                     scfTrade.setStatus(row[3].toString());
 					scfTrade.setTradeAmount(new BigDecimal (row[4].toString()));
@@ -340,7 +341,7 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 	 
 	 
 	 @SuppressWarnings("unchecked")
-		public SCFTrade getScfTradeByScfCompany(long scfCompany,Date frmDate,Date toDate){
+		public List<SCFTrade> getScfTradeByScfCompany(long scfCompany,Date frmDate,Date toDate){
 			_log.debug("Inside getScfTradeByScfCompany  ");
 			List<SCFTrade> scfTrades=new ArrayList<SCFTrade>();
 			SCFTrade scfTrade = null;
@@ -348,9 +349,25 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
   
 			
 			try {
-				String qry = "select (select name from tf_company where idcompany IN (company_id)) as company, "
-				 		+"sum(trade_amount) as trade_amount, (select count(trade_id) from scf_invoice where scf_company IN (:company_id)) as trades, "
-				 		+"company_id from scf_trade where company_id IN (:company_id) or opening_date IN (:opening_date) or (company_id IN (:company_id) and opening_date IN (:opening_date)) group by company_id"; 
+				String qry = "";
+				if(scfCompany != 0 && frmDate != null && toDate != null){
+					qry = "select (select name from tf_company where idcompany IN (company_id)) as company, "
+					 		+"sum(trade_amount) as trade_amount, (select count(trade_id) from scf_invoice where scf_company IN (:company_id)) as trades, "
+					 		+"company_id from scf_trade where company_id IN (:company_id) or opening_date IN (:opening_date) or (company_id IN (:company_id) and opening_date IN (:opening_date)) group by company_id";
+				}else if(scfCompany == 0 && frmDate != null && toDate != null){
+					qry = "select (select name from tf_company where idcompany IN (company_id)) as company, "
+					 		+"sum(trade_amount) as trade_amount, (select count(trade_id) from scf_invoice where scf_company IN (company_id)) as trades, "
+					 		+"company_id from scf_trade where opening_date IN (:opening_date)   group by company_id";
+				}else if(scfCompany != 0 && (frmDate == null || toDate == null)){
+					qry = "select (select name from tf_company where idcompany IN (company_id)) as company, "
+					 		+"sum(trade_amount) as trade_amount, (select count(trade_id) from scf_invoice where scf_company IN (:company_id)) as trades, "
+					 		+"company_id from scf_trade where company_id IN (:company_id) group by company_id";
+				}else{
+					qry = "select (select name from tf_company where idcompany = company_id) as company, "
+				 		+"sum(trade_amount) as trade_amount, (select count(trade_id) from scf_invoice where scf_company= company_id) as trades, "
+				 		+"company_id from tradedb.scf_trade group by company_id";
+				}
+				 
 			    Query   resultscheck1 = (Query) sessionFactory.getCurrentSession().createSQLQuery(qry);
 					if(scfCompany>0)	{
 						_log.info("Scf company" + scfCompany);
@@ -371,41 +388,73 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 					scfTrade.setTradeAmount(new BigDecimal (row[1].toString()));
 					scfTrade.setDuration(Integer.valueOf(row[2].toString()));
 					scfTrade.setInsuranceDocId(Long.valueOf(row[3].toString()));
-					
+					scfTrades.add(scfTrade);
 				}
 		     _log.debug("getScfTradeByScfCompany, result size: "
-						+ scfTrade);
+						+ scfTrades);
 		     
 	       } catch (RuntimeException re) {
 				_log.error("getScfTradeByScfCompany failed", re);
 				throw re;
 			}
 			
-			return scfTrade;
+			return scfTrades;
 		
 		}
 	 
 	 
 	 @SuppressWarnings("unchecked")
-		public List<SCFTrade> getScfTradeSellerCompany(String scfCompany,Date frmDate,Date toDate,String status){
+		public List<SCFTrade> getScfTradeSellerCompany(String scfCompany,Date frmDate,Date toDate,int startIndex,int pageSize){
 			_log.debug("Inside getScfTradeSellerCompany  ");
 			List<SCFTrade> scfTrades=new ArrayList<SCFTrade>();
 			SCFTrade scfTrade = null;
 			List<Object[]> resultscheck = new ArrayList<Object[]>();
-
+			System.out.println("DDDD"+scfCompany+frmDate+toDate);
 			
 			try {
-				String query = "select distinct trd.id as TradeID, trd.company_id as CompanyID, (select name from tf_company where idcompany = company_id) as Company, trd.status Status,trd.trade_amount, (select count(trade_id) from scf_invoice where trade_id = trd.id) Invocies, cmp.name SellerCompany from scf_trade trd, scf_invoice inv, tf_company cmp where company_id = company_id and inv.trade_id = trd.id and cmp.regnumber IN (:inv.seller_company_registration_number)"; 
 
+				String query="";
+				if(scfCompany != null && frmDate != null && toDate != null){
+
+				    query = "select distinct trd.id as TradeID, trd.company_id as CompanyID, (select name from tf_company where idcompany = company_id) as Company, trd.status Status,trd.trade_amount, (select count(trade_id) from scf_invoice where trade_id = trd.id) Invocies, cmp.name SellerCompany from scf_trade trd, scf_invoice inv, tf_company cmp where company_id = company_id and inv.trade_id = trd.id and cmp.NAME like (:scfCompany) or trd.status like (:status) and opening_date IN (:opening_date) and opening_date IN (:opening_date) LIMIT " + startIndex + "," + pageSize;
+					
+				}else if(scfCompany == null && (frmDate != null && toDate != null)){
+				    query = "select distinct trd.id as TradeID, trd.company_id as CompanyID, (select name from tf_company where idcompany = company_id) as Company, trd.status Status,trd.trade_amount, (select count(trade_id) from scf_invoice where trade_id = trd.id) Invocies, cmp.name SellerCompany from scf_trade trd, scf_invoice inv, tf_company cmp where company_id = company_id and inv.trade_id = trd.id and opening_date IN (:opening_date) or opening_date IN (:opening_date)LIMIT " + startIndex + "," + pageSize;
+
+					
+				}else if(scfCompany != null && (frmDate == null || toDate == null)){
+				    query = "select distinct trd.id as TradeID, trd.company_id as CompanyID, (select name from tf_company where idcompany = company_id) as Company, trd.status Status,trd.trade_amount, (select count(trade_id) from scf_invoice where trade_id = trd.id) Invocies, cmp.name SellerCompany from scf_trade trd, scf_invoice inv, tf_company cmp where company_id = company_id and inv.trade_id = trd.id and cmp.NAME like (:scfCompany) or trd.status like (:status) LIMIT " + startIndex + "," + pageSize;
+
+					
+				}else{
+					 query = "select distinct trd.id as TradeID, trd.company_id as CompanyID, (select name from tf_company where idcompany = company_id) as Company, trd.status Status,trd.trade_amount, (select count(trade_id) from scf_invoice where trade_id = trd.id) Invocies, cmp.name SellerCompany from scf_trade trd, scf_invoice inv, tf_company cmp where company_id = "+scfCompany+" and inv.trade_id = trd.id and cmp.regnumber =  inv.seller_company_registration_number LIMIT " + startIndex + "," + pageSize;
+
+				}
+             System.out.println("query:::"+query);
 			    Query   resultscheck1 = (Query) sessionFactory.getCurrentSession().createSQLQuery(query);
 					if(!StringUtils.isEmpty(scfCompany))	{
 						_log.info("Scf company" + scfCompany);
-						resultscheck1 .setParameter("inv.seller_company_registration_number", scfCompany);
+						
+						resultscheck1.setParameter("scfCompany", "%"+scfCompany+"%");
+						resultscheck1.setParameter("status", "%"+scfCompany+"%");
+
 					}
+					
+					if(!StringUtils.isEmpty(frmDate)){
+						_log.info("From Date " + frmDate);
+						resultscheck1 .setParameter("opening_date", frmDate);
+			         }
+					if(!StringUtils.isEmpty(toDate)){
+						_log.info("To Date"+toDate);
+						resultscheck1.setParameter("opening_date",toDate);
+					}
+					
+					
 				resultscheck=resultscheck1.list();
 				for(Object[] row:resultscheck){
 					scfTrade = new SCFTrade();
 					scfTrade.setId(Long.valueOf((row[0].toString())));
+					scfTrade.setInsuranceDocId(Long.valueOf(row[0].toString()));
 					scfTrade.setTradeNotes(row[2].toString());
                     scfTrade.setStatus(row[3].toString());
 					scfTrade.setTradeAmount(new BigDecimal (row[4].toString()));
@@ -422,6 +471,61 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 			}
 			
 			return scfTrades;
-		
-		}
+	 }
+
+		public Long getScfTradeSellerCompanyCount(String scfCompany,Date frmDate,Date toDate){
+			_log.debug("Inside getScfTradeSellerCompanyCount  ");
+			
+			try {
+
+				String query="";
+				if(scfCompany != null && frmDate != null && toDate != null){
+
+				    query = "select distinct trd.id as TradeID, trd.company_id as CompanyID, (select name from tf_company where idcompany = company_id) as Company, trd.status Status,trd.trade_amount, (select count(trade_id) from scf_invoice where trade_id = trd.id) Invocies, cmp.name SellerCompany from scf_trade trd, scf_invoice inv, tf_company cmp where company_id = company_id and inv.trade_id = trd.id and cmp.NAME like (:scfCompany) or trd.status like (:status) and opening_date IN (:opening_date) and opening_date IN (:opening_date)";
+					
+				}else if(scfCompany == null && frmDate != null && toDate != null){
+				    query = "select distinct trd.id as TradeID, trd.company_id as CompanyID, (select name from tf_company where idcompany = company_id) as Company, trd.status Status,trd.trade_amount, (select count(trade_id) from scf_invoice where trade_id = trd.id) Invocies, cmp.name SellerCompany from scf_trade trd, scf_invoice inv, tf_company cmp where company_id = company_id and inv.trade_id = trd.id and opening_date IN (:opening_date) and opening_date IN (:opening_date) " ;
+
+					
+				}else if(scfCompany != null && (frmDate == null || toDate == null)){
+				    query = "select distinct trd.id as TradeID, trd.company_id as CompanyID, (select name from tf_company where idcompany = company_id) as Company, trd.status Status,trd.trade_amount, (select count(trade_id) from scf_invoice where trade_id = trd.id) Invocies, cmp.name SellerCompany from scf_trade trd, scf_invoice inv, tf_company cmp where company_id = company_id and inv.trade_id = trd.id and cmp.NAME like (:scfCompany) or trd.status like (:status) ";
+
+					
+				}else{
+					 query = "select distinct trd.id as TradeID, trd.company_id as CompanyID, (select name from tf_company where idcompany = company_id) as Company, trd.status Status,trd.trade_amount, (select count(trade_id) from scf_invoice where trade_id = trd.id) Invocies, cmp.name SellerCompany from scf_trade trd, scf_invoice inv, tf_company cmp where company_id = "+scfCompany+" and inv.trade_id = trd.id and cmp.regnumber =  inv.seller_company_registration_number";
+
+				}
+             System.out.println("query:::"+query);
+			    Query   resultscheck1 = (Query) sessionFactory.getCurrentSession().createSQLQuery(query);
+					if(!StringUtils.isEmpty(scfCompany))	{
+						_log.info("Scf company" + scfCompany);
+						
+						resultscheck1.setParameter("scfCompany", "%"+scfCompany+"%");
+						resultscheck1.setParameter("status", "%"+scfCompany+"%");
+
+					}
+					
+					if(!StringUtils.isEmpty(frmDate)){
+						_log.info("From Date " + frmDate);
+						resultscheck1 .setParameter("opening_date", frmDate);
+			         }
+					if(!StringUtils.isEmpty(toDate)){
+						_log.info("To Date"+toDate);
+						resultscheck1.setParameter("opening_date",toDate);
+					}
+					
+					
+					Long resultscheck =Long.valueOf(resultscheck1.list().size());
+				
+		     _log.debug("getScfTradeSellerCompanyCount, result size: "
+						+ resultscheck);
+				return resultscheck;
+
+	       } catch (RuntimeException re) {
+				_log.error("getScfTradeSellerCompanyCount failed", re);
+				throw re;
+			}
+			
+	 }
+	 
 }

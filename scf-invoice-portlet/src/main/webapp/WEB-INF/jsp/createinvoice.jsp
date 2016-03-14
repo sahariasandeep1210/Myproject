@@ -11,10 +11,11 @@
 </portlet:renderURL>
 <portlet:renderURL var="invoiceListURL"></portlet:renderURL>
 
-
-<liferay-ui:error 	key="invoice.duplicate.error">
+<%-- <liferay-ui:error 	key="invoice.duplicate.error">
 	<liferay-ui:message key="invoice.duplicate.number.company"  arguments="${invoice.invoiceNumber}"></liferay-ui:message>
-</liferay-ui:error> 
+</liferay-ui:error>  --%>
+<liferay-ui:error 	key="invoice.duplicate.error" message="${errorMessage}"/>
+
 
 <div class="alert alert-danger" id="errorMsg">
 	<i class="icon-remove-sign icon-2"></i>

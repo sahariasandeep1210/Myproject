@@ -3,8 +3,6 @@
 <portlet:renderURL var="histryURL">
 	<portlet:param name="render" value="singleHistory" />
 </portlet:renderURL>
-<portlet:renderURL var="defaultURL">
-</portlet:renderURL>
 
 <portlet:actionURL var="getTradeHistoryURL">
 	<portlet:param name="trade" value="getTradeHistory" />
@@ -112,7 +110,6 @@
 					<c:choose>
 						<c:when test="${fn:length(scfTradesHistory) gt 0}">
 							<c:forEach items="${scfTradesHistory}" var="trade">
-
 								<tr>
 									<td><span class='underline'><a
 											href="javascript:void(0);"
@@ -127,15 +124,19 @@
 							</c:forEach>
 						</c:when>
 						<c:when test="${fn:length(scfTradesList) gt 0}">
+ 						     <c:forEach items="${scfTradesList}" var="trade">
+						       ${"Dhanush:"scfTradesList}
+						      
 								<tr>
-									<td>${scfTradesList.tradeNotes}</td>
-									<td>${scfTradesList.tradeAmount}</td>
+									<td>${trade.tradeNotes}</td>
+									<td>${trade.tradeAmount}</td>
 									<td>ALL</td>
 									<td>N/A</td>
-									<td>${scfTradesList.duration}</td>
+									<td>${trade.duration}</td>
 									<td>N/A</td>
 
 								</tr>
+						</c:forEach>
 						</c:when>
 						<c:otherwise>
 							<tr>

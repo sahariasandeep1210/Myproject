@@ -17,7 +17,6 @@
 	<form:form method="post" commandName="singlehistoryModel"
 		class="form-horizontal" name="singlehistoryForm"
 		id="singlehistoryForm" autocomplete="off">
-	    <input type="hidden" name="compID" value="${trade.id}">
 		<input type="hidden" value="${getSellerHistoryURL}"
 			id="getTradeSellerHis" />
 		<input type="hidden" name="currentPage" id="currentPage"
@@ -26,6 +25,9 @@
 			value="${paginationModel.noOfRecords}" />
 		<input type="hidden" name="defaultURL" id="defaultURL"
 			value="${defaultURL}" />
+			<input type="hidden" name="getSellerHistoryURL" id="getSellerHistoryURL"
+			value="${getSellerHistoryURL}" />
+			
 		<div>
      
 			<a href="javascript:void(0);"
@@ -114,7 +116,10 @@
 					<c:choose>
 						<c:when test="${fn:length(scfTradesHistory) gt 0}">
 							<c:forEach items="${scfTradesHistory}" var="trade">
+							<input type="hidden" name="compID" value="${trade.insuranceDocId}">
+							
 								<tr>
+								    
 									<td>${trade.tradeNotes}</td>
 									<td>${trade.tradeAmount}</td>
 									<td>${trade.id}</td>

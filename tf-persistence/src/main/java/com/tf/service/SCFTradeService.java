@@ -1,22 +1,21 @@
 package com.tf.service;
 
+import com.tf.model.SCFTrade;
+
 import java.util.Date;
 import java.util.List;
-
-import com.tf.model.Invoice;
-import com.tf.model.SCFTrade;
 
 public interface SCFTradeService  {
 	
 	public List<SCFTrade> getScfTrades(int startIndex,int pageSize);
-	
+	public Long getScfTradeSellerCompanyCount(String scfCompany,Date frmDate,Date toDate);
 	public SCFTrade save(SCFTrade scfTrade);
 	public List<SCFTrade> getTradeHistoryByComapnyId(long companyId,int startIndex,int pageSize);
 	public SCFTrade findById(long id);
 	public Long getScfTradesCount();
-	public SCFTrade getScfTradeByScfCompany(long scfCompany,Date frmDate,Date toDate);
+	public List<SCFTrade> getScfTradeByScfCompany(long scfCompany,Date frmDate,Date toDate);
 	public List<SCFTrade> getScfTrades(Long companyID);
-	public List<SCFTrade> getScfTradeSellerCompany(String scfCompany,Date frmDate,Date toDate,String status);
+	public List<SCFTrade> getScfTradeSellerCompany(String scfCompany,Date frmDate,Date toDate,int startIndex,int pageSize);
 	public void updateTrade(SCFTrade scfTrade);
 	
 	public List<SCFTrade> getScfTradesByTradeId(Long tradeId);
