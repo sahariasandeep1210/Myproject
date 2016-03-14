@@ -175,15 +175,22 @@ public class InvoiceController {
          
 		try{
 			Invoice invoice2=invoiceService.getInvoicesByInvoiceNumAndCompanyId(invoice.getInvoiceNumber(), scfCompanyId);
-		    if(invoice2 !=null && invoiceId !=invoice2.getId()){
+			Invoice invoice3=invoiceService.getInvoicesById(invoiceId);
+			System.out.println("invoice2:"+invoice2);
+
+			Company company = companyService.findById(scfCompanyId);
+		    if(invoice2 !=null && invoiceId !=invoice2.getId() ){
+
 		        SessionErrors.add(request, "invoice.duplicate.error");
 			    model.put("invoice", invoice);
-			    model.put("company", companyService.findById(scfCompanyId));
+			    model.put("company",company );
 		        response.setRenderParameter("render", "createInvoice");
 
 			 }else{
 				 if(invoiceId > 0){
 					 // Update record
+					 System.out.println("Iam in");
+
 			        	Invoice inv= invoiceService.getInvoicesById(invoiceId);
 			        	inv.setInvoiceNumber(invoice.getInvoiceNumber());
 			        	inv.setInvoiceDate(invoice.getInvoiceDate());
@@ -201,7 +208,10 @@ public class InvoiceController {
 						invoiceService.addInvoices(invoices);
 				 
 				 }else{
+					 System.out.println("Iam");
 		        	 Invoice invoiceModel = transfromInvoiceDtoToInvoiceModel(invoice);
+					 System.out.println("Iam:::"+invoiceModel);
+
 					 List<Invoice> invoices = new ArrayList<Invoice>();
 					 invoices.add(invoiceModel);
 					 invoiceService.addInvoices(invoices);

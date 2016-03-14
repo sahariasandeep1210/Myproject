@@ -22,9 +22,7 @@
   
 </portlet:renderURL>
 <liferay-ui:error key="default-error-message" 		message="default.error.message" /> 
-
 <liferay-ui:success key="invoice.success.trade" message="invoice.success.trade" /> 
-
 <liferay-ui:error 	key="invoice.allotment.error">
 	<liferay-ui:message key="invoice.allotment.failture"  arguments="${invoice.invoiceNumber}"></liferay-ui:message>
 </liferay-ui:error> 

@@ -465,7 +465,6 @@ public class SCFTradeController {
 	}
 	
 	
-	
 	@ActionMapping(params="trade=getTradeHistory")
 	protected void getTradeHistory( ModelMap model,ActionRequest request,ActionResponse response) throws Exception {
 		SCFTrade scfTrade;

@@ -17,8 +17,10 @@ import javax.persistence.Table;
 @Table(name = "scf_invoice")
 public class Invoice implements Serializable {
 
-	
-	private static final long serialVersionUID = 1L;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -584301302166760342L;
 
 	@Id
 	@Column(name = "id")

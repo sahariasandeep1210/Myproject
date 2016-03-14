@@ -240,7 +240,10 @@ public class InvoiceDAOImpl  extends BaseDAOImpl<Invoice, Long> implements Invoi
 	}
 	public Invoice getInvoicesByInvoiceNumAndCompanyId(long id,long companyId){
 		try{
-		Invoice invoice = (Invoice)sessionFactory.getCurrentSession().createCriteria(Invoice.class).add(Restrictions.eq("invoiceNumber", id)).uniqueResult();
+		Invoice invoice = (Invoice)sessionFactory.getCurrentSession().createCriteria(Invoice.class)
+				         .add(Restrictions.eq("invoiceNumber", id))
+				         .add(Restrictions.eq("scfCompany.id", companyId))
+				         .uniqueResult();
 		_log.debug("getInvoicesByInvoiceNumber successful, result size: "
 				+ invoice);
 		return invoice;
