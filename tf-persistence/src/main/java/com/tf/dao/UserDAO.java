@@ -21,4 +21,6 @@ public interface UserDAO {
 	
 	public Object[] getUserTypeAndLifearyID(long id) ;
 
+	public String findUserOjectByCompanyId(long id);
+
 }

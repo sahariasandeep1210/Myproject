@@ -95,6 +95,23 @@ public class UserDAOImpl extends BaseDAOImpl<User, Long>  implements UserDAO{
 		}
 	}
 	
+	public String findUserOjectByCompanyId(long id) {
+		_log.debug("getting User instance with id: " + id);
+		try {	
+			String email = (String) sessionFactory.getCurrentSession().createQuery("select email from User where company.id = :companyID").setLong("companyID",id).uniqueResult();
+			if (email.equals("")) {
+				_log.debug("get successful, no instance found");
+			} else {
+				_log.debug("get successful, email instance found - "+email);
+			}
+			return email;
+		} catch (RuntimeException re) {
+			re.printStackTrace();
+			_log.error("get failed", re);
+			throw re;
+		}
+	}
+	
 	public long  getCompanyIDbyUserID(long id) {
 		_log.debug("getting User instance with id: " + id);
 		Long companyId=null;
