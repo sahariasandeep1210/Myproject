@@ -26,6 +26,11 @@ public class UserServiceImpl implements UserService {
 		return userDAO.findUserByCompanyId(id);
 	}
 	
+	public String findUserOjectByCompanyId(long id) {
+		// TODO Auto-generated method stub
+		return userDAO.findUserOjectByCompanyId(id);
+	}
+	
 	public User findById(long id){
 		return userDAO.findById(id);
 	}
