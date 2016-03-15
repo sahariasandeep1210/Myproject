@@ -1,8 +1,10 @@
 package com.tf.controller.invoice;
 
+import com.liferay.mail.service.MailServiceUtil;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.mail.MailMessage;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.repository.model.Folder;
 import com.liferay.portal.kernel.servlet.SessionErrors;
@@ -10,6 +12,7 @@ import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.util.JavaConstants;
 import com.liferay.portal.kernel.util.MimeTypesUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.ServiceContextFactory;
@@ -18,6 +21,10 @@ import com.liferay.portlet.documentlibrary.model.DLFileEntry;
 import com.liferay.portlet.documentlibrary.model.DLFolder;
 import com.liferay.portlet.documentlibrary.model.DLFolderConstants;
 import com.liferay.portlet.documentlibrary.service.DLAppServiceUtil;
+import com.liferay.portlet.journal.model.JournalArticle;
+import com.liferay.portlet.journal.model.JournalArticleDisplay;
+import com.liferay.portlet.journal.service.JournalArticleLocalServiceUtil;
+import com.liferay.portlet.journalcontent.util.JournalContentUtil;
 import com.mysql.jdbc.StringUtils;
 import com.tf.dto.InvoiceDTO;
 import com.tf.model.Company;
@@ -43,6 +50,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.mail.internet.InternetAddress;
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 import javax.portlet.PortletConfig;
@@ -216,7 +224,52 @@ public class InvoiceController {
 					 List<Invoice> invoices = new ArrayList<Invoice>();
 					 invoices.add(invoiceModel);
 					 invoiceService.addInvoices(invoices);
+					// Email Notification
+						ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);
+						String articleName =  "create-invoice-email-notification"; // Web Content's UrlTitle
+						String content = StringPool.BLANK;
+
+						JournalArticle journalArticle = JournalArticleLocalServiceUtil.getArticleByUrlTitle(themeDisplay.getScopeGroupId(), articleName);// getting the journalArticle Object based on name
+						String articleId = journalArticle.getArticleId();
+						JournalArticleDisplay articleDisplay =  JournalContentUtil.getDisplay (themeDisplay.getScopeGroupId(), articleId,"",themeDisplay.getLanguageId(),themeDisplay);
+						content = articleDisplay.getContent();
+						
+						// We can replace runtime data at PHNO position
+						System.out.println("\n-------------------------------------------------");
+						System.out.println("\n before replace content - "+content);
+						
+						content = content.replaceAll("PHNO1", invoiceModel.getScfCompany().getName());						
+						content = content.replaceAll("PHNO3", "White Hall Finance");
+						String tempstart = "<table border=\"1\" cellpadding=\"1\" cellspacing=\"1\" style=\"width:500px;\"><tbody><tr><td><strong>Invoice Number</strong></td><td><strong>Invoice Amount</strong></td><td><strong>Date&nbsp;</strong></td></tr>";
+						String tempend = "</tbody></table>";
+						String tempstr = tempstart + "<tr><td>"+invoiceModel.getInvoiceNumber()+"</td><td>"+invoiceModel.getInvoiceAmount()+"</td><td>"+invoiceModel.getInvoiceDate()+"</td></tr>" +tempend;
+						content = content.replaceAll("PHNO10", tempstr);
+						
+						System.out.println("\n after replace content - "+content);
+						System.out.println("\n-------------------------------------------------");
+						
+						InternetAddress fromAddress = null;
+						InternetAddress toAddress = null;
+					
+						try {
+							
+							fromAddress = new InternetAddress("gautam.tf2015@gmail.com");
+							toAddress = new InternetAddress("dhanush.kodi@knowarth.com");							
+							MailMessage mailMessage = new MailMessage();
+							mailMessage.setTo(toAddress);
+							//mailMessage.setBCC(new InternetAddress("ankit.lakum@knowarth.com"));
+							mailMessage.setFrom(fromAddress);
+							mailMessage.setSubject("Your request finance for this invoice has been created.");
+							mailMessage.setBody(content);
+							mailMessage.setHTMLFormat(true);
+							MailServiceUtil.sendEmail(mailMessage);							
+							System.out.println("Send mail with HTML Format");
+							
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
 				 }
+				 
 			 }
 	}catch(Exception e){ 
 		 

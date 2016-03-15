@@ -181,6 +181,7 @@ public class SCFTradeController {
 			@ModelAttribute("tradehistoryModel") SCFTradeDTO scfTradeDTO,
 			ModelMap model, RenderRequest request, RenderResponse response)
 			throws Exception {
+		System.out.println("iam coming from get methiod");
 		 List<SCFTrade> scfTrades=null;
 		 BigDecimal totalTradeAmount = BigDecimal.ZERO;
 		 Long noOfRecords = 0l;
@@ -468,14 +469,9 @@ public class SCFTradeController {
 	@ActionMapping(params="trade=getTradeHistory")
 	protected void getTradeHistory( ModelMap model,ActionRequest request,ActionResponse response) throws Exception {
 		DateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
-		Date fromDate=formatter.parse("2/1/1970");
-		long scfCompanyId= 0;
-		Date toDate= new Date();
+		Date fromDate=null;
+		Date toDate=null;
 		String companyName=ParamUtil.getString(request, "Search");
-		if(!StringUtils.isNullOrEmpty(companyName)){
-	        Company company = companyService.getCompaniesByName(companyName);
-		    scfCompanyId=company.getId();
-		}
         String from=ParamUtil.getString(request, "fromDate");
         String to=ParamUtil.getString(request, "toDate");
         if(!StringUtils.isNullOrEmpty(from)){
@@ -484,27 +480,26 @@ public class SCFTradeController {
         if(!StringUtils.isNullOrEmpty(to)){
             toDate=formatter.parse(to);
        }
-        List<SCFTrade> scfTradesList=scfTradeService.getScfTradeByScfCompany(scfCompanyId, fromDate, toDate); 
+        List<SCFTrade> scfTradesList=scfTradeService.getScfTradeByScfCompany(companyName, fromDate, toDate);
         System.out.println("DhanushSuccess:"+scfTradesList);
-        //model.put("scfTradesList", scfTradesList);
-        request.setAttribute("scfTradesList", scfTradesList);
+        model.put("scfTradesList", scfTradesList);
         response.setRenderParameter("render", "tradeHistory");
-       
+	
        } 	
  
 	@ActionMapping(params="trade=getSellerHistory")
 	protected void getSellerHistory( ModelMap model,ActionRequest request,ActionResponse response) throws Exception {
 		DateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
-		Date fromDate=formatter.parse("2/1/1970");
-		Date toDate= new Date();
-		 List<SCFTrade> scfTradesList=null;
+		Date fromDate=null;
+		Date toDate= null;
+		List<SCFTrade> scfTradesList=null;
 		Long noOfRecords = 0l;
 		List<SCFTrade> scfTrades=null;
 		BigDecimal totalTradeAmount = BigDecimal.ZERO;
 		PaginationModel paginationModel = paginationUtil
 				.preparePaginationModel(request);
 		Long compID = ParamUtil.getLong(request, "compID");
-		System.out.println("SS:"+compID);
+		System.out.println("SS123:"+compID);
 		String companyName=ParamUtil.getString(request, "Search");
         String from=ParamUtil.getString(request, "fromDate");
         String to=ParamUtil.getString(request, "toDate");
@@ -516,16 +511,16 @@ public class SCFTradeController {
        }
         System.out.println("fromDate:"+fromDate);
         
-         scfTradesList=scfTradeService.getScfTradeSellerCompany(companyName,fromDate, toDate,paginationModel.getStartIndex(),paginationModel.getPageSize());
+         scfTradesList=scfTradeService.getScfTradeSellerCompany(companyName, fromDate, toDate, compID, paginationModel.getStartIndex(), paginationModel.getPageSize());
          noOfRecords=scfTradeService.getScfTradeSellerCompanyCount(companyName, fromDate, toDate);
-                       
-        scfTrades=scfTradeService.getTradeHistoryByComapnyId(compID,paginationModel.getStartIndex(),
+         scfTrades=scfTradeService.getTradeHistoryByComapnyId(compID,paginationModel.getStartIndex(),
 				paginationModel.getPageSize());
+        System.out.println("scfTradesscfTradesscfTradesscfTrades"+scfTrades);
         for(SCFTrade scf:scfTrades){
 			totalTradeAmount=totalTradeAmount.add(scf.getTradeAmount());
+	        System.out.println("totalTradeAmount::"+totalTradeAmount);
 		}
         paginationUtil.setPaginationInfo(noOfRecords, paginationModel);
-
         System.out.println("DhanushSuccess:"+scfTradesList);
         model.put("scfTradesList", scfTradesList);
         model.put("compID", compID);
