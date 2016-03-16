@@ -233,3 +233,37 @@ function setPage(pageNumber){
 	document.forms["invoicelist"].action = actionUrl;
 	document.forms["invoicelist"].submit();	
 }
+
+
+$("#fromDate").datepicker({
+	changeMonth : true,
+	changeYear : true,
+	showOn : "button",
+	
+	buttonImage : "/tf-theme/images/calendar.jpg",
+	buttonImageOnly : true,
+	buttonText : "Select date",
+    onSelect: function(selected) {
+				$("#toDate").datepicker("option","minDate", selected)
+				  
+		   }
+});
+
+$("#toDate").datepicker({
+	changeMonth : true,
+	changeYear : true,
+	showOn : "button",
+	buttonImage : "/tf-theme/images/calendar.jpg",
+	buttonImageOnly : true,
+	buttonText : "Select date",
+	onSelect: function(selected) {
+				$("#fromDate").datepicker("option","maxDate", selected)
+				  
+		   }
+});
+
+$("#invoiceReport").click(function (){
+	var updateURL=$("#getInvoiceReportURL").val();
+	document.forms["invoicelist"].action = updateURL;
+  document.forms["invoicelist"].submit();
+});

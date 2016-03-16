@@ -464,8 +464,16 @@ public class SCFTradeController {
 		}
 
 	}
-	
-	
+	@RenderMapping(params = "action=tradeRedirect")
+    public String tradeRedirect(ModelMap model, RenderRequest request,
+            RenderResponse response) throws Exception { 
+        return "tradehistory";
+    }
+	@RenderMapping(params = "action=singleHistory")
+    public String tradeSingleHistory(ModelMap model, RenderRequest request,
+            RenderResponse response) throws Exception { 
+        return "singlehistorytrade";
+    }
 	@ActionMapping(params="trade=getTradeHistory")
 	protected void getTradeHistory( ModelMap model,ActionRequest request,ActionResponse response) throws Exception {
 		DateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
@@ -480,10 +488,15 @@ public class SCFTradeController {
         if(!StringUtils.isNullOrEmpty(to)){
             toDate=formatter.parse(to);
        }
-        List<SCFTrade> scfTradesList=scfTradeService.getScfTradeByScfCompany(companyName, fromDate, toDate);
+        Long noOfRecords = 0l;
+        PaginationModel paginationModel = paginationUtil.preparePaginationModel(request);
+        List<SCFTrade> scfTradesList=scfTradeService.getScfTradeByScfCompany(companyName, fromDate, toDate,paginationModel.getStartIndex(),paginationModel.getPageSize());
+        noOfRecords=scfTradeService.getScfTradeByScfCompanyCount(companyName, fromDate, toDate);
+        paginationUtil.setPaginationInfo(noOfRecords, paginationModel);
+		 model.put("paginationModel", paginationModel);
         System.out.println("DhanushSuccess:"+scfTradesList);
         model.put("scfTradesList", scfTradesList);
-        response.setRenderParameter("render", "tradeHistory");
+        response.setRenderParameter("action", "tradeRedirect");
 	
        } 	
  
@@ -493,11 +506,10 @@ public class SCFTradeController {
 		Date fromDate=null;
 		Date toDate= null;
 		List<SCFTrade> scfTradesList=null;
-		Long noOfRecords = 0l;
 		List<SCFTrade> scfTrades=null;
 		BigDecimal totalTradeAmount = BigDecimal.ZERO;
-		PaginationModel paginationModel = paginationUtil
-				.preparePaginationModel(request);
+
+		
 		Long compID = ParamUtil.getLong(request, "compID");
 		System.out.println("SS123:"+compID);
 		String companyName=ParamUtil.getString(request, "Search");
@@ -509,24 +521,32 @@ public class SCFTradeController {
         if(!StringUtils.isNullOrEmpty(to)){
             toDate=formatter.parse(to);
        }
-        System.out.println("fromDate:"+fromDate);
-        
+        try{
+    	  Long noOfRecords = 0l;
+          PaginationModel paginationModel = paginationUtil.preparePaginationModel(request);
          scfTradesList=scfTradeService.getScfTradeSellerCompany(companyName, fromDate, toDate, compID, paginationModel.getStartIndex(), paginationModel.getPageSize());
-         noOfRecords=scfTradeService.getScfTradeSellerCompanyCount(companyName, fromDate, toDate);
+         noOfRecords=scfTradeService.getScfTradeSellerCompanyCount(companyName, fromDate, toDate,compID);
+         paginationUtil.setPaginationInfo(noOfRecords, paginationModel);
+ 		 model.put("paginationModel", paginationModel);
+         System.out.println("norecordss:"+noOfRecords);
+         System.out.println("paginationfrom get:"+paginationModel);
+
          scfTrades=scfTradeService.getTradeHistoryByComapnyId(compID,paginationModel.getStartIndex(),
 				paginationModel.getPageSize());
         System.out.println("scfTradesscfTradesscfTradesscfTrades"+scfTrades);
         for(SCFTrade scf:scfTrades){
 			totalTradeAmount=totalTradeAmount.add(scf.getTradeAmount());
-	        System.out.println("totalTradeAmount::"+totalTradeAmount);
 		}
-        paginationUtil.setPaginationInfo(noOfRecords, paginationModel);
+        System.out.println("totalTradeAmount::"+totalTradeAmount);
         System.out.println("DhanushSuccess:"+scfTradesList);
         model.put("scfTradesList", scfTradesList);
         model.put("compID", compID);
         model.put("totalTradeAmount", totalTradeAmount);
-		model.put("paginationModel", paginationModel);
-        response.setRenderParameter("render", "singleHistory");
+        response.setRenderParameter("action", "singleHistory");
+
+        }catch(Exception ex){
+        	_log.error("Error occurred while filtering the sellercompany:"+ex.getMessage());
+        }
        
        } 	
  

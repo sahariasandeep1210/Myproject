@@ -87,6 +87,19 @@
 							</tr>
 						</c:forEach>
 					</c:when>
+					<c:when test="${fn:length(invoices) gt 0}">
+					   <c:forEach items="${invoices}" var="invoice" >
+					     <tr> 
+					        <td>${invoice.invoiceNumber}</td>
+								<td><fmt:formatDate pattern="dd-MM-yyyy"
+										value="${invoice.payment_date}" /></td>
+								<td>${invoice.invoiceAmount}</td>
+								<td>${invoice.duration}</td>
+								<td>${invoice.scfCompany.name}</td>
+								<td>${invoice.status}</td>
+					     </tr>
+					   </c:forEach>
+					</c:when>
 					<c:otherwise>
 						<tr>
 							<td colspan="6" align="center">No records found!</td>

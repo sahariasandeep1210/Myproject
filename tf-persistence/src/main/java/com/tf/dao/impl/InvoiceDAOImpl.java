@@ -1,17 +1,24 @@
 package com.tf.dao.impl;
 
 import com.tf.dao.InvoiceDAO;
+import com.tf.model.InvestorTransaction;
 import com.tf.model.Invoice;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 @Repository
 @Transactional(rollbackFor = Exception.class)
@@ -253,5 +260,168 @@ public class InvoiceDAOImpl  extends BaseDAOImpl<Invoice, Long> implements Invoi
 		throw re;
 	 }
 	}
+	
+	
+	@SuppressWarnings("unchecked")
+	public List<Invoice> getInvoicesByFilter(String search,Date frmDate,Date toDate,String value,int startIndex,int pageSize){
+		_log.debug("Inside getInvoicesByFilter");
+		List<Invoice> InvoiceList=new ArrayList<Invoice>();
+        System.out.println("search"+search);
+        System.out.println("frmDate"+frmDate);
+        System.out.println("toDate"+toDate);
+        System.out.println("value"+value);
+		try {
+			DetachedCriteria criteria= DetachedCriteria.forClass(Invoice.class);
+			/*Pattern pattern = Pattern.compile(".*[^0-9].*");
+			Pattern pattern1 = Pattern.compile("^[a-zA-Z]*$");
+			Matcher isNumber = pattern.matcher(search);
+	        Matcher matcher = pattern1.matcher(search);
+			System.out.println("isNumber:"+isNumber);
+			if(isNumber.matches()){
+				System.out.println("Numeric");
+				criteria.add(Restrictions.like("invoiceNumber", Long.valueOf("%"+search+"%")));
+			}else if(matcher.matches()){
+				System.out.println("Alpha");
+
+				criteria .add(Restrictions.like("scfCompany.name", "%"+search+"%"));
+			}else{
+				System.out.println("AlphaNumeric");
+				criteria.add(Restrictions.like("status", "%"+search+"%"));
+			}*/
+			if(!StringUtils.isEmpty(search)){
+				criteria.add(Restrictions.like("status", "%"+search+"%"));
+			}
+			if(("invoiceDate").equals(value) && frmDate != null && toDate != null){
+				System.out.println("iam in inv1");
+
+				criteria.add(Restrictions.ge("invoiceDate", frmDate));
+				criteria.add(Restrictions.le("invoiceDate",toDate));
+			}else if(("invoiceDate").equals(value) && frmDate != null && toDate==null){
+				System.out.println("iam in inv2");
+
+				criteria.add(Restrictions.eq("invoiceDate", frmDate));
+			}else if(("invoiceDate").equals(value) && frmDate == null && toDate!=null){
+				System.out.println("iam in inv3");
+
+				criteria.add(Restrictions.eq("invoiceDate",toDate));
+
+			}
+			if(("financeDate").equals(value) && frmDate != null && toDate != null){
+				System.out.println("iam in fi1");
+
+				criteria.add(Restrictions.ge("financeDate", frmDate));
+				criteria.add(Restrictions.le("financeDate",toDate));
+			}else if(("financeDate").equals(value) && frmDate != null && toDate==null){
+				System.out.println("iam in fi2");
+
+				criteria.add(Restrictions.eq("financeDate", frmDate));
+			}else if(("financeDate").equals(value) && frmDate == null && toDate!=null){
+				System.out.println("iam in fi3");
+
+				criteria.add(Restrictions.eq("financeDate",toDate));
+
+			}
+			if(("paymentDate").equals(value) && frmDate != null && toDate != null){
+				System.out.println("iam in pa1");
+				criteria.add(Restrictions.ge("payment_date", frmDate));
+				criteria.add(Restrictions.le("payment_date",toDate));
+			}else if(("paymentDate").equals(value) && frmDate != null && toDate==null){
+				System.out.println("iam in pa2");
+				criteria.add(Restrictions.eq("payment_date", frmDate));
+			}else if(("paymentDate").equals(value) && frmDate == null && toDate!=null){
+				System.out.println("iam in pa3");
+
+				criteria.add(Restrictions.eq("payment_date",toDate));
+			}
+			
+            InvoiceList=criteria.getExecutableCriteria(sessionFactory.getCurrentSession()).setFirstResult(startIndex).setMaxResults(pageSize).list();
+            System.out.println("InvoiceList"+InvoiceList);
+			_log.debug("getInvoicesByFilter successful, result size: "
+					+ InvoiceList.size());
+			return InvoiceList;
+		} catch (RuntimeException re) {
+			_log.error("getInvoicesByFilter failed", re);
+			throw re;
+		}
+	}
+	
+	public Long getInvoicesByFilterCount(String search,Date frmDate,Date toDate,String value) {
+		_log.debug("Inside getInvoicesByFilterCount ");
+		try {
+			DetachedCriteria criteria= DetachedCriteria.forClass(Invoice.class);
+			/*Pattern pattern = Pattern.compile(".*[^0-9].*");
+			Pattern pattern1 = Pattern.compile("^[a-zA-Z]*$");
+			Matcher isNumber = pattern.matcher(search);
+	        Matcher matcher = pattern1.matcher(search);
+			System.out.println("isNumber:"+isNumber);
+			if(isNumber.matches()){
+				System.out.println("Numeric");
+				criteria.add(Restrictions.like("invoiceNumber", Long.valueOf("%"+search+"%")));
+			}else if(matcher.matches()){
+				System.out.println("Alpha");
+
+				criteria .add(Restrictions.like("scfCompany.name", "%"+search+"%"));
+			}else{
+				System.out.println("AlphaNumeric");
+				criteria.add(Restrictions.like("status", "%"+search+"%"));
+			}*/
+			if(!StringUtils.isEmpty(search)){
+				criteria.add(Restrictions.like("status", "%"+search+"%"));
+			}
+			if(("invoiceDate").equals(value) && frmDate != null && toDate != null){
+				System.out.println("iam in inv1");
+
+				criteria.add(Restrictions.ge("invoiceDate", frmDate));
+				criteria.add(Restrictions.le("invoiceDate",toDate));
+			}else if(("invoiceDate").equals(value) && frmDate != null && toDate==null){
+				System.out.println("iam in inv2");
+
+				criteria.add(Restrictions.eq("invoiceDate", frmDate));
+			}else if(("invoiceDate").equals(value) && frmDate == null && toDate!=null){
+				System.out.println("iam in inv3");
+
+				criteria.add(Restrictions.eq("invoiceDate",toDate));
+
+			}
+			if(("financeDate").equals(value) && frmDate != null && toDate != null){
+				System.out.println("iam in fi1");
+
+				criteria.add(Restrictions.ge("financeDate", frmDate));
+				criteria.add(Restrictions.le("financeDate",toDate));
+			}else if(("financeDate").equals(value) && frmDate != null && toDate==null){
+				System.out.println("iam in fi2");
+
+				criteria.add(Restrictions.eq("financeDate", frmDate));
+			}else if(("financeDate").equals(value) && frmDate == null && toDate!=null){
+				System.out.println("iam in fi3");
+
+				criteria.add(Restrictions.eq("financeDate",toDate));
+
+			}
+			if(("paymentDate").equals(value) && frmDate != null && toDate != null){
+				System.out.println("iam in pa1");
+				criteria.add(Restrictions.ge("payment_date", frmDate));
+				criteria.add(Restrictions.le("payment_date",toDate));
+			}else if(("paymentDate").equals(value) && frmDate != null && toDate==null){
+				System.out.println("iam in pa2");
+				criteria.add(Restrictions.eq("payment_date", frmDate));
+			}else if(("paymentDate").equals(value) && frmDate == null && toDate!=null){
+				System.out.println("iam in pa3");
+
+				criteria.add(Restrictions.eq("payment_date",toDate));
+			}
+			
+
+			Long resultCount=(Long) criteria.getExecutableCriteria(sessionFactory.getCurrentSession()).setProjection(Projections.rowCount()).uniqueResult();
+					
+					
+			_log.debug("getInvoicesByFilterCount  "	+ resultCount);
+			return resultCount;
+		} catch (RuntimeException re) {
+			_log.error("getInvoicesByFilterCount failed", re);
+			throw re;
+		}
+	}
+	
 	
 }

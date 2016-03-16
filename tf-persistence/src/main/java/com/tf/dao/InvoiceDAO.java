@@ -1,5 +1,6 @@
 package com.tf.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import com.tf.model.Invoice;
@@ -12,7 +13,7 @@ public interface InvoiceDAO extends BaseDAO<Invoice, Long> {
 	public List<Invoice> getInvoices(int startIndex,int pageSize);
 	
 	public Long getInvoicesCount();
-	
+	public List<Invoice> getInvoicesByFilter(String search,Date frmDate,Date toDate,String value,int startIndex,int pageSize);
 	public List<Invoice> getInvoicesAmount(List<Long> invoiceIds);
 	
 	public List<Invoice> getInvoices(long companyID,int startIndex,int pageSize);
@@ -20,7 +21,7 @@ public interface InvoiceDAO extends BaseDAO<Invoice, Long> {
 	public Invoice getInvoicesBytradeId(long id);
 	
 	public List<Invoice> getInvoicesByCompanyNumber(String companyNumber,int startIndex,int pageSize);
-	
+	public Long getInvoicesByFilterCount(String search,Date frmDate,Date toDate,String value);
 	public Long getInvsCounts(long companyID);
 	
 	public List<Invoice> getInvoicesByCompanyNoAndStatus(String companyNumber,String status);
