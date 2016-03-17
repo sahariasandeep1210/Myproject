@@ -658,6 +658,24 @@ public class SCFTradeController {
 	@ActionMapping(params="seller=getSellerTrade")
 	protected void getSellerTrade( ModelMap model,ActionRequest request,ActionResponse response) throws Exception {
 		String search=ParamUtil.getString(request, "Search");
+		Long noOfRecords = 0l;
+		PaginationModel paginationModel = paginationUtil
+				.preparePaginationModel(request);
+
+		String regNum = liferayUtility.getWhiteHallComapanyRegNo(request);
+		List<SCFTrade> scftrades=scfTradeService.getScfTradeListWithSearch(search, regNum, paginationModel.getStartIndex(), paginationModel.getPageSize());
+		
+		System.out.println("----getScfTradeListWithSearch-----------------");
+		for(SCFTrade s : scftrades){
+			System.out.println("\ngetId - "+s.getId());
+		}
+		System.out.println("---------------------");
+		
+		model.put("trades", scftrades);
+		paginationUtil.setPaginationInfo(noOfRecords, paginationModel);
+        System.out.println("paginationsss:"+paginationModel);
+		model.put("paginationModel", paginationModel);
+		//getScfTradeListWithSearch
 		System.out.println("search::"+search);
 		
 	}

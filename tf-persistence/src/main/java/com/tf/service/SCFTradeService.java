@@ -29,6 +29,8 @@ public interface SCFTradeService  {
 	public List<SCFTrade> getScfTradeList(String RegNum,int startIndex,int pageSize);
 	public  List<SCFTrade> getTradeHistoryList(int startIndex,int pageSize);
 	public void updateTradeLifeCycle(SCFTrade scfTrade);
-	public Long getScfTradesHistoryCount(); 
+	public Long getScfTradesHistoryCount();
+	public List<SCFTrade> getScfTradeListWithSearch(String search,
+			String regNum, int startIndex, int pageSize);
 
 }

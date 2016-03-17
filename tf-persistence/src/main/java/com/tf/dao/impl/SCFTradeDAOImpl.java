@@ -14,6 +14,7 @@ import org.hibernate.FetchMode;
 import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.criterion.CriteriaSpecification;
+import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
@@ -130,11 +131,51 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 			ProjectionList prList = Projections.projectionList();
             prList.add((Projections.distinct(Projections.property("inv.scfTrade"))));
             criteria.setProjection(prList);
-			List<SCFTrade> scftrades=(List<SCFTrade>)criteria.add(Restrictions.eq("inv.sellerCompanyRegistrationNumber", RegNum))
+            
+ 			List<SCFTrade> scftrades=(List<SCFTrade>)criteria.add(Restrictions.eq("inv.sellerCompanyRegistrationNumber", RegNum))
 					.setFirstResult(startIndex)
 					.setMaxResults(pageSize).list();
 			_log.debug("getScfTrades successful, result size: "
 					
+					+ scftrades.size());
+			return scftrades;
+		} catch (RuntimeException re) {
+			_log.error("getScfTrades failed", re);
+			throw re;
+		}
+		
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<SCFTrade> getScfTradeListWithSearch(String searchtxt, String RegNum,int startIndex,int pageSize){		
+		_log.debug("Inside getScfTrades ");
+		try {
+			
+			List<SCFTrade> scftrades = new ArrayList<SCFTrade>();
+			
+			List<Object[]> resultscheck = new ArrayList<Object[]>();
+
+			String query = "select trd.id as trdid from scf_trade trd, tf_company cmp, scf_invoice inv  where inv.seller_company_registration_number = "+RegNum+" and trd.id like (:searchtxt) or trd.trade_amount like (:searchtxt) or trd.status like (:searchtxt) or cmp.NAME like (:searchtxt) group by trd.id LIMIT " + startIndex + "," + pageSize;
+			
+			System.out.println("\n ankit query "+query);
+					
+			Query qrys = (Query) sessionFactory.getCurrentSession().createSQLQuery(query);
+			qrys.setParameter("searchtxt", "%"+searchtxt+"%");
+			
+			System.out.println("\n--------------------------");
+			 List<Object[]> resultschecknew = (List<Object[]>) qrys.list();
+			 System.out.println("resultschecknew"+resultschecknew);
+//				for(Object[] row:resultschecknew){
+//					System.out.println("\nrow[0].toString() - "+row[0].toString());
+//					
+//					SCFTrade scfTrade = new SCFTrade();
+//					
+//					scftrades.add(scfTrade);
+//				}
+				System.out.println("\n--------------------------");
+				
+			scftrades = (List<SCFTrade>) qrys.list();
+			_log.debug("getScfTrades successful, result size: "					
 					+ scftrades.size());
 			return scftrades;
 		} catch (RuntimeException re) {
