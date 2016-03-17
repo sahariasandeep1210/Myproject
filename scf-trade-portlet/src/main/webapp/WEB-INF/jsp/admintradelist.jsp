@@ -1,6 +1,5 @@
 <%@include file="init.jsp"%>
 <%@ taglib uri="http://whitehall.com/jsp/tld/p" prefix="p"%>
-
 <%@include file="tabview.jsp"%>
 
 <liferay-theme:defineObjects />
@@ -13,21 +12,31 @@
 	<portlet:param name="action" value="updateStatus" />
 </portlet:actionURL>
 
-<portlet:renderURL var="defaultRenderURL" />
+<portlet:actionURL var="getAdminTradeURL">
+	<portlet:param name="admin" value="getAdminTrade" />
+</portlet:actionURL>
 
+<portlet:renderURL var="defaultRenderURL" />
 
 <div class="container-fluid">
 
-
 	<form:form commandName="scfTradeModel" method="post"
 		action="${createURL}" id="scfTradeList"  name="scfTradeList" >
-		 <input type="hidden" name="currentPage"     id="currentPage"        value="${paginationModel.currentPage}" />
+		<input type="hidden" name="currentPage"     id="currentPage"        value="${paginationModel.currentPage}" />
         <input type="hidden" name="curPageSize"         id="curPageSize"   value="${paginationModel.pageSize}" />
         <input type="hidden" name="noOfRecords"     id="noOfRecords"         value="${paginationModel.noOfRecords}" />
-         <input type="hidden" name="defaultURL"         id="defaultURL"      value="${defaultRenderURL}" />
+        <input type="hidden" name="defaultURL"         id="defaultURL"      value="${defaultRenderURL}" />
+                <input type="hidden" name="getAdminTradeURL"         id="getAdminTradeURL"      value="${getAdminTradeURL}" />
         
 		<input type="hidden" id="tradeID" name="tradeID">
 		<input type="hidden" id="status" name="status">
+		
+		<div class="row-fluid">
+            <div class="search-seller">
+                <input type="text" name="Search" placeholder="Search Here" id="search">
+                <input type="button" value="Search" id="adminTradeReport" class="btn btn-primary" />
+            </div>
+        </div>
 			<div class="row-fluid">
 			<div class="span6">
 				<div class="span3">
@@ -61,6 +70,21 @@
 					</tr>
 				</thead>
 				<tbody>
+				<tr>
+						<td></td>
+						<td>0</td>
+						<td></td>
+						<td>${totalTradeAmount}</td>
+						<td></td>
+						<td>${totalInvestorProfit}</td>
+						<td>${totalWhiteHallShare}</td>
+						<td>${totalInvestorNet}</td>
+						<td>${totalSellerFees}</td>
+						<td>${totalWhiteHallFees}</td>
+						<td>${totalSellerAmount}</td>
+						<td></td>
+
+					</tr>
 					<c:choose>
 						<c:when test="${fn:length(trades) gt 0}">
 							<c:forEach items="${trades}" var="trade">

@@ -366,7 +366,7 @@ public class InvoiceDAOImpl  extends BaseDAOImpl<Invoice, Long> implements Invoi
 				criteria.add(Restrictions.like("status", "%"+search+"%"));
 			}*/
 			if(!StringUtils.isEmpty(search)){
-				criteria.add(Restrictions.like("status", "%"+search+"%"));
+				criteria.add(Restrictions.like("status", search+"%"));
 			}
 			if(("invoiceDate").equals(value) && frmDate != null && toDate != null){
 				System.out.println("iam in inv1");

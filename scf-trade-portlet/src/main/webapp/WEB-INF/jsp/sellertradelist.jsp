@@ -2,6 +2,11 @@
 <liferay-theme:defineObjects />
 <%@ taglib uri="http://whitehall.com/jsp/tld/p" prefix="p"%>
 
+
+<portlet:actionURL var="getSellerTradeURL">
+	<portlet:param name="seller" value="getSellerTrade" />
+</portlet:actionURL>
+
 <portlet:resourceURL  var="tradeURL"></portlet:resourceURL>
 <portlet:renderURL var="defaultRenderURL" />
 
@@ -25,6 +30,8 @@
         <input type="hidden" name="currPageSize"         id="currPageSize"             value="${paginationModel.pageSize}" />
         <input type="hidden" name="noOfRecords"     id="noOfRecords"        value="${paginationModel.noOfRecords}" />
         <input type="hidden" name="defaultURL"         id="defaultURL"         value="${defaultRenderURL}" />
+        <input type="hidden" name="getSellerTradeURL"   id="getSellerTradeURL"         value="${getSellerTradeURL}" />
+        
         <input type="hidden" id="tradeURL" name="tradeURL" value="${tradeURL}"/>
         <input type="hidden" id="invoices" name="invoices" value="${trade.invoices}">
         
@@ -32,7 +39,7 @@
         <div class="row-fluid">
             <div class="search-seller">
                 <input type="text" name="Search" placeholder="Search Here" id="search">
-
+                <input type="button" value="Search" id="sellerTradeReport" class="btn btn-primary" />
             </div>
         </div>
         <div class="row-fluid">

@@ -47,7 +47,6 @@
 				<thead>
 					<tr>
 					<!-- 	<th>SCF Trade</th> -->
-					
 					    <th>Trade #</th>
 					    <th>SCF Company</th>
 					    <th>Duration</th>
@@ -59,6 +58,17 @@
 					</tr>
 				</thead>
 				<tbody>
+					<tr>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td>${totalTradeAmount}</td>
+						<td></td>
+						<td></td>
+
+					</tr>
 					<c:choose>
 						<c:when test="${fn:length(trades) gt 0}">
 							<c:forEach items="${trades}" var="trade">

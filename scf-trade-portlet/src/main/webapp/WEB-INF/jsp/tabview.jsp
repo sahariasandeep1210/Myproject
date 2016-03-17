@@ -12,7 +12,7 @@
 </portlet:renderURL>
 
 <form id="tabviewform">
-<input type="hidden" value="${activetab}" name="currentTab" id="currentTab">
+     <input type="hidden" value="${activetab}" name="currentTab" id="currentTab">
 </form>
 
 

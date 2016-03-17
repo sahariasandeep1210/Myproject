@@ -128,25 +128,11 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 			Criteria criteria = sessionFactory.getCurrentSession().createCriteria(SCFTrade.class);
 			criteria.createAlias("invoices", "inv");
 			ProjectionList prList = Projections.projectionList();
-             prList.add((Projections.distinct(Projections.property("inv.scfTrade"))));
-             criteria.setProjection(prList);
+            prList.add((Projections.distinct(Projections.property("inv.scfTrade"))));
+            criteria.setProjection(prList);
 			List<SCFTrade> scftrades=(List<SCFTrade>)criteria.add(Restrictions.eq("inv.sellerCompanyRegistrationNumber", RegNum))
 					.setFirstResult(startIndex)
 					.setMaxResults(pageSize).list();
-			
-			
-			/*Set<SCFTrade> tradeSet = new LinkedHashSet<SCFTrade>();
-             SCFTrade scfTrade=null;
-			for (Invoice inv : invoice) {
-				scfTrade = inv.getScfTrade();
-				System.out.println("Dhanush:"+scfTrade);
-			List<SCFTrade> results = (List<SCFTrade>) sessionFactory.getCurrentSession().createCriteria(SCFTrade.class).add(Restrictions.eq("id", scfTrade.getId())).setFirstResult(startIndex).setMaxResults(pageSize).list();
-			for (SCFTrade trade : results) {
-				tradeSet.add(trade);
-			}
-		}	
-			scftrades = new ArrayList<SCFTrade>(tradeSet);
-*/
 			_log.debug("getScfTrades successful, result size: "
 					
 					+ scftrades.size());

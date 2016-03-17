@@ -146,19 +146,49 @@ public class SCFTradeController {
 				.getPermissionChecker();
 
 		if (permissionChecker.isOmniadmin()) {
+			BigDecimal totalTradeAmount = BigDecimal.ZERO;
+			BigDecimal totalInvestorProfit = BigDecimal.ZERO;
+			BigDecimal totalWhiteHallShare = BigDecimal.ZERO;
+			BigDecimal totalInvestorNet = BigDecimal.ZERO;
+			BigDecimal totalSellerFees = BigDecimal.ZERO;
+			BigDecimal totalWhiteHallFees = BigDecimal.ZERO;
+			BigDecimal totalSellerAmount = BigDecimal.ZERO;
+
 			scftrades = scfTradeService.getScfTrades(paginationModel.getStartIndex(),
 					paginationModel.getPageSize());
 			noOfRecords = scfTradeService.getScfTradesCount();
+			for(SCFTrade scf:scftrades){
+				totalTradeAmount=totalTradeAmount.add(scf.getTradeAmount());
+				totalInvestorProfit=totalInvestorProfit.add(scf.getInvestorTotalGross());
+				totalWhiteHallShare=totalWhiteHallShare.add(scf.getWhitehallTotalShare());
+				totalInvestorNet=totalInvestorNet.add(scf.getInvestorTotalProfit());
+				totalSellerFees=totalSellerFees.add(scf.getSellerFees());
+				totalWhiteHallFees=totalWhiteHallFees.add(scf.getWhitehallTotalProfit());
+				totalSellerAmount=totalSellerAmount.add(scf.getSellerNetAllotment());
+			}
 			model.put("userType", Constants.ADMIN);
+			model.put("totalTradeAmount", totalTradeAmount);
+			model.put("totalInvestorProfit", totalInvestorProfit);
+			model.put("totalWhiteHallShare", totalWhiteHallShare);
+			model.put("totalInvestorNet", totalInvestorNet);
+			model.put("totalSellerFees", totalSellerFees);
+			model.put("totalWhiteHallFees", totalWhiteHallFees);
+			model.put("totalSellerAmount", totalSellerAmount);
 			model.put(ACTIVETAB, "admintradelist");
 
 			viewName = "admintradelist";
 		} else if (request.isUserInRole(Constants.SCF_ADMIN)) {
+			BigDecimal totalTradeAmount = BigDecimal.ZERO;
+
 			long companyId = userService.getCompanybyUserID(
 					themeDisplay.getUserId()).getId();
 			scftrades = scfTradeService.getScfTrades(companyId,paginationModel.getStartIndex(),
 					paginationModel.getPageSize());
 			noOfRecords=scfTradeService.getScfTradesCount(companyId);
+			for(SCFTrade scf:scftrades){
+				totalTradeAmount=totalTradeAmount.add(scf.getTradeAmount());
+			}
+			model.put("totalTradeAmount", totalTradeAmount);
 			viewName = "tradelist";
 		} else if (request.isUserInRole(Constants.SELLER_ADMIN)) {
 
@@ -200,8 +230,6 @@ public class SCFTradeController {
 		model.put(ACTIVETAB, "tradehistory");
 		model.put("scfTradesHistory", scfTrades);
 		model.put("totalTradeAmount", totalTradeAmount);
-
-
 		model.put("userType", Constants.ADMIN);
 
 	    return new ModelAndView("tradehistory", model);	
@@ -465,9 +493,11 @@ public class SCFTradeController {
 
 	}
 	@RenderMapping(params = "action=tradeRedirect")
-    public String tradeRedirect(ModelMap model, RenderRequest request,
+    public ModelAndView tradeRedirect(ModelMap model, RenderRequest request,
             RenderResponse response) throws Exception { 
-        return "tradehistory";
+		 model.put("userType", Constants.ADMIN);
+		 model.put(ACTIVETAB, "tradehistory");
+        return new ModelAndView("tradehistory",model);
     }
 	@RenderMapping(params = "action=singleHistory")
     public String tradeSingleHistory(ModelMap model, RenderRequest request,
@@ -508,7 +538,6 @@ public class SCFTradeController {
 		List<SCFTrade> scfTradesList=null;
 		List<SCFTrade> scfTrades=null;
 		BigDecimal totalTradeAmount = BigDecimal.ZERO;
-
 		
 		Long compID = ParamUtil.getLong(request, "compID");
 		System.out.println("SS123:"+compID);
@@ -530,7 +559,6 @@ public class SCFTradeController {
  		 model.put("paginationModel", paginationModel);
          System.out.println("norecordss:"+noOfRecords);
          System.out.println("paginationfrom get:"+paginationModel);
-
          scfTrades=scfTradeService.getTradeHistoryByComapnyId(compID,paginationModel.getStartIndex(),
 				paginationModel.getPageSize());
         System.out.println("scfTradesscfTradesscfTradesscfTrades"+scfTrades);
@@ -550,6 +578,30 @@ public class SCFTradeController {
        
        } 	
  
+	
+	
+	@ActionMapping(params="seller=getSellerTrade")
+	protected void getSellerTrade( ModelMap model,ActionRequest request,ActionResponse response) throws Exception {
+		String search=ParamUtil.getString(request, "Search");
+		System.out.println("search::"+search);
+		
+	}
+	
+	@ActionMapping(params="admin=getAdminTrade")
+	protected void getAdminTrade( ModelMap model,ActionRequest request,ActionResponse response) throws Exception {
+		
+		String search=ParamUtil.getString(request, "Search");
+		System.out.println("search::"+search);
+
+		
+	}
+	
+	
+	
+	
+	
+	
+	
 
 }
 	

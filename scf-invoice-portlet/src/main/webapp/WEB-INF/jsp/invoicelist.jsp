@@ -106,16 +106,23 @@
 
 		</div>
 		<div class="row-fluid">
-			<div class="span6">
-				<label class="span6">Date:</label> <select id="dateList"
-					name="dateList">
+			<div class="span1">
+				<label style="margin-bottom:0;padding: 5px 0;">Date:</label>  </div>
+			<div class="span3">	
+				<select id="dateList" name="dateList">
 					<option value="">---Select---</option>
-					<option value="invoiceDate">invoiceDate</option>
-					<option value="paymentDate">paymentDate</option>
-					<option value="financeDate">financeDate</option>
-				</select> <input name="fromDate" id="fromDate" placeholder="From" /> <input
-					name="toDate" id="toDate" placeholder="To" />
-			</div>
+					<option value="invoiceDate" <c:if test="${ value eq 'invoiceDate'}">selected="selected" </c:if>>invoiceDate</option>
+					<option value="paymentDate" <c:if test="${ value eq 'paymentDate'}">selected="selected" </c:if>>paymentDate</option>
+					<option value="financeDate" <c:if test="${ value eq 'financeDate'}">selected="selected" </c:if>>financeDate</option>
+				</select> 
+		   </div>
+		  <div class="span3">	
+				<input name="fromDate" id="fromDate" placeholder="From" /> 
+		  </div>		
+		  <div class="span3">	
+				<input name="toDate" id="toDate" placeholder="To" />
+		  </div>
+				
 		</div>
 		<div class="row-fluid">
 			<div class="span6">

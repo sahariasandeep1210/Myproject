@@ -34,8 +34,7 @@
 					<th>Amount</th>
 					<th>Duration</th>
 					<th>Invoice Company</th>
-<!-- 					<th>Due date</th>
- -->					<th>Status</th>
+					<th>Status</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -88,17 +87,49 @@
 						</c:forEach>
 					</c:when>
 					<c:when test="${fn:length(invoices) gt 0}">
-					   <c:forEach items="${invoices}" var="invoice" >
-					     <tr> 
-					        <td>${invoice.invoiceNumber}</td>
+						<c:forEach items="${invoices}" var="invoice">
+							<tr>
+							<c:if test="${defaultRender}">
+									<td><c:choose>
+											<c:when
+												test="${ userType eq 'Seller Admin' && invoice.status eq 'New'}">
+												<input type="checkbox" value="${invoice.id}"
+													name="invoiceId" date-attr="${invoice.financeDate}"
+													scfcompany-attr="${invoice.scfCompany.id}"
+													<c:if test="${invoice.scfTrade.id ne null}">disabled="disabled"</c:if>>
+											</c:when>
+											<c:when
+												test="${userType eq 'Seller Admin' && invoice.status ne 'New'}">
+												<input type="checkbox" name="invoiceId"
+													date-attr="${invoice.financeDate}"
+													scfcompany-attr="${invoice.scfCompany.id}"
+													disabled="disabled">
+											</c:when>
+											<c:when test="${invoice.status eq 'New'}">
+												<input type="checkbox" name="invoiceId"
+													date-attr="${invoice.financeDate}"
+													scfcompany-attr="${invoice.scfCompany.id}"
+													disabled="disabled">
+											</c:when>
+											<c:otherwise>
+												<input type="checkbox" value="${invoice.id}"
+													name="invoiceId" date-attr="${invoice.financeDate}"
+													scfcompany-attr="${invoice.scfCompany.id}"
+													<c:if test="${invoice.scfTrade.id ne null}">disabled="disabled"</c:if>>
+											</c:otherwise>
+										</c:choose></td>
+								</c:if>
+								<td><span class='underline'><a
+										href="javascript:void(0);"
+										onclick="window.location.href='${invoiceURL}&invoiceID=${invoice.id}'">${invoice.invoiceNumber}</a></span></td>
 								<td><fmt:formatDate pattern="dd-MM-yyyy"
 										value="${invoice.payment_date}" /></td>
 								<td>${invoice.invoiceAmount}</td>
 								<td>${invoice.duration}</td>
 								<td>${invoice.scfCompany.name}</td>
 								<td>${invoice.status}</td>
-					     </tr>
-					   </c:forEach>
+							</tr>
+						</c:forEach>
 					</c:when>
 					<c:otherwise>
 						<tr>

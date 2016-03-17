@@ -5,6 +5,17 @@ $(document).ready(function(){
 	$("#pagSize").val($("#curPageSize").val());
 	$("#pgSize").val($("#currPageSizes").val());
 
+	$("#adminTradeReport").click(function (){
+		var updateURL=$("#getAdminTradeURL").val();
+		document.forms["scfTradeList"].action = updateURL;
+      document.forms["scfTradeList"].submit();
+    });
+	
+	$("#sellerTradeReport").click(function (){
+		var updateURL=$("#getSellerTradeURL").val();
+		document.forms["sellerList"].action = updateURL;
+      document.forms["sellerList"].submit();
+    });
 	
 	 $("#historyReport").click(function (){
 			var updateURL=$("#getTradeHistorys").val();

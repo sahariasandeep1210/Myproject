@@ -124,10 +124,12 @@
 							</c:forEach>
 						</c:when>
 						<c:when test="${fn:length(scfTradesList) gt 0}">
- 						     <c:forEach items="${scfTradesList}" var="trade">
-						      
+							<c:forEach items="${scfTradesList}" var="trade">
+
 								<tr>
-									<td>${trade.tradeNotes}</td>
+									<td><span class='underline'><a
+											href="javascript:void(0);"
+											onclick="window.location.href='${histryURL}&compID=${trade.insuranceDocId}'">${trade.tradeNotes}</a></span></td>
 									<td>${trade.tradeAmount}</td>
 									<td>ALL</td>
 									<td>N/A</td>
@@ -135,7 +137,7 @@
 									<td>N/A</td>
 
 								</tr>
-						</c:forEach>
+							</c:forEach>
 						</c:when>
 						<c:otherwise>
 							<tr>
@@ -149,5 +151,4 @@
 		</div>
 	</form:form>
 </div>
- <p:paginate paginationModel="${paginationModel}" />
- 
+<p:paginate paginationModel="${paginationModel}" />

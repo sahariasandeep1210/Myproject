@@ -690,9 +690,15 @@ public class InvoiceController {
 	}	
 }
 	@RenderMapping(params = "action=invoiceRedirect")
-    public String invoiceRedirect(ModelMap model, RenderRequest request,
+    public ModelAndView invoiceRedirect(ModelMap model, RenderRequest request,
             RenderResponse response) throws Exception { 
-        return "invoicelist";
+		model.put("defaultRender", Boolean.TRUE);
+
+		model.put("userType", Constants.ADMIN);
+		model.put("userType", Constants.SCF_ADMIN);
+		model.put("userType", Constants.SELLER_ADMIN);
+		model.put(ACTIVETAB, "invoicelist");
+        return new ModelAndView("invoicelist",model);
     }
 	@ActionMapping(params="invoice=getInvoiceReport")
 	protected void getCashReport( ModelMap model,ActionRequest request,ActionResponse response) throws Exception {
@@ -718,6 +724,7 @@ public class InvoiceController {
         paginationUtil.setPaginationInfo(noOfRecords,paginationModel);
 		model.put("paginationModel", paginationModel);
 		model.put("invoices", invoices);
+		model.put("value", value);		
         response.setRenderParameter("action", "invoiceRedirect");
        }
 	
