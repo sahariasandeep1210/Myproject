@@ -3,6 +3,7 @@ package com.tf.controller.trade;
 import com.google.gson.Gson;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.repository.model.FileEntry;
@@ -384,6 +385,67 @@ public class SCFTradeController {
 		SCFTrade scfTrade = scfTradeService.findById(tradeID);
 		scfTrade.setStatus(status);
 		scfTradeService.updateTradeLifeCycle(scfTrade);
+		
+//		if(TradeStatus.ALLOTMENT_PAID.getValue().equalsIgnoreCase(status)){
+//			// Email Notification
+//		 	try {					
+//		 		String articleName =  "create-invoice-by-scf-company"; // Web Content's UrlTitle							
+//				String content = liferayUtility.getContentByURLTitle(request, articleName);
+//			
+//				content = content.replaceAll("PHNO1", invoiceModel.getScfCompany().getName());						
+//				content = content.replaceAll("PHNO3", "White Hall Finance");
+//				String tempstart = "<table border=\"1\" cellpadding=\"1\" cellspacing=\"1\" style=\"width:500px;\"><tbody><tr><td><strong>Invoice Number</strong></td><td><strong>Invoice Amount</strong></td><td><strong>Date&nbsp;</strong></td></tr>";
+//				String tempend = "</tbody></table>";
+//				String tempstr = tempstart + "<tr><td>"+invoiceModel.getInvoiceNumber()+"</td><td>"+invoiceModel.getInvoiceAmount()+"</td><td>"+invoiceModel.getInvoiceDate()+"</td></tr>" +tempend;
+//				content = content.replaceAll("PHNO10", tempstr);
+//				
+//				String from = LanguageUtil.get(portletConfig, request.getLocale(), "invoice.sender.email");								
+//				//String to = userService.findUserOjectByCompanyId(invoiceModel.getScfCompany().getId());
+//				String to = "gautam.tf2015@gmail.com";
+//
+//				System.out.println("\ncontent - "+content);
+//				System.out.println("\nfrom - "+from);
+//				System.out.println("\nto - "+to);
+//				System.out.println("\ntempstr - "+tempstr);
+//				
+//				if(!content.endsWith("") &&!from.endsWith("") && !to.endsWith("")){	
+//					liferayUtility.sendEmail(request, from, to, "Your invoice has been created.", content);
+//				}
+//			
+//			} catch (Exception e) {
+//				e.printStackTrace();
+//			}
+//		}else if(TradeStatus.SUPPLIER_PAID.getValue().equalsIgnoreCase(status)){
+//			// Email Notification
+//		 	try {					
+//		 		String articleName =  "create-invoice-by-scf-company"; // Web Content's UrlTitle							
+//				String content = liferayUtility.getContentByURLTitle(request, articleName);
+//			
+//				content = content.replaceAll("PHNO1", invoiceModel.getScfCompany().getName());						
+//				content = content.replaceAll("PHNO3", "White Hall Finance");
+//				String tempstart = "<table border=\"1\" cellpadding=\"1\" cellspacing=\"1\" style=\"width:500px;\"><tbody><tr><td><strong>Invoice Number</strong></td><td><strong>Invoice Amount</strong></td><td><strong>Date&nbsp;</strong></td></tr>";
+//				String tempend = "</tbody></table>";
+//				String tempstr = tempstart + "<tr><td>"+invoiceModel.getInvoiceNumber()+"</td><td>"+invoiceModel.getInvoiceAmount()+"</td><td>"+invoiceModel.getInvoiceDate()+"</td></tr>" +tempend;
+//				content = content.replaceAll("PHNO10", tempstr);
+//				
+//				String from = LanguageUtil.get(portletConfig, request.getLocale(), "invoice.sender.email");								
+//				//String to = userService.findUserOjectByCompanyId(invoiceModel.getScfCompany().getId());
+//				String to = "gautam.tf2015@gmail.com";
+//
+//				System.out.println("\ncontent - "+content);
+//				System.out.println("\nfrom - "+from);
+//				System.out.println("\nto - "+to);
+//				System.out.println("\ntempstr - "+tempstr);
+//				
+//				if(!content.endsWith("") &&!from.endsWith("") && !to.endsWith("")){	
+//					liferayUtility.sendEmail(request, from, to, "Your invoice has been created.", content);
+//				}
+//			
+//			} catch (Exception e) {
+//				e.printStackTrace();
+//			}
+//		}
+		
 		System.out.println("tradeID::" + tradeID + " status " + status);
 
 	}

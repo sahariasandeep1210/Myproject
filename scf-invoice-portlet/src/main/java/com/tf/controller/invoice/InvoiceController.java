@@ -247,103 +247,59 @@ public class InvoiceController {
 					 invoices.add(invoiceModel);
 					 invoiceService.addInvoices(invoices);
 					 
-					 	// Email Notification -create-invoice-by-whitehalladmin-to-scfcompany
-					 	try {
-					 	
-					 			
-						ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);
-					
-						String articleName = "";
-						if(liferayUtility.getPermissionChecker(request).isOmniadmin()) {
-							articleName =  "create-invoice-by-scfcompany-to-whitehalladmin"; // Web Content's UrlTitle
-						}else if (request.isUserInRole(Constants.SCF_ADMIN)) {
-							articleName =  "create-invoice-by-whitehalladmin-to-scfcompany"; // Web Content's UrlTitle
-						}
+					 	// Email Notification
+					 	try {					
+					 		String articleName =  "create-invoice-by-scf-company"; // Web Content's UrlTitle							
+							String content = liferayUtility.getContentByURLTitle(request, articleName);
 						
-						String content = StringPool.BLANK;
-
-						JournalArticle journalArticle = JournalArticleLocalServiceUtil.getArticleByUrlTitle(themeDisplay.getScopeGroupId(), articleName);// getting the journalArticle Object based on name
-						String articleId = journalArticle.getArticleId();
-
-						JournalArticleDisplay articleDisplay =  JournalContentUtil.getDisplay (themeDisplay.getScopeGroupId(), articleId,"",themeDisplay.getLanguageId(),themeDisplay);
-
-						content = articleDisplay.getContent();
-						
-						// We can replace runtime data at PHNO position
-						System.out.println("\n-------------------------------------------------");
-						System.out.println("\n before replace content - "+content);
-						
-						content = content.replaceAll("PHNO1", invoiceModel.getScfCompany().getName());						
-						content = content.replaceAll("PHNO3", "White Hall Finance");
-						
-							if(journalArticle != null){
-								InternetAddress fromAddress = null;
-								InternetAddress toAddress = null;
-								fromAddress = new InternetAddress(LanguageUtil.get(portletConfig, request.getLocale(), "invoice.sender.email"));								
-								String email = userService.findUserOjectByCompanyId(invoiceModel.getScfCompany().getId());
-								toAddress = new InternetAddress(email);							
-								MailMessage mailMessage = new MailMessage();
-								mailMessage.setTo(toAddress);
-								mailMessage.setFrom(fromAddress);
-								mailMessage.setSubject("Your request finance for this invoice has been created.");
-								mailMessage.setBody(content);
-								mailMessage.setHTMLFormat(true);
-								MailServiceUtil.sendEmail(mailMessage);		
-								System.out.println("\n scr cmp email - "+email);
-								System.out.println("sender email - "+LanguageUtil.get(portletConfig, request.getLocale(), "invoice.sender.email"));
-								System.out.println("\nSend mail with HTML Format");
+							content = content.replaceAll("PHNO1", invoiceModel.getScfCompany().getName());						
+							content = content.replaceAll("PHNO3", "White Hall Finance");
+							String tempstart = "<table border=\"1\" cellpadding=\"1\" cellspacing=\"1\" style=\"width:500px;\"><tbody><tr><td><strong>Invoice Number</strong></td><td><strong>Invoice Amount</strong></td><td><strong>Date&nbsp;</strong></td></tr>";
+							String tempend = "</tbody></table>";
+							String tempstr = tempstart + "<tr><td>"+invoiceModel.getInvoiceNumber()+"</td><td>"+invoiceModel.getInvoiceAmount()+"</td><td>"+invoiceModel.getInvoiceDate()+"</td></tr>" +tempend;
+							content = content.replaceAll("PHNO10", tempstr);
+							
+							String from = LanguageUtil.get(portletConfig, request.getLocale(), "invoice.sender.email");								
+							//String to = userService.findUserOjectByCompanyId(invoiceModel.getScfCompany().getId());
+							String to = "gautam.tf2015@gmail.com";
+	
+							System.out.println("\ncontent - "+content);
+							System.out.println("\nfrom - "+from);
+							System.out.println("\nto - "+to);
+							System.out.println("\ntempstr - "+tempstr);
+							
+							if(!content.endsWith("") &&!from.endsWith("") && !to.endsWith("")){	
+								liferayUtility.sendEmail(request, from, to, "Your invoice has been created.", content);
 							}
 						
 						} catch (Exception e) {
 							e.printStackTrace();
 						}
 					 	
-					 // Email Notification -create-invoice-by-whitehalladmin-to-seller
+					 	// Email Notification
 					 	try {
 					 	
-						ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);
-						String articleName =  "create-invoice-by-whitehalladmin-to-seller"; // Web Content's UrlTitle
-						String content = StringPool.BLANK;
-
-						JournalArticle journalArticle = JournalArticleLocalServiceUtil.getArticleByUrlTitle(themeDisplay.getScopeGroupId(), articleName);// getting the journalArticle Object based on name
-						String articleId = journalArticle.getArticleId();
-						JournalArticleDisplay articleDisplay =  JournalContentUtil.getDisplay(themeDisplay.getScopeGroupId(), articleId,"",themeDisplay.getLanguageId(),themeDisplay);
-						content = articleDisplay.getContent();
+							String articleName =  "create-invoice-by-scf-company"; // Web Content's UrlTitle
+							String content = liferayUtility.getContentByURLTitle(request, articleName);
+							
+							Company cmp = companyService.getCompaniesByRegNum(invoiceModel.getSellerCompanyRegistrationNumber());
+							content = content.replaceAll("PHNO1", cmp.getName());						
+							content = content.replaceAll("PHNO3", "White Hall Finance");
+							String tempstart = "<table border=\"1\" cellpadding=\"1\" cellspacing=\"1\" style=\"width:500px;\"><tbody><tr><td><strong>Invoice Number</strong></td><td><strong>Invoice Amount</strong></td><td><strong>Date&nbsp;</strong></td></tr>";
+							String tempend = "</tbody></table>";
+							String tempstr = tempstart + "<tr><td>"+invoiceModel.getInvoiceNumber()+"</td><td>"+invoiceModel.getInvoiceAmount()+"</td><td>"+invoiceModel.getInvoiceDate()+"</td></tr>" +tempend;
+							content = content.replaceAll("PHNO10", tempstr);
 						
-						// We can replace runtime data at PHNO position
-						System.out.println("\n-------------------------------------------------");
-						System.out.println("\n before replace content - "+content);
-						
-						Company cmp = companyService.getCompaniesByRegNum(invoiceModel.getSellerCompanyRegistrationNumber());
-						content = content.replaceAll("PHNO1", cmp.getName());						
-						content = content.replaceAll("PHNO3", "White Hall Finance");
-						
-						// Table we can write half dynamic in webcontent, so if we want total table to be dynamic we should do <DIV> based table design and css
-						
-						String tempstart = "<table border=\"1\" cellpadding=\"1\" cellspacing=\"1\" style=\"width:500px;\"><tbody><tr><td><strong>Invoice Number</strong></td><td><strong>Invoice Amount</strong></td><td><strong>Date&nbsp;</strong></td></tr>";
-						String tempend = "</tbody></table>";
-						String tempstr = tempstart + "<tr><td>"+invoiceModel.getInvoiceNumber()+"</td><td>"+invoiceModel.getInvoiceAmount()+"</td><td>"+invoiceModel.getInvoiceDate()+"</td></tr>" +tempend;
-						content = content.replaceAll("PHNO10", tempstr);
-						
-						System.out.println("\n after replace content - "+content);
-						System.out.println("\n-------------------------------------------------");
-						
-							if(journalArticle != null){
-								InternetAddress fromAddress = null;
-								InternetAddress toAddress = null;
-								fromAddress = new InternetAddress(LanguageUtil.get(portletConfig, request.getLocale(), "invoice.sender.email"));								
-								String email = userService.findUserOjectByCompanyId(cmp.getId());
-								toAddress = new InternetAddress(email);							
-								MailMessage mailMessage = new MailMessage();
-								mailMessage.setTo(toAddress);
-								mailMessage.setFrom(fromAddress);
-								mailMessage.setSubject("Your request finance for this invoice has been created.");
-								mailMessage.setBody(content);
-								mailMessage.setHTMLFormat(true);
-								MailServiceUtil.sendEmail(mailMessage);		
-								System.out.println("\n seller cmp email - "+email);
-								System.out.println("sender email - "+LanguageUtil.get(portletConfig, request.getLocale(), "invoice.sender.email"));
-								System.out.println("\nSend mail with HTML Format");
+							String from = LanguageUtil.get(portletConfig, request.getLocale(), "invoice.sender.email");								
+							String to = userService.findUserOjectByCompanyId(invoiceModel.getScfCompany().getId());
+	
+							System.out.println("\ncontent - "+content);
+							System.out.println("\nfrom - "+from);
+							System.out.println("\nto - "+to);
+							System.out.println("\ncmp.getName() - "+cmp.getName());
+							
+							if(!cmp.getName().endsWith("") && !content.endsWith("") &&!from.endsWith("") && !to.endsWith("")){	
+								liferayUtility.sendEmail(request, from, to, "Your invoice has been created.", content);
 							}
 						
 						} catch (Exception e) {
@@ -677,6 +633,43 @@ public class InvoiceController {
 		PortletConfig portletConfig = (PortletConfig)request.getAttribute(JavaConstants.JAVAX_PORTLET_CONFIG);
 		SessionMessages.add(request, "invoice.success.trade");
 		model.put("successMessage", LanguageUtil.get(portletConfig, request.getLocale(), "invoice.success.trade") + liferayUtility.getDate(financeDate));
+		
+		if(invoicesIdList != null){
+			for(String inv : invoicesIdList){
+				
+				Invoice invm = invoiceService.getInvoicesById(Long.valueOf(inv));
+				
+				// Email Notification
+			 	try {					
+			 		String articleName =  "seller-request-for-finanace"; // Web Content's UrlTitle							
+					String content = liferayUtility.getContentByURLTitle(request, articleName);
+				
+					content = content.replaceAll("PHNO1", invm.getScfCompany().getName());						
+					content = content.replaceAll("PHNO3", "White Hall Finance");
+					String tempstart = "<table border=\"1\" cellpadding=\"1\" cellspacing=\"1\" style=\"width:500px;\"><tbody><tr><td><strong>Invoice Number</strong></td><td><strong>Invoice Amount</strong></td><td><strong>Date&nbsp;</strong></td></tr>";
+					String tempend = "</tbody></table>";
+					String tempstr = tempstart + "<tr><td>"+invm.getInvoiceNumber()+"</td><td>"+invm.getInvoiceAmount()+"</td><td>"+invm.getInvoiceDate()+"</td></tr>" +tempend;
+					content = content.replaceAll("PHNO10", tempstr);
+					
+					String from = LanguageUtil.get(portletConfig, request.getLocale(), "invoice.sender.email");								
+					//String to = userService.findUserOjectByCompanyId(invoiceModel.getScfCompany().getId());
+					String to = "gautam.tf2015@gmail.com";
+
+					System.out.println("\ncontent - "+content);
+					System.out.println("\nfrom - "+from);
+					System.out.println("\nto - "+to);
+					System.out.println("\ntempstr - "+tempstr);
+					
+					if(!content.endsWith("") &&!from.endsWith("") && !to.endsWith("")){	
+						liferayUtility.sendEmail(request, from, to, "Your request finance for this invoice has been created.", content);
+					}
+				
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}	
+			 	
 	}catch(InSuffcientFund e){
 		Invoice invoice=invoiceService.findById(Long.valueOf(invoicesIdList.get(0)));
 		model.put("scfCompany", invoice.getScfCompany().getName());
