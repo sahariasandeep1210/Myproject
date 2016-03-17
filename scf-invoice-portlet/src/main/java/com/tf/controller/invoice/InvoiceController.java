@@ -27,12 +27,16 @@ import com.liferay.portlet.journal.service.JournalArticleLocalServiceUtil;
 import com.liferay.portlet.journalcontent.util.JournalContentUtil;
 import com.mysql.jdbc.StringUtils;
 import com.tf.dto.InvoiceDTO;
+import com.tf.model.Allotment;
 import com.tf.model.Company;
+import com.tf.model.Investor;
+import com.tf.model.InvestorTransaction;
 import com.tf.model.Invoice;
 import com.tf.model.InvoiceDocument;
 import com.tf.persistance.util.Constants;
 import com.tf.persistance.util.InSuffcientFund;
 import com.tf.persistance.util.InvoiceStatus;
+import com.tf.persistance.util.TranscationStatus;
 import com.tf.service.CompanyService;
 import com.tf.service.InvoiceDocumentService;
 import com.tf.service.InvoiceService;
@@ -43,6 +47,7 @@ import com.tf.util.model.PaginationModel;
 
 import java.beans.PropertyEditorSupport;
 import java.math.BigDecimal;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -677,6 +682,37 @@ public class InvoiceController {
 		e.getMessage();
 	}	
 }
+	@RenderMapping(params = "action=invoiceRedirect")
+    public String invoiceRedirect(ModelMap model, RenderRequest request,
+            RenderResponse response) throws Exception { 
+        return "invoicelist";
+    }
+	@ActionMapping(params="invoice=getInvoiceReport")
+	protected void getCashReport( ModelMap model,ActionRequest request,ActionResponse response) throws Exception {
+		
+		DateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+		Date fromDate=null;
+		Date toDate=null;
+		String search=ParamUtil.getString(request, "Search");
+		String value=ParamUtil.getString(request, "dateList");
+        String from=ParamUtil.getString(request, "fromDate");
+        String to=ParamUtil.getString(request, "toDate");
+        if(!StringUtils.isNullOrEmpty(from)){
+        fromDate=formatter.parse(from);
+        }
+        if(!StringUtils.isNullOrEmpty(to)){
+            toDate=formatter.parse(to);
+       }
+        Long noOfRecords=0l;
+        PaginationModel paginationModel = paginationUtil.preparePaginationModel(request);
+        List<Invoice> invoices=invoiceService.getInvoicesByFilter(search, fromDate, toDate, value,paginationModel.getStartIndex(),paginationModel.getPageSize());
+        noOfRecords=invoiceService.getInvoicesByFilterCount(search, fromDate, toDate, value);
+        System.out.println("invoicesss:"+invoices);
+        paginationUtil.setPaginationInfo(noOfRecords,paginationModel);
+		model.put("paginationModel", paginationModel);
+		model.put("invoices", invoices);
+        response.setRenderParameter("action", "invoiceRedirect");
+       }
 	
 	protected Log _log = LogFactoryUtil.getLog(InvoiceController.class.getName());
 }

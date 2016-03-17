@@ -350,5 +350,10 @@ public class InvoiceServiceImpl implements InvoiceService{
 		return invoiceDAO.findById(id); 
 	}
 	
-	
+	public List<Invoice> getInvoicesByFilter(String search,Date frmDate,Date toDate,String value,int startIndex,int pageSize){
+		return invoiceDAO.getInvoicesByFilter(search, frmDate, toDate, value, startIndex, pageSize);
+	}
+	public Long getInvoicesByFilterCount(String search,Date frmDate,Date toDate,String value){
+		return invoiceDAO.getInvoicesByFilterCount(search, frmDate, toDate, value);
+	}
 }

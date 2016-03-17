@@ -125,7 +125,6 @@
 						</c:when>
 						<c:when test="${fn:length(scfTradesList) gt 0}">
  						     <c:forEach items="${scfTradesList}" var="trade">
-						       ${"Dhanush:"scfTradesList}
 						      
 								<tr>
 									<td>${trade.tradeNotes}</td>
@@ -150,4 +149,5 @@
 		</div>
 	</form:form>
 </div>
-<p:paginate paginationModel="${paginationModel}" />
+ <p:paginate paginationModel="${paginationModel}" />
+ 

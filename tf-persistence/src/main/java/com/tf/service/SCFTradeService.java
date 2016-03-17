@@ -6,14 +6,14 @@ import java.util.Date;
 import java.util.List;
 
 public interface SCFTradeService  {
-	
+	public Long getScfTradeByScfCompanyCount(String scfCompany,Date frmDate,Date toDate);
 	public List<SCFTrade> getScfTrades(int startIndex,int pageSize);
-	public Long getScfTradeSellerCompanyCount(String scfCompany,Date frmDate,Date toDate);
+	public Long getScfTradeSellerCompanyCount(String scfCompany,Date frmDate,Date toDate,long compID);
 	public SCFTrade save(SCFTrade scfTrade);
 	public List<SCFTrade> getTradeHistoryByComapnyId(long companyId,int startIndex,int pageSize);
 	public SCFTrade findById(long id);
 	public Long getScfTradesCount();
-	public List<SCFTrade> getScfTradeByScfCompany(String scfCompany,Date frmDate,Date toDate);
+	public List<SCFTrade> getScfTradeByScfCompany(String scfCompany,Date frmDate,Date toDate,int startIndex,int pageSize);
 	public List<SCFTrade> getScfTrades(Long companyID);
 	public List<SCFTrade> getScfTradeSellerCompany(String scfCompany,Date frmDate,Date toDate,long compID ,int startIndex,int pageSize);
 	public void updateTrade(SCFTrade scfTrade);

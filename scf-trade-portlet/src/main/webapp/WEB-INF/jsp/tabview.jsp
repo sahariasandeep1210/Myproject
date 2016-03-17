@@ -4,6 +4,10 @@
 	<portlet:param name="render" value="tradeHistory" />
 </portlet:renderURL>
 
+<portlet:actionURL var="traHistoryURL">
+	<portlet:param name="trade" value="getTradeHistory" />
+</portlet:actionURL>
+
 <portlet:renderURL var="tradesURL">
 </portlet:renderURL>
 
