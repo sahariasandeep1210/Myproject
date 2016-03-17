@@ -3,10 +3,12 @@ package com.tf.controller.trade;
 import com.google.gson.Gson;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.repository.model.Folder;
+import com.liferay.portal.kernel.util.JavaConstants;
 import com.liferay.portal.kernel.util.MimeTypesUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -49,6 +51,7 @@ import java.util.Map;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
+import javax.portlet.PortletConfig;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 import javax.portlet.ResourceRequest;
@@ -412,6 +415,78 @@ public class SCFTradeController {
 		SCFTrade scfTrade = scfTradeService.findById(tradeID);
 		scfTrade.setStatus(status);
 		scfTradeService.updateTradeLifeCycle(scfTrade);
+		
+		PortletConfig portletConfig = (PortletConfig)request.getAttribute(JavaConstants.JAVAX_PORTLET_CONFIG);
+		
+		if(TradeStatus.ALLOTMENT_PAID.getValue().equalsIgnoreCase(status)){
+			// Email Notification
+		 	try {					
+		 		String articleName =  "create-invoice-by-scf-company"; // Web Content's UrlTitle							
+				String content = liferayUtility.getContentByURLTitle(request, articleName);
+				List<Invoice> invlist = (List<Invoice>) scfTrade.getInvoices();
+				content = content.replaceAll("PHNO1", "");						
+				content = content.replaceAll("PHNO3", "White Hall Finance");
+				String tempstart = "<table border=\"1\" cellpadding=\"1\" cellspacing=\"1\" style=\"width:500px;\"><tbody><tr><td><strong>Invoice Number</strong></td><td><strong>Invoice Amount</strong></td><td><strong>Date&nbsp;</strong></td></tr>";
+				String tempend = "</tbody></table>";
+				String middle = "";
+				for(Invoice inv : invlist){
+					middle = "<tr><td>"+ inv.getInvoiceNumber()+"</td><td>"+inv.getInvoiceAmount()+"</td><td>"+inv.getInvoiceDate()+"</td></tr>";
+				}
+				String tempstr = tempstart + middle +tempend;
+				content = content.replaceAll("PHNO10", tempstr);
+				
+				String from = LanguageUtil.get(portletConfig, request.getLocale(), "invoice.sender.email");								
+				//String to = userService.findUserOjectByCompanyId(invoiceModel.getScfCompany().getId());
+				String to = "gautam.tf2015@gmail.com";
+
+				System.out.println("\ncontent - "+content);
+				System.out.println("\nfrom - "+from);
+				System.out.println("\nto - "+to);
+				System.out.println("\ntempstr - "+tempstr);
+				
+				if(!content.endsWith("") &&!from.endsWith("") && !to.endsWith("")){	
+					liferayUtility.sendEmail(request, from, to, "Your invoice has been created.", content);
+				}
+			
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}else if(TradeStatus.SUPPLIER_PAID.getValue().equalsIgnoreCase(status)){
+			// Email Notification
+		 	try {					
+		 		String articleName =  "create-invoice-by-scf-company"; // Web Content's UrlTitle							
+				String content = liferayUtility.getContentByURLTitle(request, articleName);
+			
+				List<Invoice> invlist = (List<Invoice>) scfTrade.getInvoices();
+				content = content.replaceAll("PHNO1", "");						
+				content = content.replaceAll("PHNO3", "White Hall Finance");
+				String tempstart = "<table border=\"1\" cellpadding=\"1\" cellspacing=\"1\" style=\"width:500px;\"><tbody><tr><td><strong>Invoice Number</strong></td><td><strong>Invoice Amount</strong></td><td><strong>Date&nbsp;</strong></td></tr>";
+				String tempend = "</tbody></table>";
+				String middle = "";
+				for(Invoice inv : invlist){
+					middle = "<tr><td>"+ inv.getInvoiceNumber()+"</td><td>"+inv.getInvoiceAmount()+"</td><td>"+inv.getInvoiceDate()+"</td></tr>";
+				}
+				String tempstr = tempstart + middle +tempend;
+				content = content.replaceAll("PHNO10", tempstr);
+				
+				String from = LanguageUtil.get(portletConfig, request.getLocale(), "invoice.sender.email");								
+				//String to = userService.findUserOjectByCompanyId(invoiceModel.getScfCompany().getId());
+				String to = "gautam.tf2015@gmail.com";
+
+				System.out.println("\ncontent - "+content);
+				System.out.println("\nfrom - "+from);
+				System.out.println("\nto - "+to);
+				System.out.println("\ntempstr - "+tempstr);
+				
+				if(!content.endsWith("") &&!from.endsWith("") && !to.endsWith("")){	
+					liferayUtility.sendEmail(request, from, to, "Your invoice has been created.", content);
+				}
+			
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
 		System.out.println("tradeID::" + tradeID + " status " + status);
 
 	}
