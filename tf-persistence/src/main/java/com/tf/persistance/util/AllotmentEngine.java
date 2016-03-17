@@ -183,7 +183,7 @@ public class AllotmentEngine {
 		
 		
 		System.out.println("------------------------------------------------------------------------------------)");
-		//saving allotment information to databse
+		//saving allotment information to database
 		for(Allotment altment : allotments){
 			System.out.println("allotment::::::::"+altment);
 			allotmentDAO.saveEntity(altment);

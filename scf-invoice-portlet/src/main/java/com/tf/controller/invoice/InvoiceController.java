@@ -1,3 +1,4 @@
+
 package com.tf.controller.invoice;
 
 import com.liferay.mail.service.MailServiceUtil;
@@ -86,296 +87,303 @@ import org.springframework.web.portlet.bind.annotation.ActionMapping;
 import org.springframework.web.portlet.bind.annotation.RenderMapping;
 
 /**
- * This controller is responsible for request/response handling on
- * Invoice screens
+ * This controller is responsible for request/response handling on Invoice
+ * screens
  * 
  * @author Gautam Sharma
- * 
  */
 @Controller
 @RequestMapping(value = "VIEW")
 public class InvoiceController {
-	
-	private  final static String ACTIVETAB="activetab";	
+
+	private final static String ACTIVETAB = "activetab";
 
 	@Autowired
 	protected UserService userService;
-	
+
 	@Autowired
-	private InSuffcientFund fund ;
-	
+	private InSuffcientFund fund;
+
 	@Autowired
 	protected InvoiceService invoiceService;
-	
+
 	@Autowired
 	protected InvoiceDocumentService invoiceDocumentService;
-	
+
 	@Autowired
 	protected CompanyService companyService;
-	
+
 	@Autowired
 	protected LiferayUtility liferayUtility;
-	
+
 	@Autowired
 	protected PaginationUtil paginationUtil;
-	
 
 	@InitBinder
 	public void binder(WebDataBinder binder) {
 
 		binder.registerCustomEditor(Date.class, new PropertyEditorSupport() {
+
 			public void setAsText(String value) {
+
 				try {
 					setValue(new SimpleDateFormat("MM/dd/yyyy").parse(value));
-				} catch (Exception e) {
+				}
+				catch (Exception e) {
 					setValue(value);
 				}
 			}
 
 			public String getAsText() {
+
 				if (getValue() != null) {
-					return new SimpleDateFormat("MM/dd/yyyy")
-							.format((Date) getValue());
-				} else {
+					return new SimpleDateFormat("MM/dd/yyyy").format((Date) getValue());
+				}
+				else {
 					return null;
 				}
 			}
 		});
-		
+
 	}
-	
-	
 
 	@RenderMapping(params = "render=invoiceDocuments")
 	protected ModelAndView renderInvoiceDocumentList(
-			@ModelAttribute("invoiceModel") InvoiceDTO invoice, ModelMap model,
-			RenderRequest request, RenderResponse response) throws Exception {
+		@ModelAttribute("invoiceModel") InvoiceDTO invoice, ModelMap model,
+		RenderRequest request, RenderResponse response)
+		throws Exception {
+
 		try {
 			List<Company> companyList = new ArrayList<Company>();
 			ThemeDisplay themeDisplay = liferayUtility.getThemeDisplay(request);
-			List<InvoiceDocument> invoiceDocumentList = new ArrayList<InvoiceDocument>();
+			List<InvoiceDocument> invoiceDocumentList =
+				new ArrayList<InvoiceDocument>();
 			if (liferayUtility.getPermissionChecker(request).isOmniadmin()) {
-				invoiceDocumentList = invoiceDocumentService
-						.getInvoiceDocuments();
+				invoiceDocumentList =
+					invoiceDocumentService.getInvoiceDocuments();
 				companyList = companyService.getCompanies("5");
 				model.put("userType", Constants.ADMIN);
-			} else if (request.isUserInRole(Constants.SCF_ADMIN)) {
-				invoiceDocumentList = invoiceDocumentService
-						.getInvoiceDocuments(themeDisplay.getUser().getUserId());
-				long companyId = userService.getCompanyIDbyUserID(themeDisplay
-						.getUserId());
+			}
+			else if (request.isUserInRole(Constants.SCF_ADMIN)) {
+				invoiceDocumentList =
+					invoiceDocumentService.getInvoiceDocuments(themeDisplay.getUser().getUserId());
+				long companyId =
+					userService.getCompanyIDbyUserID(themeDisplay.getUserId());
 				companyList.add(companyService.findById(companyId));
 				model.put("userType", Constants.SCF_ADMIN);
 			}
 			model.put("companyList", companyList);
 			model.put("invoiceList", invoiceDocumentList);
 			model.put(ACTIVETAB, "invoiceDocuments");
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			SessionErrors.add(request, "default-error-message");
-			_log.error("InvoiceController.renderInvoiceDocumentList() - error occured while rendering invoice documents "+e.getMessage());
+			_log.error("InvoiceController.renderInvoiceDocumentList() - error occured while rendering invoice documents " +
+				e.getMessage());
 		}
 		return new ModelAndView("invoicedoclist", model);
 	}
 
-	
 	@RenderMapping(params = "render=createInvoice")
 	protected ModelAndView renderCreateInvoice(
-			@ModelAttribute("invoiceModel") InvoiceDTO invoice, ModelMap model,
-			RenderRequest request, RenderResponse response) throws Exception {
+		@ModelAttribute("invoiceModel") InvoiceDTO invoice, ModelMap model,
+		RenderRequest request, RenderResponse response)
+		throws Exception {
+
 		List<Company> companyList = companyService.getCompanies("5");
 		model.put("companyList", companyList);
 		return new ModelAndView("createinvoice", model);
 	}
-	
+
 	@ActionMapping(params = "update=updateInvoice")
 	protected void updateInvoice(
-			@ModelAttribute("invoiceModel") InvoiceDTO invoice, ModelMap model,
-			ActionRequest request, ActionResponse response) {
-         Long invoiceId=ParamUtil.getLong(request, "invoiceId",0);	
-         long scfCompanyId=ParamUtil.getLong(request, "scfCompany");
-         System.out.println("scfCompanyId:::"+scfCompanyId);
-         System.out.println("invoiceId:::"+invoiceId);
-         
-		try{
-			Invoice invoice2=invoiceService.getInvoicesByInvoiceNumAndCompanyId(invoice.getInvoiceNumber(), scfCompanyId);
-			System.out.println("invoice2:"+invoice2);
+		@ModelAttribute("invoiceModel") InvoiceDTO invoice, ModelMap model,
+		ActionRequest request, ActionResponse response) {
 
-			PortletConfig portletConfig = (PortletConfig)request.getAttribute(JavaConstants.JAVAX_PORTLET_CONFIG);
-	        
+		Long invoiceId = ParamUtil.getLong(request, "invoiceId", 0);
+		long scfCompanyId = ParamUtil.getLong(request, "scfCompany");
+		System.out.println("scfCompanyId:::" + scfCompanyId);
+		System.out.println("invoiceId:::" + invoiceId);
+
+		try {
+			Invoice invoice2 =
+				invoiceService.getInvoicesByInvoiceNumAndCompanyId(
+					invoice.getInvoiceNumber(), scfCompanyId);
+			System.out.println("invoice2:" + invoice2);
+
+			PortletConfig portletConfig =
+				(PortletConfig) request.getAttribute(JavaConstants.JAVAX_PORTLET_CONFIG);
+
 			Company company = companyService.findById(scfCompanyId);
-		    if(invoice2 !=null && invoiceId !=invoice2.getId() ){
+			if (invoice2 != null && invoiceId != invoice2.getId()) {
 
-		        SessionErrors.add(request, "invoice.duplicate.error");
+				SessionErrors.add(request, "invoice.duplicate.error");
 				model.put(
-						"errorMessage",
-						LanguageUtil.get(portletConfig, request.getLocale(),
-								"invoice.duplicate.number.company")
-								+ invoice.getInvoiceNumber()
-								+ StringPool.SPACE
-								+ LanguageUtil.get(portletConfig,
-										request.getLocale(),
-										"invoice.duplicate.number")
-							    +StringPool.SPACE			
-								+ company.getName()
-								+StringPool.SPACE
-								+ LanguageUtil.get(portletConfig,
-										request.getLocale(),
-										"invoice.duplicate.message"));
-			    model.put("invoice", invoice);
-			    model.put("company",company );
-		        response.setRenderParameter("render", "createInvoice");
+					"errorMessage",
+					LanguageUtil.get(
+						portletConfig, request.getLocale(),
+						"invoice.duplicate.number.company") +
+						invoice.getInvoiceNumber() +
+						StringPool.SPACE +
+						LanguageUtil.get(
+							portletConfig, request.getLocale(),
+							"invoice.duplicate.number") +
+						StringPool.SPACE +
+						company.getName() +
+						StringPool.SPACE +
+						LanguageUtil.get(
+							portletConfig, request.getLocale(),
+							"invoice.duplicate.message"));
+				model.put("invoice", invoice);
+				model.put("company", company);
+				response.setRenderParameter("render", "createInvoice");
 
-			 }else{
-				 if(invoiceId > 0){
-					 // Update record
+			}
+			else {
+				if (invoiceId > 0) {
+					// Update record
 
-			        	Invoice inv= invoiceService.getInvoicesById(invoiceId);
-			        	inv.setInvoiceNumber(invoice.getInvoiceNumber());
-			        	inv.setInvoiceDate(invoice.getInvoiceDate());
-			        	inv.setSellerCompanyRegistrationNumber(invoice.getSellerRegNo());
-			        	inv.setInvoiceAmount(invoice.getInvoiceAmount());
-			        	inv.setInvoiceDesc(invoice.getInvoiceDesc());
-			        	inv.setDuration(invoice.getDuration());
-			        	inv.setPayment_date(invoice.getPaymentDate());
-			    		inv.setCurrency(invoice.getCurrency());
-			    		inv.setInvoiceDesc(invoice.getInvoiceDesc());
-			    		Company scfCompany=companyService.findById(invoice.getScfCompany());
-			    		inv.setScfCompany(scfCompany);
-			    		List<Invoice> invoices = new ArrayList<Invoice>();
-						invoices.add(inv);
-						invoiceService.addInvoices(invoices);
-				 
-				 }else{
-		        	 Invoice invoiceModel = transfromInvoiceDtoToInvoiceModel(invoice);
-					 System.out.println("Iam:::"+invoiceModel);
-					 List<Invoice> invoices = new ArrayList<Invoice>();
-					 invoices.add(invoiceModel);
-					 invoiceService.addInvoices(invoices);
-					 
-					 	// Email Notification
-					 	try {					
-					 		String articleName =  "create-invoice-by-scf-company"; // Web Content's UrlTitle							
-							String content = liferayUtility.getContentByURLTitle(request, articleName);
-						
-							content = content.replaceAll("PHNO1", invoiceModel.getScfCompany().getName());						
-							content = content.replaceAll("PHNO3", "White Hall Finance");
-							String tempstart = "<table border=\"1\" cellpadding=\"1\" cellspacing=\"1\" style=\"width:500px;\"><tbody><tr><td><strong>Invoice Number</strong></td><td><strong>Invoice Amount</strong></td><td><strong>Date&nbsp;</strong></td></tr>";
-							String tempend = "</tbody></table>";
-							String tempstr = tempstart + "<tr><td>"+invoiceModel.getInvoiceNumber()+"</td><td>"+invoiceModel.getInvoiceAmount()+"</td><td>"+invoiceModel.getInvoiceDate()+"</td></tr>" +tempend;
-							content = content.replaceAll("PHNO10", tempstr);
-							
-							String from = LanguageUtil.get(portletConfig, request.getLocale(), "invoice.sender.email");								
-							//String to = userService.findUserOjectByCompanyId(invoiceModel.getScfCompany().getId());
-							String to = "gautam.tf2015@gmail.com";
-	
-							System.out.println("\ncontent - "+content);
-							System.out.println("\nfrom - "+from);
-							System.out.println("\nto - "+to);
-							System.out.println("\ntempstr - "+tempstr);
-							
-							if(!content.endsWith("") &&!from.endsWith("") && !to.endsWith("")){	
-								liferayUtility.sendEmail(request, from, to, "Your invoice has been created.", content);
-							}
-						
-						} catch (Exception e) {
-							e.printStackTrace();
+					Invoice inv = invoiceService.getInvoicesById(invoiceId);
+					inv.setInvoiceNumber(invoice.getInvoiceNumber());
+					inv.setInvoiceDate(invoice.getInvoiceDate());
+					inv.setSellerCompanyRegistrationNumber(invoice.getSellerRegNo());
+					inv.setInvoiceAmount(invoice.getInvoiceAmount());
+					inv.setInvoiceDesc(invoice.getInvoiceDesc());
+					inv.setDuration(invoice.getDuration());
+					inv.setPayment_date(invoice.getPaymentDate());
+					inv.setCurrency(invoice.getCurrency());
+					inv.setInvoiceDesc(invoice.getInvoiceDesc());
+					Company scfCompany =
+						companyService.findById(invoice.getScfCompany());
+					inv.setScfCompany(scfCompany);
+					List<Invoice> invoices = new ArrayList<Invoice>();
+					invoices.add(inv);
+					invoiceService.addInvoices(invoices);
+
+				}
+				else {
+					Invoice invoiceModel =transfromInvoiceDtoToInvoiceModel(invoice);
+					List<Invoice> invoices = new ArrayList<Invoice>();
+					invoices.add(invoiceModel);
+					invoiceService.addInvoices(invoices);
+					// Email Notification
+					try {
+						// invoices has been added, now we need to trigger email
+						// notification
+						String articleName = "create-invoice-by-scf-company";
+						String content = liferayUtility.getContentByURLTitle(request, articleName);						
+						//The reason behind keeping this code outside if/else is : we need to send
+						//notification to user irrespective of invoice created by Whitehall admin or SCF company admin
+						Company cmp =companyService.getCompaniesByRegNum(invoiceModel.getSellerCompanyRegistrationNumber());
+						//Sending mail to Seller							
+						sendInvoiceCreateNotification(request, portletConfig, invoiceModel, content,cmp,Boolean.FALSE);							
+						if (liferayUtility.getPermissionChecker(request).isOmniadmin()) {							
+							//Sending mail to SCF company
+							cmp=invoiceModel.getScfCompany();
+							sendInvoiceCreateNotification(request, portletConfig, invoiceModel, content,cmp,Boolean.FALSE);
 						}
-					 	
-					 	// Email Notification
-					 	try {
-					 	
-							String articleName =  "create-invoice-by-scf-company"; // Web Content's UrlTitle
-							String content = liferayUtility.getContentByURLTitle(request, articleName);
-							
-							Company cmp = companyService.getCompaniesByRegNum(invoiceModel.getSellerCompanyRegistrationNumber());
-							content = content.replaceAll("PHNO1", cmp.getName());						
-							content = content.replaceAll("PHNO3", "White Hall Finance");
-							String tempstart = "<table border=\"1\" cellpadding=\"1\" cellspacing=\"1\" style=\"width:500px;\"><tbody><tr><td><strong>Invoice Number</strong></td><td><strong>Invoice Amount</strong></td><td><strong>Date&nbsp;</strong></td></tr>";
-							String tempend = "</tbody></table>";
-							String tempstr = tempstart + "<tr><td>"+invoiceModel.getInvoiceNumber()+"</td><td>"+invoiceModel.getInvoiceAmount()+"</td><td>"+invoiceModel.getInvoiceDate()+"</td></tr>" +tempend;
-							content = content.replaceAll("PHNO10", tempstr);
-						
-							String from = LanguageUtil.get(portletConfig, request.getLocale(), "invoice.sender.email");								
-							String to = userService.findUserOjectByCompanyId(invoiceModel.getScfCompany().getId());
-	
-							System.out.println("\ncontent - "+content);
-							System.out.println("\nfrom - "+from);
-							System.out.println("\nto - "+to);
-							System.out.println("\ncmp.getName() - "+cmp.getName());
-							
-							if(!cmp.getName().endsWith("") && !content.endsWith("") &&!from.endsWith("") && !to.endsWith("")){	
-								liferayUtility.sendEmail(request, from, to, "Your invoice has been created.", content);
-							}
-						
-						} catch (Exception e) {
-							e.printStackTrace();
+						else {
+							sendInvoiceCreateNotification(request, portletConfig, invoiceModel, content,cmp,Boolean.TRUE);
 						}
-				 }
-				 
-			 }
-		}catch(Exception e){ 
-		 
-			_log.error(e.getMessage());
-		  
-		}
-        
-	}
-	
-	public void SendMailSSL(String from, String to, String subject, String body){
-		
-			System.out.println("\nSendMailSSL Function");
-			Properties props = new Properties();
-			props.put("mail.smtp.host", "smtp.gmail.com");
-			props.put("mail.smtp.socketFactory.port", "465");
-			props.put("mail.smtp.socketFactory.class",
-					"javax.net.ssl.SSLSocketFactory");
-			props.put("mail.smtp.auth", "true");
-			props.put("mail.smtp.port", "465");
-			props.put("mail.smtps.ssl.trust", "*");
-
-			Session session = Session.getInstance(props,
-				new javax.mail.Authenticator() {
-					protected PasswordAuthentication getPasswordAuthentication() {
-						return new PasswordAuthentication("gautam.tf2015@gmail.com","Trade2015");
 					}
-				});
+					catch (Exception e) {
+						_log.error(e.getMessage());
+					}
+				}
 
-			try {
+			}
+		}
+		catch (Exception e) {
 
-				Message message = new MimeMessage(session);
-				message.setFrom(new InternetAddress(from));
-				message.setRecipients(Message.RecipientType.TO,
-						InternetAddress.parse(to));
-				message.setSubject(subject);
-				message.setText(body);
+			_log.error(e.getMessage());
 
-				Transport.send(message);
+		}
 
-				System.out.println("\nEmail Sent.");
-
-			} catch (MessagingException e) {
-				throw new RuntimeException(e);
-			}		
 	}
-	
+
+	private void sendInvoiceCreateNotification(
+		ActionRequest request, PortletConfig portletConfig,
+		Invoice invoiceModel, String content,Company cmp,boolean mailToAdmin) {	
+		if(mailToAdmin){			
+			content = content.replaceAll("PHNO1", liferayUtility.getThemeDisplay(request).getUser().getFullName());
+		}else{
+			content = content.replaceAll("PHNO1", cmp.getName());
+		}		
+		content = content.replaceAll("PHNO3", "White Hall Finance");
+		String tempstart =	"<table border=\"1\" cellpadding=\"1\" cellspacing=\"1\" style=\"width:500px;\"><tbody><tr><td><strong>Invoice Number</strong></td><td><strong>Invoice Amount</strong></td><td><strong>Date&nbsp;</strong></td></tr>";
+		String tempend = "</tbody></table>";
+		String tempstr =tempstart + "<tr><td>" + invoiceModel.getInvoiceNumber() +"</td><td>" + invoiceModel.getInvoiceAmount() + "</td><td>" +
+						invoiceModel.getInvoiceDate() + "</td></tr>" + tempend;
+		content = content.replaceAll("PHNO10", tempstr);
+		String from =LanguageUtil.get(portletConfig, request.getLocale(), "invoice.sender.email");
+		String to =	userService.findUserOjectByCompanyId(cmp.getId());
+		if (!StringUtils.isNullOrEmpty(content) && 	!StringUtils.isNullOrEmpty(from) && !StringUtils.isNullOrEmpty(to)) {
+			liferayUtility.sendEmail(request, from, to, "Your invoice has been created.", content);
+		}
+	}
+
+	public void SendMailSSL(String from, String to, String subject, String body) {
+
+		System.out.println("\nSendMailSSL Function");
+		Properties props = new Properties();
+		props.put("mail.smtp.host", "smtp.gmail.com");
+		props.put("mail.smtp.socketFactory.port", "465");
+		props.put(
+			"mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+		props.put("mail.smtp.auth", "true");
+		props.put("mail.smtp.port", "465");
+		props.put("mail.smtps.ssl.trust", "*");
+
+		Session session =
+			Session.getInstance(props, new javax.mail.Authenticator() {
+
+				protected PasswordAuthentication getPasswordAuthentication() {
+
+					return new PasswordAuthentication(
+						"gautam.tf2015@gmail.com", "Trade2015");
+				}
+			});
+
+		try {
+
+			Message message = new MimeMessage(session);
+			message.setFrom(new InternetAddress(from));
+			message.setRecipients(
+				Message.RecipientType.TO, InternetAddress.parse(to));
+			message.setSubject(subject);
+			message.setText(body);
+
+			Transport.send(message);
+
+			System.out.println("\nEmail Sent.");
+
+		}
+		catch (MessagingException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
 	@ActionMapping(params = "action=addInvoice")
 	protected void addInvoice(
-			@ModelAttribute("invoiceModel") InvoiceDTO invoice, ModelMap model,
-			ActionRequest request, ActionResponse response) {
+		@ModelAttribute("invoiceModel") InvoiceDTO invoice, ModelMap model,
+		ActionRequest request, ActionResponse response) {
+
 		try {
-			  System.out.println("Invoicesss:"+invoice);
-			 
+			System.out.println("Invoicesss:" + invoice);
+
 			Invoice invoiceModel = transfromInvoiceDtoToInvoiceModel(invoice);
 			List<Invoice> invoices = new ArrayList<Invoice>();
 			invoices.add(invoiceModel);
 			invoiceService.addInvoices(invoices);
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
 	private Invoice transfromInvoiceDtoToInvoiceModel(InvoiceDTO invoice) {
-		Invoice invoiceModel= new Invoice();
+
+		Invoice invoiceModel = new Invoice();
 		invoiceModel.setInvoiceNumber(invoice.getInvoiceNumber());
 		invoiceModel.setInvoiceDate(invoice.getInvoiceDate());
 		invoiceModel.setSellerCompanyRegistrationNumber(invoice.getSellerRegNo());
@@ -385,20 +393,23 @@ public class InvoiceController {
 		invoiceModel.setPayment_date(invoice.getPaymentDate());
 		invoiceModel.setCurrency(invoice.getCurrency());
 		invoiceModel.setStatus(InvoiceStatus.NEW.getValue());
-		Company scfCompany=companyService.findById(invoice.getScfCompany());
+		Company scfCompany = companyService.findById(invoice.getScfCompany());
 		invoiceModel.setScfCompany(scfCompany);
 		return invoiceModel;
 	}
+
 	@RenderMapping(params = "render=updateInvoices")
 	protected ModelAndView renderupdateInvoices(
-			@ModelAttribute("invoiceModel") InvoiceDTO invoiceModel, ModelMap model,
-			RenderRequest request, RenderResponse response) throws Exception {
+		@ModelAttribute("invoiceModel") InvoiceDTO invoiceModel,
+		ModelMap model, RenderRequest request, RenderResponse response)
+		throws Exception {
+
 		List<Company> companyList = companyService.getCompanies("5");
-		long invoiceId=ParamUtil.getLong(request, "invoiceID");
-		if(invoiceId >0){
-		Invoice invoice=invoiceService.getInvoicesById(invoiceId);
-		
-			Company	scfCompanies=invoice.getScfCompany();
+		long invoiceId = ParamUtil.getLong(request, "invoiceID");
+		if (invoiceId > 0) {
+			Invoice invoice = invoiceService.getInvoicesById(invoiceId);
+
+			Company scfCompanies = invoice.getScfCompany();
 			invoiceModel.setId(invoice.getId());
 			invoiceModel.setCompanyId(scfCompanies.getId());
 			invoiceModel.setInvoiceNumber(invoice.getInvoiceNumber());
@@ -406,58 +417,69 @@ public class InvoiceController {
 			invoiceModel.setSellerRegNo(invoice.getSellerCompanyRegistrationNumber());
 			invoiceModel.setSellerVatNumber(invoice.getSellerCompanyVatNumber());
 			invoiceModel.setCurrency(invoice.getCurrency());
-/*		    invoiceModel.setDuration(invoice.getDuration());
-*/
+			/*
+			 * invoiceModel.setDuration(invoice.getDuration());
+			 */
 			invoiceModel.setDuration(invoice.getDuration());
 			invoiceModel.setInvoiceAmount(invoice.getInvoiceAmount());
 			invoiceModel.setPaymentDate(invoice.getPayment_date());
-            invoiceModel.setVatAmount(invoice.getVatAmount());
-            model.put("scfCompanies", scfCompanies);
-		
-		model.put("invoices", invoice);
+			invoiceModel.setVatAmount(invoice.getVatAmount());
+			model.put("scfCompanies", scfCompanies);
 
-	}			
+			model.put("invoices", invoice);
+
+		}
 		model.put("companyList", companyList);
 		model.put("invoiceModel", invoiceModel);
-	    return new ModelAndView("createinvoice",model);
-		
+		return new ModelAndView("createinvoice", model);
+
 	}
+
 	@RenderMapping
 	protected ModelAndView renderInvoiceList(
-			RenderRequest request, RenderResponse response,ModelMap model) throws Exception {
+		RenderRequest request, RenderResponse response, ModelMap model)
+		throws Exception {
+
 		try {
 			List<Invoice> invoices = new ArrayList<Invoice>();
 			Long noOfRecords = 0l;
-			PaginationModel paginationModel = paginationUtil
-					.preparePaginationModel(request);
-			ThemeDisplay themeDisplay = (ThemeDisplay) request
-					.getAttribute(WebKeys.THEME_DISPLAY);
-			if (liferayUtility.getPermissionChecker(request).isOmniadmin()
-					|| request.isUserInRole(Constants.WHITEHALL_ADMIN)) {
-				invoices = invoiceService.getInvoices(paginationModel.getStartIndex(),
+			PaginationModel paginationModel =
+				paginationUtil.preparePaginationModel(request);
+			ThemeDisplay themeDisplay =
+				(ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
+			if (liferayUtility.getPermissionChecker(request).isOmniadmin() ||
+				request.isUserInRole(Constants.WHITEHALL_ADMIN)) {
+				invoices =
+					invoiceService.getInvoices(
+						paginationModel.getStartIndex(),
 						paginationModel.getPageSize());
 				noOfRecords = invoiceService.getInvoicesCount();
-				
-				
+
 				model.put("userType", Constants.ADMIN);
-			} else if (request.isUserInRole(Constants.SCF_ADMIN)) {
-				
-				invoices = invoiceService.getInvoices(themeDisplay.getUser()
-						.getUserId(),paginationModel.getStartIndex(),
+			}
+			else if (request.isUserInRole(Constants.SCF_ADMIN)) {
+
+				invoices =
+					invoiceService.getInvoices(
+						themeDisplay.getUser().getUserId(),
+						paginationModel.getStartIndex(),
 						paginationModel.getPageSize());
-				noOfRecords = invoiceService.getInvsCounts(themeDisplay.getUser()
-						.getUserId());
+				noOfRecords =
+					invoiceService.getInvsCounts(themeDisplay.getUser().getUserId());
 
 				model.put("userType", Constants.SCF_ADMIN);
-			} else if (request.isUserInRole(Constants.SELLER_ADMIN)) {
-				long companyId = userService.getCompanyIDbyUserID(themeDisplay
-						.getUserId());
-				invoices = invoiceService
-						.getInvoicesByCompanyNumber(companyService.findById(
-								companyId).getRegNumber(),paginationModel.getStartIndex(),
-								paginationModel.getPageSize());
-				noOfRecords = invoiceService.getInvoiceCounts(companyService.findById(
-								companyId).getRegNumber());
+			}
+			else if (request.isUserInRole(Constants.SELLER_ADMIN)) {
+				long companyId =
+					userService.getCompanyIDbyUserID(themeDisplay.getUserId());
+				invoices =
+					invoiceService.getInvoicesByCompanyNumber(
+						companyService.findById(companyId).getRegNumber(),
+						paginationModel.getStartIndex(),
+						paginationModel.getPageSize());
+				noOfRecords =
+					invoiceService.getInvoiceCounts(companyService.findById(
+						companyId).getRegNumber());
 
 				model.put("userType", Constants.SELLER_ADMIN);
 			}
@@ -468,30 +490,34 @@ public class InvoiceController {
 			model.put("invoicesList", invoices);
 			model.put("defaultRender", Boolean.TRUE);
 			model.put(ACTIVETAB, "invoiceslist");
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			SessionErrors.add(request, "default-error-message");
-			_log.error("InvoiceController.renderInvoiceList() - error occured while rendering invoices "+e.getMessage());
+			_log.error("InvoiceController.renderInvoiceList() - error occured while rendering invoices " +
+				e.getMessage());
 		}
 		return new ModelAndView("invoicelist", model);
 	}
 
 	@ActionMapping(params = "action=importInvoice")
 	protected void callAction(
-			@ModelAttribute("invoiceModel") InvoiceDTO invoice, ModelMap model,
-			ActionRequest request, ActionResponse response) throws Exception {
+		@ModelAttribute("invoiceModel") InvoiceDTO invoice, ModelMap model,
+		ActionRequest request, ActionResponse response)
+		throws Exception {
+
 		request.getPortletSession().removeAttribute("invoiceDTO");
-		request.getPortletSession().removeAttribute("invoiceList");		
-		int currentRow=0;
-		Invoice invoiceModel = null;		
+		request.getPortletSession().removeAttribute("invoiceList");
+		int currentRow = 0;
+		Invoice invoiceModel = null;
 		Workbook workbook = null;
 		List<Invoice> invoiceList = new ArrayList<Invoice>();
-		String zero="0";
-		Company scfCompany= companyService.findById(invoice.getScfCompany());
-	
+		String zero = "0";
+		Company scfCompany = companyService.findById(invoice.getScfCompany());
+
 		try {
-			workbook = new XSSFWorkbook(invoice.getInvoiceDoc()
-					.getInputStream());
-			int numberOfSheets = workbook.getNumberOfSheets();			
+			workbook =
+				new XSSFWorkbook(invoice.getInvoiceDoc().getInputStream());
+			int numberOfSheets = workbook.getNumberOfSheets();
 			for (int i = 0; i < numberOfSheets; i++) {
 				Sheet sheet = workbook.getSheetAt(i);
 				// every sheet has rows, iterate over them
@@ -499,7 +525,7 @@ public class InvoiceController {
 				while (rowIterator.hasNext()) {
 					invoiceModel = new Invoice();
 					invoiceModel.setScfCompany(scfCompany);
-					currentRow=currentRow+1;
+					currentRow = currentRow + 1;
 
 					Row row = rowIterator.next();
 					// Every row has columns, get the column iterator and
@@ -511,40 +537,55 @@ public class InvoiceController {
 						// Get the Cell object
 						if (index == 0) {
 							invoiceModel.setInvoiceNumber((long) cell.getNumericCellValue());
-						} else if (index == 1) {
+						}
+						else if (index == 1) {
 							invoiceModel.setInvoiceDate(cell.getDateCellValue());
 
-						} else if (index == 2) {
-							cell.setCellType(Cell.CELL_TYPE_STRING);							
-							if(!StringUtils.isNullOrEmpty(cell.getStringCellValue()) && !cell.getStringCellValue().startsWith("0")){
-								//this fix to add 0 as prefix to company number as
-								//companieshouse.gov.uk services has all company number staring from 0
-								StringBuilder sb=new StringBuilder(zero);
+						}
+						else if (index == 2) {
+							cell.setCellType(Cell.CELL_TYPE_STRING);
+							if (!StringUtils.isNullOrEmpty(cell.getStringCellValue()) &&
+								!cell.getStringCellValue().startsWith("0")) {
+								// this fix to add 0 as prefix to company number
+								// as
+								// companieshouse.gov.uk services has all
+								// company number staring from 0
+								StringBuilder sb = new StringBuilder(zero);
 								sb.append(cell.getStringCellValue());
 								invoiceModel.setSellerCompanyRegistrationNumber(sb.toString());
-								sb=null;
-							}else{
+								sb = null;
+							}
+							else {
 								invoiceModel.setSellerCompanyRegistrationNumber(cell.getStringCellValue());
 							}
-							
-						} else if (index == 3) {
+
+						}
+						else if (index == 3) {
 							invoiceModel.setSellerCompanyVatNumber(cell.getStringCellValue());
-						} else if (index == 4) {
+						}
+						else if (index == 4) {
 							invoiceModel.setInvoiceAmount(BigDecimal.valueOf(cell.getNumericCellValue()));
-						} else if (index == 5) {
+						}
+						else if (index == 5) {
 							invoiceModel.setVatAmount(BigDecimal.valueOf(cell.getNumericCellValue()));
-						} else if (index == 6) {
+						}
+						else if (index == 6) {
 							invoiceModel.setInvoiceDesc(cell.getStringCellValue());
-						} else if (index == 7) {
+						}
+						else if (index == 7) {
 							invoiceModel.setDuration((int) (cell.getNumericCellValue()));
-						} else if (index == 8) {
+						}
+						else if (index == 8) {
 							invoiceModel.setPayment_date(cell.getDateCellValue());
-						} else if (index == 9) {
+						}
+						else if (index == 9) {
 							invoiceModel.setCurrency(cell.getStringCellValue());
-						}else if (index == 10) {
-/*							invoiceModel.setDueDate(cell.getDateCellValue());
-*/						}
-						
+						}
+						else if (index == 10) {
+							/*
+							 * invoiceModel.setDueDate(cell.getDateCellValue());
+							 */}
+
 						invoiceModel.setStatus(InvoiceStatus.NEW.getValue());
 						index++;
 					}
@@ -552,35 +593,41 @@ public class InvoiceController {
 				}
 
 			}
-			
-		request.getPortletSession().setAttribute("invoiceDTO", invoice);
-		request.getPortletSession().setAttribute("invoiceList", invoiceList);		
-		model.put("documentUpload",Boolean.TRUE);
-		model.put("invoicesList",invoiceList);
-		response.setRenderParameter("render","invoiceDocuments");
-		} catch (Exception e) {
-			model.put("errorOccured",true);
+
+			request.getPortletSession().setAttribute("invoiceDTO", invoice);
+			request.getPortletSession().setAttribute("invoiceList", invoiceList);
+			model.put("documentUpload", Boolean.TRUE);
+			model.put("invoicesList", invoiceList);
+			response.setRenderParameter("render", "invoiceDocuments");
+		}
+		catch (Exception e) {
+			model.put("errorOccured", true);
 			e.printStackTrace();
-		
-		} finally {
-			model.put("currentRow",currentRow);
+
+		}
+		finally {
+			model.put("currentRow", currentRow);
 		}
 
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	@ActionMapping(params = "action=saveInvoices")
-	protected void saveInvoices(ModelMap model,
-			ActionRequest request, ActionResponse response) throws Exception {
-		InvoiceDTO invoice= (InvoiceDTO)request.getPortletSession().getAttribute("invoiceDTO");		
-		List<Invoice> invoiceList = (List<Invoice>)request.getPortletSession().getAttribute("invoiceList");
-	
-		
+	protected void saveInvoices(
+		ModelMap model, ActionRequest request, ActionResponse response)
+		throws Exception {
+
+		InvoiceDTO invoice =
+			(InvoiceDTO) request.getPortletSession().getAttribute("invoiceDTO");
+		List<Invoice> invoiceList =
+			(List<Invoice>) request.getPortletSession().getAttribute(
+				"invoiceList");
+
 		FileEntry fileEntry = null;
-		Folder folder=null;
+		Folder folder = null;
 		InvoiceDocument invoiceDocument = null;
-		ThemeDisplay themeDisplay = (ThemeDisplay) request
-				.getAttribute(WebKeys.THEME_DISPLAY);
+		ThemeDisplay themeDisplay =
+			(ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
 		long currentSideID = themeDisplay.getScopeGroupId();
 		long parentFolderId = DLFolderConstants.DEFAULT_PARENT_FOLDER_ID;
 		Folder parentfolder = null;
@@ -588,28 +635,37 @@ public class InvoiceController {
 		if (parentfolder != null) {
 			parentFolderId = parentfolder.getFolderId();
 		}
-		 Integer	folderCount=DLAppServiceUtil.getFoldersCount(currentSideID,  parentFolderId) ;         
-		ServiceContext serviceContextDlFolder = ServiceContextFactory.getInstance(DLFolder.class.getName(), request); 
-		folder=DLAppServiceUtil.addFolder(currentSideID, parentFolderId, folderCount.toString(), "Invoices Document Folder", serviceContextDlFolder);
+		Integer folderCount =
+			DLAppServiceUtil.getFoldersCount(currentSideID, parentFolderId);
+		ServiceContext serviceContextDlFolder =
+			ServiceContextFactory.getInstance(DLFolder.class.getName(), request);
+		folder =
+			DLAppServiceUtil.addFolder(
+				currentSideID, parentFolderId, folderCount.toString(),
+				"Invoices Document Folder", serviceContextDlFolder);
 		String userName = themeDisplay.getUser().getScreenName();
-		String mimeType = MimeTypesUtil.getContentType(invoice.getInvoiceDoc()
-				.getInputStream(), invoice.getInvoiceDoc().getName());
-		ServiceContext serviceContext = ServiceContextFactory.getInstance(
+		String mimeType =
+			MimeTypesUtil.getContentType(
+				invoice.getInvoiceDoc().getInputStream(),
+				invoice.getInvoiceDoc().getName());
+		ServiceContext serviceContext =
+			ServiceContextFactory.getInstance(
 				DLFileEntry.class.getName(), request);
-		fileEntry = DLAppServiceUtil.addFileEntry(themeDisplay
-				.getScopeGroupId(), folder.getFolderId(), invoice.getInvoiceDoc()
-				.getOriginalFilename(), mimeType, invoice.getInvoiceDoc()
-				.getOriginalFilename(), invoice.getInvoiceDoc()
-				.getOriginalFilename(), "upload", invoice.getInvoiceDoc()
-				.getInputStream(), invoice.getInvoiceDoc().getSize(),
-				serviceContext);
+		fileEntry =
+			DLAppServiceUtil.addFileEntry(
+				themeDisplay.getScopeGroupId(), folder.getFolderId(),
+				invoice.getInvoiceDoc().getOriginalFilename(), mimeType,
+				invoice.getInvoiceDoc().getOriginalFilename(),
+				invoice.getInvoiceDoc().getOriginalFilename(), "upload",
+				invoice.getInvoiceDoc().getInputStream(),
+				invoice.getInvoiceDoc().getSize(), serviceContext);
 		invoiceDocument = new InvoiceDocument();
 		invoiceDocument.setDocumentId(fileEntry.getFileEntryId());
 		invoiceDocument.setUploadDate(new Date());
 		invoiceDocument.setUploadedby(userName);
-		invoiceDocument.setDocumentName(invoice.getInvoiceDoc()
-				.getOriginalFilename());
-		invoiceDocument.setDocumentUrl(liferayUtility.getDocumentURL(themeDisplay, fileEntry));
+		invoiceDocument.setDocumentName(invoice.getInvoiceDoc().getOriginalFilename());
+		invoiceDocument.setDocumentUrl(liferayUtility.getDocumentURL(
+			themeDisplay, fileEntry));
 		invoiceDocument.setDocumentType(mimeType);
 
 		if (invoiceList != null && invoiceList.size() > 0) {
@@ -617,109 +673,158 @@ public class InvoiceController {
 			invoiceDocument.setScfCompany(invoiceList.get(0).getScfCompany());
 			invoiceDocumentService.addInvoiceDocument(invoiceDocument);
 		}
-		response.setRenderParameter("render","invoiceDocuments");
+		response.setRenderParameter("render", "invoiceDocuments");
 
 	}
-	
-	@ActionMapping(params = "action=requestFinance")
-	protected void requestFinance(ModelMap model,
-			ActionRequest request, ActionResponse response) throws Exception {
-		String invoiceIds= ParamUtil.getString(request, "invoices");
-		Date financeDate=null;
-		List<String> invoicesIdList=null;
-		try{
-		if(!StringUtils.isNullOrEmpty(invoiceIds)){
-			long companyId = liferayUtility.getWhitehallCompanyID(request);
-			long userId=userService.getUserbyLiferayUserID(liferayUtility.getLiferayUserID(request));
-			invoicesIdList=Arrays.asList(invoiceIds.split(","));
-			financeDate=invoiceService.triggerAllotment(invoicesIdList,companyId,userId);
-		}
-		
-		PortletConfig portletConfig = (PortletConfig)request.getAttribute(JavaConstants.JAVAX_PORTLET_CONFIG);
-		SessionMessages.add(request, "invoice.success.trade");
-		model.put("successMessage", LanguageUtil.get(portletConfig, request.getLocale(), "invoice.success.trade") + liferayUtility.getDate(financeDate));
-		
-		if(invoicesIdList != null){
-			for(String inv : invoicesIdList){
-				
-				Invoice invm = invoiceService.getInvoicesById(Long.valueOf(inv));
-				
-				// Email Notification
-			 	try {					
-			 		String articleName =  "seller-request-for-finanace"; // Web Content's UrlTitle							
-					String content = liferayUtility.getContentByURLTitle(request, articleName);
-				
-					content = content.replaceAll("PHNO1", invm.getScfCompany().getName());						
-					content = content.replaceAll("PHNO3", "White Hall Finance");
-					String tempstart = "<table border=\"1\" cellpadding=\"1\" cellspacing=\"1\" style=\"width:500px;\"><tbody><tr><td><strong>Invoice Number</strong></td><td><strong>Invoice Amount</strong></td><td><strong>Date&nbsp;</strong></td></tr>";
-					String tempend = "</tbody></table>";
-					String tempstr = tempstart + "<tr><td>"+invm.getInvoiceNumber()+"</td><td>"+invm.getInvoiceAmount()+"</td><td>"+invm.getInvoiceDate()+"</td></tr>" +tempend;
-					content = content.replaceAll("PHNO10", tempstr);
-					
-					String from = LanguageUtil.get(portletConfig, request.getLocale(), "invoice.sender.email");								
-					//String to = userService.findUserOjectByCompanyId(invoiceModel.getScfCompany().getId());
-					String to = "gautam.tf2015@gmail.com";
 
-					System.out.println("\ncontent - "+content);
-					System.out.println("\nfrom - "+from);
-					System.out.println("\nto - "+to);
-					System.out.println("\ntempstr - "+tempstr);
-					
-					if(!content.endsWith("") &&!from.endsWith("") && !to.endsWith("")){	
-						liferayUtility.sendEmail(request, from, to, "Your request finance for this invoice has been created.", content);
+	@ActionMapping(params = "action=requestFinance")
+	protected void requestFinance(
+		ModelMap model, ActionRequest request, ActionResponse response)
+		throws Exception {
+
+		String invoiceIds = ParamUtil.getString(request, "invoices");
+		Date financeDate = null;
+		List<String> invoicesIdList = null;
+		try {
+			if (!StringUtils.isNullOrEmpty(invoiceIds)) {
+				long companyId = liferayUtility.getWhitehallCompanyID(request);
+				long userId =
+					userService.getUserbyLiferayUserID(liferayUtility.getLiferayUserID(request));
+				invoicesIdList = Arrays.asList(invoiceIds.split(","));
+				financeDate =
+					invoiceService.triggerAllotment(
+						invoicesIdList, companyId, userId);
+			}
+
+			PortletConfig portletConfig =
+				(PortletConfig) request.getAttribute(JavaConstants.JAVAX_PORTLET_CONFIG);
+			SessionMessages.add(request, "invoice.success.trade");
+			model.put(
+				"successMessage",
+				LanguageUtil.get(
+					portletConfig, request.getLocale(), "invoice.success.trade") +
+					liferayUtility.getDate(financeDate));
+
+			if (invoicesIdList != null) {
+				for (String inv : invoicesIdList) {
+
+					Invoice invm =
+						invoiceService.getInvoicesById(Long.valueOf(inv));
+
+					// Email Notification
+					try {
+						String articleName = "seller-request-for-finanace"; // Web
+																			// Content's
+																			// UrlTitle
+						String content =
+							liferayUtility.getContentByURLTitle(
+								request, articleName);
+
+						content =
+							content.replaceAll(
+								"PHNO1", invm.getScfCompany().getName());
+						content =
+							content.replaceAll("PHNO3", "White Hall Finance");
+						String tempstart =
+							"<table border=\"1\" cellpadding=\"1\" cellspacing=\"1\" style=\"width:500px;\"><tbody><tr><td><strong>Invoice Number</strong></td><td><strong>Invoice Amount</strong></td><td><strong>Date&nbsp;</strong></td></tr>";
+						String tempend = "</tbody></table>";
+						String tempstr =
+							tempstart + "<tr><td>" + invm.getInvoiceNumber() +
+								"</td><td>" + invm.getInvoiceAmount() +
+								"</td><td>" + invm.getInvoiceDate() +
+								"</td></tr>" + tempend;
+						content = content.replaceAll("PHNO10", tempstr);
+
+						String from =
+							LanguageUtil.get(
+								portletConfig, request.getLocale(),
+								"invoice.sender.email");
+						// String to =
+						// userService.findUserOjectByCompanyId(invoiceModel.getScfCompany().getId());
+						String to = "gautam.tf2015@gmail.com";
+
+						System.out.println("\ncontent - " + content);
+						System.out.println("\nfrom - " + from);
+						System.out.println("\nto - " + to);
+						System.out.println("\ntempstr - " + tempstr);
+
+						if (!content.endsWith("") && !from.endsWith("") &&
+							!to.endsWith("")) {
+							liferayUtility.sendEmail(
+								request,
+								from,
+								to,
+								"Your request finance for this invoice has been created.",
+								content);
+						}
+
 					}
-				
-				} catch (Exception e) {
-					e.printStackTrace();
+					catch (Exception e) {
+						e.printStackTrace();
+					}
 				}
 			}
-		}	
-			 	
-	}catch(InSuffcientFund e){
-		Invoice invoice=invoiceService.findById(Long.valueOf(invoicesIdList.get(0)));
-		model.put("scfCompany", invoice.getScfCompany().getName());
-		SessionErrors.add(request, "invoice.allotment.error");
-		e.getMessage();
-	}	
-}
+
+		}
+		catch (InSuffcientFund e) {
+			Invoice invoice =
+				invoiceService.findById(Long.valueOf(invoicesIdList.get(0)));
+			model.put("scfCompany", invoice.getScfCompany().getName());
+			SessionErrors.add(request, "invoice.allotment.error");
+			e.getMessage();
+		}
+	}
+
 	@RenderMapping(params = "action=invoiceRedirect")
-    public ModelAndView invoiceRedirect(ModelMap model, RenderRequest request,
-            RenderResponse response) throws Exception { 
+	public ModelAndView invoiceRedirect(
+		ModelMap model, RenderRequest request, RenderResponse response)
+		throws Exception {
+
 		model.put("defaultRender", Boolean.TRUE);
 
 		model.put("userType", Constants.ADMIN);
 		model.put("userType", Constants.SCF_ADMIN);
 		model.put("userType", Constants.SELLER_ADMIN);
 		model.put(ACTIVETAB, "invoicelist");
-        return new ModelAndView("invoicelist",model);
-    }
-	@ActionMapping(params="invoice=getInvoiceReport")
-	protected void getCashReport( ModelMap model,ActionRequest request,ActionResponse response) throws Exception {
-		
+		return new ModelAndView("invoicelist", model);
+	}
+
+	@ActionMapping(params = "invoice=getInvoiceReport")
+	protected void getCashReport(
+		ModelMap model, ActionRequest request, ActionResponse response)
+		throws Exception {
+
 		DateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
-		Date fromDate=null;
-		Date toDate=null;
-		String search=ParamUtil.getString(request, "Search");
-		String value=ParamUtil.getString(request, "dateList");
-        String from=ParamUtil.getString(request, "fromDate");
-        String to=ParamUtil.getString(request, "toDate");
-        if(!StringUtils.isNullOrEmpty(from)){
-        fromDate=formatter.parse(from);
-        }
-        if(!StringUtils.isNullOrEmpty(to)){
-            toDate=formatter.parse(to);
-       }
-        Long noOfRecords=0l;
-        PaginationModel paginationModel = paginationUtil.preparePaginationModel(request);
-        List<Invoice> invoices=invoiceService.getInvoicesByFilter(search, fromDate, toDate, value,paginationModel.getStartIndex(),paginationModel.getPageSize());
-        noOfRecords=invoiceService.getInvoicesByFilterCount(search, fromDate, toDate, value);
-        System.out.println("invoicesss:"+invoices);
-        paginationUtil.setPaginationInfo(noOfRecords,paginationModel);
+		Date fromDate = null;
+		Date toDate = null;
+		String search = ParamUtil.getString(request, "Search");
+		String value = ParamUtil.getString(request, "dateList");
+		String from = ParamUtil.getString(request, "fromDate");
+		String to = ParamUtil.getString(request, "toDate");
+		if (!StringUtils.isNullOrEmpty(from)) {
+			fromDate = formatter.parse(from);
+		}
+		if (!StringUtils.isNullOrEmpty(to)) {
+			toDate = formatter.parse(to);
+		}
+		Long noOfRecords = 0l;
+		PaginationModel paginationModel =
+			paginationUtil.preparePaginationModel(request);
+		List<Invoice> invoices =
+			invoiceService.getInvoicesByFilter(
+				search, fromDate, toDate, value,
+				paginationModel.getStartIndex(), paginationModel.getPageSize());
+		noOfRecords =
+			invoiceService.getInvoicesByFilterCount(
+				search, fromDate, toDate, value);
+		System.out.println("invoicesss:" + invoices);
+		paginationUtil.setPaginationInfo(noOfRecords, paginationModel);
 		model.put("paginationModel", paginationModel);
 		model.put("invoices", invoices);
-		model.put("value", value);		
-        response.setRenderParameter("action", "invoiceRedirect");
-       }
-	
-	protected Log _log = LogFactoryUtil.getLog(InvoiceController.class.getName());
+		model.put("value", value);
+		response.setRenderParameter("action", "invoiceRedirect");
+	}
+
+	protected Log _log =
+		LogFactoryUtil.getLog(InvoiceController.class.getName());
 }
