@@ -2,9 +2,12 @@ package com.tf.dao.impl;
 
 import com.tf.dao.SCFTradeDAO;
 import com.tf.model.SCFTrade;
+import com.tf.util.PaginationUtil;
+import com.tf.util.ValidationUtil;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -17,13 +20,18 @@ import org.hibernate.FetchMode;
 import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.criterion.CriteriaSpecification;
+import org.hibernate.criterion.Disjunction;
+import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.loader.custom.Return;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
+
+import com.tf.util.*;
 
 @Repository
 @Transactional
@@ -33,6 +41,8 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 		super(SCFTrade.class);
 	}
 
+	@Autowired
+	protected ValidationUtil validationUtil;
 	
 	@SuppressWarnings("unchecked")
 	public List<SCFTrade>  getScfTrades(int startIndex,int pageSize){
@@ -669,18 +679,48 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 		}
 		
 		@SuppressWarnings("unchecked")
-		public List<SCFTrade> getAdminTradeListWithSearch(String searchtxt,int startIndex,int pageSize){
+		public List<SCFTrade> getAdminTradeListWithSearch(String searchtxt,Date fromDate, Date toDate, String value, int startIndex,int pageSize){
 			_log.debug("Inside getAdminTradeListWithSearch ");
 			List<SCFTrade> scftrades = new ArrayList<SCFTrade>();
 			SCFTrade scfTrade = null;
 			List<Object[]> resultscheck = new ArrayList<Object[]>();
 			try {
 				
-				String query = "select trd.id ,trd.trade_amount as trdid (select name from tf_company where idcompany = trd.company_id) as companyfrom scf_trade trd, tf_company cmp, scf_invoice inv, tf_allotments almt, tf_investor_portfolio tfip where trd.id like (:searchtxt) or trd.trade_amount like (:searchtxt) or trd.status like (:searchtxt) or cmp.NAME like (:searchtxt) group by trd.id LIMIT " + startIndex + "," + pageSize;
+				String query = "select trd.id from scf_trade trd, tf_company cmp, scf_invoice inv, tf_allotments almt, tf_investor_portfolio tfip where trd.id like (:searchtxt) or trd.trade_amount like (:searchtxt) or trd.status like (:searchtxt) or cmp.NAME like (:searchtxt) group by trd.id LIMIT " + startIndex + "," + pageSize;
 				Query qrys = (Query) sessionFactory.getCurrentSession().createSQLQuery(query);
 				qrys.setParameter("searchtxt", "%"+searchtxt+"%");
 				resultscheck = (List<Object[]>) qrys.list();
-
+				System.out.println("\n resultscheck - "+resultscheck);				
+				
+				Disjunction or = Restrictions.disjunction();
+			
+				if(validationUtil.isNumeric(searchtxt)){
+					or.add(Restrictions.eq("tradeAmount", BigDecimal.valueOf(Long.valueOf(searchtxt))));
+				}				
+				or.add(Restrictions.like("status", searchtxt, MatchMode.ANYWHERE));
+				or.add(Restrictions.like("scfId", searchtxt, MatchMode.ANYWHERE));
+				or.add(Restrictions.like("company.name", searchtxt, MatchMode.ANYWHERE));
+				
+				Disjunction or2 = Restrictions.disjunction();
+				if(fromDate != null && fromDate != toDate && value != null && value.equalsIgnoreCase("")){
+					or2.add(Restrictions.ge(value, fromDate));
+					or2.add(Restrictions.ge(value, toDate));
+				}				
+				
+				List<SCFTrade> results = (List<SCFTrade>) sessionFactory.getCurrentSession()
+						.createCriteria(SCFTrade.class)	
+						.createAlias("company", "company")
+						.setFirstResult(startIndex).setMaxResults(pageSize)
+						.setFetchMode("invoices",FetchMode.JOIN)
+						.setFetchMode("allotments", FetchMode.JOIN)
+						.setFetchMode("company", FetchMode.JOIN)
+						.add(or)			
+						.add(or2)						
+						.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY).list();
+				
+				
+				scftrades = results;
+				System.out.println("\n results - "+results.size());
 				_log.debug("getAdminTradeListWithSearch successful, result size: "					
 						+ scftrades.size());
 			} catch (RuntimeException re) {

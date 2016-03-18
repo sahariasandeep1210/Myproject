@@ -424,8 +424,8 @@ public class SCFTradeController {
 		 		String articleName =  "create-invoice-by-scf-company"; // Web Content's UrlTitle							
 				String content = liferayUtility.getContentByURLTitle(request, articleName);
 				List<Invoice> invlist = (List<Invoice>) scfTrade.getInvoices();
-				content = content.replaceAll("PHNO1", "");						
-				content = content.replaceAll("PHNO3", "White Hall Finance");
+				content = content.replaceAll("\\[PH-NAME\\]", "");						
+				content = content.replaceAll("\\[PH-REGARDS\\]", "White Hall Finance");
 				String tempstart = "<table border=\"1\" cellpadding=\"1\" cellspacing=\"1\" style=\"width:500px;\"><tbody><tr><td><strong>Invoice Number</strong></td><td><strong>Invoice Amount</strong></td><td><strong>Date&nbsp;</strong></td></tr>";
 				String tempend = "</tbody></table>";
 				String middle = "";
@@ -433,7 +433,7 @@ public class SCFTradeController {
 					middle = "<tr><td>"+ inv.getInvoiceNumber()+"</td><td>"+inv.getInvoiceAmount()+"</td><td>"+inv.getInvoiceDate()+"</td></tr>";
 				}
 				String tempstr = tempstart + middle +tempend;
-				content = content.replaceAll("PHNO10", tempstr);
+				content = content.replaceAll("\\[PH-CONTENT\\]", tempstr);
 				
 				String from = LanguageUtil.get(portletConfig, request.getLocale(), "invoice.sender.email");								
 				//String to = userService.findUserOjectByCompanyId(invoiceModel.getScfCompany().getId());
@@ -458,8 +458,8 @@ public class SCFTradeController {
 				String content = liferayUtility.getContentByURLTitle(request, articleName);
 			
 				List<Invoice> invlist = (List<Invoice>) scfTrade.getInvoices();
-				content = content.replaceAll("PHNO1", "");						
-				content = content.replaceAll("PHNO3", "White Hall Finance");
+				content = content.replaceAll("\\[PH-NAME\\]", "");						
+				content = content.replaceAll("\\[PH-REGARDS\\]", "White Hall Finance");
 				String tempstart = "<table border=\"1\" cellpadding=\"1\" cellspacing=\"1\" style=\"width:500px;\"><tbody><tr><td><strong>Invoice Number</strong></td><td><strong>Invoice Amount</strong></td><td><strong>Date&nbsp;</strong></td></tr>";
 				String tempend = "</tbody></table>";
 				String middle = "";
@@ -467,7 +467,7 @@ public class SCFTradeController {
 					middle = "<tr><td>"+ inv.getInvoiceNumber()+"</td><td>"+inv.getInvoiceAmount()+"</td><td>"+inv.getInvoiceDate()+"</td></tr>";
 				}
 				String tempstr = tempstart + middle +tempend;
-				content = content.replaceAll("PHNO10", tempstr);
+				content = content.replaceAll("\\[PH-CONTENT\\]", tempstr);
 				
 				String from = LanguageUtil.get(portletConfig, request.getLocale(), "invoice.sender.email");								
 				//String to = userService.findUserOjectByCompanyId(invoiceModel.getScfCompany().getId());
@@ -699,12 +699,25 @@ public class SCFTradeController {
 	protected void getAdminTrade( ModelMap model,ActionRequest request,ActionResponse response) throws Exception {
 		List<SCFTrade> trades=null;
 		List<SCFTrade> scftrades=null;
+		DateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+		Date fromDate = null;
+		Date toDate = null;
+		String search = ParamUtil.getString(request, "Search");
+		String value = ParamUtil.getString(request, "dateList");
+		String from = ParamUtil.getString(request, "fromDate");
+		String to = ParamUtil.getString(request, "toDate");
+		if (!StringUtils.isNullOrEmpty(from)) {
+			fromDate = formatter.parse(from);
+		}
+		if (!StringUtils.isNullOrEmpty(to)) {
+			toDate = formatter.parse(to);
+		}
 		Long noOfRecords = 0l;
 		PaginationModel paginationModel = paginationUtil
 				.preparePaginationModel(request);
-		String search=ParamUtil.getString(request, "Search");
-		System.out.println("search::"+search);
-		scftrades=scfTradeService.getAdminTradeListWithSearch(search,  paginationModel.getStartIndex(), paginationModel.getPageSize());
+		
+		System.out.println("\ngetAdminTrade search::"+search);
+		scftrades=scfTradeService.getAdminTradeListWithSearch(search, fromDate, toDate, value, paginationModel.getStartIndex(), paginationModel.getPageSize());
 		paginationUtil.setPaginationInfo(noOfRecords, paginationModel);
 		model.put("scftrades", scftrades);
 		model.put("paginationModel", paginationModel);

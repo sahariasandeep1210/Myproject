@@ -287,20 +287,22 @@ public class InvoiceController {
 
 		if (mailToAdmin) {
 			// needs to be repocaed omni admin name
-			content = content.replaceAll("PHNO1", liferayUtility.getThemeDisplay(request).getUser().getFullName());
+			content = content.replaceAll("\\[PH-NAME\\]", liferayUtility.getThemeDisplay(request).getUser().getFullName());
 		}
 		else {
-			content = content.replaceAll("PHNO1", cmp.getName());
+			content = content.replaceAll("\\[PH-NAME\\]", cmp.getName());
 		}
-		content = content.replaceAll("PHNO3", "White Hall Finance");
+		content = content.replaceAll("\\[PH-REGARDS\\]", "White Hall Finance");
 		String tempstart =
 			"<table border=\"1\" cellpadding=\"1\" cellspacing=\"1\" style=\"width:500px;\"><tbody><tr><td><strong>Invoice Number</strong></td><td><strong>Invoice Amount</strong></td><td><strong>Date&nbsp;</strong></td></tr>";
 		String tempend = "</tbody></table>";
 		String tempstr = tempstart + "<tr><td>" + invoiceModel.getInvoiceNumber() + "</td><td>" + invoiceModel.getInvoiceAmount() + "</td><td>" +
 			invoiceModel.getInvoiceDate() + "</td></tr>" + tempend;
-		content = content.replaceAll("PHNO10", tempstr);
+		content = content.replaceAll("\\[PH-CONTENT\\]", tempstr);
+		
 		String from = LanguageUtil.get(portletConfig, request.getLocale(), "invoice.sender.email");
 		String to = userService.findUserOjectByCompanyId(cmp.getId());
+		
 		if (!StringUtils.isNullOrEmpty(content) && !StringUtils.isNullOrEmpty(from) && !StringUtils.isNullOrEmpty(to)) {
 			liferayUtility.sendEmail(request, from, to, "Your invoice has been created.", content);
 		}

@@ -32,6 +32,8 @@ public interface SCFTradeService  {
 	public Long getScfTradesHistoryCount();
 	public List<SCFTrade> getScfTradeListWithSearch(String search,
 			String regNum, int startIndex, int pageSize);
-	public List<SCFTrade> getAdminTradeListWithSearch(String searchtxt,int startIndex,int pageSize);
+	public List<SCFTrade> getAdminTradeListWithSearch(String search,
+			Date fromDate, Date toDate, String value, int startIndex,
+			int pageSize);
 
 }
