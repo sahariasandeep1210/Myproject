@@ -15,9 +15,30 @@
 		      <!-- Hibernate Specific Properties  -->
           		<jdbc.driverClassName>com.mysql.jdbc.Driver</jdbc.driverClassName> 
           		<jdbc.dialect>org.hibernate.dialect.MySQLDialect</jdbc.dialect>          							
-          		<jdbc.databaseurl><![CDATA[jdbc:mysql://127.0.0.1/tradeDB?tinyInt1isBit=false&amp;useUnicode=true&amp;characterEncoding=UTF-8&amp;useFastDateParsing=false]]></jdbc.databaseurl> 
+          		<jdbc.databaseurl><![CDATA[jdbc:mysql://127.0.0.1/whitehall_db?tinyInt1isBit=false&amp;useUnicode=true&amp;characterEncoding=UTF-8&amp;useFastDateParsing=false]]></jdbc.databaseurl> 
           		<jdbc.username>root</jdbc.username> 
           		<jdbc.password>root</jdbc.password> 
+          
+     </properties>
+    </profile>
+       <profile>
+       <id>Dev</id>
+       <properties>
+      		 <!-- Liferay Specific Properties  -->
+		         <liferay.version>6.2.2</liferay.version> 
+		          <app.server.parent.dir>G:/Project/liferay-portal-6.2-ce-ga3</app.server.parent.dir>
+		         <liferay.auto.deploy.dir>G:/Project/liferay-portal-6.2-ce-ga3/deploy</liferay.auto.deploy.dir>
+		         <liferay.app.server.dir>G:/Project/liferay-portal-6.2-ce-ga3/tomcat-7.0.42</liferay.app.server.dir>
+		         <liferay.app.server.deploy.dir>G:/Project/liferay-portal-6.2-ce-ga3/tomcat-7.0.42/webapps</liferay.app.server.deploy.dir>
+		         <liferay.app.server.lib.global.dir>G:/Project/liferay-portal-6.2-ce-ga3/tomcat-7.0.42/lib/ext</liferay.app.server.lib.global.dir>
+		         <liferay.app.server.portal.dir>G:/Project/liferay-portal-6.2-ce-ga3/tomcat-7.0.42/webapps/ROOT</liferay.app.server.portal.dir>
+		         
+		      <!-- Hibernate Specific Properties  -->
+          		<jdbc.driverClassName>com.mysql.jdbc.Driver</jdbc.driverClassName> 
+          		<jdbc.dialect>org.hibernate.dialect.MySQLDialect</jdbc.dialect>          							
+          		<jdbc.databaseurl><![CDATA[jdbc:mysql://127.0.0.1/whitehall_db?tinyInt1isBit=false&amp;useUnicode=true&amp;characterEncoding=UTF-8&amp;useFastDateParsing=false]]></jdbc.databaseurl> 
+          		<jdbc.username>root</jdbc.username> 
+          		<jdbc.password>20w#!te#!ll</jdbc.password> 
           
      </properties>
     </profile>
@@ -26,6 +47,7 @@
   
  
 <activeProfiles>
-    <activeProfile>local</activeProfile>
+<!--  <activeProfile>local</activeProfile>  --> 
+<activeProfile>Dev</activeProfile>  
 </activeProfiles>
 </settings>
