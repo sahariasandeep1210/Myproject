@@ -32,5 +32,5 @@ public interface SCFTradeDAO  extends BaseDAO<SCFTrade, Serializable>{
 	public List<SCFTrade> getScfTradeListWithSearch(String searchtxt,
 			String regNum, int startIndex, int pageSize);
 	public Long getScfTradeListWithSearchCount(String searchtxt, String RegNum);
-	public List<SCFTrade> getAdminTradeListWithSearch(String searchtxt,int startIndex,int pageSize);
+	public List<SCFTrade> getAdminTradeListWithSearch(String searchtxt,Date fromDate, Date toDate,String value, int startIndex,int pageSize);
 }
