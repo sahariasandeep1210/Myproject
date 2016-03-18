@@ -107,6 +107,33 @@
  
                             </c:forEach>
                                  </c:when>
+                             <c:when test="${fn:length(scftrades) gt 0}">
+                                   <c:forEach items="${scftrades}" var="trade">
+                                   <tr>
+                                    <td><span class='underline'><a href="javascript:void(0);"
+                                        onclick="window.location.href='${supplierURL}&tradeID=${trade.id}'">${trade.scfId}</a></span></td>
+                                        <td>${trade.company.name}</td>
+                                    <td>${trade.tradeAmount}</td>
+                                    <td>${trade.status}</td>
+                                    <td>${trade.duration}</td>
+                                    <td><fmt:formatDate pattern="dd-MM-yyyy"
+                                            value="${trade.openingDate}" /></td>
+                                    <td><fmt:formatDate pattern="dd-MM-yyyy"
+                                            value="${trade.closingDate}" /></td>
+                                    <td><fmt:formatDate pattern="dd-MM-yyyy"
+                                            value="${trade.sellerPaymentDate}" /></td>
+                                    <td>${trade.sellerTransFee }</td>
+                                    <td>${trade.sellerFees}</td>
+                                    <td>${trade.investorTotalGross}</td>
+                                    <td></td>
+                                    <td>${trade.sellerTransFee + trade.sellerFees + trade.investorTotalGross}</td>
+                                    <td>${trade.sellerNetAllotment}</td>
+
+                                </tr>
+ 
+                                </c:forEach>
+                             </c:when>
+                                 
  					       <c:otherwise>
  					       <tr>							
  					          <td colspan="9" align="center">No records found!</td>

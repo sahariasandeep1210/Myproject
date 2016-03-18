@@ -5,6 +5,9 @@ import com.tf.model.SCFTrade;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -14,10 +17,10 @@ import org.hibernate.FetchMode;
 import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.criterion.CriteriaSpecification;
-import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.loader.custom.Return;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -148,42 +151,67 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 	
 	@SuppressWarnings("unchecked")
 	public List<SCFTrade> getScfTradeListWithSearch(String searchtxt, String RegNum,int startIndex,int pageSize){		
-		_log.debug("Inside getScfTrades ");
+		_log.debug("Inside getScfTradeListWithSearch ");
+		List<SCFTrade> scftrades = new ArrayList<SCFTrade>();
+		SCFTrade scfTrade = null;
+		List<Object[]> resultscheck = new ArrayList<Object[]>();
 		try {
-			
-			List<SCFTrade> scftrades = new ArrayList<SCFTrade>();
-			
-			List<Object[]> resultscheck = new ArrayList<Object[]>();
-
-			String query = "select trd.id as trdid from scf_trade trd, tf_company cmp, scf_invoice inv  where inv.seller_company_registration_number = "+RegNum+" and trd.id like (:searchtxt) or trd.trade_amount like (:searchtxt) or trd.status like (:searchtxt) or cmp.NAME like (:searchtxt) group by trd.id LIMIT " + startIndex + "," + pageSize;
-			
-			System.out.println("\n ankit query "+query);
-					
+			//String query = "select trd.id,trd.scf_id,trd.status,trd.duration,trd.opening_date,trd.closing_date,trd.Seller_Payment_date,trd.seller_transaction_fee,trd.seller_fees,trd.investor_total_gross_profit,trd.seller_net_allotment  as trades from scf_trade trd, tf_company cmp, scf_invoice inv  where inv.seller_company_registration_number = "+RegNum+" and trd.id like (:searchtxt) or trd.trade_amount like (:searchtxt) or trd.status like (:searchtxt) or cmp.NAME like (:searchtxt) group by trd.id LIMIT " + startIndex + "," + pageSize;
+			String query = "select trd.id,trd.scf_id,trd.status,trd.duration,trd.opening_date,trd.closing_date,trd.Seller_Payment_date,trd.seller_transaction_fee,trd.seller_fees,trd.investor_total_gross_profit,trd.seller_net_allotment as trdid from scf_trade trd, tf_company cmp, scf_invoice inv  where inv.seller_company_registration_number = "+RegNum+" and trd.id like (:searchtxt) or trd.trade_amount like (:searchtxt) or trd.status like (:searchtxt) or cmp.NAME like (:searchtxt) group by trd.id LIMIT " + startIndex + "," + pageSize;
 			Query qrys = (Query) sessionFactory.getCurrentSession().createSQLQuery(query);
 			qrys.setParameter("searchtxt", "%"+searchtxt+"%");
-			
-			System.out.println("\n--------------------------");
-			 List<Object[]> resultschecknew = (List<Object[]>) qrys.list();
-			 System.out.println("resultschecknew"+resultschecknew);
-//				for(Object[] row:resultschecknew){
-//					System.out.println("\nrow[0].toString() - "+row[0].toString());
-//					
-//					SCFTrade scfTrade = new SCFTrade();
-//					
-//					scftrades.add(scfTrade);
-//				}
-				System.out.println("\n--------------------------");
-				
-			scftrades = (List<SCFTrade>) qrys.list();
-			_log.debug("getScfTrades successful, result size: "					
+			resultscheck = (List<Object[]>) qrys.list();
+			System.out.println("resultscheck:"+resultscheck);
+			DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+				for(Object[] row:resultscheck){
+					scfTrade = new SCFTrade();
+					scfTrade.setId(Long.valueOf(row[0].toString()));
+					scfTrade.setScfId(row[1].toString());
+					scfTrade.setStatus(row[2].toString());
+					scfTrade.setDuration(Integer.valueOf(row[3].toString()));
+					scfTrade.setOpeningDate(formatter.parse(row[4].toString()));
+					scfTrade.setClosingDate(formatter.parse(row[5].toString()));
+					scfTrade.setSellerPaymentDate(formatter.parse(row[6].toString()));
+					scfTrade.setSellerTransFee(new BigDecimal (row[7].toString()));
+					scfTrade.setSellerFees(new BigDecimal (row[8].toString()));
+					scfTrade.setInvestorTotalGross(new BigDecimal (row[9].toString()));
+					scfTrade.setSellerNetAllotment(new BigDecimal (row[10].toString()));
+					scftrades.add(scfTrade);
+				}
+
+			_log.debug("getScfTradeListWithSearch successful, result size: "					
 					+ scftrades.size());
-			return scftrades;
 		} catch (RuntimeException re) {
-			_log.error("getScfTrades failed", re);
+			_log.error("getScfTradeListWithSearch failed", re);
 			throw re;
 		}
-		
+		catch (ParseException pe ) {
+			_log.error("getScfTradeListWithSearch failed" +pe.getMessage());
+			
+		}
+		return scftrades;
+
+
 	}
+	
+	@SuppressWarnings("unchecked")
+	public Long getScfTradeListWithSearchCount(String searchtxt, String RegNum) {
+		_log.debug("Inside getScfTradeListWithSearch ");
+		List<Object[]> resultscheck = new ArrayList<Object[]>();
+		try {
+			String query = "select trd.id,trd.scf_id,trd.status,trd.duration,trd.opening_date,trd.closing_date,trd.Seller_Payment_date,trd.seller_transaction_fee,trd.seller_fees,trd.investor_total_gross_profit,trd.seller_net_allotment  as trades from scf_trade trd, tf_company cmp, scf_invoice inv  where inv.seller_company_registration_number = "+RegNum+" and trd.id like (:searchtxt) or trd.trade_amount like (:searchtxt) or trd.status like (:searchtxt) or cmp.NAME like (:searchtxt) group by trd.id";
+			Query qrys = (Query) sessionFactory.getCurrentSession().createSQLQuery(query);
+			qrys.setParameter("searchtxt", "%"+searchtxt+"%");
+			resultscheck = (List<Object[]>) qrys.list();
+			Long count =Long.valueOf(qrys.list().size());
+			return count;
+		} catch (RuntimeException re) {
+			_log.error("getScfTradesCountByCompanyId Count failed", re);
+			throw re;
+		}
+
+	}
+
 	
 	@SuppressWarnings("unchecked")
 	public List<SCFTrade> getScfTrades(Long companyID,int startIndex,int pageSize) {
@@ -639,5 +667,28 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 			}
 			
 		}
-	 
+		
+		@SuppressWarnings("unchecked")
+		public List<SCFTrade> getAdminTradeListWithSearch(String searchtxt,int startIndex,int pageSize){
+			_log.debug("Inside getAdminTradeListWithSearch ");
+			List<SCFTrade> scftrades = new ArrayList<SCFTrade>();
+			SCFTrade scfTrade = null;
+			List<Object[]> resultscheck = new ArrayList<Object[]>();
+			try {
+				
+				String query = "select trd.id ,trd.trade_amount as trdid (select name from tf_company where idcompany = trd.company_id) as companyfrom scf_trade trd, tf_company cmp, scf_invoice inv, tf_allotments almt, tf_investor_portfolio tfip where trd.id like (:searchtxt) or trd.trade_amount like (:searchtxt) or trd.status like (:searchtxt) or cmp.NAME like (:searchtxt) group by trd.id LIMIT " + startIndex + "," + pageSize;
+				Query qrys = (Query) sessionFactory.getCurrentSession().createSQLQuery(query);
+				qrys.setParameter("searchtxt", "%"+searchtxt+"%");
+				resultscheck = (List<Object[]>) qrys.list();
+
+				_log.debug("getAdminTradeListWithSearch successful, result size: "					
+						+ scftrades.size());
+			} catch (RuntimeException re) {
+				_log.error("getAdminTradeListWithSearch failed", re);
+				throw re;
+			}
+			
+			return scftrades;
+		}
+		 
 }

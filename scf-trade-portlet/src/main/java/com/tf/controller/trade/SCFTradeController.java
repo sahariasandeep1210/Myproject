@@ -653,39 +653,62 @@ public class SCFTradeController {
        
        } 	
  
-	
+	@RenderMapping(params = "action=getSellerTrade")
+    public String getSellerTrade(ModelMap model, RenderRequest request,
+            RenderResponse response) throws Exception { 
+		 
+        return "sellertradelist";
+    }
 	
 	@ActionMapping(params="seller=getSellerTrade")
 	protected void getSellerTrade( ModelMap model,ActionRequest request,ActionResponse response) throws Exception {
-		String search=ParamUtil.getString(request, "Search");
+		List<SCFTrade> trades=null;
+		List<SCFTrade> scftrades=null;
 		Long noOfRecords = 0l;
 		PaginationModel paginationModel = paginationUtil
 				.preparePaginationModel(request);
-
 		String regNum = liferayUtility.getWhiteHallComapanyRegNo(request);
-		List<SCFTrade> scftrades=scfTradeService.getScfTradeListWithSearch(search, regNum, paginationModel.getStartIndex(), paginationModel.getPageSize());
-		
-		System.out.println("----getScfTradeListWithSearch-----------------");
-		for(SCFTrade s : scftrades){
-			System.out.println("\ngetId - "+s.getId());
+		String search=ParamUtil.getString(request, "Search");
+
+		if(!StringUtils.isNullOrEmpty(search)){
+		       scftrades=scfTradeService.getScfTradeListWithSearch(search, regNum, paginationModel.getStartIndex(), paginationModel.getPageSize());
+		       noOfRecords=scfTradeService.getScfTradeListWithSearchCount(search, regNum);
+		}else{
+			trades=scfTradeService.getScfTradeList(regNum, paginationModel.getStartIndex(), paginationModel.getPageSize());
+			noOfRecords = scfTradeService.getScfTradeCounts(regNum);
 		}
-		System.out.println("---------------------");
-		
-		model.put("trades", scftrades);
+        
 		paginationUtil.setPaginationInfo(noOfRecords, paginationModel);
-        System.out.println("paginationsss:"+paginationModel);
+		model.put("trades", trades);
+		model.put("scftrades", scftrades);
 		model.put("paginationModel", paginationModel);
+		response.setRenderParameter("action", "getSellerTrade");
 		//getScfTradeListWithSearch
 		System.out.println("search::"+search);
 		
 	}
 	
+	@RenderMapping(params = "action=getAdminTrade")
+    public String getAdminTrade(ModelMap model, RenderRequest request,
+            RenderResponse response) throws Exception { 
+		 
+        return "admintradelist";
+    }
+	
 	@ActionMapping(params="admin=getAdminTrade")
 	protected void getAdminTrade( ModelMap model,ActionRequest request,ActionResponse response) throws Exception {
-		
+		List<SCFTrade> trades=null;
+		List<SCFTrade> scftrades=null;
+		Long noOfRecords = 0l;
+		PaginationModel paginationModel = paginationUtil
+				.preparePaginationModel(request);
 		String search=ParamUtil.getString(request, "Search");
 		System.out.println("search::"+search);
-
+		scftrades=scfTradeService.getAdminTradeListWithSearch(search,  paginationModel.getStartIndex(), paginationModel.getPageSize());
+		paginationUtil.setPaginationInfo(noOfRecords, paginationModel);
+		model.put("scftrades", scftrades);
+		model.put("paginationModel", paginationModel);
+		response.setRenderParameter("action", "getAdminTrade");
 		
 	}
 	

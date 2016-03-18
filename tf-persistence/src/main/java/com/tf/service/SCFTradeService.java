@@ -17,7 +17,7 @@ public interface SCFTradeService  {
 	public List<SCFTrade> getScfTrades(Long companyID);
 	public List<SCFTrade> getScfTradeSellerCompany(String scfCompany,Date frmDate,Date toDate,long compID ,int startIndex,int pageSize);
 	public void updateTrade(SCFTrade scfTrade);
-	
+	public Long getScfTradeListWithSearchCount(String searchtxt, String RegNum);
 	public List<SCFTrade> getScfTradesByTradeId(Long tradeId);
 	 public Long getHistoryCount(long companyId);
 	public List<SCFTrade> getScfTrades(Long companyID,int startIndex,int pageSize) ;
@@ -32,5 +32,6 @@ public interface SCFTradeService  {
 	public Long getScfTradesHistoryCount();
 	public List<SCFTrade> getScfTradeListWithSearch(String search,
 			String regNum, int startIndex, int pageSize);
+	public List<SCFTrade> getAdminTradeListWithSearch(String searchtxt,int startIndex,int pageSize);
 
 }

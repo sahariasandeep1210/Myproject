@@ -31,12 +31,41 @@
 		<input type="hidden" id="tradeID" name="tradeID">
 		<input type="hidden" id="status" name="status">
 		
+		
 		<div class="row-fluid">
-            <div class="search-seller">
-                <input type="text" name="Search" placeholder="Search Here" id="search">
-                <input type="button" value="Search" id="adminTradeReport" class="btn btn-primary" />
-            </div>
-        </div>
+			<div class="span6">
+				<input type="text" name="Search" placeholder="Search Here"
+					id="search">
+			</div>
+
+		</div>
+		<div class="row-fluid">
+			<div class="span1">
+				<label style="margin-bottom:0;padding: 5px 0;">Date:</label>  </div>
+			<div class="span3">	
+				<select id="dateList" name="dateList">
+					<option value="">---Select---</option>
+					<option value="openingDate" <c:if test="${ value eq 'openingDate'}">selected="selected" </c:if>>invoiceDate</option>
+					<option value="closingDate" <c:if test="${ value eq 'closingDate'}">selected="selected" </c:if>>closingDate</option>
+					<option value="investorPaymentDate" <c:if test="${ value eq 'investorPaymentDate'}">selected="selected" </c:if>>investorPaymentDate</option>
+					<option value="sellerPaymentDate" <c:if test="${ value eq 'sellerPaymentDate'}">selected="selected" </c:if>>sellerPaymentDate</option>
+				    <option value="createDate" <c:if test="${ value eq 'createDate'}">selected="selected" </c:if>>createDate</option>
+					
+				</select> 
+		   </div>
+		  <div class="span3">	
+				<input name="fromDate" id="fromDate" placeholder="From" /> 
+		  </div>		
+		  <div class="span3">	
+				<input name="toDate" id="toDate" placeholder="To" />
+		  </div>
+	</div>	  
+		  <div class="row-fluid">
+			<div class="span6">
+				 <input type="button" value="Search" id="adminTradeReport" class="btn btn-primary" />
+			</div>
+
+		</div>
 			<div class="row-fluid">
 			<div class="span6">
 				<div class="span3">
@@ -127,6 +156,25 @@
 							
 							</c:forEach>
 						</c:when>
+						<c:when test="${fn:length(scftrades) gt 0}">
+							<c:forEach items="${scftrades}" var="trade">
+								<tr>
+									<td width="3%"><input type="radio" value="${trade.id}" name="trade"  status-attr="${trade.status}" <c:if test="${trade.status eq 'Settled' || trade.status eq 'Closed'}">disabled="disabled"</c:if> ></td>
+									 <td class="underline"><a href="javascript:void(0);"
+                                        onclick="window.location.href='${createURL}&tradeID=${trade.id}'">${trade.scfId}</a></td>
+									<td><strong>${trade.company.name} ( ${trade.duration} Days )</strong></td>
+									<td>${trade.tradeAmount}</td>
+									<td></td>
+									<td>${trade.investorTotalGross}</td>
+									<td>${trade.whitehallTotalShare}</td>
+									<td>${trade.investorTotalProfit}</td>
+									<td>${trade.sellerFees + trade.sellerTransFee}</td>
+									<td>${trade.whitehallTotalProfit}</td>
+									<td>${trade.sellerNetAllotment}</td>	
+									<td>${trade.status}</td>						
+								</tr>
+								</c:forEach>
+								</c:when>
 						<c:otherwise>
 							<tr>
 								<td colspan="9" align="center">No records found!</td>

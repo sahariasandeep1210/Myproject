@@ -286,5 +286,10 @@ public class SCFTradeServiceImpl  implements SCFTradeService{
 	 public Long getScfTradeByScfCompanyCount(String scfCompany,Date frmDate,Date toDate){
 		 return scfTradeDAO.getScfTradeByScfCompanyCount(scfCompany, frmDate, toDate);
 	 }
-	 
+	 public Long getScfTradeListWithSearchCount(String searchtxt, String RegNum){
+		 return scfTradeDAO.getScfTradeListWithSearchCount(searchtxt,RegNum);
+	 }
+	 public List<SCFTrade> getAdminTradeListWithSearch(String searchtxt,int startIndex,int pageSize){
+		 return scfTradeDAO.getAdminTradeListWithSearch(searchtxt, startIndex, pageSize);
+	 }
 }
