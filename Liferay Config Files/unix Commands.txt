@@ -1,0 +1,17 @@
+sudo chown -R ec2-user /opt/whitehallfinance
+sudo chmod -R 755 /opt/whitehallfinance
+
+
+cp /opt/whitehallfinance/warfiles/tf-admin-portlet.war /opt/whitehallfinance/deploy
+cp /opt/whitehallfinance/warfiles/tf-dashboard-portlet.war /opt/liferay/deploy 
+cp /opt/whitehallfinance/warfiles/tf-registration-portlet.war /opt/liferay/deploy 
+cp /opt/whitehallfinance/warfiles/tf-hook.war /opt/liferay/deploy
+cp /opt/whitehallfinance/warfiles/tf-hook.war /opt/whitehallfinance/deploy 
+
+cp /opt/whitehallfinance/warfiles/tf-settings-portlet.war /opt/whitehallfinance/deploy
+cp /opt/whitehallfinance/warfiles/scf-investor-portlet.war /opt/whitehallfinance/deploy 
+cp /opt/whitehallfinance/warfiles/scf-trade-portlet.war /opt/whitehallfinance/deploy 
+cp /opt/whitehallfinance/warfiles/tf-admin-portlet.war /opt/whitehallfinance/deploy 
+cp /opt/whitehallfinance/warfiles/tf-registration-portlet.war /opt/whitehallfinance/deploy 
+cp /opt/whitehallfinance/warfiles/scf-invoice-portlet.war /opt/whitehallfinance/deploy   
+cp /opt/whitehallfinance/warfiles/tf-hook.war /opt/whitehallfinance/deploy  
