@@ -767,9 +767,7 @@ public class InvoiceController {
 	public ModelAndView invoiceRedirect(
 		ModelMap model, RenderRequest request, RenderResponse response)
 		throws Exception {
-
 		model.put("defaultRender", Boolean.TRUE);
-
 		model.put("userType", Constants.ADMIN);
 		model.put("userType", Constants.SCF_ADMIN);
 		model.put("userType", Constants.SELLER_ADMIN);

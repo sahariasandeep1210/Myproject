@@ -15,12 +15,10 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-
 @Entity
 @Table(name="scf_trade")
 public class SCFTrade  implements Serializable{
 	
-
 	private static final long serialVersionUID = -3106577799099944699L;
 	
 

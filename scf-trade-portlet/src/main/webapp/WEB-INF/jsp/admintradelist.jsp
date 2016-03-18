@@ -7,7 +7,6 @@
 	<portlet:param name="render" value="createTrade" />
 </portlet:renderURL>
 
-
 <portlet:actionURL var="updateStatusURL">
 	<portlet:param name="action" value="updateStatus" />
 </portlet:actionURL>
@@ -45,12 +44,11 @@
 			<div class="span3">	
 				<select id="dateList" name="dateList">
 					<option value="">---Select---</option>
-					<option value="openingDate" <c:if test="${ value eq 'openingDate'}">selected="selected" </c:if>>invoiceDate</option>
+					<option value="openingDate" <c:if test="${ value eq 'openingDate'}">selected="selected" </c:if>>openingDate</option>
 					<option value="closingDate" <c:if test="${ value eq 'closingDate'}">selected="selected" </c:if>>closingDate</option>
 					<option value="investorPaymentDate" <c:if test="${ value eq 'investorPaymentDate'}">selected="selected" </c:if>>investorPaymentDate</option>
-					<option value="sellerPaymentDate" <c:if test="${ value eq 'sellerPaymentDate'}">selected="selected" </c:if>>sellerPaymentDate</option>
+					<option value="SellerPaymentDate" <c:if test="${ value eq 'sellerPaymentDate'}">selected="selected" </c:if>>sellerPaymentDate</option>
 				    <option value="createDate" <c:if test="${ value eq 'createDate'}">selected="selected" </c:if>>createDate</option>
-					
 				</select> 
 		   </div>
 		  <div class="span3">	

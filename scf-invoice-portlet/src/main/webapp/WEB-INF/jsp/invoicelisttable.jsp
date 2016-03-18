@@ -3,7 +3,6 @@
 	<portlet:param name="render" value="updateInvoices" />
 </portlet:renderURL>
 
-
 <div class="container-fluid">
 
 	<div class="row-fluid">

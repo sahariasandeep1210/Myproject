@@ -1,12 +1,8 @@
 package com.tf.util;
-
 import javax.portlet.PortletRequest;
-
 import org.springframework.stereotype.Component;
-
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.tf.util.model.PaginationModel;
-
 @Component
 public class PaginationUtil {
 
