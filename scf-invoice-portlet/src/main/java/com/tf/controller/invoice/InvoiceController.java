@@ -1,51 +1,6 @@
 
 package com.tf.controller.invoice;
 
-import com.liferay.mail.service.MailServiceUtil;
-import com.liferay.portal.kernel.language.LanguageUtil;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.mail.MailMessage;
-import com.liferay.portal.kernel.repository.model.FileEntry;
-import com.liferay.portal.kernel.repository.model.Folder;
-import com.liferay.portal.kernel.servlet.SessionErrors;
-import com.liferay.portal.kernel.servlet.SessionMessages;
-import com.liferay.portal.kernel.util.JavaConstants;
-import com.liferay.portal.kernel.util.MimeTypesUtil;
-import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.service.ServiceContext;
-import com.liferay.portal.service.ServiceContextFactory;
-import com.liferay.portal.theme.ThemeDisplay;
-import com.liferay.portlet.documentlibrary.model.DLFileEntry;
-import com.liferay.portlet.documentlibrary.model.DLFolder;
-import com.liferay.portlet.documentlibrary.model.DLFolderConstants;
-import com.liferay.portlet.documentlibrary.service.DLAppServiceUtil;
-import com.liferay.portlet.journal.model.JournalArticle;
-import com.liferay.portlet.journal.model.JournalArticleDisplay;
-import com.liferay.portlet.journal.service.JournalArticleLocalServiceUtil;
-import com.liferay.portlet.journalcontent.util.JournalContentUtil;
-import com.mysql.jdbc.StringUtils;
-import com.tf.dto.InvoiceDTO;
-import com.tf.model.Allotment;
-import com.tf.model.Company;
-import com.tf.model.Investor;
-import com.tf.model.InvestorTransaction;
-import com.tf.model.Invoice;
-import com.tf.model.InvoiceDocument;
-import com.tf.persistance.util.Constants;
-import com.tf.persistance.util.InSuffcientFund;
-import com.tf.persistance.util.InvoiceStatus;
-import com.tf.persistance.util.TranscationStatus;
-import com.tf.service.CompanyService;
-import com.tf.service.InvoiceDocumentService;
-import com.tf.service.InvoiceService;
-import com.tf.service.UserService;
-import com.tf.util.LiferayUtility;
-import com.tf.util.PaginationUtil;
-import com.tf.util.model.PaginationModel;
-
 import java.beans.PropertyEditorSupport;
 import java.math.BigDecimal;
 import java.text.DateFormat;
@@ -85,6 +40,41 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.portlet.ModelAndView;
 import org.springframework.web.portlet.bind.annotation.ActionMapping;
 import org.springframework.web.portlet.bind.annotation.RenderMapping;
+
+import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.repository.model.FileEntry;
+import com.liferay.portal.kernel.repository.model.Folder;
+import com.liferay.portal.kernel.servlet.SessionErrors;
+import com.liferay.portal.kernel.servlet.SessionMessages;
+import com.liferay.portal.kernel.util.JavaConstants;
+import com.liferay.portal.kernel.util.MimeTypesUtil;
+import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.service.ServiceContextFactory;
+import com.liferay.portal.theme.ThemeDisplay;
+import com.liferay.portlet.documentlibrary.model.DLFileEntry;
+import com.liferay.portlet.documentlibrary.model.DLFolder;
+import com.liferay.portlet.documentlibrary.model.DLFolderConstants;
+import com.liferay.portlet.documentlibrary.service.DLAppServiceUtil;
+import com.mysql.jdbc.StringUtils;
+import com.tf.dto.InvoiceDTO;
+import com.tf.model.Company;
+import com.tf.model.Invoice;
+import com.tf.model.InvoiceDocument;
+import com.tf.persistance.util.Constants;
+import com.tf.persistance.util.InSuffcientFund;
+import com.tf.persistance.util.InvoiceStatus;
+import com.tf.service.CompanyService;
+import com.tf.service.InvoiceDocumentService;
+import com.tf.service.InvoiceService;
+import com.tf.service.UserService;
+import com.tf.util.LiferayUtility;
+import com.tf.util.PaginationUtil;
+import com.tf.util.model.PaginationModel;
 
 /**
  * This controller is responsible for request/response handling on Invoice
@@ -202,14 +192,11 @@ public class InvoiceController {
 
 		Long invoiceId = ParamUtil.getLong(request, "invoiceId", 0);
 		long scfCompanyId = ParamUtil.getLong(request, "scfCompany");
-		System.out.println("scfCompanyId:::" + scfCompanyId);
-		System.out.println("invoiceId:::" + invoiceId);
 
 		try {
 			Invoice invoice2 =
 				invoiceService.getInvoicesByInvoiceNumAndCompanyId(
 					invoice.getInvoiceNumber(), scfCompanyId);
-			System.out.println("invoice2:" + invoice2);
 
 			PortletConfig portletConfig =
 				(PortletConfig) request.getAttribute(JavaConstants.JAVAX_PORTLET_CONFIG);
@@ -220,20 +207,11 @@ public class InvoiceController {
 				SessionErrors.add(request, "invoice.duplicate.error");
 				model.put(
 					"errorMessage",
-					LanguageUtil.get(
-						portletConfig, request.getLocale(),
-						"invoice.duplicate.number.company") +
-						invoice.getInvoiceNumber() +
-						StringPool.SPACE +
-						LanguageUtil.get(
-							portletConfig, request.getLocale(),
-							"invoice.duplicate.number") +
-						StringPool.SPACE +
-						company.getName() +
-						StringPool.SPACE +
-						LanguageUtil.get(
-							portletConfig, request.getLocale(),
-							"invoice.duplicate.message"));
+					LanguageUtil.get(portletConfig, request.getLocale(), "invoice.duplicate.number.company") +
+						invoice.getInvoiceNumber() + StringPool.SPACE +
+						LanguageUtil.get(portletConfig, request.getLocale(), "invoice.duplicate.number") +
+						StringPool.SPACE + company.getName() + StringPool.SPACE +
+						LanguageUtil.get(portletConfig, request.getLocale(), "invoice.duplicate.message"));
 				model.put("invoice", invoice);
 				model.put("company", company);
 				response.setRenderParameter("render", "createInvoice");
@@ -262,7 +240,7 @@ public class InvoiceController {
 
 				}
 				else {
-					Invoice invoiceModel =transfromInvoiceDtoToInvoiceModel(invoice);
+					Invoice invoiceModel = transfromInvoiceDtoToInvoiceModel(invoice);
 					List<Invoice> invoices = new ArrayList<Invoice>();
 					invoices.add(invoiceModel);
 					invoiceService.addInvoices(invoices);
@@ -271,19 +249,21 @@ public class InvoiceController {
 						// invoices has been added, now we need to trigger email
 						// notification
 						String articleName = "create-invoice-by-scf-company";
-						String content = liferayUtility.getContentByURLTitle(request, articleName);						
-						//The reason behind keeping this code outside if/else is : we need to send
-						//notification to user irrespective of invoice created by Whitehall admin or SCF company admin
-						Company cmp =companyService.getCompaniesByRegNum(invoiceModel.getSellerCompanyRegistrationNumber());
-						//Sending mail to Seller							
-						sendInvoiceCreateNotification(request, portletConfig, invoiceModel, content,cmp,Boolean.FALSE);							
-						if (liferayUtility.getPermissionChecker(request).isOmniadmin()) {							
-							//Sending mail to SCF company
-							cmp=invoiceModel.getScfCompany();
-							sendInvoiceCreateNotification(request, portletConfig, invoiceModel, content,cmp,Boolean.FALSE);
+						String content = liferayUtility.getContentByURLTitle(request, articleName);
+						// The reason behind keeping this code outside if/else
+						// is : we need to send
+						// notification to user irrespective of invoice created
+						// by Whitehall admin or SCF company admin
+						Company cmp = companyService.getCompaniesByRegNum(invoiceModel.getSellerCompanyRegistrationNumber());
+						// Sending mail to Seller
+						sendInvoiceCreateNotification(request, portletConfig, invoiceModel, content, cmp, Boolean.FALSE);
+						if (liferayUtility.getPermissionChecker(request).isOmniadmin()) {
+							// Sending mail to SCF company
+							cmp = invoiceModel.getScfCompany();
+							sendInvoiceCreateNotification(request, portletConfig, invoiceModel, content, cmp, Boolean.FALSE);
 						}
 						else {
-							sendInvoiceCreateNotification(request, portletConfig, invoiceModel, content,cmp,Boolean.TRUE);
+							sendInvoiceCreateNotification(request, portletConfig, invoiceModel, content, cmp, Boolean.TRUE);
 						}
 					}
 					catch (Exception e) {
@@ -303,21 +283,25 @@ public class InvoiceController {
 
 	private void sendInvoiceCreateNotification(
 		ActionRequest request, PortletConfig portletConfig,
-		Invoice invoiceModel, String content,Company cmp,boolean mailToAdmin) {	
-		if(mailToAdmin){			
+		Invoice invoiceModel, String content, Company cmp, boolean mailToAdmin) {
+
+		if (mailToAdmin) {
+			// needs to be repocaed omni admin name
 			content = content.replaceAll("PHNO1", liferayUtility.getThemeDisplay(request).getUser().getFullName());
-		}else{
+		}
+		else {
 			content = content.replaceAll("PHNO1", cmp.getName());
-		}		
+		}
 		content = content.replaceAll("PHNO3", "White Hall Finance");
-		String tempstart =	"<table border=\"1\" cellpadding=\"1\" cellspacing=\"1\" style=\"width:500px;\"><tbody><tr><td><strong>Invoice Number</strong></td><td><strong>Invoice Amount</strong></td><td><strong>Date&nbsp;</strong></td></tr>";
+		String tempstart =
+			"<table border=\"1\" cellpadding=\"1\" cellspacing=\"1\" style=\"width:500px;\"><tbody><tr><td><strong>Invoice Number</strong></td><td><strong>Invoice Amount</strong></td><td><strong>Date&nbsp;</strong></td></tr>";
 		String tempend = "</tbody></table>";
-		String tempstr =tempstart + "<tr><td>" + invoiceModel.getInvoiceNumber() +"</td><td>" + invoiceModel.getInvoiceAmount() + "</td><td>" +
-						invoiceModel.getInvoiceDate() + "</td></tr>" + tempend;
+		String tempstr = tempstart + "<tr><td>" + invoiceModel.getInvoiceNumber() + "</td><td>" + invoiceModel.getInvoiceAmount() + "</td><td>" +
+			invoiceModel.getInvoiceDate() + "</td></tr>" + tempend;
 		content = content.replaceAll("PHNO10", tempstr);
-		String from =LanguageUtil.get(portletConfig, request.getLocale(), "invoice.sender.email");
-		String to =	userService.findUserOjectByCompanyId(cmp.getId());
-		if (!StringUtils.isNullOrEmpty(content) && 	!StringUtils.isNullOrEmpty(from) && !StringUtils.isNullOrEmpty(to)) {
+		String from = LanguageUtil.get(portletConfig, request.getLocale(), "invoice.sender.email");
+		String to = userService.findUserOjectByCompanyId(cmp.getId());
+		if (!StringUtils.isNullOrEmpty(content) && !StringUtils.isNullOrEmpty(from) && !StringUtils.isNullOrEmpty(to)) {
 			liferayUtility.sendEmail(request, from, to, "Your invoice has been created.", content);
 		}
 	}
