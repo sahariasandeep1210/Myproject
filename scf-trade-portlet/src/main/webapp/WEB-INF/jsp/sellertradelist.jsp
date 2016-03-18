@@ -112,7 +112,7 @@
                                    <tr>
                                     <td><span class='underline'><a href="javascript:void(0);"
                                         onclick="window.location.href='${supplierURL}&tradeID=${trade.id}'">${trade.scfId}</a></span></td>
-                                        <td>${trade.company.name}</td>
+                                     <td>${trade.insuranceDocName}</td>
                                     <td>${trade.tradeAmount}</td>
                                     <td>${trade.status}</td>
                                     <td>${trade.duration}</td>

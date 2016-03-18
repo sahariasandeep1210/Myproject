@@ -156,8 +156,8 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 		SCFTrade scfTrade = null;
 		List<Object[]> resultscheck = new ArrayList<Object[]>();
 		try {
-			//String query = "select trd.id,trd.scf_id,trd.status,trd.duration,trd.opening_date,trd.closing_date,trd.Seller_Payment_date,trd.seller_transaction_fee,trd.seller_fees,trd.investor_total_gross_profit,trd.seller_net_allotment  as trades from scf_trade trd, tf_company cmp, scf_invoice inv  where inv.seller_company_registration_number = "+RegNum+" and trd.id like (:searchtxt) or trd.trade_amount like (:searchtxt) or trd.status like (:searchtxt) or cmp.NAME like (:searchtxt) group by trd.id LIMIT " + startIndex + "," + pageSize;
-			String query = "select trd.id,trd.scf_id,trd.status,trd.duration,trd.opening_date,trd.closing_date,trd.Seller_Payment_date,trd.seller_transaction_fee,trd.seller_fees,trd.investor_total_gross_profit,trd.seller_net_allotment as trdid from scf_trade trd, tf_company cmp, scf_invoice inv  where inv.seller_company_registration_number = "+RegNum+" and trd.id like (:searchtxt) or trd.trade_amount like (:searchtxt) or trd.status like (:searchtxt) or cmp.NAME like (:searchtxt) group by trd.id LIMIT " + startIndex + "," + pageSize;
+			 String query="select (select name from tf_company where idcompany = trd.company_id) as name, trd.id,trd.scf_id,trd.status,trd.duration,trd.opening_date,trd.closing_date,trd.Seller_Payment_date,trd.seller_transaction_fee,trd.seller_fees,trd.investor_total_gross_profit,trd.seller_net_allotment ,trd.trade_amount  from scf_trade trd, tf_company cmp, scf_invoice where seller_company_registration_number= "+RegNum+" and trade_id = trd.id and trd.trade_amount like (:searchtxt)  or trd.scf_id like (:searchtxt)  or trd.status like (:searchtxt)  or cmp.Name like (:searchtxt)  group by trd.id LIMIT " + startIndex + "," + pageSize;
+			//String query = "select (select name from tf_company where idcompany = trd.company_id) as company, trd.id,trd.scf_id,trd.status,trd.duration,trd.opening_date,trd.closing_date,trd.Seller_Payment_date,trd.seller_transaction_fee,trd.seller_fees,trd.investor_total_gross_profit,trd.seller_net_allotment,trd.trade_amount from scf_trade trd, tf_company cmp, scf_invoice inv  where inv.seller_company_registration_number = "+RegNum+" and trd.id like (:searchtxt) or trd.trade_amount like (:searchtxt) or trd.status like (:searchtxt) or cmp.NAME like (:searchtxt) group by trd.id LIMIT " + startIndex + "," + pageSize;
 			Query qrys = (Query) sessionFactory.getCurrentSession().createSQLQuery(query);
 			qrys.setParameter("searchtxt", "%"+searchtxt+"%");
 			resultscheck = (List<Object[]>) qrys.list();
@@ -165,17 +165,19 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 			DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 				for(Object[] row:resultscheck){
 					scfTrade = new SCFTrade();
-					scfTrade.setId(Long.valueOf(row[0].toString()));
-					scfTrade.setScfId(row[1].toString());
-					scfTrade.setStatus(row[2].toString());
-					scfTrade.setDuration(Integer.valueOf(row[3].toString()));
-					scfTrade.setOpeningDate(formatter.parse(row[4].toString()));
-					scfTrade.setClosingDate(formatter.parse(row[5].toString()));
-					scfTrade.setSellerPaymentDate(formatter.parse(row[6].toString()));
-					scfTrade.setSellerTransFee(new BigDecimal (row[7].toString()));
-					scfTrade.setSellerFees(new BigDecimal (row[8].toString()));
-					scfTrade.setInvestorTotalGross(new BigDecimal (row[9].toString()));
-					scfTrade.setSellerNetAllotment(new BigDecimal (row[10].toString()));
+					scfTrade.setInsuranceDocName(row[0].toString());
+					scfTrade.setId(Long.valueOf(row[1].toString()));
+					scfTrade.setScfId(row[2].toString());
+					scfTrade.setStatus(row[3].toString());
+					scfTrade.setDuration(Integer.valueOf(row[4].toString()));
+					scfTrade.setOpeningDate(formatter.parse(row[5].toString()));
+					scfTrade.setClosingDate(formatter.parse(row[6].toString()));
+					scfTrade.setSellerPaymentDate(formatter.parse(row[7].toString()));
+					scfTrade.setSellerTransFee(new BigDecimal (row[8].toString()));
+					scfTrade.setSellerFees(new BigDecimal (row[9].toString()));
+					scfTrade.setInvestorTotalGross(new BigDecimal (row[10].toString()));
+					scfTrade.setSellerNetAllotment(new BigDecimal (row[11].toString()));
+					scfTrade.setTradeAmount(new BigDecimal(row[12].toString()));
 					scftrades.add(scfTrade);
 				}
 
@@ -199,7 +201,9 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 		_log.debug("Inside getScfTradeListWithSearch ");
 		List<Object[]> resultscheck = new ArrayList<Object[]>();
 		try {
-			String query = "select trd.id,trd.scf_id,trd.status,trd.duration,trd.opening_date,trd.closing_date,trd.Seller_Payment_date,trd.seller_transaction_fee,trd.seller_fees,trd.investor_total_gross_profit,trd.seller_net_allotment  as trades from scf_trade trd, tf_company cmp, scf_invoice inv  where inv.seller_company_registration_number = "+RegNum+" and trd.id like (:searchtxt) or trd.trade_amount like (:searchtxt) or trd.status like (:searchtxt) or cmp.NAME like (:searchtxt) group by trd.id";
+			 String query="select (select name from tf_company where idcompany = trd.company_id) as name, trd.id,trd.scf_id,trd.status,trd.duration,trd.opening_date,trd.closing_date,trd.Seller_Payment_date,trd.seller_transaction_fee,trd.seller_fees,trd.investor_total_gross_profit,trd.seller_net_allotment ,trd.trade_amount  from scf_trade trd, tf_company cmp, scf_invoice where seller_company_registration_number= "+RegNum+" and trade_id = trd.id and trd.trade_amount like (:searchtxt)  or trd.scf_id like (:searchtxt)  or trd.status like (:searchtxt)  or cmp.Name like (:searchtxt)  group by trd.id ";
+
+			//String query = "select trd.id,trd.scf_id,trd.status,trd.duration,trd.opening_date,trd.closing_date,trd.Seller_Payment_date,trd.seller_transaction_fee,trd.seller_fees,trd.investor_total_gross_profit,trd.seller_net_allotment  as trades from scf_trade trd, tf_company cmp, scf_invoice inv  where inv.seller_company_registration_number = "+RegNum+" and trd.id like (:searchtxt) or trd.trade_amount like (:searchtxt) or trd.status like (:searchtxt) or cmp.NAME like (:searchtxt) group by trd.id";
 			Query qrys = (Query) sessionFactory.getCurrentSession().createSQLQuery(query);
 			qrys.setParameter("searchtxt", "%"+searchtxt+"%");
 			resultscheck = (List<Object[]>) qrys.list();

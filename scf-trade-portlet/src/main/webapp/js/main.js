@@ -367,6 +367,7 @@ function setPage(pageNumber){
    }else if($("#tradeHisTable").length){
 	   $("#currentPage").val(pageNumber);
 		var actionUrl=$("#defaultURL").val();
+		var actionUrl=$("#getTradeHistoryURL").val();
 		document.forms["tradehistoryForm"].action = actionUrl;
 		document.forms["tradehistoryForm"].submit();	
    }else if($("#singleTradeHistoryTable").length){

@@ -1,5 +1,6 @@
 <%@include file="init.jsp"%>
 <%@include file="tabview.jsp"%>
+
 <portlet:renderURL var="histryURL">
 	<portlet:param name="render" value="singleHistory" />
 </portlet:renderURL>
@@ -21,6 +22,8 @@
 			value="${paginationModel.noOfRecords}" />
 		<input type="hidden" name="defaultURL" id="defaultURL"
 			value="${defaultURL}" />
+			<input type="hidden" name="getTradeHistoryURL" id="getTradeHistoryURL"
+			value="${getTradeHistoryURL}" />
 
 
 

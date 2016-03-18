@@ -205,13 +205,15 @@ public class InvoiceController {
 			if (invoice2 != null && invoiceId != invoice2.getId()) {
 
 				SessionErrors.add(request, "invoice.duplicate.error");
+				StringBuilder sb = new StringBuilder();
 				model.put(
 					"errorMessage",
-					LanguageUtil.get(portletConfig, request.getLocale(), "invoice.duplicate.number.company") +
-						invoice.getInvoiceNumber() + StringPool.SPACE +
-						LanguageUtil.get(portletConfig, request.getLocale(), "invoice.duplicate.number") +
-						StringPool.SPACE + company.getName() + StringPool.SPACE +
-						LanguageUtil.get(portletConfig, request.getLocale(), "invoice.duplicate.message"));
+					sb.append(LanguageUtil.get(portletConfig, request.getLocale(), "invoice.duplicate.number.company")).append(
+						invoice.getInvoiceNumber()).append(StringPool.SPACE).append(
+						LanguageUtil.get(portletConfig, request.getLocale(), "invoice.duplicate.number")).append(StringPool.SPACE).append(
+						company.getName()).append(StringPool.SPACE).append(
+						LanguageUtil.get(portletConfig, request.getLocale(), "invoice.duplicate.message")));
+					
 				model.put("invoice", invoice);
 				model.put("company", company);
 				response.setRenderParameter("render", "createInvoice");

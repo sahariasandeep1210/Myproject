@@ -101,7 +101,7 @@
 				<tbody>
 				<tr>
 						<td></td>
-						<td>0</td>
+						<td></td>
 						<td></td>
 						<td>${totalTradeAmount}</td>
 						<td></td>
