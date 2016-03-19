@@ -1,13 +1,13 @@
 $(document).ready(function() {
-
+	
+	var userType=$("#userType").val();
 	enableTab();
 	$("#createTrade").hide(); 
-	 $("#pageSize").val($("#currPageSize").val());
+	$("#pageSize").val($("#currPageSize").val());
 	$("#requestFinance").hide();
 	$("#errorMsg").hide(); 
-	 $('table').tablesorter();
-	 
-	 $("#pageSize").change(function (){
+	$('table').tablesorter();	 
+	$("#pageSize").change(function (){
 			var noOfRecords=parseInt($("#noOfRecords").val());
 			var pageSize=parseInt($("#currPageSize").val());
 			var newPageSize=parseInt($(this).val());
@@ -19,39 +19,28 @@ $(document).ready(function() {
 				document.forms["invoicelist"].action = actionUrl;
 				document.forms["invoicelist"].submit();	
 			}
-		});
-	  
+	 });  
 	 
 	 $("#invoiceUpdate").click(function (){
 			var updateURL=$("#updateInvoiceURL").val();
 			document.forms["createInvoiceForm"].action = updateURL;
 			document.forms["createInvoiceForm"].submit();
-
-		});
-	 
-	 /*$("#invoiceAdd").click(function (){
-			var updateURL=$("#updateInvoiceURL").val();
-			document.forms["createInvoiceForm"].action = updateURL;
-			document.forms["createInvoiceForm"].submit();
-
-		});
-		*/
-	 
-	 $("#exportInvoices").click(function(){
-			
+	 });	 
+	
+	 $("#exportInvoices").click(function(){			
 			$('#invoiceListTable').tableExport({
 				type : 'excel',
 				escape : 'false',
 				fileName: 'invoiceList',
 				worksheetName: 'InvoicesList'
-			});
-			
+			});			
 	});
 
 	$('ul.nav-pills li a').click(function (e) {
 		  $('ul.nav-pills li.active').removeClass('active');
 		  $(this).parent('li').addClass('active');
-		});
+	});
+	
 	$("#updateInvoice").click(function() {
 		$('#wrapperfirst').removeClass('hideclass');
 		$('#myModal').modal('show');
@@ -79,8 +68,6 @@ $(document).ready(function() {
 		$('#wrappersecond').removeClass('hideclass');
 		$('#confirmationModel').modal('show');
 	}
-	
-
 	
 	$("#createTrade").click(function() {	
 		var invoices = [];  
@@ -129,12 +116,14 @@ $(document).ready(function() {
 		document.forms["invoicelist"].submit();
 		
 	}); 
+	
 	$("#createInvoice").click(function() {
 		 var url = $(this).attr('data-url');
 		 document.forms["invoicelist"].action = url;
 		document.forms["invoicelist"].submit();
 		
 	}); 
+	
 	$("#invoiceback").click(function() {
 		 var url = $(this).attr('data-url');
 		 document.forms["createInvoiceForm"].action = url;
@@ -150,6 +139,15 @@ $(document).ready(function() {
 		buttonImageOnly : true,
 		buttonText : "Select date"
 	});
+	
+	//adding condition for Seller
+	if(userType=='Seller Admin'){
+		//removing datepicker image
+		$(".ui-datepicker-trigger").remove();
+		
+		//disabling SCF company select box
+		$('#scfCompany').attr('disabled', 'disabled');
+	}
 
 });
 
