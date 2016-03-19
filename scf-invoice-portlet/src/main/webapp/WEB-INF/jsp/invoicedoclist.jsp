@@ -61,27 +61,27 @@
 <!-- Modal -->
 
 
-	<form:form commandName="invoiceModel" id="importInvoiceForm"
-		method="post" action="${importInvoiceURL}" name="importInvoicForm"
-		enctype="multipart/form-data">
-<div id="wrapperfirst" class="hideclass">
-<div id="myModal" class="modal  fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-    <h3 id="myModalLabel">Upload Invoice</h3>
-  </div>
-  <div class="modal-body">
-    <%@include file="addinvoice.jsp"%>
-  </div>
-  <div class="modal-footer">
-    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-   <input type="submit" value="Upload Invoice" class="btn btn-primary" />
-  </div>
-</div>
-</div>
+<form:form commandName="invoiceModel" id="importInvoiceForm"
+	method="post" action="${importInvoiceURL}" name="importInvoicForm"
+	enctype="multipart/form-data">
+	<div id="wrapperfirst" class="hideclass">
+		<div id="myModal" class="modal  fade" tabindex="-1" role="dialog"	aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				<h3 id="myModalLabel">Upload Invoice</h3>
+			</div>
+			<div class="modal-body">
+				<%@include file="addinvoice.jsp"%>
+			</div>
+			<div class="modal-footer">
+				<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+				<input type="button" value="Upload Invoice" class="btn btn-primary"  id="uploadInvoices"/>
+			</div>
+		</div>
+	</div>
 
 
-	</form:form>
+</form:form>
 
 <c:if test="${documentUpload}">
 <div id="wrappersecond" class="hideclass">

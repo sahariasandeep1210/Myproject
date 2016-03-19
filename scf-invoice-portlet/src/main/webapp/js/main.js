@@ -140,6 +140,17 @@ $(document).ready(function() {
 		buttonText : "Select date"
 	});
 	
+	//upload invoices popup validation
+	$("#uploadInvoices").click(function() {
+		var error_free = true;
+		error_free = bulkUpload(error_free);
+		if(error_free){
+			document.forms["importInvoicForm"].submit();
+		}	
+		
+	}); 
+	
+	
 	//adding condition for Seller
 	if(userType=='Seller Admin'){
 		//removing datepicker image
@@ -225,6 +236,30 @@ function validateInvoice(error_free) {
 	return error_free;
 }
 
+function bulkUpload(error_free){
+var elements = [];
+	
+	elements[0] = "scfCompany";
+	elements[1] = "fileType";
+	elements[2] = "invoiceDoc";
+	
+	for (i = 0; i < elements.length; i++) {
+		var element = $("#" + elements[i]);
+		if(element.length){
+			var eleValue = element.val();
+			if (eleValue == '' || eleValue == null || (element.is('select') && element[0].selectedIndex == 0)) {
+				element.addClass("error_show");
+				error_free = false;				
+			} else {
+				element.removeClass("error_show");
+			}
+		}	
+	}
+	return error_free;
+	
+}
+
+
 function setPage(pageNumber){
 	$("#currentPage").val(pageNumber);
 	var actionUrl=$("#defaultURL").val();
@@ -262,6 +297,8 @@ $("#toDate").datepicker({
 
 $("#invoiceReport").click(function (){
 	var updateURL=$("#getInvoiceReportURL").val();
+	//as search has been triggered we should reset the page number to 1
+	$("#currentPage").val(1);
 	document.forms["invoicelist"].action = updateURL;
-  document.forms["invoicelist"].submit();
+    document.forms["invoicelist"].submit();
 });

@@ -467,7 +467,6 @@ public class InvoiceController {
 					invoiceModel = new Invoice();
 					invoiceModel.setScfCompany(scfCompany);
 					currentRow = currentRow + 1;
-
 					Row row = rowIterator.next();
 					// Every row has columns, get the column iterator and
 					// iterate over them
@@ -521,11 +520,7 @@ public class InvoiceController {
 						}
 						else if (index == 9) {
 							invoiceModel.setCurrency(cell.getStringCellValue());
-						}
-						else if (index == 10) {
-							/*
-							 * invoiceModel.setDueDate(cell.getDateCellValue());
-							 */}
+						}		
 
 						invoiceModel.setStatus(InvoiceStatus.NEW.getValue());
 						index++;

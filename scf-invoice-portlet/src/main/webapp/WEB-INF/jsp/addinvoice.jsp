@@ -7,9 +7,8 @@
 
 <div class="row-fluid">
 	<div class="span6">
-		<label class="span6">SCF Company:</label> 
-		<select id="scfCompany" name="scfCompany"  placeholder="SCF Company">
-			<option value="">---Select---</option>
+		<select id="scfCompany" name="scfCompany">
+		    <option value="" selected="selected" disabled="disabled">Select SCF Company*</option>
 			<c:forEach var="company" items="${companyList}">
 				<option value="${company.id}">${company.name}</option>
 			</c:forEach>			
@@ -20,17 +19,16 @@
 
 <div class="row-fluid">
 	<div class="span6">
-		<label class="span6">File Type:</label> 
-		<select id="fileType" name="fileType"  placeholder="File Type">
-			<option value="CSV">CSV</option>
-			<option value="XLS">XLS/XLSX</option>		   	   
+		<select id="fileType" name="fileType" >
+			<option value="" selected="selected" disabled="disabled">Select File Type*</option>
+			<option value="XLS">XLS/XLSX</option>	
+			<option value="CSV">CSV</option>				   	   
 		</select>
 	</div>
 </div>
 <div class="row-fluid">
 	<div class="span6">
-		<label class="span6">Invoices Documents</label> 
-		<input type="file" name="invoiceDoc" class=" btn btn-file span6" />
+		<input type="file" name="invoiceDoc" class=" btn btn-file span12" id="invoiceDoc"/>
 	</div>
 </div>
 
