@@ -1,13 +1,13 @@
 $(document).ready(function() {
-
+	
+	var userType=$("#userType").val();
 	enableTab();
 	$("#createTrade").hide(); 
-	 $("#pageSize").val($("#currPageSize").val());
+	$("#pageSize").val($("#currPageSize").val());
 	$("#requestFinance").hide();
 	$("#errorMsg").hide(); 
-	 $('table').tablesorter();
-	 
-	 $("#pageSize").change(function (){
+	$('table').tablesorter();	 
+	$("#pageSize").change(function (){
 			var noOfRecords=parseInt($("#noOfRecords").val());
 			var pageSize=parseInt($("#currPageSize").val());
 			var newPageSize=parseInt($(this).val());
@@ -19,39 +19,28 @@ $(document).ready(function() {
 				document.forms["invoicelist"].action = actionUrl;
 				document.forms["invoicelist"].submit();	
 			}
-		});
-	  
+	 });  
 	 
 	 $("#invoiceUpdate").click(function (){
 			var updateURL=$("#updateInvoiceURL").val();
 			document.forms["createInvoiceForm"].action = updateURL;
 			document.forms["createInvoiceForm"].submit();
-
-		});
-	 
-	 /*$("#invoiceAdd").click(function (){
-			var updateURL=$("#updateInvoiceURL").val();
-			document.forms["createInvoiceForm"].action = updateURL;
-			document.forms["createInvoiceForm"].submit();
-
-		});
-		*/
-	 
-	 $("#exportInvoices").click(function(){
-			
+	 });	 
+	
+	 $("#exportInvoices").click(function(){			
 			$('#invoiceListTable').tableExport({
 				type : 'excel',
 				escape : 'false',
 				fileName: 'invoiceList',
 				worksheetName: 'InvoicesList'
-			});
-			
+			});			
 	});
 
 	$('ul.nav-pills li a').click(function (e) {
 		  $('ul.nav-pills li.active').removeClass('active');
 		  $(this).parent('li').addClass('active');
-		});
+	});
+	
 	$("#updateInvoice").click(function() {
 		$('#wrapperfirst').removeClass('hideclass');
 		$('#myModal').modal('show');
@@ -79,8 +68,6 @@ $(document).ready(function() {
 		$('#wrappersecond').removeClass('hideclass');
 		$('#confirmationModel').modal('show');
 	}
-	
-
 	
 	$("#createTrade").click(function() {	
 		var invoices = [];  
@@ -129,12 +116,14 @@ $(document).ready(function() {
 		document.forms["invoicelist"].submit();
 		
 	}); 
+	
 	$("#createInvoice").click(function() {
 		 var url = $(this).attr('data-url');
 		 document.forms["invoicelist"].action = url;
 		document.forms["invoicelist"].submit();
 		
 	}); 
+	
 	$("#invoiceback").click(function() {
 		 var url = $(this).attr('data-url');
 		 document.forms["createInvoiceForm"].action = url;
@@ -150,6 +139,26 @@ $(document).ready(function() {
 		buttonImageOnly : true,
 		buttonText : "Select date"
 	});
+	
+	//upload invoices popup validation
+	$("#uploadInvoices").click(function() {
+		var error_free = true;
+		error_free = bulkUpload(error_free);
+		if(error_free){
+			document.forms["importInvoicForm"].submit();
+		}	
+		
+	}); 
+	
+	
+	//adding condition for Seller
+	if(userType=='Seller Admin'){
+		//removing datepicker image
+		$(".ui-datepicker-trigger").remove();
+		
+		//disabling SCF company select box
+		$('#scfCompany').attr('disabled', 'disabled');
+	}
 
 });
 
@@ -227,6 +236,30 @@ function validateInvoice(error_free) {
 	return error_free;
 }
 
+function bulkUpload(error_free){
+var elements = [];
+	
+	elements[0] = "scfCompany";
+	elements[1] = "fileType";
+	elements[2] = "invoiceDoc";
+	
+	for (i = 0; i < elements.length; i++) {
+		var element = $("#" + elements[i]);
+		if(element.length){
+			var eleValue = element.val();
+			if (eleValue == '' || eleValue == null || (element.is('select') && element[0].selectedIndex == 0)) {
+				element.addClass("error_show");
+				error_free = false;				
+			} else {
+				element.removeClass("error_show");
+			}
+		}	
+	}
+	return error_free;
+	
+}
+
+
 function setPage(pageNumber){
 	$("#currentPage").val(pageNumber);
 	var actionUrl=$("#defaultURL").val();
@@ -264,6 +297,8 @@ $("#toDate").datepicker({
 
 $("#invoiceReport").click(function (){
 	var updateURL=$("#getInvoiceReportURL").val();
+	//as search has been triggered we should reset the page number to 1
+	$("#currentPage").val(1);
 	document.forms["invoicelist"].action = updateURL;
-  document.forms["invoicelist"].submit();
+    document.forms["invoicelist"].submit();
 });

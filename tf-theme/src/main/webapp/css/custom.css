@@ -641,3 +641,8 @@ table.tablesorter thead tr th {
 .error-actions {margin-top:15px;margin-bottom:15px;}
 .error-actions .btn { margin-right:10px; }
 
+.error_show {
+	border: red 1px solid !important;
+}
+
+

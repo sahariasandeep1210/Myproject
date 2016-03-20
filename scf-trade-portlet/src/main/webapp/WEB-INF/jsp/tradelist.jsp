@@ -16,54 +16,17 @@
 
 <div class="container-fluid">
 
-	<form:form commandName="scfTradeModel" method="post"
-		action="${createURL}" id="scfTradeList">
-
-		<input type="hidden" name="currentPage" id="currentPage"
-			value="${paginationModel.currentPage}" />
-		<input type="hidden" name="currPageSizes" id="currPageSizes"
-			value="${paginationModel.pageSize}" />
-		<input type="hidden" name="noOfRecords" id="noOfRecords"
-			value="${paginationModel.noOfRecords}" />
-		<input type="hidden" name="defaultURL" id="defaultURL"
-			value="${defaultRenderURL}" />
-		<input type="hidden" name="getScfAdminTradeURL"
-			id="getScfAdminTradeURL" value="${getScfAdminTradeURL}" />
-
-
-		<div class="row-fluid">
-			<div class="search-scf">
-				<input type="text" name="Search" placeholder="Search Here"
-					id="search">
-			</div>
-		</div>
-		<div class="row-fluid">
-			<div class="span1">
-				<label style="margin-bottom: 0; padding: 5px 0;">Date:</label>
-			</div>
-			<div class="span3">
-				<select id="dateList" name="dateList">
-					<option value="">---Select---</option>
-					<option value="openingDate"
-						<c:if test="${ value eq 'openingDate'}">selected="selected" </c:if>>openingDate</option>
-					<option value="closingDate"
-						<c:if test="${ value eq 'closingDate'}">selected="selected" </c:if>>closingDate</option>
-					<option value="investorPaymentDate"
-						<c:if test="${ value eq 'investorPaymentDate'}">selected="selected" </c:if>>investorPaymentDate</option>
-					<option value="sellerPaymentDate"
-						<c:if test="${ value eq 'sellerPaymentDate'}">selected="selected" </c:if>>sellerPaymentDate</option>
-					<option value="createDate"
-						<c:if test="${ value eq 'createDate'}">selected="selected" </c:if>>createDate</option>
-
-				</select>
-			</div>
-			<div class="span3">
-				<input name="fromDate" id="fromDate" placeholder="From" />
-			</div>
-			<div class="span3">
-				<input name="toDate" id="toDate" placeholder="To" />
-			</div>
-		</div>
+	<form:form commandName="scfTradeModel" method="post" action="${createURL}" id="scfTradeList"  >
+		
+		<input type="hidden" name="currentPage"           id="currentPage"        value="${paginationModel.currentPage}" />
+        <input type="hidden" name="currPageSizes"         id="currPageSizes"      value="${paginationModel.pageSize}" />
+        <input type="hidden" name="noOfRecords"           id="noOfRecords"        value="${paginationModel.noOfRecords}" />
+        <input type="hidden" name="defaultURL"           id="defaultURL"         value="${defaultRenderURL}" />
+        <input type="hidden" name="getScfAdminTradeURL"  id="getScfAdminTradeURL" value="${getScfAdminTradeURL}" />
+         
+         
+       <%@include file="tradefilter.jspf"%> 
+	  
 		<div class="row-fluid">
 			<div class="scfAdminTradeReport">
 				<input type="button" value="Search" id="scfAdminTradeReport"
@@ -104,20 +67,19 @@
 						<th>Is MultiInvoice</th>
 					</tr>
 				</thead>
-				<tbody>
-					<tr>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td>${totalTradeAmount}</td>
-						<td></td>
-						<td></td>
-
-					</tr>
+				<tbody>						
 					<c:choose>
 						<c:when test="${fn:length(trades) gt 0}">
+							<tr>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td>${totalTradeAmount}</td>
+								<td></td>
+								<td></td>		
+							</tr>
 							<c:forEach items="${trades}" var="trade">
 								<tr>
 									<%-- <td>${trade.scfTrade}</td> --%>
@@ -183,6 +145,12 @@
 								<tr class="historyRow" id="${trade.id}_row">
 									<td colspan=7></td>
 								</tr>
+<<<<<<< HEAD
+=======
+								<tr class="historyRow"  id="${trade.id}_row">								
+							  		<td colspan=8></td>
+							</tr>
+>>>>>>> b411342bd25cd58006028fa2667d662b8bbbcaf3
 							</c:forEach>
 						</c:when>
 						<c:otherwise>

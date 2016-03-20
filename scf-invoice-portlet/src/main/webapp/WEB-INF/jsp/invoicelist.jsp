@@ -105,22 +105,20 @@
 			</div>
 
 		</div>
-		<div class="row-fluid">
-			<div class="span1">
-				<label style="margin-bottom:0;padding: 5px 0;">Date:</label>  </div>
+		<div class="row-fluid">		
 			<div class="span3">	
 				<select id="dateList" name="dateList">
-					<option value="">---Select---</option>
-					<option value="invoiceDate" <c:if test="${ value eq 'invoiceDate'}">selected="selected" </c:if>>invoiceDate</option>
-					<option value="paymentDate" <c:if test="${ value eq 'paymentDate'}">selected="selected" </c:if>>paymentDate</option>
-					<option value="financeDate" <c:if test="${ value eq 'financeDate'}">selected="selected" </c:if>>financeDate</option>
+					<option value="" selected="selected" disabled="disabled">Select Date</option>
+					<option value="invoiceDate" <c:if test="${ value eq 'invoiceDate'}">selected="selected" </c:if>>Invoice Date</option>
+					<option value="paymentDate" <c:if test="${ value eq 'paymentDate'}">selected="selected" </c:if>>Payment Date</option>
+					<option value="financeDate" <c:if test="${ value eq 'financeDate'}">selected="selected" </c:if>>Finance Date</option>
 				</select> 
 		   </div>
 		  <div class="span3">	
-				<input name="fromDate" id="fromDate" placeholder="From" /> 
+				<input name="fromDate" type="text" id="fromDate" placeholder="From"  /> 
 		  </div>		
 		  <div class="span3">	
-				<input name="toDate" id="toDate" placeholder="To" />
+				<input name="toDate" type="text" id="toDate" placeholder="To" />
 		  </div>
 				
 		</div>

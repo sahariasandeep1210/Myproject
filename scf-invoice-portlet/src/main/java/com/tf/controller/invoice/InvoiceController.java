@@ -65,6 +65,7 @@ import com.tf.dto.InvoiceDTO;
 import com.tf.model.Company;
 import com.tf.model.Invoice;
 import com.tf.model.InvoiceDocument;
+import com.tf.persistance.util.CompanyTypes;
 import com.tf.persistance.util.Constants;
 import com.tf.persistance.util.InSuffcientFund;
 import com.tf.persistance.util.InvoiceStatus;
@@ -115,7 +116,6 @@ public class InvoiceController {
 		binder.registerCustomEditor(Date.class, new PropertyEditorSupport() {
 
 			public void setAsText(String value) {
-
 				try {
 					setValue(new SimpleDateFormat("MM/dd/yyyy").parse(value));
 				}
@@ -125,7 +125,6 @@ public class InvoiceController {
 			}
 
 			public String getAsText() {
-
 				if (getValue() != null) {
 					return new SimpleDateFormat("MM/dd/yyyy").format((Date) getValue());
 				}
@@ -146,19 +145,15 @@ public class InvoiceController {
 		try {
 			List<Company> companyList = new ArrayList<Company>();
 			ThemeDisplay themeDisplay = liferayUtility.getThemeDisplay(request);
-			List<InvoiceDocument> invoiceDocumentList =
-				new ArrayList<InvoiceDocument>();
+			List<InvoiceDocument> invoiceDocumentList =	new ArrayList<InvoiceDocument>();
 			if (liferayUtility.getPermissionChecker(request).isOmniadmin()) {
-				invoiceDocumentList =
-					invoiceDocumentService.getInvoiceDocuments();
+				invoiceDocumentList =invoiceDocumentService.getInvoiceDocuments();
 				companyList = companyService.getCompanies("5");
 				model.put("userType", Constants.ADMIN);
 			}
 			else if (request.isUserInRole(Constants.SCF_ADMIN)) {
-				invoiceDocumentList =
-					invoiceDocumentService.getInvoiceDocuments(themeDisplay.getUser().getUserId());
-				long companyId =
-					userService.getCompanyIDbyUserID(themeDisplay.getUserId());
+				invoiceDocumentList = invoiceDocumentService.getInvoiceDocuments(themeDisplay.getUser().getUserId());
+				long companyId = userService.getCompanyIDbyUserID(themeDisplay.getUserId());
 				companyList.add(companyService.findById(companyId));
 				model.put("userType", Constants.SCF_ADMIN);
 			}
@@ -213,7 +208,7 @@ public class InvoiceController {
 						LanguageUtil.get(portletConfig, request.getLocale(), "invoice.duplicate.number")).append(StringPool.SPACE).append(
 						company.getName()).append(StringPool.SPACE).append(
 						LanguageUtil.get(portletConfig, request.getLocale(), "invoice.duplicate.message")));
-					
+
 				model.put("invoice", invoice);
 				model.put("company", company);
 				response.setRenderParameter("render", "createInvoice");
@@ -288,7 +283,7 @@ public class InvoiceController {
 		Invoice invoiceModel, String content, Company cmp, boolean mailToAdmin) {
 
 		if (mailToAdmin) {
-			// needs to be repocaed omni admin name
+			// needs to be replaced omni admin name
 			content = content.replaceAll("\\[PH-NAME\\]", liferayUtility.getThemeDisplay(request).getUser().getFullName());
 		}
 		else {
@@ -301,53 +296,12 @@ public class InvoiceController {
 		String tempstr = tempstart + "<tr><td>" + invoiceModel.getInvoiceNumber() + "</td><td>" + invoiceModel.getInvoiceAmount() + "</td><td>" +
 			invoiceModel.getInvoiceDate() + "</td></tr>" + tempend;
 		content = content.replaceAll("\\[PH-CONTENT\\]", tempstr);
-		
+
 		String from = LanguageUtil.get(portletConfig, request.getLocale(), "invoice.sender.email");
 		String to = userService.findUserOjectByCompanyId(cmp.getId());
-		
+
 		if (!StringUtils.isNullOrEmpty(content) && !StringUtils.isNullOrEmpty(from) && !StringUtils.isNullOrEmpty(to)) {
 			liferayUtility.sendEmail(request, from, to, "Your invoice has been created.", content);
-		}
-	}
-
-	public void SendMailSSL(String from, String to, String subject, String body) {
-
-		System.out.println("\nSendMailSSL Function");
-		Properties props = new Properties();
-		props.put("mail.smtp.host", "smtp.gmail.com");
-		props.put("mail.smtp.socketFactory.port", "465");
-		props.put(
-			"mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
-		props.put("mail.smtp.auth", "true");
-		props.put("mail.smtp.port", "465");
-		props.put("mail.smtps.ssl.trust", "*");
-
-		Session session =
-			Session.getInstance(props, new javax.mail.Authenticator() {
-
-				protected PasswordAuthentication getPasswordAuthentication() {
-
-					return new PasswordAuthentication(
-						"gautam.tf2015@gmail.com", "Trade2015");
-				}
-			});
-
-		try {
-
-			Message message = new MimeMessage(session);
-			message.setFrom(new InternetAddress(from));
-			message.setRecipients(
-				Message.RecipientType.TO, InternetAddress.parse(to));
-			message.setSubject(subject);
-			message.setText(body);
-
-			Transport.send(message);
-
-			System.out.println("\nEmail Sent.");
-
-		}
-		catch (MessagingException e) {
-			throw new RuntimeException(e);
 		}
 	}
 
@@ -391,12 +345,10 @@ public class InvoiceController {
 		@ModelAttribute("invoiceModel") InvoiceDTO invoiceModel,
 		ModelMap model, RenderRequest request, RenderResponse response)
 		throws Exception {
-
-		List<Company> companyList = companyService.getCompanies("5");
+		List<Company> companyList = companyService.getCompanies(CompanyTypes.SCF_COMPANY.getValue());
 		long invoiceId = ParamUtil.getLong(request, "invoiceID");
 		if (invoiceId > 0) {
 			Invoice invoice = invoiceService.getInvoicesById(invoiceId);
-
 			Company scfCompanies = invoice.getScfCompany();
 			invoiceModel.setId(invoice.getId());
 			invoiceModel.setCompanyId(scfCompanies.getId());
@@ -405,18 +357,19 @@ public class InvoiceController {
 			invoiceModel.setSellerRegNo(invoice.getSellerCompanyRegistrationNumber());
 			invoiceModel.setSellerVatNumber(invoice.getSellerCompanyVatNumber());
 			invoiceModel.setCurrency(invoice.getCurrency());
-			/*
-			 * invoiceModel.setDuration(invoice.getDuration());
-			 */
+			invoiceModel.setInvoiceDesc(invoice.getInvoiceDesc());		
 			invoiceModel.setDuration(invoice.getDuration());
 			invoiceModel.setInvoiceAmount(invoice.getInvoiceAmount());
 			invoiceModel.setPaymentDate(invoice.getPayment_date());
 			invoiceModel.setVatAmount(invoice.getVatAmount());
 			model.put("scfCompanies", scfCompanies);
-
 			model.put("invoices", invoice);
-
 		}
+		if(request.isUserInRole(Constants.SELLER_ADMIN)){
+			model.put("userType",Constants.SELLER_ADMIN);
+			model.put("readOnly", Boolean.TRUE);
+		}
+		
 		model.put("companyList", companyList);
 		model.put("invoiceModel", invoiceModel);
 		return new ModelAndView("createinvoice", model);
@@ -514,7 +467,6 @@ public class InvoiceController {
 					invoiceModel = new Invoice();
 					invoiceModel.setScfCompany(scfCompany);
 					currentRow = currentRow + 1;
-
 					Row row = rowIterator.next();
 					// Every row has columns, get the column iterator and
 					// iterate over them
@@ -568,11 +520,7 @@ public class InvoiceController {
 						}
 						else if (index == 9) {
 							invoiceModel.setCurrency(cell.getStringCellValue());
-						}
-						else if (index == 10) {
-							/*
-							 * invoiceModel.setDueDate(cell.getDateCellValue());
-							 */}
+						}		
 
 						invoiceModel.setStatus(InvoiceStatus.NEW.getValue());
 						index++;
@@ -767,6 +715,7 @@ public class InvoiceController {
 	public ModelAndView invoiceRedirect(
 		ModelMap model, RenderRequest request, RenderResponse response)
 		throws Exception {
+
 		model.put("defaultRender", Boolean.TRUE);
 		model.put("userType", Constants.ADMIN);
 		model.put("userType", Constants.SCF_ADMIN);

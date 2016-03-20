@@ -29,35 +29,7 @@
         
 		<input type="hidden" id="tradeID" name="tradeID">
 		<input type="hidden" id="status" name="status">
-		
-		
-		<div class="row-fluid">
-			<div class="span6">
-				<input type="text" name="Search" placeholder="Search Here"
-					id="search">
-			</div>
-
-		</div>
-		<div class="row-fluid">
-			<div class="span1">
-				<label style="margin-bottom:0;padding: 5px 0;">Date:</label>  </div>
-			<div class="span3">	
-				<select id="dateList" name="dateList">
-					<option value="">---Select---</option>
-					<option value="openingDate" <c:if test="${ value eq 'openingDate'}">selected="selected" </c:if>>openingDate</option>
-					<option value="closingDate" <c:if test="${ value eq 'closingDate'}">selected="selected" </c:if>>closingDate</option>
-					<option value="investorPaymentDate" <c:if test="${ value eq 'investorPaymentDate'}">selected="selected" </c:if>>investorPaymentDate</option>
-					<option value="SellerPaymentDate" <c:if test="${ value eq 'sellerPaymentDate'}">selected="selected" </c:if>>sellerPaymentDate</option>
-				    <option value="createDate" <c:if test="${ value eq 'createDate'}">selected="selected" </c:if>>createDate</option>
-				</select> 
-		   </div>
-		  <div class="span3">	
-				<input name="fromDate" id="fromDate" placeholder="From" /> 
-		  </div>		
-		  <div class="span3">	
-				<input name="toDate" id="toDate" placeholder="To" />
-		  </div>
-	</div>	  
+				<%@include file="tradefilter.jspf"%> 
 		  <div class="row-fluid">
 			<div class="span6">
 				 <input type="button" value="Search" id="adminTradeReport" class="btn btn-primary" />
@@ -97,23 +69,24 @@
 					</tr>
 				</thead>
 				<tbody>
-				<tr>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td>${totalTradeAmount}</td>
-						<td></td>
-						<td>${totalInvestorProfit}</td>
-						<td>${totalWhiteHallShare}</td>
-						<td>${totalInvestorNet}</td>
-						<td>${totalSellerFees}</td>
-						<td>${totalWhiteHallFees}</td>
-						<td>${totalSellerAmount}</td>
-						<td></td>
-
-					</tr>
+				
 					<c:choose>
 						<c:when test="${fn:length(trades) gt 0}">
+							<tr>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td>${totalTradeAmount}</td>
+								<td></td>
+								<td>${totalInvestorProfit}</td>
+								<td>${totalWhiteHallShare}</td>
+								<td>${totalInvestorNet}</td>
+								<td>${totalSellerFees}</td>
+								<td>${totalWhiteHallFees}</td>
+								<td>${totalSellerAmount}</td>
+								<td></td>
+		
+							</tr>
 							<c:forEach items="${trades}" var="trade">
 								<tr>
 									
@@ -195,7 +168,7 @@
 								</c:when>
 						<c:otherwise>
 							<tr>
-								<td colspan="9" align="center">No records found!</td>
+								<td colspan="12" align="center">No records found!</td>
 							</tr>
 						</c:otherwise>
 					</c:choose>
