@@ -1,13 +1,10 @@
 
 package com.tf.dao.impl;
 
-import com.tf.dao.SCFTradeDAO;
-import com.tf.model.SCFTrade;
-import com.tf.util.ValidationUtil;
-
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -15,19 +12,21 @@ import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
 import org.hibernate.Hibernate;
 import org.hibernate.Query;
+import org.hibernate.Session;
 import org.hibernate.criterion.CriteriaSpecification;
-import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.MatchMode;
-import org.hibernate.criterion.Projection;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
-import org.hibernate.criterion.Subqueries;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
+
+import com.tf.dao.SCFTradeDAO;
+import com.tf.model.SCFTrade;
+import com.tf.util.ValidationUtil;
 
 @Repository
 @Transactional
@@ -46,18 +45,18 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 
 		_log.debug("Inside getScfTrades  ");
 		try {
-			
-			Criteria criteria =
-				(Criteria) sessionFactory.getCurrentSession().createCriteria(SCFTrade.class);
-			criteria.setFirstResult(startIndex).setMaxResults(pageSize);
-			
-			/*((Criteria) prList).setFetchMode(
-					"invoices", FetchMode.JOIN).setFetchMode("allotments", FetchMode.JOIN).setResultTransformer(
-					CriteriaSpecification.DISTINCT_ROOT_ENTITY);*/
-			 List<SCFTrade> results =(List<SCFTrade>) criteria.setFetchMode("invoices", FetchMode.JOIN)
-				.setFetchMode("allotments", FetchMode.JOIN)
-				.list();
-			 System.out.println("resultsresults:"+results);
+			List<SCFTrade> results =new ArrayList<SCFTrade>();
+			Collection<Long> ids = getIDListForPagination(startIndex, pageSize);
+			if(!ids.isEmpty()) {
+		        Session session = sessionFactory.getCurrentSession();
+		        Criteria criteria = session.createCriteria(SCFTrade.class)
+		        					.add(Restrictions.in("id", ids))
+		        					.setFetchMode("invoices", FetchMode.JOIN)
+		        					.setFetchMode("allotments", FetchMode.JOIN)
+		        					.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		        results = (List<SCFTrade>) criteria.list(); 
+		        
+			}
 			_log.debug("getScfTrades successful, result size: " + results.size());
 			return results;
 		}
@@ -255,11 +254,19 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 
 		_log.debug("Inside getScfTrades ");
 		try {
-             Criteria criteria =sessionFactory.getCurrentSession().createCriteria(SCFTrade.class).add(Restrictions.eq("company.id", companyID)).setFirstResult(startIndex).setMaxResults(
-					pageSize);
-			List<SCFTrade> results =
-				(List<SCFTrade>) criteria.setFetchMode(
-					"invoices", FetchMode.JOIN)/*.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY).*/.list();
+			
+			List<SCFTrade> results =new ArrayList<SCFTrade>();
+			Collection<Long> ids = getIDListForPagination(startIndex, pageSize);
+			if(!ids.isEmpty()) {
+		        Session session = sessionFactory.getCurrentSession();
+		        Criteria criteria = session.createCriteria(SCFTrade.class)
+		        					.add(Restrictions.in("id", ids))
+		        					.add(Restrictions.eq("company.id", companyID))
+		        					.setFetchMode("invoices", FetchMode.JOIN)
+		        					.setFetchMode("allotments", FetchMode.JOIN)
+		        					.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		        results = (List<SCFTrade>) criteria.list(); 
+			}
 			_log.debug("getScfTrades successful, result size: " + results.size());
 			return results;
 		}
@@ -325,12 +332,14 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 	public Long getScfTradeCounts(String regNum) {
 
 		_log.debug("Inside getScfTradeCounts ");
-		try {
+		try {			
 			Criteria criteria = sessionFactory.getCurrentSession().createCriteria(SCFTrade.class);
 			criteria.createAlias("invoices", "inv");
+			ProjectionList prList = Projections.projectionList();
+			prList.add((Projections.distinct(Projections.property("inv.scfTrade"))));
+			criteria.setProjection(prList);
 			Long resultCount =
-				(Long) criteria.add(Restrictions.eq("inv.sellerCompanyRegistrationNumber", regNum)).setResultTransformer(
-					CriteriaSpecification.DISTINCT_ROOT_ENTITY).setProjection(Projections.rowCount()).uniqueResult();
+				(Long) criteria.add(Restrictions.eq("inv.sellerCompanyRegistrationNumber", regNum)).setProjection(Projections.countDistinct("inv.scfTrade")).uniqueResult();
 
 			_log.debug("getScfTradeCounts Count " + resultCount);
 			return resultCount;
@@ -951,5 +960,17 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 			throw re;
 		}
 
+	}
+	
+	public Collection<Long> getIDListForPagination(int startIndex, int pageSize) {
+	    Session session = sessionFactory.getCurrentSession();
+
+	    Criteria criteria = session.createCriteria(SCFTrade.class)
+	    					.setProjection(Projections.id());
+	    	criteria.setFirstResult(startIndex);
+	    	criteria.setMaxResults(pageSize);
+	    @SuppressWarnings("unchecked")
+	    Collection<Long> ids = criteria.list();
+	    return ids;
 	}
 }

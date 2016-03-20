@@ -286,7 +286,6 @@ public class SCFTradeController {
 		}
 		model.put("scfTradeModel", scfTradeDTO);
 		model.put("company", company);
-
 		return new ModelAndView("createscftrade", model);
 
 	}
