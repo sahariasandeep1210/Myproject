@@ -171,6 +171,26 @@
 									<td>${trade.sellerNetAllotment}</td>	
 									<td>${trade.status}</td>						
 								</tr>
+								<c:if test="${fn:length(trade.allotments) gt 0}">
+									<c:forEach items="${trade.allotments}" var="allotment">
+										<tr>
+											<td></td>
+											<td></td>
+											<td>${allotment.investorPortfolio.investor.company.name}</td> 
+											<td>${allotment.allotmentAmount}</td>
+											<td>${allotment.marketDiscount}</td>
+											<td>${allotment.investorGrossProfit}</td>
+											<td>${allotment.whitehallProfitShare}</td>
+											<td>${allotment.investorNetProfit}</td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											
+										</tr>
+										
+									</c:forEach>
+								</c:if>
 								</c:forEach>
 								</c:when>
 						<c:otherwise>

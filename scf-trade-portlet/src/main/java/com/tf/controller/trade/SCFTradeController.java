@@ -1,3 +1,4 @@
+
 package com.tf.controller.trade;
 
 import com.google.gson.Gson;
@@ -74,15 +75,13 @@ import org.springframework.web.portlet.bind.annotation.ResourceMapping;
  * screens
  * 
  * @author Gautam Sharma
- * 
  */
 @Controller
 @RequestMapping(value = "VIEW")
 public class SCFTradeController {
 
-	protected Log _log = LogFactoryUtil.getLog(SCFTradeController.class
-			.getName());
-	private  final static String ACTIVETAB="activetab";	
+	protected Log _log = LogFactoryUtil.getLog(SCFTradeController.class.getName());
+	private final static String ACTIVETAB = "activetab";
 
 	@Autowired
 	private SCFTradeService scfTradeService;
@@ -109,44 +108,42 @@ public class SCFTradeController {
 	public void binder(WebDataBinder binder) {
 
 		binder.registerCustomEditor(Date.class, new PropertyEditorSupport() {
+
 			public void setAsText(String value) {
+
 				try {
 					setValue(new SimpleDateFormat("MM/dd/yyyy").parse(value));
-				} catch (Exception e) {
+				}
+				catch (Exception e) {
 					setValue(null);
 				}
 			}
 
 			public String getAsText() {
+
 				if (getValue() != null) {
-					return new SimpleDateFormat("MM/dd/yyyy")
-							.format((Date) getValue());
-				} else {
+					return new SimpleDateFormat("MM/dd/yyyy").format((Date) getValue());
+				}
+				else {
 					return null;
 				}
 			}
 		});
 
-		binder.registerCustomEditor(Long.class, new MyCustomNumberEditor(
-				Long.class, true));
+		binder.registerCustomEditor(Long.class, new MyCustomNumberEditor(Long.class, true));
 	}
 
 	@RenderMapping
-	protected ModelAndView renderTradeList(ModelMap model,
-			RenderRequest request, RenderResponse response) throws Exception {
+	protected ModelAndView renderTradeList(ModelMap model, RenderRequest request, RenderResponse response)
+		throws Exception {
+
 		List<SCFTrade> scftrades = null;
-		List<Invoice> invoices = null;
-
-		SCFTrade scfTrade = null;
 		String viewName = "";
-		ThemeDisplay themeDisplay = (ThemeDisplay) request
-				.getAttribute(WebKeys.THEME_DISPLAY);
+		ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
 		Long noOfRecords = 0l;
-		PaginationModel paginationModel = paginationUtil
-				.preparePaginationModel(request);
+		PaginationModel paginationModel = paginationUtil.preparePaginationModel(request);
 
-		PermissionChecker permissionChecker = themeDisplay
-				.getPermissionChecker();
+		PermissionChecker permissionChecker = themeDisplay.getPermissionChecker();
 
 		if (permissionChecker.isOmniadmin()) {
 			BigDecimal totalTradeAmount = BigDecimal.ZERO;
@@ -157,17 +154,16 @@ public class SCFTradeController {
 			BigDecimal totalWhiteHallFees = BigDecimal.ZERO;
 			BigDecimal totalSellerAmount = BigDecimal.ZERO;
 
-			scftrades = scfTradeService.getScfTrades(paginationModel.getStartIndex(),
-					paginationModel.getPageSize());
+			scftrades = scfTradeService.getScfTrades(paginationModel.getStartIndex(), paginationModel.getPageSize());
 			noOfRecords = scfTradeService.getScfTradesCount();
-			for(SCFTrade scf:scftrades){
-				totalTradeAmount=totalTradeAmount.add(scf.getTradeAmount());
-				totalInvestorProfit=totalInvestorProfit.add(scf.getInvestorTotalGross());
-				totalWhiteHallShare=totalWhiteHallShare.add(scf.getWhitehallTotalShare());
-				totalInvestorNet=totalInvestorNet.add(scf.getInvestorTotalProfit());
-				totalSellerFees=totalSellerFees.add(scf.getSellerFees());
-				totalWhiteHallFees=totalWhiteHallFees.add(scf.getWhitehallTotalProfit());
-				totalSellerAmount=totalSellerAmount.add(scf.getSellerNetAllotment());
+			for (SCFTrade scf : scftrades) {
+				totalTradeAmount = totalTradeAmount.add(scf.getTradeAmount());
+				totalInvestorProfit = totalInvestorProfit.add(scf.getInvestorTotalGross());
+				totalWhiteHallShare = totalWhiteHallShare.add(scf.getWhitehallTotalShare());
+				totalInvestorNet = totalInvestorNet.add(scf.getInvestorTotalProfit());
+				totalSellerFees = totalSellerFees.add(scf.getSellerFees());
+				totalWhiteHallFees = totalWhiteHallFees.add(scf.getWhitehallTotalProfit());
+				totalSellerAmount = totalSellerAmount.add(scf.getSellerNetAllotment());
 			}
 			model.put("userType", Constants.ADMIN);
 			model.put("totalTradeAmount", totalTradeAmount);
@@ -180,30 +176,30 @@ public class SCFTradeController {
 			model.put(ACTIVETAB, "admintradelist");
 
 			viewName = "admintradelist";
-		} else if (request.isUserInRole(Constants.SCF_ADMIN)) {
+		}
+		else if (request.isUserInRole(Constants.SCF_ADMIN)) {
 			BigDecimal totalTradeAmount = BigDecimal.ZERO;
 
-			long companyId = userService.getCompanybyUserID(
-					themeDisplay.getUserId()).getId();
-			scftrades = scfTradeService.getScfTrades(companyId,paginationModel.getStartIndex(),
-					paginationModel.getPageSize());
-			noOfRecords=scfTradeService.getScfTradesCount(companyId);
-			for(SCFTrade scf:scftrades){
-				totalTradeAmount=totalTradeAmount.add(scf.getTradeAmount());
+			long companyId = userService.getCompanybyUserID(themeDisplay.getUserId()).getId();
+			scftrades = scfTradeService.getScfTrades(companyId, paginationModel.getStartIndex(), paginationModel.getPageSize());
+			noOfRecords = scfTradeService.getScfTradesCount(companyId);
+			for (SCFTrade scf : scftrades) {
+				totalTradeAmount = totalTradeAmount.add(scf.getTradeAmount());
 			}
 			model.put("totalTradeAmount", totalTradeAmount);
 			viewName = "tradelist";
-		} else if (request.isUserInRole(Constants.SELLER_ADMIN)) {
+		}
+		else if (request.isUserInRole(Constants.SELLER_ADMIN)) {
 
 			String regNum = liferayUtility.getWhiteHallComapanyRegNo(request);
-			scftrades=scfTradeService.getScfTradeList(regNum, paginationModel.getStartIndex(), paginationModel.getPageSize());
+			scftrades = scfTradeService.getScfTradeList(regNum, paginationModel.getStartIndex(), paginationModel.getPageSize());
 			noOfRecords = scfTradeService.getScfTradeCounts(regNum);
-     		viewName = "sellertradelist";
+			viewName = "sellertradelist";
 		}
 		model.put("trades", scftrades);
 
 		paginationUtil.setPaginationInfo(noOfRecords, paginationModel);
-        System.out.println("paginationsss:"+paginationModel);
+		System.out.println("paginationsss:" + paginationModel);
 		model.put("paginationModel", paginationModel);
 
 		return new ModelAndView(viewName, model);
@@ -211,84 +207,81 @@ public class SCFTradeController {
 
 	@RenderMapping(params = "render=tradeHistory")
 	protected ModelAndView renderTradeHistory(
-			@ModelAttribute("tradehistoryModel") SCFTradeDTO scfTradeDTO,
-			ModelMap model, RenderRequest request, RenderResponse response)
-			throws Exception {
+		@ModelAttribute("tradehistoryModel") SCFTradeDTO scfTradeDTO, ModelMap model, RenderRequest request, RenderResponse response)
+		throws Exception {
+
 		System.out.println("iam coming from get methiod");
-		 List<SCFTrade> scfTrades=null;
-		 BigDecimal totalTradeAmount = BigDecimal.ZERO;
-		 Long noOfRecords = 0l;
-		 PaginationModel paginationModel = paginationUtil
-					.preparePaginationModel(request);
-		scfTrades=scfTradeService.getTradeHistoryList(paginationModel.getStartIndex(),
-				paginationModel.getPageSize());
-		 noOfRecords = scfTradeService.getScfTradesHistoryCount();
-		System.out.println("noOfRecordsSSSSS:"+scfTrades);
-		for(SCFTrade scf:scfTrades){
-			totalTradeAmount=totalTradeAmount.add(scf.getTradeAmount());
+		List<SCFTrade> scfTrades = null;
+		BigDecimal totalTradeAmount = BigDecimal.ZERO;
+		Long noOfRecords = 0l;
+		PaginationModel paginationModel = paginationUtil.preparePaginationModel(request);
+		scfTrades = scfTradeService.getTradeHistoryList(paginationModel.getStartIndex(), paginationModel.getPageSize());
+		noOfRecords = scfTradeService.getScfTradesHistoryCount();
+		System.out.println("noOfRecordsSSSSS:" + scfTrades);
+		for (SCFTrade scf : scfTrades) {
+			totalTradeAmount = totalTradeAmount.add(scf.getTradeAmount());
 		}
 		paginationUtil.setPaginationInfo(noOfRecords, paginationModel);
-        System.out.println("paginationsss:"+paginationModel);
+		System.out.println("paginationsss:" + paginationModel);
 		model.put("paginationModel", paginationModel);
 		model.put(ACTIVETAB, "tradehistory");
 		model.put("scfTradesHistory", scfTrades);
 		model.put("totalTradeAmount", totalTradeAmount);
 		model.put("userType", Constants.ADMIN);
 
-	    return new ModelAndView("tradehistory", model);	
+		return new ModelAndView("tradehistory", model);
 	}
-	@RenderMapping(params = "render=singleHistory")
-	protected ModelAndView rendersingleHistory(ModelMap model,
-			RenderRequest request, RenderResponse response) {
-		 List<SCFTrade> scfTrades=null;
-		 BigDecimal totalTradeAmount = BigDecimal.ZERO;
 
-		 Long noOfRecords = 0l;
-		 PaginationModel paginationModel = paginationUtil
-					.preparePaginationModel(request);
+	@RenderMapping(params = "render=singleHistory")
+	protected ModelAndView rendersingleHistory(ModelMap model, RenderRequest request, RenderResponse response) {
+
+		List<SCFTrade> scfTrades = null;
+		BigDecimal totalTradeAmount = BigDecimal.ZERO;
+
+		Long noOfRecords = 0l;
+		PaginationModel paginationModel = paginationUtil.preparePaginationModel(request);
 		Long compID = ParamUtil.getLong(request, "compID");
-		scfTrades=scfTradeService.getTradeHistoryByComapnyId(compID,paginationModel.getStartIndex(),
-				paginationModel.getPageSize());
-		noOfRecords=scfTradeService.getHistoryCount(compID);
-		for(SCFTrade scf:scfTrades){
-			totalTradeAmount=totalTradeAmount.add(scf.getTradeAmount());
+		scfTrades = scfTradeService.getTradeHistoryByComapnyId(compID, paginationModel.getStartIndex(), paginationModel.getPageSize());
+		noOfRecords = scfTradeService.getHistoryCount(compID);
+		for (SCFTrade scf : scfTrades) {
+			totalTradeAmount = totalTradeAmount.add(scf.getTradeAmount());
 		}
 		paginationUtil.setPaginationInfo(noOfRecords, paginationModel);
-        System.out.println("paginationsss:"+paginationModel);
+		System.out.println("paginationsss:" + paginationModel);
 		model.put("paginationModel", paginationModel);
 		model.put("scfTradesHistory", scfTrades);
 		model.put("totalTradeAmount", totalTradeAmount);
-         model.put("compID", compID);
+		model.put("compID", compID);
 
 		return new ModelAndView("singlehistorytrade", model);
 	}
-	@ActionMapping(params="page=historyBack")
-	protected void pageBack(ModelMap model,
-			ActionRequest request, ActionResponse response){
-        response.setRenderParameter("render", "tradeHistory");
+
+	@ActionMapping(params = "page=historyBack")
+	protected void pageBack(ModelMap model, ActionRequest request, ActionResponse response) {
+
+		response.setRenderParameter("render", "tradeHistory");
 
 	}
-	
+
 	@RenderMapping(params = "render=createTrade")
 	protected ModelAndView renderCreateTrade(
-			@ModelAttribute("scfTradeModel") SCFTradeDTO scfTradeDTO,
-			ModelMap model, RenderRequest request, RenderResponse response)
-			throws Exception {
+		@ModelAttribute("scfTradeModel") SCFTradeDTO scfTradeDTO, ModelMap model, RenderRequest request, RenderResponse response)
+		throws Exception {
+
 		Long tradeID = ParamUtil.getLong(request, "tradeID");
-		Invoice invoice=invoiceService.getInvoicesBytradeId(tradeID);
-		Company company=companyService.getCompaniesByRegNum(invoice.getSellerCompanyRegistrationNumber());
-		System.out.println("Dhanush123:"+invoice);
+		Invoice invoice = invoiceService.getInvoicesBytradeId(tradeID);
+		Company company = companyService.getCompaniesByRegNum(invoice.getSellerCompanyRegistrationNumber());
+		System.out.println("Dhanush123:" + invoice);
 		if (tradeID == null || tradeID == 0) {
 			String invoiceIds = ParamUtil.getString(request, "invoices");
-			Map<Company, BigDecimal> invoiceMap = invoiceService
-					.getInvoicesAmount(invoiceIds);
-			Map.Entry<Company, BigDecimal> entry = invoiceMap.entrySet()
-					.iterator().next();
+			Map<Company, BigDecimal> invoiceMap = invoiceService.getInvoicesAmount(invoiceIds);
+			Map.Entry<Company, BigDecimal> entry = invoiceMap.entrySet().iterator().next();
 			scfTradeDTO.setTradeAmount(entry.getValue());
 			scfTradeDTO.setCompany(entry.getKey());
 			model.put("invoiceList", invoiceService.getInvoices(invoiceIds));
 			model.put("invoiceIds", invoiceIds);
-		} else {
+		}
+		else {
 			SCFTrade scfTrade = scfTradeService.findById(tradeID);
 			scfTradeDTO = transformTOScfTradeDTO(scfTrade);
 			model.put("invoiceList", scfTrade.getInvoices());
@@ -302,12 +295,11 @@ public class SCFTradeController {
 	}
 
 	@RenderMapping(params = "render=singleTrade")
-	protected ModelAndView renderSingleTrade(ModelMap model,
-			RenderRequest request, RenderResponse response) {
+	protected ModelAndView renderSingleTrade(ModelMap model, RenderRequest request, RenderResponse response) {
+
 		Long tradeID = ParamUtil.getLong(request, "tradeID");
 		SCFTrade scfTrade = scfTradeService.findById(tradeID);
-		List<Allotment> allotmentList = allotmentService
-				.groupAllotmentbyBps(tradeID);
+		List<Allotment> allotmentList = allotmentService.groupAllotmentbyBps(tradeID);
 		long companyId = liferayUtility.getWhitehallCompanyID(request);
 		Company company = companyService.findById(companyId);
 		model.put("allotments", allotmentList);
@@ -319,21 +311,17 @@ public class SCFTradeController {
 	}
 
 	@ActionMapping(params = "action=saveTrade")
-	protected void saveTarde(
-			@ModelAttribute("scfTradeModel") SCFTradeDTO scfTradeDTO,
-			ModelMap model, ActionRequest request, ActionResponse response)
-			throws Exception {
+	protected void saveTarde(@ModelAttribute("scfTradeModel") SCFTradeDTO scfTradeDTO, ModelMap model, ActionRequest request, ActionResponse response)
+		throws Exception {
+
 		try {
 
-			ThemeDisplay themeDisplay = (ThemeDisplay) request
-					.getAttribute(WebKeys.THEME_DISPLAY);
+			ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
 			long currentSideID = themeDisplay.getScopeGroupId();
 			long parentFolderId = DLFolderConstants.DEFAULT_PARENT_FOLDER_ID;
-			ServiceContext serviceContextDlFolder = ServiceContextFactory
-					.getInstance(DLFolder.class.getName(), request);
+			ServiceContext serviceContextDlFolder = ServiceContextFactory.getInstance(DLFolder.class.getName(), request);
 			Folder parentfolder = null;
-			parentfolder = DLAppServiceUtil.getFolder(currentSideID, 0,
-					"Insurance");
+			parentfolder = DLAppServiceUtil.getFolder(currentSideID, 0, "Insurance");
 			if (parentfolder != null) {
 				parentFolderId = parentfolder.getFolderId();
 			}
@@ -344,19 +332,15 @@ public class SCFTradeController {
 			scfTrade.setStatus(TradeStatus.NEW.getValue());
 			scfTrade = scfTradeService.save(scfTrade);
 			if (!StringUtils.isNullOrEmpty(scfTradeDTO.getInvoiceIds())) {
-				List<String> invoicesIdList = Arrays.asList(scfTradeDTO
-						.getInvoiceIds().split(","));
-				invoiceService.updateInvoicesStatusWithTrade(invoicesIdList,
-						InvoiceStatus.TRADE_GENERATED.getValue(),
-						scfTrade.getId());
+				List<String> invoicesIdList = Arrays.asList(scfTradeDTO.getInvoiceIds().split(","));
+				invoiceService.updateInvoicesStatusWithTrade(invoicesIdList, InvoiceStatus.TRADE_GENERATED.getValue(), scfTrade.getId());
 			}
 
 			if (scfTrade.getWantToInsure()) {
-				addInsuranceDocument(scfTradeDTO, request, themeDisplay,
-						currentSideID, parentFolderId, serviceContextDlFolder,
-						scfTrade);
+				addInsuranceDocument(scfTradeDTO, request, themeDisplay, currentSideID, parentFolderId, serviceContextDlFolder, scfTrade);
 			}
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			e.printStackTrace();
 			_log.error("Error Occured while saving Trade" + e.getMessage());
 		}
@@ -364,42 +348,36 @@ public class SCFTradeController {
 	}
 
 	@ResourceMapping("breakdownURL")
-	public ModelAndView fetchAllotmentBreak(ResourceRequest request,
-			ResourceResponse response, ModelMap modelMap) throws IOException {
+	public ModelAndView fetchAllotmentBreak(ResourceRequest request, ResourceResponse response, ModelMap modelMap)
+		throws IOException {
+
 		long tradeID = ParamUtil.getLong(request, "tradeID", 0);
-		List<Allotment> allotmentList = allotmentService
-				.getALlotmentsbyTrade(tradeID);
+		List<Allotment> allotmentList = allotmentService.getALlotmentsbyTrade(tradeID);
 		modelMap.put("allotmentList", allotmentList);
 		modelMap.put("tradeID", tradeID);
 		return new ModelAndView("allotmentbreakup");
 	}
 
-	private void addInsuranceDocument(SCFTradeDTO scfTradeDTO,
-			ActionRequest request, ThemeDisplay themeDisplay,
-			long currentSideID, long parentFolderId,
-			ServiceContext serviceContextDlFolder, SCFTrade scfTrade)
-			throws PortalException, SystemException, IOException {
+	private void addInsuranceDocument(
+		SCFTradeDTO scfTradeDTO, ActionRequest request, ThemeDisplay themeDisplay, long currentSideID, long parentFolderId,
+		ServiceContext serviceContextDlFolder, SCFTrade scfTrade)
+		throws PortalException, SystemException, IOException {
+
 		FileEntry fileEntry;
 		Folder folder;
 		scfTrade = scfTradeService.findById(scfTrade.getId());
-		folder = DLAppServiceUtil.addFolder(currentSideID, parentFolderId,
-				scfTrade.getId().toString(), "Trade Insurance Folder",
-				serviceContextDlFolder);
-		String mimeType = MimeTypesUtil.getContentType(scfTradeDTO
-				.getInsuranceDocument().getInputStream(), scfTradeDTO
-				.getInsuranceDocument().getName());
-		ServiceContext serviceContext = ServiceContextFactory.getInstance(
-				DLFileEntry.class.getName(), request);
-		fileEntry = DLAppServiceUtil.addFileEntry(themeDisplay
-				.getScopeGroupId(), folder.getFolderId(), scfTradeDTO
-				.getInsuranceDocument().getOriginalFilename(), mimeType,
-				scfTradeDTO.getInsuranceDocument().getOriginalFilename(),
-				scfTradeDTO.getInsuranceDocument().getOriginalFilename(),
-				"upload", scfTradeDTO.getInsuranceDocument().getInputStream(),
-				scfTradeDTO.getInsuranceDocument().getSize(), serviceContext);
+		folder =
+			DLAppServiceUtil.addFolder(currentSideID, parentFolderId, scfTrade.getId().toString(), "Trade Insurance Folder", serviceContextDlFolder);
+		String mimeType =
+			MimeTypesUtil.getContentType(scfTradeDTO.getInsuranceDocument().getInputStream(), scfTradeDTO.getInsuranceDocument().getName());
+		ServiceContext serviceContext = ServiceContextFactory.getInstance(DLFileEntry.class.getName(), request);
+		fileEntry =
+			DLAppServiceUtil.addFileEntry(
+				themeDisplay.getScopeGroupId(), folder.getFolderId(), scfTradeDTO.getInsuranceDocument().getOriginalFilename(), mimeType,
+				scfTradeDTO.getInsuranceDocument().getOriginalFilename(), scfTradeDTO.getInsuranceDocument().getOriginalFilename(), "upload",
+				scfTradeDTO.getInsuranceDocument().getInputStream(), scfTradeDTO.getInsuranceDocument().getSize(), serviceContext);
 		scfTrade.setInsuranceDocId(fileEntry.getFileEntryId());
-		scfTrade.setInsuranceDocName(scfTradeDTO.getInsuranceDocument()
-				.getOriginalFilename());
+		scfTrade.setInsuranceDocName(scfTradeDTO.getInsuranceDocument().getOriginalFilename());
 		scfTrade.setInsuranceDocUrl(getUrl(themeDisplay, fileEntry));
 		scfTrade.setInsuranceDocType(mimeType);
 		scfTrade.setUpdatDate(new Date());
@@ -407,91 +385,109 @@ public class SCFTradeController {
 		scfTradeService.updateTrade(scfTrade);
 	}
 
+	@SuppressWarnings("unchecked")
 	@ActionMapping(params = "action=updateStatus")
-	protected void saveTarde(ModelMap model, ActionRequest request,
-			ActionResponse response) throws Exception {
+	protected void saveTarde(ModelMap model, ActionRequest request, ActionResponse response)
+		throws Exception {
+
 		Long tradeID = ParamUtil.getLong(request, "tradeID");
 		String status = ParamUtil.getString(request, "status");
 		SCFTrade scfTrade = scfTradeService.findById(tradeID);
 		scfTrade.setStatus(status);
 		scfTradeService.updateTradeLifeCycle(scfTrade);
-		
-		PortletConfig portletConfig = (PortletConfig)request.getAttribute(JavaConstants.JAVAX_PORTLET_CONFIG);
-		
-		if(TradeStatus.ALLOTMENT_PAID.getValue().equalsIgnoreCase(status)){
+
+		PortletConfig portletConfig = (PortletConfig) request.getAttribute(JavaConstants.JAVAX_PORTLET_CONFIG);
+
+		if (TradeStatus.ALLOTMENT_PAID.getValue().equalsIgnoreCase(status)) {
 			// Email Notification
-		 	try {					
-		 		String articleName =  "create-invoice-by-scf-company"; // Web Content's UrlTitle							
+			try {
+				String articleName = "create-invoice-by-scf-company"; // Web
+																		// Content's
+																		// UrlTitle
 				String content = liferayUtility.getContentByURLTitle(request, articleName);
 				List<Invoice> invlist = (List<Invoice>) scfTrade.getInvoices();
-				content = content.replaceAll("\\[PH-NAME\\]", "");						
+				content = content.replaceAll("\\[PH-NAME\\]", "");
 				content = content.replaceAll("\\[PH-REGARDS\\]", "White Hall Finance");
-				String tempstart = "<table border=\"1\" cellpadding=\"1\" cellspacing=\"1\" style=\"width:500px;\"><tbody><tr><td><strong>Invoice Number</strong></td><td><strong>Invoice Amount</strong></td><td><strong>Date&nbsp;</strong></td></tr>";
+				String tempstart =
+					"<table border=\"1\" cellpadding=\"1\" cellspacing=\"1\" style=\"width:500px;\"><tbody><tr><td><strong>Invoice Number</strong></td><td><strong>Invoice Amount</strong></td><td><strong>Date&nbsp;</strong></td></tr>";
 				String tempend = "</tbody></table>";
 				String middle = "";
-				for(Invoice inv : invlist){
-					middle = "<tr><td>"+ inv.getInvoiceNumber()+"</td><td>"+inv.getInvoiceAmount()+"</td><td>"+inv.getInvoiceDate()+"</td></tr>";
+				for (Invoice inv : invlist) {
+					middle =
+						"<tr><td>" + inv.getInvoiceNumber() + "</td><td>" + inv.getInvoiceAmount() + "</td><td>" + inv.getInvoiceDate() +
+							"</td></tr>";
 				}
-				String tempstr = tempstart + middle +tempend;
+				String tempstr = tempstart + middle + tempend;
 				content = content.replaceAll("\\[PH-CONTENT\\]", tempstr);
-				
-				String from = LanguageUtil.get(portletConfig, request.getLocale(), "invoice.sender.email");								
-				//String to = userService.findUserOjectByCompanyId(invoiceModel.getScfCompany().getId());
+
+				String from = LanguageUtil.get(portletConfig, request.getLocale(), "invoice.sender.email");
+				// String to =
+				// userService.findUserOjectByCompanyId(invoiceModel.getScfCompany().getId());
 				String to = "gautam.tf2015@gmail.com";
 
-				System.out.println("\ncontent - "+content);
-				System.out.println("\nfrom - "+from);
-				System.out.println("\nto - "+to);
-				System.out.println("\ntempstr - "+tempstr);
-				
-				if(!content.endsWith("") &&!from.endsWith("") && !to.endsWith("")){	
+				System.out.println("\ncontent - " + content);
+				System.out.println("\nfrom - " + from);
+				System.out.println("\nto - " + to);
+				System.out.println("\ntempstr - " + tempstr);
+
+				if (!content.endsWith("") && !from.endsWith("") && !to.endsWith("")) {
 					liferayUtility.sendEmail(request, from, to, "Your invoice has been created.", content);
 				}
-			
-			} catch (Exception e) {
-				e.printStackTrace();
+
 			}
-		}else if(TradeStatus.SUPPLIER_PAID.getValue().equalsIgnoreCase(status)){
-			// Email Notification
-		 	try {					
-		 		String articleName =  "create-invoice-by-scf-company"; // Web Content's UrlTitle							
-				String content = liferayUtility.getContentByURLTitle(request, articleName);
-			
-				List<Invoice> invlist = (List<Invoice>) scfTrade.getInvoices();
-				content = content.replaceAll("\\[PH-NAME\\]", "");						
-				content = content.replaceAll("\\[PH-REGARDS\\]", "White Hall Finance");
-				String tempstart = "<table border=\"1\" cellpadding=\"1\" cellspacing=\"1\" style=\"width:500px;\"><tbody><tr><td><strong>Invoice Number</strong></td><td><strong>Invoice Amount</strong></td><td><strong>Date&nbsp;</strong></td></tr>";
-				String tempend = "</tbody></table>";
-				String middle = "";
-				for(Invoice inv : invlist){
-					middle = "<tr><td>"+ inv.getInvoiceNumber()+"</td><td>"+inv.getInvoiceAmount()+"</td><td>"+inv.getInvoiceDate()+"</td></tr>";
-				}
-				String tempstr = tempstart + middle +tempend;
-				content = content.replaceAll("\\[PH-CONTENT\\]", tempstr);
-				
-				String from = LanguageUtil.get(portletConfig, request.getLocale(), "invoice.sender.email");								
-				//String to = userService.findUserOjectByCompanyId(invoiceModel.getScfCompany().getId());
-				String to = "gautam.tf2015@gmail.com";
-
-				System.out.println("\ncontent - "+content);
-				System.out.println("\nfrom - "+from);
-				System.out.println("\nto - "+to);
-				System.out.println("\ntempstr - "+tempstr);
-				
-				if(!content.endsWith("") &&!from.endsWith("") && !to.endsWith("")){	
-					liferayUtility.sendEmail(request, from, to, "Your invoice has been created.", content);
-				}
-			
-			} catch (Exception e) {
+			catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
-		
+		else if (TradeStatus.SUPPLIER_PAID.getValue().equalsIgnoreCase(status)) {
+			// Email Notification
+			try {
+				String articleName = "create-invoice-by-scf-company"; // Web
+																		// Content's
+																		// UrlTitle
+				String content = liferayUtility.getContentByURLTitle(request, articleName);
+
+				List<Invoice> invlist = (List<Invoice>) scfTrade.getInvoices();
+				content = content.replaceAll("\\[PH-NAME\\]", "");
+				content = content.replaceAll("\\[PH-REGARDS\\]", "White Hall Finance");
+				String tempstart =
+					"<table border=\"1\" cellpadding=\"1\" cellspacing=\"1\" style=\"width:500px;\"><tbody><tr><td><strong>Invoice Number</strong></td><td><strong>Invoice Amount</strong></td><td><strong>Date&nbsp;</strong></td></tr>";
+				String tempend = "</tbody></table>";
+				String middle = "";
+				for (Invoice inv : invlist) {
+					middle =
+						"<tr><td>" + inv.getInvoiceNumber() + "</td><td>" + inv.getInvoiceAmount() + "</td><td>" + inv.getInvoiceDate() +
+							"</td></tr>";
+				}
+				String tempstr = tempstart + middle + tempend;
+				content = content.replaceAll("\\[PH-CONTENT\\]", tempstr);
+
+				String from = LanguageUtil.get(portletConfig, request.getLocale(), "invoice.sender.email");
+				// String to =
+				// userService.findUserOjectByCompanyId(invoiceModel.getScfCompany().getId());
+				String to = "gautam.tf2015@gmail.com";
+
+				System.out.println("\ncontent - " + content);
+				System.out.println("\nfrom - " + from);
+				System.out.println("\nto - " + to);
+				System.out.println("\ntempstr - " + tempstr);
+
+				if (!content.endsWith("") && !from.endsWith("") && !to.endsWith("")) {
+					liferayUtility.sendEmail(request, from, to, "Your invoice has been created.", content);
+				}
+
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+
 		System.out.println("tradeID::" + tradeID + " status " + status);
 
 	}
 
 	private SCFTrade transformTOScfTrade(SCFTradeDTO scfTradeDTO) {
+
 		SCFTrade scfTrade = new SCFTrade();
 		scfTrade.setClosingDate(scfTradeDTO.getClosingDate());
 		scfTrade.setCompany(scfTradeDTO.getCompany());
@@ -507,12 +503,12 @@ public class SCFTradeController {
 		scfTrade.setTradeNotes(scfTradeDTO.getTradeNotes());
 		scfTrade.setTradeSettled(scfTradeDTO.getTradeSettled());
 		scfTrade.setWantToInsure(scfTradeDTO.getWantToInsure());
-		scfTrade.setInvoices(invoiceService.getInvoices(scfTradeDTO
-				.getInvoiceIds()));
+		scfTrade.setInvoices(invoiceService.getInvoices(scfTradeDTO.getInvoiceIds()));
 		return scfTrade;
 	}
 
 	private SCFTradeDTO transformTOScfTradeDTO(SCFTrade scfTrade) {
+
 		SCFTradeDTO scfTradeDTO = new SCFTradeDTO();
 		scfTradeDTO.setId(scfTrade.getId());
 		scfTradeDTO.setClosingDate(scfTrade.getClosingDate());
@@ -535,6 +531,7 @@ public class SCFTradeController {
 	}
 
 	private String getUrl(ThemeDisplay themeDisplay, FileEntry fileEntry) {
+
 		StringBuilder sb = new StringBuilder();
 		sb.append(themeDisplay.getPortalURL());
 		sb.append("/c/document_library/get_file?uuid=");
@@ -546,11 +543,11 @@ public class SCFTradeController {
 
 	@ResourceMapping
 	public void search(ResourceRequest request, ResourceResponse response)
-			throws IOException {
+		throws IOException {
+
 		String settingmodel = null;
 
-		long searchSelection = Long.valueOf(ParamUtil.getString(request,
-				"searchSelection", ""));
+		long searchSelection = Long.valueOf(ParamUtil.getString(request, "searchSelection", ""));
 		try {
 
 			SCFTrade sellerList = scfTradeService.findById(searchSelection);
@@ -561,144 +558,160 @@ public class SCFTradeController {
 			response.getWriter().println(settingmodel);
 			System.out.println("userSelections" + settingmodel);
 
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			_log.error("Error occured while fetchSettings" + e.getMessage());
 			response.setProperty(ResourceResponse.HTTP_STATUS_CODE, "400");
 		}
 
 	}
+
 	@RenderMapping(params = "action=tradeRedirect")
-    public ModelAndView tradeRedirect(ModelMap model, RenderRequest request,
-            RenderResponse response) throws Exception { 
-		 model.put("userType", Constants.ADMIN);
-		 model.put(ACTIVETAB, "tradehistory");
-        return new ModelAndView("tradehistory",model);
-    }
+	public ModelAndView tradeRedirect(ModelMap model, RenderRequest request, RenderResponse response)
+		throws Exception {
+
+		model.put("userType", Constants.ADMIN);
+		model.put(ACTIVETAB, "tradehistory");
+		return new ModelAndView("tradehistory", model);
+	}
+
 	@RenderMapping(params = "action=singleHistory")
-    public String tradeSingleHistory(ModelMap model, RenderRequest request,
-            RenderResponse response) throws Exception { 
-        return "singlehistorytrade";
-    }
-	@ActionMapping(params="trade=getTradeHistory")
-	protected void getTradeHistory( ModelMap model,ActionRequest request,ActionResponse response) throws Exception {
+	public String tradeSingleHistory(ModelMap model, RenderRequest request, RenderResponse response)
+		throws Exception {
+
+		return "singlehistorytrade";
+	}
+
+	@ActionMapping(params = "trade=getTradeHistory")
+	protected void getTradeHistory(ModelMap model, ActionRequest request, ActionResponse response)
+		throws Exception {
+
 		DateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
-		Date fromDate=null;
-		Date toDate=null;
-		String companyName=ParamUtil.getString(request, "Search");
-        String from=ParamUtil.getString(request, "fromDate");
-        String to=ParamUtil.getString(request, "toDate");
-        if(!StringUtils.isNullOrEmpty(from)){
-        fromDate=formatter.parse(from);
-        }
-        if(!StringUtils.isNullOrEmpty(to)){
-            toDate=formatter.parse(to);
-       }
-        Long noOfRecords = 0l;
-        PaginationModel paginationModel = paginationUtil.preparePaginationModel(request);
-        List<SCFTrade> scfTradesList=scfTradeService.getScfTradeByScfCompany(companyName, fromDate, toDate,paginationModel.getStartIndex(),paginationModel.getPageSize());
-        noOfRecords=scfTradeService.getScfTradeByScfCompanyCount(companyName, fromDate, toDate);
-        paginationUtil.setPaginationInfo(noOfRecords, paginationModel);
-		 model.put("paginationModel", paginationModel);
-        System.out.println("DhanushSuccess:"+scfTradesList);
-        model.put("scfTradesList", scfTradesList);
-        response.setRenderParameter("action", "tradeRedirect");
-	
-       } 	
- 
-	@ActionMapping(params="trade=getSellerHistory")
-	protected void getSellerHistory( ModelMap model,ActionRequest request,ActionResponse response) throws Exception {
-		DateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
-		Date fromDate=null;
-		Date toDate= null;
-		List<SCFTrade> scfTradesList=null;
-		List<SCFTrade> scfTrades=null;
-		BigDecimal totalTradeAmount = BigDecimal.ZERO;
-		
-		Long compID = ParamUtil.getLong(request, "compID");
-		System.out.println("SS123:"+compID);
-		String companyName=ParamUtil.getString(request, "Search");
-        String from=ParamUtil.getString(request, "fromDate");
-        String to=ParamUtil.getString(request, "toDate");
-        if(!StringUtils.isNullOrEmpty(from)){
-        fromDate=formatter.parse(from);
-        }
-        if(!StringUtils.isNullOrEmpty(to)){
-            toDate=formatter.parse(to);
-       }
-        try{
-    	  Long noOfRecords = 0l;
-          PaginationModel paginationModel = paginationUtil.preparePaginationModel(request);
-         scfTradesList=scfTradeService.getScfTradeSellerCompany(companyName, fromDate, toDate, compID, paginationModel.getStartIndex(), paginationModel.getPageSize());
-         noOfRecords=scfTradeService.getScfTradeSellerCompanyCount(companyName, fromDate, toDate,compID);
-         paginationUtil.setPaginationInfo(noOfRecords, paginationModel);
- 		 model.put("paginationModel", paginationModel);
-         System.out.println("norecordss:"+noOfRecords);
-         System.out.println("paginationfrom get:"+paginationModel);
-         scfTrades=scfTradeService.getTradeHistoryByComapnyId(compID,paginationModel.getStartIndex(),
-				paginationModel.getPageSize());
-        System.out.println("scfTradesscfTradesscfTradesscfTrades"+scfTrades);
-        for(SCFTrade scf:scfTrades){
-			totalTradeAmount=totalTradeAmount.add(scf.getTradeAmount());
+		Date fromDate = null;
+		Date toDate = null;
+		String companyName = ParamUtil.getString(request, "Search");
+		String from = ParamUtil.getString(request, "fromDate");
+		String to = ParamUtil.getString(request, "toDate");
+		if (!StringUtils.isNullOrEmpty(from)) {
+			fromDate = formatter.parse(from);
 		}
-        System.out.println("totalTradeAmount::"+totalTradeAmount);
-        System.out.println("DhanushSuccess:"+scfTradesList);
-        model.put("scfTradesList", scfTradesList);
-        model.put("compID", compID);
-        model.put("totalTradeAmount", totalTradeAmount);
-        response.setRenderParameter("action", "singleHistory");
-
-        }catch(Exception ex){
-        	_log.error("Error occurred while filtering the sellercompany:"+ex.getMessage());
-        }
-       
-       } 	
- 
-	@RenderMapping(params = "action=getSellerTrade")
-    public String getSellerTrade(ModelMap model, RenderRequest request,
-            RenderResponse response) throws Exception { 
-		 
-        return "sellertradelist";
-    }
-	
-	@ActionMapping(params="seller=getSellerTrade")
-	protected void getSellerTrade( ModelMap model,ActionRequest request,ActionResponse response) throws Exception {
-		List<SCFTrade> trades=null;
-		List<SCFTrade> scftrades=null;
+		if (!StringUtils.isNullOrEmpty(to)) {
+			toDate = formatter.parse(to);
+		}
 		Long noOfRecords = 0l;
-		PaginationModel paginationModel = paginationUtil
-				.preparePaginationModel(request);
-		String regNum = liferayUtility.getWhiteHallComapanyRegNo(request);
-		String search=ParamUtil.getString(request, "Search");
+		PaginationModel paginationModel = paginationUtil.preparePaginationModel(request);
+		List<SCFTrade> scfTradesList =
+			scfTradeService.getScfTradeByScfCompany(companyName, fromDate, toDate, paginationModel.getStartIndex(), paginationModel.getPageSize());
+		noOfRecords = scfTradeService.getScfTradeByScfCompanyCount(companyName, fromDate, toDate);
+		paginationUtil.setPaginationInfo(noOfRecords, paginationModel);
+		model.put("paginationModel", paginationModel);
+		System.out.println("DhanushSuccess:" + scfTradesList);
+		model.put("scfTradesList", scfTradesList);
+		response.setRenderParameter("action", "tradeRedirect");
 
-		if(!StringUtils.isNullOrEmpty(search)){
-		       scftrades=scfTradeService.getScfTradeListWithSearch(search, regNum, paginationModel.getStartIndex(), paginationModel.getPageSize());
-		       noOfRecords=scfTradeService.getScfTradeListWithSearchCount(search, regNum);
-		}else{
-			trades=scfTradeService.getScfTradeList(regNum, paginationModel.getStartIndex(), paginationModel.getPageSize());
+	}
+
+	@ActionMapping(params = "trade=getSellerHistory")
+	protected void getSellerHistory(ModelMap model, ActionRequest request, ActionResponse response)
+		throws Exception {
+
+		DateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+		Date fromDate = null;
+		Date toDate = null;
+		List<SCFTrade> scfTradesList = null;
+		List<SCFTrade> scfTrades = null;
+		BigDecimal totalTradeAmount = BigDecimal.ZERO;
+
+		Long compID = ParamUtil.getLong(request, "compID");
+		System.out.println("SS123:" + compID);
+		String companyName = ParamUtil.getString(request, "Search");
+		String from = ParamUtil.getString(request, "fromDate");
+		String to = ParamUtil.getString(request, "toDate");
+		if (!StringUtils.isNullOrEmpty(from)) {
+			fromDate = formatter.parse(from);
+		}
+		if (!StringUtils.isNullOrEmpty(to)) {
+			toDate = formatter.parse(to);
+		}
+		try {
+			Long noOfRecords = 0l;
+			PaginationModel paginationModel = paginationUtil.preparePaginationModel(request);
+			scfTradesList =
+				scfTradeService.getScfTradeSellerCompany(
+					companyName, fromDate, toDate, compID, paginationModel.getStartIndex(), paginationModel.getPageSize());
+			noOfRecords = scfTradeService.getScfTradeSellerCompanyCount(companyName, fromDate, toDate, compID);
+			paginationUtil.setPaginationInfo(noOfRecords, paginationModel);
+			model.put("paginationModel", paginationModel);
+			System.out.println("norecordss:" + noOfRecords);
+			System.out.println("paginationfrom get:" + paginationModel);
+			scfTrades = scfTradeService.getTradeHistoryByComapnyId(compID, paginationModel.getStartIndex(), paginationModel.getPageSize());
+			System.out.println("scfTradesscfTradesscfTradesscfTrades" + scfTrades);
+			for (SCFTrade scf : scfTrades) {
+				totalTradeAmount = totalTradeAmount.add(scf.getTradeAmount());
+			}
+			System.out.println("totalTradeAmount::" + totalTradeAmount);
+			System.out.println("DhanushSuccess:" + scfTradesList);
+			model.put("scfTradesList", scfTradesList);
+			model.put("compID", compID);
+			model.put("totalTradeAmount", totalTradeAmount);
+			response.setRenderParameter("action", "singleHistory");
+
+		}
+		catch (Exception ex) {
+			_log.error("Error occurred while filtering the sellercompany:" + ex.getMessage());
+		}
+
+	}
+
+	@RenderMapping(params = "action=getSellerTrade")
+	public String getSellerTrade(ModelMap model, RenderRequest request, RenderResponse response)
+		throws Exception {
+
+		return "sellertradelist";
+	}
+
+	@ActionMapping(params = "seller=getSellerTrade")
+	protected void getSellerTrade(ModelMap model, ActionRequest request, ActionResponse response)
+		throws Exception {
+
+		List<SCFTrade> trades = null;
+		List<SCFTrade> scftrades = null;
+		Long noOfRecords = 0l;
+		PaginationModel paginationModel = paginationUtil.preparePaginationModel(request);
+		String regNum = liferayUtility.getWhiteHallComapanyRegNo(request);
+		String search = ParamUtil.getString(request, "Search");
+
+		if (!StringUtils.isNullOrEmpty(search)) {
+			scftrades = scfTradeService.getScfTradeListWithSearch(search, regNum, paginationModel.getStartIndex(), paginationModel.getPageSize());
+			noOfRecords = scfTradeService.getScfTradeListWithSearchCount(search, regNum);
+		}
+		else {
+			trades = scfTradeService.getScfTradeList(regNum, paginationModel.getStartIndex(), paginationModel.getPageSize());
 			noOfRecords = scfTradeService.getScfTradeCounts(regNum);
 		}
-        
+
 		paginationUtil.setPaginationInfo(noOfRecords, paginationModel);
 		model.put("trades", trades);
 		model.put("scftrades", scftrades);
 		model.put("paginationModel", paginationModel);
 		response.setRenderParameter("action", "getSellerTrade");
-		//getScfTradeListWithSearch
-		System.out.println("search::"+search);
-		
+
 	}
-	
+
 	@RenderMapping(params = "action=getAdminTrade")
-    public String getAdminTrade(ModelMap model, RenderRequest request,
-            RenderResponse response) throws Exception { 
-		 
-        return "admintradelist";
-    }
-	
-	@ActionMapping(params="admin=getAdminTrade")
-	protected void getAdminTrade( ModelMap model,ActionRequest request,ActionResponse response) throws Exception {
-		List<SCFTrade> trades=null;
-		List<SCFTrade> scftrades=null;
+	public String getAdminTrade(ModelMap model, RenderRequest request, RenderResponse response)
+		throws Exception {
+
+		model.put("userType", Constants.ADMIN);
+
+		return "admintradelist";
+	}
+
+	@ActionMapping(params = "admin=getAdminTrade")
+	protected void getAdminTrade(ModelMap model, ActionRequest request, ActionResponse response)
+		throws Exception {
+
+		List<SCFTrade> scftrades = null;
 		DateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
 		Date fromDate = null;
 		Date toDate = null;
@@ -713,27 +726,57 @@ public class SCFTradeController {
 			toDate = formatter.parse(to);
 		}
 		Long noOfRecords = 0l;
-		PaginationModel paginationModel = paginationUtil
-				.preparePaginationModel(request);
-		
-		System.out.println("\ngetAdminTrade search::"+search);
-		scftrades=scfTradeService.getAdminTradeListWithSearch(search, fromDate, toDate, value, paginationModel.getStartIndex(), paginationModel.getPageSize());
+		PaginationModel paginationModel = paginationUtil.preparePaginationModel(request);
+		scftrades =
+			scfTradeService.getAdminTradeListWithSearch(
+				search, fromDate, toDate, value, paginationModel.getStartIndex(), paginationModel.getPageSize());
+		noOfRecords = scfTradeService.getAdminTradeListWithSearchCount(search, fromDate, toDate, value);
 		paginationUtil.setPaginationInfo(noOfRecords, paginationModel);
 		model.put("scftrades", scftrades);
 		model.put("paginationModel", paginationModel);
 		response.setRenderParameter("action", "getAdminTrade");
-		
+
 	}
-	
-	
-	
-	
-	
-	
-	
+
+	@RenderMapping(params = "action=getScfAdminTrade")
+	public String getScfAdminTrade(ModelMap model, RenderRequest request, RenderResponse response)
+		throws Exception {
+
+		return "tradelist";
+	}
+
+	@ActionMapping(params = "scf=getScfAdminTrade")
+	protected void getScfAdminTrade(ModelMap model, ActionRequest request, ActionResponse response)
+		throws Exception {
+
+		List<SCFTrade> scftrades = null;
+		ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
+
+		DateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+		Date fromDate = null;
+		Date toDate = null;
+		String search = ParamUtil.getString(request, "Search");
+		String value = ParamUtil.getString(request, "dateList");
+		String from = ParamUtil.getString(request, "fromDate");
+		String to = ParamUtil.getString(request, "toDate");
+		if (!StringUtils.isNullOrEmpty(from)) {
+			fromDate = formatter.parse(from);
+		}
+		if (!StringUtils.isNullOrEmpty(to)) {
+			toDate = formatter.parse(to);
+		}
+		long companyId = userService.getCompanybyUserID(themeDisplay.getUserId()).getId();
+		Long noOfRecords = 0l;
+		PaginationModel paginationModel = paginationUtil.preparePaginationModel(request);
+		scftrades =
+			scfTradeService.getScfAdminTradeListWithSearch(
+				companyId, search, fromDate, toDate, value, paginationModel.getStartIndex(), paginationModel.getPageSize());
+		noOfRecords = scfTradeService.getScfAdminTradeListWithSearchCount(companyId, search, fromDate, toDate, value);
+		paginationUtil.setPaginationInfo(noOfRecords, paginationModel);
+		model.put("scftrades", scftrades);
+		model.put("paginationModel", paginationModel);
+		response.setRenderParameter("action", "getScfAdminTrade");
+
+	}
 
 }
-	
-	
-
-

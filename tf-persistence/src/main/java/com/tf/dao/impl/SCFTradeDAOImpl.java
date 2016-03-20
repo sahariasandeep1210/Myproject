@@ -4,24 +4,26 @@ package com.tf.dao.impl;
 import com.tf.dao.SCFTradeDAO;
 import com.tf.model.SCFTrade;
 import com.tf.util.ValidationUtil;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
 import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.criterion.CriteriaSpecification;
+import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Projection;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.criterion.Subqueries;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,10 +46,18 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 
 		_log.debug("Inside getScfTrades  ");
 		try {
-			List<SCFTrade> results =
-				(List<SCFTrade>) sessionFactory.getCurrentSession().createCriteria(SCFTrade.class).setFirstResult(startIndex).setMaxResults(pageSize).setFetchMode(
+			
+			Criteria criteria =
+				(Criteria) sessionFactory.getCurrentSession().createCriteria(SCFTrade.class);
+			criteria.setFirstResult(startIndex).setMaxResults(pageSize);
+			
+			/*((Criteria) prList).setFetchMode(
 					"invoices", FetchMode.JOIN).setFetchMode("allotments", FetchMode.JOIN).setResultTransformer(
-					CriteriaSpecification.DISTINCT_ROOT_ENTITY).list();
+					CriteriaSpecification.DISTINCT_ROOT_ENTITY);*/
+			 List<SCFTrade> results =(List<SCFTrade>) criteria.setFetchMode("invoices", FetchMode.JOIN)
+				.setFetchMode("allotments", FetchMode.JOIN)
+				.list();
+			 System.out.println("resultsresults:"+results);
 			_log.debug("getScfTrades successful, result size: " + results.size());
 			return results;
 		}
@@ -61,9 +71,12 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 
 		_log.debug("Inside getScfTradesCount ");
 		try {
-
+			Criteria criteria =
+				(Criteria) sessionFactory.getCurrentSession().createCriteria(SCFTrade.class);
 			Long resultCount =
-				(Long) sessionFactory.getCurrentSession().createCriteria(SCFTrade.class).setProjection(Projections.rowCount()).uniqueResult();
+							(Long) criteria.setFetchMode("invoices", FetchMode.JOIN)
+							.setFetchMode("allotments", FetchMode.JOIN).setProjection(Projections.rowCount()).uniqueResult();
+			System.out.println("resultCountresultCountresultCount:"+resultCount);
 			_log.info("getScfTradesCount Count:: " + resultCount);
 			return resultCount;
 		}
@@ -177,39 +190,25 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 
 		_log.debug("Inside getScfTradeListWithSearch ");
 		List<SCFTrade> scftrades = new ArrayList<SCFTrade>();
-		SCFTrade scfTrade = null;
-		List<Object[]> resultscheck = new ArrayList<Object[]>();
 		try {
-			String query =
-				"select (select name from tf_company where idcompany = trd.company_id) as name, trd.id,trd.scf_id,trd.status,trd.duration,trd.opening_date,trd.closing_date,trd.Seller_Payment_date,trd.seller_transaction_fee,trd.seller_fees,trd.investor_total_gross_profit,trd.seller_net_allotment ,trd.trade_amount  from scf_trade trd, tf_company cmp, scf_invoice where seller_company_registration_number= " +
-					RegNum +
-					" and trade_id = trd.id and trd.trade_amount like (:searchtxt)  or trd.scf_id like (:searchtxt)  or trd.status like (:searchtxt)  or cmp.Name like (:searchtxt)  group by trd.id LIMIT " +
-					startIndex + "," + pageSize;
-			// String query =
-			// "select (select name from tf_company where idcompany = trd.company_id) as company, trd.id,trd.scf_id,trd.status,trd.duration,trd.opening_date,trd.closing_date,trd.Seller_Payment_date,trd.seller_transaction_fee,trd.seller_fees,trd.investor_total_gross_profit,trd.seller_net_allotment,trd.trade_amount from scf_trade trd, tf_company cmp, scf_invoice inv  where inv.seller_company_registration_number = "+RegNum+" and trd.id like (:searchtxt) or trd.trade_amount like (:searchtxt) or trd.status like (:searchtxt) or cmp.NAME like (:searchtxt) group by trd.id LIMIT "
-			// + startIndex + "," + pageSize;
-			Query qrys = (Query) sessionFactory.getCurrentSession().createSQLQuery(query);
-			qrys.setParameter("searchtxt", "%" + searchtxt + "%");
-			resultscheck = (List<Object[]>) qrys.list();
-			System.out.println("resultscheck:" + resultscheck);
-			DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-			for (Object[] row : resultscheck) {
-				scfTrade = new SCFTrade();
-				scfTrade.setInsuranceDocName(row[0].toString());
-				scfTrade.setId(Long.valueOf(row[1].toString()));
-				scfTrade.setScfId(row[2].toString());
-				scfTrade.setStatus(row[3].toString());
-				scfTrade.setDuration(Integer.valueOf(row[4].toString()));
-				scfTrade.setOpeningDate(formatter.parse(row[5].toString()));
-				scfTrade.setClosingDate(formatter.parse(row[6].toString()));
-				scfTrade.setSellerPaymentDate(formatter.parse(row[7].toString()));
-				scfTrade.setSellerTransFee(new BigDecimal(row[8].toString()));
-				scfTrade.setSellerFees(new BigDecimal(row[9].toString()));
-				scfTrade.setInvestorTotalGross(new BigDecimal(row[10].toString()));
-				scfTrade.setSellerNetAllotment(new BigDecimal(row[11].toString()));
-				scfTrade.setTradeAmount(new BigDecimal(row[12].toString()));
-				scftrades.add(scfTrade);
+
+			Criteria criteria = sessionFactory.getCurrentSession().createCriteria(SCFTrade.class);
+			criteria.createAlias("invoices", "inv");
+			criteria.createAlias("company", "company");
+			Disjunction or = Restrictions.disjunction();
+			if (validationUtil.isNumeric(searchtxt)) {
+				or.add(Restrictions.eq("tradeAmount", BigDecimal.valueOf(Long.valueOf(searchtxt))));
 			}
+			or.add(Restrictions.like("status", searchtxt, MatchMode.ANYWHERE));
+			or.add(Restrictions.like("scfId", searchtxt, MatchMode.ANYWHERE));
+			or.add(Restrictions.like("company.name", searchtxt, MatchMode.ANYWHERE));
+			ProjectionList prList = Projections.projectionList();
+			prList.add((Projections.distinct(Projections.property("inv.scfTrade"))));
+			criteria.setProjection(prList);
+			criteria.add(or);
+			scftrades =
+				(List<SCFTrade>) criteria.add(Restrictions.eq("inv.sellerCompanyRegistrationNumber", RegNum)).setFirstResult(startIndex).setMaxResults(
+					pageSize).list();
 
 			_log.debug("getScfTradeListWithSearch successful, result size: " + scftrades.size());
 		}
@@ -217,31 +216,31 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 			_log.error("getScfTradeListWithSearch failed", re);
 			throw re;
 		}
-		catch (ParseException pe) {
-			_log.error("getScfTradeListWithSearch failed" + pe.getMessage());
-
-		}
 		return scftrades;
 
 	}
 
-	@SuppressWarnings("unchecked")
 	public Long getScfTradeListWithSearchCount(String searchtxt, String RegNum) {
 
 		_log.debug("Inside getScfTradeListWithSearch ");
-		List<Object[]> resultscheck = new ArrayList<Object[]>();
 		try {
-			String query =
-				"select (select name from tf_company where idcompany = trd.company_id) as name, trd.id,trd.scf_id,trd.status,trd.duration,trd.opening_date,trd.closing_date,trd.Seller_Payment_date,trd.seller_transaction_fee,trd.seller_fees,trd.investor_total_gross_profit,trd.seller_net_allotment ,trd.trade_amount  from scf_trade trd, tf_company cmp, scf_invoice where seller_company_registration_number= " +
-					RegNum +
-					" and trade_id = trd.id and trd.trade_amount like (:searchtxt)  or trd.scf_id like (:searchtxt)  or trd.status like (:searchtxt)  or cmp.Name like (:searchtxt)  group by trd.id ";
+			Criteria criteria = sessionFactory.getCurrentSession().createCriteria(SCFTrade.class);
+			criteria.createAlias("invoices", "inv");
+			criteria.createAlias("company", "company");
+			Disjunction or = Restrictions.disjunction();
+			if (validationUtil.isNumeric(searchtxt)) {
+				or.add(Restrictions.eq("tradeAmount", BigDecimal.valueOf(Long.valueOf(searchtxt))));
+			}
+			or.add(Restrictions.like("status", searchtxt, MatchMode.ANYWHERE));
+			or.add(Restrictions.like("scfId", searchtxt, MatchMode.ANYWHERE));
+			or.add(Restrictions.like("company.name", searchtxt, MatchMode.ANYWHERE));
+			ProjectionList prList = Projections.projectionList();
+			prList.add((Projections.distinct(Projections.property("inv.scfTrade"))));
+			criteria.setProjection(prList);
+			criteria.add(or);
+			Long count =
+				(Long) criteria.add(Restrictions.eq("inv.sellerCompanyRegistrationNumber", RegNum)).setProjection(Projections.rowCount()).uniqueResult();
 
-			// String query =
-			// "select trd.id,trd.scf_id,trd.status,trd.duration,trd.opening_date,trd.closing_date,trd.Seller_Payment_date,trd.seller_transaction_fee,trd.seller_fees,trd.investor_total_gross_profit,trd.seller_net_allotment  as trades from scf_trade trd, tf_company cmp, scf_invoice inv  where inv.seller_company_registration_number = "+RegNum+" and trd.id like (:searchtxt) or trd.trade_amount like (:searchtxt) or trd.status like (:searchtxt) or cmp.NAME like (:searchtxt) group by trd.id";
-			Query qrys = (Query) sessionFactory.getCurrentSession().createSQLQuery(query);
-			qrys.setParameter("searchtxt", "%" + searchtxt + "%");
-			resultscheck = (List<Object[]>) qrys.list();
-			Long count = Long.valueOf(qrys.list().size());
 			return count;
 		}
 		catch (RuntimeException re) {
@@ -258,7 +257,7 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 		try {
 
 			List<SCFTrade> results =
-				(List<SCFTrade>) sessionFactory.getCurrentSession().createCriteria(SCFTrade.class).add(Restrictions.ne("company.id", companyID)).setFetchMode(
+				(List<SCFTrade>) sessionFactory.getCurrentSession().createCriteria(SCFTrade.class).add(Restrictions.eq("company.id", companyID)).setFetchMode(
 					"invoices", FetchMode.JOIN).setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY).setFirstResult(startIndex).setMaxResults(
 					pageSize).list();
 			_log.debug("getScfTrades successful, result size: " + results.size());
@@ -813,22 +812,12 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 
 	@SuppressWarnings("unchecked")
 	public List<SCFTrade> getAdminTradeListWithSearch(String searchtxt, Date fromDate, Date toDate, String value, int startIndex, int pageSize) {
+
 		_log.debug("Inside getAdminTradeListWithSearch ");
 		List<SCFTrade> scftrades = new ArrayList<SCFTrade>();
-		SCFTrade scfTrade = null;
-		List<Object[]> resultscheck = new ArrayList<Object[]>();
+
 		try {
-
-			String query =
-				"select trd.id from scf_trade trd, tf_company cmp, scf_invoice inv, tf_allotments almt, tf_investor_portfolio tfip where trd.id like (:searchtxt) or trd.trade_amount like (:searchtxt) or trd.status like (:searchtxt) or cmp.NAME like (:searchtxt) group by trd.id LIMIT " +
-					startIndex + "," + pageSize;
-			Query qrys = (Query) sessionFactory.getCurrentSession().createSQLQuery(query);
-			qrys.setParameter("searchtxt", "%" + searchtxt + "%");
-			resultscheck = (List<Object[]>) qrys.list();
-			System.out.println("\n resultscheck - " + resultscheck);
-
 			Disjunction or = Restrictions.disjunction();
-
 			if (validationUtil.isNumeric(searchtxt)) {
 				or.add(Restrictions.eq("tradeAmount", BigDecimal.valueOf(Long.valueOf(searchtxt))));
 			}
@@ -839,7 +828,7 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 			Disjunction or2 = Restrictions.disjunction();
 			if (fromDate != null && fromDate != toDate && value != null && value.equalsIgnoreCase("")) {
 				or2.add(Restrictions.ge(value, fromDate));
-				or2.add(Restrictions.ge(value, toDate));
+				or2.add(Restrictions.le(value, toDate));
 			}
 
 			List<SCFTrade> results =
@@ -858,4 +847,107 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 		return scftrades;
 	}
 
+	public Long getAdminTradeListWithSearchCount(String searchtxt, Date fromDate, Date toDate, String value) {
+
+		_log.debug("Inside getAdminTradeListWithSearchCount ");
+		try {
+
+			Disjunction or = Restrictions.disjunction();
+
+			if (validationUtil.isNumeric(searchtxt)) {
+				or.add(Restrictions.eq("tradeAmount", BigDecimal.valueOf(Long.valueOf(searchtxt))));
+			}
+			or.add(Restrictions.like("status", searchtxt, MatchMode.ANYWHERE));
+			or.add(Restrictions.like("scfId", searchtxt, MatchMode.ANYWHERE));
+			or.add(Restrictions.like("company.name", searchtxt, MatchMode.ANYWHERE));
+			Disjunction or2 = Restrictions.disjunction();
+			if (fromDate != null && fromDate != toDate && value != null && value.equalsIgnoreCase("")) {
+				or2.add(Restrictions.ge(value, fromDate));
+				or2.add(Restrictions.le(value, toDate));
+			}
+			Criteria criteria =
+				(Criteria) sessionFactory.getCurrentSession().createCriteria(SCFTrade.class).createAlias("company", "company").setFetchMode(
+					"invoices", FetchMode.JOIN).setFetchMode("allotments", FetchMode.JOIN).setFetchMode("company", FetchMode.JOIN).add(or).add(or2).setResultTransformer(
+					CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+			Long resultCount = (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+			_log.debug("getAdminTradeListWithSearchCount" + resultCount);
+			return resultCount;
+		}
+		catch (RuntimeException re) {
+			_log.error("getAdminTradeListWithSearchCount failed", re);
+			throw re;
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<SCFTrade> getScfAdminTradeListWithSearch(
+		long companyId, String searchtxt, Date fromDate, Date toDate, String value, int startIndex, int pageSize) {
+
+		_log.debug("Inside getScfAdminTradeListWithSearch ");
+		List<SCFTrade> scftrades = new ArrayList<SCFTrade>();
+		try {
+
+			Disjunction or = Restrictions.disjunction();
+
+			if (validationUtil.isNumeric(searchtxt)) {
+				or.add(Restrictions.eq("tradeAmount", BigDecimal.valueOf(Long.valueOf(searchtxt))));
+			}
+			or.add(Restrictions.like("status", searchtxt, MatchMode.ANYWHERE));
+
+			Disjunction or2 = Restrictions.disjunction();
+			if (fromDate != null && fromDate != toDate && value != null && value.equalsIgnoreCase("")) {
+				or2.add(Restrictions.ge(value, fromDate));
+				or2.add(Restrictions.le(value, toDate));
+			}
+
+			List<SCFTrade> results =
+				(List<SCFTrade>) sessionFactory.getCurrentSession().createCriteria(SCFTrade.class).add(Restrictions.eq("company.id", companyId)).setFetchMode(
+					"invoices", FetchMode.JOIN).add(or).add(or2).setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY).setFirstResult(
+					startIndex).setMaxResults(pageSize).list();
+			scftrades = results;
+			_log.debug("getAdminTradeListWithSearch successful, result size: " + scftrades.size());
+		}
+		catch (RuntimeException re) {
+			_log.error("getAdminTradeListWithSearch failed", re);
+			throw re;
+		}
+
+		return scftrades;
+	}
+
+	public Long getScfAdminTradeListWithSearchCount(long companyId, String searchtxt, Date fromDate, Date toDate, String value) {
+
+		_log.debug("Inside getScfAdminTradeListWithSearchCount ");
+		List<SCFTrade> scftrades = new ArrayList<SCFTrade>();
+		try {
+
+			Disjunction or = Restrictions.disjunction();
+
+			if (validationUtil.isNumeric(searchtxt)) {
+				or.add(Restrictions.eq("tradeAmount", BigDecimal.valueOf(Long.valueOf(searchtxt))));
+			}
+			or.add(Restrictions.like("status", searchtxt, MatchMode.ANYWHERE));
+
+			Disjunction or2 = Restrictions.disjunction();
+			if (fromDate != null && fromDate != toDate && value != null && value.equalsIgnoreCase("")) {
+				or2.add(Restrictions.ge(value, fromDate));
+				or2.add(Restrictions.le(value, toDate));
+			}
+
+			Criteria criteria =
+				(Criteria) sessionFactory.getCurrentSession().createCriteria(SCFTrade.class).add(Restrictions.eq("company.id", companyId)).setFetchMode(
+					"invoices", FetchMode.JOIN).add(or).add(or2).setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+			Long resultCount = (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+
+			_log.debug("getScfAdminTradeListWithSearchCount successful, result size: " + scftrades.size());
+
+			return resultCount;
+
+		}
+		catch (RuntimeException re) {
+			_log.error("getScfAdminTradeListWithSearchCount failed", re);
+			throw re;
+		}
+
+	}
 }
