@@ -13,15 +13,19 @@ public interface InvoiceDAO extends BaseDAO<Invoice, Long> {
 	public List<Invoice> getInvoices(int startIndex,int pageSize);
 	
 	public Long getInvoicesCount();
+	
 	public List<Invoice> getInvoicesByFilter(String search,Date frmDate,Date toDate,String value,int startIndex,int pageSize);
+	
 	public List<Invoice> getInvoicesAmount(List<Long> invoiceIds);
 	
 	public List<Invoice> getInvoices(long companyID,int startIndex,int pageSize);
 	
-	public Invoice getInvoicesBytradeId(long id);
+	public List<Invoice> getInvoicesBytradeId(long id);
 	
 	public List<Invoice> getInvoicesByCompanyNumber(String companyNumber,int startIndex,int pageSize);
+	
 	public Long getInvoicesByFilterCount(String search,Date frmDate,Date toDate,String value);
+	
 	public Long getInvsCounts(long companyID);
 	
 	public List<Invoice> getInvoicesByCompanyNoAndStatus(String companyNumber,String status);

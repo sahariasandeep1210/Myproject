@@ -50,13 +50,13 @@ public class InvoiceDAOImpl extends BaseDAOImpl<Invoice, Long> implements Invoic
 
 	}
 
-	public Invoice getInvoicesBytradeId(long id) {
+	public List<Invoice> getInvoicesBytradeId(long id) {
 
 		try {
-			Invoice invoice =
-				(Invoice) sessionFactory.getCurrentSession().createCriteria(Invoice.class).add(Restrictions.eq("scfTrade.id", id)).uniqueResult();
-			_log.debug("getInvoicesBytradeId successful, result size: " + invoice);
-			return invoice;
+			List<Invoice> invoices =
+				(List<Invoice>) sessionFactory.getCurrentSession().createCriteria(Invoice.class).add(Restrictions.eq("scfTrade.id", id)).list();
+			_log.debug("getInvoicesBytradeId successful, result size: " + invoices.size());
+			return invoices;
 
 		}
 		catch (RuntimeException re) {

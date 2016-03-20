@@ -13,16 +13,20 @@ import com.tf.persistance.util.InSuffcientFund;
 public interface InvoiceService {
 
 	public void addInvoices(List<Invoice> invoices);
+	
 	public Long getInvoicesByFilterCount(String search,Date frmDate,Date toDate,String value);
+	
 	public List<Invoice> getInvoices(int startIndex,int pageSize);
 
 	public Map<Company, BigDecimal> getInvoicesAmount(String invoiceIds);
+	
 	public List<Invoice> getInvoicesByFilter(String search,Date frmDate,Date toDate,String value,int startIndex,int pageSize);
+	
 	public Set<Invoice> getInvoices(String invoiceIds);
 
 	public List<Invoice> getInvoices(long companyID,int startIndex,int pageSize);
 	
-	public Invoice getInvoicesBytradeId(long id);
+	public List<Invoice> getInvoicesBytradeId(long id);
 	
 	public List<Invoice> getInvoicesByCompanyNumber(String companyNumber,int startIndex,int pageSize);
 	
@@ -49,5 +53,7 @@ public interface InvoiceService {
 	public Long getInvsCounts(long companyID);
 	
 	public Invoice findById(Long id); 
+	
+	public String getSellerRegNumberByTradeID(long id);
 
 }

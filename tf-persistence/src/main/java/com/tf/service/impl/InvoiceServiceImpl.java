@@ -338,7 +338,7 @@ public class InvoiceServiceImpl implements InvoiceService{
 		return invoiceDAO.getInvoicesByRegNum(regNum);
 	}
 	
-	public Invoice getInvoicesBytradeId(long id){
+	public List<Invoice> getInvoicesBytradeId(long id){
 		return invoiceDAO.getInvoicesBytradeId(id);
 	}
 	
@@ -355,5 +355,11 @@ public class InvoiceServiceImpl implements InvoiceService{
 	}
 	public Long getInvoicesByFilterCount(String search,Date frmDate,Date toDate,String value){
 		return invoiceDAO.getInvoicesByFilterCount(search, frmDate, toDate, value);
+	}
+
+	public String getSellerRegNumberByTradeID(long id) {
+		//there should be exception handling here
+		String sellerRegNumber=getInvoicesBytradeId(id).get(0).getSellerCompanyRegistrationNumber();
+		return sellerRegNumber;
 	}
 }
