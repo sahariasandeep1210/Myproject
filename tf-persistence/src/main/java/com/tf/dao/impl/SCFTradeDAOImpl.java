@@ -109,7 +109,7 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 
 			List<SCFTrade> results =
 				(List<SCFTrade>) sessionFactory.getCurrentSession().createCriteria(SCFTrade.class).add(Restrictions.eq("company.id", companyID)).setFetchMode(
-					"invoices", FetchMode.JOIN).setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY).list();
+					"invoices", FetchMode.JOIN)/*.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY)*/.list();
 			_log.debug("getScfTrades successful, result size: " + results.size());
 			return results;
 		}
@@ -255,11 +255,11 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 
 		_log.debug("Inside getScfTrades ");
 		try {
-
+             Criteria criteria =sessionFactory.getCurrentSession().createCriteria(SCFTrade.class).add(Restrictions.eq("company.id", companyID)).setFirstResult(startIndex).setMaxResults(
+					pageSize);
 			List<SCFTrade> results =
-				(List<SCFTrade>) sessionFactory.getCurrentSession().createCriteria(SCFTrade.class).add(Restrictions.eq("company.id", companyID)).setFetchMode(
-					"invoices", FetchMode.JOIN).setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY).setFirstResult(startIndex).setMaxResults(
-					pageSize).list();
+				(List<SCFTrade>) criteria.setFetchMode(
+					"invoices", FetchMode.JOIN)/*.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY).*/.list();
 			_log.debug("getScfTrades successful, result size: " + results.size());
 			return results;
 		}
@@ -290,9 +290,11 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 
 		_log.debug("Inside getCompanies ");
 		try {
+			Criteria criteria =sessionFactory.getCurrentSession().createCriteria(SCFTrade.class).add(Restrictions.eq("company.id", companyID));
 
 			Long resultCount =
-				(Long) sessionFactory.getCurrentSession().createCriteria(SCFTrade.class).add(Restrictions.ne("company.id", companyID)).setProjection(
+				(Long)criteria.setFetchMode(
+					"invoices", FetchMode.JOIN).setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY).setProjection(
 					Projections.rowCount()).uniqueResult();
 			_log.debug("Companies Count " + resultCount);
 			return resultCount;

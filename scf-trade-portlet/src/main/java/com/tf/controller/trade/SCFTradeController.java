@@ -197,11 +197,9 @@ public class SCFTradeController {
 			viewName = "sellertradelist";
 		}
 		model.put("trades", scftrades);
-
 		paginationUtil.setPaginationInfo(noOfRecords, paginationModel);
 		System.out.println("paginationsss:" + paginationModel);
 		model.put("paginationModel", paginationModel);
-
 		return new ModelAndView(viewName, model);
 	}
 
@@ -271,7 +269,6 @@ public class SCFTradeController {
 		Long tradeID = ParamUtil.getLong(request, "tradeID");
 		Invoice invoice = invoiceService.getInvoicesBytradeId(tradeID);
 		Company company = companyService.getCompaniesByRegNum(invoice.getSellerCompanyRegistrationNumber());
-		System.out.println("Dhanush123:" + invoice);
 		if (tradeID == null || tradeID == 0) {
 			String invoiceIds = ParamUtil.getString(request, "invoices");
 			Map<Company, BigDecimal> invoiceMap = invoiceService.getInvoicesAmount(invoiceIds);
@@ -710,8 +707,15 @@ public class SCFTradeController {
 	@ActionMapping(params = "admin=getAdminTrade")
 	protected void getAdminTrade(ModelMap model, ActionRequest request, ActionResponse response)
 		throws Exception {
-
+		BigDecimal totalTradeAmount = BigDecimal.ZERO;
+		BigDecimal totalInvestorProfit = BigDecimal.ZERO;
+		BigDecimal totalWhiteHallShare = BigDecimal.ZERO;
+		BigDecimal totalInvestorNet = BigDecimal.ZERO;
+		BigDecimal totalSellerFees = BigDecimal.ZERO;
+		BigDecimal totalWhiteHallFees = BigDecimal.ZERO;
+		BigDecimal totalSellerAmount = BigDecimal.ZERO;
 		List<SCFTrade> scftrades = null;
+		List<SCFTrade> trades = null;
 		DateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
 		Date fromDate = null;
 		Date toDate = null;
@@ -727,12 +731,36 @@ public class SCFTradeController {
 		}
 		Long noOfRecords = 0l;
 		PaginationModel paginationModel = paginationUtil.preparePaginationModel(request);
+		if(!StringUtils.isNullOrEmpty(search)&& !StringUtils.isNullOrEmpty(value)){
 		scftrades =
 			scfTradeService.getAdminTradeListWithSearch(
 				search, fromDate, toDate, value, paginationModel.getStartIndex(), paginationModel.getPageSize());
 		noOfRecords = scfTradeService.getAdminTradeListWithSearchCount(search, fromDate, toDate, value);
+		}else{
+			trades = scfTradeService.getScfTrades(paginationModel.getStartIndex(), paginationModel.getPageSize());
+			noOfRecords = scfTradeService.getScfTradesCount();
+			for (SCFTrade scf : trades) {
+				totalTradeAmount = totalTradeAmount.add(scf.getTradeAmount());
+				totalInvestorProfit = totalInvestorProfit.add(scf.getInvestorTotalGross());
+				totalWhiteHallShare = totalWhiteHallShare.add(scf.getWhitehallTotalShare());
+				totalInvestorNet = totalInvestorNet.add(scf.getInvestorTotalProfit());
+				totalSellerFees = totalSellerFees.add(scf.getSellerFees());
+				totalWhiteHallFees = totalWhiteHallFees.add(scf.getWhitehallTotalProfit());
+				totalSellerAmount = totalSellerAmount.add(scf.getSellerNetAllotment());
+			}
+			model.put("totalTradeAmount", totalTradeAmount);
+			model.put("totalInvestorProfit", totalInvestorProfit);
+			model.put("totalWhiteHallShare", totalWhiteHallShare);
+			model.put("totalInvestorNet", totalInvestorNet);
+			model.put("totalSellerFees", totalSellerFees);
+			model.put("totalWhiteHallFees", totalWhiteHallFees);
+			model.put("totalSellerAmount", totalSellerAmount);
+		}
+		
 		paginationUtil.setPaginationInfo(noOfRecords, paginationModel);
 		model.put("scftrades", scftrades);
+		model.put("trades", trades);
+		model.put("value", value);
 		model.put("paginationModel", paginationModel);
 		response.setRenderParameter("action", "getAdminTrade");
 
@@ -748,13 +776,15 @@ public class SCFTradeController {
 	@ActionMapping(params = "scf=getScfAdminTrade")
 	protected void getScfAdminTrade(ModelMap model, ActionRequest request, ActionResponse response)
 		throws Exception {
+		BigDecimal totalTradeAmount = BigDecimal.ZERO;
 
 		List<SCFTrade> scftrades = null;
 		ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
-
+		List<SCFTrade> trades = null;
 		DateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
 		Date fromDate = null;
 		Date toDate = null;
+		
 		String search = ParamUtil.getString(request, "Search");
 		String value = ParamUtil.getString(request, "dateList");
 		String from = ParamUtil.getString(request, "fromDate");
@@ -768,12 +798,23 @@ public class SCFTradeController {
 		long companyId = userService.getCompanybyUserID(themeDisplay.getUserId()).getId();
 		Long noOfRecords = 0l;
 		PaginationModel paginationModel = paginationUtil.preparePaginationModel(request);
+		if(!StringUtils.isNullOrEmpty(search)&& !StringUtils.isNullOrEmpty(value)){
 		scftrades =
 			scfTradeService.getScfAdminTradeListWithSearch(
 				companyId, search, fromDate, toDate, value, paginationModel.getStartIndex(), paginationModel.getPageSize());
 		noOfRecords = scfTradeService.getScfAdminTradeListWithSearchCount(companyId, search, fromDate, toDate, value);
+		}else{
+			trades = scfTradeService.getScfTrades(companyId, paginationModel.getStartIndex(), paginationModel.getPageSize());
+			noOfRecords = scfTradeService.getScfTradesCount(companyId);
+			for (SCFTrade scf : trades) {
+				totalTradeAmount = totalTradeAmount.add(scf.getTradeAmount());
+			}
+			model.put("totalTradeAmount", totalTradeAmount);
+		}
 		paginationUtil.setPaginationInfo(noOfRecords, paginationModel);
 		model.put("scftrades", scftrades);
+		model.put("value", value);
+		model.put("trades", trades);
 		model.put("paginationModel", paginationModel);
 		response.setRenderParameter("action", "getScfAdminTrade");
 

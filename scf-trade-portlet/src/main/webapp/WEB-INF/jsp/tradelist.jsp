@@ -145,12 +145,7 @@
 								<tr class="historyRow" id="${trade.id}_row">
 									<td colspan=7></td>
 								</tr>
-<<<<<<< HEAD
-=======
-								<tr class="historyRow"  id="${trade.id}_row">								
-							  		<td colspan=8></td>
-							</tr>
->>>>>>> b411342bd25cd58006028fa2667d662b8bbbcaf3
+
 							</c:forEach>
 						</c:when>
 						<c:otherwise>
