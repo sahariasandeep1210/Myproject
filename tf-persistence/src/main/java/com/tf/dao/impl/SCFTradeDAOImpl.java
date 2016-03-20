@@ -418,7 +418,7 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 			String qry =
 				"select (select name from tf_company where idcompany = company_id) as company, " +
 					"sum(trade_amount) as trade_amount, (select count(trade_id) from scf_invoice where scf_company= company_id) as trades, " +
-					"company_id from tradedb.scf_trade group by company_id LIMIT " + startIndex + "," + pageSize;
+					"company_id from scf_trade group by company_id LIMIT " + startIndex + "," + pageSize;
 			/*
 			 * Criteria criteria = (Criteria)
 			 * sessionFactory.getCurrentSession().createSQLQuery(qry);
@@ -450,7 +450,7 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 			String qry =
 				"select (select name from tf_company where idcompany = company_id) as company, "
 					+ "sum(trade_amount) as trade_amount, (select count(trade_id) from scf_invoice where scf_company= company_id) as trades, "
-					+ "company_id from tradedb.scf_trade group by company_id;";
+					+ "company_id from scf_trade group by company_id;";
 			Long resultscheck = Long.valueOf((sessionFactory.getCurrentSession().createSQLQuery(qry)).list().size());
 			_log.info("getScfTradesHistoryCount Count:: " + resultscheck);
 			return resultscheck;
@@ -519,16 +519,15 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 				qry =
 					"select (select name from tf_company where idcompany = company_id) as company, " +
 						"sum(trade_amount) as trade_amount, (select count(trade_id) from scf_invoice where scf_company= company_id) as trades," +
-						"company_id from tradedb.scf_trade group by company_id having company like (:company_id) LIMIT " + startIndex + "," +
+						"company_id from scf_trade group by company_id having company like (:company_id) LIMIT " + startIndex + "," +
 						pageSize;
 			}
 			else {
 				qry =
 					"select (select name from tf_company where idcompany = company_id) as company, " +
 						"sum(trade_amount) as trade_amount, (select count(trade_id) from scf_invoice where scf_company= company_id) as trades, " +
-						"company_id from tradedb.scf_trade group by company_id LIMIT " + startIndex + "," + pageSize;
+						"company_id from scf_trade group by company_id LIMIT " + startIndex + "," + pageSize;
 			}
-			System.out.println("query:::1" + qry);
 
 			Query resultscheck1 = (Query) sessionFactory.getCurrentSession().createSQLQuery(qry);
 			if (!StringUtils.isEmpty(scfCompany)) {
@@ -784,13 +783,13 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 				qry =
 					"select (select name from tf_company where idcompany = company_id) as company, "
 						+ "sum(trade_amount) as trade_amount, (select count(trade_id) from scf_invoice where scf_company= company_id) as trades,"
-						+ "company_id from tradedb.scf_trade group by company_id having company like (:company_id)";
+						+ "company_id from scf_trade group by company_id having company like (:company_id)";
 			}
 			else {
 				qry =
 					"select (select name from tf_company where idcompany = company_id) as company, "
 						+ "sum(trade_amount) as trade_amount, (select count(trade_id) from scf_invoice where scf_company= company_id) as trades, "
-						+ "company_id from tradedb.scf_trade group by company_id";
+						+ "company_id from scf_trade group by company_id";
 			}
 			System.out.println("query:::1" + qry);
 
