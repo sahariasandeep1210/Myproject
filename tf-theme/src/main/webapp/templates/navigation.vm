@@ -77,7 +77,7 @@
 						<a href="#" id="personal-menu" class="lfr-nav-child-toggle dropdown-toggle">#language ("my-places") <i class="icon-caret-down"></i></a>
 						<ul class="dropdown-menu child-menu" role="menu">
 							$my_sites_portlet_url.setParameter("groupId", "$user.getGroupId()")
-							#if ($user.hasPublicLayouts())
+							#if ($user.hasPublicLayouts() && $permissionChecker.isOmniadmin())
 								$my_sites_portlet_url.setParameter("privateLayout", "false")
 
 								<li>
@@ -86,7 +86,7 @@
 									</a>
 								</li>
 							#end
-							#if ($user.hasPrivateLayouts())
+							#if ($user.hasPrivateLayouts() && $permissionChecker.isOmniadmin())
 								$my_sites_portlet_url.setParameter("privateLayout", "true")
 
 								<li>
