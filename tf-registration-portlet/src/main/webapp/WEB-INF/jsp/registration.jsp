@@ -94,7 +94,7 @@
 		</div>
 		<div class="row-fluid">
 			<div class="span6">
-				<label class="span6">Address Information</label>
+				<label class="span6">Address Information <span class="requiredStar">*</span></label>
 				<%-- <form:input path="addRegistered" cssClass="span6" id="cmpAddress"/> --%>
 			</div>
 
@@ -174,7 +174,7 @@
 			</div>
 
 			<div class="span6">
-				<label class="span6">Company Type:</label>
+				<label class="span6">Company Type:<span class="requiredStar">*</span></label>
 				<form:select path="company.companyType" items="${companyTypeMap}"
 					class="span6" id="companyType" placeholder="CompanyType Type"/>
 				
@@ -318,6 +318,19 @@
 
 	</form:form>
 
+</div>
+
+<div id="myModal" class="modal  fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myModalLabel">Not Found!</h3>
+  </div>
+  <div class="modal-body">
+    <p>Company details not found.Please enter manually.</p>
+  </div>
+  <div class="modal-footer">
+    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+  </div>
 </div>
 
 

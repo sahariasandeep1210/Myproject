@@ -4,6 +4,7 @@ import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,7 +15,8 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.tf.persistance.util.Constants;
 import com.tf.service.InvestorService;
-import com.tf.utility.LiferayUtility;
+import com.tf.util.LiferayUtility;
+
 
 
 @Controller
@@ -36,13 +38,17 @@ public class DashboardController {
 		String viewName="newdashboard";
 		if(request.isUserInRole(Constants.PRIMARY_INVESTOR_ADMIN)){
 			viewName="investordashboard";
+		}else if(request.isUserInRole(Constants.SELLER_ADMIN)){
+			viewName="sellerdashboard";
+		}else if(request.isUserInRole(Constants.SCF_ADMIN)){
+			viewName="scfdashboard";
 		}
 		model.put("dashboardModel", investorService.getDashBoardInformation());
 		return new ModelAndView(viewName, model);		
 	}
 
 	private void setPortletURls(ModelMap map, RenderRequest request) {
-		map.put("mangaeCompanyURL", liferayUtility.setPortletURL( request, "tf-company-portlet",null,null,true));
+		map.put("mangaeCompanyURL", liferayUtility.getPortletURL( request, "tf-company-portlet",null,null,true));
 		//map.put("createPOURL", liferayUtility.setPortletURL(request, "tf-po-portlet","render","addPurchaseOrder",true)) ;
 	}
 	
