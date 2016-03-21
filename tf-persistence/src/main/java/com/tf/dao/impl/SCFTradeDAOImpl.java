@@ -836,17 +836,37 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 			or.add(Restrictions.like("company.name", searchtxt, MatchMode.ANYWHERE));
 
 			Disjunction or2 = Restrictions.disjunction();
-			if (fromDate != null && fromDate != toDate && value != null && value.equalsIgnoreCase("")) {
-				or2.add(Restrictions.ge(value, fromDate));
-				or2.add(Restrictions.le(value, toDate));
+			or2.add(Restrictions.between(value, fromDate, toDate));
+			
+			if (fromDate != null && toDate == null && !value.equalsIgnoreCase("") && searchtxt.equalsIgnoreCase("")) {
+				or2.add(Restrictions.between(value, fromDate, toDate));
+				List<SCFTrade> results =
+						(List<SCFTrade>) sessionFactory.getCurrentSession().createCriteria(SCFTrade.class).createAlias("company", "company").setFirstResult(
+							startIndex).setMaxResults(pageSize).setFetchMode("invoices", FetchMode.JOIN).setFetchMode("allotments", FetchMode.JOIN).setFetchMode(
+							"company", FetchMode.JOIN).add(Restrictions.eq(value, fromDate)).setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY).list();
+				scftrades = results;
+			}else if(fromDate != null && toDate != null && !value.equalsIgnoreCase("") && searchtxt.equalsIgnoreCase("")) {
+				List<SCFTrade> results =
+						(List<SCFTrade>) sessionFactory.getCurrentSession().createCriteria(SCFTrade.class).createAlias("company", "company").setFirstResult(
+							startIndex).setMaxResults(pageSize).setFetchMode("invoices", FetchMode.JOIN).setFetchMode("allotments", FetchMode.JOIN).setFetchMode(
+							"company", FetchMode.JOIN).add(or2).setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY).list();
+				scftrades = results;
+			}else if(fromDate != null && toDate != null && !value.equalsIgnoreCase("") && !searchtxt.equalsIgnoreCase("")) {
+				List<SCFTrade> results =
+						(List<SCFTrade>) sessionFactory.getCurrentSession().createCriteria(SCFTrade.class).createAlias("company", "company").setFirstResult(
+							startIndex).setMaxResults(pageSize).setFetchMode("invoices", FetchMode.JOIN).setFetchMode("allotments", FetchMode.JOIN).setFetchMode(
+							"company", FetchMode.JOIN).add(or2).add(or).setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY).list();
+				scftrades = results;
+			}else{
+				List<SCFTrade> results =
+						(List<SCFTrade>) sessionFactory.getCurrentSession().createCriteria(SCFTrade.class).createAlias("company", "company").setFirstResult(
+							startIndex).setMaxResults(pageSize).setFetchMode("invoices", FetchMode.JOIN).setFetchMode("allotments", FetchMode.JOIN).setFetchMode(
+							"company", FetchMode.JOIN).add(or).setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY).list();
+				scftrades = results;
 			}
 
-			List<SCFTrade> results =
-				(List<SCFTrade>) sessionFactory.getCurrentSession().createCriteria(SCFTrade.class).createAlias("company", "company").setFirstResult(
-					startIndex).setMaxResults(pageSize).setFetchMode("invoices", FetchMode.JOIN).setFetchMode("allotments", FetchMode.JOIN).setFetchMode(
-					"company", FetchMode.JOIN).add(or).add(or2).setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY).list();
-
-			scftrades = results;
+			
+			
 			_log.debug("getAdminTradeListWithSearch successful, result size: " + scftrades.size());
 		}
 		catch (RuntimeException re) {
