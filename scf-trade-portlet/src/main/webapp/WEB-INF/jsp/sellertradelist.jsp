@@ -45,7 +45,7 @@
 		<div class="row-fluid">
 			<div class="search-seller">
 				<input type="text" name="Search" placeholder="Search Here"
-					id="search"> <input type="button" value="Search"
+					id="search"> <input type="button" value="${search}"
 					id="sellerTradeReport" class="btn btn-primary" />
 			</div>
 		</div>

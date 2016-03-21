@@ -603,6 +603,10 @@ public class SCFTradeController {
 		model.put("paginationModel", paginationModel);
 		System.out.println("DhanushSuccess:" + scfTradesList);
 		model.put("scfTradesList", scfTradesList);
+		model.put("companyName", companyName);
+		model.put("fromDate", from);
+		model.put("toDate", to);
+
 		response.setRenderParameter("action", "tradeRedirect");
 
 	}
@@ -636,24 +640,24 @@ public class SCFTradeController {
 				scfTradeService.getScfTradeSellerCompany(
 					companyName, fromDate, toDate, compID, paginationModel.getStartIndex(), paginationModel.getPageSize());
 			noOfRecords = scfTradeService.getScfTradeSellerCompanyCount(companyName, fromDate, toDate, compID);
-			paginationUtil.setPaginationInfo(noOfRecords, paginationModel);
-			model.put("paginationModel", paginationModel);
-			System.out.println("norecordss:" + noOfRecords);
-			System.out.println("paginationfrom get:" + paginationModel);
+		
 			scfTrades = scfTradeService.getTradeHistoryByComapnyId(compID, paginationModel.getStartIndex(), paginationModel.getPageSize());
-			System.out.println("scfTradesscfTradesscfTradesscfTrades" + scfTrades);
+			noOfRecords=scfTradeService.getHistoryCount(compID);
 			for (SCFTrade scf : scfTrades) {
 				totalTradeAmount = totalTradeAmount.add(scf.getTradeAmount());
+			
 			}
-			System.out.println("totalTradeAmount::" + totalTradeAmount);
-			System.out.println("DhanushSuccess:" + scfTradesList);
+			paginationUtil.setPaginationInfo(noOfRecords, paginationModel);
 			model.put("scfTradesList", scfTradesList);
+			model.put("paginationModel", paginationModel);
 			model.put("compID", compID);
 			model.put("totalTradeAmount", totalTradeAmount);
+			model.put("companyName", companyName);
+			model.put("fromDate", from);
+			model.put("toDate", to);
 			response.setRenderParameter("action", "singleHistory");
-
-		}
-		catch (Exception ex) {
+		
+		}catch (Exception ex) {
 			_log.error("Error occurred while filtering the sellercompany:" + ex.getMessage());
 		}
 
@@ -689,6 +693,7 @@ public class SCFTradeController {
 		paginationUtil.setPaginationInfo(noOfRecords, paginationModel);
 		model.put("trades", trades);
 		model.put("scftrades", scftrades);
+		model.put("search", search);
 		model.put("paginationModel", paginationModel);
 		response.setRenderParameter("action", "getSellerTrade");
 
@@ -759,6 +764,9 @@ public class SCFTradeController {
 		paginationUtil.setPaginationInfo(noOfRecords, paginationModel);
 		model.put("scftrades", scftrades);
 		model.put("trades", trades);
+		model.put("search", search);
+		model.put("from", from);
+		model.put("to", to);
 		model.put("value", value);
 		model.put("paginationModel", paginationModel);
 		response.setRenderParameter("action", "getAdminTrade");
@@ -812,6 +820,9 @@ public class SCFTradeController {
 		}
 		paginationUtil.setPaginationInfo(noOfRecords, paginationModel);
 		model.put("scftrades", scftrades);
+		model.put("search", search);
+		model.put("from", from);
+		model.put("to", to);
 		model.put("value", value);
 		model.put("trades", trades);
 		model.put("paginationModel", paginationModel);

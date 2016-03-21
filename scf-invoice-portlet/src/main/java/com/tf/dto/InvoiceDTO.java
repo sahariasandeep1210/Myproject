@@ -30,7 +30,8 @@ public class InvoiceDTO  implements Serializable{
 	private Date paymentDate;
 	private String currency;
 	private Date dueDate;
-	
+	private String status;
+
 	private Long companyId;
 	
 
@@ -124,6 +125,14 @@ public class InvoiceDTO  implements Serializable{
 
 	public void setInvoiceDesc(String invoiceDesc) {
 		this.invoiceDesc = invoiceDesc;
+	}
+	
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
 	public Integer getDuration() {

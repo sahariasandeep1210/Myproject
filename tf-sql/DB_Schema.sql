@@ -516,3 +516,5 @@ CREATE TABLE tf_whitehall_transaction (
 
 ALTER TABLE tf_allotments ADD investor_id BIGINT(20) DEFAULT NULL after trade_id;
 ALTER TABLE tf_allotments ADD CONSTRAINT fk_investor_id FOREIGN KEY (investor_id) REFERENCES tf_investor(investor_id);
+
+ALTER TABLE scf_invoice DROP INDEX `invoice_number_UNIQUE`;

@@ -6,6 +6,9 @@
 <portlet:renderURL var="createInvoiceURL">
   <portlet:param name="render" value="createInvoice"/>
 </portlet:renderURL>
+<portlet:actionURL var="deleteInvoiceURL">
+  <portlet:param name="delete" value="deleteInvoice"/>
+</portlet:actionURL>
 <portlet:renderURL var="invoiceListURL"></portlet:renderURL>
 
 
@@ -23,6 +26,8 @@
         <input type="hidden" id="addInvoiceURL" value="${updateInvoiceURL}">        
 		<input type="hidden" name="invoiceId" value="${invoiceModel.id}">
 		<input type="hidden" name="userType" value="${userType}" id="userType">
+		<input type="hidden" name="deleteInvoiceURL" value="${deleteInvoiceURL}" id="deleteInvoiceURL">
+		
 	<div class="row-fluid">
 			<div class="span12">
 				<div class="span12"
@@ -117,18 +122,20 @@
 				<!-- Invoice link won't be visible for Investor so that's why putting condition for only Seller  -->
 				<c:if test="${userType ne 'Seller Admin'}">
 					<c:choose>
-						<c:when test="${invoiceModel.id !=null && invoiceModel.id !=0}">
+						<c:when test="${invoiceModel.id !=null && invoiceModel.id !=0 && invoiceModel.status eq 'New'}">
 							<input type="button" value="Update" class="btn btn-primary"
 								id="invoiceUpdate" />
 							<input type="button" value="Delete" class="btn btn-danger"
-								onclick="deleteInvoice()" />
+								id="invoiceDelete" />
 						</c:when>
-						<c:otherwise>
-							<input type="button" value="Add Invoice" class="btn btn-primary" id="invoiceAdd" />
-						</c:otherwise>
-					</c:choose>				
+						<c:when test="${invoiceModel.id eq null }">
+						    	<input type="button" value="Add Invoice" class="btn btn-primary" id="invoiceAdd" />
+                         </c:when>					
+                   </c:choose>				
 				</c:if>
-				<input type="button" value="Go Back" class="btn btn-primary"	data-url="${invoiceListURL}" id="invoiceback" />
+				
+				 <input type="button" value="Go Back" class="btn btn-primary"	data-url="${invoiceListURL}" id="invoiceback" />
+				
 			</div>
 		</div>
 	</form:form>

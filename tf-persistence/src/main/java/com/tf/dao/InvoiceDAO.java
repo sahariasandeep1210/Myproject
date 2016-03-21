@@ -8,6 +8,7 @@ import com.tf.model.Invoice;
 
 public interface InvoiceDAO extends BaseDAO<Invoice, Long> {
 	
+	public void deleteInvoice(Invoice invoice);	
 	public void addInvoices(List<Invoice> invoice);
 	
 	public List<Invoice> getInvoices(int startIndex,int pageSize);

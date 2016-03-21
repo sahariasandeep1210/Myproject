@@ -11,7 +11,8 @@ import com.tf.model.Invoice;
 import com.tf.persistance.util.InSuffcientFund;
 
 public interface InvoiceService {
-
+	 
+	public void deleteInvoice(Invoice invoice);	
 	public void addInvoices(List<Invoice> invoices);
 	
 	public Long getInvoicesByFilterCount(String search,Date frmDate,Date toDate,String value);

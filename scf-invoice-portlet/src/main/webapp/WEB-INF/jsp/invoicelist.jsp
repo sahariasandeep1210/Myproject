@@ -31,6 +31,10 @@
 
 <liferay-ui:success key="invoice.success.trade"
 	message="${successMessage}" />
+	
+<liferay-ui:success key="invoice.success.delete"
+	message="${successMessage}" />
+	
 
 <liferay-ui:error key="invoice.allotment.error">
 	<liferay-ui:message key="invoice.allotment.error"
@@ -101,7 +105,7 @@
 		<div class="row-fluid">
 			<div class="span6">
 				<input type="text" name="Search" placeholder="Search Here"
-					id="search">
+					id="search" value="${search}">
 			</div>
 
 		</div>

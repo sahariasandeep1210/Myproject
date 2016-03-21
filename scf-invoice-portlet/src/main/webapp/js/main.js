@@ -25,7 +25,13 @@ $(document).ready(function() {
 			var updateURL=$("#updateInvoiceURL").val();
 			document.forms["createInvoiceForm"].action = updateURL;
 			document.forms["createInvoiceForm"].submit();
-	 });	 
+	 });
+	 
+	 $("#invoiceDelete").click(function (){
+			var updateURL=$("#deleteInvoiceURL").val();
+			document.forms["createInvoiceForm"].action = updateURL;
+			document.forms["createInvoiceForm"].submit();
+	 });
 	
 	 $("#exportInvoices").click(function(){			
 			$('#invoiceListTable').tableExport({

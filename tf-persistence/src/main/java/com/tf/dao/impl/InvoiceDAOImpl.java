@@ -79,7 +79,20 @@ public class InvoiceDAOImpl extends BaseDAOImpl<Invoice, Long> implements Invoic
 			throw re;
 		}
 	}
-
+	
+public void deleteInvoice(Invoice invoice){
+	try{
+	Session session = sessionFactory.getCurrentSession();
+	Invoice inv= new Invoice();
+	inv.setId(invoice.getId());
+	session.delete(invoice);
+	
+	_log.debug("Invoices Deleted successful");
+	}catch (RuntimeException e) {
+		_log.error("Invoices Deleted failed", e);
+		throw e;
+		}
+}
 	@SuppressWarnings("unchecked")
 	public List<Invoice> getInvoices(int startIndex, int pageSize) {
 

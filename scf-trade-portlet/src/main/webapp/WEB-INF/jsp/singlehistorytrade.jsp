@@ -56,16 +56,16 @@
 									ALL</span></label></td>
 						<td>${totalTradeAmount}</td>
 						<td><input type="text" name="Search"
-							placeholder="Search Here" id="search"></td>
+							placeholder="Search Here" id="search" value="${companyName}"></td>
 						<td></td>
 					</tr>
 
 					<tr>
 						<td><label class="span6">Select Date Range :</label></td>
-						<td><input name="fromDate" id="fromDate" placeholder="From" />
+						<td><input name="fromDate" id="fromDate" placeholder="From" value="${fromDate}" />
 						</td>
 
-						<td><input name="toDate" id="toDate" placeholder="To" /></td>
+						<td><input name="toDate" id="toDate" placeholder="To" value="${toDate}"/></td>
 						<td></td>
 					</tr>
 					<tr>

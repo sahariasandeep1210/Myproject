@@ -41,6 +41,8 @@ public class InvoiceServiceImpl implements InvoiceService{
 	@Autowired
 	private InvoiceDAO invoiceDAO;
 	
+	
+	
 	@Autowired
 	private InvestorDAO investorDAO;
 	
@@ -361,5 +363,8 @@ public class InvoiceServiceImpl implements InvoiceService{
 		//there should be exception handling here
 		String sellerRegNumber=getInvoicesBytradeId(id).get(0).getSellerCompanyRegistrationNumber();
 		return sellerRegNumber;
+	}
+	public void deleteInvoice(Invoice invoice){
+		invoiceDAO.deleteInvoice(invoice);
 	}
 }

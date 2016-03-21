@@ -45,17 +45,15 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 
 		_log.debug("Inside getScfTrades  ");
 		try {
-			List<SCFTrade> results =new ArrayList<SCFTrade>();
+			List<SCFTrade> results = new ArrayList<SCFTrade>();
 			Collection<Long> ids = getIDListForPagination(startIndex, pageSize);
-			if(!ids.isEmpty()) {
-		        Session session = sessionFactory.getCurrentSession();
-		        Criteria criteria = session.createCriteria(SCFTrade.class)
-		        					.add(Restrictions.in("id", ids))
-		        					.setFetchMode("invoices", FetchMode.JOIN)
-		        					.setFetchMode("allotments", FetchMode.JOIN)
-		        					.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-		        results = (List<SCFTrade>) criteria.list(); 
-		        
+			if (!ids.isEmpty()) {
+				Session session = sessionFactory.getCurrentSession();
+				Criteria criteria =
+					session.createCriteria(SCFTrade.class).add(Restrictions.in("id", ids)).setFetchMode("invoices", FetchMode.JOIN).setFetchMode(
+						"allotments", FetchMode.JOIN).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+				results = (List<SCFTrade>) criteria.list();
+
 			}
 			_log.debug("getScfTrades successful, result size: " + results.size());
 			return results;
@@ -70,12 +68,11 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 
 		_log.debug("Inside getScfTradesCount ");
 		try {
-			Criteria criteria =
-				(Criteria) sessionFactory.getCurrentSession().createCriteria(SCFTrade.class);
+			Criteria criteria = (Criteria) sessionFactory.getCurrentSession().createCriteria(SCFTrade.class);
 			Long resultCount =
-							(Long) criteria.setFetchMode("invoices", FetchMode.JOIN)
-							.setFetchMode("allotments", FetchMode.JOIN).setProjection(Projections.rowCount()).uniqueResult();
-			System.out.println("resultCountresultCountresultCount:"+resultCount);
+				(Long) criteria.setFetchMode("invoices", FetchMode.JOIN).setFetchMode("allotments", FetchMode.JOIN).setProjection(
+					Projections.rowCount()).uniqueResult();
+			System.out.println("resultCountresultCountresultCount:" + resultCount);
 			_log.info("getScfTradesCount Count:: " + resultCount);
 			return resultCount;
 		}
@@ -108,7 +105,11 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 
 			List<SCFTrade> results =
 				(List<SCFTrade>) sessionFactory.getCurrentSession().createCriteria(SCFTrade.class).add(Restrictions.eq("company.id", companyID)).setFetchMode(
-					"invoices", FetchMode.JOIN)/*.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY)*/.list();
+					"invoices", FetchMode.JOIN)/*
+												 * .setResultTransformer(
+												 * CriteriaSpecification
+												 * .DISTINCT_ROOT_ENTITY)
+												 */.list();
 			_log.debug("getScfTrades successful, result size: " + results.size());
 			return results;
 		}
@@ -254,18 +255,15 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 
 		_log.debug("Inside getScfTrades ");
 		try {
-			
-			List<SCFTrade> results =new ArrayList<SCFTrade>();
+
+			List<SCFTrade> results = new ArrayList<SCFTrade>();
 			Collection<Long> ids = getIDListForPagination(startIndex, pageSize);
-			if(!ids.isEmpty()) {
-		        Session session = sessionFactory.getCurrentSession();
-		        Criteria criteria = session.createCriteria(SCFTrade.class)
-		        					.add(Restrictions.in("id", ids))
-		        					.add(Restrictions.eq("company.id", companyID))
-		        					.setFetchMode("invoices", FetchMode.JOIN)
-		        					.setFetchMode("allotments", FetchMode.JOIN)
-		        					.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-		        results = (List<SCFTrade>) criteria.list(); 
+			if (!ids.isEmpty()) {
+				Session session = sessionFactory.getCurrentSession();
+				Criteria criteria =
+					session.createCriteria(SCFTrade.class).add(Restrictions.in("id", ids)).add(Restrictions.eq("company.id", companyID)).setFetchMode(
+						"invoices", FetchMode.JOIN).setFetchMode("allotments", FetchMode.JOIN).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+				results = (List<SCFTrade>) criteria.list();
 			}
 			_log.debug("getScfTrades successful, result size: " + results.size());
 			return results;
@@ -297,11 +295,10 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 
 		_log.debug("Inside getCompanies ");
 		try {
-			Criteria criteria =sessionFactory.getCurrentSession().createCriteria(SCFTrade.class).add(Restrictions.eq("company.id", companyID));
+			Criteria criteria = sessionFactory.getCurrentSession().createCriteria(SCFTrade.class).add(Restrictions.eq("company.id", companyID));
 
 			Long resultCount =
-				(Long)criteria.setFetchMode(
-					"invoices", FetchMode.JOIN).setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY).setProjection(
+				(Long) criteria.setFetchMode("invoices", FetchMode.JOIN).setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY).setProjection(
 					Projections.rowCount()).uniqueResult();
 			_log.debug("Companies Count " + resultCount);
 			return resultCount;
@@ -332,14 +329,15 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 	public Long getScfTradeCounts(String regNum) {
 
 		_log.debug("Inside getScfTradeCounts ");
-		try {			
+		try {
 			Criteria criteria = sessionFactory.getCurrentSession().createCriteria(SCFTrade.class);
 			criteria.createAlias("invoices", "inv");
 			ProjectionList prList = Projections.projectionList();
 			prList.add((Projections.distinct(Projections.property("inv.scfTrade"))));
 			criteria.setProjection(prList);
 			Long resultCount =
-				(Long) criteria.add(Restrictions.eq("inv.sellerCompanyRegistrationNumber", regNum)).setProjection(Projections.countDistinct("inv.scfTrade")).uniqueResult();
+				(Long) criteria.add(Restrictions.eq("inv.sellerCompanyRegistrationNumber", regNum)).setProjection(
+					Projections.countDistinct("inv.scfTrade")).uniqueResult();
 
 			_log.debug("getScfTradeCounts Count " + resultCount);
 			return resultCount;
@@ -419,10 +417,7 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 				"select (select name from tf_company where idcompany = company_id) as company, " +
 					"sum(trade_amount) as trade_amount, (select count(trade_id) from scf_invoice where scf_company= company_id) as trades, " +
 					"company_id from scf_trade group by company_id LIMIT " + startIndex + "," + pageSize;
-			/*
-			 * Criteria criteria = (Criteria)
-			 * sessionFactory.getCurrentSession().createSQLQuery(qry);
-			 */
+
 			List<Object[]> resultscheck = (List<Object[]>) sessionFactory.getCurrentSession().createSQLQuery(qry).list();
 			for (Object[] row : resultscheck) {
 				scfTrade = new SCFTrade();
@@ -515,18 +510,32 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 						"sum(trade_amount) as trade_amount, (select count(trade_id) from scf_invoice where scf_company IN (company_id)) as trades, " +
 						"company_id from scf_trade where opening_date IN (:toDate) group by company_id LIMIT " + startIndex + "," + pageSize;
 			}
-			else if (!StringUtils.isEmpty(scfCompany) && (frmDate == null || toDate == null)) {
+			else if (!StringUtils.isEmpty(scfCompany) && frmDate == null && toDate == null) {
 				qry =
 					"select (select name from tf_company where idcompany = company_id) as company, " +
 						"sum(trade_amount) as trade_amount, (select count(trade_id) from scf_invoice where scf_company= company_id) as trades," +
-						"company_id from scf_trade group by company_id having company like (:company_id) LIMIT " + startIndex + "," +
-						pageSize;
+						"company_id from scf_trade group by company_id having company like (:company_id) LIMIT " + startIndex + "," + pageSize;
+
+			}
+			else if (!StringUtils.isEmpty(scfCompany) && frmDate != null && toDate == null) {
+				qry =
+					"select (select name from tf_company where idcompany = company_id) as company, " +
+						"sum(trade_amount) as trade_amount, (select count(trade_id) from scf_invoice where scf_company= company_id) as trades," +
+						"company_id from scf_trade where opening_date IN (:fromDate) group by company_id having company like (:company_id) LIMIT " +
+						startIndex + "," + pageSize;
+			}
+			else if (!StringUtils.isEmpty(scfCompany) && frmDate == null && toDate != null) {
+				qry =
+					"select (select name from tf_company where idcompany = company_id) as company, " +
+						"sum(trade_amount) as trade_amount, (select count(trade_id) from scf_invoice where scf_company= company_id) as trades," +
+						"company_id from scf_trade where opening_date IN (:toDate) group by company_id having company like (:company_id) LIMIT " +
+						startIndex + "," + pageSize;
 			}
 			else {
 				qry =
 					"select (select name from tf_company where idcompany = company_id) as company, " +
 						"sum(trade_amount) as trade_amount, (select count(trade_id) from scf_invoice where scf_company= company_id) as trades, " +
-						"company_id from scf_trade group by company_id LIMIT " + startIndex + "," + pageSize;
+						"company_id from scf_trade  group by company_id LIMIT " + startIndex + "," + pageSize;
 			}
 
 			Query resultscheck1 = (Query) sessionFactory.getCurrentSession().createSQLQuery(qry);
@@ -610,11 +619,27 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 						startIndex + "," + pageSize;
 
 			}
-			else if (!StringUtils.isEmpty(scfCompany) && (frmDate == null || toDate == null)) {
+			else if (!StringUtils.isEmpty(scfCompany) && frmDate == null && toDate == null) {
 				query =
 					"select distinct trd.id as TradeID, trd.company_id as CompanyID, (select name from tf_company where idcompany = company_id) as Company, trd.status Status,trd.trade_amount, (select count(trade_id) from scf_invoice where trade_id = trd.id) Invocies, cmp.name SellerCompany from scf_trade trd, scf_invoice inv, tf_company cmp where company_id = " +
 						compID +
 						" and inv.trade_id = trd.id and cmp.regnumber =  inv.seller_company_registration_number and cmp.NAME like (:scfCompany) or trd.status like (:status) LIMIT " +
+						startIndex + "," + pageSize;
+
+			}
+			else if (!StringUtils.isEmpty(scfCompany) && frmDate != null && toDate == null) {
+				query =
+					"select distinct trd.id as TradeID, trd.company_id as CompanyID, (select name from tf_company where idcompany = company_id) as Company, trd.status Status,trd.trade_amount, (select count(trade_id) from scf_invoice where trade_id = trd.id) Invocies, cmp.name SellerCompany from scf_trade trd, scf_invoice inv, tf_company cmp where company_id = " +
+						compID +
+						" and inv.trade_id = trd.id and cmp.regnumber =  inv.seller_company_registration_number and cmp.NAME like (:scfCompany) or trd.status like (:status) and  opening_date IN (:fromDate) LIMIT " +
+						startIndex + "," + pageSize;
+
+			}
+			else if (!StringUtils.isEmpty(scfCompany) && frmDate == null && toDate != null) {
+				query =
+					"select distinct trd.id as TradeID, trd.company_id as CompanyID, (select name from tf_company where idcompany = company_id) as Company, trd.status Status,trd.trade_amount, (select count(trade_id) from scf_invoice where trade_id = trd.id) Invocies, cmp.name SellerCompany from scf_trade trd, scf_invoice inv, tf_company cmp where company_id = " +
+						compID +
+						" and inv.trade_id = trd.id and cmp.regnumber =  inv.seller_company_registration_number and cmp.NAME like (:scfCompany) or trd.status like (:status) and  opening_date IN (:toDate) LIMIT " +
 						startIndex + "," + pageSize;
 
 			}
@@ -705,11 +730,25 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 						" and inv.trade_id = trd.id and cmp.regnumber =  inv.seller_company_registration_number and  opening_date IN (:toDate)";
 
 			}
-			else if (!StringUtils.isEmpty(scfCompany) && (frmDate == null || toDate == null)) {
+			else if (!StringUtils.isEmpty(scfCompany) && frmDate == null && toDate == null) {
 				query =
 					"select distinct trd.id as TradeID, trd.company_id as CompanyID, (select name from tf_company where idcompany = company_id) as Company, trd.status Status,trd.trade_amount, (select count(trade_id) from scf_invoice where trade_id = trd.id) Invocies, cmp.name SellerCompany from scf_trade trd, scf_invoice inv, tf_company cmp where company_id = " +
 						compID +
 						" and inv.trade_id = trd.id and cmp.regnumber =  inv.seller_company_registration_number and cmp.NAME like (:scfCompany) or trd.status like (:status)";
+
+			}
+			else if (!StringUtils.isEmpty(scfCompany) && frmDate != null && toDate == null) {
+				query =
+					"select distinct trd.id as TradeID, trd.company_id as CompanyID, (select name from tf_company where idcompany = company_id) as Company, trd.status Status,trd.trade_amount, (select count(trade_id) from scf_invoice where trade_id = trd.id) Invocies, cmp.name SellerCompany from scf_trade trd, scf_invoice inv, tf_company cmp where company_id = " +
+						compID +
+						" and inv.trade_id = trd.id and cmp.regnumber =  inv.seller_company_registration_number and cmp.NAME like (:scfCompany) or trd.status like (:status) and  opening_date IN (:fromDate)";
+
+			}
+			else if (!StringUtils.isEmpty(scfCompany) && frmDate == null && toDate != null) {
+				query =
+					"select distinct trd.id as TradeID, trd.company_id as CompanyID, (select name from tf_company where idcompany = company_id) as Company, trd.status Status,trd.trade_amount, (select count(trade_id) from scf_invoice where trade_id = trd.id) Invocies, cmp.name SellerCompany from scf_trade trd, scf_invoice inv, tf_company cmp where company_id = " +
+						compID +
+						" and inv.trade_id = trd.id and cmp.regnumber =  inv.seller_company_registration_number and cmp.NAME like (:scfCompany) or trd.status like (:status) and  opening_date IN (:toDate)";
 
 			}
 			else {
@@ -779,11 +818,24 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 						+ "sum(trade_amount) as trade_amount, (select count(trade_id) from scf_invoice where scf_company IN (company_id)) as trades, "
 						+ "company_id from scf_trade where opening_date IN (:toDate) group by company_id";
 			}
-			else if (!StringUtils.isEmpty(scfCompany) && (frmDate == null || toDate == null)) {
+			else if (!StringUtils.isEmpty(scfCompany) && frmDate == null && toDate == null) {
 				qry =
 					"select (select name from tf_company where idcompany = company_id) as company, "
 						+ "sum(trade_amount) as trade_amount, (select count(trade_id) from scf_invoice where scf_company= company_id) as trades,"
 						+ "company_id from scf_trade group by company_id having company like (:company_id)";
+			}
+			else if (!StringUtils.isEmpty(scfCompany) && frmDate != null && toDate == null) {
+				qry =
+					"select (select name from tf_company where idcompany = company_id) as company, "
+						+ "sum(trade_amount) as trade_amount, (select count(trade_id) from scf_invoice where scf_company= company_id) as trades,"
+						+ "company_id from scf_trade where opening_date IN (:fromDate) group by company_id having company like (:company_id)";
+
+			}
+			else if (!StringUtils.isEmpty(scfCompany) && frmDate == null && toDate != null) {
+				qry =
+					"select (select name from tf_company where idcompany = company_id) as company, "
+						+ "sum(trade_amount) as trade_amount, (select count(trade_id) from scf_invoice where scf_company= company_id) as trades,"
+						+ "company_id from scf_trade where opening_date IN (:toDate) group by company_id having company like (:company_id)";
 			}
 			else {
 				qry =
@@ -960,16 +1012,16 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 		}
 
 	}
-	
-	public Collection<Long> getIDListForPagination(int startIndex, int pageSize) {
-	    Session session = sessionFactory.getCurrentSession();
 
-	    Criteria criteria = session.createCriteria(SCFTrade.class)
-	    					.setProjection(Projections.id());
-	    	criteria.setFirstResult(startIndex);
-	    	criteria.setMaxResults(pageSize);
-	    @SuppressWarnings("unchecked")
-	    Collection<Long> ids = criteria.list();
-	    return ids;
+	public Collection<Long> getIDListForPagination(int startIndex, int pageSize) {
+
+		Session session = sessionFactory.getCurrentSession();
+
+		Criteria criteria = session.createCriteria(SCFTrade.class).setProjection(Projections.id());
+		criteria.setFirstResult(startIndex);
+		criteria.setMaxResults(pageSize);
+		@SuppressWarnings("unchecked")
+		Collection<Long> ids = criteria.list();
+		return ids;
 	}
 }

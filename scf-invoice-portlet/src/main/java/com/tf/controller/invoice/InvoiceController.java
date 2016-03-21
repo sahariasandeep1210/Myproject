@@ -362,6 +362,7 @@ public class InvoiceController {
 			invoiceModel.setInvoiceAmount(invoice.getInvoiceAmount());
 			invoiceModel.setPaymentDate(invoice.getPayment_date());
 			invoiceModel.setVatAmount(invoice.getVatAmount());
+			invoiceModel.setStatus(invoice.getStatus());
 			model.put("scfCompanies", scfCompanies);
 			model.put("invoices", invoice);
 		}
@@ -375,7 +376,24 @@ public class InvoiceController {
 		return new ModelAndView("createinvoice", model);
 
 	}
+	
+	
+	@ActionMapping(params = "delete=deleteInvoice")
+	protected void deleteInvoice(
+		ActionRequest request, ActionResponse response, ModelMap model)
+		throws Exception {
+		Long invoiceId=ParamUtil.getLong(request, "invoiceId");
+		Invoice invoice=invoiceService.getInvoicesById(invoiceId);
+		invoiceService.deleteInvoice(invoice);
+		PortletConfig portletConfig =
+						(PortletConfig) request.getAttribute(JavaConstants.JAVAX_PORTLET_CONFIG);
+					SessionMessages.add(request, "invoice.success.delete");
+					model.put(
+						"successMessage",
+						LanguageUtil.get(
+							portletConfig, request.getLocale(), "invoice.success.delete"));
 
+	}
 	@RenderMapping
 	protected ModelAndView renderInvoiceList(
 		RenderRequest request, RenderResponse response, ModelMap model)
@@ -715,12 +733,7 @@ public class InvoiceController {
 	public ModelAndView invoiceRedirect(
 		ModelMap model, RenderRequest request, RenderResponse response)
 		throws Exception {
-
-		model.put("defaultRender", Boolean.TRUE);
-		model.put("userType", Constants.ADMIN);
-		model.put("userType", Constants.SCF_ADMIN);
-		model.put("userType", Constants.SELLER_ADMIN);
-		model.put(ACTIVETAB, "invoicelist");
+		
 		return new ModelAndView("invoicelist", model);
 	}
 
@@ -757,6 +770,12 @@ public class InvoiceController {
 		model.put("paginationModel", paginationModel);
 		model.put("invoices", invoices);
 		model.put("value", value);
+		model.put("search", search);
+		model.put("defaultRender", Boolean.TRUE);
+		model.put("userType", Constants.ADMIN);
+		model.put("userType", Constants.SCF_ADMIN);
+		model.put("userType", Constants.SELLER_ADMIN);
+		model.put(ACTIVETAB, "invoicelist");
 		response.setRenderParameter("action", "invoiceRedirect");
 	}
 
