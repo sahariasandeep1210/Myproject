@@ -735,12 +735,7 @@ public class SCFTradeController {
 		}
 		Long noOfRecords = 0l;
 		PaginationModel paginationModel = paginationUtil.preparePaginationModel(request);
-		if(!StringUtils.isNullOrEmpty(search)&& !StringUtils.isNullOrEmpty(value)){
-		scftrades =
-			scfTradeService.getAdminTradeListWithSearch(
-				search, fromDate, toDate, value, paginationModel.getStartIndex(), paginationModel.getPageSize());
-		noOfRecords = scfTradeService.getAdminTradeListWithSearchCount(search, fromDate, toDate, value);
-		}else{
+		if(StringUtils.isNullOrEmpty(search) && StringUtils.isNullOrEmpty(value)){
 			trades = scfTradeService.getScfTrades(paginationModel.getStartIndex(), paginationModel.getPageSize());
 			noOfRecords = scfTradeService.getScfTradesCount();
 			for (SCFTrade scf : trades) {
@@ -759,6 +754,12 @@ public class SCFTradeController {
 			model.put("totalSellerFees", totalSellerFees);
 			model.put("totalWhiteHallFees", totalWhiteHallFees);
 			model.put("totalSellerAmount", totalSellerAmount);
+		}else{
+			scftrades =
+					scfTradeService.getAdminTradeListWithSearch(
+						search, fromDate, toDate, value, paginationModel.getStartIndex(), paginationModel.getPageSize());
+				noOfRecords = scfTradeService.getAdminTradeListWithSearchCount(search, fromDate, toDate, value);
+			
 		}
 		
 		paginationUtil.setPaginationInfo(noOfRecords, paginationModel);
