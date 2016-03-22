@@ -245,6 +245,11 @@
 			<artifactId>tf-persistence</artifactId>
 			<version>1.1-RELEASE</version>
 		</dependency>
+		<dependency>
+			<groupId>com.tf</groupId>
+			<artifactId>tf-util</artifactId>
+			<version>1.1-RELEASE</version>
+		</dependency>
 	</dependencies>
 
 </project>
