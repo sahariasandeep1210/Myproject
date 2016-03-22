@@ -1,10 +1,18 @@
 
 package com.tf.dao.impl;
 
+import com.mysql.jdbc.StringUtils;
 import com.tf.dao.InvoiceDAO;
+import com.tf.model.Company;
 import com.tf.model.Invoice;
+import com.tf.model.SCFTrade;
+import com.tf.service.CompanyService;
 import com.tf.util.ValidationUtil;
 
+import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -27,7 +35,8 @@ public class InvoiceDAOImpl extends BaseDAOImpl<Invoice, Long> implements Invoic
 
 	@Autowired
 	protected ValidationUtil validationUtil;
-
+   @Autowired
+   protected CompanyService companyService;
 	public InvoiceDAOImpl() {
 
 		super(Invoice.class);
@@ -128,13 +137,13 @@ public void deleteInvoice(Invoice invoice){
 	@SuppressWarnings("unchecked")
 	public List<Invoice> getInvoicesAmount(List<Long> invoiceIds) {
 
-		_log.debug("Inside getInvoice ");
+		_log.debug("Inside getInvoicesAmount ");
 		try {
 
 			Query query = sessionFactory.getCurrentSession().createQuery("FROM Invoice invoice WHERE invoice.id IN (:ids) ");
 			query.setParameterList("ids", invoiceIds);
 			List<Invoice> results = (List<Invoice>) query.list();;
-			_log.debug("GetCompanies successful, result size: " + results.size());
+			_log.debug("getInvoicesAmount successful, result size: " + results.size());
 			return results;
 		}
 		catch (RuntimeException re) {
@@ -312,13 +321,77 @@ public void deleteInvoice(Invoice invoice){
 
 		_log.debug("Inside getInvoicesByFilter");
 		List<Invoice> InvoiceList = new ArrayList<Invoice>();
+		Invoice invoice = null;
+		List<Object[]> resultscheck = new ArrayList<Object[]>();
 		
 		try {
 			DetachedCriteria criteria = DetachedCriteria.forClass(Invoice.class);
-			Disjunction or = Restrictions.disjunction();
 			if (validationUtil.isNumeric(search)) {
-				or.add(Restrictions.like("invoiceNumber", Long.valueOf(search)));
-			}
+				String qry="";
+				if( StringUtils.isNullOrEmpty(value)){
+				   qry="select invoice_number,payment_date,invoice_amout,duration,status ,(select idcompany from tf_company cmp where cmp.idcompany=scf_company) from scf_invoice invoice WHERE invoice.invoice_number like (:invoiceNumber)LIMIT " +
+						startIndex + "," + pageSize;
+				}else if(("invoiceDate").equals(value) && frmDate != null && toDate != null){
+					   qry="select invoice_number,payment_date,invoice_amout,duration,status ,(select idcompany from tf_company cmp where cmp.idcompany=scf_company) from scf_invoice invoice WHERE invoice.invoice_number like (:invoiceNumber) and invoice.invoice_date BETWEEN (:fromDate) and (:toDate)LIMIT " +
+						startIndex + "," + pageSize;
+				}else if (("invoiceDate").equals(value) && frmDate != null && toDate == null) {
+					   qry="select invoice_number,payment_date,invoice_amout,duration,status ,(select idcompany from tf_company cmp where cmp.idcompany=scf_company) from scf_invoice invoice WHERE invoice.invoice_number like (:invoiceNumber) and invoice.invoice_date IN (:fromDate)LIMIT " +
+						startIndex + "," + pageSize;
+				}else if (("invoiceDate").equals(value) && frmDate == null && toDate != null) {
+					   qry="select invoice_number,payment_date,invoice_amout,duration,status ,(select idcompany from tf_company cmp where cmp.idcompany=scf_company) from scf_invoice invoice WHERE invoice.invoice_number like (:invoiceNumber) and invoice.invoice_date IN (:toDate)LIMIT " +
+						startIndex + "," + pageSize;
+				}else if (("financeDate").equals(value) && frmDate != null && toDate != null){
+					   qry="select invoice_number,payment_date,invoice_amout,duration,status ,(select idcompany from tf_company cmp where cmp.idcompany=scf_company) from scf_invoice invoice WHERE invoice.invoice_number like (:invoiceNumber) and invoice.finance_date BETWEEN (:fromDate) and (:toDate)LIMIT " +
+						startIndex + "," + pageSize;
+
+				}else if (("financeDate").equals(value) && frmDate != null && toDate == null) {
+					   qry="select invoice_number,payment_date,invoice_amout,duration,status ,(select idcompany from tf_company cmp where cmp.idcompany=scf_company) from scf_invoice invoice WHERE invoice.invoice_number like (:invoiceNumber) and invoice.finance_date IN (:fromDate)LIMIT " +
+						startIndex + "," + pageSize;
+					
+				}else if (("financeDate").equals(value) && frmDate == null && toDate != null) {
+					   qry="select invoice_number,payment_date,invoice_amout,duration,status ,(select idcompany from tf_company cmp where cmp.idcompany=scf_company) from scf_invoice invoice WHERE invoice.invoice_number like (:invoiceNumber) and invoice.finance_date IN (:toDate)LIMIT " +
+						startIndex + "," + pageSize;
+				}else if (("paymentDate").equals(value) && frmDate != null && toDate != null){
+					   qry="select invoice_number,payment_date,invoice_amout,duration,status ,(select idcompany from tf_company cmp where cmp.idcompany=scf_company) from scf_invoice invoice WHERE invoice.invoice_number like (:invoiceNumber) and invoice.payment_date BETWEEN (:fromDate) and (:toDate)LIMIT " +
+						startIndex + "," + pageSize;
+
+				}else if (("paymentDate").equals(value) && frmDate != null && toDate == null){
+					   qry="select invoice_number,payment_date,invoice_amout,duration,status ,(select idcompany from tf_company cmp where cmp.idcompany=scf_company) from scf_invoice invoice WHERE invoice.invoice_number like (:invoiceNumber) and invoice.payment_date IN (:fromDate)LIMIT " +
+						startIndex + "," + pageSize;
+
+				}else if (("paymentDate").equals(value) && frmDate == null && toDate != null) {
+					   qry="select invoice_number,payment_date,invoice_amout,duration,status ,(select idcompany from tf_company cmp where cmp.idcompany=scf_company) from scf_invoice invoice WHERE invoice.invoice_number like (:invoiceNumber) and invoice.payment_date IN (:toDate)LIMIT " +
+						startIndex + "," + pageSize;
+				}
+				Query query = sessionFactory.getCurrentSession().createSQLQuery(qry);
+				if (!StringUtils.isNullOrEmpty(search)) {
+				query.setParameter("invoiceNumber", "%"+search+"%");
+				}
+				if (frmDate != null) {
+				query.setParameter("fromDate", frmDate);
+				}
+				if (toDate != null) {
+				query.setParameter("toDate", toDate);
+				}
+				resultscheck = (List<Object[]>) query.list();
+				DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+
+				for(Object[] row:resultscheck){
+					invoice =new Invoice();
+					invoice.setInvoiceNumber(Long.valueOf(row[0].toString()));
+					invoice.setPayment_date(formatter.parse(row[1].toString()));
+					invoice.setInvoiceAmount(new BigDecimal(row[2].toString()));
+					invoice.setDuration(Integer.valueOf(row[3].toString()));
+					invoice.setStatus(row[4].toString());
+					Company company= companyService.findById(Long.valueOf(row[5].toString()));
+					invoice.setScfCompany(company);
+					InvoiceList.add(invoice);
+				}
+				
+/*				or.add(Restrictions.like("invoiceNumber", Long.valueOf(search)));
+*/			}else{
+			Disjunction or = Restrictions.disjunction();
+
 			or.add(Restrictions.like("status", search, MatchMode.ANYWHERE));
 
 			or.add(Restrictions.like("company.name", search, MatchMode.ANYWHERE));
@@ -367,12 +440,17 @@ public void deleteInvoice(Invoice invoice){
 
 			.add(or).setFirstResult(startIndex).setMaxResults(pageSize).list();
 			_log.debug("getInvoicesByFilter successful, result size: " + InvoiceList.size());
-			return InvoiceList;
-		}
-		catch (RuntimeException re) {
+             }	
+		}catch (RuntimeException re) {
 			_log.error("getInvoicesByFilter failed", re);
 			throw re;
 		}
+		catch (ParseException e) {
+			_log.error("getInvoicesByFilter failed", e);
+			e.printStackTrace();
+		}
+		return InvoiceList;
+
 	}
 
 	public Long getInvoicesByFilterCount(String search, Date frmDate, Date toDate, String value) {
