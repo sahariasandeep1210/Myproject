@@ -1,46 +1,6 @@
 
 package com.tf.controller.invoice;
 
-import java.beans.PropertyEditorSupport;
-import java.math.BigDecimal;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Properties;
-
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.PasswordAuthentication;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
-import javax.portlet.ActionRequest;
-import javax.portlet.ActionResponse;
-import javax.portlet.PortletConfig;
-import javax.portlet.RenderRequest;
-import javax.portlet.RenderResponse;
-
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.portlet.ModelAndView;
-import org.springframework.web.portlet.bind.annotation.ActionMapping;
-import org.springframework.web.portlet.bind.annotation.RenderMapping;
-
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -75,7 +35,40 @@ import com.tf.service.InvoiceService;
 import com.tf.service.UserService;
 import com.tf.util.LiferayUtility;
 import com.tf.util.PaginationUtil;
+import com.tf.util.ValidationUtil;
 import com.tf.util.model.PaginationModel;
+
+import java.beans.PropertyEditorSupport;
+import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+
+import javax.portlet.ActionRequest;
+import javax.portlet.ActionResponse;
+import javax.portlet.PortletConfig;
+import javax.portlet.RenderRequest;
+import javax.portlet.RenderResponse;
+
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.portlet.ModelAndView;
+import org.springframework.web.portlet.bind.annotation.ActionMapping;
+import org.springframework.web.portlet.bind.annotation.RenderMapping;
 
 /**
  * This controller is responsible for request/response handling on Invoice
@@ -88,6 +81,9 @@ import com.tf.util.model.PaginationModel;
 public class InvoiceController {
 
 	private final static String ACTIVETAB = "activetab";
+	
+	@Autowired
+	protected ValidationUtil validationUtil;
 
 	@Autowired
 	protected UserService userService;
@@ -752,7 +748,7 @@ public class InvoiceController {
 	protected void getCashReport(
 		ModelMap model, ActionRequest request, ActionResponse response)
 		throws Exception {
-
+		List<Invoice> invoices =null;
 		DateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
 		Date fromDate = null;
 		Date toDate = null;
@@ -769,13 +765,20 @@ public class InvoiceController {
 		Long noOfRecords = 0l;
 		PaginationModel paginationModel =
 			paginationUtil.preparePaginationModel(request);
-		List<Invoice> invoices =
+		if(validationUtil.isNumeric(search)){
+			invoices =invoiceService.getInvoicesByFilter(
+								search, fromDate, toDate, value,
+								paginationModel.getStartIndex(), paginationModel.getPageSize());
+			noOfRecords=Long.valueOf(invoices.size());
+		}else{
+		invoices =
 			invoiceService.getInvoicesByFilter(
 				search, fromDate, toDate, value,
 				paginationModel.getStartIndex(), paginationModel.getPageSize());
 		noOfRecords =
 			invoiceService.getInvoicesByFilterCount(
 				search, fromDate, toDate, value);
+		}
 		System.out.println("invoicesss:" + invoices);
 		paginationUtil.setPaginationInfo(noOfRecords, paginationModel);
 		model.put("paginationModel", paginationModel);
