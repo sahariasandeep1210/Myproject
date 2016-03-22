@@ -119,10 +119,10 @@
 				</select> 
 		   </div>
 		  <div class="span3">	
-				<input name="fromDate" type="text" id="fromDate" placeholder="From"  /> 
+				<input name="fromDate" type="text" id="fromDate" placeholder="From" value="${from}" /> 
 		  </div>		
 		  <div class="span3">	
-				<input name="toDate" type="text" id="toDate" placeholder="To" />
+				<input name="toDate" type="text" id="toDate" placeholder="To"  value="${to}"/>
 		  </div>
 				
 		</div>

@@ -144,6 +144,7 @@ public class InvoiceController {
 
 		try {
 			List<Company> companyList = new ArrayList<Company>();
+
 			ThemeDisplay themeDisplay = liferayUtility.getThemeDisplay(request);
 			List<InvoiceDocument> invoiceDocumentList =	new ArrayList<InvoiceDocument>();
 			if (liferayUtility.getPermissionChecker(request).isOmniadmin()) {
@@ -154,6 +155,7 @@ public class InvoiceController {
 			else if (request.isUserInRole(Constants.SCF_ADMIN)) {
 				invoiceDocumentList = invoiceDocumentService.getInvoiceDocuments(themeDisplay.getUser().getUserId());
 				long companyId = userService.getCompanyIDbyUserID(themeDisplay.getUserId());
+				System.out.println("Dfffff:"+companyService.findById(companyId));
 				companyList.add(companyService.findById(companyId));
 				model.put("userType", Constants.SCF_ADMIN);
 			}
@@ -174,8 +176,17 @@ public class InvoiceController {
 		@ModelAttribute("invoiceModel") InvoiceDTO invoice, ModelMap model,
 		RenderRequest request, RenderResponse response)
 		throws Exception {
-
-		List<Company> companyList = companyService.getCompanies("5");
+		List<Company> companyList = new ArrayList<Company>();
+		ThemeDisplay themeDisplay =
+						(ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
+        if(liferayUtility.getPermissionChecker(request).isOmniadmin() ||
+				request.isUserInRole(Constants.WHITEHALL_ADMIN)){
+    		companyList = companyService.getCompanies("5");
+        }else if(request.isUserInRole(Constants.SCF_ADMIN)){
+        	long companyId =
+        					userService.getCompanyIDbyUserID(themeDisplay.getUserId());
+        	companyList=companyService.getCompaniesById(companyId);
+        }
 		model.put("companyList", companyList);
 		return new ModelAndView("createinvoice", model);
 	}
@@ -774,10 +785,17 @@ public class InvoiceController {
 		model.put("invoices", invoices);
 		model.put("value", value);
 		model.put("search", search);
+		model.put("from", from);
+		model.put("to", to);
 		model.put("defaultRender", Boolean.TRUE);
+		if(liferayUtility.getPermissionChecker(request).isOmniadmin() ||
+						request.isUserInRole(Constants.WHITEHALL_ADMIN)){
 		model.put("userType", Constants.ADMIN);
+	}else if(request.isUserInRole(Constants.SCF_ADMIN)){
 		model.put("userType", Constants.SCF_ADMIN);
+	}else if(request.isUserInRole(Constants.SELLER_ADMIN)){
 		model.put("userType", Constants.SELLER_ADMIN);
+	}
 		model.put(ACTIVETAB, "invoicelist");
 		response.setRenderParameter("action", "invoiceRedirect");
 	}
