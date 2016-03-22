@@ -317,7 +317,7 @@ public void deleteInvoice(Invoice invoice){
 			DetachedCriteria criteria = DetachedCriteria.forClass(Invoice.class);
 			Disjunction or = Restrictions.disjunction();
 			if (validationUtil.isNumeric(search)) {
-				or.add(Restrictions.eq("invoiceNumber", Long.valueOf(search)));
+				or.add(Restrictions.like("invoiceNumber", Long.valueOf(search)));
 			}
 			or.add(Restrictions.like("status", search, MatchMode.ANYWHERE));
 
@@ -376,16 +376,14 @@ public void deleteInvoice(Invoice invoice){
 	}
 
 	public Long getInvoicesByFilterCount(String search, Date frmDate, Date toDate, String value) {
-
 		_log.debug("Inside getInvoicesByFilterCount ");
 		try {
 			DetachedCriteria criteria = DetachedCriteria.forClass(Invoice.class);
 			Disjunction or = Restrictions.disjunction();
 			if (validationUtil.isNumeric(search)) {
-				or.add(Restrictions.eq("invoiceNumber", Long.valueOf(search)));
+				or.add(Restrictions.like("invoiceNumber",Long.valueOf(search)));
 			}
 			or.add(Restrictions.like("status", search, MatchMode.ANYWHERE));
-
 			or.add(Restrictions.like("company.name", search, MatchMode.ANYWHERE));
 			if (("invoiceDate").equals(value) && frmDate != null && toDate != null) {
 

@@ -759,9 +759,8 @@ public class SCFTradeController {
 					scfTradeService.getAdminTradeListWithSearch(
 						search, fromDate, toDate, value, paginationModel.getStartIndex(), paginationModel.getPageSize());
 				noOfRecords = scfTradeService.getAdminTradeListWithSearchCount(search, fromDate, toDate, value);
-			
+			System.out.println("noOfRecordsnoOfRecordsnoOfRecords:"+noOfRecords);
 		}
-		
 		paginationUtil.setPaginationInfo(noOfRecords, paginationModel);
 		model.put("scftrades", scftrades);
 		model.put("trades", trades);
@@ -806,18 +805,18 @@ public class SCFTradeController {
 		long companyId = userService.getCompanybyUserID(themeDisplay.getUserId()).getId();
 		Long noOfRecords = 0l;
 		PaginationModel paginationModel = paginationUtil.preparePaginationModel(request);
-		if(!StringUtils.isNullOrEmpty(search)&& !StringUtils.isNullOrEmpty(value)){
-		scftrades =
-			scfTradeService.getScfAdminTradeListWithSearch(
-				companyId, search, fromDate, toDate, value, paginationModel.getStartIndex(), paginationModel.getPageSize());
-		noOfRecords = scfTradeService.getScfAdminTradeListWithSearchCount(companyId, search, fromDate, toDate, value);
-		}else{
+		if(StringUtils.isNullOrEmpty(search)&& StringUtils.isNullOrEmpty(value)){
 			trades = scfTradeService.getScfTrades(companyId, paginationModel.getStartIndex(), paginationModel.getPageSize());
 			noOfRecords = scfTradeService.getScfTradesCount(companyId);
 			for (SCFTrade scf : trades) {
 				totalTradeAmount = totalTradeAmount.add(scf.getTradeAmount());
 			}
 			model.put("totalTradeAmount", totalTradeAmount);
+		
+		}else{
+			scftrades = scfTradeService.getScfAdminTradeListWithSearch(
+								companyId, search, fromDate, toDate, value, paginationModel.getStartIndex(), paginationModel.getPageSize());
+						noOfRecords = scfTradeService.getScfAdminTradeListWithSearchCount(companyId, search, fromDate, toDate, value);
 		}
 		paginationUtil.setPaginationInfo(noOfRecords, paginationModel);
 		model.put("scftrades", scftrades);
