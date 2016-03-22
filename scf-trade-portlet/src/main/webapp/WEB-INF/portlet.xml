@@ -4,7 +4,7 @@
 	<portlet>
 		<portlet-name>scf-trade-portlet</portlet-name>
 		<display-name>SCF Trade portlet</display-name>
-			<portlet-class>org.springframework.web.portlet.DispatcherPortlet</portlet-class>
+		<portlet-class>org.springframework.web.portlet.DispatcherPortlet</portlet-class>
 		<init-param>
 			<name>contextConfigLocation</name>
 			<value>classpath:applicationContext-scf-trade-portlet.xml</value>

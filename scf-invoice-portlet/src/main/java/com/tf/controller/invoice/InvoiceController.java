@@ -247,20 +247,22 @@ public class InvoiceController {
 						// notification
 						String articleName = "create-invoice-by-scf-company";
 						String content = liferayUtility.getContentByURLTitle(request, articleName);
+						String articleNameTable = "create-invoice-by-scf-company-table";
+						String contentTable = liferayUtility.getContentByURLTitle(request, articleNameTable);
 						// The reason behind keeping this code outside if/else
 						// is : we need to send
 						// notification to user irrespective of invoice created
 						// by Whitehall admin or SCF company admin
 						Company cmp = companyService.getCompaniesByRegNum(invoiceModel.getSellerCompanyRegistrationNumber());
 						// Sending mail to Seller
-						sendInvoiceCreateNotification(request, portletConfig, invoiceModel, content, cmp, Boolean.FALSE);
+						sendInvoiceCreateNotification(request, portletConfig, invoiceModel, content, contentTable, cmp, Boolean.FALSE);
 						if (liferayUtility.getPermissionChecker(request).isOmniadmin()) {
 							// Sending mail to SCF company
 							cmp = invoiceModel.getScfCompany();
-							sendInvoiceCreateNotification(request, portletConfig, invoiceModel, content, cmp, Boolean.FALSE);
+							sendInvoiceCreateNotification(request, portletConfig, invoiceModel, content, contentTable, cmp, Boolean.FALSE);
 						}
 						else {
-							sendInvoiceCreateNotification(request, portletConfig, invoiceModel, content, cmp, Boolean.TRUE);
+							sendInvoiceCreateNotification(request, portletConfig, invoiceModel, content, contentTable, cmp, Boolean.TRUE);
 						}
 					}
 					catch (Exception e) {
@@ -280,7 +282,7 @@ public class InvoiceController {
 
 	private void sendInvoiceCreateNotification(
 		ActionRequest request, PortletConfig portletConfig,
-		Invoice invoiceModel, String content, Company cmp, boolean mailToAdmin) {
+		Invoice invoiceModel, String content, String contentTable, Company cmp, boolean mailToAdmin) {
 
 		if (mailToAdmin) {
 			// needs to be replaced omni admin name
@@ -290,11 +292,12 @@ public class InvoiceController {
 			content = content.replaceAll("\\[PH-NAME\\]", cmp.getName());
 		}
 		content = content.replaceAll("\\[PH-REGARDS\\]", "White Hall Finance");
-		String tempstart =
-			"<table border=\"1\" cellpadding=\"1\" cellspacing=\"1\" style=\"width:500px;\"><tbody><tr><td><strong>Invoice Number</strong></td><td><strong>Invoice Amount</strong></td><td><strong>Date&nbsp;</strong></td></tr>";
-		String tempend = "</tbody></table>";
-		String tempstr = tempstart + "<tr><td>" + invoiceModel.getInvoiceNumber() + "</td><td>" + invoiceModel.getInvoiceAmount() + "</td><td>" +
-			invoiceModel.getInvoiceDate() + "</td></tr>" + tempend;
+		
+		Integer endIndex = contentTable.indexOf("<tbody>");
+		String tempstart = contentTable.substring(0, endIndex);
+	
+		String tempstr = tempstart + "<tbody><tr><td>" + invoiceModel.getInvoiceNumber() + "</td><td>" + invoiceModel.getInvoiceAmount() + "</td><td>" +
+			invoiceModel.getInvoiceDate() + "</td></tr></tbody></table>";
 		content = content.replaceAll("\\[PH-CONTENT\\]", tempstr);
 
 		String from = LanguageUtil.get(portletConfig, request.getLocale(), "invoice.sender.email");
@@ -384,7 +387,7 @@ public class InvoiceController {
 		throws Exception {
 		Long invoiceId=ParamUtil.getLong(request, "invoiceId");
 		Invoice invoice=invoiceService.getInvoicesById(invoiceId);
-		invoiceService.deleteInvoice(invoice);
+		//invoiceService.deleteInvoice(invoice);
 		PortletConfig portletConfig =
 						(PortletConfig) request.getAttribute(JavaConstants.JAVAX_PORTLET_CONFIG);
 					SessionMessages.add(request, "invoice.success.delete");

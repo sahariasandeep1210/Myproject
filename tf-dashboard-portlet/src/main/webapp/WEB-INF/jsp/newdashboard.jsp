@@ -77,8 +77,8 @@
 							<span class="shortcut-label">Invoices</span>								
 						</a>
 						
-						<a href="javascript:;" class="shortcut">
-							<i class="fa fa-bar-chart"></i>
+						<a href="/group/guest/reports" class="shortcut">
+							<i class="icon-book fa-6 fa-4"></i>
 							<span class="shortcut-label">Reports</span>	
 						</a>
 						<c:choose>						
