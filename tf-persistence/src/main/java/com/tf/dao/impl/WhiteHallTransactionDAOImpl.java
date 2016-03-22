@@ -1,19 +1,27 @@
 package com.tf.dao.impl;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
 import org.hibernate.Session;
+import org.hibernate.criterion.Disjunction;
+import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import com.tf.dao.WhiteHallTransactionDAO;
+import com.tf.model.InvestorTransaction;
+import com.tf.model.SCFTrade;
 import com.tf.model.WhiteHallTransaction;
 import com.tf.util.ValidationUtil;
 
@@ -35,22 +43,12 @@ public class WhiteHallTransactionDAOImpl extends BaseDAOImpl<WhiteHallTransactio
 		_log.debug("Inside WhiteHallTransactions  ");
 		try {
 			List<WhiteHallTransaction> results = new ArrayList<WhiteHallTransaction>();
-			Collection<Long> ids = getIDListForPagination(startIndex, pageSize);
-			if (!ids.isEmpty()) {
-				System.out.println("with ids");
-				Session session = sessionFactory.getCurrentSession();
-				Criteria criteria =
-					session.createCriteria(WhiteHallTransaction.class).add(Restrictions.in("id", ids));
-				results = (List<WhiteHallTransaction>) criteria.list();
-			}else{
-				System.out.println("with no ids");
+
 				Session session = sessionFactory.getCurrentSession();
 				Criteria criteria =
 					session.createCriteria(WhiteHallTransaction.class);
-				results = (List<WhiteHallTransaction>) criteria.list();
-			}
-			System.out.println("results = "+results);
-			System.out.println("results.size = "+results.size());
+					results = (List<WhiteHallTransaction>) criteria.list();
+			
 			_log.debug("WhiteHallTransactions successful, result size: " + results.size());
 			return results;
 		}
@@ -60,15 +58,6 @@ public class WhiteHallTransactionDAOImpl extends BaseDAOImpl<WhiteHallTransactio
 		}
 	}
 	
-	public Collection<Long> getIDListForPagination(int startIndex, int pageSize) {
-		Session session = sessionFactory.getCurrentSession();
-		Criteria criteria = session.createCriteria(WhiteHallTransaction.class).setProjection(Projections.id());
-		criteria.setFirstResult(startIndex);
-		criteria.setMaxResults(pageSize);
-		@SuppressWarnings("unchecked")
-		Collection<Long> ids = criteria.list();
-		return ids;
-	}
 
 	public Long getWhiteHallTransactionsCount() {
 		_log.debug("Inside WhiteHallTransactions ");
@@ -85,4 +74,71 @@ public class WhiteHallTransactionDAOImpl extends BaseDAOImpl<WhiteHallTransactio
 			throw re;
 		}
 	}
+	
+	
+	
+	
+	@SuppressWarnings("unchecked")
+	public List<WhiteHallTransaction> getReportListWithSearch(String searchtxt, Date fromDate, Date toDate,int startIndex, int pageSize) {
+		_log.debug("Inside getReportListWithSearch ");
+		try {
+			List<WhiteHallTransaction> results=new ArrayList<WhiteHallTransaction>();
+
+			Session session = sessionFactory.getCurrentSession();
+			Criteria criteria =
+							session.createCriteria(WhiteHallTransaction.class);
+			Disjunction or = Restrictions.disjunction();
+			or.add(Restrictions.like("reference", searchtxt, MatchMode.ANYWHERE));
+			or.add(Restrictions.like("companyType", searchtxt, MatchMode.ANYWHERE));
+			or.add(Restrictions.like("transcationType", searchtxt, MatchMode.ANYWHERE));
+			if(!StringUtils.isEmpty(fromDate)){
+				_log.info("From Date " + fromDate);
+				criteria.add(Restrictions.ge("transcationDate", fromDate));
+	         }
+			if(!StringUtils.isEmpty(toDate)){
+				_log.info("To Date"+toDate);
+				criteria.add(Restrictions.le("transcationDate",toDate));
+			}
+			results = (List<WhiteHallTransaction>) criteria.add(or).setFirstResult(startIndex).setMaxResults(pageSize).list();
+			_log.debug("getReportListWithSearch successful, result size: " + results.size());
+			return results;
+
+		}
+		catch (RuntimeException re) {
+			_log.error("getReportListWithSearch failed", re);
+			throw re;
+		}
+
+	}
+	public Long getReportListWithSearchCount(String searchtxt, Date fromDate, Date toDate) {
+		_log.debug("Inside getReportListWithSearch ");
+		try {
+
+			Session session = sessionFactory.getCurrentSession();
+			Criteria criteria =
+							session.createCriteria(WhiteHallTransaction.class);
+			Disjunction or = Restrictions.disjunction();
+			or.add(Restrictions.like("reference", searchtxt, MatchMode.ANYWHERE));
+			or.add(Restrictions.like("companyType", searchtxt, MatchMode.ANYWHERE));
+			or.add(Restrictions.like("transcationType", searchtxt, MatchMode.ANYWHERE));
+			if(!StringUtils.isEmpty(fromDate)){
+				_log.info("From Date " + fromDate);
+				criteria.add(Restrictions.ge("transcationDate", fromDate));
+	         }
+			if(!StringUtils.isEmpty(toDate)){
+				_log.info("To Date"+toDate);
+				criteria.add(Restrictions.le("transcationDate",toDate));
+			}
+			Long resultCount = (Long) criteria.add(or).setProjection(Projections.rowCount()).uniqueResult();
+			_log.debug("getReportListWithSearch successful, result size: " + resultCount);
+			return resultCount;
+
+		}
+		catch (RuntimeException re) {
+			_log.error("getReportListWithSearch failed", re);
+			throw re;
+		}
+
+	}
+
 }

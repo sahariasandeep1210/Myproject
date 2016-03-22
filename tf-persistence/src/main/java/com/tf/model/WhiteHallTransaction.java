@@ -4,10 +4,13 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 
@@ -38,8 +41,9 @@ public class WhiteHallTransaction implements  Serializable {
 	@Column(name="reference") 
 	private String reference;
 	
-	@Column(name="company_id") 
-	private Long companyID;
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "company_id")
+	private Company company;
 	
 	@Column(name="company_type") 
 	private String companyType;
@@ -97,13 +101,12 @@ public class WhiteHallTransaction implements  Serializable {
 		this.reference = reference;
 	}
 
-	public Long getCompanyID() {
-		return companyID;
+	public Company getCompany() {
+		return company;
 	}
 
-
-	public void setCompanyID(Long companyID) {
-		this.companyID = companyID;
+	public void setCompany(Company company) {
+		this.company = company;
 	}
 
 
@@ -122,7 +125,7 @@ public class WhiteHallTransaction implements  Serializable {
 		return "WhiteHallTransaction [id=" + id + ", amount=" + amount
 				+ ", transcationType=" + transcationType + ", transcationDate="
 				+ transcationDate + ", tradeID=" + tradeID + ", reference="
-				+ reference + ", companyName=" + companyID + ", companyType="
+				+ reference + ", companyName=" + company + ", companyType="
 				+ companyType + "]";
 	}
 
