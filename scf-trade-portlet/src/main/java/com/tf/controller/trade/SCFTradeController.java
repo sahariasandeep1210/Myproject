@@ -38,6 +38,7 @@ import com.tf.util.LiferayUtility;
 import com.tf.util.MyCustomNumberEditor;
 import com.tf.util.PaginationUtil;
 import com.tf.util.SCFTradeDTO;
+import com.tf.util.ValidationUtil;
 import com.tf.util.model.PaginationModel;
 
 import java.beans.PropertyEditorSupport;
@@ -103,6 +104,9 @@ public class SCFTradeController {
 
 	@Autowired
 	protected PaginationUtil paginationUtil;
+	
+	@Autowired
+	protected ValidationUtil validationUtil;
 
 	@InitBinder
 	public void binder(WebDataBinder binder) {
@@ -727,6 +731,22 @@ public class SCFTradeController {
 		String value = ParamUtil.getString(request, "dateList");
 		String from = ParamUtil.getString(request, "fromDate");
 		String to = ParamUtil.getString(request, "toDate");
+		
+		if(validationUtil.isThisDateValid(from, "MM/dd/yyyy"))
+			System.out.println("\nFrom Date is : "+from);
+		else
+			from = null;
+		
+		if(validationUtil.isThisDateValid(to, "MM/dd/yyyy"))
+			System.out.println("\nTo Date is : "+to);
+		else
+			to = null;
+		
+		if(validationUtil.containsSpecialCharacter(search))
+			System.out.println("\nYr String is : "+search);
+		else
+			to = null;
+		
 		if (!StringUtils.isNullOrEmpty(from)) {
 			fromDate = formatter.parse(from);
 		}
@@ -796,6 +816,17 @@ public class SCFTradeController {
 		String value = ParamUtil.getString(request, "dateList");
 		String from = ParamUtil.getString(request, "fromDate");
 		String to = ParamUtil.getString(request, "toDate");
+		
+		if(validationUtil.isThisDateValid(from, "MM/DD/yyyy"))
+			System.out.println("From Date is : "+from);
+		else
+			from = null;
+		
+		if(validationUtil.isThisDateValid(to, "MM/DD/yyyy"))
+			System.out.println("To Date is : "+to);
+		else
+			to = null;
+		
 		if (!StringUtils.isNullOrEmpty(from)) {
 			fromDate = formatter.parse(from);
 		}
@@ -816,7 +847,8 @@ public class SCFTradeController {
 		}else{
 			scftrades = scfTradeService.getScfAdminTradeListWithSearch(
 								companyId, search, fromDate, toDate, value, paginationModel.getStartIndex(), paginationModel.getPageSize());
-						noOfRecords = scfTradeService.getScfAdminTradeListWithSearchCount(companyId, search, fromDate, toDate, value);
+			noOfRecords = (long) scftrades.size();
+			//noOfRecords = scfTradeService.getScfAdminTradeListWithSearchCount(companyId, search, fromDate, toDate, value);
 		}
 		paginationUtil.setPaginationInfo(noOfRecords, paginationModel);
 		model.put("scftrades", scftrades);
