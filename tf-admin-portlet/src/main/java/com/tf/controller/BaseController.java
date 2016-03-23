@@ -21,6 +21,7 @@ import com.tf.service.CompanyService;
 import com.tf.service.CompanyServices;
 import com.tf.service.CompanyTypeService;
 import com.tf.service.OfficerService;
+import com.tf.service.SellerScfMappingService;
 import com.tf.service.UserService;
 import com.tf.util.AdminUtility;
 import com.tf.util.LiferayUtility;
@@ -30,6 +31,8 @@ import com.tf.util.PaginationUtil;
 public class BaseController {
 
 	protected Log _log = LogFactoryUtil.getLog(BaseController.class.getName());
+	
+	
 	
 	@Autowired
 	protected CompanyService companyService;
@@ -57,6 +60,9 @@ public class BaseController {
 	
 	@Autowired
 	protected PaginationUtil paginationUtil;
+	
+	@Autowired
+	protected SellerScfMappingService sellerScfMappingService;
 
 	public static Map<String, String> orgTypeMap = initialzeOrgTypeMap();
 	public static Map<Long, String> companyTypeMap;

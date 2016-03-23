@@ -28,6 +28,7 @@
 		<mapping class="com.tf.model.GeneralSetting" />
 		<mapping class="com.tf.model.InvestorTransaction" /> 
 		<mapping class="com.tf.model.WhiteHallTransaction" />
+		<mapping class="com.tf.model.SellerScfCompanyMapping" />
 	</session-factory>
 
 </hibernate-configuration>

@@ -43,7 +43,6 @@
 		</div>
 		<div class="row-fluid">
 					<div class="span6">
-						<h4>Manage Companies</h4>
 					</div>
 					<div class="span6">
 						

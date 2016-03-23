@@ -1,14 +1,15 @@
 package com.tf.dao.impl;
 
+import com.tf.dao.WhiteHallTransactionDAO;
+import com.tf.model.WhiteHallTransaction;
+import com.tf.util.ValidationUtil;
+
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
 import org.hibernate.Criteria;
-import org.hibernate.FetchMode;
 import org.hibernate.Session;
 import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.MatchMode;
@@ -18,12 +19,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
-
-import com.tf.dao.WhiteHallTransactionDAO;
-import com.tf.model.InvestorTransaction;
-import com.tf.model.SCFTrade;
-import com.tf.model.WhiteHallTransaction;
-import com.tf.util.ValidationUtil;
 
 @Repository
 @Transactional

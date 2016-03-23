@@ -4,6 +4,12 @@ $(function() {
 	
 	//enableDisableoptions();
 	
+	$("#addSeller").click(function() {
+		var updateURL = $("#saveURL").val();
+		document.forms["sellerList"].action = updateURL;
+		document.forms["sellerList"].submit();
+	});
+	
 	 $("#pageSize").val($("#currPageSize").val());
 	$("#errorMsg").hide(); 
 	
@@ -299,6 +305,8 @@ $(document).ready(function(){
 		var url = $(this).attr('data-url');
 		submitUserForms(url);
 	});
+	
+	
 	
 	$("#dateestablished").datepicker({
 		changeMonth : true,

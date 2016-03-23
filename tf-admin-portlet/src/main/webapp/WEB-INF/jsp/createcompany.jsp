@@ -71,22 +71,34 @@
 						</div>
 					</div>
 				</div>
+				<c:if test="${userType eq 'SCF Company Admin'}">
+				     <div class="accordion-group">
+					<div class="accordion-heading">
+						<a class="accordion-toggle" data-toggle="collapse"
+							data-parent="#accordion2" href="#collapseFour"> Sellers
+							Information </a>
+					</div>
+					<div id="collapseFour" class="accordion-body collapse">
+						<div class="accordion-inner">
+							<%@include file="sellerlist.jsp"%>						
+						</div>
+					</div>
+				</div>
+				</c:if>
 			</div>
+			
 			<div class="row-fluid">
 				<div class="span6">
 					<input type="button" value="Go Back" class="btn btn-primary"
 						data-url="${companyListURL}" id="cmpback" />
 				</div>
 			</div>
+			
 		</c:when>
 		<c:otherwise>
 			<%@include file="createcompanyform.jsp"%>
 		</c:otherwise>
 	</c:choose>
-
-
-
-
 
 
 </div>

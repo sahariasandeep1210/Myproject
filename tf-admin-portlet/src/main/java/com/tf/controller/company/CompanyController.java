@@ -1,5 +1,33 @@
 package com.tf.controller.company;
 
+import com.google.gson.Gson;
+import com.liferay.portal.DuplicateUserEmailAddressException;
+import com.liferay.portal.DuplicateUserScreenNameException;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.servlet.SessionErrors;
+import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.kernel.workflow.WorkflowConstants;
+import com.liferay.portal.security.permission.PermissionChecker;
+import com.liferay.portal.service.UserLocalServiceUtil;
+import com.liferay.portal.theme.ThemeDisplay;
+import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
+import com.tf.controller.BaseController;
+import com.tf.model.AddressModel;
+import com.tf.model.Company;
+import com.tf.model.CompanyModel;
+import com.tf.model.Investor;
+import com.tf.model.Officer;
+import com.tf.model.OfficerAddress;
+import com.tf.model.OfficerList;
+import com.tf.model.OfficerModel;
+import com.tf.model.SellerScfCompanyMapping;
+import com.tf.model.User;
+import com.tf.persistance.util.CompanyStatus;
+import com.tf.persistance.util.Constants;
+import com.tf.util.OfficerDTO;
+import com.tf.util.model.PaginationModel;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -27,33 +55,6 @@ import org.springframework.web.portlet.bind.annotation.ActionMapping;
 import org.springframework.web.portlet.bind.annotation.RenderMapping;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 
-import com.google.gson.Gson;
-import com.liferay.portal.DuplicateUserEmailAddressException;
-import com.liferay.portal.DuplicateUserScreenNameException;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.servlet.SessionErrors;
-import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.kernel.workflow.WorkflowConstants;
-import com.liferay.portal.security.permission.PermissionChecker;
-import com.liferay.portal.service.UserLocalServiceUtil;
-import com.liferay.portal.theme.ThemeDisplay;
-import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
-import com.tf.controller.BaseController;
-import com.tf.model.AddressModel;
-import com.tf.model.Company;
-import com.tf.model.CompanyModel;
-import com.tf.model.Investor;
-import com.tf.model.Officer;
-import com.tf.model.OfficerAddress;
-import com.tf.model.OfficerList;
-import com.tf.model.OfficerModel;
-import com.tf.model.User;
-import com.tf.persistance.util.CompanyStatus;
-import com.tf.persistance.util.Constants;
-import com.tf.util.OfficerDTO;
-import com.tf.util.model.PaginationModel;
-
 /**
  * This controller is responsible for request/response handling on
  * Seller/Company screens
@@ -64,7 +65,7 @@ import com.tf.util.model.PaginationModel;
 @Controller
 @RequestMapping(value = "VIEW")
 public class CompanyController extends BaseController {
-
+	
 	@RenderMapping
 	protected ModelAndView renderCompanyList(
 			@ModelAttribute("companyModel") Company company, ModelMap model,
@@ -93,7 +94,9 @@ public class CompanyController extends BaseController {
 		ThemeDisplay themeDispay = (ThemeDisplay) request
 				.getAttribute(WebKeys.THEME_DISPLAY);
 		List<User> users;
-		Map<String, String> userTypesMap;
+		List<Company> companyList = new ArrayList<Company>();
+		List<SellerScfCompanyMapping> sellerScfMappings=null; 
+		List<Company> companies=null;
 		try {
 			users = new ArrayList<User>();
 			if (companyID != 0) {
@@ -104,7 +107,22 @@ public class CompanyController extends BaseController {
 				model.put("cmpType", companyTypeMap.get(Long.valueOf(company
 						.getCompanyType())));
 			}
+			if(request.isUserInRole(Constants.SCF_ADMIN)){
+				model.put("userType", Constants.SCF_ADMIN);
+			}
+			Long noOfRecords = 0l;
+			PaginationModel paginationModel = paginationUtil
+					.preparePaginationModel(request);
+			sellerScfMappings=sellerScfMappingService.getSellerScfMapping(paginationModel.getStartIndex(), paginationModel.getPageSize());
+			System.out.println("sellerScfMappings:"+sellerScfMappings);
+			noOfRecords=sellerScfMappingService.getSellerScfMappingCount();
+			companyList = companyService.getCompanies("4");
+			companies=prepareCompanyList(companyList,sellerScfMappings);
+			System.out.println("companies:"+companies);
 
+			paginationUtil.setPaginationInfo(noOfRecords, paginationModel);
+			model.put("companies", companies);
+			model.put("sellerScfMappings", sellerScfMappings);
 			model.put("currentUser", themeDispay.getRealUser());
 			model.put("users", users);
 		} catch (Exception e) {
@@ -118,6 +136,38 @@ public class CompanyController extends BaseController {
 		model.put("companyTypeMap", companyTypeMap);
 
 		return new ModelAndView("createcompany", model);
+	}
+	
+	private List<Company> prepareCompanyList(List<Company> companyList,
+		List<SellerScfCompanyMapping> sellerScfMappings) {
+        for(SellerScfCompanyMapping seller: sellerScfMappings){
+             Company company =seller.getSellerCompany();
+		if(company.getId()==seller.getSellerCompany().getId()){
+			companyList.remove(company);	
+		}
+}	
+	return companyList;		
+}
+	
+	@RenderMapping(params = "action=getSeller")
+	public String getScfAdminTrade(ModelMap model, RenderRequest request, RenderResponse response)
+		throws Exception {
+		
+		return "createcompany";
+	}
+	@ActionMapping(params = "action=saveSeller")
+	protected void saveSeller(ModelMap model, ActionRequest request,
+			ActionResponse response) throws Exception {
+		ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
+		long companyId=ParamUtil.getLong(request, "sellerCompany");
+		long compId = userService.getCompanybyUserID(themeDisplay.getUserId()).getId();
+		Company company =companyService.findById(companyId);
+		SellerScfCompanyMapping sellerScfMapping = new SellerScfCompanyMapping();
+		sellerScfMapping.setScfCompany(compId);
+		sellerScfMapping.setSellerCompany(company);
+		sellerScfMappingService.saveSeller(sellerScfMapping);
+		response.setRenderParameter("render", "createCompany");
+		
 	}
 
 	@ActionMapping(params = "action=homePage")

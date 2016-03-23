@@ -518,3 +518,15 @@ ALTER TABLE tf_allotments ADD investor_id BIGINT(20) DEFAULT NULL after trade_id
 ALTER TABLE tf_allotments ADD CONSTRAINT fk_investor_id FOREIGN KEY (investor_id) REFERENCES tf_investor(investor_id);
 
 ALTER TABLE scf_invoice DROP INDEX `invoice_number_UNIQUE`;
+
+
+
+DROP TABLE IF EXISTS tf_seller_scfcompany_mapping;
+CREATE TABLE tf_seller_scfcompany_mapping (
+  id  BIGINT(20) NOT NULL AUTO_INCREMENT, 
+  scf_company BIGINT(20), 
+  seller_company BIGINT(20),
+  PRIMARY KEY (id),  
+  UNIQUE KEY id_UNIQUE (id), 
+
+) ;
