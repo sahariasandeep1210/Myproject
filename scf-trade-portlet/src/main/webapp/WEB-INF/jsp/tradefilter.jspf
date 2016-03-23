@@ -1,3 +1,8 @@
+<%@include file="init.jsp"%>
+
+<script type="text/javascript">
+        
+</script>
 
 <div class="row-fluid">
 	<div class="search-scf">
