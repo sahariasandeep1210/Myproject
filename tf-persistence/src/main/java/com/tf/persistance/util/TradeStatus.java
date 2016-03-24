@@ -9,6 +9,7 @@ public enum TradeStatus {
 	SUPPLIER_PAID("Supplier Paid"),
 	SCF_REPAYMENT("SCF Repayment"),
 	INVESTOR_PAID ("Investor Paid"),
+	INVESTOR_REPAID ("Investor Repaid"),
 	SETTLED("Settled"),
 	CLOSED("Closed");	
 		

@@ -100,7 +100,18 @@ public class SCFTradeServiceImpl implements SCFTradeService {
 					invTransaction.setTradeID(investorTransaction.getTradeID());
 					invTransaction.setReference("Invested");
 					investorTransactionDAO.saveEntity(invTransaction);
+					
 				}
+
+				//adding whitehall transaction
+				
+				WhiteHallTransaction whtTransaction = new WhiteHallTransaction();
+				whtTransaction.setAmount(scfTrade.getTradeAmount());
+				whtTransaction.setReference("Investors has paid the money to whitehall");
+				whtTransaction.setTranscationDate(new Date());
+				whtTransaction.setTradeID(scfTrade.getId());
+				whtTransaction.setTranscationType(TradeStatus.INVESTOR_PAID.getValue());
+				whiteHallTransactionDAO.saveEntity(whtTransaction);
 				tradeUpdate = Boolean.TRUE;
 			}
 			else if (TradeStatus.SUPPLIER_PAID.getValue().equalsIgnoreCase(scfTrade.getStatus())) {
@@ -136,19 +147,19 @@ public class SCFTradeServiceImpl implements SCFTradeService {
 				// Adding Whitehall investor paid Transaction
 				WhiteHallTransaction whtTransaction = new WhiteHallTransaction();
 				whtTransaction.setAmount(scfTrade.getTradeAmount());
-				whtTransaction.setReference("SCF Company Paid to Whitehall Admin");
+				whtTransaction.setReference("Investor has been repaid by whitehall");
 				whtTransaction.setTranscationDate(new Date());
 				whtTransaction.setTradeID(scfTrade.getId());
-				whtTransaction.setTranscationType(TradeStatus.INVESTOR_PAID.getValue());
+				whtTransaction.setTranscationType(TradeStatus.INVESTOR_REPAID.getValue());
 				whiteHallTransactionDAO.saveEntity(whtTransaction);
 
 				// Adding Whitehall investor profit paid Transaction
 				WhiteHallTransaction whtTransactionInvProfit = new WhiteHallTransaction();
 				whtTransactionInvProfit.setAmount(allotmentDAO.getTotalInvestorProfitForTrade(scfTrade.getId()));
-				whtTransactionInvProfit.setReference("SCF Company Paid to Whitehall Admin");
+				whtTransactionInvProfit.setReference("Investor profit has been paid  by whitehall");
 				whtTransactionInvProfit.setTranscationDate(new Date());
 				whtTransactionInvProfit.setTradeID(scfTrade.getId());
-				whtTransactionInvProfit.setTranscationType(TradeStatus.INVESTOR_PAID.getValue());
+				whtTransactionInvProfit.setTranscationType(TradeStatus.INVESTOR_REPAID.getValue());
 				whiteHallTransactionDAO.saveEntity(whtTransactionInvProfit);
 				tradeUpdate = Boolean.TRUE;
 			}
