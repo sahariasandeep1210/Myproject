@@ -14,7 +14,7 @@
 	<input type="hidden" name="currentPage" 	id="currentPage"    	value="${paginationModel.currentPage}" />
 	<input type="hidden" name="currPageSize" 	id="currPageSize"    	value="${paginationModel.pageSize}" /> 
 	<input type="hidden" name="noOfRecords" 	id="noOfRecords"    	value="${paginationModel.noOfRecords}" />
-	<input type="hidden" name="defaultURL" 	id="defaultURL"    	value="${defaultURL}" />
+	<input type="hidden" name="defaultURL" 		id="defaultURL"    		value="${defaultURL}" />
 		<input type="hidden" name="getReportURL" 	id="getReportURL"    	value="${getReportURL}" />
 	
 	
@@ -74,7 +74,18 @@
 							<c:forEach items="${reportList}" var="report">
 								<tr>
 									<td>${report.amount} </td>
-									<td>${report.transcationType}</td>
+									<td>${report.transcationType}
+										 <c:choose>
+											<c:when test="${report.transcationType eq 'SCF Repayment' || report.transcationType eq 'Investor Paid' }">
+												<img height="30" width="30" src="${themeDisplay.pathThemeImages}/green.png" style=" float: right; vertical-align: middle; font-size: 20px"/>
+											</c:when>
+											<c:otherwise>
+												<img height="30" width="30" src="${themeDisplay.pathThemeImages}/red.png" style=" float: right; vertical-align: middle; font-size: 20px"/>
+											</c:otherwise>										
+										</c:choose>
+									
+									
+									</td>
 									<td><fmt:formatDate pattern="dd-MM-yyyy" value="${report.transcationDate}" /></td>
 									<td>${report.tradeID}</td>
 									<td>${report.company.name}</td>

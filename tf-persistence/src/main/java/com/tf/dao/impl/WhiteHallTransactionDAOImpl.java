@@ -42,7 +42,7 @@ public class WhiteHallTransactionDAOImpl extends BaseDAOImpl<WhiteHallTransactio
 				Session session = sessionFactory.getCurrentSession();
 				Criteria criteria =
 					session.createCriteria(WhiteHallTransaction.class);
-					results = (List<WhiteHallTransaction>) criteria.list();
+					results = (List<WhiteHallTransaction>) criteria.setFirstResult(startIndex).setMaxResults(pageSize).list();
 			
 			_log.debug("WhiteHallTransactions successful, result size: " + results.size());
 			return results;

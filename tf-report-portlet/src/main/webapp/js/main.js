@@ -15,12 +15,7 @@ $(document).ready(
 			});
 		});
 		
-	function setPage(pageNumber) {
-					$("#currentPage").val(pageNumber);
-					var actionUrl = $("#defaultURL").val();
-					document.forms["reportList"].action = actionUrl;
-					document.forms["reportList"].submit();
-				}
+
 });
 
 $("#fromDate").datepicker({
@@ -49,3 +44,10 @@ $("#toDate").datepicker({
 
 	}
 });
+
+function setPage(pageNumber) {
+	$("#currentPage").val(pageNumber);
+	var actionUrl = $("#defaultURL").val();
+	document.forms["reportList"].action = actionUrl;
+	document.forms["reportList"].submit();
+}
