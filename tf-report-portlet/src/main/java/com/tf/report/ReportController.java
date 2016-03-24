@@ -59,6 +59,7 @@ public class ReportController {
 			paginationUtil.setPaginationInfo(noOfRecords, paginationModel);
 			model.put("paginationModel", paginationModel);
 			model.put("reportList", reportList);
+			model.put("totalEarnins", whiteHallTransactionService.getWhiteHallEarnings());
 
 		}catch(Exception e){
 			_log.error("ReportController.renderReportList() - error occured while rendering Report"

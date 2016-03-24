@@ -51,3 +51,18 @@ function setPage(pageNumber) {
 	document.forms["reportList"].action = actionUrl;
 	document.forms["reportList"].submit();
 }
+
+$("#pageSize").change(function (){
+	var noOfRecords=parseInt($("#noOfRecords").val());
+	var pageSize=parseInt($("#currPageSize").val());
+	var newPageSize=parseInt($(this).val());
+	$("#currentPage").val(1);
+	if(noOfRecords<pageSize && newPageSize>pageSize){
+		return;
+	}else{
+		var actionUrl = $("#defaultURL").val();
+		document.forms["reportList"].action = actionUrl;
+		document.forms["reportList"].submit();
+	}	
+	
+});
