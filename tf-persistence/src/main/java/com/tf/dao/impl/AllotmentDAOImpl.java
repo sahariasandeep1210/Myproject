@@ -163,7 +163,7 @@ public class AllotmentDAOImpl extends BaseDAOImpl<Allotment, Long>   implements 
 		
 		BigDecimal totalNetProfit=BigDecimal.ZERO;
 		
-		List<Object[]> rows=new ArrayList<Object[]>();
+		List<BigDecimal> rows=new ArrayList<BigDecimal>();
 		
 		_log.debug("Inside getTotalInvestorProfitForTrade ");
 		try {
@@ -172,9 +172,9 @@ public class AllotmentDAOImpl extends BaseDAOImpl<Allotment, Long>   implements 
 			ProjectionList prList = Projections.projectionList();		
 			prList.add(Projections.sum("investorNetProfit"));			
 			cr.setProjection(prList);
-			rows = (List<Object[]>) cr.list();
-			for(Object[] row:rows){
-				totalNetProfit=row[1] !=null ?new BigDecimal(row[1].toString()):BigDecimal.ZERO;
+			rows = (List<BigDecimal>) cr.list();
+			for(BigDecimal row:rows){
+				totalNetProfit=row !=null ?new BigDecimal(row.toString()):BigDecimal.ZERO;
 			}			
 			
 		} catch (RuntimeException re) {
