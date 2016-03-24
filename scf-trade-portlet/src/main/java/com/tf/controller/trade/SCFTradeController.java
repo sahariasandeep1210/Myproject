@@ -9,6 +9,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.repository.model.Folder;
+import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.util.JavaConstants;
 import com.liferay.portal.kernel.util.MimeTypesUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
@@ -27,6 +28,7 @@ import com.tf.model.Company;
 import com.tf.model.Invoice;
 import com.tf.model.SCFTrade;
 import com.tf.persistance.util.Constants;
+import com.tf.persistance.util.InSuffcientFund;
 import com.tf.persistance.util.InvoiceStatus;
 import com.tf.persistance.util.TradeStatus;
 import com.tf.service.AllotmentService;
@@ -390,17 +392,22 @@ public class SCFTradeController {
 	protected void saveTarde(ModelMap model, ActionRequest request, ActionResponse response)
 		throws Exception {
 
-		Long tradeID = ParamUtil.getLong(request, "tradeID");
-		String status = ParamUtil.getString(request, "status");
-		SCFTrade scfTrade = scfTradeService.findById(tradeID);
-		scfTrade.setStatus(status);
-		scfTradeService.updateTradeLifeCycle(scfTrade);
-
+		Long tradeID;
+		String status=null;
+		SCFTrade scfTrade=null;
 		PortletConfig portletConfig = (PortletConfig) request.getAttribute(JavaConstants.JAVAX_PORTLET_CONFIG);
+		try {
+			tradeID = ParamUtil.getLong(request, "tradeID");
+			status = ParamUtil.getString(request, "status");
+			scfTrade = scfTradeService.findById(tradeID);
+			scfTrade.setStatus(status);
+			scfTradeService.updateTradeLifeCycle(scfTrade);
+			
+		
 
 		if (TradeStatus.ALLOTMENT_PAID.getValue().equalsIgnoreCase(status)) {
 			// Email Notification
-			try {
+		
 				String articleName = "create-invoice-by-scf-company"; // Web
 																		// Content's
 																		// UrlTitle
@@ -435,13 +442,10 @@ public class SCFTradeController {
 				}
 
 			}
-			catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
+			
 		else if (TradeStatus.SUPPLIER_PAID.getValue().equalsIgnoreCase(status)) {
 			// Email Notification
-			try {
+			
 				String articleName = "create-invoice-by-scf-company"; // Web
 																		// Content's
 																		// UrlTitle
@@ -477,12 +481,15 @@ public class SCFTradeController {
 				}
 
 			}
-			catch (Exception e) {
-				e.printStackTrace();
-			}
+		}
+		catch (InSuffcientFund e) {
+			SessionErrors.add(request, "trade.allotment.error");
+			e.getMessage();
+		} 
+		catch (Exception e) {
+			e.getMessage();
 		}
 
-		System.out.println("tradeID::" + tradeID + " status " + status);
 
 	}
 

@@ -5,7 +5,7 @@
 	<groupId>com.tf</groupId>
 	<artifactId>tf-report-portlet</artifactId>
 	<packaging>war</packaging>
-	<name> WhiteHall Finance  -Report Portlet</name>
+	<name> WhiteHall Finance  - Report Portlet</name>
 	<version>1.1-SNAPSHOT</version>
 	<developers>
 		<developer>
@@ -59,6 +59,7 @@
 		</plugins>
 	</build>
 	<properties>
+		<liferay.version>6.2.2</liferay.version>
 		<java-version>1.6</java-version>
 		<portlet-api.version>2.0</portlet-api.version>
 		<servlet-api.version>2.5</servlet-api.version>
@@ -239,43 +240,11 @@
 			<groupId>com.tf</groupId>
 			<artifactId>tf-util</artifactId>
 			<version>1.1-RELEASE</version>
-		</dependency>
-		<dependency>
-		    <groupId>org.apache.poi</groupId>
-		    <artifactId>poi</artifactId>
-		    <version>3.10-FINAL</version>
-		</dependency>
-		<dependency>
-	<groupId>javax.mail</groupId>
-	<artifactId>mail</artifactId>
-    <scope>provided</scope>
-	<version>1.4.7</version>
-</dependency>
-		<dependency>
-		    <groupId>org.apache.poi</groupId>
-		    <artifactId>poi-ooxml</artifactId>
-		    <version>3.10-FINAL</version>
-		</dependency>
-		<dependency>
-		   <groupId>commons-io</groupId>
-		   <artifactId>commons-io</artifactId>
-		   <version>2.4</version>
-	    </dependency>
-		 <dependency>
-		   <groupId>commons-fileupload</groupId>
-		   <artifactId>commons-fileupload</artifactId>
-		   <version>1.2.1</version>
-		 </dependency>
+		</dependency>		
 		  <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>
             <version>${spring.version}</version>
         </dependency>
-        <dependency>
-			<groupId>javax.mail</groupId>
-			<artifactId>mail</artifactId>
-			<version>1.4</version>
-			<scope>provided</scope>
-		</dependency>
 	</dependencies>
 </project>

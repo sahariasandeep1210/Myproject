@@ -17,6 +17,7 @@
 
 <portlet:renderURL var="defaultRenderURL" />
 
+<liferay-ui:error key="trade.allotment.error"  message="trade.allotment.error"/>
 <div class="container-fluid">
 
 	<form:form commandName="scfTradeModel" method="post"
