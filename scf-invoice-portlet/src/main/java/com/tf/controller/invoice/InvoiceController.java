@@ -416,18 +416,61 @@ public class InvoiceController {
 				paginationUtil.preparePaginationModel(request);
 			ThemeDisplay themeDisplay =
 				(ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
+			DateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+			Date fromDate = null;
+			Date toDate = null;
+			String search = ParamUtil.getString(request, "Search");
+			String value = ParamUtil.getString(request, "dateList");
+			String from = ParamUtil.getString(request, "fromDate");
+			String to = ParamUtil.getString(request, "toDate");
+			if (!StringUtils.isNullOrEmpty(from)) {
+				fromDate = formatter.parse(from);
+			}
+			if (!StringUtils.isNullOrEmpty(to)) {
+				toDate = formatter.parse(to);
+			}
 			if (liferayUtility.getPermissionChecker(request).isOmniadmin() ||
 				request.isUserInRole(Constants.WHITEHALL_ADMIN)) {
+				
+				if(validationUtil.isNumeric(search)){
+					invoices =invoiceService.getInvoicesByFilter(
+										search, fromDate, toDate, value,
+										paginationModel.getStartIndex(), paginationModel.getPageSize());
+					noOfRecords=invoiceService.getInvoicesByFilterNumberCount(search, fromDate, toDate, value);
+				}else if(!StringUtils.isNullOrEmpty(search) || !StringUtils.isNullOrEmpty(value)){
+				invoices =
+					invoiceService.getInvoicesByFilter(
+						search, fromDate, toDate, value,
+						paginationModel.getStartIndex(), paginationModel.getPageSize());
+				noOfRecords =
+					invoiceService.getInvoicesByFilterCount(
+						search, fromDate, toDate, value);
+				}else{
+				
 				invoices =
 					invoiceService.getInvoices(
 						paginationModel.getStartIndex(),
 						paginationModel.getPageSize());
 				noOfRecords = invoiceService.getInvoicesCount();
-
+				}
+				
 				model.put("userType", Constants.ADMIN);
 			}
 			else if (request.isUserInRole(Constants.SCF_ADMIN)) {
-
+				if(validationUtil.isNumeric(search)){
+					invoices =invoiceService.getInvoicesByFilter(
+										search, fromDate, toDate, value,
+										paginationModel.getStartIndex(), paginationModel.getPageSize());
+					noOfRecords=invoiceService.getInvoicesByFilterNumberCount(search, fromDate, toDate, value);
+				}else if(!StringUtils.isNullOrEmpty(search) || !StringUtils.isNullOrEmpty(value)){
+				invoices =
+					invoiceService.getInvoicesByFilter(
+						search, fromDate, toDate, value,
+						paginationModel.getStartIndex(), paginationModel.getPageSize());
+				noOfRecords =
+					invoiceService.getInvoicesByFilterCount(
+						search, fromDate, toDate, value);
+				}else{
 				invoices =
 					invoiceService.getInvoices(
 						themeDisplay.getUser().getUserId(),
@@ -435,12 +478,26 @@ public class InvoiceController {
 						paginationModel.getPageSize());
 				noOfRecords =
 					invoiceService.getInvsCounts(themeDisplay.getUser().getUserId());
-
+				}
 				model.put("userType", Constants.SCF_ADMIN);
 			}
 			else if (request.isUserInRole(Constants.SELLER_ADMIN)) {
 				long companyId =
 					userService.getCompanyIDbyUserID(themeDisplay.getUserId());
+				if(validationUtil.isNumeric(search)){
+					invoices =invoiceService.getInvoicesByFilter(
+										search, fromDate, toDate, value,
+										paginationModel.getStartIndex(), paginationModel.getPageSize());
+					noOfRecords=invoiceService.getInvoicesByFilterNumberCount(search, fromDate, toDate, value);
+				}else if(!StringUtils.isNullOrEmpty(search) || !StringUtils.isNullOrEmpty(value)){
+				invoices =
+					invoiceService.getInvoicesByFilter(
+						search, fromDate, toDate, value,
+						paginationModel.getStartIndex(), paginationModel.getPageSize());
+				noOfRecords =
+					invoiceService.getInvoicesByFilterCount(
+						search, fromDate, toDate, value);
+				}else{
 				invoices =
 					invoiceService.getInvoicesByCompanyNumber(
 						companyService.findById(companyId).getRegNumber(),
@@ -449,9 +506,13 @@ public class InvoiceController {
 				noOfRecords =
 					invoiceService.getInvoiceCounts(companyService.findById(
 						companyId).getRegNumber());
-
+				}
 				model.put("userType", Constants.SELLER_ADMIN);
 			}
+			model.put("value", value);
+			model.put("search", search);
+			model.put("from", from);
+			model.put("to", to);
 			request.getPortletSession().removeAttribute("invoiceDTO");
 			request.getPortletSession().removeAttribute("invoiceList");
 			paginationUtil.setPaginationInfo(noOfRecords, paginationModel);
@@ -747,7 +808,7 @@ public class InvoiceController {
 		return new ModelAndView("invoicelist", model);
 	}
 
-	@ActionMapping(params = "invoice=getInvoiceReport")
+	/*@ActionMapping(params = "invoice=getInvoiceReport")
 	protected void getCashReport(
 		ModelMap model, ActionRequest request, ActionResponse response)
 		throws Exception {
@@ -782,7 +843,6 @@ public class InvoiceController {
 			invoiceService.getInvoicesByFilterCount(
 				search, fromDate, toDate, value);
 		}
-		System.out.println("invoicesss:" + invoices);
 		paginationUtil.setPaginationInfo(noOfRecords, paginationModel);
 		model.put("paginationModel", paginationModel);
 		model.put("invoices", invoices);
@@ -802,7 +862,7 @@ public class InvoiceController {
 		model.put(ACTIVETAB, "invoicelist");
 		response.setRenderParameter("action", "invoiceRedirect");
 	}
-
+*/
 	protected Log _log =
 		LogFactoryUtil.getLog(InvoiceController.class.getName());
 }

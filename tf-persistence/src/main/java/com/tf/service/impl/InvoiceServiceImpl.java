@@ -367,4 +367,8 @@ public class InvoiceServiceImpl implements InvoiceService{
 	public void deleteInvoice(Invoice invoice){
 		invoiceDAO.deleteInvoice(invoice);
 	}
+	
+	public Long getInvoicesByFilterNumberCount(String search, Date frmDate, Date toDate, String value){
+		return invoiceDAO.getInvoicesByFilterNumberCount(search, frmDate, toDate, value);
+	}
 }

@@ -10,7 +10,7 @@ public interface InvoiceDAO extends BaseDAO<Invoice, Long> {
 	
 	public void deleteInvoice(Invoice invoice);	
 	public void addInvoices(List<Invoice> invoice);
-	
+	public Long getInvoicesByFilterNumberCount(String search, Date frmDate, Date toDate, String value);
 	public List<Invoice> getInvoices(int startIndex,int pageSize);
 	
 	public Long getInvoicesCount();

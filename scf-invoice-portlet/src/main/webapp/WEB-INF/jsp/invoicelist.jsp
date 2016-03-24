@@ -101,7 +101,7 @@
 			value="${paginationModel.noOfRecords}" /> <input type="hidden"
 			name="defaultURL" id="defaultURL" value="${defaultRenderURL}" /> <input
 			type="hidden" name="getInvoiceReportURL" id="getInvoiceReportURL"
-			value="${getInvoiceReportURL}" />
+			value="${defaultRenderURL}" />
 		<div class="row-fluid">
 			<div class="span6">
 				<input type="text" name="Search" placeholder="Search Here"
