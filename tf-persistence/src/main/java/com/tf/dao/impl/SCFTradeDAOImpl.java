@@ -255,12 +255,12 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 		try {
 
 			List<SCFTrade> results = new ArrayList<SCFTrade>();
-			Collection<Long> ids = getIDListForScfPagination(startIndex, pageSize,companyID);
+			Collection<Long> ids = getIDListForScfPagination(startIndex, pageSize, companyID);
 			if (!ids.isEmpty()) {
 				Session session = sessionFactory.getCurrentSession();
 				Criteria criteria =
-					session.createCriteria(SCFTrade.class).add(Restrictions.in("id", ids)).setFetchMode(
-						"invoices", FetchMode.JOIN).setFetchMode("allotments", FetchMode.JOIN).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+					session.createCriteria(SCFTrade.class).add(Restrictions.in("id", ids)).setFetchMode("invoices", FetchMode.JOIN).setFetchMode(
+						"allotments", FetchMode.JOIN).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 				results = (List<SCFTrade>) criteria.list();
 			}
 			_log.debug("getScfTrades successful, result size: " + results.size());
@@ -290,6 +290,7 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 	}
 
 	public Long getScfTradesCount(Long companyID) {
+
 		_log.debug("Inside getScfTradesCount ");
 		try {
 			Criteria criteria = sessionFactory.getCurrentSession().createCriteria(SCFTrade.class).add(Restrictions.eq("company.id", companyID));
@@ -867,8 +868,9 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 
 	@SuppressWarnings("unchecked")
 	public List<SCFTrade> getAdminTradeListWithSearch(String searchtxt, Date fromDate, Date toDate, String value, int startIndex, int pageSize) {
+
 		_log.debug("Inside getAdminTradeListWithSearch ");
-		Criteria criteria =null;
+		Criteria criteria = null;
 		try {
 			Collection<Long> ids = getIDListForPagination(startIndex, pageSize);
 			if (!ids.isEmpty()) {
@@ -888,19 +890,27 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 			Disjunction or2 = Restrictions.disjunction();
 			or2.add(Restrictions.between(value, fromDate, toDate));
 			if (fromDate != null && toDate == null && !value.equalsIgnoreCase("") && searchtxt.equalsIgnoreCase("")) {
-					 criteria .add(Restrictions.eq(value, fromDate));
-			}else if(fromDate != null && toDate != null && !value.equalsIgnoreCase("") && searchtxt.equalsIgnoreCase("")) {
-				 criteria.add(or2);
-
-			}else if(fromDate != null && toDate != null && !value.equalsIgnoreCase("") && !searchtxt.equalsIgnoreCase("")) {
-				 criteria.add(or2).add(or).add(Restrictions.eq(value, fromDate));
-
-			}else{
-				 criteria.add(or);
+				criteria.add(Restrictions.ge(value, fromDate));
 			}
-			
-			List<SCFTrade>	results = (List<SCFTrade>) criteria.list();
-			
+			else if (fromDate == null && toDate != null && !value.equalsIgnoreCase("") && searchtxt.equalsIgnoreCase("")) {
+				criteria.add(Restrictions.le(value, toDate));
+			}
+			else if (fromDate != null && toDate != null && !value.equalsIgnoreCase("") && searchtxt.equalsIgnoreCase("")) {
+				criteria.add(or2);
+			}
+			else if (fromDate != null && toDate != null && !value.equalsIgnoreCase("") && !searchtxt.equalsIgnoreCase("")) {
+				criteria.add(or2).add(or);
+			}else if (fromDate != null && toDate == null && !value.equalsIgnoreCase("") && !searchtxt.equalsIgnoreCase("")) {
+				criteria.add(or).add(Restrictions.ge(value, fromDate));
+			}else if (fromDate == null && toDate != null && !value.equalsIgnoreCase("") && !searchtxt.equalsIgnoreCase("")) {
+				criteria.add(or).add(Restrictions.le(value, toDate));
+			}
+			else {
+				criteria.add(or);
+			}
+
+			List<SCFTrade> results = (List<SCFTrade>) criteria.list();
+
 			_log.debug("getAdminTradeListWithSearch successful, result size: " + results.size());
 			return results;
 
@@ -913,12 +923,14 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 	}
 
 	public Long getAdminTradeListWithSearchCount(String searchtxt, Date fromDate, Date toDate, String value) {
-   
+
 		_log.debug("Inside getAdminTradeListWithSearchCount ");
 		try {
-			
-			Criteria criteria =  (Criteria) sessionFactory.getCurrentSession().createCriteria(SCFTrade.class).createAlias("company", "company").setFetchMode(
-				"invoices", FetchMode.JOIN).setFetchMode("allotments", FetchMode.JOIN).setFetchMode("company", FetchMode.JOIN).setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+
+			Criteria criteria =
+				(Criteria) sessionFactory.getCurrentSession().createCriteria(SCFTrade.class).createAlias("company", "company").setFetchMode(
+					"invoices", FetchMode.JOIN).setFetchMode("allotments", FetchMode.JOIN).setFetchMode("company", FetchMode.JOIN).setResultTransformer(
+					CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 			Disjunction or = Restrictions.disjunction();
 			if (validationUtil.isNumeric(searchtxt)) {
 				or.add(Restrictions.eq("tradeAmount", BigDecimal.valueOf(Long.valueOf(searchtxt))));
@@ -929,19 +941,27 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 
 			Disjunction or2 = Restrictions.disjunction();
 			or2.add(Restrictions.between(value, fromDate, toDate));
-			
+
 			if (fromDate != null && toDate == null && !value.equalsIgnoreCase("") && searchtxt.equalsIgnoreCase("")) {
-					 criteria .add(Restrictions.eq(value, fromDate));
-			}else if(fromDate != null && toDate != null && !value.equalsIgnoreCase("") && searchtxt.equalsIgnoreCase("")) {
-				 criteria.add(or2);
-
-			}else if(fromDate != null && toDate != null && !value.equalsIgnoreCase("") && !searchtxt.equalsIgnoreCase("")) {
-				 criteria.add(or2).add(or).add(Restrictions.eq(value, fromDate));
-
-			}else{
-				 criteria.add(or);
+				criteria.add(Restrictions.ge(value, fromDate));
 			}
-				Long resultCount = (Long)criteria.setProjection(Projections.rowCount()).uniqueResult();
+			else if (fromDate == null && toDate != null && !value.equalsIgnoreCase("") && searchtxt.equalsIgnoreCase("")) {
+				criteria.add(Restrictions.le(value, toDate));
+			}
+			else if (fromDate != null && toDate != null && !value.equalsIgnoreCase("") && searchtxt.equalsIgnoreCase("")) {
+				criteria.add(or2);
+			}
+			else if (fromDate != null && toDate != null && !value.equalsIgnoreCase("") && !searchtxt.equalsIgnoreCase("")) {
+				criteria.add(or2).add(or);
+			}else if (fromDate != null && toDate == null && !value.equalsIgnoreCase("") && !searchtxt.equalsIgnoreCase("")) {
+				criteria.add(or).add(Restrictions.ge(value, fromDate));
+			}else if (fromDate == null && toDate != null && !value.equalsIgnoreCase("") && !searchtxt.equalsIgnoreCase("")) {
+				criteria.add(or).add(Restrictions.le(value, toDate));
+			}
+			else {
+				criteria.add(or);
+			}
+			Long resultCount = (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
 			_log.debug("getAdminTradeListWithSearchCount" + resultCount);
 			return resultCount;
 		}
@@ -956,14 +976,14 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 		long companyId, String searchtxt, Date fromDate, Date toDate, String value, int startIndex, int pageSize) {
 
 		_log.debug("Inside getScfAdminTradeListWithSearch ");
-		Criteria criteria =null;
+		Criteria criteria = null;
 		try {
-			Collection<Long> ids = getIDListForScfPagination(startIndex, pageSize,companyId);
+			Collection<Long> ids = getIDListForScfPagination(startIndex, pageSize, companyId);
 			if (!ids.isEmpty()) {
 				Session session = sessionFactory.getCurrentSession();
 				criteria =
-					session.createCriteria(SCFTrade.class).add(Restrictions.in("id", ids)).setFetchMode(
-						"invoices", FetchMode.JOIN).setFetchMode("allotments", FetchMode.JOIN).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+					session.createCriteria(SCFTrade.class).add(Restrictions.in("id", ids)).setFetchMode("invoices", FetchMode.JOIN).setFetchMode(
+						"allotments", FetchMode.JOIN).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 			}
 			Disjunction or = Restrictions.disjunction();
 			if (validationUtil.isNumeric(searchtxt)) {
@@ -975,17 +995,20 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 			Disjunction or2 = Restrictions.disjunction();
 			or2.add(Restrictions.between(value, fromDate, toDate));
 			if (fromDate != null && toDate == null && !value.equalsIgnoreCase("") && searchtxt.equalsIgnoreCase("")) {
-					 criteria .add(Restrictions.eq(value, fromDate));
-			}else if(fromDate != null && toDate != null && !value.equalsIgnoreCase("") && searchtxt.equalsIgnoreCase("")) {
-				 criteria.add(or2);
-
-			}else if(fromDate != null && toDate != null && !value.equalsIgnoreCase("") && !searchtxt.equalsIgnoreCase("")) {
-				 criteria.add(or2).add(or).add(Restrictions.eq(value, fromDate));
-
-			}else{
-				 criteria.add(or);
+				criteria.add(Restrictions.eq(value, fromDate));
 			}
-			List<SCFTrade>	results = (List<SCFTrade>) criteria.list();
+			else if (fromDate != null && toDate != null && !value.equalsIgnoreCase("") && searchtxt.equalsIgnoreCase("")) {
+				criteria.add(or2);
+
+			}
+			else if (fromDate != null && toDate != null && !value.equalsIgnoreCase("") && !searchtxt.equalsIgnoreCase("")) {
+				criteria.add(or2).add(or).add(Restrictions.eq(value, fromDate));
+
+			}
+			else {
+				criteria.add(or);
+			}
+			List<SCFTrade> results = (List<SCFTrade>) criteria.list();
 			_log.debug("getAdminTradeListWithSearch successful, result size: " + results.size());
 			return results;
 
@@ -1003,8 +1026,10 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 		List<SCFTrade> scftrades = new ArrayList<SCFTrade>();
 		try {
 
-			Criteria criteria =  (Criteria) sessionFactory.getCurrentSession().createCriteria(SCFTrade.class).add(Restrictions.eq("company.id", companyId)).setFetchMode(
-				"invoices", FetchMode.JOIN).setFetchMode("allotments", FetchMode.JOIN).setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+			Criteria criteria =
+				(Criteria) sessionFactory.getCurrentSession().createCriteria(SCFTrade.class).add(Restrictions.eq("company.id", companyId)).setFetchMode(
+					"invoices", FetchMode.JOIN).setFetchMode("allotments", FetchMode.JOIN).setResultTransformer(
+					CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 			Disjunction or = Restrictions.disjunction();
 			if (validationUtil.isNumeric(searchtxt)) {
 				or.add(Restrictions.eq("tradeAmount", BigDecimal.valueOf(Long.valueOf(searchtxt))));
@@ -1012,22 +1037,25 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 			or.add(Restrictions.like("scfId", searchtxt, MatchMode.ANYWHERE));
 
 			or.add(Restrictions.like("status", searchtxt, MatchMode.ANYWHERE));
-			
+
 			Disjunction or2 = Restrictions.disjunction();
 			or2.add(Restrictions.between(value, fromDate, toDate));
-			
+
 			if (fromDate != null && toDate == null && !value.equalsIgnoreCase("") && searchtxt.equalsIgnoreCase("")) {
-					 criteria .add(Restrictions.eq(value, fromDate));
-			}else if(fromDate != null && toDate != null && !value.equalsIgnoreCase("") && searchtxt.equalsIgnoreCase("")) {
-				 criteria.add(or2);
-
-			}else if(fromDate != null && toDate != null && !value.equalsIgnoreCase("") && !searchtxt.equalsIgnoreCase("")) {
-				 criteria.add(or2).add(or).add(Restrictions.eq(value, fromDate));
-
-			}else{
-				 criteria.add(or);
+				criteria.add(Restrictions.eq(value, fromDate));
 			}
-				Long resultCount = (Long)criteria.setProjection(Projections.rowCount()).uniqueResult();
+			else if (fromDate != null && toDate != null && !value.equalsIgnoreCase("") && searchtxt.equalsIgnoreCase("")) {
+				criteria.add(or2);
+
+			}
+			else if (fromDate != null && toDate != null && !value.equalsIgnoreCase("") && !searchtxt.equalsIgnoreCase("")) {
+				criteria.add(or2).add(or).add(Restrictions.eq(value, fromDate));
+
+			}
+			else {
+				criteria.add(or);
+			}
+			Long resultCount = (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
 
 			_log.debug("getScfAdminTradeListWithSearchCount successful, result size: " + scftrades.size());
 
@@ -1042,6 +1070,7 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 	}
 
 	public Collection<Long> getIDListForPagination(int startIndex, int pageSize) {
+
 		Session session = sessionFactory.getCurrentSession();
 		Criteria criteria = session.createCriteria(SCFTrade.class).setProjection(Projections.id());
 		criteria.setFirstResult(startIndex);
@@ -1050,7 +1079,10 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 		Collection<Long> ids = criteria.list();
 		return ids;
 	}
-	public Collection<Long> getIDListForScfPagination(int startIndex, int pageSize,long companyId) {
+	
+
+	public Collection<Long> getIDListForScfPagination(int startIndex, int pageSize, long companyId) {
+
 		Session session = sessionFactory.getCurrentSession();
 		Criteria criteria = session.createCriteria(SCFTrade.class).add(Restrictions.eq("company.id", companyId)).setProjection(Projections.id());
 		criteria.setFirstResult(startIndex);
@@ -1059,4 +1091,5 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 		Collection<Long> ids = criteria.list();
 		return ids;
 	}
+	
 }

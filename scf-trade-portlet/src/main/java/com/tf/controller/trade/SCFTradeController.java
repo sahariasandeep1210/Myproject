@@ -183,10 +183,35 @@ public class SCFTradeController {
 		}
 		else if (request.isUserInRole(Constants.SCF_ADMIN)) {
 			BigDecimal totalTradeAmount = BigDecimal.ZERO;
-
+			DateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+			Date fromDate = null;
+			Date toDate = null;
+			String search = ParamUtil.getString(request, "Search");
+			String value = ParamUtil.getString(request, "dateList");
+			String from = ParamUtil.getString(request, "fromDate");
+			String to = ParamUtil.getString(request, "toDate");
+			if (!StringUtils.isNullOrEmpty(from)) {
+				fromDate = formatter.parse(from);
+			}
+			if (!StringUtils.isNullOrEmpty(to)) {
+				toDate = formatter.parse(to);
+			}
 			long companyId = userService.getCompanybyUserID(themeDisplay.getUserId()).getId();
-			scftrades = scfTradeService.getScfTrades(companyId, paginationModel.getStartIndex(), paginationModel.getPageSize());
-			noOfRecords = scfTradeService.getScfTradesCount(companyId);
+			
+			if(StringUtils.isNullOrEmpty(search)&& StringUtils.isNullOrEmpty(value)){
+				scftrades = scfTradeService.getScfTrades(companyId, paginationModel.getStartIndex(), paginationModel.getPageSize());
+				noOfRecords = scfTradeService.getScfTradesCount(companyId);
+			}else{
+				scftrades = scfTradeService.getScfAdminTradeListWithSearch(
+									companyId, search, fromDate, toDate, value, paginationModel.getStartIndex(), paginationModel.getPageSize());
+				noOfRecords = scfTradeService.getScfAdminTradeListWithSearchCount(companyId, search, fromDate, toDate, value);
+				model.put("scftrades", scftrades);
+			}
+			model.put("search", search);
+			model.put("from", from);
+			model.put("to", to);
+			model.put("value", value);
+
 			for (SCFTrade scf : scftrades) {
 				totalTradeAmount = totalTradeAmount.add(scf.getTradeAmount());
 			}
@@ -731,22 +756,6 @@ public class SCFTradeController {
 		String value = ParamUtil.getString(request, "dateList");
 		String from = ParamUtil.getString(request, "fromDate");
 		String to = ParamUtil.getString(request, "toDate");
-		
-		if(validationUtil.isThisDateValid(from, "MM/dd/yyyy"))
-			System.out.println("\nFrom Date is : "+from);
-		else
-			from = null;
-		
-		if(validationUtil.isThisDateValid(to, "MM/dd/yyyy"))
-			System.out.println("\nTo Date is : "+to);
-		else
-			to = null;
-		
-		if(validationUtil.containsSpecialCharacter(search))
-			System.out.println("\nYr String is : "+search);
-		else
-			to = null;
-		
 		if (!StringUtils.isNullOrEmpty(from)) {
 			fromDate = formatter.parse(from);
 		}
@@ -779,7 +788,6 @@ public class SCFTradeController {
 					scfTradeService.getAdminTradeListWithSearch(
 						search, fromDate, toDate, value, paginationModel.getStartIndex(), paginationModel.getPageSize());
 				noOfRecords = scfTradeService.getAdminTradeListWithSearchCount(search, fromDate, toDate, value);
-			System.out.println("noOfRecordsnoOfRecordsnoOfRecords:"+noOfRecords);
 		}
 		paginationUtil.setPaginationInfo(noOfRecords, paginationModel);
 		model.put("scftrades", scftrades);
@@ -800,7 +808,7 @@ public class SCFTradeController {
 		return "tradelist";
 	}
 
-	@ActionMapping(params = "scf=getScfAdminTrade")
+/*	@ActionMapping(params = "scf=getScfAdminTrade")
 	protected void getScfAdminTrade(ModelMap model, ActionRequest request, ActionResponse response)
 		throws Exception {
 		BigDecimal totalTradeAmount = BigDecimal.ZERO;
@@ -811,22 +819,10 @@ public class SCFTradeController {
 		DateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
 		Date fromDate = null;
 		Date toDate = null;
-		
 		String search = ParamUtil.getString(request, "Search");
 		String value = ParamUtil.getString(request, "dateList");
 		String from = ParamUtil.getString(request, "fromDate");
 		String to = ParamUtil.getString(request, "toDate");
-		
-		if(validationUtil.isThisDateValid(from, "MM/DD/yyyy"))
-			System.out.println("From Date is : "+from);
-		else
-			from = null;
-		
-		if(validationUtil.isThisDateValid(to, "MM/DD/yyyy"))
-			System.out.println("To Date is : "+to);
-		else
-			to = null;
-		
 		if (!StringUtils.isNullOrEmpty(from)) {
 			fromDate = formatter.parse(from);
 		}
@@ -847,8 +843,7 @@ public class SCFTradeController {
 		}else{
 			scftrades = scfTradeService.getScfAdminTradeListWithSearch(
 								companyId, search, fromDate, toDate, value, paginationModel.getStartIndex(), paginationModel.getPageSize());
-			noOfRecords = (long) scftrades.size();
-			//noOfRecords = scfTradeService.getScfAdminTradeListWithSearchCount(companyId, search, fromDate, toDate, value);
+			noOfRecords = scfTradeService.getScfAdminTradeListWithSearchCount(companyId, search, fromDate, toDate, value);
 		}
 		paginationUtil.setPaginationInfo(noOfRecords, paginationModel);
 		model.put("scftrades", scftrades);
@@ -860,6 +855,6 @@ public class SCFTradeController {
 		model.put("paginationModel", paginationModel);
 		response.setRenderParameter("action", "getScfAdminTrade");
 
-	}
+	}*/
 
 }
