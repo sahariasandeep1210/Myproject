@@ -1,5 +1,6 @@
-$(document).ready(
-		function() {
+$(document).ready(function() {
+	
+	$("#pageSize").val($("#currPageSize").val());
 			$("#TransactionReport").click(function() {
 				var updateURL = $("#getReportURL").val();
 				document.forms["reportList"].action = updateURL;
