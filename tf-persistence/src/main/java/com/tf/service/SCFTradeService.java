@@ -2,6 +2,7 @@
 package com.tf.service;
 
 import com.tf.model.SCFTrade;
+import com.tf.persistance.util.InSuffcientFund;
 
 import java.util.Date;
 import java.util.List;
@@ -54,7 +55,7 @@ public interface SCFTradeService {
 
 	public List<SCFTrade> getTradeHistoryList(int startIndex, int pageSize);
 
-	public void updateTradeLifeCycle(SCFTrade scfTrade);
+	public void updateTradeLifeCycle(SCFTrade scfTrade) throws InSuffcientFund;
 
 	public Long getScfTradesHistoryCount();
 

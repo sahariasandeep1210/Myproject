@@ -91,6 +91,7 @@ public class AllotmentEngine {
 
 			allotment.setInvestorPortfolio(investorDAO.loadInvestorPortfolio(investor.getInvestorProtId()));
 			allotment.setScfTrade(trade);
+			allotment.setInvestorID(investor.getInvestorId());
 			invTranscation.setTradeID(trade.getId());
 
 			if(sameRateCount <= 1 ){
