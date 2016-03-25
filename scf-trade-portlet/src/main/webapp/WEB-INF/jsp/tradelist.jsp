@@ -45,7 +45,7 @@
 			<div class="span6">
 				<div class="span12">
 					<h5 style="float: right !important;">
-						<a href="${createURL}" style="color: #295780; font-weight: bold;">
+						<a href="${createURL}" style="color: #295780; font-weight: bold;" id="exportScfAdmin">
 							Export</a>
 					</h5>
 				</div>

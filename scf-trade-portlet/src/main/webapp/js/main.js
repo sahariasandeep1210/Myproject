@@ -76,6 +76,24 @@ $(document).ready(
 					document.forms["scfTradeList"].submit();
 				}
 			});
+			$("#exportAdmin").click(function() {
+				$('#tradeListTable').tableExport({
+					type : 'excel',
+					escape : 'false',
+				    fileName : 'TradeList',
+					worksheetName : 'TradeList'
+				});
+
+			});
+			$("#exportScfAdmin").click(function() {
+				$('#tradeListTable').tableExport({
+					type : 'excel',
+					escape : 'false',
+				    fileName : 'TradeList',
+					worksheetName : 'TradeList'
+				});
+
+			});
 
 			$("#exportSeller").click(function() {
 				$('#sellerListTable').tableExport({

@@ -47,7 +47,7 @@
 			</div>
 			<div class="span6">  
 			  <div class="span12">
-			  	<h5 style="float: right !important;" ><a href="#" style="color: #295780;font-weight: bold;"> Export</a></h5>
+			  	<h5 style="float: right !important;" ><a href="#" style="color: #295780;font-weight: bold;" id="exportAdmin"> Export</a></h5>
 			  </div>
 			  </div>			
 		</div>
