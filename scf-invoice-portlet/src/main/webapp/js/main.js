@@ -1,5 +1,16 @@
 $(document).ready(function() {
 	
+	$("#dateList").change(function() {
+		var userSel=$(this).val();
+		if(userSel === 'undefined' || (! userSel )|| userSel === null){
+			$("#fromDate").val('');
+			$("#toDate").val('');
+		}
+	});
+	
+	
+
+	
 	var userType=$("#userType").val();
 	enableTab();
 	$("#createTrade").hide(); 
@@ -295,16 +306,14 @@ $("#fromDate").datepicker({
 	changeMonth : true,
 	changeYear : true,
 	showOn : "button",
-	
 	buttonImage : "/tf-theme/images/calendar.jpg",
 	buttonImageOnly : true,
 	buttonText : "Select date",
     onSelect: function(selected) {
 				$("#toDate").datepicker("option","minDate", selected)
-				  
-		   }
+		}
+	
 });
-
 $("#toDate").datepicker({
 	changeMonth : true,
 	changeYear : true,

@@ -1,10 +1,21 @@
 $(document).ready(
 		function() {
+			
+
 			$(".historyRow").hide();
 			$("#buttonDiv").hide();
 			$("#pageSize").val($("#currPageSize").val());
 			$("#pagSize").val($("#curPageSize").val());
 			$("#pgSize").val($("#currPageSizes").val());
+			
+			$("#dateList").change(function() {
+				var userSel=$(this).val();
+				if(userSel === 'undefined' || (! userSel )|| userSel === null){
+					$("#fromDate").val('');
+					$("#toDate").val('');
+				}
+			});
+			
 
 			$("#adminTradeReport").click(function() {
 				var updateURL = $("#getAdminTradeURL").val();
