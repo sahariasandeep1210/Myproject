@@ -306,7 +306,11 @@ $(document).ready(function(){
 		submitUserForms(url);
 	});
 	
-	
+	$("#backBtn").click(function(){
+		var url = $(this).attr('data-url');
+		document.forms["companyDetail"].action = url;
+		document.forms["companyDetail"].submit();
+	});
 	
 	$("#dateestablished").datepicker({
 		changeMonth : true,

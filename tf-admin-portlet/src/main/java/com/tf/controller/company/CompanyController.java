@@ -118,13 +118,17 @@ public class CompanyController extends BaseController {
 			noOfRecords=sellerScfMappingService.getSellerScfMappingCount();
 			companyList = companyService.getCompanies("4");
 			companies=prepareCompanyList(companyList,sellerScfMappings);
-			System.out.println("companies:"+companies);
+			ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
+
+			long companyId = userService.getCompanybyUserID(themeDisplay.getUserId()).getId();
 
 			paginationUtil.setPaginationInfo(noOfRecords, paginationModel);
 			model.put("companies", companies);
 			model.put("sellerScfMappings", sellerScfMappings);
 			model.put("currentUser", themeDispay.getRealUser());
 			model.put("users", users);
+			model.put("companyId", companyId);
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			SessionErrors.add(request, "default-error-message");

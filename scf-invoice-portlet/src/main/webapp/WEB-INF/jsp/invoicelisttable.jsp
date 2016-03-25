@@ -80,7 +80,12 @@
 								<td>${invoice.scfCompany.name}</td>
 								<%--  <td><fmt:formatDate pattern="dd-MM-yyyy"
 										value="${invoice.financeDate}" /></td>  --%>
-								<td>${invoice.status}</td>
+								<td>
+								${invoice.status}
+								<c:if test="${invoice.status ne 'New'}">
+								(${invoice.scfTrade.scfId})
+								</c:if>
+								</td>
 							</tr>
 						</c:forEach>
 					</c:when>
@@ -125,7 +130,12 @@
 								<td>${invoice.invoiceAmount}</td>
 								<td>${invoice.duration}</td>
 								<td>${invoice.scfCompany.name}</td>
-								<td>${invoice.status}</td>
+								<td>
+								    ${invoice.status}
+								     <c:if test="${invoice.status ne 'New'}">
+								           (${invoice.scfTrade.scfId})
+								      </c:if>
+								</td>
 							</tr>
 						</c:forEach>
 					</c:when>

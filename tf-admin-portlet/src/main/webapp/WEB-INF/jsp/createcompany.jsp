@@ -2,7 +2,9 @@
 <portlet:actionURL var="createCompanyURL">
 	<portlet:param name="action" value="createCompany" />
 </portlet:actionURL>
-
+<portlet:renderURL var="createURL">
+	<portlet:param name="render" value="createCompany" />
+</portlet:renderURL>
 <portlet:actionURL var="regCompanyURL">
 	<portlet:param name="action" value="registerCompany" />
 </portlet:actionURL>
@@ -71,7 +73,7 @@
 						</div>
 					</div>
 				</div>
-				<c:if test="${userType eq 'SCF Company Admin'}">
+				<c:if test="${userType eq 'SCF Company Admin'  && cmpType ne 'Seller'}">
 				     <div class="accordion-group">
 					<div class="accordion-heading">
 						<a class="accordion-toggle" data-toggle="collapse"
@@ -86,14 +88,24 @@
 				</div>
 				</c:if>
 			</div>
-			
+		<c:choose>
+			<c:when test="${cmpType ne 'Seller'}">
 			<div class="row-fluid">
 				<div class="span6">
 					<input type="button" value="Go Back" class="btn btn-primary"
 						data-url="${companyListURL}" id="cmpback" />
 				</div>
 			</div>
-			
+			</c:when>
+			<c:otherwise>
+					<div class="row-fluid">
+				<div class="span6">
+					<input type="button" value="Back" class="btn btn-primary"  data-url="${createURL}&companyID=${companyId}"	id="backBtn"  />
+
+				</div>
+			</div>
+			</c:otherwise>
+		</c:choose>
 		</c:when>
 		<c:otherwise>
 			<%@include file="createcompanyform.jsp"%>
