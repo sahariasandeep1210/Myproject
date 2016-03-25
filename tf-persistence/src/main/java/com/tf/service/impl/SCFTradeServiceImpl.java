@@ -159,11 +159,31 @@ public class SCFTradeServiceImpl implements SCFTradeService {
 				whtTransactionInvProfit.setReference("Investor profit has been paid  by whitehall");
 				whtTransactionInvProfit.setTranscationDate(new Date());
 				whtTransactionInvProfit.setTradeID(scfTrade.getId());
-				whtTransactionInvProfit.setTranscationType(TradeStatus.INVESTOR_REPAID.getValue());
+				whtTransactionInvProfit.setTranscationType(TranscationStatus.INVETOR_PROFIT.getValue());
 				whiteHallTransactionDAO.saveEntity(whtTransactionInvProfit);
 				tradeUpdate = Boolean.TRUE;
 			}
 			else if (TradeStatus.SETTLED.getValue().equalsIgnoreCase(scfTrade.getStatus())) {
+				//adding Fees from seller
+				WhiteHallTransaction whtTransactionSellerFee = new WhiteHallTransaction();
+				if(scfTrade.getSellerTransFee()!=null && scfTrade.getSellerFees()!=null){
+					whtTransactionSellerFee.setAmount(scfTrade.getSellerTransFee().add(scfTrade.getSellerFees()));
+				}				
+				whtTransactionSellerFee.setReference("WhiteHall Fees from Seller");
+				whtTransactionSellerFee.setTranscationDate(new Date());
+				whtTransactionSellerFee.setTradeID(scfTrade.getId());
+				whtTransactionSellerFee.setTranscationType(TranscationStatus.WHITEHALL_FEE.getValue());
+				whiteHallTransactionDAO.saveEntity(whtTransactionSellerFee);
+				
+				//adding profit from Investor
+				WhiteHallTransaction whtTransactionInvProfit = new WhiteHallTransaction();
+				whtTransactionInvProfit.setAmount(scfTrade.getWhitehallTotalShare());
+				whtTransactionInvProfit.setReference("Whitehall profit from Investor");
+				whtTransactionInvProfit.setTranscationDate(new Date());
+				whtTransactionInvProfit.setTradeID(scfTrade.getId());
+				whtTransactionInvProfit.setTranscationType(TranscationStatus.WHITEHALL_PROFIT.getValue());
+				whiteHallTransactionDAO.saveEntity(whtTransactionInvProfit);
+				
 				updateAllotments(scfTrade, TradeStatus.SETTLED.getValue());
 			}
 		

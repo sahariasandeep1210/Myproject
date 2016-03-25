@@ -12,7 +12,7 @@
 <div class="row-fluid">
 	<div class="span3">
 		<select id="dateList" name="dateList">
-			<option value="" selected="selected" disabled="disabled">Select Date</option>
+			<option value="" selected="selected" >Select Date</option>
 			<option value="openingDate" <c:if test="${ value eq 'openingDate'}">selected="selected" </c:if>>Opening Date</option>
 			<option value="closingDate" <c:if test="${ value eq 'closingDate'}">selected="selected" </c:if>>Closing Date</option>
 			<option value="investorPaymentDate" <c:if test="${ value eq 'investorPaymentDate'}">selected="selected" </c:if>>Investor PaymentDate</option>

@@ -14,8 +14,8 @@
 	<input type="hidden" name="currentPage" 	id="currentPage"    	value="${paginationModel.currentPage}" />
 	<input type="hidden" name="currPageSize" 	id="currPageSize"    	value="${paginationModel.pageSize}" /> 
 	<input type="hidden" name="noOfRecords" 	id="noOfRecords"    	value="${paginationModel.noOfRecords}" />
-	<input type="hidden" name="defaultURL" 	id="defaultURL"    	value="${defaultURL}" />
-		<input type="hidden" name="getReportURL" 	id="getReportURL"    	value="${getReportURL}" />
+	<input type="hidden" name="defaultURL" 		id="defaultURL"    		value="${defaultURL}" />
+	<input type="hidden" name="getReportURL" 	id="getReportURL"    	value="${getReportURL}" />
 	
 	
 <div class="row-fluid">
@@ -40,6 +40,19 @@
 					class="btn btn-primary" />
 			</div>
 
+		</div>
+		
+		<div class="row-fluid">
+					<div class="span6">
+						<div class="span6">
+							<h5>Total Earnings:</h5>
+						</div>
+						<div class="span6">
+							<label> ${totalEarnins}</label>
+						</div>
+					</div>
+				
+			
 		</div>
 		<div class="row-fluid">
 					<div class="span6">
@@ -74,7 +87,18 @@
 							<c:forEach items="${reportList}" var="report">
 								<tr>
 									<td>${report.amount} </td>
-									<td>${report.transcationType}</td>
+									<td>${report.transcationType}
+										 <c:choose>
+											<c:when test="${report.transcationType eq 'SCF Repayment' || report.transcationType eq 'Investor Paid'  || report.transcationType eq 'Whitehall Profit' ||  report.transcationType eq 'Whitehall Fee' }">
+												<img height="30" width="30" src="${themeDisplay.pathThemeImages}/green.png" style=" float: right; vertical-align: middle; font-size: 20px"/>
+											</c:when>
+											<c:otherwise>
+												<img height="30" width="30" src="${themeDisplay.pathThemeImages}/red.png" style=" float: right; vertical-align: middle; font-size: 20px"/>
+											</c:otherwise>										
+										</c:choose>
+									
+									
+									</td>
 									<td><fmt:formatDate pattern="dd-MM-yyyy" value="${report.transcationDate}" /></td>
 									<td>${report.tradeID}</td>
 									<td>${report.company.name}</td>
@@ -103,6 +127,35 @@
 				</tbody>
 			</table>
 		</div>
+		
+		<div class="row-fluid" >
+			<div class="span6" >
+				
+			</div>
+				<div class="span6" >					
+					<div class="span12" >
+						<div class="span6">
+											<label class="span4"> Show &nbsp;</label>
+											<select id="pageSize" class="paginationselect span8" name="pageSize">
+												<option value="5">5</option>
+												<option value="10">10</option>
+												<option value="20">20</option>
+												<option value="30">30</option>
+												<option value="45">45</option>
+												<option value="60">60</option>
+												<option value="75">75</option>
+												<option value="100">100</option>
+											</select> 
+						</div>
+								<div class="span6">
+											
+											<label>&nbsp; Results per page </label>
+											</div>
+				</div>
+			</div>
+		</div>
+		
+		
 
 	</form:form>
 

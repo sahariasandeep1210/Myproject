@@ -550,7 +550,12 @@ function setPage(pageNumber) {
 		document.forms["investorBalanceForm"].action = actionUrl;
 		document.forms["investorBalanceForm"].submit();
 
-	} else if ($("#cashReportTable").length) {
+	} else if($(".investorCash").length){
+		$("#currentPage").val(pageNumber);
+		var actionUrl = $("#defaultCashURL").val();
+		document.forms["casReportForm"].action = actionUrl;
+		document.forms["casReportForm"].submit();
+	}else if ($("#cashReportTable").length) {
 		$("#currentPage").val(pageNumber);
 		var actionUrl = $("#defaultCashURL").val();
 		document.forms["cashReportForm"].action = actionUrl;

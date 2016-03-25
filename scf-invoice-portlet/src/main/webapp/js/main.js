@@ -112,14 +112,31 @@ $(document).ready(function() {
 	});
 	
 	$("#requestFinance").click(function() {
+		var scfCompany = []; 
 		var invoices = []; 
-		 var url = $(this).attr('data-url');
-		 $("#invoicelist input:checkbox:checked").each(function() {
-				invoices.push($(this).val());
-			});
-		 $("#invoices").val(invoices.toString()); 
-		 document.forms["invoicelist"].action = url;
-		document.forms["invoicelist"].submit();
+		
+		 $("#errormsg").hide();
+		 $("#errormsg").text("");
+		 
+		 $("#invoicelist input:checkbox:checked").each(function () {
+			 scfCompany.push($(this).attr("scfcompany-attr"));		       
+		    });
+		 
+		 var uniquescmp = scfCompany.unique();
+		 if(uniquescmp.length==1 ){
+			 var url = $(this).attr('data-url');
+			 $("#invoicelist input:checkbox:checked").each(function() {
+					invoices.push($(this).val());
+				});
+			 $("#invoices").val(invoices.toString()); 
+			document.forms["invoicelist"].action = url;
+			document.forms["invoicelist"].submit();
+		 }else{
+			 $("#errormsg").text("All the invoices in a trade must be from same Invoice company");
+			 $("#errormsg").show();	
+		 }
+		
+		 
 		
 	}); 
 	

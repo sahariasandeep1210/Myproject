@@ -3,12 +3,14 @@
 <%@include file="tabview1.jsp"%>
 
 <%@include file="init.jsp"%>
+<liferay-theme:defineObjects />
 
 <portlet:actionURL var="fetchCashURL">
   <portlet:param name="fetch" value="fetchCashReport"/>
 </portlet:actionURL>
 
 <portlet:renderURL var="defaultRenderURL" />
+
 
 <div class="container-fluid">
 
@@ -19,6 +21,7 @@
 		      <input type="hidden" name="currentPage"  id="currentPage"   value="${paginationModel.currentPage}" />
 		      <input type="hidden" name="noOfRecords"  id="noOfRecords"   value="${paginationModel.noOfRecords}" />
 		      <input type="hidden" name="defaultCasURL"   id="defaultCasURL" 	  value="${defaultRenderURL}" />
+		      <input type="hidden" name="defaultCashURL"   id="defaultCashURL" 	  value="${cashReportURL}" />
 		      
 		      
 		      <input type="hidden" name="companyId" value="${companyname.id}">
@@ -90,7 +93,7 @@
 		<br>
 	
 	<div class="table-responsive">
-			<table class="table  tablesorter table-bordered" id="cashReportTable">
+			<table class="table  tablesorter table-bordered investorCash" id="cashReportTable" >
 				<thead>
 					<tr>
 					    <th>Date</th>
@@ -108,7 +111,17 @@
 				   
 						<tr>
 							<td><fmt:formatDate pattern="dd-MM-yyyy" value="${investorTransaction.transcationDate}" /></td>
-							<td>${investorTransaction.transcationType}</td>
+							<td>${investorTransaction.transcationType}
+								
+								<c:choose>
+											<c:when test="${investorTransaction.transcationType eq 'Deposit' || investorTransaction.transcationType eq 'Repaid' || investorTransaction.transcationType eq 'Profit' }">
+												<img height="30" width="30" src="${themeDisplay.pathThemeImages}/green.png" style=" float: right; vertical-align: middle; font-size: 20px"/>
+											</c:when>
+											<c:otherwise>
+												<img height="30" width="30" src="${themeDisplay.pathThemeImages}/red.png" style=" float: right; vertical-align: middle; font-size: 20px"/>
+											</c:otherwise>										
+										</c:choose>
+							</td>
 							<td></td>
 							<td>${investorTransaction.amount}</td>
 							<td></td>
@@ -121,7 +134,17 @@
 				   
 						    <tr>
 							   <td><fmt:formatDate pattern="dd-MM-yyyy" value="${inv.transcationDate}" /></td>
-							    <td>${inv.transcationType}</td>
+							    <td>${inv.transcationType}
+							    	 <c:choose>
+											<c:when test="${inv.transcationType eq 'Deposit' || inv.transcationType eq 'Repaid' || inv.transcationType eq 'Profit' }">
+												<img height="30" width="30" src="${themeDisplay.pathThemeImages}/green.png" style=" float: right; vertical-align: middle; font-size: 20px"/>
+											</c:when>
+											<c:otherwise>
+												<img height="30" width="30" src="${themeDisplay.pathThemeImages}/red.png" style=" float: right; vertical-align: middle; font-size: 20px"/>
+											</c:otherwise>										
+										</c:choose>
+							    
+							    </td>
 							      <td></td>
 							     <td>${inv.amount}</td>
 							    <td></td>

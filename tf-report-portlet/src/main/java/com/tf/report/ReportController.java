@@ -1,19 +1,5 @@
 package com.tf.report;
 
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.theme.ThemeDisplay;
-import com.mysql.jdbc.StringUtils;
-import com.tf.model.Company;
-import com.tf.model.SCFTrade;
-import com.tf.model.WhiteHallTransaction;
-import com.tf.service.WhiteHallTransactionService;
-import com.tf.util.PaginationUtil;
-import com.tf.util.model.PaginationModel;
-
-import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -33,6 +19,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.portlet.ModelAndView;
 import org.springframework.web.portlet.bind.annotation.ActionMapping;
 import org.springframework.web.portlet.bind.annotation.RenderMapping;
+
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.ParamUtil;
+import com.mysql.jdbc.StringUtils;
+import com.tf.model.WhiteHallTransaction;
+import com.tf.service.WhiteHallTransactionService;
+import com.tf.util.PaginationUtil;
+import com.tf.util.model.PaginationModel;
 
 /**
  * This controller is responsible for request/response handling on Report
@@ -64,6 +59,7 @@ public class ReportController {
 			paginationUtil.setPaginationInfo(noOfRecords, paginationModel);
 			model.put("paginationModel", paginationModel);
 			model.put("reportList", reportList);
+			model.put("totalEarnins", whiteHallTransactionService.getWhiteHallEarnings());
 
 		}catch(Exception e){
 			_log.error("ReportController.renderReportList() - error occured while rendering Report"
