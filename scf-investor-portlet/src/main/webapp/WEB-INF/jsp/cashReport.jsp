@@ -28,8 +28,7 @@
 		      <input type="hidden" name="currPageSize" 	id="currPageSize"    	value="${paginationModel.pageSize}" /> 
 		      <input type="hidden" name="noOfRecords"  id="noOfRecords"   value="${paginationModel.noOfRecords}" />
 		      <input type="hidden" name="defaultCashURL"   id="defaultCashURL" 	  value="${cashReportURL}" />
-		      <input type="hidden" name="getCashs"   id="getCashs" 	  value="${getCashURL}" />
-		      
+		      <input type="hidden" name="getCashs"   id="getCashs" 	  value="${cashReportURL}" />
 		      <input type="hidden" name="investorID" value="${investorId}">
 		      
 		      <div class="row-fluid">
@@ -65,12 +64,10 @@
 	  <div class="row-fluid">
 	         <div class="span6">
                 <label class="span6">Select Date Range :</label>
-              <input name="fromDate" class="span9" id="fromDate" placeholder="From" />
+                    <input name="fromDate" class="span9" id="fromDate" placeholder="From" value="${from}" />
              </div>
 		<div class="span6">
-                
-              <input name="toDate" Class="span9" id="toDate" placeholder="To" />
-                
+              <input name="toDate" Class="span9" id="toDate" placeholder="To" value="${to}"/>
 	     </div>
 	  </div>
 		<br>

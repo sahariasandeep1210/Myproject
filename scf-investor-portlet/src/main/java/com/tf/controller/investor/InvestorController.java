@@ -1,3 +1,4 @@
+
 package com.tf.controller.investor;
 
 import com.liferay.portal.kernel.log.Log;
@@ -59,108 +60,169 @@ import org.springframework.web.portlet.bind.annotation.RenderMapping;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 
 /**
- * This controller is responsible for request/response handling on
- * Investor screens
+ * This controller is responsible for request/response handling on Investor
+ * screens
  * 
  * @author Gautam Sharma
- * 
  */
 @Controller
 @RequestMapping(value = "VIEW")
 public class InvestorController {
-	
+
 	protected Log _log = LogFactoryUtil.getLog(InvestorController.class);
-	private static final int MINDISCOUNT=400;
-	private static final int MAXDISCOUNT=600;
-	private  final static String ACTIVETAB			 		="activetab";	
-	private static final String Investor_Protfolios 		= "allinvestorprotfolios";
-	private static final String Investor_Balance 			= "investorbalance";
-	private static final String Cash_Report 				= "casReport";
-	private static final BigDecimal mul_Value=new BigDecimal(1.025);
-	private static final BigDecimal YEAR=new BigDecimal(365/45);
-
-
-
+	private static final int MINDISCOUNT = 400;
+	private static final int MAXDISCOUNT = 600;
+	private final static String ACTIVETAB = "activetab";
+	private static final String Investor_Protfolios = "allinvestorprotfolios";
+	private static final String Investor_Balance = "investorbalance";
+	private static final String Cash_Report = "casReport";
 
 	@Autowired
 	protected PaginationUtil paginationUtil;
-	
+
 	@Autowired
-	protected  UserService userService; 
-	
+	protected UserService userService;
+
 	@Autowired
-	protected  InvestorService investorService;
+	protected InvestorService investorService;
 	@Autowired
-	protected  AllotmentService allotmentService;
-	
+	protected AllotmentService allotmentService;
+
 	@Autowired
-	protected  CompanyService companyService; 
-	
+	protected CompanyService companyService;
+
 	@Autowired
-	protected  InvestorHistoryService investorHistoryService; 
-	
+	protected InvestorHistoryService investorHistoryService;
+
 	@Autowired
 	protected InvestorTransactionService investorTransactionService;
-	
+
 	@Autowired
 	protected SCFTradeService scfTradeService;
-	
+
 	@RenderMapping(params = "render=investorProtfolios")
-	protected ModelAndView renderInvestorProtfolios(@ModelAttribute("investorDTO")InvestorDTO  investorDTO,ModelMap model,RenderRequest request, RenderResponse response) throws Exception {		
+	protected ModelAndView renderInvestorProtfolios(
+		@ModelAttribute("investorDTO") InvestorDTO investorDTO, ModelMap model, RenderRequest request, RenderResponse response)
+		throws Exception {
+
 		_log.info("Render InvestorController ");
 		model.put(ACTIVETAB, Investor_Protfolios);
-		if(getPermissionChecker(request).isOmniadmin() ){
-			List<InvestorPortfolio> list =investorService.findAllInvestorProtFolios();
-			Map<String,BigDecimal> totalsMap=investorService.getProtfolioTotals();
+		if (getPermissionChecker(request).isOmniadmin()) {
+			List<InvestorPortfolio> list = investorService.findAllInvestorProtFolios();
+			Map<String, BigDecimal> totalsMap = investorService.getProtfolioTotals();
 			model.put("totalsMap", totalsMap);
-			model.put("investorList", list);	
+			model.put("investorList", list);
 		}
-		return new ModelAndView(Investor_Protfolios, model);		
+		return new ModelAndView(Investor_Protfolios, model);
 	}
-	
+
 	@RenderMapping(params = "render=investorBalance")
-	protected ModelAndView renderinvestorbalance(@ModelAttribute("investorBalanceModel")InvestorTransaction  investorBalanceModel,ModelMap model,RenderRequest request, RenderResponse response) throws Exception {		
+	protected ModelAndView renderinvestorbalance(
+		@ModelAttribute("investorBalanceModel") InvestorTransaction investorBalanceModel, ModelMap model, RenderRequest request,
+		RenderResponse response)
+		throws Exception {
+
 		_log.info("Render InvestorController");
 		List<com.tf.persistance.util.InvestorDTO> investors = null;
 		List<InvestorTransaction> investorsTransactions = null;
-		investors=companyService.getInvestors();
-		investorsTransactions=investorTransactionService.getInvestorTransactions();
-		model.put("investorsTransactions",investorsTransactions );
-	    model.put("investors", investors);
+		investors = companyService.getInvestors();
+		investorsTransactions = investorTransactionService.getInvestorTransactions();
+		model.put("investorsTransactions", investorsTransactions);
+		model.put("investors", investors);
 		model.put(ACTIVETAB, Investor_Balance);
-	    return new ModelAndView(Investor_Balance, model);		
+		return new ModelAndView(Investor_Balance, model);
 	}
-	
+
 	@RenderMapping(params = "report=casReport")
-	protected ModelAndView rendercasReport(ModelMap model,RenderRequest request, RenderResponse response) throws Exception {	
+	protected ModelAndView rendercasReport(ModelMap model, RenderRequest request, RenderResponse response)
+		throws Exception {
+		Investor inves=null;
 		List<InvestorTransaction> investorList = new ArrayList<InvestorTransaction>();
-		ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);
-		
-        long companyId=userService.getCompanybyUserID(themeDisplay.getUserId()).getId();
-        if(request.isUserInRole(Constants.PRIMARY_INVESTOR_ADMIN)){
-		if(companyId > 0){
+		List<InvestorTransaction> invList = null;
+		Company company = null;
+		List<com.tf.persistance.util.InvestorDTO> investors = null;
+		ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
+		long companyId = userService.getCompanybyUserID(themeDisplay.getUserId()).getId();
+		BigDecimal receivablesPosition = BigDecimal.ZERO;
+		BigDecimal totalReceivablesPosition = BigDecimal.ZERO;
+		BigDecimal totalAsset = BigDecimal.ZERO;
+		DateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+		if (request.isUserInRole(Constants.PRIMARY_INVESTOR_ADMIN)) {
+			if (companyId > 0) {
+				investors = companyService.getInvestors();
+				Date fromDate = formatter.parse("2/1/1970");
+				Date toDate = new Date();
+				String transactionType = ParamUtil.getString(request, "transaction");
+				String from = ParamUtil.getString(request, "fromDate");
+				String to = ParamUtil.getString(request, "toDate");
+				Long noOfRecords = 0l;
+				PaginationModel paginationModel = paginationUtil.preparePaginationModel(request);
+				if (!StringUtils.isEmpty(from)) {
+					fromDate = formatter.parse(from);
+				}
+				if (!StringUtils.isEmpty(to)) {
+					toDate = formatter.parse(to);
+				}
+				if (StringUtils.isEmpty(transactionType) && StringUtils.isEmpty(from) && StringUtils.isEmpty(to)) {
+					Long investor = investorService.getInvestorIDByCompanyId(companyId);
+					 inves = investorService.findByInvestorId(investor);
+					inves.setCashPosition(inves.getCashPosition() != null ? inves.getCashPosition() : BigDecimal.ZERO);
+					List<Allotment> allotments = allotmentService.getAllotmentByInvestorAndStatus(investor, TranscationStatus.INVESTED.getValue());
+					for (Allotment allot : allotments) {
+						receivablesPosition = allot.getAllotmentAmount().add(allot.getInvestorNetProfit());
+						totalReceivablesPosition = totalReceivablesPosition.add(receivablesPosition);
+					}
+					totalAsset = inves.getCashPosition().add(totalReceivablesPosition);
+					investorList = investorTransactionService.getInvestors(investor, paginationModel.getStartIndex(), paginationModel.getPageSize());
+					noOfRecords = investorTransactionService.getInvestorsCount(investor);
+				}
+				else {
+					Long investorId = investorService.getInvestorIDByCompanyId(companyId);
+				     inves = investorService.findByInvestorId(investorId);
+					inves.setCashPosition(inves.getCashPosition() != null ? inves.getCashPosition() : BigDecimal.ZERO);
+					// block also needs to be optimized. right now putting quick
+					// fix for Dhanush code
+					List<Allotment> allotments = allotmentService.getAllotmentByInvestorAndStatus(investorId, TranscationStatus.INVESTED.getValue());
+					for (Allotment allot : allotments) {
+						receivablesPosition = allot.getAllotmentAmount().add(allot.getInvestorNetProfit());
+						totalReceivablesPosition = totalReceivablesPosition.add(receivablesPosition);
+					}
+					totalAsset = inves.getCashPosition().add(totalReceivablesPosition);
+					invList =
+						investorTransactionService.getInvestorTransactionByTransactionType(
+							investorId, transactionType, fromDate, toDate, paginationModel.getStartIndex(), paginationModel.getPageSize());
+					noOfRecords = investorTransactionService.getInvestorsCounts(investorId, transactionType, fromDate, toDate);
+					model.put("transactionType", transactionType);
+					model.put("from", from);
+					model.put("to", to);
+					model.put("invList", invList);
+					for (com.tf.persistance.util.InvestorDTO inv : investors) {
+						if (inv.getInvestorID() == investorId) {
+							model.put("companyname", inv.getName());
+							model.put("investorId", inv.getInvestorID());
+						}
+					}
+				}
+				company = companyService.findById(companyId);
+				paginationUtil.setPaginationInfo(noOfRecords, paginationModel);
+				model.put("investor", inves);
+				model.put("totalReceivablesPosition", totalReceivablesPosition);
+				model.put("totalAsset", totalAsset);
+				model.put("paginationModel", paginationModel);
+				model.put("companyname", company);
+				model.put("investorList", investorList);
+				model.put(ACTIVETAB, Cash_Report);
 
-		Company company=companyService.findById(companyId);
-		Long investor= investorService.getInvestorIDByCompanyId(companyId);
-		Long noOfRecords=0l;
-        PaginationModel paginationModel = paginationUtil.preparePaginationModel(request);
-        investorList=investorTransactionService.getInvestors(investor, paginationModel.getStartIndex(), paginationModel.getPageSize());
- 		noOfRecords=investorTransactionService.getInvestorsCount(investor);
-        paginationUtil.setPaginationInfo(noOfRecords,paginationModel);
-		model.put("paginationModel", paginationModel);
-        model.put("companyname", company);
-        model.put("investorList", investorList);
-		model.put(ACTIVETAB, Cash_Report);
-
+			}
 		}
-       }	
-		return new ModelAndView(Cash_Report,model);
-	
+		return new ModelAndView(Cash_Report, model);
+
 	}
-	
+
 	@RenderMapping(params = "receivable=receivableReport")
-	protected ModelAndView receivableReport(ModelMap model,
-			RenderRequest request, RenderResponse response) throws Exception {
+	protected ModelAndView receivableReport(ModelMap model, RenderRequest request, RenderResponse response)
+		throws Exception {
+
 		List<com.tf.persistance.util.InvestorModelDTO> dtos = null;
 		com.tf.persistance.util.InvestorModelDTO dto;
 		SCFTrade scfTrade = null;
@@ -174,34 +236,27 @@ public class InvestorController {
 		BigDecimal totalNet = BigDecimal.ZERO;
 		BigDecimal totalAmount = BigDecimal.ZERO;
 		Long noOfRecords = 0l;
-		PaginationModel paginationModel = paginationUtil
-				.preparePaginationModel(request);
+		PaginationModel paginationModel = paginationUtil.preparePaginationModel(request);
 
 		Long investorId = ParamUtil.getLong(request, "investorID");
 
 		List<com.tf.persistance.util.InvestorDTO> investorDTO = null;
 		investorDTO = companyService.getInvestors();
-		List<InvestorPortfolio> investors = investorTransactionService
-				.getInvestorPortfolioId(investorId);
+		List<InvestorPortfolio> investors = investorTransactionService.getInvestorPortfolioId(investorId);
 		Set<com.tf.persistance.util.InvestorModelDTO> dtos2 = new LinkedHashSet<com.tf.persistance.util.InvestorModelDTO>();
 
 		for (InvestorPortfolio investor : investors) {
-			List<Allotment> allotmentList = allotmentService
-					.getALlotmentByPortId(investor.getInvestorProtId(),
-							paginationModel.getStartIndex(),
-							paginationModel.getPageSize());
+			List<Allotment> allotmentList =
+				allotmentService.getALlotmentByPortId(investor.getInvestorProtId(), paginationModel.getStartIndex(), paginationModel.getPageSize());
 
 			for (Allotment allots : allotmentList) {
-				noOfRecords = allotmentService.getAllotsCount(allots
-						.getAllotmentId());
+				noOfRecords = allotmentService.getAllotsCount(allots.getAllotmentId());
 
 				scfTrade = allots.getScfTrade();
-				List<SCFTrade> scTrade = scfTradeService
-						.getScfTradesByTradeId(scfTrade.getId());
+				List<SCFTrade> scTrade = scfTradeService.getScfTradesByTradeId(scfTrade.getId());
 				for (SCFTrade scf : scTrade) {
 					company = scf.getCompany();
-					List<Company> comp = companyService
-							.getCompaniesById(company.getId());
+					List<Company> comp = companyService.getCompaniesById(company.getId());
 					for (Company com : comp) {
 						dto = new InvestorModelDTO();
 						dto = getAllotments(dto, allots);
@@ -212,21 +267,13 @@ public class InvestorController {
 					}
 				}
 
-				majurityGross = allots.getAllotmentAmount()
-						.add(allots.getInvestorGrossProfit())
-						.setScale(2, RoundingMode.CEILING);
-				majurityNet = majurityGross.subtract(
-						allots.getWhitehallProfitShare()).setScale(2,
-						RoundingMode.CEILING);
-				returnAmount = majurityNet
-						.subtract(allots.getAllotmentAmount()).setScale(2,
-								RoundingMode.CEILING);
+				majurityGross = allots.getAllotmentAmount().add(allots.getInvestorGrossProfit()).setScale(2, RoundingMode.CEILING);
+				majurityNet = majurityGross.subtract(allots.getWhitehallProfitShare()).setScale(2, RoundingMode.CEILING);
+				returnAmount = majurityNet.subtract(allots.getAllotmentAmount()).setScale(2, RoundingMode.CEILING);
 
-				totalAllotAmount = totalAllotAmount.add(allots
-						.getAllotmentAmount());
+				totalAllotAmount = totalAllotAmount.add(allots.getAllotmentAmount());
 				totalMajurity = totalMajurity.add(majurityGross);
-				totalFinance = totalFinance.add(allots
-						.getWhitehallProfitShare());
+				totalFinance = totalFinance.add(allots.getWhitehallProfitShare());
 				totalNet = totalNet.add(majurityNet);
 				totalAmount = totalAmount.add(returnAmount);
 			}
@@ -252,496 +299,436 @@ public class InvestorController {
 	}
 
 	@RenderMapping
-	protected ModelAndView renderInvestorInfo(@ModelAttribute("investorDTO")InvestorDTO  investorDTO,ModelMap model,RenderRequest request, RenderResponse response) throws Exception {		
+	protected ModelAndView renderInvestorInfo(
+		@ModelAttribute("investorDTO") InvestorDTO investorDTO, ModelMap model, RenderRequest request, RenderResponse response)
+		throws Exception {
+
 		_log.info("Render Investor Protfolio");
-		ThemeDisplay themeDisplay=(ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);
-		long investorId=0l;
-		 List<InvestorPortfolio> investorPortfolioList=null;		 
-		 String viewName=prepareInvestorProtfolioInformation(request,investorDTO, model, themeDisplay,
-				investorId, investorPortfolioList);		
+		ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
+		long investorId = 0l;
+		List<InvestorPortfolio> investorPortfolioList = null;
+		String viewName = prepareInvestorProtfolioInformation(request, investorDTO, model, themeDisplay, investorId, investorPortfolioList);
 		prepareDiscountList(model);
 
-		return new ModelAndView(viewName, model);		
+		return new ModelAndView(viewName, model);
 	}
-	@ActionMapping(params="page=cashBack")
-	protected void pageBack(ModelMap model,
-			ActionRequest request, ActionResponse response){
+
+	@ActionMapping(params = "page=cashBack")
+	protected void pageBack(ModelMap model, ActionRequest request, ActionResponse response) {
+
 		List<com.tf.persistance.util.InvestorDTO> investors = null;
-		BigDecimal receivablesPosition= BigDecimal.ZERO; 
-		BigDecimal totalReceivablesPosition = BigDecimal.ZERO; 
-		BigDecimal totalAsset = BigDecimal.ZERO; 
+		BigDecimal receivablesPosition = BigDecimal.ZERO;
+		BigDecimal totalReceivablesPosition = BigDecimal.ZERO;
+		BigDecimal totalAsset = BigDecimal.ZERO;
 		List<InvestorTransaction> investorList = new ArrayList<InvestorTransaction>();
-        investors=companyService.getInvestors();
-        Long investorID = ParamUtil.getLong(request, "investorID"); 
-       
-        if(investorID > 0){
-        	Investor investor=investorService.findByInvestorId(investorID);	
-        	investor.setCashPosition(investor.getCashPosition()!=null?investor.getCashPosition():BigDecimal.ZERO);
-        	//block also needs to be optimized. right now putting quick fix for Dhanush code
-			List<Allotment> allotments=allotmentService.getAllotmentByInvestorAndStatus(investorID,TranscationStatus.INVESTED.getValue());				
-			 for(Allotment allot:allotments){
-				 receivablesPosition=allot.getAllotmentAmount().add(allot.getInvestorNetProfit());
-				 totalReceivablesPosition=totalReceivablesPosition.add(receivablesPosition);
-			 }
-			totalAsset=investor.getCashPosition().add(totalReceivablesPosition);
-    		Long noOfRecords=0l;
-            PaginationModel paginationModel = paginationUtil.preparePaginationModel(request);
-            investorList=investorTransactionService.getInvestors(investorID, paginationModel.getStartIndex(), paginationModel.getPageSize());
-     		noOfRecords=investorTransactionService.getInvestorsCount(investorID);
-            paginationUtil.setPaginationInfo(noOfRecords,paginationModel);
-    		model.put("paginationModel", paginationModel);
-            model.put("investorList", investorList);
-		    model.put("investorID", investorID);
-	        model.put("investor", investor);
-	        model.put("totalReceivablesPosition", totalReceivablesPosition);	
+		investors = companyService.getInvestors();
+		Long investorID = ParamUtil.getLong(request, "investorID");
+
+		if (investorID > 0) {
+			Investor investor = investorService.findByInvestorId(investorID);
+			investor.setCashPosition(investor.getCashPosition() != null ? investor.getCashPosition() : BigDecimal.ZERO);
+			// block also needs to be optimized. right now putting quick fix for
+			// Dhanush code
+			List<Allotment> allotments = allotmentService.getAllotmentByInvestorAndStatus(investorID, TranscationStatus.INVESTED.getValue());
+			for (Allotment allot : allotments) {
+				receivablesPosition = allot.getAllotmentAmount().add(allot.getInvestorNetProfit());
+				totalReceivablesPosition = totalReceivablesPosition.add(receivablesPosition);
+			}
+			totalAsset = investor.getCashPosition().add(totalReceivablesPosition);
+			Long noOfRecords = 0l;
+			PaginationModel paginationModel = paginationUtil.preparePaginationModel(request);
+			investorList = investorTransactionService.getInvestors(investorID, paginationModel.getStartIndex(), paginationModel.getPageSize());
+			noOfRecords = investorTransactionService.getInvestorsCount(investorID);
+			paginationUtil.setPaginationInfo(noOfRecords, paginationModel);
+			model.put("paginationModel", paginationModel);
+			model.put("investorList", investorList);
+			model.put("investorID", investorID);
+			model.put("investor", investor);
+			model.put("totalReceivablesPosition", totalReceivablesPosition);
 			model.put("totalAsset", totalAsset);
-	        
-		    model.put(ACTIVETAB, Investor_Balance);
-		   
-        }
-        for(com.tf.persistance.util.InvestorDTO inv:investors){
-        	if(inv.getInvestorID()==investorID){
-                model.put("investorID", inv.getInvestorID());
 
-        }
-       } 	
-		
-        response.setRenderParameter("render", "investorBalance");
+			model.put(ACTIVETAB, Investor_Balance);
+
+		}
+		for (com.tf.persistance.util.InvestorDTO inv : investors) {
+			if (inv.getInvestorID() == investorID) {
+				model.put("investorID", inv.getInvestorID());
+
+			}
+		}
+
+		response.setRenderParameter("render", "investorBalance");
 	}
 
-	@RenderMapping(params="render=cashReport")
-	protected ModelAndView renderSingleTrade(ModelMap model,
-			RenderRequest request, RenderResponse response){
-		BigDecimal receivablesPosition= BigDecimal.ZERO; 
-		BigDecimal totalReceivablesPosition = BigDecimal.ZERO; 
-		BigDecimal totalAsset = BigDecimal.ZERO; 
+	@RenderMapping(params = "render=cashReport")
+	protected ModelAndView renderSingleTrade(ModelMap model, RenderRequest request, RenderResponse response) throws Exception{
+		BigDecimal receivablesPosition = BigDecimal.ZERO;
+		BigDecimal totalReceivablesPosition = BigDecimal.ZERO;
+		BigDecimal totalAsset = BigDecimal.ZERO;
 		List<InvestorTransaction> investorList = new ArrayList<InvestorTransaction>();
 		List<com.tf.persistance.util.InvestorDTO> investors = null;
-        investors=companyService.getInvestors();
-        Long investorID = ParamUtil.getLong(request, "investorID"); 
-		if(investorID > 0){		
-			Investor investor=investorService.findByInvestorId(investorID);	
-        	investor.setCashPosition(investor.getCashPosition()!=null?investor.getCashPosition():BigDecimal.ZERO);
-        	//block also needs to be optimized. right now putting quick fix for Dhanush code
-			List<Allotment> allotments=allotmentService.getAllotmentByInvestorAndStatus(investorID,TranscationStatus.INVESTED.getValue());				
-			 for(Allotment allot:allotments){
-				 receivablesPosition=allot.getAllotmentAmount().add(allot.getInvestorNetProfit());
-				 totalReceivablesPosition=totalReceivablesPosition.add(receivablesPosition);
-			 }
-		totalAsset=investor.getCashPosition().add(totalReceivablesPosition);
-		Long noOfRecords=0l;
-        PaginationModel paginationModel = paginationUtil.preparePaginationModel(request);
-        investorList=investorTransactionService.getInvestors(investorID, paginationModel.getStartIndex(), paginationModel.getPageSize());
- 		noOfRecords=investorTransactionService.getInvestorsCount(investorID);
-        paginationUtil.setPaginationInfo(noOfRecords,paginationModel);
-        System.out.println("Paginationsss:"+paginationModel);
-        for(InvestorTransaction lis:investorList)
-        System.out.println("investorListfromCashReport:"+lis.getTranscationType());
-
-		model.put("paginationModel", paginationModel);
-	    model.put("investorID", investorID);
-	    for(com.tf.persistance.util.InvestorDTO inv:investors){
-        	if(inv.getInvestorID()==investorID){
-                model.put("companyname", inv.getName());
-                model.put("investorId", inv.getInvestorID());
-
-        }
-       } 	
-        model.put("investorList", investorList);
-        model.put("investorId", investorID);
-
-	    model.put("investor", investor);
-		model.put("totalReceivablesPosition", totalReceivablesPosition);	
-		model.put("totalAsset", totalAsset);
+		List<InvestorTransaction> invList=null;
+		investors = companyService.getInvestors();
+		Long noOfRecords = 0l;
+		PaginationModel paginationModel = paginationUtil.preparePaginationModel(request);
+		DateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+		Date fromDate = formatter.parse("2/1/1970");
+		Date toDate = new Date();
+		long investorId = ParamUtil.getLong(request, "investorID");
+		String transactionType = ParamUtil.getString(request, "transaction");
+		String from = ParamUtil.getString(request, "fromDate");
+		String to = ParamUtil.getString(request, "toDate");
+		if (!StringUtils.isEmpty(from)) {
+			fromDate = formatter.parse(from);
 		}
-		return new ModelAndView("cashReport",model);
+		if (!StringUtils.isEmpty(to)) {
+			toDate = formatter.parse(to);
+		}
+		Long investorID = ParamUtil.getLong(request, "investorID");
+		if (investorID > 0) {
+			Investor investor = investorService.findByInvestorId(investorID);
+			investor.setCashPosition(investor.getCashPosition() != null ? investor.getCashPosition() : BigDecimal.ZERO);
+			List<Allotment> allotments = allotmentService.getAllotmentByInvestorAndStatus(investorID, TranscationStatus.INVESTED.getValue());
+			for (Allotment allot : allotments) {
+				receivablesPosition = allot.getAllotmentAmount().add(allot.getInvestorNetProfit());
+				totalReceivablesPosition = totalReceivablesPosition.add(receivablesPosition);
+			}
+			totalAsset = investor.getCashPosition().add(totalReceivablesPosition);
+			if(StringUtils.isEmpty(transactionType)&&StringUtils.isEmpty(from)&&StringUtils.isEmpty(to)){
+			investorList = investorTransactionService.getInvestors(investorID, paginationModel.getStartIndex(), paginationModel.getPageSize());
+			noOfRecords = investorTransactionService.getInvestorsCount(investorID);
+			}else{
+			 invList =investorTransactionService.getInvestorTransactionByTransactionType(
+								investorId, transactionType, fromDate, toDate, paginationModel.getStartIndex(), paginationModel.getPageSize());
+			noOfRecords = investorTransactionService.getInvestorsCounts(investorId, transactionType, fromDate, toDate);
+			}
+			for (com.tf.persistance.util.InvestorDTO inv : investors) {
+				if (inv.getInvestorID() == investorID) {
+					model.put("companyname", inv.getName());
+					model.put("investorId", inv.getInvestorID());
+				}
+			}
+			paginationUtil.setPaginationInfo(noOfRecords, paginationModel);
+			model.put("investorList", investorList);
+			model.put("investorId", investorID);
+			model.put("paginationModel", paginationModel);
+			model.put("invList", invList);
+			model.put("investorID", investorID);
+			model.put("investor", investor);
+			model.put("totalReceivablesPosition", totalReceivablesPosition);
+			model.put("totalAsset", totalAsset);
+			model.put("transactionType", transactionType);
+			model.put("from", from);
+			model.put("to", to);
+
+		}
+		return new ModelAndView("cashReport", model);
 	}
-	@RenderMapping(params="render=invesProt")
-	protected ModelAndView renderInvesProt(InvestorDTO investorDTO,ModelMap model,
-			RenderRequest request, RenderResponse response){
-		ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);
-		long investorId=01;
-		List<InvestorPortfolio> investorPortfolioList=null;
-		String viewName="investorprotfolio";
+
+	@RenderMapping(params = "render=invesProt")
+	protected ModelAndView renderInvesProt(InvestorDTO investorDTO, ModelMap model, RenderRequest request, RenderResponse response) {
+
+		ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
+		long investorId = 01;
+		List<InvestorPortfolio> investorPortfolioList = null;
+		String viewName = "investorprotfolio";
 		List<Company> companyList = new ArrayList<Company>();
 		companyList = companyService.getCompanies("5");
-		Map<Long,List<InvestorPortfolio>>  map=investorService.getInvestorPortfolioByUserId(themeDisplay.getUserId());
-		for(Map.Entry<Long, List<InvestorPortfolio>> entry : map.entrySet()){
-			investorId=entry.getKey();
+		Map<Long, List<InvestorPortfolio>> map = investorService.getInvestorPortfolioByUserId(themeDisplay.getUserId());
+		for (Map.Entry<Long, List<InvestorPortfolio>> entry : map.entrySet()) {
+			investorId = entry.getKey();
 			model.put("investorID", investorId);
-			investorPortfolioList=entry.getValue();		
+			investorPortfolioList = entry.getValue();
 		}
-		Map<String,BigDecimal> totalsMap=investorService.getProtfolioTotals(investorId);
-		Map<Long,BigDecimal> totalCreditMap=investorService.findTotalCreditLine(investorId);
-		setTotalCreditLine(totalCreditMap,investorPortfolioList);
-		companyList=prepareCompanyList(companyList,investorPortfolioList);
-		model.put("investorHistoryList", investorPortfolioList);	
+		Map<String, BigDecimal> totalsMap = investorService.getProtfolioTotals(investorId);
+		Map<Long, BigDecimal> totalCreditMap = investorService.findTotalCreditLine(investorId);
+		setTotalCreditLine(totalCreditMap, investorPortfolioList);
+		companyList = prepareCompanyList(companyList, investorPortfolioList);
+		model.put("investorHistoryList", investorPortfolioList);
 		model.put(ACTIVETAB, viewName);
 
-		model.put("totalsMap", totalsMap);	
-		model.put("investorDTO", investorDTO);		
+		model.put("totalsMap", totalsMap);
+		model.put("investorDTO", investorDTO);
 		model.put("companyList", companyList);
-		
-		return new ModelAndView(viewName,model);
+
+		return new ModelAndView(viewName, model);
 
 	}
 
-	private String prepareInvestorProtfolioInformation(RenderRequest request,InvestorDTO investorDTO,
-			ModelMap model, ThemeDisplay themeDisplay, long investorId,
-			List<InvestorPortfolio> investorPortfolioList) {
-		String viewName="investorprotfolio";
-		if(getPermissionChecker(request).isOmniadmin() ){
-			List<InvestorPortfolio> list =investorService.findAllInvestorProtFolios();
-			Map<String,BigDecimal> totalsMap=investorService.getProtfolioTotals();
-			model.put("totalsMap", totalsMap);	
-			model.put("investorList", list);	
-			viewName="allinvestorprotfolios";
-		}else{
+	private String prepareInvestorProtfolioInformation(
+		RenderRequest request, InvestorDTO investorDTO, ModelMap model, ThemeDisplay themeDisplay, long investorId,
+		List<InvestorPortfolio> investorPortfolioList) {
+
+		String viewName = "investorprotfolio";
+		if (getPermissionChecker(request).isOmniadmin()) {
+			List<InvestorPortfolio> list = investorService.findAllInvestorProtFolios();
+			Map<String, BigDecimal> totalsMap = investorService.getProtfolioTotals();
+			model.put("totalsMap", totalsMap);
+			model.put("investorList", list);
+			viewName = "allinvestorprotfolios";
+		}
+		else {
 			List<Company> companyList = new ArrayList<Company>();
 			companyList = companyService.getCompanies("5");
-			Map<Long,List<InvestorPortfolio>>  map=investorService.getInvestorPortfolioByUserId(themeDisplay.getUserId());
-			for(Map.Entry<Long, List<InvestorPortfolio>> entry : map.entrySet()){
-				investorId=entry.getKey();
+			Map<Long, List<InvestorPortfolio>> map = investorService.getInvestorPortfolioByUserId(themeDisplay.getUserId());
+			for (Map.Entry<Long, List<InvestorPortfolio>> entry : map.entrySet()) {
+				investorId = entry.getKey();
 				model.put("investorID", investorId);
-				investorPortfolioList=entry.getValue();		
+				investorPortfolioList = entry.getValue();
 			}
-			Map<String,BigDecimal> totalsMap=investorService.getProtfolioTotals(investorId);
-			Map<Long,BigDecimal> totalCreditMap=investorService.findTotalCreditLine(investorId);
-			setTotalCreditLine(totalCreditMap,investorPortfolioList);
-			companyList=prepareCompanyList(companyList,investorPortfolioList);
-			model.put("investorHistoryList", investorPortfolioList);	
-			
-			model.put("totalsMap", totalsMap);	
-			model.put("investorDTO", investorDTO);		
+			Map<String, BigDecimal> totalsMap = investorService.getProtfolioTotals(investorId);
+			Map<Long, BigDecimal> totalCreditMap = investorService.findTotalCreditLine(investorId);
+			setTotalCreditLine(totalCreditMap, investorPortfolioList);
+			companyList = prepareCompanyList(companyList, investorPortfolioList);
+			model.put("investorHistoryList", investorPortfolioList);
+
+			model.put("totalsMap", totalsMap);
+			model.put("investorDTO", investorDTO);
 			model.put("companyList", companyList);
 		}
 		return viewName;
-		
-	}	
 
-	private void setTotalCreditLine(Map<Long, BigDecimal> totalCreditMap,
-			List<InvestorPortfolio> investorPortfolioList) {
-		for (InvestorPortfolio investorPortfolio :investorPortfolioList){
+	}
+
+	private void setTotalCreditLine(Map<Long, BigDecimal> totalCreditMap, List<InvestorPortfolio> investorPortfolioList) {
+
+		for (InvestorPortfolio investorPortfolio : investorPortfolioList) {
 			investorPortfolio.setCurrentCreditLine(totalCreditMap.get(investorPortfolio.getCompany().getId()));
-		}		
-	}
-	
-	private List<Company> prepareCompanyList(List<Company> companyList,
-			List<InvestorPortfolio> investorPortfolioList) {
-		for(InvestorPortfolio investorPortfolio: investorPortfolioList){
-			if(!(BigDecimal.ZERO.compareTo(investorPortfolio.getMyCreditLine()) == 0 )){
-				companyList.remove(investorPortfolio.getCompany());	
-			}					
 		}
-		return companyList;		
 	}
 
-	
-	@ActionMapping(params="action=updateProtfolio")
-	protected void add(@ModelAttribute("investorDTO")InvestorDTO  investorDTO, 
-												 ModelMap model, 
-												 ActionRequest request,
-												 ActionResponse response) throws Exception {
-		ThemeDisplay themeDisplay=(ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);		
-		long investorID=ParamUtil.get(request, "investorID", 0);
-		investorDTO.setInvestorModel(filterNullValues(investorDTO.getInvestorModel(),themeDisplay));
-		investorService.addInvestorPortfolios(investorDTO.getInvestorModel(), investorID);	
-		
-	}	
-	
-	@ActionMapping(params="action=addInvtranscation")
-	protected void addInvestorBalance(@ModelAttribute("investorBalanceModel")InvestorTransaction  investorBalanceModel,
-												 ModelMap model,
-												 ActionRequest request,
-												 ActionResponse response) throws Exception {
+	private List<Company> prepareCompanyList(List<Company> companyList, List<InvestorPortfolio> investorPortfolioList) {
+
+		for (InvestorPortfolio investorPortfolio : investorPortfolioList) {
+			if (!(BigDecimal.ZERO.compareTo(investorPortfolio.getMyCreditLine()) == 0)) {
+				companyList.remove(investorPortfolio.getCompany());
+			}
+		}
+		return companyList;
+	}
+
+	@ActionMapping(params = "action=updateProtfolio")
+	protected void add(@ModelAttribute("investorDTO") InvestorDTO investorDTO, ModelMap model, ActionRequest request, ActionResponse response)
+		throws Exception {
+
+		ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
+		long investorID = ParamUtil.get(request, "investorID", 0);
+		investorDTO.setInvestorModel(filterNullValues(investorDTO.getInvestorModel(), themeDisplay));
+		investorService.addInvestorPortfolios(investorDTO.getInvestorModel(), investorID);
+
+	}
+
+	@ActionMapping(params = "action=addInvtranscation")
+	protected void addInvestorBalance(
+		@ModelAttribute("investorBalanceModel") InvestorTransaction investorBalanceModel, ModelMap model, ActionRequest request,
+		ActionResponse response)
+		throws Exception {
+
 		List<InvestorTransaction> investorList = new ArrayList<InvestorTransaction>();
-		Long investorID=ParamUtil.getLong(request, "investorID",0l);
-		
-		if(investorID!=0 ){
-			
-				
-	        investorBalanceModel.setInvestorID(investorID);
-		    investorTransactionService.saveInvestorBalance(investorBalanceModel);
-		    Long noOfRecords=0l;
-	        PaginationModel paginationModel = paginationUtil.preparePaginationModel(request);
-	        investorList=investorTransactionService.getInvestors(investorID, paginationModel.getStartIndex(), paginationModel.getPageSize());
-	 		noOfRecords=investorTransactionService.getInvestorsCount(investorID);
-	        paginationUtil.setPaginationInfo(noOfRecords,paginationModel);
+		Long investorID = ParamUtil.getLong(request, "investorID", 0l);
+
+		if (investorID != 0) {
+
+			investorBalanceModel.setInvestorID(investorID);
+			investorTransactionService.saveInvestorBalance(investorBalanceModel);
+			Long noOfRecords = 0l;
+			PaginationModel paginationModel = paginationUtil.preparePaginationModel(request);
+			investorList = investorTransactionService.getInvestors(investorID, paginationModel.getStartIndex(), paginationModel.getPageSize());
+			noOfRecords = investorTransactionService.getInvestorsCount(investorID);
+			paginationUtil.setPaginationInfo(noOfRecords, paginationModel);
 			model.put("paginationModel", paginationModel);
-			BigDecimal receivablesPosition= BigDecimal.ZERO; 
-			BigDecimal totalReceivablesPosition = BigDecimal.ZERO; 
-			BigDecimal totalAsset = BigDecimal.ZERO; 
-			Investor investor=investorService.findByInvestorId(investorID);	
-        	investor.setCashPosition(investor.getCashPosition()!=null?investor.getCashPosition():BigDecimal.ZERO);
-        	//block also needs to be optimized. right now putting quick fix for Dhanush code
-			List<Allotment> allotments=allotmentService.getAllotmentByInvestorAndStatus(investorID,TranscationStatus.INVESTED.getValue());				
-			 for(Allotment allot:allotments){
-				 receivablesPosition=allot.getAllotmentAmount().add(allot.getInvestorNetProfit());
-				 totalReceivablesPosition=totalReceivablesPosition.add(receivablesPosition);
-			 }
-			totalAsset=investor.getCashPosition().add(totalReceivablesPosition);
+			BigDecimal receivablesPosition = BigDecimal.ZERO;
+			BigDecimal totalReceivablesPosition = BigDecimal.ZERO;
+			BigDecimal totalAsset = BigDecimal.ZERO;
+			Investor investor = investorService.findByInvestorId(investorID);
+			investor.setCashPosition(investor.getCashPosition() != null ? investor.getCashPosition() : BigDecimal.ZERO);
+			// block also needs to be optimized. right now putting quick fix for
+			// Dhanush code
+			List<Allotment> allotments = allotmentService.getAllotmentByInvestorAndStatus(investorID, TranscationStatus.INVESTED.getValue());
+			for (Allotment allot : allotments) {
+				receivablesPosition = allot.getAllotmentAmount().add(allot.getInvestorNetProfit());
+				totalReceivablesPosition = totalReceivablesPosition.add(receivablesPosition);
+			}
+			totalAsset = investor.getCashPosition().add(totalReceivablesPosition);
 			model.put("investor", investor);
-			model.put("totalReceivablesPosition", totalReceivablesPosition);	
+			model.put("totalReceivablesPosition", totalReceivablesPosition);
 			model.put("totalAsset", totalAsset);
 			model.put("investorList", investorList);
 		}
-	    model.put("investorID", investorID);
+		model.put("investorID", investorID);
 
-        response.setRenderParameter("render", "investorBalance");
+		response.setRenderParameter("render", "investorBalance");
 
 	}
-	@ActionMapping(params="getBy=getInvestorDetails")
-	protected void getInvestorDetails(ModelMap model , ActionRequest request,ActionResponse response){
-		BigDecimal receivablesPosition= BigDecimal.ZERO; 
-		BigDecimal totalReceivablesPosition = BigDecimal.ZERO; 
-		BigDecimal totalAsset = BigDecimal.ZERO; 
 
+	@ActionMapping(params = "getBy=getInvestorDetails")
+	protected void getInvestorDetails(ModelMap model, ActionRequest request, ActionResponse response) {
 
-		List<InvestorTransaction> investorList = new ArrayList<InvestorTransaction>();        
-		long investorID=ParamUtil.getLong(request, "investorID");
-		if(investorID > 0){
-			Investor investor=investorService.findByInvestorId(investorID);	
-        	investor.setCashPosition(investor.getCashPosition()!=null?investor.getCashPosition():BigDecimal.ZERO);
-        	//block also needs to be optimized. right now putting quick fix for Dhanush code
-			List<Allotment> allotments=allotmentService.getAllotmentByInvestorAndStatus(investorID,TranscationStatus.INVESTED.getValue());				
-			 for(Allotment allot:allotments){
-				 receivablesPosition=allot.getAllotmentAmount().add(allot.getInvestorNetProfit());
-				 totalReceivablesPosition=totalReceivablesPosition.add(receivablesPosition);
-				
-			 }
-			totalAsset=investor.getCashPosition().add(totalReceivablesPosition);
-			Long noOfRecords=0l;
-	        PaginationModel paginationModel = paginationUtil.preparePaginationModel(request);
-	        investorList=investorTransactionService.getInvestors(investorID, paginationModel.getStartIndex(), paginationModel.getPageSize());
-	 		noOfRecords=investorTransactionService.getInvestorsCount(investorID);
-	        paginationUtil.setPaginationInfo(noOfRecords,paginationModel);
-	        System.out.println("Paginationsss:"+paginationModel);
+		BigDecimal receivablesPosition = BigDecimal.ZERO;
+		BigDecimal totalReceivablesPosition = BigDecimal.ZERO;
+		BigDecimal totalAsset = BigDecimal.ZERO;
+
+		List<InvestorTransaction> investorList = new ArrayList<InvestorTransaction>();
+		long investorID = ParamUtil.getLong(request, "investorID");
+		if (investorID > 0) {
+			Investor investor = investorService.findByInvestorId(investorID);
+			investor.setCashPosition(investor.getCashPosition() != null ? investor.getCashPosition() : BigDecimal.ZERO);
+			// block also needs to be optimized. right now putting quick fix for
+			// Dhanush code
+			List<Allotment> allotments = allotmentService.getAllotmentByInvestorAndStatus(investorID, TranscationStatus.INVESTED.getValue());
+			for (Allotment allot : allotments) {
+				receivablesPosition = allot.getAllotmentAmount().add(allot.getInvestorNetProfit());
+				totalReceivablesPosition = totalReceivablesPosition.add(receivablesPosition);
+
+			}
+			totalAsset = investor.getCashPosition().add(totalReceivablesPosition);
+			Long noOfRecords = 0l;
+			PaginationModel paginationModel = paginationUtil.preparePaginationModel(request);
+			investorList = investorTransactionService.getInvestors(investorID, paginationModel.getStartIndex(), paginationModel.getPageSize());
+			noOfRecords = investorTransactionService.getInvestorsCount(investorID);
+			paginationUtil.setPaginationInfo(noOfRecords, paginationModel);
+			System.out.println("Paginationsss:" + paginationModel);
 
 			model.put("paginationModel", paginationModel);
 			model.put("investorList", investorList);
-			model.put("investorID", investorID);	
+			model.put("investorID", investorID);
 			model.put("investor", investor);
-			model.put("totalReceivablesPosition", totalReceivablesPosition);	
+			model.put("totalReceivablesPosition", totalReceivablesPosition);
 			model.put("totalAsset", totalAsset);
-         }
-		
-        response.setRenderParameter("render", "investorBalance");
+		}
+
+		response.setRenderParameter("render", "investorBalance");
 	}
+
 	
-	@ActionMapping(params="cash=getCashReport")
-	protected void getCashReport( ModelMap model,ActionRequest request,ActionResponse response) throws Exception {
-		BigDecimal receivablesPosition= BigDecimal.ZERO; 
-		BigDecimal totalReceivablesPosition = BigDecimal.ZERO; 
-		BigDecimal totalAsset = BigDecimal.ZERO; 
-		DateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
-		List<com.tf.persistance.util.InvestorDTO> investors = null;
-        investors=companyService.getInvestors();
-		Date fromDate=formatter.parse("2/1/1970");
-		Date toDate=new Date();
-		long investorId=ParamUtil.getLong(request, "investorID");
-		String transactionType=ParamUtil.getString(request, "transaction");
-        String from=ParamUtil.getString(request, "fromDate");
-        String to=ParamUtil.getString(request, "toDate");
-        if(!StringUtils.isEmpty(from)){
-        fromDate=formatter.parse(from);
-        }
-        if(!StringUtils.isEmpty(to)){
-            toDate=formatter.parse(to);
-       }
-        
-        	Investor investor=investorService.findByInvestorId(investorId);	
-        	investor.setCashPosition(investor.getCashPosition()!=null?investor.getCashPosition():BigDecimal.ZERO);
-        	//block also needs to be optimized. right now putting quick fix for Dhanush code
-			List<Allotment> allotments=allotmentService.getAllotmentByInvestorAndStatus(investorId,TranscationStatus.INVESTED.getValue());				
-			 for(Allotment allot:allotments){
-				 receivablesPosition=allot.getAllotmentAmount().add(allot.getInvestorNetProfit());
-				 totalReceivablesPosition=totalReceivablesPosition.add(receivablesPosition);
-			 }
-		totalAsset=investor.getCashPosition().add(totalReceivablesPosition);
-        Long noOfRecords=0l;
-        PaginationModel paginationModel = paginationUtil.preparePaginationModel(request);
-        List<InvestorTransaction> invList=investorTransactionService.getInvestorTransactionByTransactionType(investorId, transactionType, fromDate, toDate,paginationModel.getStartIndex(), paginationModel.getPageSize());
-		noOfRecords=investorTransactionService.getInvestorsCounts(investorId,transactionType, fromDate, toDate);
-        paginationUtil.setPaginationInfo(noOfRecords,paginationModel);
-		model.put("paginationModel", paginationModel);
-        model.put("transactionType", transactionType);
-        model.put("invList", invList);
-        for(com.tf.persistance.util.InvestorDTO inv:investors){
-        	if(inv.getInvestorID()==investorId){
-                model.put("companyname", inv.getName());
-                model.put("investorId", inv.getInvestorID());
-
-
-        }
-       } 	
-        model.put("investor", investor);
-		model.put("totalReceivablesPosition", totalReceivablesPosition);	
-		model.put("totalAsset", totalAsset);
-        response.setRenderParameter("render", "cashReport");
-
-	}
-	@ActionMapping(params="fetch=fetchCashReport")
-	protected void fetchCashReport( ModelMap model,ActionRequest request,ActionResponse response) throws Exception {
-		List<InvestorTransaction> investorList = new ArrayList<InvestorTransaction>();
-		DateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
-		Date fromDate=formatter.parse("2/1/1970");
-		Date toDate=new Date();
-		long companyId=ParamUtil.getLong(request, "companyId");
-/*        long companyId=userService.getCompanybyUserID(themeDisplay.getUserId()).getId();		
-*/      Company company=companyService.findById(companyId);
-		Long investorId=investorService.getInvestorIDByCompanyId(companyId);
-        String transactionType=ParamUtil.getString(request, "transaction");
-        String from=ParamUtil.getString(request, "fromDate");
-        String to=ParamUtil.getString(request, "toDate");
-
-        if(!StringUtils.isEmpty(from)){
-        fromDate=formatter.parse(from);
-        }
-        if(!StringUtils.isEmpty(to)){
-            toDate=formatter.parse(to);
-       }
-        
-        Long noOfRecords=0l;
-        PaginationModel paginationModel = paginationUtil.preparePaginationModel(request);
-        investorList=investorTransactionService.getInvestors(investorId, paginationModel.getStartIndex(), paginationModel.getPageSize());
-		noOfRecords=investorTransactionService.getInvestorsCounts(investorId,transactionType, fromDate, toDate);
-        paginationUtil.setPaginationInfo(noOfRecords,paginationModel);
-        List<InvestorTransaction> invList=investorTransactionService.getInvestorTransactionByTransactionType(investorId, transactionType, fromDate, toDate,paginationModel.getStartIndex(), paginationModel.getPageSize());
-        System.out.println("DDD34:"+invList);
-        model.put("invList", invList);
-		model.put("paginationModel", paginationModel);
-        model.put("companyname", company);
-        if(invList.isEmpty()){
-            model.put("investorList", investorList);
-        }
-        response.setRenderParameter("report", "casReport");
-        
-
-	}
 	
-	@ActionMapping(params="action=editProtfolio")
-	protected void add(ModelMap model, 
-												 ActionRequest request,
-												 ActionResponse response) throws Exception {
-		ThemeDisplay themeDisplay=(ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);
+	@ActionMapping(params = "action=editProtfolio")
+	protected void add(ModelMap model, ActionRequest request, ActionResponse response)
+		throws Exception {
+
+		ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
 		InvestorPortfolio investorModel = new InvestorPortfolio();
-		long profolioId= ParamUtil.getLong(request, "profolioId",0);
-		BigDecimal currentCreditLine =new BigDecimal(ParamUtil.getString(request, "currentCreditLine","0"));
-		BigDecimal myCreditLine =new BigDecimal(ParamUtil.getString(request, "myCreditLine","0"));
-		int discountRate =ParamUtil.getInteger(request, "discountRate");
+		long profolioId = ParamUtil.getLong(request, "profolioId", 0);
+		BigDecimal currentCreditLine = new BigDecimal(ParamUtil.getString(request, "currentCreditLine", "0"));
+		BigDecimal myCreditLine = new BigDecimal(ParamUtil.getString(request, "myCreditLine", "0"));
+		int discountRate = ParamUtil.getInteger(request, "discountRate");
 		investorModel.setCurrentCreditLine(currentCreditLine);
 		investorModel.setMyCreditLine(myCreditLine);
 		investorModel.setDiscountRate(discountRate);
-		InvestorPortfolio investor=investorService.findById(profolioId);
-		//if(discountRate !=investor.getDiscountRate().intValue() || currentCreditLine !=investor.getCurrentCreditLine() || myCreditLine!=investor.getMyCreditLine()){
-		if(discountRate !=investor.getDiscountRate().intValue()  || myCreditLine.compareTo(investor.getMyCreditLine())!=0){	
-			updateAvailtoInvest(investor,investorModel);
-			investorService.updatePortfiloDetails(investor,investorModel, themeDisplay.getUser().getScreenName());		
-		}		
+		InvestorPortfolio investor = investorService.findById(profolioId);
+		// if(discountRate !=investor.getDiscountRate().intValue() ||
+		// currentCreditLine !=investor.getCurrentCreditLine() ||
+		// myCreditLine!=investor.getMyCreditLine()){
+		if (discountRate != investor.getDiscountRate().intValue() || myCreditLine.compareTo(investor.getMyCreditLine()) != 0) {
+			updateAvailtoInvest(investor, investorModel);
+			investorService.updatePortfiloDetails(investor, investorModel, themeDisplay.getUser().getScreenName());
+		}
 	}
-	
-	private void updateAvailtoInvest(InvestorPortfolio investor,
-			InvestorPortfolio investorModel) {
-		if(investor.getAmountInvested()!=null){			
+
+	private void updateAvailtoInvest(InvestorPortfolio investor, InvestorPortfolio investorModel) {
+
+		if (investor.getAmountInvested() != null) {
 			investorModel.setAvailToInvest(investorModel.getMyCreditLine().subtract(investor.getAmountInvested()));
-		}else{
+		}
+		else {
 			investorModel.setAvailToInvest(investorModel.getMyCreditLine());
 		}
-		
+
 	}
 
-
-
 	@ResourceMapping("historyURL")
-	public ModelAndView fetchHistory(ResourceRequest request, ResourceResponse response, ModelMap modelMap)throws IOException {
-		long protfolioID = ParamUtil.getLong(request, "protfolioID",0);
-		List<InvestorPortfolioHistory>  investorHistoryList=investorHistoryService.getInvestorHistory(protfolioID);
+	public ModelAndView fetchHistory(ResourceRequest request, ResourceResponse response, ModelMap modelMap)
+		throws IOException {
+
+		long protfolioID = ParamUtil.getLong(request, "protfolioID", 0);
+		List<InvestorPortfolioHistory> investorHistoryList = investorHistoryService.getInvestorHistory(protfolioID);
 		modelMap.put("investorHistoryList", investorHistoryList);
 		modelMap.put("protfolioID", protfolioID);
 		return new ModelAndView("investorprotfoliohistory");
 	}
-	
-	
+
 	@ResourceMapping("crtLinebreakdownURL")
-	public ModelAndView crtLinebreakdown(ResourceRequest request, ResourceResponse response, ModelMap modelMap)throws IOException {
-		long scfcompany = ParamUtil.getLong(request, "scfcompany",0); 
-		long investorID = ParamUtil.getLong(request, "investorID",0);
-		Company company=companyService.findById(scfcompany);
-		List<InvestorPortfolio>  investorList=investorService.findTotalCreditLineBreakDown(scfcompany);
+	public ModelAndView crtLinebreakdown(ResourceRequest request, ResourceResponse response, ModelMap modelMap)
+		throws IOException {
+
+		long scfcompany = ParamUtil.getLong(request, "scfcompany", 0);
+		long investorID = ParamUtil.getLong(request, "investorID", 0);
+		Company company = companyService.findById(scfcompany);
+		List<InvestorPortfolio> investorList = investorService.findTotalCreditLineBreakDown(scfcompany);
 		modelMap.put("investorList", investorList);
 		modelMap.put("scfCompany", company.getName());
 		modelMap.put("investorID", investorID);
 		return new ModelAndView("investorprotfoliobreak");
 	}
-	
-	
-	
-
 
 	/**
-	 * This method will discard InvestorPortfolio object which is having null Discount Rate.
+	 * This method will discard InvestorPortfolio object which is having null
+	 * Discount Rate.
 	 * 
-	 * @param 
+	 * @param
 	 * @return List<InvestorPortfolio>
 	 */
-	private List<InvestorPortfolio> filterNullValues(List<InvestorPortfolio> investorPortfolios,ThemeDisplay themeDisplay) {
-		List<InvestorPortfolio> updatedInvestorPortfolios=new ArrayList<InvestorPortfolio>();
-		for(InvestorPortfolio investorPortfolio :investorPortfolios){
-			if(investorPortfolio!=null && investorPortfolio.getDiscountRate()!=null && investorPortfolio.getMyCreditLine()!=null){
+	private List<InvestorPortfolio> filterNullValues(List<InvestorPortfolio> investorPortfolios, ThemeDisplay themeDisplay) {
+
+		List<InvestorPortfolio> updatedInvestorPortfolios = new ArrayList<InvestorPortfolio>();
+		for (InvestorPortfolio investorPortfolio : investorPortfolios) {
+			if (investorPortfolio != null && investorPortfolio.getDiscountRate() != null && investorPortfolio.getMyCreditLine() != null) {
 				investorPortfolio.setMinDiscountRate(MINDISCOUNT);
 				investorPortfolio.setMaxDiscountRate(MAXDISCOUNT);
 				investorPortfolio.setAvailToInvest(investorPortfolio.getMyCreditLine());
 				investorPortfolio.setStartDate(new Date());
 				investorPortfolio.setUpdatedBy(themeDisplay.getUser().getScreenName());
 				updatedInvestorPortfolios.add(investorPortfolio);
-			}			
+			}
 		}
-		return updatedInvestorPortfolios;		
+		return updatedInvestorPortfolios;
 	}
-	
+
 	/**
 	 * @param model
 	 */
 	private void prepareDiscountList(ModelMap model) {
-		List<Integer> list=new ArrayList<Integer>();
-		int i=MINDISCOUNT;
-		while( i<=MAXDISCOUNT){
+
+		List<Integer> list = new ArrayList<Integer>();
+		int i = MINDISCOUNT;
+		while (i <= MAXDISCOUNT) {
 			list.add(i);
-			i=i+10;
+			i = i + 10;
 		}
 		model.put("discountList", list);
 	}
-	
-	
-	private PermissionChecker getPermissionChecker(PortletRequest request){
-		ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);
-		PermissionChecker permissionChecker = themeDisplay.getPermissionChecker();
-		return permissionChecker;	
-	}
-	private com.tf.persistance.util.InvestorModelDTO getAllotments(
-			com.tf.persistance.util.InvestorModelDTO dto, Allotment allots)
-	{
-		BigDecimal majurityGross = BigDecimal.ZERO; 
-		BigDecimal majurityNet = BigDecimal.ZERO; 
-		BigDecimal returnAmount = BigDecimal.ZERO; 
-		BigDecimal returns = BigDecimal.ZERO; 
-	    BigDecimal YEAR=new BigDecimal(365/allots.getNoOfdays());
 
-		majurityGross=allots.getAllotmentAmount().add(allots.getInvestorGrossProfit()).setScale(2, RoundingMode.CEILING);
-		majurityNet=majurityGross.subtract(allots.getWhitehallProfitShare()).setScale(2,RoundingMode.CEILING);
-		returnAmount=majurityNet.subtract(allots.getAllotmentAmount()).setScale(2, RoundingMode.CEILING);
-		returns=((majurityNet.subtract(allots.getAllotmentAmount())).multiply(YEAR)).divide(allots.getAllotmentAmount(),6, RoundingMode.HALF_UP).setScale(2,RoundingMode.CEILING);
+	private PermissionChecker getPermissionChecker(PortletRequest request) {
+
+		ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
+		PermissionChecker permissionChecker = themeDisplay.getPermissionChecker();
+		return permissionChecker;
+	}
+
+	private com.tf.persistance.util.InvestorModelDTO getAllotments(com.tf.persistance.util.InvestorModelDTO dto, Allotment allots) {
+
+		BigDecimal majurityGross = BigDecimal.ZERO;
+		BigDecimal majurityNet = BigDecimal.ZERO;
+		BigDecimal returnAmount = BigDecimal.ZERO;
+		BigDecimal returns = BigDecimal.ZERO;
+		BigDecimal YEAR = new BigDecimal(365 / allots.getNoOfdays());
+
+		majurityGross = allots.getAllotmentAmount().add(allots.getInvestorGrossProfit()).setScale(2, RoundingMode.CEILING);
+		majurityNet = majurityGross.subtract(allots.getWhitehallProfitShare()).setScale(2, RoundingMode.CEILING);
+		returnAmount = majurityNet.subtract(allots.getAllotmentAmount()).setScale(2, RoundingMode.CEILING);
+		returns =
+			((majurityNet.subtract(allots.getAllotmentAmount())).multiply(YEAR)).divide(allots.getAllotmentAmount(), 6, RoundingMode.HALF_UP).setScale(
+				2, RoundingMode.CEILING);
 		dto.setAllotmentDate(allots.getAllotmentDate());
-        dto.setNoOfdays(allots.getNoOfdays());		
-        dto.setAllotmentAmount(allots.getAllotmentAmount());
-        dto.setMajurityGross(majurityGross);
-        dto.setFinanceFee(allots.getWhitehallProfitShare());
-        dto.setMajurityNet(majurityNet);
-        dto.setReturnAmount(returnAmount);
-        dto.setReturns(returns);
-        dto.setStatus(allots.getStatus());
-        return dto;
-        
+		dto.setNoOfdays(allots.getNoOfdays());
+		dto.setAllotmentAmount(allots.getAllotmentAmount());
+		dto.setMajurityGross(majurityGross);
+		dto.setFinanceFee(allots.getWhitehallProfitShare());
+		dto.setMajurityNet(majurityNet);
+		dto.setReturnAmount(returnAmount);
+		dto.setReturns(returns);
+		dto.setStatus(allots.getStatus());
+		return dto;
 
 	}
 }

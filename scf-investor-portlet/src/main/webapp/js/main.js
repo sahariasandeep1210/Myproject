@@ -307,7 +307,7 @@ $("#toDate").datepicker({
 	}
   
   $("#cashReport").click(function (){
-		var updateURL=$("#getCashReports").val();
+		var updateURL=$("#getCashs").val();
 		document.forms["cashReportForm"].action = updateURL;
       document.forms["cashReportForm"].submit();
 });
@@ -549,10 +549,9 @@ function setPage(pageNumber) {
 		var actionUrl = $("#defaultURL").val();
 		document.forms["investorBalanceForm"].action = actionUrl;
 		document.forms["investorBalanceForm"].submit();
-
-	} else if($(".investorCash").length){
+	} else if($("#casReportTable").length){
 		$("#currentPage").val(pageNumber);
-		var actionUrl = $("#defaultCashURL").val();
+		var actionUrl = $("#defaultCasURL").val();
 		document.forms["casReportForm"].action = actionUrl;
 		document.forms["casReportForm"].submit();
 	}else if ($("#cashReportTable").length) {
@@ -572,7 +571,6 @@ function setPage(pageNumber) {
 		var actionUrl = $("#defaultRenderURL").val();
 		document.forms["receivableReportForm"].action = actionUrl;
 		document.forms["receivableReportForm"].submit();
-
 	}
 }
 
