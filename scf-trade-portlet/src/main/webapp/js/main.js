@@ -412,7 +412,6 @@ function setPage(pageNumber) {
 	} else if ($("#tradeHisTable").length) {
 		$("#currentPage").val(pageNumber);
 		var actionUrl = $("#defaultURL").val();
-		var actionUrl = $("#getTradeHistoryURL").val();
 		document.forms["tradehistoryForm"].action = actionUrl;
 		document.forms["tradehistoryForm"].submit();
 	} else if ($("#singleTradeHistoryTable").length) {
@@ -420,12 +419,7 @@ function setPage(pageNumber) {
 		var actionUrl = $("#defaultURL").val();
 		document.forms["singlehistoryForm"].action = actionUrl;
 		document.forms["singlehistoryForm"].submit();
-	} else if ($("#singleTradeHistoryTable").length) {
-		$("#currentPage").val(pageNumber);
-		var actionUrl = $("#getSellerHistoryURL").val();
-		document.forms["singlehistoryForm"].action = actionUrl;
-		document.forms["singlehistoryForm"].submit();
-	} else {
+	}  else {
 		$("#currentPage").val(pageNumber);
 		var actionUrl = $("#defaultURL").val();
 		document.forms["scfTradeList"].action = actionUrl;

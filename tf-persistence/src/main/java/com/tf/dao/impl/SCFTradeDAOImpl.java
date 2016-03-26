@@ -189,7 +189,6 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 		_log.debug("Inside getScfTradeListWithSearch ");
 		List<SCFTrade> scftrades = new ArrayList<SCFTrade>();
 		try {
-
 			Criteria criteria = sessionFactory.getCurrentSession().createCriteria(SCFTrade.class);
 			criteria.createAlias("invoices", "inv");
 			criteria.createAlias("company", "company");
@@ -237,7 +236,8 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 			criteria.setProjection(prList);
 			criteria.add(or);
 			Long count =
-				(Long) criteria.add(Restrictions.eq("inv.sellerCompanyRegistrationNumber", RegNum)).setProjection(Projections.rowCount()).uniqueResult();
+							(Long) criteria.add(Restrictions.eq("inv.sellerCompanyRegistrationNumber", RegNum)).setProjection(
+								Projections.countDistinct("inv.scfTrade")).uniqueResult();
 
 			return count;
 		}
@@ -872,7 +872,7 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 		_log.debug("Inside getAdminTradeListWithSearch ");
 		Criteria criteria = null;
 		try {
-			Collection<Long> ids = getIDListForPagination(startIndex, pageSize);
+			Collection<Long> ids = getIDListForAdminPagination(searchtxt,fromDate,toDate,value,startIndex, pageSize);
 			if (!ids.isEmpty()) {
 				Session session = sessionFactory.getCurrentSession();
 				criteria =
@@ -1073,6 +1073,46 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 
 		Session session = sessionFactory.getCurrentSession();
 		Criteria criteria = session.createCriteria(SCFTrade.class).setProjection(Projections.id());
+		criteria.setFirstResult(startIndex);
+		criteria.setMaxResults(pageSize);
+		@SuppressWarnings("unchecked")
+		Collection<Long> ids = criteria.list();
+		return ids;
+	}
+	
+	public Collection<Long> getIDListForAdminPagination(String searchtxt, Date fromDate, Date toDate, String value,int startIndex, int pageSize) {
+		Session session = sessionFactory.getCurrentSession();
+		Criteria criteria = session.createCriteria(SCFTrade.class).setProjection(Projections.id()).createAlias("company", "company");
+		Disjunction or = Restrictions.disjunction();
+		if (validationUtil.isNumeric(searchtxt)) {
+			or.add(Restrictions.eq("tradeAmount", BigDecimal.valueOf(Long.valueOf(searchtxt))));
+		}
+		or.add(Restrictions.like("status", searchtxt, MatchMode.ANYWHERE));
+		or.add(Restrictions.like("scfId", searchtxt, MatchMode.ANYWHERE));
+		or.add(Restrictions.like("company.name", searchtxt, MatchMode.ANYWHERE));
+
+		Disjunction or2 = Restrictions.disjunction();
+		or2.add(Restrictions.between(value, fromDate, toDate));
+
+		if (fromDate != null && toDate == null && !value.equalsIgnoreCase("") && searchtxt.equalsIgnoreCase("")) {
+			criteria.add(Restrictions.ge(value, fromDate));
+		}
+		else if (fromDate == null && toDate != null && !value.equalsIgnoreCase("") && searchtxt.equalsIgnoreCase("")) {
+			criteria.add(Restrictions.le(value, toDate));
+		}
+		else if (fromDate != null && toDate != null && !value.equalsIgnoreCase("") && searchtxt.equalsIgnoreCase("")) {
+			criteria.add(or2);
+		}
+		else if (fromDate != null && toDate != null && !value.equalsIgnoreCase("") && !searchtxt.equalsIgnoreCase("")) {
+			criteria.add(or2).add(or);
+		}else if (fromDate != null && toDate == null && !value.equalsIgnoreCase("") && !searchtxt.equalsIgnoreCase("")) {
+			criteria.add(or).add(Restrictions.ge(value, fromDate));
+		}else if (fromDate == null && toDate != null && !value.equalsIgnoreCase("") && !searchtxt.equalsIgnoreCase("")) {
+			criteria.add(or).add(Restrictions.le(value, toDate));
+		}
+		else {
+			criteria.add(or);
+		}
 		criteria.setFirstResult(startIndex);
 		criteria.setMaxResults(pageSize);
 		@SuppressWarnings("unchecked")

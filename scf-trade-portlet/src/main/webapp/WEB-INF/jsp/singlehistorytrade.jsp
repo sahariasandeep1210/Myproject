@@ -19,7 +19,7 @@
 		id="singlehistoryForm" autocomplete="off">
 		<input type="hidden" name="compID" value="${compID}">
 		
-		<input type="hidden" value="${getSellerHistoryURL}"
+		<input type="hidden" value="${defaultURL}"
 			id="getTradeSellerHis" />
 		<input type="hidden" name="currentPage" id="currentPage"
 			value="${paginationModel.currentPage}" />
@@ -27,8 +27,7 @@
 			value="${paginationModel.noOfRecords}" />
 		<input type="hidden" name="defaultURL" id="defaultURL"
 			value="${defaultURL}" />
-			<input type="hidden" name="getSellerHistoryURL" id="getSellerHistoryURL"
-			value="${getSellerHistoryURL}" />
+			
 			
 		<div>
      

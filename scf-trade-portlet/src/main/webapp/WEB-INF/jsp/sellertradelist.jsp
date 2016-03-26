@@ -35,8 +35,7 @@
 		<input type="hidden" name="defaultURL" id="defaultURL"
 			value="${defaultRenderURL}" />
 		<input type="hidden" name="getSellerTradeURL" id="getSellerTradeURL"
-			value="${getSellerTradeURL}" />
-
+			value="${defaultRenderURL}" />
 		<input type="hidden" id="tradeURL" name="tradeURL" value="${tradeURL}" />
 		<input type="hidden" id="invoices" name="invoices"
 			value="${trade.invoices}">
@@ -45,8 +44,8 @@
 		<div class="row-fluid">
 			<div class="search-seller">
 				<input type="text" name="Search" placeholder="Search Here"
-					id="search" value="${search}"> <input type="button" 
-					id="sellerTradeReport" class="btn btn-primary"  value="Search"/>
+					id="search" value="${search}"> <input type="button"
+					id="sellerTradeReport" class="btn btn-primary" value="Search" />
 			</div>
 		</div>
 		<div class="row-fluid">

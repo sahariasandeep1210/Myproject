@@ -14,22 +14,17 @@
 	<form:form method="post" commandName="tradehistoryModel"
 		class="form-horizontal" name="tradehistoryForm" id="tradehistoryForm"
 		autocomplete="off">
-		<input type="hidden" value="${getTradeHistoryURL}"
+		<input type="hidden" value="${tradeHistoryURL}"
 			id="getTradeHistorys" />
 		<input type="hidden" name="currentPage" id="currentPage"
 			value="${paginationModel.currentPage}" />
 		<input type="hidden" name="noOfRecords" id="noOfRecords"
 			value="${paginationModel.noOfRecords}" />
 		<input type="hidden" name="defaultURL" id="defaultURL"
-			value="${defaultURL}" />
-			<input type="hidden" name="getTradeHistoryURL" id="getTradeHistoryURL"
-			value="${getTradeHistoryURL}" />
-
-
+			value="${tradeHistoryURL}" />
 
 		<div class="table-responsive">
-
-
+		
 			<table class="addtextCenter" id="tradeHisTable">
 				<colgroup>
 					<col style="width: 9.09%;">

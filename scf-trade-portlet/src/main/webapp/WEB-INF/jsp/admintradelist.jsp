@@ -26,7 +26,7 @@
         <input type="hidden" name="curPageSize"         id="curPageSize"   value="${paginationModel.pageSize}" />
         <input type="hidden" name="noOfRecords"     id="noOfRecords"         value="${paginationModel.noOfRecords}" />
         <input type="hidden" name="defaultURL"         id="defaultURL"      value="${defaultRenderURL}" />
-        <input type="hidden" name="getAdminTradeURL"         id="getAdminTradeURL"      value="${getAdminTradeURL}" />
+        <input type="hidden" name="getAdminTradeURL"         id="getAdminTradeURL"      value="${defaultRenderURL}" />
                 
         
 		<input type="hidden" id="tradeID" name="tradeID">
