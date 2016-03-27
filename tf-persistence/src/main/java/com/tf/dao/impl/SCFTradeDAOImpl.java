@@ -26,7 +26,7 @@ import org.springframework.util.StringUtils;
 
 import com.tf.dao.SCFTradeDAO;
 import com.tf.model.SCFTrade;
-import com.tf.util.ValidationUtil;
+import com.tf.persistance.util.ValidationUtil;
 
 @Repository
 @Transactional

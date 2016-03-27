@@ -1,24 +1,12 @@
 package com.tf.dao.impl;
 
-import com.tf.dao.WhiteHallTransactionDAO;
-import com.tf.model.Allotment;
-import com.tf.model.WhiteHallTransaction;
-import com.tf.persistance.util.DashboardModel;
-import com.tf.persistance.util.TradeStatus;
-import com.tf.persistance.util.TranscationStatus;
-import com.tf.util.ValidationUtil;
-
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import org.hibernate.Criteria;
-import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.MatchMode;
@@ -29,6 +17,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
+
+import com.tf.dao.WhiteHallTransactionDAO;
+import com.tf.model.WhiteHallTransaction;
+import com.tf.persistance.util.TradeStatus;
+import com.tf.persistance.util.TranscationStatus;
+import com.tf.persistance.util.ValidationUtil;
 
 @Repository
 @Transactional

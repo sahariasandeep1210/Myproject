@@ -1,14 +1,6 @@
 
 package com.tf.dao.impl;
 
-import com.mysql.jdbc.StringUtils;
-import com.tf.dao.InvoiceDAO;
-import com.tf.model.Company;
-import com.tf.model.Invoice;
-import com.tf.model.SCFTrade;
-import com.tf.service.CompanyService;
-import com.tf.util.ValidationUtil;
-
 import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -28,6 +20,13 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.mysql.jdbc.StringUtils;
+import com.tf.dao.InvoiceDAO;
+import com.tf.model.Company;
+import com.tf.model.Invoice;
+import com.tf.persistance.util.ValidationUtil;
+import com.tf.service.CompanyService;
 
 @Repository
 @Transactional(rollbackFor = Exception.class)
