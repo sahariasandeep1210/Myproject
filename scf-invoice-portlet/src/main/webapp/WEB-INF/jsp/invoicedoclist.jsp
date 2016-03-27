@@ -95,7 +95,7 @@
 				<h3 id="myModalLabel">Invoice Preview</h3>
 			</div>
 			<div class="modal-body">
-				<%@include file="invoicelisttable.jsp"%>
+				<%@include file="invoicelisttablepreview.jsp"%>
 			</div>
 			<div class="modal-footer">
 				<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>

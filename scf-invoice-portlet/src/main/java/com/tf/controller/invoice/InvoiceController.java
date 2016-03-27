@@ -29,13 +29,13 @@ import com.tf.persistance.util.CompanyTypes;
 import com.tf.persistance.util.Constants;
 import com.tf.persistance.util.InSuffcientFund;
 import com.tf.persistance.util.InvoiceStatus;
+import com.tf.persistance.util.ValidationUtil;
 import com.tf.service.CompanyService;
 import com.tf.service.InvoiceDocumentService;
 import com.tf.service.InvoiceService;
 import com.tf.service.UserService;
 import com.tf.util.LiferayUtility;
 import com.tf.util.PaginationUtil;
-import com.tf.util.ValidationUtil;
 import com.tf.util.model.PaginationModel;
 
 import java.beans.PropertyEditorSupport;
@@ -151,7 +151,6 @@ public class InvoiceController {
 			else if (request.isUserInRole(Constants.SCF_ADMIN)) {
 				invoiceDocumentList = invoiceDocumentService.getInvoiceDocuments(themeDisplay.getUser().getUserId());
 				long companyId = userService.getCompanyIDbyUserID(themeDisplay.getUserId());
-				System.out.println("Dfffff:"+companyService.findById(companyId));
 				companyList.add(companyService.findById(companyId));
 				model.put("userType", Constants.SCF_ADMIN);
 			}
@@ -590,18 +589,21 @@ public class InvoiceController {
 
 						}
 						else if (index == 3) {
+							//needs be removed
 							invoiceModel.setSellerCompanyVatNumber(cell.getStringCellValue());
 						}
 						else if (index == 4) {
 							invoiceModel.setInvoiceAmount(BigDecimal.valueOf(cell.getNumericCellValue()));
 						}
 						else if (index == 5) {
+							//needs to be removed
 							invoiceModel.setVatAmount(BigDecimal.valueOf(cell.getNumericCellValue()));
 						}
 						else if (index == 6) {
 							invoiceModel.setInvoiceDesc(cell.getStringCellValue());
 						}
 						else if (index == 7) {
+							//needs to be removed
 							invoiceModel.setDuration((int) (cell.getNumericCellValue()));
 						}
 						else if (index == 8) {
@@ -614,6 +616,10 @@ public class InvoiceController {
 						invoiceModel.setStatus(InvoiceStatus.NEW.getValue());
 						index++;
 					}
+					
+					//invoiceModel.getInvoiceNumber()
+					//invoiceModel.getScfCompany().getId()
+					
 					invoiceList.add(invoiceModel);
 				}
 
