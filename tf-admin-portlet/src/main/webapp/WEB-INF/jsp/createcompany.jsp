@@ -89,19 +89,20 @@
 				</c:if>
 			</div>
 		<c:choose>
-			<c:when test="${cmpType ne 'Seller'}">
+			<c:when test="${cmpType eq 'Seller' && userType eq 'SCF Company Admin' }">
 			<div class="row-fluid">
 				<div class="span6">
-					<input type="button" value="Go Back" class="btn btn-primary"
-						data-url="${companyListURL}" id="cmpback" />
+					<input type="button" value="Back" class="btn btn-primary"  data-url="${createURL}&companyID=${companyId}"	id="backBtn"  />
+
 				</div>
 			</div>
 			</c:when>
 			<c:otherwise>
-					<div class="row-fluid">
+					
+			<div class="row-fluid">
 				<div class="span6">
-					<input type="button" value="Back" class="btn btn-primary"  data-url="${createURL}&companyID=${companyId}"	id="backBtn"  />
-
+					<input type="button" value="Go Back" class="btn btn-primary"
+						data-url="${companyListURL}" id="cmpback" />
 				</div>
 			</div>
 			</c:otherwise>

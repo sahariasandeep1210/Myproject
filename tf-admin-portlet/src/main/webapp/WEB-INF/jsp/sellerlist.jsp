@@ -7,12 +7,14 @@
 <portlet:renderURL var="createURL">
 	<portlet:param name="render" value="createCompany" />
 </portlet:renderURL>
+<portlet:renderURL var="defaultRenderURL"></portlet:renderURL>
 
 <div class="container-fluid">
 	<form:form commandName="sellerListModel" method="post" action=""
 		id="sellerList" autocomplete="off" name="sellerList">
-		<input type="hidden" value="${saveSellerURL}" id="saveURL" />
-
+		<input type="hidden" value="${createURL}" id="saveURL" />
+        <input type="hidden" value="${companyId}" id="companyID" name="companyID"/>
+         
 		<div class="row-fluid">
 			<div class="span6">
 				<label class="span6">Seller Company List:</label> 

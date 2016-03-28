@@ -72,12 +72,19 @@ public class CompanyController extends BaseController {
 			RenderRequest request, RenderResponse response) throws Exception {
 		_log.info("CompanyController :: Render Company List");
 		try {
+			
 			List<Company> companyList = new ArrayList<Company>();
 			ThemeDisplay themeDisplay = (ThemeDisplay) request
 					.getAttribute(WebKeys.THEME_DISPLAY);
+
 			companyList = prepareCompanyList(request, companyList,
 					themeDisplay, model);
 			model.put("allCompanies", companyList);
+			if(request.isUserInRole(Constants.SCF_ADMIN)){
+				long compId = userService.getCompanybyUserID(themeDisplay.getUserId()).getId();
+				model.put("companyId", compId);
+			}
+
 		} catch (Exception e) {
 			SessionErrors.add(request, "default-error-message");
 			_log.error("CompanyController.renderCompanyList() - error occured while rendering company/companies"
@@ -110,24 +117,33 @@ public class CompanyController extends BaseController {
 			if(request.isUserInRole(Constants.SCF_ADMIN)){
 				model.put("userType", Constants.SCF_ADMIN);
 			}
+			
+			ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
+			if(request.isUserInRole(Constants.SCF_ADMIN)){			
+				long companyId = userService.getCompanybyUserID(themeDisplay.getUserId()).getId();
+				model.put("companyId", companyId);
+			}
+			long sellerId=ParamUtil.getLong(request, "sellerCompany");
+			if(sellerId>0){
+			long compId = userService.getCompanybyUserID(themeDisplay.getUserId()).getId();
+			Company comp =companyService.findById(sellerId);
+			SellerScfCompanyMapping sellerScfMapping = new SellerScfCompanyMapping();
+			sellerScfMapping.setScfCompany(compId);
+			sellerScfMapping.setSellerCompany(comp);
+			sellerScfMappingService.saveSeller(sellerScfMapping);
+			}
 			Long noOfRecords = 0l;
 			PaginationModel paginationModel = paginationUtil
 					.preparePaginationModel(request);
 			sellerScfMappings=sellerScfMappingService.getSellerScfMapping(paginationModel.getStartIndex(), paginationModel.getPageSize());
-			System.out.println("sellerScfMappings:"+sellerScfMappings);
 			noOfRecords=sellerScfMappingService.getSellerScfMappingCount();
 			companyList = companyService.getCompanies("4");
 			companies=prepareCompanyList(companyList,sellerScfMappings);
-			ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
-
-			long companyId = userService.getCompanybyUserID(themeDisplay.getUserId()).getId();
-
 			paginationUtil.setPaginationInfo(noOfRecords, paginationModel);
 			model.put("companies", companies);
 			model.put("sellerScfMappings", sellerScfMappings);
 			model.put("currentUser", themeDispay.getRealUser());
 			model.put("users", users);
-			model.put("companyId", companyId);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -153,7 +169,7 @@ public class CompanyController extends BaseController {
 	return companyList;		
 }
 	
-	@RenderMapping(params = "action=getSeller")
+	/*@RenderMapping(params = "action=getSeller")
 	public String getScfAdminTrade(ModelMap model, RenderRequest request, RenderResponse response)
 		throws Exception {
 		
@@ -172,7 +188,7 @@ public class CompanyController extends BaseController {
 		sellerScfMappingService.saveSeller(sellerScfMapping);
 		response.setRenderParameter("render", "createCompany");
 		
-	}
+	}*/
 
 	@ActionMapping(params = "action=homePage")
 	protected void homePage(ModelMap model, ActionRequest request,
