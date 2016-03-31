@@ -42,4 +42,6 @@ public interface InvoiceDAO extends BaseDAO<Invoice, Long> {
 	public List<Invoice> getInvoicesByRegNum(String regNum);
 	
 	public Invoice getInvoicesByInvoiceNumAndCompanyId(long id,long companyId);
+	
+	public int validInvoiceImport(Long invoiceNumber,Long Id);
 }

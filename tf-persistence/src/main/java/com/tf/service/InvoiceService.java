@@ -56,5 +56,7 @@ public interface InvoiceService {
 	public Invoice findById(Long id); 
 	
 	public String getSellerRegNumberByTradeID(long id);
+	
+	public int validInvoiceImport(Long invoiceNumber, Long Id);
 
 }
