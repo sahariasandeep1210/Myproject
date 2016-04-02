@@ -530,3 +530,9 @@ CREATE TABLE tf_seller_scfcompany_mapping (
   UNIQUE KEY id_UNIQUE (id), 
 
 ) ;
+
+
+
+ALTER TABLE tf_seller_scfcompany_mapping  ADD status    VARCHAR(100) DEFAULT NULL;
+ALTER TABLE tf_seller_scfcompany_mapping  ADD update_date    DATETIME DEFAULT NULL;
+ALTER TABLE tf_seller_scfcompany_mapping  ADD comment     VARCHAR(300) DEFAULT NULL;
