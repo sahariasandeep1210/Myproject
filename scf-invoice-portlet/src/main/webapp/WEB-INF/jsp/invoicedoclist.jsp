@@ -98,12 +98,11 @@
 				<%@include file="invoicelisttablepreview.jsp"%>
 			</div>
 			<div class="modal-footer">
-				<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+				<button class="btn" id="invoice-popup-close" data-dismiss="modal" aria-hidden="true">Close</button>
 				<input type="submit" value="Save Invoices" class="btn btn-primary" id="last"/>
 			</div>
 		</div>
 	</form:form>
 	</div>
 </c:if>
-
 

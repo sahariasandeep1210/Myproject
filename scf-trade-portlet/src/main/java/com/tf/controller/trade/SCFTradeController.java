@@ -39,7 +39,7 @@ import com.tf.util.LiferayUtility;
 import com.tf.util.MyCustomNumberEditor;
 import com.tf.util.PaginationUtil;
 import com.tf.util.SCFTradeDTO;
-import com.tf.util.ValidationUtil;
+import com.tf.persistance.util.ValidationUtil;
 import com.tf.util.model.PaginationModel;
 
 import java.beans.PropertyEditorSupport;
@@ -107,7 +107,7 @@ public class SCFTradeController {
 	protected PaginationUtil paginationUtil;
 
 	@Autowired
-	protected ValidationUtil validationUtil;
+	protected  ValidationUtil  validationUtil;
 
 	@InitBinder
 	public void binder(WebDataBinder binder) {

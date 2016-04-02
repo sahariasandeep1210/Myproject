@@ -22,6 +22,7 @@ import com.liferay.portlet.documentlibrary.model.DLFolderConstants;
 import com.liferay.portlet.documentlibrary.service.DLAppServiceUtil;
 import com.mysql.jdbc.StringUtils;
 import com.tf.dto.InvoiceDTO;
+import com.tf.model.Allotment;
 import com.tf.model.Company;
 import com.tf.model.Invoice;
 import com.tf.model.InvoiceDocument;
@@ -39,6 +40,7 @@ import com.tf.util.PaginationUtil;
 import com.tf.util.model.PaginationModel;
 
 import java.beans.PropertyEditorSupport;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -53,6 +55,8 @@ import javax.portlet.ActionResponse;
 import javax.portlet.PortletConfig;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
+import javax.portlet.ResourceRequest;
+import javax.portlet.ResourceResponse;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -69,6 +73,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.portlet.ModelAndView;
 import org.springframework.web.portlet.bind.annotation.ActionMapping;
 import org.springframework.web.portlet.bind.annotation.RenderMapping;
+import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 
 /**
  * This controller is responsible for request/response handling on Invoice
@@ -320,8 +325,6 @@ public class InvoiceController {
 		ActionRequest request, ActionResponse response) {
 
 		try {
-			System.out.println("Invoicesss:" + invoice);
-
 			Invoice invoiceModel = transfromInvoiceDtoToInvoiceModel(invoice);
 			List<Invoice> invoices = new ArrayList<Invoice>();
 			invoices.add(invoiceModel);
@@ -514,6 +517,8 @@ public class InvoiceController {
 			model.put("to", to);
 			request.getPortletSession().removeAttribute("invoiceDTO");
 			request.getPortletSession().removeAttribute("invoiceList");
+			request.getPortletSession().removeAttribute("validInvoiceList");
+			request.getPortletSession().removeAttribute("invalidnvoiceList");
 			paginationUtil.setPaginationInfo(noOfRecords, paginationModel);
 			model.put("paginationModel", paginationModel);
 			model.put("invoicesList", invoices);
@@ -536,10 +541,13 @@ public class InvoiceController {
 
 		request.getPortletSession().removeAttribute("invoiceDTO");
 		request.getPortletSession().removeAttribute("invoiceList");
+		request.getPortletSession().removeAttribute("validInvoiceList");
+		request.getPortletSession().removeAttribute("invalidnvoiceList");
 		int currentRow = 0;
 		Invoice invoiceModel = null;
 		Workbook workbook = null;
-		List<Invoice> invoiceList = new ArrayList<Invoice>();
+		List<Invoice> validInvoiceList = new ArrayList<Invoice>();
+		List<Invoice> invalidnvoiceList = new ArrayList<Invoice>();
 		String zero = "0";
 		Company scfCompany = companyService.findById(invoice.getScfCompany());
 
@@ -555,9 +563,13 @@ public class InvoiceController {
 					invoiceModel = new Invoice();
 					invoiceModel.setScfCompany(scfCompany);
 					currentRow = currentRow + 1;
+					
 					Row row = rowIterator.next();
 					// Every row has columns, get the column iterator and
 					// iterate over them
+					if(currentRow==1){
+						continue;
+					}
 					Iterator<Cell> cellIterator = row.cellIterator();
 					int index = 0;
 					while (cellIterator.hasNext()) {
@@ -589,46 +601,41 @@ public class InvoiceController {
 
 						}
 						else if (index == 3) {
-							//needs be removed
-							invoiceModel.setSellerCompanyVatNumber(cell.getStringCellValue());
-						}
-						else if (index == 4) {
 							invoiceModel.setInvoiceAmount(BigDecimal.valueOf(cell.getNumericCellValue()));
 						}
-						else if (index == 5) {
-							//needs to be removed
-							invoiceModel.setVatAmount(BigDecimal.valueOf(cell.getNumericCellValue()));
-						}
-						else if (index == 6) {
+						else if (index == 4) {
 							invoiceModel.setInvoiceDesc(cell.getStringCellValue());
 						}
-						else if (index == 7) {
-							//needs to be removed
-							invoiceModel.setDuration((int) (cell.getNumericCellValue()));
-						}
-						else if (index == 8) {
+						else if (index == 5) {
 							invoiceModel.setPayment_date(cell.getDateCellValue());
 						}
-						else if (index == 9) {
+						else if (index == 6) {
 							invoiceModel.setCurrency(cell.getStringCellValue());
-						}		
-
+						}	
+						
+						//in case of sheet has unnessary columns. 
+						else if(index>6){
+							break;
+						}   
 						invoiceModel.setStatus(InvoiceStatus.NEW.getValue());
 						index++;
 					}
-					
-					//invoiceModel.getInvoiceNumber()
-					//invoiceModel.getScfCompany().getId()
-					
-					invoiceList.add(invoiceModel);
+					Integer valid=invoiceService.validInvoiceImport(invoiceModel.getInvoiceNumber(), invoiceModel.getScfCompany().getId());
+					if(valid!=null && valid>0){
+						invalidnvoiceList.add(invoiceModel);
+					}else{
+						validInvoiceList.add(invoiceModel);
+					}
 				}
 
 			}
 
 			request.getPortletSession().setAttribute("invoiceDTO", invoice);
-			request.getPortletSession().setAttribute("invoiceList", invoiceList);
+			request.getPortletSession().setAttribute("invalidnvoiceList", invalidnvoiceList);
+			request.getPortletSession().setAttribute("validInvoiceList", validInvoiceList);
 			model.put("documentUpload", Boolean.TRUE);
-			model.put("invoicesList", invoiceList);
+			model.put("invalidnvoiceList", invalidnvoiceList);
+			model.put("validInvoiceList", validInvoiceList);
 			response.setRenderParameter("render", "invoiceDocuments");
 		}
 		catch (Exception e) {
@@ -652,7 +659,7 @@ public class InvoiceController {
 			(InvoiceDTO) request.getPortletSession().getAttribute("invoiceDTO");
 		List<Invoice> invoiceList =
 			(List<Invoice>) request.getPortletSession().getAttribute(
-				"invoiceList");
+				"validInvoiceList");
 
 		FileEntry fileEntry = null;
 		Folder folder = null;
@@ -810,8 +817,14 @@ public class InvoiceController {
 	public ModelAndView invoiceRedirect(
 		ModelMap model, RenderRequest request, RenderResponse response)
 		throws Exception {
-		
 		return new ModelAndView("invoicelist", model);
+	}
+
+	@ResourceMapping("closeSessionValues")
+	public void closeSessionValues(ResourceRequest request,
+			ResourceResponse response, ModelMap modelMap) throws IOException {
+		request.getPortletSession().removeAttribute("validInvoiceList");
+		request.getPortletSession().removeAttribute("invalidnvoiceList");
 	}
 
 	/*@ActionMapping(params = "invoice=getInvoiceReport")

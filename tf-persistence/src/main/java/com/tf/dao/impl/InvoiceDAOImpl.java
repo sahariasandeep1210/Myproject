@@ -564,4 +564,32 @@ public void deleteInvoice(Invoice invoice){
 		}
 	}
 
+	public int validInvoiceImport(Long invoiceNumber, Long Id) {
+		_log.debug("Inside validInvoiceImport ");
+		int valid=0;
+		Query query=null;
+		String qry="";
+		List<Integer> results=null;
+		try {
+			qry="select id FROM scf_invoice WHERE invoice_number=:invoiceNumber AND scf_company=:id";
+			query = sessionFactory.getCurrentSession().createSQLQuery(qry);
+			query.setParameter("invoiceNumber", invoiceNumber);
+			query.setParameter("id", Id);
+			results = (List<Integer>) query.list();
+			if(results!=null && !results.isEmpty()){
+				valid++;
+			}
+			_log.debug("invoice.duplicate.message successful, result size: " + results.size());
+		}
+		catch (RuntimeException re) {
+			_log.error("invoice.duplicate.message failed", re);
+			throw re;
+		}finally{
+			results=null;
+			qry=null;
+			
+		}
+		return valid;
+	}
+
 }

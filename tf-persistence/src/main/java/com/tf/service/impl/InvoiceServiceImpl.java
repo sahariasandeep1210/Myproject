@@ -371,4 +371,14 @@ public class InvoiceServiceImpl implements InvoiceService{
 	public Long getInvoicesByFilterNumberCount(String search, Date frmDate, Date toDate, String value){
 		return invoiceDAO.getInvoicesByFilterNumberCount(search, frmDate, toDate, value);
 	}
+
+	public int validInvoiceImport(Long invoiceNumber, Long Id) {
+		if(invoiceNumber==null || invoiceNumber<=0){
+			return 1;
+		}else{
+			return invoiceDAO.validInvoiceImport(invoiceNumber, Id);
+		}
+		
+		
+	}
 }
