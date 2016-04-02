@@ -63,9 +63,6 @@
 	display: none;
 }
 
-.underline {
-    text-decoration: underline;
-}
 
 .hide-tablesorter:after{
 	visibility:hidden;

@@ -94,7 +94,6 @@ public class InvoiceServiceImpl implements InvoiceService{
 			sumInvoiceAmt = sumInvoiceAmt.add(invoice.getInvoiceAmount());
 		}	
 		invoiceInfoMap.put(company, sumInvoiceAmt);
-		System.out.println("sumInvoiceAmt::::::"+sumInvoiceAmt);
 		return invoiceInfoMap;
 		
 		

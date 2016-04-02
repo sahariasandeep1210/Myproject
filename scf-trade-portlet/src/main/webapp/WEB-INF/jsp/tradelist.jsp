@@ -21,8 +21,8 @@
 		<input type="hidden" name="currentPage"           id="currentPage"        value="${paginationModel.currentPage}" />
         <input type="hidden" name="currPageSizes"         id="currPageSizes"      value="${paginationModel.pageSize}" />
         <input type="hidden" name="noOfRecords"           id="noOfRecords"        value="${paginationModel.noOfRecords}" />
-        <input type="hidden" name="defaultURL"           id="defaultURL"         value="${defaultRenderURL}" />
-        <input type="hidden" name="getScfAdminTradeURL"  id="getScfAdminTradeURL" value="${defaultRenderURL}" />
+        <input type="hidden" name="defaultURL"            id="defaultURL"         value="${defaultRenderURL}" />
+        <input type="hidden" name="getScfAdminTradeURL"   id="getScfAdminTradeURL" value="${defaultRenderURL}" />
          
          
        <%@include file="tradefilter.jspf"%> 

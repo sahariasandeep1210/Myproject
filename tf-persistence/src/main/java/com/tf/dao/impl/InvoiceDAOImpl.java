@@ -317,140 +317,41 @@ public void deleteInvoice(Invoice invoice){
 
 	@SuppressWarnings("unchecked")
 	public List<Invoice> getInvoicesByFilter(String search, Date frmDate, Date toDate, String value, int startIndex, int pageSize) {
-
 		_log.debug("Inside getInvoicesByFilter");
-		List<Invoice> InvoiceList = new ArrayList<Invoice>();
-		Invoice invoice = null;
-		List<Object[]> resultscheck = new ArrayList<Object[]>();
-		
+		List<Invoice> invoicelist = new ArrayList<Invoice>();		
 		try {
-			DetachedCriteria criteria = DetachedCriteria.forClass(Invoice.class);
-			if (validationUtil.isNumeric(search)) {
-				String qry="";
-				if( StringUtils.isNullOrEmpty(value)){
-				   qry="select invoice_number,payment_date,invoice_amout,duration,status ,(select idcompany from tf_company cmp where cmp.idcompany=scf_company) from scf_invoice invoice WHERE invoice.invoice_number like (:invoiceNumber)LIMIT " +
-						startIndex + "," + pageSize;
-				}else if(("invoiceDate").equals(value) && frmDate != null && toDate != null){
-					   qry="select invoice_number,payment_date,invoice_amout,duration,status ,(select idcompany from tf_company cmp where cmp.idcompany=scf_company) from scf_invoice invoice WHERE invoice.invoice_number like (:invoiceNumber) and invoice.invoice_date BETWEEN (:fromDate) and (:toDate)LIMIT " +
-						startIndex + "," + pageSize;
-				}else if (("invoiceDate").equals(value) && frmDate != null && toDate == null) {
-					   qry="select invoice_number,payment_date,invoice_amout,duration,status ,(select idcompany from tf_company cmp where cmp.idcompany=scf_company) from scf_invoice invoice WHERE invoice.invoice_number like (:invoiceNumber) and invoice.invoice_date  >= (:fromDate)LIMIT " +
-						startIndex + "," + pageSize;
-				}else if (("invoiceDate").equals(value) && frmDate == null && toDate != null) {
-					   qry="select invoice_number,payment_date,invoice_amout,duration,status ,(select idcompany from tf_company cmp where cmp.idcompany=scf_company) from scf_invoice invoice WHERE invoice.invoice_number like (:invoiceNumber) and invoice.invoice_date  <= (:toDate)LIMIT " +
-						startIndex + "," + pageSize;
-				}else if (("financeDate").equals(value) && frmDate != null && toDate != null){
-					   qry="select invoice_number,payment_date,invoice_amout,duration,status ,(select idcompany from tf_company cmp where cmp.idcompany=scf_company) from scf_invoice invoice WHERE invoice.invoice_number like (:invoiceNumber) and invoice.finance_date BETWEEN (:fromDate) and (:toDate)LIMIT " +
-						startIndex + "," + pageSize;
-
-				}else if (("financeDate").equals(value) && frmDate != null && toDate == null) {
-					   qry="select invoice_number,payment_date,invoice_amout,duration,status ,(select idcompany from tf_company cmp where cmp.idcompany=scf_company) from scf_invoice invoice WHERE invoice.invoice_number like (:invoiceNumber) and invoice.finance_date >= (:fromDate)LIMIT " +
-						startIndex + "," + pageSize;
-					
-				}else if (("financeDate").equals(value) && frmDate == null && toDate != null) {
-					   qry="select invoice_number,payment_date,invoice_amout,duration,status ,(select idcompany from tf_company cmp where cmp.idcompany=scf_company) from scf_invoice invoice WHERE invoice.invoice_number like (:invoiceNumber) and invoice.finance_date <= (:toDate)LIMIT " +
-						startIndex + "," + pageSize;
-				}else if (("paymentDate").equals(value) && frmDate != null && toDate != null){
-					   qry="select invoice_number,payment_date,invoice_amout,duration,status ,(select idcompany from tf_company cmp where cmp.idcompany=scf_company) from scf_invoice invoice WHERE invoice.invoice_number like (:invoiceNumber) and invoice.payment_date BETWEEN (:fromDate) and (:toDate)LIMIT " +
-						startIndex + "," + pageSize;
-
-				}else if (("paymentDate").equals(value) && frmDate != null && toDate == null){
-					   qry="select invoice_number,payment_date,invoice_amout,duration,status ,(select idcompany from tf_company cmp where cmp.idcompany=scf_company) from scf_invoice invoice WHERE invoice.invoice_number like (:invoiceNumber) and invoice.payment_date >= (:fromDate)LIMIT " +
-						startIndex + "," + pageSize;
-
-				}else if (("paymentDate").equals(value) && frmDate == null && toDate != null) {
-					   qry="select invoice_number,payment_date,invoice_amout,duration,status ,(select idcompany from tf_company cmp where cmp.idcompany=scf_company) from scf_invoice invoice WHERE invoice.invoice_number like (:invoiceNumber) and invoice.payment_date  <= (:toDate)LIMIT " +
-						startIndex + "," + pageSize;
+				DetachedCriteria criteria = DetachedCriteria.forClass(Invoice.class);	
+				Disjunction or = Restrictions.disjunction();
+				if (validationUtil.isNumeric(search)) {
+					or.add(Restrictions.like("invoiceNumber",Long.valueOf(search)));
+				}else{
+					or.add(Restrictions.like("status", search, MatchMode.ANYWHERE));
+					or.add(Restrictions.like("company.name", search, MatchMode.ANYWHERE));
+				}				
+				if (frmDate != null && toDate != null) {
+					criteria.add(Restrictions.ge(value, frmDate));
+					criteria.add(Restrictions.le(value, toDate));
 				}
-				Query query = sessionFactory.getCurrentSession().createSQLQuery(qry);
-				if (!StringUtils.isNullOrEmpty(search)) {
-				query.setParameter("invoiceNumber", "%"+search+"%");
+				else if (frmDate != null && toDate == null) {
+					criteria.add(Restrictions.ge(value, frmDate));
 				}
-				if (frmDate != null) {
-				query.setParameter("fromDate", frmDate);
-				}
-				if (toDate != null) {
-				query.setParameter("toDate", toDate);
-				}
-				resultscheck = (List<Object[]>) query.list();
-				DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-
-				for(Object[] row:resultscheck){
-					invoice =new Invoice();
-					invoice.setInvoiceNumber(Long.valueOf(row[0].toString()));
-					invoice.setPayment_date(formatter.parse(row[1].toString()));
-					invoice.setInvoiceAmount(new BigDecimal(row[2].toString()));
-					invoice.setDuration(Integer.valueOf(row[3].toString()));
-					invoice.setStatus(row[4].toString());
-					Company company= companyService.findById(Long.valueOf(row[5].toString()));
-					invoice.setScfCompany(company);
-					InvoiceList.add(invoice);
-				}
-				
-/*				or.add(Restrictions.like("invoiceNumber", Long.valueOf(search)));
-*/			}else{
-			Disjunction or = Restrictions.disjunction();
-
-			or.add(Restrictions.like("status", search, MatchMode.ANYWHERE));
-
-			or.add(Restrictions.like("company.name", search, MatchMode.ANYWHERE));
-
-			if (("invoiceDate").equals(value) && frmDate != null && toDate != null) {
-
-				criteria.add(Restrictions.ge("invoiceDate", frmDate));
-				criteria.add(Restrictions.le("invoiceDate", toDate));
-			}
-			else if (("invoiceDate").equals(value) && frmDate != null && toDate == null) {
-
-				criteria.add(Restrictions.ge("invoiceDate", frmDate));
-			}
-			else if (("invoiceDate").equals(value) && frmDate == null && toDate != null) {
-
-				criteria.add(Restrictions.le("invoiceDate", toDate));
-
-			}
-			if (("financeDate").equals(value) && frmDate != null && toDate != null) {
-
-				criteria.add(Restrictions.ge("financeDate", frmDate));
-				criteria.add(Restrictions.le("financeDate", toDate));
-			}
-			else if (("financeDate").equals(value) && frmDate != null && toDate == null) {
-
-				criteria.add(Restrictions.ge("financeDate", frmDate));
-			}
-			else if (("financeDate").equals(value) && frmDate == null && toDate != null) {
-
-				criteria.add(Restrictions.le("financeDate", toDate));
-
-			}
-			if (("paymentDate").equals(value) && frmDate != null && toDate != null) {
-				criteria.add(Restrictions.ge("payment_date", frmDate));
-				criteria.add(Restrictions.le("payment_date", toDate));
-			}
-			else if (("paymentDate").equals(value) && frmDate != null && toDate == null) {
-				criteria.add(Restrictions.ge("payment_date", frmDate));
-			}
-			else if (("paymentDate").equals(value) && frmDate == null && toDate != null) {
-
-				criteria.add(Restrictions.le("payment_date", toDate));
-			}
-
-			InvoiceList = criteria.getExecutableCriteria(sessionFactory.getCurrentSession()).createAlias("scfCompany", "company")
-
-			.add(or).setFirstResult(startIndex).setMaxResults(pageSize).list();
-			_log.debug("getInvoicesByFilter successful, result size: " + InvoiceList.size());
-             }	
+				else if (frmDate == null && toDate != null) {
+					criteria.add(Restrictions.le(value, toDate));
+				}				
+				invoicelist = criteria.getExecutableCriteria(sessionFactory.getCurrentSession()).createAlias("scfCompany", "company")
+							  .add(or).setFirstResult(startIndex).setMaxResults(pageSize).list();
+				_log.debug("getInvoicesByFilter successful, result size: " + invoicelist.size());
+          	
 		}catch (RuntimeException re) {
 			_log.error("getInvoicesByFilter failed", re);
 			throw re;
 		}
-		catch (ParseException e) {
-			_log.error("getInvoicesByFilter failed", e);
-			e.printStackTrace();
-		}
-		return InvoiceList;
+		
+		return invoicelist;
 
 	}
+	
+	@Deprecated
 	public Long getInvoicesByFilterNumberCount(String search, Date frmDate, Date toDate, String value) {
 		_log.debug("Inside getInvoicesByFilterCount ");
 		try {
@@ -508,49 +409,19 @@ public void deleteInvoice(Invoice invoice){
 			Disjunction or = Restrictions.disjunction();
 			if (validationUtil.isNumeric(search)) {
 				or.add(Restrictions.like("invoiceNumber",Long.valueOf(search)));
+			}else{
+				or.add(Restrictions.like("status", search, MatchMode.ANYWHERE));
+				or.add(Restrictions.like("company.name", search, MatchMode.ANYWHERE));
 			}
-			or.add(Restrictions.like("status", search, MatchMode.ANYWHERE));
-			or.add(Restrictions.like("company.name", search, MatchMode.ANYWHERE));
-			if (("invoiceDate").equals(value) && frmDate != null && toDate != null) {
-
-				criteria.add(Restrictions.ge("invoiceDate", frmDate));
-				criteria.add(Restrictions.le("invoiceDate", toDate));
-			}
-			else if (("invoiceDate").equals(value) && frmDate != null && toDate == null) {
-
-				criteria.add(Restrictions.ge("invoiceDate", frmDate));
-			}
-			else if (("invoiceDate").equals(value) && frmDate == null && toDate != null) {
-
-				criteria.add(Restrictions.le("invoiceDate", toDate));
-
-			}
-			if (("financeDate").equals(value) && frmDate != null && toDate != null) {
-
-				criteria.add(Restrictions.ge("financeDate", frmDate));
-				criteria.add(Restrictions.le("financeDate", toDate));
-			}
-			else if (("financeDate").equals(value) && frmDate != null && toDate == null) {
-
-				criteria.add(Restrictions.ge("financeDate", frmDate));
-			}
-			else if (("financeDate").equals(value) && frmDate == null && toDate != null) {
-
-				criteria.add(Restrictions.le("financeDate", toDate));
-
-			}
-			if (("paymentDate").equals(value) && frmDate != null && toDate != null) {
-				criteria.add(Restrictions.ge("payment_date", frmDate));
-				criteria.add(Restrictions.le("payment_date", toDate));
-			}
-			else if (("paymentDate").equals(value) && frmDate != null && toDate == null) {
-				criteria.add(Restrictions.ge("payment_date", frmDate));
-			}
-			else if (("paymentDate").equals(value) && frmDate == null && toDate != null) {
-
-				criteria.add(Restrictions.le("payment_date", toDate));
-			}
-
+			
+			if (frmDate != null && toDate != null) {
+				criteria.add(Restrictions.ge(value, frmDate));
+				criteria.add(Restrictions.le(value, toDate));
+			} else if (frmDate != null && toDate == null) {
+				criteria.add(Restrictions.ge(value, frmDate));
+			} else if ( frmDate == null && toDate != null) {
+				criteria.add(Restrictions.le(value, toDate));
+			}			
 			Long resultCount =
 				(Long) criteria.getExecutableCriteria(sessionFactory.getCurrentSession()).createAlias("scfCompany", "company").add(or).setProjection(
 					Projections.rowCount()).uniqueResult();

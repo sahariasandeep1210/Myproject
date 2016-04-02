@@ -72,63 +72,7 @@
 				</thead>
 				<tbody>
 				
-					<c:choose>
-						<c:when test="${fn:length(trades) gt 0}">
-							<tr>
-								<td></td>
-								<td></td>
-								<td></td>
-								<td>${totalTradeAmount}</td>
-								<td></td>
-								<td>${totalInvestorProfit}</td>
-								<td>${totalWhiteHallShare}</td>
-								<td>${totalInvestorNet}</td>
-								<td>${totalSellerFees}</td>
-								<td>${totalWhiteHallFees}</td>
-								<td>${totalSellerAmount}</td>
-								<td></td>
-		
-							</tr>
-							<c:forEach items="${trades}" var="trade">
-								<tr>
-									
-									<td width="3%"><input type="radio" value="${trade.id}" name="trade"  status-attr="${trade.status}" <c:if test="${trade.status eq 'Settled' || trade.status eq 'Closed'}">disabled="disabled"</c:if> ></td>
-									 <td class="underline"><a href="javascript:void(0);"
-                                        onclick="window.location.href='${createURL}&tradeID=${trade.id}'">${trade.scfId}</a></td>
-									<td><strong>${trade.company.name} ( ${trade.duration} Days )</strong></td>
-									<td>${trade.tradeAmount}</td>
-									<td></td>
-									<td>${trade.investorTotalGross}</td>
-									<td>${trade.whitehallTotalShare}</td>
-									<td>${trade.investorTotalProfit}</td>
-									<td>${trade.sellerFees + trade.sellerTransFee}</td>
-									<td>${trade.whitehallTotalProfit}</td>
-									<td>${trade.sellerNetAllotment}</td>	
-									<td>${trade.status}</td>						
-								</tr>
-								<c:if test="${fn:length(trade.allotments) gt 0}">
-									<c:forEach items="${trade.allotments}" var="allotment">
-										<tr>
-											<td></td>
-											<td></td>
-											<td>${allotment.investorPortfolio.investor.company.name}</td> 
-											<td>${allotment.allotmentAmount}</td>
-											<td>${allotment.marketDiscount}</td>
-											<td>${allotment.investorGrossProfit}</td>
-											<td>${allotment.whitehallProfitShare}</td>
-											<td>${allotment.investorNetProfit}</td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-											
-										</tr>
-										
-									</c:forEach>
-								</c:if>
-							
-							</c:forEach>
-						</c:when>
+					<c:choose>						
 						<c:when test="${fn:length(scftrades) gt 0}">
 							<c:forEach items="${scftrades}" var="trade">
 								<tr>

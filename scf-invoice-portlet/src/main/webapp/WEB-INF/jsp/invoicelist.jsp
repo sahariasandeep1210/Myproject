@@ -113,9 +113,9 @@
 			<div class="span3">	
 				<select id="dateList" name="dateList">
 					<option value="" selected="selected" >Select Date</option>
-					<option value="invoiceDate" <c:if test="${ value eq 'invoiceDate'}">selected="selected" </c:if>>Invoice Date</option>
-					<option value="paymentDate" <c:if test="${ value eq 'paymentDate'}">selected="selected" </c:if>>Payment Date</option>
-					<option value="financeDate" <c:if test="${ value eq 'financeDate'}">selected="selected" </c:if>>Finance Date</option>
+					<option value="invoiceDate" <c:if test="${ value 	eq 'invoiceDate'}">selected="selected" </c:if>>Invoice Date</option>
+					<option value="payment_date" <c:if test="${ value 	eq 'payment_date'}">selected="selected" </c:if>>Payment Date</option>
+					<option value="financeDate" <c:if test="${ value 	eq 'financeDate'}">selected="selected" </c:if>>Finance Date</option>
 				</select> 
 		   </div>
 		  <div class="span3">	

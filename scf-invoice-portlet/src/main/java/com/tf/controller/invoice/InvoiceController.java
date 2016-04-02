@@ -1,44 +1,6 @@
 
 package com.tf.controller.invoice;
 
-import com.liferay.portal.kernel.language.LanguageUtil;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.repository.model.FileEntry;
-import com.liferay.portal.kernel.repository.model.Folder;
-import com.liferay.portal.kernel.servlet.SessionErrors;
-import com.liferay.portal.kernel.servlet.SessionMessages;
-import com.liferay.portal.kernel.util.JavaConstants;
-import com.liferay.portal.kernel.util.MimeTypesUtil;
-import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.service.ServiceContext;
-import com.liferay.portal.service.ServiceContextFactory;
-import com.liferay.portal.theme.ThemeDisplay;
-import com.liferay.portlet.documentlibrary.model.DLFileEntry;
-import com.liferay.portlet.documentlibrary.model.DLFolder;
-import com.liferay.portlet.documentlibrary.model.DLFolderConstants;
-import com.liferay.portlet.documentlibrary.service.DLAppServiceUtil;
-import com.mysql.jdbc.StringUtils;
-import com.tf.dto.InvoiceDTO;
-import com.tf.model.Allotment;
-import com.tf.model.Company;
-import com.tf.model.Invoice;
-import com.tf.model.InvoiceDocument;
-import com.tf.persistance.util.CompanyTypes;
-import com.tf.persistance.util.Constants;
-import com.tf.persistance.util.InSuffcientFund;
-import com.tf.persistance.util.InvoiceStatus;
-import com.tf.persistance.util.ValidationUtil;
-import com.tf.service.CompanyService;
-import com.tf.service.InvoiceDocumentService;
-import com.tf.service.InvoiceService;
-import com.tf.service.UserService;
-import com.tf.util.LiferayUtility;
-import com.tf.util.PaginationUtil;
-import com.tf.util.model.PaginationModel;
-
 import java.beans.PropertyEditorSupport;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -74,6 +36,43 @@ import org.springframework.web.portlet.ModelAndView;
 import org.springframework.web.portlet.bind.annotation.ActionMapping;
 import org.springframework.web.portlet.bind.annotation.RenderMapping;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
+
+import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.repository.model.FileEntry;
+import com.liferay.portal.kernel.repository.model.Folder;
+import com.liferay.portal.kernel.servlet.SessionErrors;
+import com.liferay.portal.kernel.servlet.SessionMessages;
+import com.liferay.portal.kernel.util.JavaConstants;
+import com.liferay.portal.kernel.util.MimeTypesUtil;
+import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.service.ServiceContextFactory;
+import com.liferay.portal.theme.ThemeDisplay;
+import com.liferay.portlet.documentlibrary.model.DLFileEntry;
+import com.liferay.portlet.documentlibrary.model.DLFolder;
+import com.liferay.portlet.documentlibrary.model.DLFolderConstants;
+import com.liferay.portlet.documentlibrary.service.DLAppServiceUtil;
+import com.mysql.jdbc.StringUtils;
+import com.tf.dto.InvoiceDTO;
+import com.tf.model.Company;
+import com.tf.model.Invoice;
+import com.tf.model.InvoiceDocument;
+import com.tf.persistance.util.CompanyTypes;
+import com.tf.persistance.util.Constants;
+import com.tf.persistance.util.InSuffcientFund;
+import com.tf.persistance.util.InvoiceStatus;
+import com.tf.persistance.util.ValidationUtil;
+import com.tf.service.CompanyService;
+import com.tf.service.InvoiceDocumentService;
+import com.tf.service.InvoiceService;
+import com.tf.service.UserService;
+import com.tf.util.LiferayUtility;
+import com.tf.util.PaginationUtil;
+import com.tf.util.model.PaginationModel;
 
 /**
  * This controller is responsible for request/response handling on Invoice
@@ -438,7 +437,7 @@ public class InvoiceController {
 					invoices =invoiceService.getInvoicesByFilter(
 										search, fromDate, toDate, value,
 										paginationModel.getStartIndex(), paginationModel.getPageSize());
-					noOfRecords=invoiceService.getInvoicesByFilterNumberCount(search, fromDate, toDate, value);
+					noOfRecords=invoiceService.getInvoicesByFilterCount(search, fromDate, toDate, value);
 				}else if(!StringUtils.isNullOrEmpty(search) || !StringUtils.isNullOrEmpty(value)){
 				invoices =
 					invoiceService.getInvoicesByFilter(
@@ -511,6 +510,8 @@ public class InvoiceController {
 				}
 				model.put("userType", Constants.SELLER_ADMIN);
 			}
+			
+			model.put("tradeURL",liferayUtility.getPortletURL(request, "scf-trade-portlet", "render", "createTrade", true));
 			model.put("value", value);
 			model.put("search", search);
 			model.put("from", from);
@@ -827,61 +828,7 @@ public class InvoiceController {
 		request.getPortletSession().removeAttribute("invalidnvoiceList");
 	}
 
-	/*@ActionMapping(params = "invoice=getInvoiceReport")
-	protected void getCashReport(
-		ModelMap model, ActionRequest request, ActionResponse response)
-		throws Exception {
-		List<Invoice> invoices =null;
-		DateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
-		Date fromDate = null;
-		Date toDate = null;
-		String search = ParamUtil.getString(request, "Search");
-		String value = ParamUtil.getString(request, "dateList");
-		String from = ParamUtil.getString(request, "fromDate");
-		String to = ParamUtil.getString(request, "toDate");
-		if (!StringUtils.isNullOrEmpty(from)) {
-			fromDate = formatter.parse(from);
-		}
-		if (!StringUtils.isNullOrEmpty(to)) {
-			toDate = formatter.parse(to);
-		}
-		Long noOfRecords = 0l;
-		PaginationModel paginationModel =
-			paginationUtil.preparePaginationModel(request);
-		if(validationUtil.isNumeric(search)){
-			invoices =invoiceService.getInvoicesByFilter(
-								search, fromDate, toDate, value,
-								paginationModel.getStartIndex(), paginationModel.getPageSize());
-			noOfRecords=Long.valueOf(invoices.size());
-		}else{
-		invoices =
-			invoiceService.getInvoicesByFilter(
-				search, fromDate, toDate, value,
-				paginationModel.getStartIndex(), paginationModel.getPageSize());
-		noOfRecords =
-			invoiceService.getInvoicesByFilterCount(
-				search, fromDate, toDate, value);
-		}
-		paginationUtil.setPaginationInfo(noOfRecords, paginationModel);
-		model.put("paginationModel", paginationModel);
-		model.put("invoices", invoices);
-		model.put("value", value);
-		model.put("search", search);
-		model.put("from", from);
-		model.put("to", to);
-		model.put("defaultRender", Boolean.TRUE);
-		if(liferayUtility.getPermissionChecker(request).isOmniadmin() ||
-						request.isUserInRole(Constants.WHITEHALL_ADMIN)){
-		model.put("userType", Constants.ADMIN);
-	}else if(request.isUserInRole(Constants.SCF_ADMIN)){
-		model.put("userType", Constants.SCF_ADMIN);
-	}else if(request.isUserInRole(Constants.SELLER_ADMIN)){
-		model.put("userType", Constants.SELLER_ADMIN);
-	}
-		model.put(ACTIVETAB, "invoicelist");
-		response.setRenderParameter("action", "invoiceRedirect");
-	}
-*/
+
 	protected Log _log =
 		LogFactoryUtil.getLog(InvoiceController.class.getName());
 }

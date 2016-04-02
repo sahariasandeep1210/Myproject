@@ -45,26 +45,26 @@
 											<c:when
 												test="${ userType eq 'Seller Admin' && invoice.status eq 'New'}">
 												<input type="checkbox" value="${invoice.id}"
-													name="invoiceId" date-attr="${invoice.financeDate}"
+													name="invoiceId" date-attr="${invoice.payment_date}"
 													scfcompany-attr="${invoice.scfCompany.id}"
 													<c:if test="${invoice.scfTrade.id ne null}">disabled="disabled"</c:if>>
 											</c:when>
 											<c:when
 												test="${userType eq 'Seller Admin' && invoice.status ne 'New'}">
 												<input type="checkbox" name="invoiceId"
-													date-attr="${invoice.financeDate}"
+													date-attr="${invoice.payment_date}"
 													scfcompany-attr="${invoice.scfCompany.id}"
 													disabled="disabled">
 											</c:when>
 											<c:when test="${invoice.status eq 'New'}">
 												<input type="checkbox" name="invoiceId"
-													date-attr="${invoice.financeDate}"
+													date-attr="${invoice.payment_date}"
 													scfcompany-attr="${invoice.scfCompany.id}"
 													disabled="disabled">
 											</c:when>
 											<c:otherwise>
 												<input type="checkbox" value="${invoice.id}"
-													name="invoiceId" date-attr="${invoice.financeDate}"
+													name="invoiceId" date-attr="${invoice.payment_date}"
 													scfcompany-attr="${invoice.scfCompany.id}"
 													<c:if test="${invoice.scfTrade.id ne null}">disabled="disabled"</c:if>>
 											</c:otherwise>
@@ -83,13 +83,13 @@
 								<td>
 								${invoice.status}
 								<c:if test="${invoice.status ne 'New'}">
-								(${invoice.scfTrade.scfId})
+								 (<a class="underline" href ="${tradeURL}&tradeID=${invoice.scfTrade.id}">${invoice.scfTrade.scfId} </a>)
 								</c:if>
 								</td>
 							</tr>
 						</c:forEach>
 					</c:when>
-					<c:when test="${fn:length(invoices) gt 0}">
+					<%-- <c:when test="${fn:length(invoices) gt 0}">
 						<c:forEach items="${invoices}" var="invoice">
 							<tr>
 							<c:if test="${defaultRender}">
@@ -133,12 +133,12 @@
 								<td>
 								    ${invoice.status}
 								     <c:if test="${invoice.status ne 'New'}">
-								           (${invoice.scfTrade.scfId})
+								           (<a href ="${tradeURL}&tradeID=${invoice.scfTrade.id}">${invoice.scfTrade.scfId} </a>)
 								      </c:if>
 								</td>
 							</tr>
 						</c:forEach>
-					</c:when>
+					</c:when> --%>
 					<c:otherwise>
 						<tr>
 							<td colspan="6" align="center">No records found!</td>

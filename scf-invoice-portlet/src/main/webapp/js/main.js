@@ -125,16 +125,19 @@ $(document).ready(function() {
 	$("#requestFinance").click(function() {
 		var scfCompany = []; 
 		var invoices = []; 
+		var paymentDate = []; 
 		
 		 $("#errormsg").hide();
 		 $("#errormsg").text("");
 		 
 		 $("#invoicelist input:checkbox:checked").each(function () {
-			 scfCompany.push($(this).attr("scfcompany-attr"));		       
+			 scfCompany.push($(this).attr("scfcompany-attr"));	
+			 paymentDate.push($(this).attr("date-attr"));	
 		    });
 		 
 		 var uniquescmp = scfCompany.unique();
-		 if(uniquescmp.length==1 ){
+		 var uniquePaymentDate=paymentDate.unique();
+		 if(uniquescmp.length==1  &&  uniquePaymentDate.length==1){
 			 var url = $(this).attr('data-url');
 			 $("#invoicelist input:checkbox:checked").each(function() {
 					invoices.push($(this).val());
@@ -142,8 +145,11 @@ $(document).ready(function() {
 			 $("#invoices").val(invoices.toString()); 
 			document.forms["invoicelist"].action = url;
 			document.forms["invoicelist"].submit();
-		 }else{
+		 }else if(uniquescmp.length !=1 ){
 			 $("#errormsg").text("All the invoices in a trade must be from same Invoice company");
+			 $("#errormsg").show();	
+		 }else if(uniquePaymentDate.length !=1 ){
+			 $("#errormsg").text("All the invoices in a trade must be having same payment date");
 			 $("#errormsg").show();	
 		 }
 		
