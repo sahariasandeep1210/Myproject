@@ -19,7 +19,9 @@ import javax.persistence.Table;
 public class WhiteHallTransaction implements  Serializable {	
 
 
-	private static final long serialVersionUID = -5026508393829079581L;
+	private static final long serialVersionUID = 3945625843117396309L;
+	
+	
 
 	@Id
     @Column(name="id")
@@ -47,6 +49,11 @@ public class WhiteHallTransaction implements  Serializable {
 	
 	@Column(name="company_type") 
 	private String companyType;
+	
+	@Column(name="scf_trade_id") 
+	private String scfTradeId;
+	
+	
 	
 	public WhiteHallTransaction() {
 		
@@ -120,16 +127,24 @@ public class WhiteHallTransaction implements  Serializable {
 	}
 
 
-	@Override
-	public String toString() {
-		return "WhiteHallTransaction [id=" + id + ", amount=" + amount
-				+ ", transcationType=" + transcationType + ", transcationDate="
-				+ transcationDate + ", tradeID=" + tradeID + ", reference="
-				+ reference + ", companyName=" + company + ", companyType="
-				+ companyType + "]";
+	
+	public String getScfTradeId() {	
+		return scfTradeId;
+	}
+
+	
+	public void setScfTradeId(String scfTradeId) {	
+		this.scfTradeId = scfTradeId;
 	}
 
 
+	@Override
+	public String toString() {
+
+		return "WhiteHallTransaction [id=" + id + ", amount=" + amount + ", transcationType=" + transcationType + ", transcationDate=" +
+			transcationDate + ", tradeID=" + tradeID + ", reference=" + reference + ", company=" + company + ", companyType=" + companyType +
+			", scfTradeId=" + scfTradeId + "]";
+	}
 	
 	
 	

@@ -177,13 +177,18 @@ public class WhiteHallSettingController {
 		String settingmodel=null;
 		try {
 		SellerSetting sellerList = settingService.getSellerSetting(userSelection);
-		SellerSetting cloneSellerList = new SellerSetting();
-		cloneSellerList.setId(sellerList.getId());
-		cloneSellerList.setSellerFinFee(sellerList.getSellerFinFee());
-		cloneSellerList.setSellerTransFee(sellerList.getSellerTransFee());
-		Gson gson=new Gson();
-	    settingmodel=gson.toJson(cloneSellerList);
-	    response.getWriter().println(settingmodel);		
+		if(sellerList!=null){
+			SellerSetting cloneSellerList = new SellerSetting();
+			cloneSellerList.setId(sellerList.getId());
+			cloneSellerList.setSellerFinFee(sellerList.getSellerFinFee());
+			cloneSellerList.setSellerTransFee(sellerList.getSellerTransFee());
+			Gson gson=new Gson();
+		    settingmodel=gson.toJson(cloneSellerList);
+		    response.getWriter().println(settingmodel);		
+		}else{
+			 response.getWriter().println("");		
+		}
+	   
 		} catch (Exception e) {
 			_log.error("Error occured while fetchSettings"+e.getMessage());
 			response.setProperty(ResourceResponse.HTTP_STATUS_CODE, "400");

@@ -536,3 +536,6 @@ CREATE TABLE tf_seller_scfcompany_mapping (
 ALTER TABLE tf_seller_scfcompany_mapping  ADD status    VARCHAR(100) DEFAULT NULL;
 ALTER TABLE tf_seller_scfcompany_mapping  ADD update_date    DATETIME DEFAULT NULL;
 ALTER TABLE tf_seller_scfcompany_mapping  ADD comment     VARCHAR(300) DEFAULT NULL;
+
+ALTER TABLE tf_whitehall_transaction  ADD scf_trade_id VARCHAR(50) DEFAULT NULL;
+

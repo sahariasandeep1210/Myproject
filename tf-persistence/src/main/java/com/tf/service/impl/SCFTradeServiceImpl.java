@@ -110,6 +110,7 @@ public class SCFTradeServiceImpl implements SCFTradeService {
 				whtTransaction.setReference("Investors has paid the money to whitehall");
 				whtTransaction.setTranscationDate(new Date());
 				whtTransaction.setTradeID(scfTrade.getId());
+				whtTransaction.setScfTradeId(scfTrade.getScfId());
 				whtTransaction.setTranscationType(TradeStatus.INVESTOR_PAID.getValue());
 				whiteHallTransactionDAO.saveEntity(whtTransaction);
 				tradeUpdate = Boolean.TRUE;
@@ -122,6 +123,7 @@ public class SCFTradeServiceImpl implements SCFTradeService {
 				whtTransaction.setReference("Supplier paid by Whitehall Admin");
 				whtTransaction.setTranscationDate(new Date());
 				whtTransaction.setTradeID(scfTrade.getId());
+				whtTransaction.setScfTradeId(scfTrade.getScfId());
 				whtTransaction.setTranscationType(TradeStatus.SUPPLIER_PAID.getValue());
 				whiteHallTransactionDAO.saveEntity(whtTransaction);
 				tradeUpdate = Boolean.TRUE;
@@ -136,6 +138,7 @@ public class SCFTradeServiceImpl implements SCFTradeService {
 				whtTransaction.setReference("SCF Company Paid to Whitehall Admin");
 				whtTransaction.setTranscationDate(new Date());
 				whtTransaction.setTradeID(scfTrade.getId());
+				whtTransaction.setScfTradeId(scfTrade.getScfId());
 				whtTransaction.setTranscationType(TradeStatus.SCF_REPAYMENT.getValue());
 				whiteHallTransactionDAO.saveEntity(whtTransaction);
 				tradeUpdate = Boolean.TRUE;
@@ -150,6 +153,7 @@ public class SCFTradeServiceImpl implements SCFTradeService {
 				whtTransaction.setReference("Investor has been repaid by whitehall");
 				whtTransaction.setTranscationDate(new Date());
 				whtTransaction.setTradeID(scfTrade.getId());
+				whtTransaction.setScfTradeId(scfTrade.getScfId());
 				whtTransaction.setTranscationType(TradeStatus.INVESTOR_REPAID.getValue());
 				whiteHallTransactionDAO.saveEntity(whtTransaction);
 
@@ -159,6 +163,7 @@ public class SCFTradeServiceImpl implements SCFTradeService {
 				whtTransactionInvProfit.setReference("Investor profit has been paid  by whitehall");
 				whtTransactionInvProfit.setTranscationDate(new Date());
 				whtTransactionInvProfit.setTradeID(scfTrade.getId());
+				whtTransactionInvProfit.setScfTradeId(scfTrade.getScfId());
 				whtTransactionInvProfit.setTranscationType(TranscationStatus.INVETOR_PROFIT.getValue());
 				whiteHallTransactionDAO.saveEntity(whtTransactionInvProfit);
 				tradeUpdate = Boolean.TRUE;
@@ -172,6 +177,7 @@ public class SCFTradeServiceImpl implements SCFTradeService {
 				whtTransactionSellerFee.setReference("WhiteHall Fees from Seller");
 				whtTransactionSellerFee.setTranscationDate(new Date());
 				whtTransactionSellerFee.setTradeID(scfTrade.getId());
+				whtTransactionSellerFee.setScfTradeId(scfTrade.getScfId());
 				whtTransactionSellerFee.setTranscationType(TranscationStatus.WHITEHALL_FEE.getValue());
 				whiteHallTransactionDAO.saveEntity(whtTransactionSellerFee);
 				
@@ -181,6 +187,7 @@ public class SCFTradeServiceImpl implements SCFTradeService {
 				whtTransactionInvProfit.setReference("Whitehall profit from Investor");
 				whtTransactionInvProfit.setTranscationDate(new Date());
 				whtTransactionInvProfit.setTradeID(scfTrade.getId());
+				whtTransactionInvProfit.setScfTradeId(scfTrade.getScfId());
 				whtTransactionInvProfit.setTranscationType(TranscationStatus.WHITEHALL_PROFIT.getValue());
 				whiteHallTransactionDAO.saveEntity(whtTransactionInvProfit);
 				
