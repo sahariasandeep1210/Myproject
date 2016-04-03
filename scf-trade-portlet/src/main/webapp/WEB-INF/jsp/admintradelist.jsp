@@ -80,14 +80,14 @@
 									 <td class="underline"><a href="javascript:void(0);"
                                         onclick="window.location.href='${createURL}&tradeID=${trade.id}'">${trade.scfId}</a></td>
 									<td><strong>${trade.company.name} ( ${trade.duration} Days )</strong></td>
-									<td>${trade.tradeAmount}</td>
+									<td class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${trade.tradeAmount}"  /></td>
 									<td></td>
-									<td>${trade.investorTotalGross}</td>
-									<td>${trade.whitehallTotalShare}</td>
-									<td>${trade.investorTotalProfit}</td>
-									<td>${trade.sellerFees + trade.sellerTransFee}</td>
-									<td>${trade.whitehallTotalProfit}</td>
-									<td>${trade.sellerNetAllotment}</td>	
+									<td class="rightalign" ><fmt:formatNumber type="number" maxFractionDigits="3" value="${trade.investorTotalGross}"  /></td>
+									<td class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${trade.whitehallTotalShare}"  /></td>
+									<td class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${trade.investorTotalProfit}"  /></td>
+									<td class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${trade.sellerFees + trade.sellerTransFee}"  /></td>
+									<td class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${trade.whitehallTotalProfit}"  /></td>
+									<td class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${trade.sellerNetAllotment}"  /></td>	
 									<td>${trade.status}</td>						
 								</tr>
 								<c:if test="${fn:length(trade.allotments) gt 0}">
@@ -96,11 +96,11 @@
 											<td></td>
 											<td></td>
 											<td>${allotment.investorPortfolio.investor.company.name}</td> 
-											<td>${allotment.allotmentAmount}</td>
-											<td>${allotment.marketDiscount}</td>
-											<td>${allotment.investorGrossProfit}</td>
-											<td>${allotment.whitehallProfitShare}</td>
-											<td>${allotment.investorNetProfit}</td>
+											<td class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${allotment.allotmentAmount}"  /></td>
+											<td class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${allotment.marketDiscount}"  /></td>
+											<td class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${allotment.investorGrossProfit}"  /></td>
+											<td class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${allotment.whitehallProfitShare}"  /></td>
+											<td class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${allotment.investorNetProfit}"  /></td>
 											<td></td>
 											<td></td>
 											<td></td>

@@ -191,7 +191,7 @@ public class SCFTradeController {
 						search, fromDate, toDate, value, paginationModel.getStartIndex(), paginationModel.getPageSize());
 				noOfRecords = scfTradeService.getAdminTradeListWithSearchCount(search, fromDate, toDate, value);
 			}
-			model.put("scftrades", scftrades);
+			
 			model.put("search", search);
 			model.put("from", from);
 			model.put("to", to);
@@ -234,7 +234,7 @@ public class SCFTradeController {
 					scfTradeService.getScfAdminTradeListWithSearch(
 						companyId, search, fromDate, toDate, value, paginationModel.getStartIndex(), paginationModel.getPageSize());
 				noOfRecords = scfTradeService.getScfAdminTradeListWithSearchCount(companyId, search, fromDate, toDate, value);
-				model.put("scftrades", scftrades);
+				
 			}
 			model.put("search", search);
 			model.put("from", from);
@@ -258,11 +258,11 @@ public class SCFTradeController {
 			scftrades = scfTradeService.getScfTradeListWithSearch(search, regNum, paginationModel.getStartIndex(), paginationModel.getPageSize());
 			noOfRecords = scfTradeService.getScfTradeListWithSearchCount(search, regNum);
 			}
-			model.put("scftrades", scftrades);
 			model.put("search", search);
 			viewName = "sellertradelist";
 		}
-		model.put("trades", scftrades);
+		model.put("scftrades", scftrades);
+		//model.put("trades", scftrades);
 		paginationUtil.setPaginationInfo(noOfRecords, paginationModel);
 		System.out.println("paginationsss:" + paginationModel);
 		model.put("paginationModel", paginationModel);

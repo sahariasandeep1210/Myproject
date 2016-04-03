@@ -649,3 +649,8 @@ table.tablesorter thead tr th {
 .underline {
     text-decoration: underline !important;
 }
+
+
+.rightalign {
+	text-align: right !important;
+}

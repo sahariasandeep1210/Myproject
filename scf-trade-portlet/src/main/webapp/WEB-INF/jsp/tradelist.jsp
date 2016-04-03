@@ -68,51 +68,7 @@
 					</tr>
 				</thead>
 				<tbody>						
-					<c:choose>
-						<c:when test="${fn:length(trades) gt 0}">
-							<tr>
-								<td></td>
-								<td></td>
-								<td></td>
-								<td></td>
-								<td></td>
-								<td>${totalTradeAmount}</td>
-								<td></td>
-								<td></td>		
-							</tr>
-							<c:forEach items="${trades}" var="trade">
-								<tr>
-									<%-- <td>${trade.scfTrade}</td> --%>
-									<td class="underline"><a href="javascript:void(0);"
-										onclick="window.location.href='${createURL}&tradeID=${trade.id}'">${trade.scfId}</a></td>
-									<td>${trade.company.name}</td>
-									<td>${trade.duration}</td>
-									<td><fmt:formatDate pattern="dd-MM-yyyy"
-											value="${trade.openingDate}" /></td>
-									<td><fmt:formatDate pattern="dd-MM-yyyy"
-											value="${trade.closingDate}" /></td>
-									<td>${trade.tradeAmount}<a href="javascript:void(0);"
-										data-url="${breakdownURL}" class="breakdown"
-										tradeID="${trade.id}"
-										style="float: right; vertical-align: middle; font-size: 20px"><i
-											id="${trade.id}_icon" class="fa fa-plus-square"></i> </a></td>
-									<td>${trade.status}</td>
-									<td><c:choose>
-											<c:when test="${fn:length(trade.invoices) gt 1}">
-												<img
-													src="${themeDisplay.pathThemeImages}/folder-full-accept-icon_24.png" />
-											</c:when>
-											<c:otherwise>
-												<img
-													src="${themeDisplay.pathThemeImages}/folder-full-delete-icon_24.png" />
-											</c:otherwise>
-										</c:choose></td>
-								</tr>
-								<tr class="historyRow" id="${trade.id}_row">
-									<td colspan=7></td>
-								</tr>
-							</c:forEach>
-						</c:when>
+					<c:choose>						
 						<c:when test="${fn:length(scftrades) gt 0}">
 							<c:forEach items="${scftrades}" var="trade">
 								<tr>
@@ -121,11 +77,9 @@
 										onclick="window.location.href='${createURL}&tradeID=${trade.id}'">${trade.scfId}</a></td>
 									<td>${trade.company.name}</td>
 									<td>${trade.duration}</td>
-									<td><fmt:formatDate pattern="dd-MM-yyyy"
-											value="${trade.openingDate}" /></td>
-									<td><fmt:formatDate pattern="dd-MM-yyyy"
-											value="${trade.closingDate}" /></td>
-									<td>${trade.tradeAmount}<a href="javascript:void(0);"
+									<td><fmt:formatDate pattern="dd-MM-yyyy" value="${trade.openingDate}" /></td>
+									<td><fmt:formatDate pattern="dd-MM-yyyy" value="${trade.closingDate}" /></td>
+									<td class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${trade.tradeAmount}"  /><a href="javascript:void(0);"
 										data-url="${breakdownURL}" class="breakdown"
 										tradeID="${trade.id}"
 										style="float: right; vertical-align: middle; font-size: 20px"><i
