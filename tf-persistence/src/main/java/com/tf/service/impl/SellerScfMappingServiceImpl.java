@@ -17,14 +17,18 @@ public class SellerScfMappingServiceImpl implements SellerScfMappingService{
 	@Autowired
 	 protected SellerScfMappingDAO sellerScfMappingDAO;
 
-	public List<SellerScfCompanyMapping> getSellerScfMapping(int startIndex, int pageSize){
-		return sellerScfMappingDAO.getSellerScfMapping(startIndex, pageSize);
+	public List<SellerScfCompanyMapping> getSellerScfMapping(int startIndex,
+			int pageSize, Long sellerComapanyId, Long scfCompanyId,String status[]) {
+		return sellerScfMappingDAO.getSellerScfMapping(startIndex, pageSize,sellerComapanyId,scfCompanyId,status);
 	}
 	public Long getSellerScfMappingCount(){
 		return sellerScfMappingDAO.getSellerScfMappingCount();
 	}
 	public void saveSeller(SellerScfCompanyMapping sellerScfMapping){
 		sellerScfMappingDAO.saveSeller(sellerScfMapping);
+	}
+	public void updateStatus(Long id, String status,String comment) {
+		sellerScfMappingDAO.updateStatus(id, status,comment);
 	}
 	
 }

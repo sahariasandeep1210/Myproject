@@ -8,8 +8,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Criteria;
+import org.hibernate.HibernateException;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,7 +25,7 @@ public class SellerScfMappingDAOImpl extends BaseDAOImpl<SellerScfCompanyMapping
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<SellerScfCompanyMapping> getSellerScfMapping(int startIndex, int pageSize) {
+	public List<SellerScfCompanyMapping> getSellerScfMapping(int startIndex, int pageSize,Long sellerComapanyId,Long scfCompanyId,String status[]) {
 
 		_log.debug("Inside getSellerScfMapping  ");
 		try {
@@ -31,6 +34,16 @@ public class SellerScfMappingDAOImpl extends BaseDAOImpl<SellerScfCompanyMapping
 				Session session = sessionFactory.getCurrentSession();
 				Criteria criteria =
 					session.createCriteria(SellerScfCompanyMapping.class);
+				if(sellerComapanyId!=null && sellerComapanyId>0){
+					criteria.createAlias("sellerCompany","sc");
+					criteria.add(Restrictions.eq("sc.id", sellerComapanyId));
+				}
+				if(scfCompanyId!=null && scfCompanyId!=null){
+					criteria.add(Restrictions.eq("scfCompany", scfCompanyId));
+				}
+				if(status!=null){
+					criteria.add(Restrictions.in("status", status));
+				}
 					results = (List<SellerScfCompanyMapping>) criteria.list();
 			
 			_log.debug("getSellerScfMapping successful, result size: " + results.size());
@@ -69,6 +82,21 @@ public class SellerScfMappingDAOImpl extends BaseDAOImpl<SellerScfCompanyMapping
 		}
 		
 		
+	}
+
+	public void updateStatus(Long id, String status,String comment ) {
+		_log.debug("Inside updateStatus ");
+		try {
+			Session session = sessionFactory.getCurrentSession();
+			Query query=session.createSQLQuery("UPDATE tf_seller_scfcompany_mapping SET status=:status,comment=:comment,update_date=NOW() WHERE id=:id");
+			query.setParameter("status", status);
+			query.setParameter("id", id);
+			query.setParameter("comment", comment);
+			query.executeUpdate();
+		} catch (HibernateException e) {
+			_log.error("updateStatus failed",e);
+			throw e;
+		}
 	}
 	
 

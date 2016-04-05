@@ -87,6 +87,20 @@
 					</div>
 				</div>
 				</c:if>
+				<c:if test="${userType eq 'Seller Admin'}">
+				     <div class="accordion-group">
+					<div class="accordion-heading">
+						<a class="accordion-toggle" data-toggle="collapse"
+							data-parent="#accordion2" href="#collapseFour"> SCF Company
+							Information </a>
+					</div>
+					<div id="collapseFour" class="accordion-body collapse">
+						<div class="accordion-inner">
+							<%@include file="scfcompanylist.jsp"%>						
+						</div>
+					</div>
+				</div>
+				</c:if>
 			</div>
 		<c:choose>
 			<c:when test="${cmpType eq 'Seller' && userType eq 'SCF Company Admin' }">

@@ -1,10 +1,15 @@
 
+<%@page import="com.liferay.portal.kernel.portlet.LiferayWindowState"%>
 <%@include file="init.jsp"%>
-
+<%@ taglib uri="http://liferay.com/tld/portlet" prefix="liferay-portlet" %>
 
 <input type="hidden" value="${dashboardModel.investmentCap}" id="investmentCap" />
 <input type="hidden" value="${dashboardModel.availToInvest}" id="availToInvest" />
 <input type="hidden" value="${dashboardModel.amountInvested}" id="amountInvested" />
+
+<liferay-portlet:renderURL portletName="tfcompanyportlet_WAR_tfadminportlet"  var="myTaskURL" varImpl="myTaskRender" windowState="<%=LiferayWindowState.NORMAL.toString()%>"  plid="10967">
+    <liferay-portlet:param name="render" value="myTaskRender"/>
+</liferay-portlet:renderURL>
 
 <div class="container-fluid">
 	<div class="row-fluid">
@@ -14,7 +19,7 @@
 
 				<div class="widget-header">
 					<i class="icon-star" style="margin-left: 10px !important;"></i>
-					<h3>Quick Stat</h3>
+					<h3>Quick Start</h3>
 				</div>
 				<!-- /widget-header -->
 			<div class="widget-content">
@@ -81,10 +86,13 @@
 							<i class="fa fa-money"></i>
 							<span class="shortcut-label">Trades</span>	
 						</a>
-						
 						<a href="javascript:;" class="shortcut">
 							<i class="fa fa-bar-chart"></i>
 							<span class="shortcut-label">Reports</span>	
+						</a>
+						<a href="${myTaskURL}" class="shortcut">
+							<i class="fa fa-tasks"></i>
+							<span class="shortcut-label">My Task</span>	
 						</a>
 									
 					</div> <!-- /shortcuts -->	

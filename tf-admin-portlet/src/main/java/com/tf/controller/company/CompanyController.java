@@ -25,11 +25,13 @@ import com.tf.model.SellerScfCompanyMapping;
 import com.tf.model.User;
 import com.tf.persistance.util.CompanyStatus;
 import com.tf.persistance.util.Constants;
+import com.tf.util.LiferayUtility;
 import com.tf.util.OfficerDTO;
 import com.tf.util.model.PaginationModel;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -103,19 +105,26 @@ public class CompanyController extends BaseController {
 		List<User> users;
 		List<Company> companyList = new ArrayList<Company>();
 		List<SellerScfCompanyMapping> sellerScfMappings=null; 
+		List<Company> scfFinalCompanyList=null;
 		List<Company> companies=null;
+		long sellerId=0l;
+		long scfCompanyId=0l;
 		try {
 			users = new ArrayList<User>();
 			if (companyID != 0) {
 				company = companyService.findById(companyID);
 				users = userService.findUserByCompanyId(companyID);
-				company.setOfficers(new LinkedHashSet<Officer>(officerService
-						.findOfficersByCompanyId(companyID)));
-				model.put("cmpType", companyTypeMap.get(Long.valueOf(company
-						.getCompanyType())));
+				company.setOfficers(new LinkedHashSet<Officer>(officerService.findOfficersByCompanyId(companyID)));
+				model.put("cmpType", companyTypeMap.get(Long.valueOf(company.getCompanyType())));
 			}
 			if(request.isUserInRole(Constants.SCF_ADMIN)){
 				model.put("userType", Constants.SCF_ADMIN);
+				sellerId=ParamUtil.getLong(request, "sellerCompany");
+			}
+			if(request.isUserInRole(Constants.SELLER_ADMIN)){
+				model.put("userType", Constants.SELLER_ADMIN);
+				scfCompanyId=ParamUtil.getLong(request, "scfCompany");
+				
 			}
 			
 			ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
@@ -123,22 +132,49 @@ public class CompanyController extends BaseController {
 				long companyId = userService.getCompanybyUserID(themeDisplay.getUserId()).getId();
 				model.put("companyId", companyId);
 			}
-			long sellerId=ParamUtil.getLong(request, "sellerCompany");
-			if(sellerId>0){
-			long compId = userService.getCompanybyUserID(themeDisplay.getUserId()).getId();
-			Company comp =companyService.findById(sellerId);
-			SellerScfCompanyMapping sellerScfMapping = new SellerScfCompanyMapping();
-			sellerScfMapping.setScfCompany(compId);
-			sellerScfMapping.setSellerCompany(comp);
-			sellerScfMappingService.saveSeller(sellerScfMapping);
+			/**
+			 * When the SCF_Admin gets login.
+			 * Adding the seller
+			 */
+			if(sellerId>0 && request.isUserInRole(Constants.SCF_ADMIN) ){
+				long compId = userService.getCompanybyUserID(themeDisplay.getUserId()).getId();
+				Company comp =companyService.findById(sellerId);
+				SellerScfCompanyMapping sellerScfMapping = new SellerScfCompanyMapping();
+				sellerScfMapping.setScfCompany(compId);
+				sellerScfMapping.setSellerCompany(comp);
+				sellerScfMapping.setStatus(Constants.STATUS.APPROVED.toString());
+				sellerScfMapping.setUpdateDate(Calendar.getInstance().getTime());
+				sellerScfMappingService.saveSeller(sellerScfMapping);
+			}
+			/**
+			 * When the Seller gets login.
+			 * Adding the SCF_Company
+			 */
+			else if(scfCompanyId>0 && request.isUserInRole(Constants.SELLER_ADMIN)){
+				long compId = userService.getCompanybyUserID(themeDisplay.getUserId()).getId();
+				Company comp =companyService.findById(compId);
+				SellerScfCompanyMapping sellerScfMapping = new SellerScfCompanyMapping();
+				sellerScfMapping.setScfCompany(scfCompanyId);
+				sellerScfMapping.setSellerCompany(comp);
+				sellerScfMapping.setStatus(Constants.STATUS.PENDING.toString());
+				sellerScfMapping.setComment("Member Requetsed");
+				sellerScfMapping.setUpdateDate(Calendar.getInstance().getTime());
+				sellerScfMappingService.saveSeller(sellerScfMapping);
 			}
 			Long noOfRecords = 0l;
-			PaginationModel paginationModel = paginationUtil
-					.preparePaginationModel(request);
-			sellerScfMappings=sellerScfMappingService.getSellerScfMapping(paginationModel.getStartIndex(), paginationModel.getPageSize());
+			PaginationModel paginationModel = paginationUtil.preparePaginationModel(request);
+			if(request.isUserInRole(Constants.SCF_ADMIN)){
+				sellerScfMappings=sellerScfMappingService.getSellerScfMapping(paginationModel.getStartIndex(), paginationModel.getPageSize(),null,companyID,null);
+				companyList = companyService.getCompanies("4");
+				companies=prepareCompanyList(companyList,sellerScfMappings,Constants.SCF_ADMIN);
+			}else{
+				sellerScfMappings=sellerScfMappingService.getSellerScfMapping(paginationModel.getStartIndex(), paginationModel.getPageSize(),companyID,null,null);
+				companyList = companyService.getCompanies("5");
+				companies=prepareCompanyList(companyList,sellerScfMappings,Constants.SELLER_ADMIN);
+				sellerScfMappings=prepareCompanyListForListing(sellerScfMappings);
+			}
 			noOfRecords=sellerScfMappingService.getSellerScfMappingCount();
-			companyList = companyService.getCompanies("4");
-			companies=prepareCompanyList(companyList,sellerScfMappings);
+		
 			paginationUtil.setPaginationInfo(noOfRecords, paginationModel);
 			model.put("companies", companies);
 			model.put("sellerScfMappings", sellerScfMappings);
@@ -148,8 +184,7 @@ public class CompanyController extends BaseController {
 		} catch (Exception e) {
 			e.printStackTrace();
 			SessionErrors.add(request, "default-error-message");
-			_log.error("CompanyController.createCompany() - error occured while rendering add company screen"
-					+ e.getMessage());
+			_log.error("CompanyController.createCompany() - error occured while rendering add company screen"+ e.getMessage());
 		}
 		model.put("companyModel", company);
 		model.put("orgTypeMap", orgTypeMap);
@@ -158,16 +193,63 @@ public class CompanyController extends BaseController {
 		return new ModelAndView("createcompany", model);
 	}
 	
-	private List<Company> prepareCompanyList(List<Company> companyList,
-		List<SellerScfCompanyMapping> sellerScfMappings) {
-        for(SellerScfCompanyMapping seller: sellerScfMappings){
-             Company company =seller.getSellerCompany();
-		if(company.getId()==seller.getSellerCompany().getId()){
-			companyList.remove(company);	
+	
+	
+	@RenderMapping(params = "render=myTaskRender")
+	protected ModelAndView renderCreateCompany(
+			RenderRequest request, RenderResponse response) throws Exception {
+		long companyID=liferayUtility.getWhitehallCompanyID(request);
+		List<SellerScfCompanyMapping> sellerScfMappings=null; 
+		PaginationModel paginationModel = paginationUtil.preparePaginationModel(request);
+		sellerScfMappings = sellerScfMappingService.getSellerScfMapping(
+				paginationModel.getStartIndex(), paginationModel.getPageSize(),null, companyID, new String[]{Constants.STATUS.PENDING.toString()});
+		ModelMap model=new ModelMap();
+		model.put("sellerScfMappings", sellerScfMappings);
+		return new ModelAndView("mytask", model);
+	}
+	
+
+	@ActionMapping(params = "action=taskApproveReject")
+	public void closeSessionValue(ActionRequest request,ActionResponse response, ModelMap modelMap) throws IOException {
+		String id=request.getParameter("id");
+		String status=request.getParameter("status");
+		String comment=request.getParameter("comment");
+		if(org.apache.commons.lang.StringUtils.isNotEmpty(status) && org.apache.commons.lang.StringUtils.isNotEmpty(id)){
+			boolean statusBoolean=Boolean.parseBoolean(status);
+			sellerScfMappingService.updateStatus(Long.parseLong(id), statusBoolean?Constants.STATUS.APPROVED.toString():Constants.STATUS.REJECTED.toString(),comment);
+			response.sendRedirect(liferayUtility.getPortletURL(request, "tf-company-portlet", "render", "myTaskRender", true));
 		}
-}	
-	return companyList;		
-}
+	}
+	
+	private List<Company> prepareCompanyList(List<Company> companyList,
+		  List<SellerScfCompanyMapping> sellerScfMappings,String companyType){
+		  Company company=null;
+		  for(SellerScfCompanyMapping seller: sellerScfMappings){
+			  if(companyType.equalsIgnoreCase(Constants.SELLER_ADMIN)){
+				  List<Company> companies =companyService.getCompaniesById(seller.getScfCompany());
+				  if(companies!=null && companies.size()>0){
+					  company=companies.get(0);
+					  if(company.getId()==seller.getScfCompany()){
+							 companyList.remove(company);	
+						 }	  
+				  }
+             }else{
+            	 company =seller.getSellerCompany();
+            	 if(company.getId()==seller.getSellerCompany().getId()){
+					 companyList.remove(company);	
+				 }
+             }
+	        }	
+		    return companyList;		
+	   }
+	
+	private List<SellerScfCompanyMapping> prepareCompanyListForListing(List<SellerScfCompanyMapping> sellerScfMappings){
+			  for(SellerScfCompanyMapping seller: sellerScfMappings){
+					  List<Company> companies =companyService.getCompaniesById(seller.getScfCompany());
+					  seller.setSellerCompany(companies.get(0));
+		        }	
+			    return sellerScfMappings;		
+		   }
 	
 	/*@RenderMapping(params = "action=getSeller")
 	public String getScfAdminTrade(ModelMap model, RenderRequest request, RenderResponse response)
