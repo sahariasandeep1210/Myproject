@@ -320,6 +320,8 @@ $(document).ready(
 				document.forms["scfTradeList"].action = url;
 				document.forms["scfTradeList"].submit();
 			});
+			$("#updteTradeForm .ui-datepicker-trigger").remove();
+
 
 		});
 

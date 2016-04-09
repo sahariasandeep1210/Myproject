@@ -35,7 +35,12 @@ public class SCFTradeDTO implements Serializable {
 	private String insuranceDocName;
 	private String insuranceDocURL;
 	
+	private String promisoryDocName;
+	private String promisoryDocURL;
+	
 	private String invoiceIds;
+	private MultipartFile promisoryDocument;
+	private String scfId;
 	
 	public SCFTradeDTO() {
 		this.scfTrade="Yes";
@@ -185,6 +190,41 @@ public class SCFTradeDTO implements Serializable {
 		this.insuranceDocURL = insuranceDocURL;
 	}
 
+	
+	public MultipartFile getPromisoryDocument() {
+		return promisoryDocument;
+	}
+
+	public void setPromisoryDocument(MultipartFile promisoryDocument) {
+		this.promisoryDocument = promisoryDocument;
+	}
+
+	
+	public String getScfId() {
+		return scfId;
+	}
+
+	public void setScfId(String scfId) {
+		this.scfId = scfId;
+	}
+	
+
+	public String getPromisoryDocName() {
+		return promisoryDocName;
+	}
+
+	public void setPromisoryDocName(String promisoryDocName) {
+		this.promisoryDocName = promisoryDocName;
+	}
+
+	public String getPromisoryDocURL() {
+		return promisoryDocURL;
+	}
+
+	public void setPromisoryDocURL(String promisoryDocURL) {
+		this.promisoryDocURL = promisoryDocURL;
+	}
+
 	@Override
 	public String toString() {
 		return "SCFTradeDTO [id=" + id + ", scfTrade=" + scfTrade
@@ -198,9 +238,15 @@ public class SCFTradeDTO implements Serializable {
 				+ ", insuranceDocument=" + insuranceDocument
 				+ ", promisoryNote=" + promisoryNote + ", insuranceDocName="
 				+ insuranceDocName + ", insuranceDocURL=" + insuranceDocURL
-				+ ", invoiceIds=" + invoiceIds + "]";
+				+ ", promisoryDocName=" + promisoryDocName
+				+ ", promisoryDocURL=" + promisoryDocURL + ", invoiceIds="
+				+ invoiceIds + ", promisoryDocument=" + promisoryDocument
+				+ ", scfId=" + scfId + "]";
 	}
 
 	
+
+	
+
 
 }

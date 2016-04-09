@@ -115,6 +115,18 @@ public class SCFTrade  implements Serializable{
 	@Column(name="insurance_doc_type")
 	private String insuranceDocType;
 	
+	@Column(name="promisory_doc_id")
+	private Long promisoryDocId;
+	
+	@Column(name="promisory_doc_name")
+	private String promisoryDocName;
+	
+	@Column(name="promisory_doc_url")
+	private String promisoryDocUrl;
+	
+	@Column(name="promisory_doc_type")
+	private String promisoryDocType;
+	
 	@Column(name="promisory_note")
 	private String promisoryNote;
 	
@@ -388,6 +400,38 @@ public class SCFTrade  implements Serializable{
 	}
 	
 	
+	public Long getPromisoryDocId() {
+		return promisoryDocId;
+	}
+
+	public void setPromisoryDocId(Long promisoryDocId) {
+		this.promisoryDocId = promisoryDocId;
+	}
+
+	public String getPromisoryDocName() {
+		return promisoryDocName;
+	}
+
+	public void setPromisoryDocName(String promisoryDocName) {
+		this.promisoryDocName = promisoryDocName;
+	}
+
+	public String getPromisoryDocUrl() {
+		return promisoryDocUrl;
+	}
+
+	public void setPromisoryDocUrl(String promisoryDocUrl) {
+		this.promisoryDocUrl = promisoryDocUrl;
+	}
+
+	public String getPromisoryDocType() {
+		return promisoryDocType;
+	}
+
+	public void setPromisoryDocType(String promisoryDocType) {
+		this.promisoryDocType = promisoryDocType;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;

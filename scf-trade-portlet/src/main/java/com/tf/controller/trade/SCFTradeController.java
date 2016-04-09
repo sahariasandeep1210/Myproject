@@ -32,6 +32,7 @@ import com.tf.persistance.util.InvoiceStatus;
 import com.tf.persistance.util.TradeStatus;
 import com.tf.service.AllotmentService;
 import com.tf.service.CompanyService;
+import com.tf.service.InvestorService;
 import com.tf.service.InvoiceService;
 import com.tf.service.SCFTradeService;
 import com.tf.service.UserService;
@@ -108,6 +109,9 @@ public class SCFTradeController {
 
 	@Autowired
 	protected  ValidationUtil  validationUtil;
+	
+	@Autowired
+	protected  InvestorService  investorService;
 
 	@InitBinder
 	public void binder(WebDataBinder binder) {
@@ -248,7 +252,6 @@ public class SCFTradeController {
 			viewName = "tradelist";
 		}
 		else if (request.isUserInRole(Constants.SELLER_ADMIN)) {
-			
 			String search = ParamUtil.getString(request, "Search");
 			String regNum = liferayUtility.getWhiteHallComapanyRegNo(request);
 			if(StringUtils.isNullOrEmpty(search)){
@@ -260,6 +263,17 @@ public class SCFTradeController {
 			}
 			model.put("search", search);
 			viewName = "sellertradelist";
+		}else{
+			String search = ParamUtil.getString(request, "Search");
+		    Long companyId  = liferayUtility.getWhitehallCompanyID(request);
+		    Long inversorNum=investorService.getInvestorIDByCompanyId(companyId);
+		    scftrades = scfTradeService.getScfTradeListForInvestor(search, inversorNum.toString(), paginationModel.getStartIndex(), paginationModel.getPageSize(), false);
+			List<SCFTrade> list= scfTradeService.getScfTradeListForInvestor(search, inversorNum.toString(), paginationModel.getStartIndex(), paginationModel.getPageSize(), true);
+			if(list!=null & list.size()>0){
+				noOfRecords=(long) list.size();
+			}
+			model.put("search", search);
+			viewName = "inverstortradelist";
 		}
 		model.put("scftrades", scftrades);
 		//model.put("trades", scftrades);
@@ -432,7 +446,7 @@ public class SCFTradeController {
 			Long companyID = ParamUtil.getLong(request, "companyID");
 			Company company = companyService.findById(companyID);
 			scfTradeDTO.setCompany(company);
-			SCFTrade scfTrade = transformTOScfTrade(scfTradeDTO);
+			/*SCFTrade scfTrade = transformTOScfTrade(scfTradeDTO);
 			scfTrade.setStatus(TradeStatus.NEW.getValue());
 			scfTrade = scfTradeService.save(scfTrade);
 			if (!StringUtils.isNullOrEmpty(scfTradeDTO.getInvoiceIds())) {
@@ -442,7 +456,7 @@ public class SCFTradeController {
 
 			if (scfTrade.getWantToInsure()) {
 				addInsuranceDocument(scfTradeDTO, request, themeDisplay, currentSideID, parentFolderId, serviceContextDlFolder, scfTrade);
-			}
+			}*/
 		}
 		catch (Exception e) {
 			e.printStackTrace();
@@ -450,6 +464,118 @@ public class SCFTradeController {
 		}
 
 	}
+	
+	@ActionMapping(params = "action=updateTrade")
+	protected void updateTrade(@ModelAttribute("scfTradeModel") SCFTradeDTO scfTradeDTO, ModelMap model, ActionRequest request, ActionResponse response)
+		throws Exception {
+
+		try {
+			ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
+			long currentSideID = themeDisplay.getScopeGroupId();
+			long parentFolderId = DLFolderConstants.DEFAULT_PARENT_FOLDER_ID;
+			ServiceContext serviceContextDlFolder = ServiceContextFactory.getInstance(DLFolder.class.getName(), request);
+			Folder folder=null;
+			Folder scfFolder=null;
+			FileEntry incfileEntry=null;
+			FileEntry profileEntry=null;
+			String mimeType=null;
+			long repositoryId = themeDisplay.getScopeGroupId();
+			try {
+				folder=DLAppServiceUtil.getFolder(repositoryId, 0, "Trade Documents");
+			} catch (Exception e) {
+				
+			}
+			if(folder!=null && scfTradeDTO.getScfId()!=null){
+				Long companyID = ParamUtil.getLong(request, "companyID");
+				Company company = companyService.findById(companyID);
+				if((scfTradeDTO.getInsuranceDocument()!=null && scfTradeDTO.getInsuranceDocument().getSize()>0) || (scfTradeDTO.getPromisoryDocument()!=null && scfTradeDTO.getPromisoryDocument().getSize()>0) ){
+					 try {
+						scfFolder=DLAppServiceUtil.getFolder(repositoryId, folder.getFolderId(), scfTradeDTO.getScfId());
+					} catch (Exception e) {
+						_log.error("Error Occured" + e.getMessage());
+					}
+					
+					 if(scfFolder!=null){
+						 //Delete the folder as updating the document.
+						 try {
+							 if(scfTradeDTO.getInsuranceDocument()!=null && scfTradeDTO.getInsuranceDocument().getSize()>0){
+								 DLAppServiceUtil.deleteFolder(repositoryId, scfFolder.getFolderId(), "Insurance");
+							 }
+							 if(scfTradeDTO.getPromisoryDocument()!=null && scfTradeDTO.getPromisoryDocument().getSize()>0){
+								 DLAppServiceUtil.deleteFolder(repositoryId, scfFolder.getFolderId(), "Promisory");
+							 }
+							
+						} catch (Exception e) {
+							_log.error("Error Occured" + e.getMessage());
+						}
+						 
+						try {
+							if(scfTradeDTO.getInsuranceDocument()!=null && scfTradeDTO.getInsuranceDocument().getSize()>0){
+							   mimeType = MimeTypesUtil.getContentType(scfTradeDTO.getInsuranceDocument().getInputStream(), scfTradeDTO.getInsuranceDocument().getName());
+							   Folder incFolder= DLAppServiceUtil.addFolder(repositoryId, scfFolder.getFolderId(), "Insurance", "InsuranceFolder", serviceContextDlFolder);
+							   incfileEntry= DLAppServiceUtil.addFileEntry(themeDisplay.getScopeGroupId(), incFolder.getFolderId(), scfTradeDTO.getInsuranceDocument().getOriginalFilename(), mimeType, scfTradeDTO.getInsuranceDocument().getOriginalFilename(), "InsuranceDoc", "InsuranceDoc", scfTradeDTO.getInsuranceDocument().getInputStream(), scfTradeDTO.getInsuranceDocument().getSize(), serviceContextDlFolder);
+							}
+							 if(scfTradeDTO.getPromisoryDocument()!=null && scfTradeDTO.getPromisoryDocument().getSize()>0){
+								 mimeType = MimeTypesUtil.getContentType(scfTradeDTO.getPromisoryDocument().getInputStream(), scfTradeDTO.getPromisoryDocument().getName());
+								 Folder proFolder= DLAppServiceUtil.addFolder(repositoryId, scfFolder.getFolderId(), "Promisory", "PromisoryFolder", serviceContextDlFolder);
+								 profileEntry= DLAppServiceUtil.addFileEntry(themeDisplay.getScopeGroupId(), proFolder.getFolderId(), scfTradeDTO.getPromisoryDocument().getOriginalFilename(), mimeType, scfTradeDTO.getPromisoryDocument().getOriginalFilename(), "PromisoryDoc", "PromisoryDoc", scfTradeDTO.getPromisoryDocument().getInputStream(), scfTradeDTO.getPromisoryDocument().getSize(), serviceContextDlFolder);
+							 }
+						} catch (Exception e) {
+							_log.error("Error Occured" + e.getMessage());
+						}
+					 }
+					 //in case of very first time adding the document.
+					 else{
+						 try {
+							 
+							 scfFolder= DLAppServiceUtil.addFolder(repositoryId, folder.getFolderId(), scfTradeDTO.getScfId(), "SCFFolder", serviceContextDlFolder);
+							 if(scfTradeDTO.getInsuranceDocument()!=null && scfTradeDTO.getInsuranceDocument().getSize()>0){
+								 mimeType = MimeTypesUtil.getContentType(scfTradeDTO.getInsuranceDocument().getInputStream(), scfTradeDTO.getInsuranceDocument().getName());
+								 Folder incFolder= DLAppServiceUtil.addFolder(repositoryId, scfFolder.getFolderId(), "Insurance", "InsuranceFolder", serviceContextDlFolder);
+								 incfileEntry= DLAppServiceUtil.addFileEntry(themeDisplay.getScopeGroupId(), incFolder.getFolderId(), scfTradeDTO.getInsuranceDocument().getOriginalFilename(), mimeType, scfTradeDTO.getInsuranceDocument().getOriginalFilename(), "InsuranceDoc", "InsuranceDoc", scfTradeDTO.getInsuranceDocument().getInputStream(), scfTradeDTO.getInsuranceDocument().getSize(), serviceContextDlFolder);
+							 }
+							 if(scfTradeDTO.getPromisoryDocument()!=null && scfTradeDTO.getPromisoryDocument().getSize()>0){
+								 mimeType = MimeTypesUtil.getContentType(scfTradeDTO.getPromisoryDocument().getInputStream(), scfTradeDTO.getPromisoryDocument().getName());
+								 Folder proFolder= DLAppServiceUtil.addFolder(repositoryId, scfFolder.getFolderId(), "Promisory", "PromisoryFolder", serviceContextDlFolder);
+								 profileEntry= DLAppServiceUtil.addFileEntry(themeDisplay.getScopeGroupId(), proFolder.getFolderId(), scfTradeDTO.getPromisoryDocument().getOriginalFilename(), mimeType, scfTradeDTO.getPromisoryDocument().getOriginalFilename(), "PromisoryDoc", "PromisoryDoc", scfTradeDTO.getPromisoryDocument().getInputStream(), scfTradeDTO.getPromisoryDocument().getSize(), serviceContextDlFolder);
+							 }
+						} catch (Exception e) {
+							_log.error("Error Occured" + e.getMessage());
+						}
+					 }
+					SCFTrade scfTrade = scfTradeService.findById(scfTradeDTO.getId());
+					if(scfTradeDTO.getInsuranceDocument()!=null && scfTradeDTO.getInsuranceDocument().getSize()>0){
+						scfTrade.setInsuranceDocId(incfileEntry.getFileEntryId());
+						scfTrade.setInsuranceDocName(scfTradeDTO.getInsuranceDocument().getOriginalFilename());
+						scfTrade.setInsuranceDocUrl(getUrl(themeDisplay, incfileEntry));
+						scfTrade.setInsuranceDocType(mimeType);
+					}
+					if(scfTradeDTO.getPromisoryDocument()!=null && scfTradeDTO.getPromisoryDocument().getSize()>0){
+						scfTrade.setPromisoryDocId(profileEntry.getFileEntryId());
+						scfTrade.setPromisoryDocName(scfTradeDTO.getPromisoryDocument().getOriginalFilename());
+						scfTrade.setPromisoryDocUrl(getUrl(themeDisplay, profileEntry));
+						scfTrade.setPromisoryDocType(mimeType);
+					}
+					scfTrade.setUpdatDate(new Date());
+					scfTradeService.updateTrade(scfTrade);
+				}
+				/*SCFTrade scfTrade = transformTOScfTrade(scfTradeDTO);
+				scfTrade.setStatus(TradeStatus.NEW.getValue());*/
+				//scfTrade = scfTradeService.save(scfTrade);
+
+				/*if (scfTrade.getWantToInsure()) {
+					addInsuranceDocument(scfTradeDTO, request, themeDisplay, currentSideID, parentFolderId, serviceContextDlFolder, scfTrade);
+				}*/
+			 } 
+			}
+			
+		catch (Exception e) {
+			e.printStackTrace();
+			_log.error("Error Occured while saving Trade" + e.getMessage());
+		}
+
+	}
+	
 
 	@ResourceMapping("breakdownURL")
 	public ModelAndView fetchAllotmentBreak(ResourceRequest request, ResourceResponse response, ModelMap modelMap)
@@ -614,9 +740,9 @@ public class SCFTradeController {
 	}
 
 	private SCFTradeDTO transformTOScfTradeDTO(SCFTrade scfTrade) {
-
 		SCFTradeDTO scfTradeDTO = new SCFTradeDTO();
 		scfTradeDTO.setId(scfTrade.getId());
+		scfTradeDTO.setScfId(scfTrade.getScfId());
 		scfTradeDTO.setClosingDate(scfTrade.getClosingDate());
 		scfTradeDTO.setCompany(scfTrade.getCompany());
 		scfTradeDTO.setDuration(scfTrade.getDuration());
@@ -632,8 +758,9 @@ public class SCFTradeController {
 		scfTradeDTO.setWantToInsure(scfTrade.getWantToInsure());
 		scfTradeDTO.setInsuranceDocName(scfTrade.getInsuranceDocName());
 		scfTradeDTO.setInsuranceDocURL(scfTrade.getInsuranceDocUrl());
+		scfTradeDTO.setPromisoryDocName(scfTrade.getPromisoryDocName());
+		scfTradeDTO.setPromisoryDocURL(scfTrade.getPromisoryDocUrl());
 		return scfTradeDTO;
-
 	}
 
 	private String getUrl(ThemeDisplay themeDisplay, FileEntry fileEntry) {

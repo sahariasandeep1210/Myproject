@@ -1131,5 +1131,49 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 		Collection<Long> ids = criteria.list();
 		return ids;
 	}
+
+	public List<SCFTrade> getScfTradeListForInvestor(String searchtxt,
+			String invNum, int startIndex, int pageSize, boolean count) {
+		_log.debug("Inside getScfTradeListWithSearch ");
+		List<SCFTrade> scftrades = new ArrayList<SCFTrade>();
+		try {
+			Criteria criteria = sessionFactory.getCurrentSession().createCriteria(SCFTrade.class);
+			criteria.createAlias("allotments", "alt");
+			criteria.createAlias("company", "company");
+			
+			if(org.apache.commons.lang.StringUtils.isNotBlank(searchtxt)){
+				Disjunction or = Restrictions.disjunction();
+				if (validationUtil.isNumeric(searchtxt)) {
+					or.add(Restrictions.eq("tradeAmount", BigDecimal.valueOf(Long.valueOf(searchtxt))));
+				}
+				or.add(Restrictions.like("status", searchtxt, MatchMode.ANYWHERE));
+				or.add(Restrictions.like("scfId", searchtxt, MatchMode.ANYWHERE));
+				or.add(Restrictions.like("company.name", searchtxt, MatchMode.ANYWHERE));
+				criteria.add(or);
+			}
+			if (!count) {
+				ProjectionList prList = Projections.projectionList();
+				prList.add((Projections.distinct(Projections.property("alt.scfTrade"))));
+				criteria.setProjection(prList);
+				scftrades =(List<SCFTrade>) criteria.add(Restrictions.eq("alt.investorID", Long.parseLong(invNum))).setFirstResult(startIndex).setMaxResults(
+							pageSize).list();
+			}
+			else{
+				Long countList =
+						(Long) criteria.add(Restrictions.eq("alt.investorID", Long.parseLong(invNum))).setProjection(
+							Projections.countDistinct("alt.scfTrade")).uniqueResult();
+				SCFTrade scfTrade=new SCFTrade();
+				scfTrade.setId(countList);
+				scftrades.add(scfTrade );
+			}
+
+			_log.debug("getScfTradeListWithSearch successful, result size: " + scftrades.size());
+		}
+		catch (RuntimeException re) {
+			_log.error("getScfTradeListWithSearch failed", re);
+			throw re;
+		}
+		return scftrades;
+	}
 	
 }
