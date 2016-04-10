@@ -14,8 +14,6 @@
 		<header-portlet-css>/css/main.css</header-portlet-css>
 		<footer-portlet-javascript>/js/jquery-latest.min.js</footer-portlet-javascript>
 		<footer-portlet-javascript>/js/jquery-ui.min.js</footer-portlet-javascript>
-		<footer-portlet-javascript>/js/chart.js</footer-portlet-javascript>
-		<footer-portlet-javascript>/js/stat.js</footer-portlet-javascript>
 		
 	</portlet>
 	<role-mapper>

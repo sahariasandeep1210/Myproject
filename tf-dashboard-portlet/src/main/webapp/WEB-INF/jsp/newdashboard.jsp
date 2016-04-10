@@ -17,8 +17,8 @@
 					<h3>Quick Stat</h3>
 				</div>
 				<!-- /widget-header -->
-			<div class="widget-content">
-					<div class="stats">
+			<div class="widget-content" id="creditLineChart">
+		<%-- 			<div class="stats">
 							
 							<div class="stat">
 								<span class="stat-value">${dashboardModel.investmentCap}</span>									
@@ -43,7 +43,7 @@
 							 <!-- <div id="js-legend" class="chart-legend"></div> -->
 							 <div id="js-legend" class="chart-legend" style="display:inline-block;position: absolute;"></div>
 						 </div>
-					</div>		
+					</div> --%>		
 			</div>
 			<br><br>
 			<div id="chart-widget" class="widget-content">
@@ -135,19 +135,51 @@
 	</div>
 	  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 	  <script type="text/javascript">
-      google.charts.load('current', {'packages':['corechart'],'legend':'none'});
-      google.charts.setOnLoadCallback(drawChart);
+	  // Load Charts and the corechart and barchart packages.
+      google.charts.load('current', {'packages':['corechart']});
+      // Draw the pie chart and bar chart when Charts is loaded.
+	  google.charts.setOnLoadCallback(drawChart);
+      
       function drawChart() {
-	      var data = new google.visualization.DataTable();
-		  data.addColumn('string', 'Name');
-		  data.addColumn('number', 'Cash');
+	      var barChartdata = new google.visualization.DataTable();
+	      var pieChartdata = new google.visualization.DataTable();
+	      
+	      barChartdata.addColumn('string', 'Name');
+	      barChartdata.addColumn('number', 'Cash');
 		  <c:forEach var="element" items='${cashPosition}'>
-		            data.addRow(["${element[1]}",parseFloat("${element[0]}")]);
+		  		barChartdata.addRow(["${element[1]}",parseFloat("${element[0]}")]);
 	      </c:forEach>
-	        var options = {
-	        		 title: 'Cash Position Graph'
-	          }
-	        var chart = new google.visualization.ColumnChart(document.getElementById('columnchart_material'));
-	        chart.draw(data, options);
+	      
+	      
+	      pieChartdata.addColumn('string', 'Cash');
+	      pieChartdata.addColumn('number', 'Amount');
+	      pieChartdata.addRows([
+	                    ['Total Credit line', parseInt('${dashboardModel.investmentCap}')],
+	                    ['Available to Invest', parseInt('${dashboardModel.availToInvest}')],
+	                    ['Amount Invested', parseInt('${dashboardModel.amountInvested}')]
+	                  ]);
+
+	      
+	        var barChartOptions = {	        		
+	        		 legend: { position: "none" }
+	          };
+	        
+	        var pieChartOptions = {        		
+	        		 is3D: true,
+	        		 width: '100%',
+	        	     height: '100%',
+	        	     chartArea: {
+	        	            left: "10%",
+	        	            top: "3%",
+	        	            height: "100%",
+	        	            width: "100%"
+	        	        }
+	          };
+	        
+	        var barChart = new google.visualization.ColumnChart(document.getElementById('columnchart_material'));
+	        barChart.draw(barChartdata, barChartOptions);
+	        
+	        var pieChart = new google.visualization.PieChart(document.getElementById('creditLineChart'));
+	        pieChart.draw(pieChartdata, pieChartOptions);
         }
     </script>
