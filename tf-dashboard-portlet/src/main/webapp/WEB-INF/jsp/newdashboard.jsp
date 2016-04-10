@@ -44,8 +44,18 @@
 							 <div id="js-legend" class="chart-legend" style="display:inline-block;position: absolute;"></div>
 						 </div>
 					</div>		
-
-			
+			</div>
+			<br><br>
+			<div id="chart-widget" class="widget-content">
+			     <c:choose>
+                        <c:when test="${not empty cashPosition }">
+                             <div id="columnchart_material">
+                             </div>
+                        </c:when>	
+                        <c:otherwise>
+                        
+                        </c:otherwise>		     
+			     </c:choose>
 			</div>
 				
 			</div>
@@ -122,8 +132,22 @@
 		
 		</div>
 		</div>
-		
-
-
-
 	</div>
+	  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+	  <script type="text/javascript">
+      google.charts.load('current', {'packages':['corechart'],'legend':'none'});
+      google.charts.setOnLoadCallback(drawChart);
+      function drawChart() {
+	      var data = new google.visualization.DataTable();
+		  data.addColumn('string', 'Name');
+		  data.addColumn('number', 'Cash');
+		  <c:forEach var="element" items='${cashPosition}'>
+		            data.addRow(["${element[1]}",parseFloat("${element[0]}")]);
+	      </c:forEach>
+	        var options = {
+	        		 title: 'Cash Position Graph'
+	          }
+	        var chart = new google.visualization.ColumnChart(document.getElementById('columnchart_material'));
+	        chart.draw(data, options);
+        }
+    </script>

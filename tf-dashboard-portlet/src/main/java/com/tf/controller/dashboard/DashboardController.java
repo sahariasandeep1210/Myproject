@@ -1,7 +1,14 @@
 package com.tf.controller.dashboard;
 
+import java.math.BigDecimal;
+import java.util.List;
+
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.security.permission.PermissionChecker;
+import com.liferay.portal.theme.ThemeDisplay;
+import com.tf.model.Investor;
 import com.tf.persistance.util.Constants;
 import com.tf.service.InvestorService;
 import com.tf.util.LiferayUtility;
@@ -42,7 +49,15 @@ public class DashboardController {
 		}else if(request.isUserInRole(Constants.SCF_ADMIN)){
 			viewName="scfdashboard";
 		}
+		ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
+		PermissionChecker permissionChecker = themeDisplay.getPermissionChecker();
+		if (permissionChecker.isOmniadmin()) {
+			List<Investor> cashPosition =investorService.getCashPoition();
+			model.put("cashPosition",cashPosition);
+		}
+		
 		model.put("dashboardModel", investorService.getDashBoardInformation());
+		
 		return new ModelAndView(viewName, model);		
 	}
 

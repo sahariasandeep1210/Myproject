@@ -46,5 +46,7 @@ public interface InvestorService {
 	public Long getInvestorIDByCompanyId(long companyId);
 	
 	public Investor findByInvestorId(long id);
+	
+	public List<Investor> getCashPoition();
 
 }

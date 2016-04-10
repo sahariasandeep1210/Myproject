@@ -51,5 +51,8 @@ public interface InvestorDAO extends BaseDAO<InvestorPortfolio, Long> {
 	public Investor findByInvestorId(long id);
 	
 	public void updateInvestor(Investor investor);	
+	
+	
+	public List<Investor> getCashPoition();
 
 }

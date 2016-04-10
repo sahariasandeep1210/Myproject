@@ -15,8 +15,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.hibernate.Criteria;
+import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projection;
+import org.hibernate.criterion.ProjectionList;
+import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -398,6 +405,28 @@ public class InvestorDAOImpl extends BaseDAOImpl<InvestorPortfolio, Long>   impl
 			throw re;
 		}	
 	
+	}
+
+
+	public List<Investor> getCashPoition() {
+		List<Investor> investors=null;
+		try {
+			Session session = sessionFactory.getCurrentSession();
+			Criteria criteria= session.createCriteria(Investor.class);
+			criteria.createAlias("company", "cmp");
+			criteria.add(Restrictions.isNotNull("cashPosition"));
+			criteria.addOrder(Order.desc("cashPosition"));
+			criteria.setMaxResults(5);
+			ProjectionList projList = Projections.projectionList();
+			projList.add(Projections.property("cashPosition"));
+			projList.add(Projections.property("cmp.name"));
+			criteria.setProjection(projList);
+			investors=criteria.list();
+		} catch (RuntimeException e) {
+			_log.error("getCachPoition", e);
+			throw e;
+		}
+		return investors;
 	}
 
 }
