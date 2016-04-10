@@ -17,8 +17,8 @@
 }
 </style>
 
-<portlet:renderURL var="supplierURL">
-	<portlet:param name="render" value="singleTrade" />
+<portlet:renderURL var="investorDetailsURL">
+	<portlet:param name="render" value="investorDetails" />
 </portlet:renderURL>
 
 <div class="container-fluid">
@@ -92,8 +92,7 @@
 							<c:forEach items="${scftrades}" var="trade">
 								<tr>
 									<td><span class='underline'><a
-											href="javascript:void(0);"
-											onclick="window.location.href='${supplierURL}&tradeID=${trade.id}'">${trade.scfId}</a></span></td>
+											href="${investorDetailsURL}&tradeID=${trade.id}">${trade.scfId}</a></span></td>
 									<td>${trade.company.name}</td>
 									<td  class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${trade.tradeAmount}"  /></td>
 									<td>${trade.status}</td>

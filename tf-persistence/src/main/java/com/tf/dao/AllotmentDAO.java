@@ -20,5 +20,7 @@ public interface AllotmentDAO   extends BaseDAO<Allotment, Long> {
 	public List<Allotment> getAllotmentByStatus(String status);
 	
 	public BigDecimal getTotalInvestorProfitForTrade(long tradeID);
+	
+	public List<Allotment> getTradeAllotmentByInvestor(long invId,long tradeID);
 
 }

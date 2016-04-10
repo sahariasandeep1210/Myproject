@@ -396,5 +396,9 @@ public class SCFTradeServiceImpl implements SCFTradeService {
 		Long investorID, int startIndex, int pageSize, boolean count) {
 		return scfTradeDAO.getScfTradeListForInvestor(searchtxt, investorID, startIndex, pageSize, count);
 	}
+	
+	public SCFTrade findTradeDeatailsForInvestor(long tradeId,long investorID){
+		return scfTradeDAO.findTradeDeatailsForInvestor(tradeId,investorID);
+	}
 
 }

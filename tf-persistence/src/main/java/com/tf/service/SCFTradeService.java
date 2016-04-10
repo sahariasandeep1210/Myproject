@@ -70,5 +70,7 @@ public interface SCFTradeService {
 	
 	public List<SCFTrade> getScfTradeListForInvestor(String searchtxt,
 			Long investorID, int startIndex, int pageSize, boolean count);
+	
+	public SCFTrade findTradeDeatailsForInvestor(long tradeId,long investorID);
 
 }

@@ -185,4 +185,23 @@ public class AllotmentDAOImpl extends BaseDAOImpl<Allotment, Long>   implements 
 		return totalNetProfit;
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<Allotment> getTradeAllotmentByInvestor(long invId,long tradeID){
+		_log.debug("Inside getALlotmentByPortId ");
+		try {
+			
+			Criteria criteria  = sessionFactory.getCurrentSession().createCriteria(Allotment.class);
+					
+			List<Allotment> allotmentList=(List<Allotment>)criteria.add(Restrictions.eq("investorID", invId)).add(Restrictions.eq("scfTrade.id", tradeID)).list();		
+			_log.debug("getALlotmentByPortId successful, result size: "
+					+ allotmentList.size());
+			return allotmentList;
+
+		} catch (RuntimeException re) {
+			_log.error("getALlotmentByPortId failed", re);
+			throw re;
+		}	
+		
+	}
+	
 }

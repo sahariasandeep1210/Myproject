@@ -424,6 +424,22 @@ public class SCFTradeController {
 
 		return new ModelAndView("suppliertrade", model);
 	}
+	
+	@RenderMapping(params = "render=investorDetails")
+	protected ModelAndView renderInvestorDetails(ModelMap model, RenderRequest request, RenderResponse response) {
+		Long tradeID = ParamUtil.getLong(request, "tradeID");
+		String sellerRegNo = invoiceService.getSellerRegNumberByTradeID(tradeID);
+		Company company = companyService.getCompaniesByRegNum(sellerRegNo);
+		Long companyId  = liferayUtility.getWhitehallCompanyID(request);
+	    Long investorID=investorService.getInvestorIDByCompanyId(companyId);
+		SCFTrade scfTrade = scfTradeService.findTradeDeatailsForInvestor(tradeID,investorID);
+		SCFTradeDTO scfTradeDTO = transformTOScfTradeDTO(scfTrade);
+		model.put("invoiceList", scfTrade.getInvoices());
+		model.put("scfTradeModel", scfTradeDTO);
+		model.put("sellerName", company.getName());
+		model.put("allotments", scfTrade.getAllotments());
+		return new ModelAndView("investortardedetails", model);
+	}
 
 	@ActionMapping(params = "action=saveTrade")
 	protected void saveTarde(@ModelAttribute("scfTradeModel") SCFTradeDTO scfTradeDTO, ModelMap model, ActionRequest request, ActionResponse response)

@@ -6,6 +6,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 
 import org.hibernate.Criteria;
@@ -24,7 +25,9 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import com.tf.dao.AllotmentDAO;
 import com.tf.dao.SCFTradeDAO;
+import com.tf.model.Allotment;
 import com.tf.model.SCFTrade;
 import com.tf.persistance.util.ValidationUtil;
 
@@ -39,6 +42,10 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 
 	@Autowired
 	protected ValidationUtil validationUtil;
+	
+	@Autowired
+	protected AllotmentDAO allotmentDAO;
+
 
 	@SuppressWarnings("unchecked")
 	public List<SCFTrade> getScfTrades(int startIndex, int pageSize) {
@@ -123,7 +130,7 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 		_log.debug("getting Trade instance with id: " + id);
 		try {
 			SCFTrade instance = (SCFTrade) sessionFactory.getCurrentSession().get("com.tf.model.SCFTrade", id);
-			Hibernate.initialize(instance.getInvoices());
+			Hibernate.initialize(instance.getInvoices());		
 
 			if (instance == null) {
 				_log.debug("get successful, no instance found");
@@ -1174,6 +1181,26 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 			throw re;
 		}
 		return scftrades;
+	}
+	
+	public SCFTrade findTradeDeatailsForInvestor(long tradeId,long investorID) {
+		try {
+			SCFTrade instance = (SCFTrade) sessionFactory.getCurrentSession().get("com.tf.model.SCFTrade", tradeId);
+			Hibernate.initialize(instance.getInvoices());	
+			instance.setAllotments(new HashSet<Allotment>(allotmentDAO.getTradeAllotmentByInvestor(investorID, instance.getId())));
+			;
+			if (instance == null) {
+				_log.debug("get successful, no instance found");
+			}
+			else {
+				_log.debug("get successful, instance found");
+			}
+			return instance;
+		}
+		catch (RuntimeException re) {
+			_log.error("get failed", re);
+			throw re;
+		}
 	}
 	
 }
