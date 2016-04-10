@@ -69,6 +69,6 @@ public interface SCFTradeService {
 	public Long getScfAdminTradeListWithSearchCount(long companyId, String searchtxt, Date fromDate, Date toDate, String value);
 	
 	public List<SCFTrade> getScfTradeListForInvestor(String searchtxt,
-			String invNum, int startIndex, int pageSize, boolean count);
+			Long investorID, int startIndex, int pageSize, boolean count);
 
 }

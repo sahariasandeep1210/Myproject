@@ -35,7 +35,7 @@
         p:password="${jdbc.password}" /> -->
         
         <bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
-    		<property name="jndiName" value="java:comp/env/jdbc/whitehall"/>
+    		<property name="jndiName" value="java:comp/env/jdbc/LiferayPool"/>
 		</bean>
         
         <bean id="sessionFactory"
@@ -47,7 +47,7 @@
           <property name="hibernateProperties">
             <props>
                 <prop key="hibernate.dialect">${jdbc.dialect}</prop>
-                <prop key="hibernate.show_sql">true</prop>
+                <prop key="hibernate.show_sql">false</prop>
                 <prop key="hibernate.hbm2ddl.auto">validate</prop>
               
                 

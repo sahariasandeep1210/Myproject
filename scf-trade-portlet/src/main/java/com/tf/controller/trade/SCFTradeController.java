@@ -1,6 +1,35 @@
 
 package com.tf.controller.trade;
 
+import java.beans.PropertyEditorSupport;
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
+import javax.portlet.ActionRequest;
+import javax.portlet.ActionResponse;
+import javax.portlet.PortletConfig;
+import javax.portlet.RenderRequest;
+import javax.portlet.RenderResponse;
+import javax.portlet.ResourceRequest;
+import javax.portlet.ResourceResponse;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.portlet.ModelAndView;
+import org.springframework.web.portlet.bind.annotation.ActionMapping;
+import org.springframework.web.portlet.bind.annotation.RenderMapping;
+import org.springframework.web.portlet.bind.annotation.ResourceMapping;
+
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.language.LanguageUtil;
@@ -28,8 +57,8 @@ import com.tf.model.Invoice;
 import com.tf.model.SCFTrade;
 import com.tf.persistance.util.Constants;
 import com.tf.persistance.util.InSuffcientFund;
-import com.tf.persistance.util.InvoiceStatus;
 import com.tf.persistance.util.TradeStatus;
+import com.tf.persistance.util.ValidationUtil;
 import com.tf.service.AllotmentService;
 import com.tf.service.CompanyService;
 import com.tf.service.InvestorService;
@@ -40,38 +69,7 @@ import com.tf.util.LiferayUtility;
 import com.tf.util.MyCustomNumberEditor;
 import com.tf.util.PaginationUtil;
 import com.tf.util.SCFTradeDTO;
-import com.tf.persistance.util.ValidationUtil;
 import com.tf.util.model.PaginationModel;
-
-import java.beans.PropertyEditorSupport;
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-
-import javax.portlet.ActionRequest;
-import javax.portlet.ActionResponse;
-import javax.portlet.PortletConfig;
-import javax.portlet.RenderRequest;
-import javax.portlet.RenderResponse;
-import javax.portlet.ResourceRequest;
-import javax.portlet.ResourceResponse;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.portlet.ModelAndView;
-import org.springframework.web.portlet.bind.annotation.ActionMapping;
-import org.springframework.web.portlet.bind.annotation.RenderMapping;
-import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 
 /**
  * This controller is responsible for request/response handling on SCF Trade
@@ -266,9 +264,9 @@ public class SCFTradeController {
 		}else{
 			String search = ParamUtil.getString(request, "Search");
 		    Long companyId  = liferayUtility.getWhitehallCompanyID(request);
-		    Long inversorNum=investorService.getInvestorIDByCompanyId(companyId);
-		    scftrades = scfTradeService.getScfTradeListForInvestor(search, inversorNum.toString(), paginationModel.getStartIndex(), paginationModel.getPageSize(), false);
-			List<SCFTrade> list= scfTradeService.getScfTradeListForInvestor(search, inversorNum.toString(), paginationModel.getStartIndex(), paginationModel.getPageSize(), true);
+		    Long investorID=investorService.getInvestorIDByCompanyId(companyId);
+		    scftrades = scfTradeService.getScfTradeListForInvestor(search, investorID, paginationModel.getStartIndex(), paginationModel.getPageSize(), false);
+			List<SCFTrade> list= scfTradeService.getScfTradeListForInvestor(search, investorID, paginationModel.getStartIndex(), paginationModel.getPageSize(), true);
 			if(list!=null & list.size()>0){
 				noOfRecords=(long) list.size();
 			}
@@ -276,7 +274,6 @@ public class SCFTradeController {
 			viewName = "inverstortradelist";
 		}
 		model.put("scftrades", scftrades);
-		//model.put("trades", scftrades);
 		paginationUtil.setPaginationInfo(noOfRecords, paginationModel);
 		System.out.println("paginationsss:" + paginationModel);
 		model.put("paginationModel", paginationModel);

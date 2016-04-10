@@ -1133,7 +1133,7 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 	}
 
 	public List<SCFTrade> getScfTradeListForInvestor(String searchtxt,
-			String invNum, int startIndex, int pageSize, boolean count) {
+			Long invNum, int startIndex, int pageSize, boolean count) {
 		_log.debug("Inside getScfTradeListWithSearch ");
 		List<SCFTrade> scftrades = new ArrayList<SCFTrade>();
 		try {
@@ -1155,12 +1155,12 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 				ProjectionList prList = Projections.projectionList();
 				prList.add((Projections.distinct(Projections.property("alt.scfTrade"))));
 				criteria.setProjection(prList);
-				scftrades =(List<SCFTrade>) criteria.add(Restrictions.eq("alt.investorID", Long.parseLong(invNum))).setFirstResult(startIndex).setMaxResults(
+				scftrades =(List<SCFTrade>) criteria.add(Restrictions.eq("alt.investorID", invNum)).setFirstResult(startIndex).setMaxResults(
 							pageSize).list();
 			}
 			else{
 				Long countList =
-						(Long) criteria.add(Restrictions.eq("alt.investorID", Long.parseLong(invNum))).setProjection(
+						(Long) criteria.add(Restrictions.eq("alt.investorID", invNum)).setProjection(
 							Projections.countDistinct("alt.scfTrade")).uniqueResult();
 				SCFTrade scfTrade=new SCFTrade();
 				scfTrade.setId(countList);

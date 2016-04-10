@@ -393,8 +393,8 @@ public class SCFTradeServiceImpl implements SCFTradeService {
 	}
 
 	public List<SCFTrade> getScfTradeListForInvestor(String searchtxt,
-			String invNum, int startIndex, int pageSize, boolean count) {
-		return scfTradeDAO.getScfTradeListForInvestor(searchtxt, invNum, startIndex, pageSize, count);
+		Long investorID, int startIndex, int pageSize, boolean count) {
+		return scfTradeDAO.getScfTradeListForInvestor(searchtxt, investorID, startIndex, pageSize, count);
 	}
 
 }
