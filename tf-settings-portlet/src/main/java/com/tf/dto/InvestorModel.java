@@ -1,10 +1,13 @@
 package com.tf.dto;
 
+import java.io.Serializable;
 import java.util.List;
 
 import com.tf.persistance.util.InvestorDTO;
 
-public class InvestorModel {
+public class InvestorModel implements Serializable {
+
+	private static final long serialVersionUID = 5347134510188136691L;
 	
 	private List<InvestorDTO>  investorDTO;
 	

@@ -13,7 +13,7 @@
 <form:form method="post" commandName="generalSettingModel"
 		class="form-horizontal" name="generalSettingForm">
 		<input type="hidden" value="${saveGeneralSettings}" id="saveSettingURL" />
-		<input type="hidden" value="${generalSettingModel.id}" name="id" />
+		<input type="hidden" value="${generalSetting.id}" name="id" />
 		
 		<div class="row-fluid">
 			<div class="span6">

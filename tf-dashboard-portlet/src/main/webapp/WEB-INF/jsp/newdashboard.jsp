@@ -114,7 +114,7 @@
 							<span class="shortcut-label">Trades</span>	
 						</a>
 						
-						<a href="javascript:;" class="shortcut">
+						<a href="/group/guest/documents" class="shortcut">
 							<i class="shortcut-icon icon-picture"></i>
 							<span class="shortcut-label">Documents</span>	
 						</a>
