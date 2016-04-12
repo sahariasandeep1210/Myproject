@@ -40,6 +40,7 @@
 						<th>Registration No</th>
 						<th>Established date</th>
 						<th>Tel Number</th>
+						<th>Status</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -51,6 +52,7 @@
 						<td>${seller.sellerCompany.regNumber}</td>
 					   <td><fmt:formatDate pattern="dd-MM-yyyy" value="${seller.sellerCompany.dateestablished}"/></td>
 						<td>${seller.sellerCompany.telnumber}</td>
+						<td>${seller.status}</td>
 
 					</tr>
 					 </c:forEach>

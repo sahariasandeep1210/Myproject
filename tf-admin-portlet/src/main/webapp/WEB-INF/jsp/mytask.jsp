@@ -57,7 +57,7 @@
           <h4 class="modal-title">Approve/Reject Comment</h4>
         </div>
         <div class="modal-body">
-         <textarea class="commentBox" name="comment" form="usrform">Comment</textarea>
+         <textarea class="commentBox" name="comment"  placeholder="Comment" ></textarea>
         </div>
         <div class="modal-footer" id="ApRjButton">
           <button type="button" class="btn btn-primary approve_reject" data-dismiss="modal">Approve</button>

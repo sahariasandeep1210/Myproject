@@ -6,63 +6,18 @@
 
 <div class="container-fluid">
 	<div class="row-fluid">
-		<div class="span6 vcenter">
+			<div class="span6 vcenter">
 		
 			<div class="widget stacked">
 
 				<div class="widget-header">
 					<i class="icon-star" style="margin-left: 10px !important;"></i>
-					<h3>Quick Stats</h3>
+					<h3>Quick Stat</h3>
 				</div>
 				<!-- /widget-header -->
-			<div class="widget-content">
-					<div class="stats">
-							
-							<div class="stat">
-								<span class="stat-value">${dashboardModel.investmentCap}</span>									
-								Total Credit Line
-							</div> 
-							
-							<div class="stat">
-								<span class="stat-value">${dashboardModel.availToInvest}</span>									
-								Available To Invest
-							</div> 
-							
-							<div class="stat">
-								<span class="stat-value">${dashboardModel.amountInvested}</span>									
-								Amount Invested 
-							</div> 
-							
-						</div> 
-						
-					<div id="chart-stats" class="stats" >
-						<div class="stat stat-chart">	
-							<canvas id="chart-area" width="225" height="100" ></canvas>
-							 <!-- <div id="js-legend" class="chart-legend"></div> -->
-							 <div id="js-legend" class="chart-legend" style="display:inline-block;position: absolute;"></div>
-						 </div>
-					</div>
-					
-					<!-- <div id="chart-stats" class="stats">
-						
-						<div class="stat stat-chart">							
-							<div id="donut-chart" class="chart-holder" style="padding: 0px; position: relative;">
-							<canvas class="base" width="260" height="100"></canvas>
-							<canvas class="overlay" width="260" height="100" style="position: absolute; left: 0px; top: 0px;"></canvas> 
-							<div class="legend"><div style="position: absolute; width: 53px; height: 72px; top: 5px; right: 5px; opacity: 0.85; background-color: rgb(255, 255, 255);"> </div><table style="position:absolute;top:5px;right:5px;;font-size:smaller;color:#545454"><tbody><tr><td class="legendColorBox"><div style="border:1px solid #ccc;padding:1px"><div style="width:4px;height:0;border:5px solid rgb(255,153,0);overflow:hidden"></div></div></td><td class="legendLabel">Series 1</td></tr><tr><td class="legendColorBox"><div style="border:1px solid #ccc;padding:1px"><div style="width:4px;height:0;border:5px solid rgb(34,34,34);overflow:hidden"></div></div></td><td class="legendLabel">Series 2</td></tr><tr><td class="legendColorBox"><div style="border:1px solid #ccc;padding:1px"><div style="width:4px;height:0;border:5px solid rgb(119,119,119);overflow:hidden"></div></div></td><td class="legendLabel">Series 3</td></tr></tbody></table></div></div> #donut							
-						</div> /substat
-						
-						<div class="stat stat-time">									
-							<span class="stat-value">00:28:13</span>
-							Average Time on Site
-						</div> /substat
-						
-					</div> -->
+			<div class="widget-content" id="creditLineChart">
 		
-			
-
-			
-			</div>
+			</div>	
 				
 			</div>
 			
@@ -136,3 +91,38 @@
 
 
 	</div>
+	  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+	  <script type="text/javascript">
+	  // Load Charts and the corechart and barchart packages.
+      google.charts.load('current', {'packages':['corechart']});
+      // Draw the pie chart and bar chart when Charts is loaded.
+	  google.charts.setOnLoadCallback(drawChart);
+      
+      function drawChart() {
+	      var pieChartdata = new google.visualization.DataTable();	      
+	      pieChartdata.addColumn('string', 'Cash');
+	      pieChartdata.addColumn('number', 'Amount');
+	      pieChartdata.addRows([
+	                    ['Total Credit line', parseInt('${dashboardModel.investmentCap}')],
+	                    ['Available to Invest', parseInt('${dashboardModel.availToInvest}')],
+	                    ['Amount Invested', parseInt('${dashboardModel.amountInvested}')]
+	                  ]);      
+	       
+	        
+	        var pieChartOptions = {        		
+	        		 is3D: true,
+	        		 width: '100%',
+	        	     height: '100%',
+	        	     chartArea: {
+	        	            left: "10%",
+	        	            top: "3%",
+	        	            height: "100%",
+	        	            width: "100%"
+	        	        }
+	          };       
+	       
+	        
+	        var pieChart = new google.visualization.PieChart(document.getElementById('creditLineChart'));
+	        pieChart.draw(pieChartdata, pieChartOptions);
+        }
+    </script>

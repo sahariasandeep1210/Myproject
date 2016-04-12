@@ -53,6 +53,15 @@ public class LifearyServiceImpl implements LiferayService {
 				Role role =RoleLocalServiceUtil.getRole(themeDisplay.getCompanyId(), user.getType());
 				UserLocalServiceUtil.addRoleUser(role.getRoleId(), lruser.getUserId());
 				UserLocalServiceUtil.updateUser(lruser);
+			}else{
+				com.liferay.portal.model.User lruser=UserLocalServiceUtil.getUser(user.getLiferayUserId());
+				lruser.setFirstName(user.getFirstName());
+				lruser.setLastName(user.getLastName());
+				lruser.setMiddleName(user.getMiddleName());
+				lruser.setEmailAddress(user.getEmail());
+				lruser.setScreenName(user.getUsername());
+				lruser.setJobTitle(user.getLevel());
+				UserLocalServiceUtil.updateUser(lruser);
 			}
 			
 		}

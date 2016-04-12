@@ -45,7 +45,15 @@
 						 </div>
 					</div> --%>		
 			</div>
-			<br><br>
+		
+				
+			</div>
+				<div class="widget stacked">
+
+				<div class="widget-header">
+					<i class="fa fa-money" style="margin-left: 10px !important;"></i>
+					<h3>Cash Position</h3>
+				</div>
 			<div id="chart-widget" class="widget-content">
 			     <c:choose>
                         <c:when test="${not empty cashPosition }">
@@ -57,8 +65,11 @@
                         </c:otherwise>		     
 			     </c:choose>
 			</div>
+		
 				
 			</div>
+			
+			
 			
 			</div>
 			

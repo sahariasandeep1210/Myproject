@@ -124,6 +124,7 @@ public class CompanyController extends BaseController {
 			if(request.isUserInRole(Constants.SELLER_ADMIN)){
 				model.put("userType", Constants.SELLER_ADMIN);
 				scfCompanyId=ParamUtil.getLong(request, "scfCompany");
+				model.put("companyId", companyID);
 				
 			}
 			
@@ -544,7 +545,6 @@ public class CompanyController extends BaseController {
 					CompanyStatus.DELETED.getValue(),
 					paginationModel.getStartIndex(),
 					paginationModel.getPageSize());
-			_log.info("Comany List:::"+companyList);
 			noOfRecords = companyService
 					.getCompaniesCount(CompanyStatus.DELETED.getValue());
 			_log.info("noOfRecords:::"+noOfRecords);
@@ -574,7 +574,6 @@ public class CompanyController extends BaseController {
 		}
 
 		paginationUtil.setPaginationInfo(noOfRecords, paginationModel);
-		_log.info("PaginationModel:::"+paginationModel);
 		model.put("paginationModel", paginationModel);
 		return companyList;
 	}

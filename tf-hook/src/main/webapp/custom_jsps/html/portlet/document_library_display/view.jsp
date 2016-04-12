@@ -20,6 +20,8 @@
 String topLink = ParamUtil.getString(request, "topLink", "home");
 
 String redirect = ParamUtil.getString(request, "redirect");
+				 
+boolean defaultDocFolder=false;
 
 Folder folder = (Folder)request.getAttribute(WebKeys.DOCUMENT_LIBRARY_FOLDER);
 
@@ -32,6 +34,12 @@ boolean defaultFolderView = false;
 if ((folder == null) && (defaultFolderId != DLFolderConstants.DEFAULT_PARENT_FOLDER_ID)) {
 	defaultFolderView = true;
 }
+
+if(folderId==defaultFolderId){
+	defaultDocFolder=true;
+}
+
+
 
 if (defaultFolderView) {
 	try {
@@ -176,10 +184,12 @@ request.setAttribute("view.jsp-useAssetEntryQuery", String.valueOf(useAssetEntry
 							</liferay-ui:search-container>
 						</liferay-ui:panel>
 					</c:if>
-
-					<%-- <liferay-ui:panel collapsible="<%= false %>" extended="<%= true %>" id='<%= renderResponse.getNamespace() + "documentLibraryDisplayDocumentsListingPanel" %>' persistState="<%= true %>" title="documents">
-						<%@ include file="/html/portlet/document_library/view_file_entries.jspf" %>
-					</liferay-ui:panel> --%>
+						
+						<c:if  test="<%= !defaultDocFolder %>">
+						 <liferay-ui:panel collapsible="<%= false %>" extended="<%= true %>" id='<%= renderResponse.getNamespace() + "documentLibraryDisplayDocumentsListingPanel" %>' persistState="<%= true %>" title="documents">
+							<%@ include file="/html/portlet/document_library/view_file_entries.jspf" %>
+						</liferay-ui:panel> 
+					</c:if>
 				</liferay-ui:panel-container>
 			</aui:col>
 

@@ -8,7 +8,7 @@
 
 <div class="container-fluid">
 	<div class="row-fluid">
-		<div class="span6 vcenter">
+			<div class="span6 vcenter">
 		
 			<div class="widget stacked">
 
@@ -17,36 +17,9 @@
 					<h3>Quick Stat</h3>
 				</div>
 				<!-- /widget-header -->
-			<div class="widget-content">
-					<div class="stats">
-							
-							<div class="stat">
-								<span class="stat-value">${dashboardModel.investmentCap}</span>									
-								Total Credit Line
-							</div> 
-							
-							<div class="stat">
-								<span class="stat-value">${dashboardModel.availToInvest}</span>									
-								Available To Invest
-							</div> 
-							
-							<div class="stat">
-								<span class="stat-value">${dashboardModel.amountInvested}</span>									
-								Amount Invested 
-							</div> 
-							
-						</div> 
-						
-						<div id="chart-stats" class="stats" >
-						<div class="stat stat-chart">	
-							<canvas id="chart-area" width="225" height="100" ></canvas>
-							 <!-- <div id="js-legend" class="chart-legend"></div> -->
-							 <div id="js-legend" class="chart-legend" style="display:inline-block;position: absolute;"></div>
-						 </div>
-					</div>		
-
-			
-			</div>
+			<div class="widget-content" id="creditLineChart">
+		
+			</div>	
 				
 			</div>
 			
@@ -100,3 +73,38 @@
 
 
 	</div>
+  	  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+	  <script type="text/javascript">
+	  // Load Charts and the corechart and barchart packages.
+      google.charts.load('current', {'packages':['corechart']});
+      // Draw the pie chart and bar chart when Charts is loaded.
+	  google.charts.setOnLoadCallback(drawChart);
+      
+      function drawChart() {
+	      var pieChartdata = new google.visualization.DataTable();	      
+	      pieChartdata.addColumn('string', 'Cash');
+	      pieChartdata.addColumn('number', 'Amount');
+	      pieChartdata.addRows([
+	                    ['Total Credit line', parseInt('${dashboardModel.investmentCap}')],
+	                    ['Available to Invest', parseInt('${dashboardModel.availToInvest}')],
+	                    ['Amount Invested', parseInt('${dashboardModel.amountInvested}')]
+	                  ]);      
+	       
+	        
+	        var pieChartOptions = {        		
+	        		 is3D: true,
+	        		 width: '100%',
+	        	     height: '100%',
+	        	     chartArea: {
+	        	            left: "10%",
+	        	            top: "3%",
+	        	            height: "100%",
+	        	            width: "100%"
+	        	        }
+	          };       
+	       
+	        
+	        var pieChart = new google.visualization.PieChart(document.getElementById('creditLineChart'));
+	        pieChart.draw(pieChartdata, pieChartOptions);
+        }
+    </script>

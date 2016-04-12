@@ -34,7 +34,6 @@ public class GeneralSettingServiceImpl implements GeneralSettingService {
 	}
 	
 	private GeneralSetting getGenralSettingFromModel(GeneralSetting generalSettingModel) {
-
 		GeneralSetting generalSetting =generalSettingDAO.findById(generalSettingModel.getId());
 		generalSetting.setSellerFinFee(generalSettingModel.getSellerFinFee());
 		generalSetting.setSellerTransFee(generalSettingModel.getSellerTransFee());
