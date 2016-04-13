@@ -190,6 +190,10 @@ $(document).ready(function() {
 		
 	}); 
 	
+	 $("#invoice-popup-close").on("click",function(){
+	    	closeSessionValues();
+	    });
+	
 	
 	//adding condition for Seller
 	if(userType=='Seller Admin'){
@@ -199,6 +203,8 @@ $(document).ready(function() {
 		//disabling SCF company select box
 		$('#scfCompany').attr('disabled', 'disabled');
 	}
+	
+	
 
 });
 
@@ -340,3 +346,12 @@ $("#invoiceReport").click(function (){
 	document.forms["invoicelist"].action = updateURL;
     document.forms["invoicelist"].submit();
 });
+
+
+function closeSessionValues(){
+	$.ajax({
+		  method: "GET",
+		  url:  "${closeSessionValuesURL}",
+		}).done(function( msg ) {
+		});
+}

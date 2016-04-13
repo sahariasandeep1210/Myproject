@@ -16,7 +16,7 @@
 
 
 <div class="alert alert-danger" id="errorMsg">
-	<i class="icon-remove-sign icon-2"></i>
+	
 </div>
 
 
