@@ -37,6 +37,7 @@ public class GeneralSettingServiceImpl implements GeneralSettingService {
 		GeneralSetting generalSetting =generalSettingDAO.findById(generalSettingModel.getId());
 		generalSetting.setSellerFinFee(generalSettingModel.getSellerFinFee());
 		generalSetting.setSellerTransFee(generalSettingModel.getSellerTransFee());
+		generalSetting.setMinPaymentDateDuartion(generalSettingModel.getMinPaymentDateDuartion());
 		generalSetting.setVat(generalSettingModel.getVat());
 		generalSetting.setWhitehalShare(generalSettingModel.getWhitehalShare());
 		return generalSetting;

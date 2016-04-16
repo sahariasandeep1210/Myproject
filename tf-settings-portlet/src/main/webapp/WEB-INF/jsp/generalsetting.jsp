@@ -66,6 +66,15 @@
 							         
 							      </td>
 							</tr>
+							<tr>
+							     <td>Min Payment Date Duartion</td>
+							      <td>
+							      <input type="text"
+												value="${generalSetting.minPaymentDateDuartion }"
+												name="minPaymentDateDuartion" id="minPaymentDateDuartion">
+							         
+							      </td>
+							</tr>
 							
 					</tbody>
 					</table>

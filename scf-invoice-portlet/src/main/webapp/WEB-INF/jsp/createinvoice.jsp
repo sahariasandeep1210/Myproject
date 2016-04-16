@@ -13,6 +13,12 @@
 
 
 <liferay-ui:error 	key="invoice.duplicate.error" message="${errorMessage}"/>
+<liferay-ui:error key="invoice.minPaymentDuration.error">
+	<liferay-ui:message key="invoice.payment.duration.error"
+		arguments="${minPaymentDurationDate}"></liferay-ui:message>
+</liferay-ui:error>
+
+
 
 
 <div class="alert alert-danger" id="errorMsg">

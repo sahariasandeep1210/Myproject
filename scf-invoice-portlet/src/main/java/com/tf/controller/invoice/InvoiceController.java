@@ -59,6 +59,7 @@ import com.liferay.portlet.documentlibrary.service.DLAppServiceUtil;
 import com.mysql.jdbc.StringUtils;
 import com.tf.dto.InvoiceDTO;
 import com.tf.model.Company;
+import com.tf.model.GeneralSetting;
 import com.tf.model.Invoice;
 import com.tf.model.InvoiceDocument;
 import com.tf.persistance.util.CompanyTypes;
@@ -67,6 +68,7 @@ import com.tf.persistance.util.InSuffcientFund;
 import com.tf.persistance.util.InvoiceStatus;
 import com.tf.persistance.util.ValidationUtil;
 import com.tf.service.CompanyService;
+import com.tf.service.GeneralSettingService;
 import com.tf.service.InvoiceDocumentService;
 import com.tf.service.InvoiceService;
 import com.tf.service.UserService;
@@ -109,6 +111,11 @@ public class InvoiceController {
 
 	@Autowired
 	protected PaginationUtil paginationUtil;
+	
+
+	@Autowired
+	protected GeneralSettingService generalSettingService;
+
 
 	@InitBinder
 	public void binder(WebDataBinder binder) {
@@ -141,7 +148,6 @@ public class InvoiceController {
 		@ModelAttribute("invoiceModel") InvoiceDTO invoice, ModelMap model,
 		RenderRequest request, RenderResponse response)
 		throws Exception {
-
 		try {
 			List<Company> companyList = new ArrayList<Company>();
 
@@ -207,6 +213,7 @@ public class InvoiceController {
 				(PortletConfig) request.getAttribute(JavaConstants.JAVAX_PORTLET_CONFIG);
 
 			Company company = companyService.findById(scfCompanyId);
+			GeneralSetting generalSetting=generalSettingService.getGeneralSetting();
 			if (invoice2 != null && invoiceId != invoice2.getId()) {
 
 				SessionErrors.add(request, "invoice.duplicate.error");
@@ -223,6 +230,14 @@ public class InvoiceController {
 				model.put("company", company);
 				response.setRenderParameter("render", "createInvoice");
 
+			}else if(generalSetting!=null && ((invoice.getPaymentDate().getTime()-new Date().getTime())/ (1000 * 60 * 60 * 24))<generalSetting.getMinPaymentDateDuartion()){
+				SessionErrors.add(request, "invoice.minPaymentDuration.error");
+				model.put(
+						"errorMessage",LanguageUtil.get(portletConfig, request.getLocale(), "invoice.payment.duration.error"));
+				model.put("invoice", invoice);
+				model.put("company", company);
+				model.put("minPaymentDurationDate", generalSetting.getMinPaymentDateDuartion());
+				response.setRenderParameter("render", "createInvoice");
 			}
 			else {
 				if (invoiceId > 0) {

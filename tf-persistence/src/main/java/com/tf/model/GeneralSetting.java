@@ -42,6 +42,9 @@ public class GeneralSetting implements Serializable{
 	@Column(name="update_date")
 	private Date updateDate;
 	
+	@Column(name="min_payment_date_duartion")
+	private Integer MinPaymentDateDuartion;
+	
 	
 	
 	public GeneralSetting() {
@@ -130,6 +133,18 @@ public class GeneralSetting implements Serializable{
 
 	public void setUpdateDate(Date updateDate) {
 		this.updateDate = updateDate;
+	}
+
+
+
+	public Integer getMinPaymentDateDuartion() {
+		return MinPaymentDateDuartion;
+	}
+
+
+
+	public void setMinPaymentDateDuartion(Integer minPaymentDateDuartion) {
+		MinPaymentDateDuartion = minPaymentDateDuartion;
 	}
 	
 	

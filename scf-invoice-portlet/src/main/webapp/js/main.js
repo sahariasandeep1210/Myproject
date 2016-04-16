@@ -171,7 +171,7 @@ $(document).ready(function() {
 		
 	});
 	
-	$("#invoiceDate, #paymentDate,#dueDate").datepicker({
+	$("#invoiceDate,#dueDate").datepicker({
 		changeMonth : true,
 		changeYear : true,
 		showOn : "button",	
@@ -179,6 +179,17 @@ $(document).ready(function() {
 		buttonImageOnly : true,
 		buttonText : "Select date"
 	});
+	
+	$("#paymentDate").datepicker({
+		changeMonth : true,
+		changeYear : true,
+		showOn : "button",
+		minDate : 0,
+		buttonImage : "/tf-theme/images/calendar.jpg",
+		buttonImageOnly : true,
+		buttonText : "Select date"
+	});
+	
 	
 	//upload invoices popup validation
 	$("#uploadInvoices").click(function() {
