@@ -875,9 +875,10 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 
 	@SuppressWarnings("unchecked")
 	public List<SCFTrade> getAdminTradeListWithSearch(String searchtxt, Date fromDate, Date toDate, String value, int startIndex, int pageSize) {
-
+		
 		_log.debug("Inside getAdminTradeListWithSearch ");
 		Criteria criteria = null;
+		List<SCFTrade> results = new ArrayList<SCFTrade>();
 		try {
 			Collection<Long> ids = getIDListForAdminPagination(searchtxt,fromDate,toDate,value,startIndex, pageSize);
 			if (!ids.isEmpty()) {
@@ -886,6 +887,10 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 					session.createCriteria(SCFTrade.class).add(Restrictions.in("id", ids)).createAlias("company", "company").setFetchMode(
 						"invoices", FetchMode.JOIN).setFetchMode("allotments", FetchMode.JOIN).setFetchMode("company", FetchMode.JOIN).setResultTransformer(
 						Criteria.DISTINCT_ROOT_ENTITY);
+				 
+			}else{
+				//as there is no result found returning empty list
+				return results;
 			}
 			Disjunction or = Restrictions.disjunction();
 			if (validationUtil.isNumeric(searchtxt)) {
@@ -916,7 +921,7 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 				criteria.add(or);
 			}
 
-			List<SCFTrade> results = (List<SCFTrade>) criteria.list();
+			results= (List<SCFTrade>) criteria.list();
 
 			_log.debug("getAdminTradeListWithSearch successful, result size: " + results.size());
 			return results;
