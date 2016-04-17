@@ -429,4 +429,30 @@ public class InvestorDAOImpl extends BaseDAOImpl<InvestorPortfolio, Long>   impl
 		return investors;
 	}
 
+
+	public List<InvestorPortfolio> getInvestorPortfolioDataForGraph(
+			Long scfCompanyId) {
+		/*String SQL_QUERY = "SELECT student.course, COUNT(student.course) FROM Student student GROUP BY student.course";  */
+		
+		StringBuilder builder=new StringBuilder();
+		builder.append("SELECT SUM(availToInvest) , discountRate FROM InvestorPortfolio");
+		if(scfCompanyId!=null && scfCompanyId>0l){
+			builder.append(" WHERE company_id=:scfCompanyId");
+		}
+		builder.append(" GROUP BY discountRate");
+		try {
+			Query query=sessionFactory.getCurrentSession().createQuery(builder.toString());
+			if(scfCompanyId!=null && scfCompanyId>0l){
+				query.setParameter("scfCompanyId", scfCompanyId);
+			}
+			List<InvestorPortfolio> investorPortfolios =query.setFirstResult(0).setMaxResults(5).list();
+			if(investorPortfolios!=null && investorPortfolios.size()>0){
+				return investorPortfolios;
+			}
+		} catch (RuntimeException e) {
+			_log.error("getInvestorPortfolioDataForGraph", e);
+		}
+		return null;
+	}
+
 }

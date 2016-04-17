@@ -32,8 +32,25 @@ long protPlid=PortalUtil.getPlidFromPortletId(themeDisplay.getScopeGroupId(),tru
 			</div>	
 				
 			</div>
-			
+
+			<div class="widget stacked">
+				<div class="widget-header">
+					<i class="fa fa-money" style="margin-left: 10px !important;"></i>
+					<h3>Graph</h3>
+				</div>
+				<div id="chart-widget" class="widget-content">
+					<c:choose>
+						<c:when test="${not empty investorPortfolios }">
+							<div id="columnchart_material"></div>
+						</c:when>
+						<c:otherwise>
+
+						</c:otherwise>
+					</c:choose>
+				</div>
 			</div>
+
+		</div>
 			
 			
 
@@ -95,17 +112,31 @@ long protPlid=PortalUtil.getPlidFromPortletId(themeDisplay.getScopeGroupId(),tru
 	  google.charts.setOnLoadCallback(drawChart);
       
       function drawChart() {
-	      var pieChartdata = new google.visualization.DataTable();	      
+	      var barChartdata = new google.visualization.DataTable();
+	      var pieChartdata = new google.visualization.DataTable();
+	      
+	      barChartdata.addColumn('string', 'Discount Rate');
+	      barChartdata.addColumn('number', 'Avail To Invest');
+	      
+		  <c:forEach var="element" items='${investorPortfolios}'>
+		  		barChartdata.addRow(["${element[1]}",parseFloat("${element[0]}")]);
+	      </c:forEach>
+	      
+	      
 	      pieChartdata.addColumn('string', 'Cash');
 	      pieChartdata.addColumn('number', 'Amount');
 	      pieChartdata.addRows([
 	                    ['Total Credit line', parseInt('${dashboardModel.investmentCap}')],
 	                    ['Available to Invest', parseInt('${dashboardModel.availToInvest}')],
 	                    ['Amount Invested', parseInt('${dashboardModel.amountInvested}')]
-	                  ]);      
-	       
+	                  ]);
+ 
+	      
+	        var barChartOptions = {	        		
+	        		 legend: { position: "none" }
+	          };
 	        
-	        var pieChartOptions = {        		
+	         var pieChartOptions = {        		
 	        		 is3D: true,
 	        		 width: '100%',
 	        	     height: '100%',
@@ -115,10 +146,12 @@ long protPlid=PortalUtil.getPlidFromPortletId(themeDisplay.getScopeGroupId(),tru
 	        	            height: "100%",
 	        	            width: "100%"
 	        	        }
-	          };       
-	       
+	          }; 
+	        
+	        var barChart = new google.visualization.ColumnChart(document.getElementById('columnchart_material'));
+	        barChart.draw(barChartdata, barChartOptions);
 	        
 	        var pieChart = new google.visualization.PieChart(document.getElementById('creditLineChart'));
-	        pieChart.draw(pieChartdata, pieChartOptions);
+	        pieChart.draw(pieChartdata, pieChartOptions); 
         }
     </script>

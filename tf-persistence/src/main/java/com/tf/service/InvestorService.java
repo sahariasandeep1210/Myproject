@@ -48,5 +48,7 @@ public interface InvestorService {
 	public Investor findByInvestorId(long id);
 	
 	public List<Investor> getCashPoition();
+	
+	public List<InvestorPortfolio> getInvestorPortfolioDataForGraph(Long scfCompanyId);
 
 }

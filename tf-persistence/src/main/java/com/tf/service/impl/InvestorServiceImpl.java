@@ -147,4 +147,9 @@ public class InvestorServiceImpl implements InvestorService {
 	public List<Investor> getCashPoition() {
 		return investorDAO.getCashPoition();
 	}
+
+	public List<InvestorPortfolio> getInvestorPortfolioDataForGraph(
+			Long scfCompanyId) {
+		return investorDAO.getInvestorPortfolioDataForGraph(scfCompanyId);
+	}
 }

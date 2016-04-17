@@ -54,5 +54,7 @@ public interface InvestorDAO extends BaseDAO<InvestorPortfolio, Long> {
 	
 	
 	public List<Investor> getCashPoition();
+	
+	public List<InvestorPortfolio> getInvestorPortfolioDataForGraph(Long scfCompanyId);
 
 }

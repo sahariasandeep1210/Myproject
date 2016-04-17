@@ -18,8 +18,10 @@ import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.security.permission.PermissionChecker;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.tf.model.Investor;
+import com.tf.model.InvestorPortfolio;
 import com.tf.persistance.util.Constants;
 import com.tf.service.InvestorService;
+import com.tf.service.UserService;
 import com.tf.util.LiferayUtility;
 
 
@@ -36,25 +38,35 @@ public class DashboardController {
 	@Autowired
 	private InvestorService investorService;
 	
+	@Autowired
+	protected UserService userService;
+	
 	@RenderMapping
 	protected ModelAndView renderCompanyList(ModelMap model,RenderRequest request, RenderResponse response) throws Exception {		
 		_log.info("Render Dashboard");
 		setPortletURls(model,request); 
 		String viewName="newdashboard";
+		ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
+		
+		List<InvestorPortfolio> investorPortfolios=null;
 		if(request.isUserInRole(Constants.PRIMARY_INVESTOR_ADMIN)){
+			investorPortfolios=investorService.getInvestorPortfolioDataForGraph(null);
 			viewName="investordashboard";
 		}else if(request.isUserInRole(Constants.SELLER_ADMIN)){
 			viewName="sellerdashboard";
 		}else if(request.isUserInRole(Constants.SCF_ADMIN)){
+			long companyId = userService.getCompanybyUserID(themeDisplay.getUserId()).getId();
+			investorPortfolios=investorService.getInvestorPortfolioDataForGraph(companyId);
 			viewName="scfdashboard";
 		}
-		ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
+	
 		PermissionChecker permissionChecker = themeDisplay.getPermissionChecker();
 		if (permissionChecker.isOmniadmin()) {
 			List<Investor> cashPosition =investorService.getCashPoition();
 			model.put("cashPosition",cashPosition);
 		}
 		
+		model.put("investorPortfolios", investorPortfolios);
 		model.put("dashboardModel", investorService.getDashBoardInformation());
 		
 		return new ModelAndView(viewName, model);		
