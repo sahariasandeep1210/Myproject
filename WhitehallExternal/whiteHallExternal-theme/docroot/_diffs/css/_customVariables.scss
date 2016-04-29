@@ -1,0 +1,70 @@
+// font-size 
+// --------------------------------------------------------------------------------------------------------
+$fontSize_8:       						0.5714285714285714em;
+$fontSize_10:       					0.721em;
+$fontSize_11:							0.7857142857142857em;
+$fontSize_12:							0.8571428571428571em;
+$fontSize_13:							0.9285714285714286em;
+$fontSize_14:							1em;
+$fontSize_16:       					1.142857142857143em;
+$fontSize_18:            				1.285714285714285em;
+$fontSize_20:	      					1.428571428571429em;
+$fontSize_22:	      					1.571428571428571em;
+$fontSize_24:	      					1.714285714285714em;
+$fontSize_32:							2.285714285714286em;
+$fontSize_36:							2.571428571428571em;
+$fontSize_38:							2.714285714285714em;
+$fontSize_42:							3em;
+
+// font-wight 
+// --------------------------------------------------------------------------------------------------------
+$fontWeight400:							400;
+$fontWeight500:							500;
+$fontWeight700:							700;
+
+// Font Config
+//-----------------------------------------------------------------------------------------------------
+$defaultfontFamily:						'Montserrat', sans-serif;
+$defaultfontWeight:						$fontWeight400  !default;
+$defaultfontSize:						$fontSize_14 !default;
+$defaultlineHeight:						24px !default;
+
+// Color Config
+//-----------------------------------------------------------------------------------------------------
+
+$black: 								#000000;
+
+$gray1:									#e9ebed;
+$gray2:									#c6c8ca;
+$gray3:									#d5d9dc;
+$gray4:									#b5b9bb;
+$gray5:									#959fa7;
+$gray6:									#7f878e;
+
+$blue1:									#2c3d4d;
+$blue2:									#253442;
+$blue3:									#222a35;
+$blue4:									#1d242d;
+
+$blue5:									#2a7bb2;
+$blue6:									#246997;
+
+$green1:								#189a80;
+$green2:								#14836d;
+
+$yellow1:								#feba12;
+$yellow2:								#d89e0f;
+
+$white: 								#ffffff;
+
+$success: 								#7bb62e;
+$error: 								#e83434;
+
+
+// screen size
+// --------------------------------------------------------------------------------------------------------
+$desktop-min:							1200px; 
+$tablet-max:							979px;
+$tablet-min:							767px;
+$mobile-max:							480px;
+$mobile-min:							320px;

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+
+#parse ($init)
+
+<html class="$root_css_class white-hall" dir="#language ("lang.dir")" lang="$w3c_language_id">
+
+<head>
+	<title>$the_title</title>
+
+	<meta content="initial-scale=1.0, width=device-width" name="viewport" />
+	
+	<link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+	
+	<link href='$css_folder/animate.css' rel='stylesheet' type='text/css'>
+	
+	$theme.include($top_head_include)
+	
+</head>
+
+<body class="$css_class">
+
+	<a href="#main-content" id="skip-to-content">#language ("skip-to-content")</a>
+	
+	$theme.include($body_top_include)
+	
+	#if ($is_signed_in)
+		#dockbar()
+	#end
+	
+	<div id="wrapper">
+		
+		<header id="banner" class="headerContainer" role="banner">
+			
+			<div class="container">
+	
+				<div class="row">
+					
+					<div id="heading" class="headerLeftcontainer span3">
+						<h1>
+							<a class="$logo_css_class" href="$site_default_url" title="#language_format ("go-to-x", [$site_name])">
+								<img alt="$logo_description" height="$site_logo_height" src="$site_logo" width="$site_logo_width" />
+							</a>
+						</h1>
+					</div>
+					
+					<div class="headerRightcontainer span9">
+						#if ($has_navigation || $is_signed_in)
+							#parse ("$full_templates_path/navigation.vm")
+						#end
+					</div>
+		
+				</div>	
+	
+			</div>
+	
+		</header>
+	
+		<div id="content">
+			#if ($selectable)
+				$theme.include($content_include)
+			#else
+				$portletDisplay.recycle()
+	
+				$portletDisplay.setTitle($the_title)
+	
+				$theme.wrapPortlet("portlet.vm", $content_include)
+			#end
+		</div>
+		
+	</div>
+
+	<script src="$javascript_folder/jqueryv2.2.2.min.js"></script>
+	<script src="$javascript_folder/bootstrap.js"></script>
+	<script src="$javascript_folder/jquery.sliderPro.min.js"></script>
+	<script src="$javascript_folder/slick.min.js"></script>
+	<script src="$javascript_folder/jquery.viewportchecker.js"></script>
+	
+	$theme.include($body_bottom_include)
+	
+	$theme.include($bottom_include)
+
+</body>
+
+</html>

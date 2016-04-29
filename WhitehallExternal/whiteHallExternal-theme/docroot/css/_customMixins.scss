@@ -1,0 +1,31 @@
+.customButton{
+	font-family: $defaultfontFamily;
+	font-weight: $defaultfontWeight;
+	background: $white;
+	text-decoration: none;
+	margin: 0;
+	height: auto;
+	min-width: auto;
+	display: inline-block;
+	
+	&:hover, &:focus{
+		text-decoration: none;
+	}
+}
+
+
+.customButtonSmall{
+	@extend .customButton;
+	font-size: $fontSize_13;
+	line-height: 30px;
+	padding: 0 25px;
+	@include border-radius(30px);
+}
+
+.customButtonMedium{
+	@extend .customButton;
+	font-size: $fontSize_13;
+	line-height: 40px;
+	padding: 0 25px;
+	@include border-radius(30px);
+}

@@ -1,0 +1,192 @@
+ #footer {
+ 		position: relative;
+   		background: $blue1;
+   		
+   		
+   		.container{
+   			padding: 46px 0 0;
+   			position: relative;
+ 		}
+ 		
+ 		.footer-navigation:before {
+			    content: "";
+			    position: absolute;
+			    z-index: -1;
+			    top: 0;
+			    right: -260px;
+			    width: 367px;
+			    height: 252px;
+			    background: url(../images/bottom-right-logo.png) right top no-repeat;
+		}
+		
+		.address{
+			a {
+                    color: $white;
+                    text-decoration: none;
+                    
+                    &:hover, &:focus{
+		        	 	color: $blue5;
+		        	 }
+                }
+		}
+   
+       	h4 {
+	        font-weight: $fontWeight700;
+	        font-size: $fontSize_14;
+	        color: $green1;
+            padding-bottom: 10px;
+	        margin: 0;
+		}
+		
+		.colorYellow{
+			color: $yellow1;
+		}
+		
+		.borderLeft{
+			border-left: 1px solid rgba(149, 159, 167, .5);
+		    -webkit-background-clip: padding-box; /* for Safari */
+		    background-clip: padding-box; /* for IE9+, Firefox 4+, Opera, Chrome */
+		    padding-left: 30px;
+		    
+		    @media (max-width: $tablet-min){
+		    	border-left: none;
+		    	padding-left: 0;
+		    }
+		}
+		
+		@media (max-width: $tablet-min){
+	    	.span3{
+	    		clear: both;
+	    	}
+	    	.span3 + .span3, .address{
+	    		margin-top: 30px;
+	    	}
+	    	.container{
+	    		padding: 50px 15px 0;
+	    	}
+	    	
+	    	.footer-social-section{
+	    		float: none;
+	    		margin:20px 0 0 41px;
+	    		
+	    		li{
+    			    width: auto;
+				    float: none;
+				    display: inline-block;
+	    		}
+	    	}
+	    }
+       
+        p {
+            color: $white;
+            font-size: $fontSize_11;
+            line-height: 22px;
+            font-weight: $fontWeight400;
+            margin: 0;
+        }
+        
+        .copyright-section{
+            background: $blue4;
+            margin-top:50px;
+            padding: 22px 0;
+            
+	   		.container{
+	    		padding: 0 15px;
+	    	}
+            
+            .logo{
+            	margin: 2px 10px 0 0;
+            	float: left;
+            }
+
+            .footer-copyright{
+	            color: $gray5;
+	            font-size: $fontSize_10;
+	            line-height: 14px;
+	            margin-top: 6px;
+	            
+	            span{
+	            	display: table;
+	            }
+	        }
+            
+        }
+        
+        
+        
+        .footer-social-links{
+        
+            li{
+                display: inline-block;
+                padding:0 10px 0 0;
+                
+                &:last-child{
+                	padding-right: 0px;
+                }
+            }
+            
+            a{
+				width: 40px;
+				height: 40px;
+				line-height: 40px;
+				display: inline-block;
+				text-align: center;
+				background: $blue1;
+				border-radius: 100%;
+				opacity:0.5;
+				 
+				&:hover, &:focus{
+					opacity:1;
+				}
+	        }
+        }
+        
+        ul {
+            margin: 0;
+            li {
+                list-style: none;
+                a {
+                    color: $white;
+                    text-decoration: none;
+                    font-size: $fontSize_11;
+                    line-height: 24px;
+                    font-weight: $fontWeight400;
+                    
+                    &:hover, &:focus{
+		        	 	color: $yellow1;
+		        	 }
+                }
+                
+                @media (max-width: $tablet-min){
+			    	width: 50%;
+			    	float: left;
+			    }
+            }
+        }
+        
+        .email-subscription {
+		    position: relative;
+		    margin: 16px 0 0;
+		}
+		.email-subscription input[type="text"] {
+		    padding: 0 30px 0 15px;
+		    margin: 0px;
+		    line-height: 40px;
+		    font-size: $fontSize_11;
+		    color: $gray5;
+		    border: 1px solid $blue3;
+		    @include border-radius(2px);
+		    background: transparent;
+		    height: auto;
+		}
+		.email-subscription i {
+		    position: absolute;
+		    right: 0px;
+		    padding: 0 15px;
+		    line-height: 40px;
+		    pointer-events: none;
+		    font-size: $fontSize_16;
+		    color: $white;
+		}
+        
+}

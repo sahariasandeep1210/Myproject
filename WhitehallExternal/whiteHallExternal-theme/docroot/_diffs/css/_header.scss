@@ -1,0 +1,142 @@
+.signed-in .headerContainer{
+	position: relative;
+}
+.headerContainer{
+	
+	padding: 19px 0;
+	z-index: 90;
+	width: 100%;
+	margin: 0 auto;
+	position: fixed;
+	
+	&.fixed-pos{
+		background: $blue1;
+		top:0;
+		z-index:2000;
+		-webkit-box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.1);
+		-moz-box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.1);
+		box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.1);
+		
+		-moz-transition: all 600ms ease-out;
+		-o-transition: all 600ms ease-out;
+		-webkit-transition: all 600ms ease-out;
+		transition: all 600ms ease-out;
+		-ms-transition: all 600ms ease-out;
+	}
+	
+	#navbarCollapseBtn{
+	    position: absolute;
+	    right: 15px;
+	    top: -43px;
+	    background: none;
+	    border: 0;
+	    outline:none;
+		background: 0;
+		font-size: $fontSize_24;
+		color: $white;
+		margin: 0;
+		padding: 0;
+		width: auto;
+		float: right;
+		display: inline-block;
+		
+		.icon-reorder{
+			text-shadow: none;
+		}
+
+		&.collapsed{
+	    	.icon-reorder:before {
+			    content: "\f0c9";
+			}
+		}
+		
+		.icon-reorder:before {
+		    content: "\f00d";
+		    
+		    -moz-transition: all 400ms ease-out;
+			-o-transition: all 400ms ease-out;
+			-webkit-transition: all 400ms ease-out;
+			transition: all 400ms ease-out;
+			-ms-transition: all 400ms ease-out;
+		}
+		
+	}
+	
+	.headerLeftcontainer {
+		padding-top: 0;
+		
+		h1{
+			margin: 0;
+    		padding: 0;
+		}
+	}
+	.headerRightcontainer{
+		position: relative;
+		float: right;
+		width: auto;
+		
+		#navbarCollapseWrapper nav{
+	    	background: $blue1;
+	    	margin: 0 0 10px;
+	    	padding: 0;
+	    	
+	    	-webkit-box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.1);
+			-moz-box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.1);
+			box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.1);
+			
+			-moz-transition: all 400ms ease-out;
+			-o-transition: all 400ms ease-out;
+			-webkit-transition: all 400ms ease-out;
+			transition: all 400ms ease-out;
+			-ms-transition: all 400ms ease-out;
+	    }
+	}
+	
+	/*&.fixed-pos{
+		#navbarCollapseWrapper nav{
+			background: $blue1;
+			
+			-moz-transition: all 400ms ease-out;
+			-o-transition: all 400ms ease-out;
+			-webkit-transition: all 400ms ease-out;
+			transition: all 400ms ease-out;
+			-ms-transition: all 400ms ease-out;
+		}
+	}*/
+
+	
+	.navBtnContainer a{
+		margin: 0 7px 0 0;
+	}
+	
+	#navbarCollapse ul{
+		list-style-type: none;
+		margin: 0;
+		
+		li{
+			float: left;
+			line-height: 30px;
+			
+			&:first-child a{
+				padding-left: 0;
+			}
+
+			a{
+				padding: 0 15px;
+				color: $white;
+				font-size: $fontSize_14;
+				font-weight: $fontWeight700;
+				text-decoration: none;
+				text-transform: capitalize;
+				width:100%;
+				display: block;
+				
+				&:hover, &:focus{
+					color: $blue5;
+				}
+			}		
+
+		}
+
+	}
+}

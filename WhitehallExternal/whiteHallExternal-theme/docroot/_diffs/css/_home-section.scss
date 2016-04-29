@@ -1,0 +1,503 @@
+.home-section{
+    background-color: $white;
+    
+    &.normal-padding{
+        padding-top:80px;
+        padding-bottom:80px;
+        
+        @media screen and (max-width: $tablet-min){
+            padding-top:40px;
+        	padding-bottom:40px;
+         }
+    }
+    
+    &.high-padding{
+    	padding-top:80px;
+        padding-bottom:100px;
+        
+        @media screen and (max-width: $tablet-min){
+            padding-top:40px;
+        	padding-bottom:40px;
+         }
+    }
+    
+    .main-header{
+        margin-bottom:20px;
+        color: $green1;
+        margin-top:0px;
+        
+        &.blue{
+        	color: $blue5;
+        }
+        
+        @media screen and (max-width: $tablet-min){
+           margin-bottom:10px;
+        }
+    }
+    p{
+        font-size: $fontSize_13;
+        color: $blue1;
+        line-height: 24px;
+    }
+    .button-container{
+        margin-top:20px;
+        
+        @media (min-width: $tablet-max){}
+			a + a{
+				margin: 0 0 0 20px;
+			}
+		
+        
+        @media screen and (max-width: $tablet-min){
+            padding-left:15px;
+            padding-right:15px;
+        }
+    }
+    
+    /* home banner */
+    &#heroSlider{
+    	min-height:630px;
+    	padding-left:0;
+    	padding-right: 0;
+    	h2{
+	    	font-size:$fontSize_42;
+	    	color: $white;
+	    }
+	    
+	    p{
+	        font-size: $fontSize_14;
+	        color: $white;
+	        line-height: 24px;
+	        white-space: normal !important;
+    		text-align: center;
+	    }
+	    .desc{
+	    	width: 50%;
+	    	margin: 25px auto 0 auto;
+	    }
+	    .sp-arrow{
+	    	width: 31px;
+    		height: 55px;
+    		opacity: .5;
+    		
+    		&:hover, &:focus{
+				opacity: 1;
+			}
+	    }
+	    .sp-next-arrow:after, .sp-next-arrow:before, .sp-previous-arrow:after, .sp-previous-arrow:before {
+		    content: '';
+		    position: absolute;
+		    width: 10%;
+		    height: 50%;
+		    background-color: #FFF;
+		}
+    }
+    /* home banner */
+    
+    .button-container {
+		.button-content{
+			display:inline-block;
+			
+			&+.button-content{
+				margin-top:20px;
+				margin-left: 20px;
+			}	
+		}
+	}
+    
+    /* highlight-section */
+    &.highlight-section{
+    
+    	&.lift-up{
+    		margin-top:-50px;
+    		
+    		&.normal-padding{
+	    		padding:0 15px 10px 15px;
+	    	}
+    	}
+    	
+    	background: none;
+    	
+    	.panel{
+		    -webkit-box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.1);
+			-moz-box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.1);
+			box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.1);
+			margin-bottom: 25px;
+		    
+		    .panel-content {
+			    padding: 20px;
+			    background: $blue5;
+			    position: relative;
+			    min-height: 325px;
+			    -webkit-border-radius: 5px 0;
+			    -moz-border-radius: 5px 0;
+			    -ms-border-radius: 5px 0;
+			    -o-border-radius: 5px 0;
+			    border-radius: 5px 0;
+			    
+			    
+			    .main-header{
+			    	color: $white;
+			    	font-size: $fontSize_18;
+    				line-height: normal;
+			    }
+			    
+			    .icon{
+			    	-webkit-border-radius: 5px 0;
+				    -moz-border-radius: 5px 0;
+				    -ms-border-radius: 5px 0;
+				    -o-border-radius: 5px 0;
+				    border-radius: 5px 0;
+				    margin-bottom: 20px;
+				    background: $white;
+				    opacity: .25;
+				    text-align: center;
+				    line-height: 120px;
+			    }
+			    
+			    p{
+			    	color: $white;
+			    }
+			    
+			    &:before{
+	    			content: "";
+	    			z-index: 1;
+				    position: absolute;
+				    width: 50px;
+				    height: 50px;
+				    right: 20px; 
+				    bottom: -25px;
+				    background:$white url(../images/w-blue.png) center center no-repeat;
+				    @include border-radius(100%);
+	    		}
+			    
+    		}
+    		
+    		&.yellow{
+    			.panel-content {
+		    		background: $yellow1;
+		    		
+		    		&:before{
+		    			content: "";
+		    			z-index: 1;
+					    position: absolute;
+					    width: 50px;
+					    height: 50px;
+					    right: 20px; 
+					    bottom: -25px;
+					    background:$white url(../images/w-yellow.png) center center no-repeat;
+					    @include border-radius(100%);
+		    		}
+    			}
+		    }
+		    
+		    &.green{
+    			.panel-content {
+		    		background: $green1;
+		    		
+		    		&:before{
+		    			content: "";
+		    			z-index: 1;
+					    position: absolute;
+					    width: 50px;
+					    height: 50px;
+					    right: 20px; 
+					    bottom: -25px;
+					    background:$white url(../images/w-green.png) center center no-repeat;
+					    @include border-radius(100%);
+		    		}
+    			}
+		    }
+    	}
+    	
+    }
+    /* highlight-section */
+    
+	/*register-section */
+	&.register-section{
+	      background: none;
+	  h2.main-header{
+	    color: $blue5;
+	  }
+	   .sub-text{
+	     text-align:center;
+	     margin-bottom:50px;
+	   }
+	
+	 .panel{
+	  -webkit-box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.1);
+	-moz-box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.1);
+	box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.1);
+	margin-bottom: 25px;
+	
+	  .panel-content {
+	   padding: 34px 20px;
+	   background: $blue5;
+	   position: relative;
+	
+	   -webkit-border-radius: 5px 0;
+	   -moz-border-radius: 5px 0;
+	   -ms-border-radius: 5px 0;
+	   -o-border-radius: 5px 0;
+	   border-radius: 5px 0;
+	
+	   .radio-btn{
+	     input[type="radio"]{
+	      width:21px;
+	      height:21px;
+	      position: absolute;
+	   top: 5px;
+	   left: 10px;
+	     }
+	   }
+	
+	   .regImg{
+	    text-align:center;
+	    margin-bottom: 15px;
+	   }
+	   .description{
+	     font-size:$fontSize_18;
+	     text-align:center;
+	   }
+	   .main-header{
+	    color: $white;
+	    font-size: $fontSize_18;
+	    line-height: normal;
+	   }
+	
+	   .icon{
+	    -webkit-border-radius: 5px 0;
+	    -moz-border-radius: 5px 0;
+	    -ms-border-radius: 5px 0;
+	    -o-border-radius: 5px 0;
+	    border-radius: 5px 0;
+	    margin-bottom: 20px;
+	    background: $white;
+	    opacity: .25;
+	    text-align: center;
+	    line-height: 120px;
+	   }
+	
+	   p{
+	    color: $white;
+	   }
+	
+	   &:before{
+	    content: "";
+	    z-index: 1;
+	    position: absolute;
+	    width: 50px;
+	    height: 50px;
+	    right: 20px; 
+	    bottom: -25px;
+	    background:$white url(../images/w-blue.png) center center no-repeat;
+	    @include border-radius(100%);
+	   }
+	
+	  }
+	
+	  &.yellow{
+	   .panel-content {
+	    background: $yellow1;
+	
+	    &:before{
+	     content: "";
+	     z-index: 1;
+	     position: absolute;
+	     width: 50px;
+	     height: 50px;
+	     right: 20px; 
+	     bottom: -25px;
+	     background:$white url(../images/w-yellow.png) center center no-repeat;
+	     @include border-radius(100%);
+	    }
+	   }
+	  }
+	
+	  &.green{
+	   .panel-content {
+	    background: $green1;
+	
+	    &:before{
+	     content: "";
+	     z-index: 1;
+	     position: absolute;
+	     width: 50px;
+	     height: 50px;
+	     right: 20px; 
+	     bottom: -25px;
+	     background:$white url(../images/w-green.png) center center no-repeat;
+	     @include border-radius(100%);
+	    }
+	   }
+	  }
+	 }
+	
+	}
+	/* register-section */
+	
+	/* About what we do */
+	&.about-what-we{
+		p{
+			text-align: justify;
+		}
+		.main-header{
+			margin-bottom: 40px;
+		}
+	}
+	
+	/* About trades */
+	&.about-trades{
+		background: $gray1;
+		
+		.sub-text{
+			margin-bottom: 50px;
+		}
+		
+		.top-header{
+			font-size: $fontSize_38;
+			color: $green1;
+			margin-bottom: 20px;
+			
+		}
+	}
+	/* About trades */
+    
+    &.sucess-stories-section{
+    	
+    	border-top: 1px solid $gray1;
+    	margin-bottom: 25px;
+    	
+    	.main-header {
+		    color: $blue5;
+		}
+    	
+    	.client-tele-list{
+    		    margin: 20px 82px 0;
+    		
+    		&:before, &:after{
+    			content: "";
+    			z-index: 1;
+			    position: absolute;
+			    width: 62px;
+			    height: 44px;
+			    left: -82px; 
+			    top: 146px;
+			    background: url(../images/quote-left.png) left top no-repeat;
+    		}
+    		&:after{
+    			right: -82px; 
+			    top: 146px;
+			    left: auto;
+			    background: url(../images/quote-right.png) left top no-repeat;
+    		}
+    		
+    		.client-tele{
+    			.portrait img{
+    				display: inline-block;
+    				@include border-radius(100%);
+    				margin: 0 0 40px;
+    			}
+    			.quote{
+    				blockquote{
+    					margin: 0;
+    					text-align: center;
+    					border: none;
+    					
+    					p{
+    						margin: 0 0 40px;
+    					}
+    					
+    					cite{
+    						color: $blue1;
+        					font-size: $fontSize_14;
+    						
+    						span{
+    							color: $green1;
+        						font-size: $fontSize_16;
+    							margin: 0 0 10px;
+    						}
+    					}
+    				}
+    			}
+    		}
+    		
+    		.slick-dots{
+    			margin: 0;
+    			pause: 0;
+    		}
+    	
+    	}
+    }
+    
+    /* why-use-section */
+    &.why-use-section{
+    	
+    	background: url(../images/why-whitehall-image.jpg) center center no-repeat;
+    	background-attachment: fixed;
+    	background-size: cover;
+    	
+    	.main-header {
+		    color: $yellow1;
+		    margin-bottom: 25px;
+		}
+		
+		.container > p{
+			color: $white;
+			margin-bottom: 50px;
+		}
+		
+		.panel{
+		    -webkit-box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.1);
+			-moz-box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.1);
+			box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.1);
+		    
+		    .panel-content {
+			    padding: 0;
+			    background: $blue5;
+			    position: relative;
+			    /*min-height: 120px;*/
+			    -webkit-border-radius: 5px 0;
+			    -moz-border-radius: 5px 0;
+			    -ms-border-radius: 5px 0;
+			    -o-border-radius: 5px 0;
+			    border-radius: 5px 0;
+			    
+			    .header {
+					line-height: 120px;
+					color: $white;
+					font-size: $fontSize_14;
+					font-weight: $fontWeight700;
+			    }
+			}
+		}
+    }
+    /* why-use-section */
+    
+    /* whitehall-platform-section */
+    &.whitehall-platform-section{
+    	
+    	.img-container{
+    		
+    		.img-responsive{
+    			-webkit-box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.1);
+				-moz-box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.1);
+				box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.1);
+				
+				-webkit-border-radius: 5px 0;
+			    -moz-border-radius: 5px 0;
+			    -ms-border-radius: 5px 0;
+			    -o-border-radius: 5px 0;
+			    border-radius: 5px 0;
+				
+				width: 100%;
+			    background: $gray3;
+    		}
+    	}
+    	.button-container{
+    		margin-top: 25px;
+    	}
+    }
+    /* whitehall-platform-section */
+    
+}

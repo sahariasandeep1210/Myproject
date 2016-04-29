@@ -1,0 +1,17 @@
+.aui { 
+	.row-fluid [class*="span"]{
+		min-height: 1px;
+	}
+	
+	.portlet-borderless-container {
+	    min-height: 1px;
+	}
+
+	.portlet-column{
+		margin : 0 0 80px;
+    }
+    
+    p + p{
+    	margin: 0 0 20px;
+    }
+}
