@@ -1,0 +1,363 @@
+.aui.white-hall{
+	.inMobileView, #navbarCollapseBtn, .inMobileViewNav{
+		display: none;
+	}
+	
+	@media (min-width: $tablet-min){
+		.home-section{
+			&.why-use-section{
+				.row-fluid + .row-fluid{
+					margin-top: 30px;
+				}
+			}
+		}
+	}
+	
+	@media (min-width: $tablet-max){
+		.navbar-collapse.collapse {
+		    display: block!important;
+		    height: auto!important;
+		    padding-bottom: 0;
+		    overflow: visible!important;
+		}
+		.headerContainer #navbarCollapseBtn{
+			display: none;
+		}
+		
+		
+	}
+	
+	@media screen and (min-width: $tablet-max) and (max-width: 1024px)  {
+		.panel.color-panel .panel-content{
+			min-height: 250px;
+		}
+    }
+	
+	@media (max-width: $tablet-max) and (min-width: $tablet-min){
+			.container, 
+			.navbar-static-top .container, 
+			.navbar-fixed-top .container, 
+			.navbar-fixed-bottom .container {
+			    width: 738px;
+			}
+			
+	        .btn.btn-primary{
+	          clear: both;
+	          display: inherit;
+	        }
+	        .btn {
+	        	width: auto;
+	        }
+	}
+	
+	
+	@media screen and (max-width: $tablet-min){
+		body{
+			padding-left:0;
+		   	padding-right:0;
+		}
+		.logo img {
+		    width: 60%;
+		    min-width: 157px;
+		}
+		.home-section, .headerContainer{
+		    padding-left:15px;
+		   	padding-right:15px;
+		}
+		.headerTopinformation{
+			display: none;
+		}
+		
+		.home-section.section-padding{
+			padding-top: 40px;
+			padding-bottom: 40px;
+		}
+		
+		.home-section{
+			&.why-use-section{
+				.panel{
+					margin-top: 15px;
+				}
+			}
+		}
+		
+	}
+	
+	@media (max-width: $mobile-max){
+		.home-section{
+			&.sucess-stories-section{
+				.client-tele-list{
+					margin: 20px 20px 0;
+				}
+			}
+		}
+	}
+	
+	@media (max-width: $mobile-max) and (min-width: $mobile-min){
+		.home-section .button-container {
+		    padding-left: 0;
+		    padding-right: 0px;
+		}
+		
+		#navbarCollapseBtn{
+			
+			&:hover, &:focus{
+				color: $yellow1;
+			}
+		}
+		.portlet-column {
+    		margin: 0 0 20px;
+    		&.homePageLayout {
+		    margin: 0;
+		   }
+		}
+		.home-section.normal-padding {
+		    padding-bottom: 40px;
+		    padding-top: 40px;
+		}
+		
+		.headerContainer{
+			.headerRightcontainer {
+				/*top: 60px !important;*/
+			}
+		}
+		
+
+		
+		
+	}
+	
+	@media (max-width: $tablet-min){
+		h1 {
+		    font-size: $fontSize_24;
+		    line-height: normal;
+		}
+		.home-section .button-container {
+		    padding-left: 0;
+		    padding-right: 0px;
+		}
+
+        .btn.btn-primary{
+          clear: both;
+          display: inherit;
+        }
+        .btn {
+        	width: auto;
+        }
+        .home-section{
+        	&.highlight-section{
+				margin-top: 15px;
+				
+				.panel{
+					margin-top: 45px;
+				}
+				
+				.row-fluid:first-child{
+					.span4:first-child{
+						.panel{
+							margin-top:0;
+						}
+					}
+				}
+			}/* highlight section end */
+			
+			&.sucess-stories-section{
+				.client-tele-list{
+					&:before, &:after{
+						background: none;
+						width:0;
+						height:0;
+					}
+				}
+			}/* sucess-stories-section end */
+			
+			&.whitehall-platform-section{
+				.main-header{
+					margin-top: 25px;
+				}
+			}/* whitehall-platform-section end */
+			
+			/* About trades */
+			&.about-trades{
+				.top-header{
+					font-size: $fontSize_32;
+				}
+			}
+			/* About trades */
+        }
+        
+        /* inner page title small start */
+        .inner-page-title-small h1{
+			margin-left: 15px; 
+			margin-right: 15px;
+			font-size: $fontSize_24;
+			line-height: normal;
+		}
+		
+		.inner-page-title-large h1{
+		   margin-left: 15px; 
+		   margin-right: 15px;
+		   font-size: $fontSize_24;
+		   line-height: normal;
+		   /*margin-top: 65px;
+		   margin-bottom: 65px;*/
+		}
+		
+		.inner-page-title-large{
+	    	table{
+	    		height: 175px;
+	    		margin-top:0;
+	    	}
+	    	
+	    	p{
+	    		width: 80%;
+	    		margin:0 auto;
+	    	}
+	    }
+	    /* inner page title small end */
+        
+	}
+	
+	@media (max-width: $tablet-max) {
+		&.ios input, &.ios input.input-large, &.ios textarea, &.ios .uneditable-input {
+            max-width: 100% !important;
+            width: 100% !important;
+        }
+        
+        
+        .mobileShow{
+		   display: block;
+		}
+		.mobileHide{
+		    display: none;
+		}
+		
+		.innerPageLayout{
+			margin-top: 60px;
+		}
+			
+		#navbarCollapseBtn{
+			
+			&:hover, &:focus{
+				color: $blue5;
+			}
+		}
+		
+		.headerContainer{
+			
+			#navbarCollapse ul{
+				float: none;
+			}
+			
+			.customNavigation{
+				text-align: left;
+			}
+			.headerRightcontainer {
+        		    width: 100%;
+				    position: absolute;
+				    top: 67px;
+				    left: 0;
+				    margin: 0;
+				    padding: 0;
+				    
+				    
+				    
+				    .inMobileViewNav, #navbarCollapseBtn{
+				    	display: inline-block;
+				    }
+				    
+				    .inMobileView{
+				    	display: block;
+				    	width: 100%;
+				    	display: block;
+				    	margin: 0;
+
+				    }
+				    
+				    .navBtnContainer{
+				    	padding: 15px;
+				    	float: none;
+				    	
+				    	a{
+				    		width: 100%;
+				    		text-align: center;
+				    		margin-bottom: 15px;
+				    		
+				    		&:last-child{
+				    			margin-bottom: 0;
+				    		}
+				    	}
+				    }
+        	}
+			
+			#navbarCollapse ul li{
+        		float: none;
+			    line-height: 18px;
+			    padding: 11px 15px;
+			    border-bottom: 1px solid $gray6;
+			    
+			    a{
+			    	padding: 0;
+			    }
+        	}
+        	
+        	#navbarCollapse.open{
+			 background: $white;
+			 float: none;
+			}
+			
+			.headerLeftcontainer {
+				padding-top: 0px;
+				padding-left: 0px;
+			}
+		}
+		
+
+		.mobile-hide{
+			height:0px;
+			
+		}
+		
+		#heading{
+			a.logo{
+				width: 166px;
+			}
+		}
+		
+		h2{
+			font-size: $fontSize_24;
+			line-height: 28px;
+		}
+		
+		.home-section{
+			&#heroSlider{
+				h2{
+			    	font-size:$fontSize_24;
+			    	line-height: 2em;
+			    	text-align:center;
+			    }
+			    .desc{
+			    	width: 100%;
+			    	margin-top:0;
+			    }
+			}
+			
+			&.highlight-section{
+				margin-top: 15px;
+			}/* highlight section end */
+			.button-container {
+				.button-content{
+					display:block;
+					
+					&+.button-content{
+						margin-top:20px;
+						margin-left: 0;
+					}	
+				}
+			}
+			
+		}
+	}
+	
+}
+

@@ -41,7 +41,7 @@
 					<h4>
 						<c:choose>
 							<c:when test="${invoiceModel.id ne null }">	
-							Edit				
+							View				
 						</c:when>
 							<c:otherwise>		
 							Add			

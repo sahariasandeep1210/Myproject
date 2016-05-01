@@ -1,0 +1,83 @@
+/*
+.btnCoBuSm{
+	@extend .customButtonSmall;
+	color : $blue5;
+	&:hover, &:focus{
+		color: $black;
+	}
+}
+
+.btnCoCySm{
+	@extend .customButtonSmall;
+	color: $green1;
+	
+	&:hover, &:focus{
+		color: $black;
+	}
+}
+*/
+
+.btnBgWhiteBlue{
+	color : $blue5;
+	
+	&:hover, &:focus{
+		color: $white;
+		background: $blue5;
+	}
+}
+
+.btnBgWhiteYellow{
+	color : $yellow1;
+	
+	&:hover, &:focus{
+		color: $white;
+		background: $yellow1;
+	}
+}
+
+.btnBgWhiteGreen{
+	color : $green1;
+	
+	&:hover, &:focus{
+		color: $white;
+		background: $green1;
+	}
+}
+
+.btnBgBlue{
+	color: $white;
+	background: $blue5;
+	
+	&:hover, &:focus{
+		background: $blue6;
+	}
+}
+
+.btnBgYellow{
+	color: $white;
+	background: $yellow1;
+	
+	&:hover, &:focus{
+		background: $yellow2;
+	}
+}
+
+.btnBgGreen{
+	color: $white;
+	background: $green1;
+	
+	&:hover, &:focus{
+		background: $green2;
+	}
+}
+
+.btnBgGray{
+	color: $white;
+	background: $gray5;
+	
+	&:hover, &:focus{
+		background: $gray6;
+	}
+}
+
+

@@ -321,6 +321,11 @@ $(document).ready(
 				document.forms["scfTradeList"].submit();
 			});
 			$("#updteTradeForm .ui-datepicker-trigger").remove();
+			
+			 $('.info-icon').tooltip({
+			        placement: 'left',
+			        title: 'Hello'
+			        });
 
 
 		});

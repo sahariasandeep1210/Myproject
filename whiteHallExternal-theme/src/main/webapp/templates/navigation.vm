@@ -1,0 +1,63 @@
+<div class="clearfix customNavigation text-right">
+
+	<a class="btn btn-navbar navbar-toggle collapsed inMobileViewNav" id="navbarCollapseBtn" data-toggle="collapse" data-target="#navbarCollapseWrapper" aria-expanded="false">
+		<i class="icon-reorder"></i>
+	</a>
+	
+	<div class="collapse navbar-collapse" id="navbarCollapseWrapper">
+		<nav class="$nav_css_class customNavigationInner" id="navbarCollapse" role="navigation">
+			<ul aria-label="#language ("site-pages")" role="menubar" class="pull-left">
+				#foreach ($nav_item in $nav_items)
+					#set ($nav_item_attr_has_popup="")
+					#set ($nav_item_attr_selected="")
+					#set ($nav_item_css_class = "")
+					#set ($tempName = $nav_item.getName())
+	   				#set ($navNameClass = $tempName.replace(" ","-"))
+	   				#if ($nav_item.isSelected())
+						#set ($nav_item_attr_selected="aria-selected='true'")
+						#set ($nav_item_css_class = "selected")
+					#end
+		
+					#if ($nav_item.hasChildren())
+						#set ($nav_item_attr_has_popup="aria-haspopup='true'")
+					#end
+		
+					<li class="$nav_item_css_class" id="layout_$nav_item.getLayoutId()" $nav_item_attr_selected role="presentation">
+						<a aria-labelledby="layout_$nav_item.getLayoutId()" href="$nav_item.getURL()" data-section="$navNameClass" $nav_item_attr_has_popup $nav_item.getTarget() role="menuitem"><span>$nav_item.icon() $nav_item.getName()</span></a>
+		
+						#if ($nav_item.hasChildren())
+							<ul class="child-menu" role="menu">
+								#foreach ($nav_child in $nav_item.getChildren())
+									#set ($nav_child_attr_selected="")
+									#set ($nav_child_css_class = "false")
+		
+									#if ($nav_child.isSelected())
+										#set ($nav_child_attr_selected="aria-selected='true'")
+										#set ($nav_child_css_class = "selected")
+									#end
+		
+									<li class="$nav_child_css_class" id="layout_$nav_child.getLayoutId()" $nav_child_attr_selected role="presentation">
+										<a aria-labelledby="layout_$nav_child.getLayoutId()" href="$nav_child.getURL()" $nav_child.getTarget() role="menuitem">$nav_child.getName()</a>
+									</li>
+								#end
+							</ul>
+						#end
+					</li>
+				#end
+			</ul>
+			#if (!$is_signed_in)
+				<div class="navBtnContainer pull-right">
+					<a href="#" class="customButtonSmall btnBgWhiteBlue" id="sign-in" rel="nofollow" data-toggle="tooltip" data-placement="bottom" title='#language ("login-title")'>#language ("login")</a>
+					<a href="#" class="customButtonSmall btnBgWhiteGreen" id="signup" rel="nofollow" data-toggle="tooltip" data-placement="bottom" title='#language ("signup-title")'>#language ("Free Account")</a>
+				</div>
+			#end
+	
+			#if ($is_signed_in)
+				<div class="navBtnContainer">
+					<a data-redirect="$is_login_redirect_required" href="$sign_out_url" class="customButtonSmall btnBgWhiteBlue" id="sign-out" rel="nofollow">#language ("signout")</a>
+				</div>
+			#end
+	
+		</nav>
+	</div>
+</div>
