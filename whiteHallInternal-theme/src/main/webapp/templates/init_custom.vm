@@ -1,0 +1,10 @@
+#set ($dockbar = $theme.getSetting("dockbar-split"))
+#set ($navNotification = $theme.getSetting("nav-notification-Show"))
+#set ($VOID = $velocityPortletPreferences.setValue('display-style', '1'))
+#set ($VOID = $velocityPortletPreferences.setValue('portlet-setup-show-borders', 'false'))
+#set ($instanceId = 'E3j7')
+#set ($dockbar_portlet = "bvidockbar_WAR_bvidockbarportlet")
+#set ($dockbar_notification = "2_WAR_notificationsportlet")
+#set ($VOID = $velocityPortletPreferences.reset())
+
+#set ($show_dockbar = $is_signed_in && $permissionChecker.isGroupAdmin($group_id))

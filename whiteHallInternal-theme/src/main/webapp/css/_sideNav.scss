@@ -1,0 +1,44 @@
+.navbar-static-side{
+	z-index: 980;
+   	position: absolute;
+   	width: $sideNavWidth;
+   	
+   	@media (max-width: $tablet-max){
+    	display:none;
+    }
+    
+    &>ul{
+    	list-style:none;
+    	padding: 0;
+    	margin: 0;
+    	
+    	li{
+    		border-bottom: 1px solid $sideNavLinkBr;
+    		color: $sideNavLinkClr;
+    		
+    		font: $font_700_11;
+    		a{
+    			padding: 15px;
+    			display: block;
+    			color: $sideNavLinkClr;
+    			text-decoration: none;
+    			
+    			.nav-label{
+    				margin-left: 10px;
+    			}
+    			&:hover, &:focus{
+    				color: $sideNavLinkClr;
+    			}
+    		}
+    		
+    		&.selected, &:hover{
+    			background: $sideNavLinkSelectedBg;
+    			color: $sideNavLinkSelectedClr;
+    			
+    			a{
+    				color: $sideNavLinkSelectedClr;
+    			}
+    		}
+    	}
+    }
+}

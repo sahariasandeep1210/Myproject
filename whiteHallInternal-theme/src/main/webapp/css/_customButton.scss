@@ -1,0 +1,30 @@
+.customButton {
+	border: 2px solid transparent;
+	margin: 0;
+	height: auto;
+	min-width: auto;
+	display: inline-block;
+	text-transform: uppercase;
+	text-decoration: none;
+	text-shadow: none;
+	@include box-shadow(none);
+	
+	&:focus{
+	    outline: 0 none;
+	}
+}
+
+.button-container a:last-child {
+	margin-top: 15px;
+}
+
+.customButtonSmall { 
+	@extend .customButton;
+	font: $font_700_12;
+	padding: 6px 20px;
+	@include border-radius(30px);
+}
+
+.customBgButtonSmall {
+	padding: 8px 20px;
+}

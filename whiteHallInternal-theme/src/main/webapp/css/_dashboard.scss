@@ -1,0 +1,244 @@
+/******************** Author: Aarif Puthawala ********************/
+
+#dashboard {
+    .fg-yellow {
+        color: $colorYellow;
+    }
+    .fg-red {
+        color: $colorRed;
+    }
+    .fg-green {
+        color: $colorGreen;
+    }
+    .fg-blue {
+        color: $colorBlue;
+    }
+    .dashboard-small-widget {
+        border-radius: 2px;
+        @include box-shadow(0px 0px 5px rgba(44, 61, 77, 0.2));
+        .widget-content {
+            padding: 15px;
+            background-color: $smallWidgetBackColor;
+            min-height: 100px;
+            box-sizing: border-box;
+            .widget-title {
+                font: $font_100_14;
+                padding-bottom: 3px;
+            }
+            .widget-body {
+                .widget-icon {
+                    font: $font_400_48;
+                }
+                .count {
+                    font: $font_100_48;
+                }
+                .small-text {
+                    font: $font_100_11;
+                }
+                .big-text {
+                    font: $font_100_24;
+                }
+            }
+        }
+        .widget-footer {
+            background-color: $smallWidgetFooterButtonBackColor;
+            border-top: 1px solid $smallWidgetFooterBorderColor;
+            font: $font_100_11;
+            color: $smallWidgetFooterTextColor;
+            white-space: nowrap;
+            .widget-footer-button {
+                width: 50%;
+                text-align: center;
+                &.create-new-button{
+                    float: right;
+                    border-left: 1px solid $smallWidgetFooterBorderColor;
+                }
+                
+                a {
+                    color: inherit;
+                    cursor: pointer;
+                    padding-top: 13px;
+                	padding-bottom: 13px;
+                	display: block;
+                    &:hover {
+                    	background: $smallWidgetFooterButtonBackHoverClr;
+                        text-decoration: none;
+                    }
+                }
+                
+                &.right {
+                    width: 100%;
+                    text-align: right;
+                    box-sizing: border-box;
+                    
+                    a{
+                    	padding-right: 15px;
+                    }
+                }
+            }
+        }
+    }
+    .quick-stat-panel {
+        .panel-body {
+            padding: 0;
+            .quick-stat-stats {
+                box-sizing: border-box;
+                padding: 20px 15px;
+                background-color: $quickStatisticsBackColor;
+                .small-text {
+                    font: $font_100_11;
+                }
+                .big-text {
+                    font: $font_100_24;
+                }
+            }
+        }
+    }
+    .top-cash-position-panel {
+        .panel-body {
+            padding: 0;
+            ul {
+                margin: 0;
+                list-style-type: none;
+                li {
+                    background-color: $topCashListItemBackColor;
+                    border-bottom: 1px solid $topCashListItemBorderColor;
+                    padding: 17px 15px;
+                    font: $font_100_13;
+                    color: $topCashListItemTextColor;
+                    &:hover {
+                        background-color: $topCashListItemBackHoverColor;
+                    }
+                    .org-name {
+                        padding-right: 90px;
+                    }
+                    .cash-amount {
+                        width: 90px;
+                        text-align: right;
+                        font: $font_700_13;
+                        color: $topCashListItemAmountTextColor;
+                    }
+                }
+            }
+        }
+    }
+    
+    @media (max-width: $mobile-max) and (min-width: $mobile-min){
+		.dashboard-small-widget {
+    		.widget-content {
+    			.widget-body {
+    				.big-text {
+	                    font: $font_400_18;
+	                }
+	                .text-container{
+		         		margin: 10px 0;
+		         	}
+    			}
+    		}
+    	}
+    	
+    	.quick-stat-panel {
+	        .panel-body {
+	            .quick-stat-stats {
+	                .text-container{
+		         		margin: 10px 0;
+		         	}
+	            }
+	        }
+	    }
+	}
+	
+	@media (max-width: $tablet-min) and (min-width: $mobile-max){
+		.dashboard-small-widget {
+    		.widget-content {
+    			.widget-body {
+	                .text-container{
+		         		margin: 10px 0;
+		         	}
+    			}
+    		}
+    	}
+    	
+    	.quick-stat-panel {
+	        .panel-body {
+	            .quick-stat-stats {
+	                .text-container{
+		         		margin: 10px 0;
+		         	}
+	            }
+	        }
+	    }
+	}
+    
+    @media (max-width: $tablet-max) and (min-width: $tablet-min){
+    	.dashboard-sm-widget-wrapper{
+    		.span2, .span6{
+    			width: 48%;
+    			margin: 0 1%;
+    		}
+    	}
+    	
+    	.dashboard-small-widget {
+    		.widget-content {
+    			.widget-body {
+    				.big-text {
+	                    font: $font_400_18;
+	                }
+	                .text-container{
+		         		margin: 10px 0;
+		         	}
+    			}
+    		}
+    	}
+    	.quick-stat-panel {
+	        .panel-body {
+	            .quick-stat-stats {
+	                .big-text {
+	                    font: $font_400_18;
+	                }
+	                
+	                .text-container{
+		         		margin: 10px 0;
+		         	}
+	            }
+	        }
+	    }
+	    
+	    
+    }
+    
+    @media (max-width: $desktop-min) and (min-width: $tablet-max){
+    
+    	.dashboard-sm-widget-wrapper{
+    		.span2, .span6{
+    			width: 48%;
+    			margin: 0 1%;
+    		}
+    	}
+    	.dashboard-small-widget {
+    		.widget-content {
+    			.widget-body {
+    				.big-text {
+	                    font: $font_400_18;
+	                }
+	                
+    			}
+    		}
+    	}
+    	
+    	.quick-stat-panel {
+	        .panel-body {
+	            .quick-stat-stats {
+	                .big-text {
+	                    font: $font_400_18;
+	                }
+	            }
+	        }
+	    }
+    }
+    
+    
+}
+
+
+/************************ End of Section *************************/
