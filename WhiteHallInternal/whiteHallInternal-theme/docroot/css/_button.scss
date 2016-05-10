@@ -1,0 +1,74 @@
+.btn+.btn{
+	margin-left: 10px;	
+}
+
+.btnBrGrSm{
+	@extend .customButtonSmall;
+	border-color: $btnGrayBorder;
+	color: $btnGrayFontColor;
+	background: $btnGrayBg;
+	
+	&:hover{
+		background: $btnGrayBorder;
+		color: $btnGrayFontColor;
+	}
+}/* button-Border-Gray Close */
+
+.btnBgBuSm{
+	@extend .customButtonSmall;
+	@extend .customBgButtonSmall;
+	border: 0 none;
+	color: $btnBlueFontColor;
+	background: $btnBlueBg;
+	
+	&:hover{
+		background: $btnHoverBlueBg;
+		color: $btnBlueFontColor;
+	}
+}/* button-Blue Close */
+
+.btnBgOrSm{
+	@extend .customButtonSmall;
+	@extend .customBgButtonSmall;
+	border: 0 none;
+	color: $btnOrangeFontColor;
+	background: $btnOrangeBg;
+	
+	&:hover{
+		background: $btnHoverOrangeBg;
+		color: $btnOrangeFontColor;
+	}
+}/* button-Orange Close */
+
+.btnBgGreenSm{
+	@extend .customButtonSmall;
+	@extend .customBgButtonSmall;
+	border: 0 none;
+	color: $btnGreenFontColor;
+	background: $btnGreenBg;
+	
+	&:hover{
+		background: $btnHoverGreenBg;
+		color: $btnGreenFontColor;
+	}
+}/* button-Green Close */
+
+.btnBgRedSm{
+	@extend .customButtonSmall;
+	@extend .customBgButtonSmall;
+	border: 0 none;
+	color: $btnRedFontColor;
+	background: $btnRedBg;
+	
+	&:hover{
+		background: $btnHoverRedBg;
+		color: $btnRedFontColor;
+	}
+}/* button-Green Close */
+
+.btnIconSm{
+	font: $font_400_14;
+	padding: 6px 8px;
+	border-width: 1px;
+	@include border-radius(50%);
+}/* button-Icon Close */

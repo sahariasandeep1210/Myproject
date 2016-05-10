@@ -1,0 +1,209 @@
+/* 
+*	Global
+*/
+
+body{
+	font: $defaultFont;
+	direction: ltr;
+	background: $bodyBg;
+	
+	
+	&.signed-out{
+		  background: url(../images/loginscreen_bg.jpg) no-repeat center center fixed; 
+		  -webkit-background-size: cover;
+		  -moz-background-size: cover;
+		  -o-background-size: cover;
+		  background-size: cover;
+		  position: fixed;
+		  height: 100%;
+		  width: 100%;
+	}
+	
+	@media (max-width: $tablet-max){
+	    background: $pageWrapperBg;
+	}
+	
+	&.custom-portal-popup{
+		background: $popupDialogBg;
+	}
+}
+
+
+#hrefFm{
+	display: none;
+}
+
+
+#content{
+	padding: 0;
+	margin-top: $topNavBarHeight - 17px;
+	
+	@media (max-width: $tablet-max){
+    	margin-top: 0;
+    }
+}
+
+
+h1, h2, h3, h4, h5, h6, p{
+	margin:0;
+	padding: 0;
+}
+
+h1{font: $headingH1;}
+h2{font: $headingH2;}
+h3{font: $headingH3;}
+h4{font: $headingH4;}
+h5{font: $headingH5;}
+p{font: $paragraph;}
+
+#wrapper{
+	
+	.pageWrapper{
+		background: $pageWrapperBg;
+		@include box-shadow(0px 0px 20px rgba(44, 61, 77,0.2));
+	    min-height: 500px;
+	    position: relative;
+	    border-left: 1px solid $pageWrapperBr;
+	    margin: 0 0 0 $sideNavWidth;
+	    
+	    @media (max-width: $tablet-max){
+	    	position: inherit;
+		    margin: 0;
+		    min-height: 500px;
+		    border-left: 0;
+		    @include box-shadow(none);
+	    }
+	}
+
+	padding: 0;
+	
+	@import "button";
+	
+	@import "header";
+	
+	@import "breadcrumb";
+	
+	@import "sideNav";
+	
+	@import "panel";
+	
+	@import "footer";
+	
+	@import "dashboard";
+	
+	@import "login";
+	
+	@import "responsiveUtil";
+	
+	
+}/* #wrapper Close */
+
+
+/*
+* sign in / out style
+*/
+.signed-in{
+	#content{
+		margin-top: $topNavBarHeight;
+		@media (max-width: $tablet-max){
+	    	margin-top: 0;
+	    }
+	}	
+}
+.signed-out{
+	#content{
+		margin-top: 0;
+	}
+	#wrapper{
+		
+		.pageWrapper{
+			margin: 0;
+			border-left: none;
+			background: $bgTransparent;
+		}
+	}
+	
+}
+
+
+/* Sign in/out Close */
+
+/* 
+*	Header
+*/
+
+/* Header Close */
+
+
+
+/* 
+*	Main Navigaiton
+*/
+
+/* mainNavigation Close */
+
+
+
+/* 
+*	Footer
+*/
+
+/* footer_cave Close */
+
+
+
+/* 
+*	Portlet
+*/
+
+.portlet-borderless-container{
+	padding: 15px 0;
+}
+
+.customPortlet{
+	
+	padding: 15px 0;
+	
+	.portlet-topper{
+		
+		background: $portletHeaderBg;
+		color: $fontWhite;
+		padding: 12px 15px;
+		@include border-top-left-radius(2px);
+		@include border-top-right-radius(2px);
+		
+		.portlet-topper-toolbar{
+			top: 11px;
+			right: 15px;
+			padding: 0;
+			
+			a i{
+				color: $portletIconColor;
+				margin-right: 5px;
+				
+				&:last-child{
+					margin-top: 8px;
+					margin-right: 0;
+				}
+				
+				&.caret{
+					border-top-color: $portletIconColor; 
+				}
+			}
+		}
+	}
+	
+	.portlet-content{
+		@include box-shadow(0px 3px 5px 0px rgba(0,0,0,0.1));
+		background: $portletBodyBg;
+		padding: 15px;
+	}
+	
+	
+	
+}/* customPortlet CLose */
+
+.portlet-msg-error{
+	display : none;
+}
+

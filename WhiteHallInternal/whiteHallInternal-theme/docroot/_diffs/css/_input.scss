@@ -1,0 +1,268 @@
+.control-group{
+	
+	margin-bottom: 20px;
+		
+	select, 
+	textarea, 
+	input[type="text"], 
+	input[type="password"], 
+	input[type="datetime"], 
+	input[type="datetime-local"], 
+	input[type="date"], 
+	input[type="month"], 
+	input[type="time"], 
+	input[type="week"], 
+	input[type="number"], 
+	input[type="email"], 
+	input[type="url"], 
+	input[type="search"], 
+	input[type="tel"], 
+	input[type="color"], 
+	.uneditable-input{
+		padding: 4px 10px;
+		font: $font_400_13;
+		color: $inputFontcolor;
+		margin-bottom:0px;
+		@include input-block-level();
+		&:focus, &:hover{
+			border: 1px solid $inputFocusborder;
+			@include box-shadow(0 0px 8px rgba(0,130,198,0.50),0 0 8px rgba(0,130,198,0.50));
+		}
+	}
+	
+	textarea, 
+	input[type="text"], 
+	input[type="password"], 
+	input[type="datetime"], 
+	input[type="datetime-local"], 
+	input[type="date"], 
+	input[type="month"], 
+	input[type="time"], 
+	input[type="week"], 
+	input[type="number"], 
+	input[type="email"], 
+	input[type="url"], 
+	input[type="search"], 
+	input[type="tel"], 
+	input[type="color"], 
+	.uneditable-input{
+		border: 1px solid $inputborderColor;
+		@include box-shadow(none);
+	}
+	
+	label,.control-label{
+		font: $font_400_13;
+		color: $labelFontcolor;
+	}
+	
+	select {
+		width: 100%;
+		margin: 0;
+		background: url(../images/select-box-arrowdown.png) no-repeat 95% 6px white;
+		-webkit-appearance: none;
+		  -moz-appearance: none;
+		   -ms-appearance: none;
+		    -o-appearance: none;
+		       appearance: none;
+	      padding-right: 35px;
+	}
+	
+	select::-ms-expand {
+	    display: none
+	}
+			
+	input[disabled], 
+	select[disabled], 
+	textarea[disabled], 
+	input[readonly], 
+	select[readonly], 
+	textarea[readonly]{
+		border: 1px solid $inputDisabledBrColor;
+		color: $inputDisabledFontColor;
+		background: $inputDisabledBg;
+		
+		&:hover, &:focus{
+			-webkit-box-shadow: none !important;
+		    -moz-box-shadow: none !important;
+		    box-shadow: none !important;
+			border: 1px solid $inputDisabledBrColor !important;
+		}
+	}
+	
+	select[disabled]{
+		background: url(../images/select-box-arrowdown.png) no-repeat 95% 6px $inputDisabledBg;
+	}
+	
+	&.error{
+	
+			.control-label, 
+			.help-block, 
+			.help-inline,
+			.checkbox, 
+			.radio, 
+			input,
+			select,
+			textarea{
+				color: $error;
+			}
+			
+			input, 
+			select, 
+			textarea{
+				border: 1px solid $error;
+			}
+			
+			.input-append{
+				.add-on{
+					border: 1px solid $error;
+					border-left: 0;
+				}
+				
+				.form-validator-stack{
+					display: block;
+					margin-top: 2px;
+					
+					[role="alert"]{
+						font: $font_400_11;
+						color: $colorPrLiRed1;
+					}
+				}
+			}
+		
+	}/* &.error Close */
+	
+	&.success{
+	
+			.control-label, 
+			.help-block, 
+			.help-inline,
+			.checkbox, 
+			.radio, 
+			input,
+			select,
+			textarea{
+				color: $successFont;
+			}
+			
+			input, 
+			select, 
+			textarea{
+				border: 1px solid $successBorder;
+			}
+		
+	}/* &.success Close */
+	
+	.required,.email[role="alert"],.digits{
+			font: $font_400_11;
+			color: $colorPrLiRed1;
+	}
+	
+	.label-required{
+			font: $font_400_13;
+			color: $colorPrLiRed1;
+	}
+	
+	.taglib-icon-help{
+		@include opacity(50);
+		&:hover{
+			@include opacity(100);
+		}
+	}
+	
+	input{
+		
+		&[type="checkbox"], &[type="radio"]{
+		    @include opacity(0);
+		    float: left;
+		    width: 18px;
+		    
+		    &+span{
+		    	    width: 16px;
+				    height: 16px;
+				    display: inline-block;
+				    margin-left: -26px;
+				    margin-top: 0;
+				    float: left;
+			    	cursor: pointer;
+		    }	
+		}
+		
+		&[type="checkbox"]+span{background: url(../images/checkbox-off.png) left center no-repeat;}
+		&[type="radio"]+span{background: url(../images/radio-off.png) left center no-repeat;}
+		
+		&[type='radio']:checked+span {
+		    	background-image: url(../images/radio-on.png);
+			}
+		
+		&[type='checkbox']:checked+span {
+		    	background-image: url(../images/checkbox-on.png);
+			}
+	
+	}/* input for CHECKBOX & RADIO CLose */
+	
+	.radio input[type="radio"], 
+	.checkbox input[type="checkbox"], 
+	.radio input[type="radio"], 
+	.checkbox input[type="checkbox"]{
+		margin-right: 8px;
+	}
+	
+	
+	.input-append,
+	.input-prepend{
+		font-size: inherit;
+		width: 100%;
+	}
+	
+	.input-append{
+		input,
+		select, 
+		.uneditable-input{
+			display: inline-block;
+		    border-right: 0 none;
+		    @include calcPercentWidth(100%, 39.5625px);
+		    float: left;
+		    &+.add-on{
+		    	    background: $bgTransparent;
+				    border: 1px solid $inputIconborderColor;
+				    padding: 4px 10px;
+				    background: $inputIconBg;
+				    border-left: 0 none;
+				    margin-left: 0px;
+				    i{
+				    	font-size: $inputIconfontSize;
+					    text-shadow: none;
+					    color: $inputIconFontColor;
+				    }
+		    }	
+		}
+	}/* input-append Close */
+	
+	&.field-wrapper{
+		label.radio{
+			margin-top: 5px;
+			display: inline-block;
+			&+label.radio{
+				margin-left: 15px;
+			}
+		}
+		
+		label.checkbox{
+			margin-top: 5px;
+			display: inline-block;
+			&+label.checkbox{
+				margin-left: 15px;
+			}
+		}
+	}/* field-wrapper Close */
+	
+}/* control-group Close */
+
+.actionContainer{
+	border-top: 1px solid $actionContainer;
+	padding: 15px 0;
+	text-align: right;
+	&.noBorder{
+		border-top: 0;
+	}
+}/* actionContainer Close */

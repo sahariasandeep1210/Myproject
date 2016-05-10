@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+
+#parse ($init)
+
+<html class="$root_css_class whiteHallInternal" dir="#language ("lang.dir")" lang="$w3c_language_id">
+
+<head>
+	<title>$the_title - $company_name</title>
+
+	<meta content="initial-scale=1.0, width=device-width" name="viewport" />
+	
+	<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700,300' rel='stylesheet' type='text/css'>
+	<script type="text/javascript" src="http://www.gstatic.com/charts/loader.js"></script>
+	
+	$theme.include($top_head_include)
+</head>
+
+<body class="$css_class">
+
+<a href="#main-content" id="skip-to-content">#language ("skip-to-content")</a>
+
+$theme.include($body_top_include)
+#if ($is_signed_in)
+	#dockbar()
+#end
+
+
+<div class="container-fluid" id="wrapper">
+	
+	#if ($is_signed_in)
+	<header id="banner" role="banner">
+	
+		<div id="heading">
+			<!-- static header -->
+			<div class="navbar top-nav-bar navbar-fixed-top">
+			  <div class="navbar-inner">
+				
+				<a class="brand visible-desktop" href="#"><img src="$images_folder/logo.png"></img></a>
+				<a class="brand visible-phone visible-tablet" href="#"><img src="$images_folder/logo-small.png"></img></a>
+				
+				
+				<ul class="nav pull-right">
+					<li class="dropdown">
+						<a type="button" class="btn btn-navbar collapsed" data-toggle="collapse" data-target=".nav-collapse">
+						  <i class="icomoon-menu bigIcon"></i>
+						</a>
+					</li>
+					
+					<li class="dropdown notification-dropdown hidden-tablet hidden-phone">
+					  <a href="#" class="dropdown-toggle-">
+						<div class="notification-img-container">
+							<i class="icomoon-setting bigIcon notification-img"></i>
+						</div>
+					  </a>
+					</li>
+					
+					<li class="dropdown notification-dropdown">
+					  <a href="#" class="dropdown-toggle-" data-toggle="dropdown">
+						<div class="notification-img-container">
+							<i class="icomoon-notification bigIcon notification-img" alt=""></i>
+							<span class="badge notification-badge">1</span>
+						</div>
+					  </a>
+					  <ul class="dropdown-menu">
+						<li>
+							<div class="custom-dropdown-wrapper notification">
+								<div class="custom-dropdown-container">
+									<div class="custom-dropdown-header-container">
+										<div class="clearfix">
+											<a class="pull-left" href="#">Notifications</a>
+											<a class="pull-right" href="#">Mark as read</a>
+										</div>
+									</div>
+								</div>
+								<div class="custom-dropdown-container">
+								<ul class="notification-list">
+									<li class="notification-item">
+										<div class="img-container">
+											<img class="dropdown-img" src="$images_folder/dummy-prof-img.jpg" alt="" title="notification image">
+										</div>
+										<div class="info-container">
+											<div class="notification-link-container">
+												<a href="#" class="no-padding">Dockbar custom notification.</a>
+												<p class="time-info">3 minuates ago</p>
+											</div>
+										</div>
+									</li>
+									
+									<li class="notification-item">
+										<div class="img-container">
+											<img class="dropdown-img" src="$images_folder/dummy-prof-img.jpg" alt="" title="notification image">
+										</div>
+										<div class="info-container">
+											<div class="notification-link-container">
+												<a href="#" class="no-padding">Dockbar custom notification.</a>
+												<p class="time-info">3 minuates ago</p>
+											</div>
+										</div>
+									</li>
+									
+								</ul>
+								</div>
+								<!--
+								<div class="custom-dropdown-container notification">
+									<div class="img-container">
+										<img class="dropdown-img" src="$images_folder/dummy-prof-img.jpg" alt="" title="notification image">
+									</div>
+									<div class="info-container">
+										<div class="notification-link-container">
+											<a href="#" class="no-padding">Dockbar custom notification.</a>
+											<p class="time-info">3 minuates ago</p>
+										</div>
+										
+									</div>
+								</div>
+								-->
+								
+								
+								
+							</div>
+						</li>
+					  </ul>
+					</li>
+					
+					<li class="dropdown profile-dropdown">
+					  <a href="#" class="dropdown-toggle-" data-toggle="dropdown">
+						<img class="profile-img" src="$images_folder/dummy-prof-img.jpg" alt="" title="notification image">
+						<span class="hidden-tablet hidden-phone">Rene Moore</span>
+						<i class="icomoon-arrow-down"></i>
+					  </a>
+					  <ul class="dropdown-menu">
+						<li>
+							<a href="#">
+								<i class="icomoon-my-profile"></i>
+								<span class="nav-item-label"> My Profile </span>
+							</a>
+						</li>
+						<li>
+							<a href="#">
+								<i class="icomoon-my-account"></i>
+								<span class="nav-item-label"> My Account </span>
+							</a>
+						</li>
+						<li>
+							<a href="#">
+								<i class="icomoon-logout"></i>
+								<span class="nav-item-label"> Sign Out </span>
+							</a>
+						</li>
+					  </ul>
+					</li>
+				  </ul>
+				<div class="nav-collapse collapse">
+					<div class="navbar-static-side-collapse">
+					
+						
+						#parse ("$full_templates_path/navigation_mob.vm")
+						
+						<!--<ul aria-label="Site Pages" class="nav hidden-desktop" role="menubar">
+							<li class="lfr-nav-updateable" id="layout_97" role="presentation">	
+								<a aria-labelledby="layout_97" href="http://localhost:9090/web/whitehall-int/home" role="menuitem">
+									<i class="icomoon-setting"></i>
+									<span class="nav-label">WELCOME</span>
+								</a>
+							</li>
+							<li class="selected">
+								<a href="http://localhost:9090/web/whitehall-int/dashboard" role="menuitem">
+									<i class="icomoon-dashboard"></i>
+									<span class="nav-label">DASHBOARD</span>
+								</a>
+							</li>
+							
+							<li>
+								<a href="http://localhost:9090/web/whitehall-int/dashboard" role="menuitem">
+									<i class="icomoon-company"></i>
+									<span class="nav-label">COMPANY</span>
+								</a>
+							</li>
+							
+							<li>
+								<a href="http://localhost:9090/web/whitehall-int/dashboard" role="menuitem">
+									<i class="icomoon-invoice"></i>
+									<span class="nav-label">INVOICES</span>
+								</a>
+							</li>
+							
+							<li>
+								<a href="http://localhost:9090/web/whitehall-int/dashboard" role="menuitem">
+									<i class="icomoon-trade"></i>
+									<span class="nav-label">TRADES</span>
+								</a>
+							</li>
+							
+							<li>
+								<a href="http://localhost:9090/web/whitehall-int/dashboard" role="menuitem">
+									<i class="icomoon-portfolio"></i>
+									<span class="nav-label">PORTFOLIO</span>
+								</a>
+							</li>
+							
+							<li>
+								<a href="http://localhost:9090/web/whitehall-int/dashboard" role="menuitem">
+									<i class="icomoon-documents"></i>
+									<span class="nav-label">DOCUMENTS</span>
+								</a>
+							</li>
+							
+							<li>
+								<a href="http://localhost:9090/web/whitehall-int/dashboard" role="menuitem">
+									<i class="icomoon-tags"></i>
+									<span class="nav-label">TAGS</span>
+								</a>
+							</li>
+					    </ul>-->
+					  </div>
+				  	
+				</div><!--/.nav-collapse -->
+			  </div><!-- /.navbar-inner -->
+			</div>
+			<!-- static header -->
+			
+			<!--<h1 class="site-title">
+				<a class="$logo_css_class" href="$site_default_url" title="#language_format ("go-to-x", [$site_name])">
+					<img alt="$logo_description" height="$site_logo_height" src="$site_logo" width="$site_logo_width" />
+				</a>
+
+				#if ($show_site_name)
+					<span class="site-name" title="#language_format ("go-to-x", [$site_name])">
+						$site_name
+					</span>
+				#end
+			</h1>
+
+			<h2 class="page-title">
+				<span>$the_title</span>
+			</h2>-->
+		</div>
+
+		#if (!$is_signed_in)
+			<a data-redirect="$is_login_redirect_required" href="$sign_in_url" id="sign-in" rel="nofollow">$sign_in_text</a>
+		#end
+
+		
+	</header>
+	#end
+
+	<div id="content">
+		
+		#if ($is_signed_in)
+			#parse ("$full_templates_path/navigation.vm")
+		#end
+		#if ($is_signed_in)
+		<!--<nav class="sort-pages modify-pages navbar-static-side nav" id="navigation" role="navigation">
+		    <ul aria-label="Site Pages" role="menubar">
+				<li class="lfr-nav-updateable" id="layout_97" role="presentation">	
+					<a aria-labelledby="layout_97" href="http://localhost:9090/web/whitehall-int/home" role="menuitem">
+						<i class="icomoon-setting"></i>
+						<span class="nav-label">WELCOME</span>
+					</a>
+				</li>
+				<li class="selected">
+					<a href="http://localhost:9090/web/whitehall-int/dashboard" role="menuitem">
+						<i class="icomoon-dashboard"></i>
+						<span class="nav-label">DASHBOARD</span>
+					</a>
+				</li>
+				
+				<li>
+					<a href="http://localhost:9090/web/whitehall-int/dashboard" role="menuitem">
+						<i class="icomoon-company"></i>
+						<span class="nav-label">COMPANY</span>
+					</a>
+				</li>
+				
+				<li>
+					<a href="http://localhost:9090/web/whitehall-int/dashboard" role="menuitem">
+						<i class="icomoon-invoice"></i>
+						<span class="nav-label">INVOICES</span>
+					</a>
+				</li>
+				
+				<li>
+					<a href="http://localhost:9090/web/whitehall-int/dashboard" role="menuitem">
+						<i class="icomoon-trade"></i>
+						<span class="nav-label">TRADES</span>
+					</a>
+				</li>
+				
+				<li>
+					<a href="http://localhost:9090/web/whitehall-int/dashboard" role="menuitem">
+						<i class="icomoon-portfolio"></i>
+						<span class="nav-label">PORTFOLIO</span>
+					</a>
+				</li>
+				
+				<li>
+					<a href="http://localhost:9090/web/whitehall-int/dashboard" role="menuitem">
+						<i class="icomoon-documents"></i>
+						<span class="nav-label">DOCUMENTS</span>
+					</a>
+				</li>
+				
+				<li>
+					<a href="http://localhost:9090/web/whitehall-int/dashboard" role="menuitem">
+						<i class="icomoon-tags"></i>
+						<span class="nav-label">TAGS</span>
+					</a>
+				</li>
+		    </ul>
+		</nav>
+		#end-->
+		
+		<div class="pageWrapper">
+			
+			
+			
+			<div class="container-fluid">
+				#if ($is_signed_in)
+				<nav id="breadcrumbs">#breadcrumbs()</nav>
+				#end
+						
+				#if ($selectable)
+					$theme.include($content_include)
+				#else
+					$portletDisplay.recycle()
+
+					$portletDisplay.setTitle($the_title)
+
+					$theme.wrapPortlet("portlet.vm", $content_include)
+				#end
+				
+				<footer id="footer" role="contentinfo site-footer">
+					<p class="powered-by">
+						&copy; 2016 WhiteHall Finance. All rights reserved.
+					</p>
+				</footer>
+			</div>
+			
+			
+		</div>
+	</div>
+
+	
+</div>
+
+<script src="$javascript_folder/jquery.minv2.2.2.js"></script>
+<script src="$javascript_folder/bootstrap-collapse.js"></script>
+<script src="$javascript_folder/bootstrap-dropdown.js"></script>
+
+$theme.include($body_bottom_include)
+
+$theme.include($bottom_include)
+
+</body>
+
+</html>

@@ -1,0 +1,913 @@
+@font-face {
+  font-family: 'icomoon';
+  src: url("icomoonFonts/icomoon.eot?6jo3xe");
+  src: url("icomoonFonts/icomoon.eot?6jo3xe#iefix") format("embedded-opentype"), url("icomoonFonts/icomoon.ttf?6jo3xe") format("truetype"), url("icomoonFonts/icomoon.woff?6jo3xe") format("woff"), url("icomoonFonts/icomoon.svg?6jo3xe#icomoon") format("svg");
+  font-weight: normal;
+  font-style: normal; }
+
+[class^="icomoon-"], [class*=" icomoon-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'icomoon' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale; }
+
+.icomoon-edit:before {
+  content: "\e91b"; }
+
+.icomoon-history:before {
+  content: "\e91c"; }
+
+.icomoon-menu:before {
+  content: "\e91a"; }
+
+.icomoon-accordian-arrow-down:before {
+  content: "\e900"; }
+
+.icomoon-accordian-arrow-up:before {
+  content: "\e901"; }
+
+.icomoon-arrow-down:before {
+  content: "\e902"; }
+
+.icomoon-calendar:before {
+  content: "\e903"; }
+
+.icomoon-checkbox:before {
+  content: "\e904"; }
+
+.icomoon-checkbox-selected:before {
+  content: "\e905"; }
+
+.icomoon-close:before {
+  content: "\e906"; }
+
+.icomoon-company:before {
+  content: "\e907"; }
+
+.icomoon-dashboard:before {
+  content: "\e908"; }
+
+.icomoon-documents:before {
+  content: "\e909"; }
+
+.icomoon-filter:before {
+  content: "\e90a"; }
+
+.icomoon-invoice:before {
+  content: "\e90b"; }
+
+.icomoon-logout:before {
+  content: "\e90c"; }
+
+.icomoon-minus:before {
+  content: "\e90d"; }
+
+.icomoon-my-account:before {
+  content: "\e90e"; }
+
+.icomoon-my-profile:before {
+  content: "\e90f"; }
+
+.icomoon-no-document:before {
+  content: "\e910"; }
+
+.icomoon-notification:before {
+  content: "\e911"; }
+
+.icomoon-plus:before {
+  content: "\e912"; }
+
+.icomoon-portfolio:before {
+  content: "\e913"; }
+
+.icomoon-radio-button:before {
+  content: "\e914"; }
+
+.icomoon-radio-button-selected:before {
+  content: "\e915"; }
+
+.icomoon-search:before {
+  content: "\e916"; }
+
+.icomoon-setting:before {
+  content: "\e917"; }
+
+.icomoon-tags:before {
+  content: "\e918"; }
+
+.icomoon-trade:before {
+  content: "\e919"; }
+
+/* 
+*	Font Configuration
+*/
+/* 
+*	Color Configuration
+*/
+/******************** Author: Aarif Puthawala ********************/
+/************************ End of Section *************************/
+.customButton, .customButtonSmall, .aui.whiteHallInternal #wrapper .btnBrGrSm, .aui.whiteHallInternal #wrapper .btnBgBuSm, .aui.whiteHallInternal #wrapper .btnBgOrSm, .aui.whiteHallInternal #wrapper .btnBgGreenSm, .aui.whiteHallInternal #wrapper .btnBgRedSm {
+  border: 2px solid transparent;
+  margin: 0;
+  height: auto;
+  min-width: auto;
+  display: inline-block;
+  text-transform: uppercase;
+  text-decoration: none;
+  text-shadow: none;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none; }
+  .customButton:focus, .customButtonSmall:focus, .aui.whiteHallInternal #wrapper .btnBrGrSm:focus, .aui.whiteHallInternal #wrapper .btnBgBuSm:focus, .aui.whiteHallInternal #wrapper .btnBgOrSm:focus, .aui.whiteHallInternal #wrapper .btnBgGreenSm:focus, .aui.whiteHallInternal #wrapper .btnBgRedSm:focus {
+    outline: 0 none; }
+
+.button-container a:last-child {
+  margin-top: 15px; }
+
+.customButtonSmall, .aui.whiteHallInternal #wrapper .btnBrGrSm, .aui.whiteHallInternal #wrapper .btnBgBuSm, .aui.whiteHallInternal #wrapper .btnBgOrSm, .aui.whiteHallInternal #wrapper .btnBgGreenSm, .aui.whiteHallInternal #wrapper .btnBgRedSm {
+  font: normal 700 0.85714em/1.33333em "Open Sans", sans-serif;
+  padding: 6px 20px;
+  -webkit-border-radius: 30px;
+  -moz-border-radius: 30px;
+  border-radius: 30px; }
+
+.customBgButtonSmall, .aui.whiteHallInternal #wrapper .btnBgBuSm, .aui.whiteHallInternal #wrapper .btnBgOrSm, .aui.whiteHallInternal #wrapper .btnBgGreenSm, .aui.whiteHallInternal #wrapper .btnBgRedSm {
+  padding: 8px 20px; }
+
+.aui.whiteHallInternal {
+  /* 
+  *	Global
+  */
+  /* #wrapper Close */
+  /*
+  * sign in / out style
+  */
+  /* Sign in/out Close */
+  /* 
+  *	Header
+  */
+  /* Header Close */
+  /* 
+  *	Main Navigaiton
+  */
+  /* mainNavigation Close */
+  /* 
+  *	Footer
+  */
+  /* footer_cave Close */
+  /* 
+  *	Portlet
+  */
+  /* customPortlet CLose */ }
+  .aui.whiteHallInternal body {
+    font: normal 400 1em/1.28571em "Open Sans", sans-serif;
+    direction: ltr;
+    background: white; }
+    .aui.whiteHallInternal body.signed-out {
+      background: url(../images/loginscreen_bg.jpg) no-repeat center center fixed;
+      -webkit-background-size: cover;
+      -moz-background-size: cover;
+      -o-background-size: cover;
+      background-size: cover;
+      position: fixed;
+      height: 100%;
+      width: 100%; }
+    @media (max-width: 979px) {
+      .aui.whiteHallInternal body {
+        background: #e9f2f7; } }
+    .aui.whiteHallInternal body.custom-portal-popup {
+      background: transparent; }
+  .aui.whiteHallInternal #hrefFm {
+    display: none; }
+  .aui.whiteHallInternal #content {
+    padding: 0;
+    margin-top: 43px; }
+    @media (max-width: 979px) {
+      .aui.whiteHallInternal #content {
+        margin-top: 0; } }
+  .aui.whiteHallInternal h1, .aui.whiteHallInternal h2, .aui.whiteHallInternal h3, .aui.whiteHallInternal h4, .aui.whiteHallInternal h5, .aui.whiteHallInternal h6, .aui.whiteHallInternal p {
+    margin: 0;
+    padding: 0; }
+  .aui.whiteHallInternal h1 {
+    font: normal 700 1.14286em/1.25em "Open Sans", sans-serif; }
+  .aui.whiteHallInternal h2 {
+    font: normal 700 1em/1.28571em "Open Sans", sans-serif; }
+  .aui.whiteHallInternal h3 {
+    font: normal 700 0.85714em/1.33333em "Open Sans", sans-serif; }
+  .aui.whiteHallInternal h4 {
+    font: normal 400 0.85714em/1.33333em "Open Sans", sans-serif; }
+  .aui.whiteHallInternal h5 {
+    font: normal 400 0.78571em/1.36364em "Open Sans", sans-serif; }
+  .aui.whiteHallInternal p {
+    font: normal 400 0.78571em/1.36364em "Open Sans", sans-serif; }
+  .aui.whiteHallInternal #wrapper {
+    padding: 0;
+    /* button-Border-Gray Close */
+    /* button-Blue Close */
+    /* button-Orange Close */
+    /* button-Green Close */
+    /* button-Green Close */
+    /* button-Icon Close */
+    /* Panel Close */
+    /******************** Author: Aarif Puthawala ********************/
+    /************************ End of Section *************************/
+    /* Login End */
+    /* Forgotpassword End */ }
+    .aui.whiteHallInternal #wrapper .pageWrapper {
+      background: #e9f2f7;
+      -webkit-box-shadow: 0px 0px 20px rgba(44, 61, 77, 0.2);
+      -moz-box-shadow: 0px 0px 20px rgba(44, 61, 77, 0.2);
+      box-shadow: 0px 0px 20px rgba(44, 61, 77, 0.2);
+      min-height: 500px;
+      position: relative;
+      border-left: 1px solid white;
+      margin: 0 0 0 220px; }
+      @media (max-width: 979px) {
+        .aui.whiteHallInternal #wrapper .pageWrapper {
+          position: inherit;
+          margin: 0;
+          min-height: 500px;
+          border-left: 0;
+          -webkit-box-shadow: none;
+          -moz-box-shadow: none;
+          box-shadow: none; } }
+    .aui.whiteHallInternal #wrapper .btn + .btn {
+      margin-left: 10px; }
+    .aui.whiteHallInternal #wrapper .btnBrGrSm {
+      border-color: #e0e0e0;
+      color: #626262;
+      background: white; }
+      .aui.whiteHallInternal #wrapper .btnBrGrSm:hover {
+        background: #e0e0e0;
+        color: #626262; }
+    .aui.whiteHallInternal #wrapper .btnBgBuSm {
+      border: 0 none;
+      color: white;
+      background: #0082c6; }
+      .aui.whiteHallInternal #wrapper .btnBgBuSm:hover {
+        background: #006ba2;
+        color: white; }
+    .aui.whiteHallInternal #wrapper .btnBgOrSm {
+      border: 0 none;
+      color: white;
+      background: #f58634; }
+      .aui.whiteHallInternal #wrapper .btnBgOrSm:hover {
+        background: #c96e2b;
+        color: white; }
+    .aui.whiteHallInternal #wrapper .btnBgGreenSm {
+      border: 0 none;
+      color: white;
+      background: #7bb62e; }
+      .aui.whiteHallInternal #wrapper .btnBgGreenSm:hover {
+        background: #659526;
+        color: white; }
+    .aui.whiteHallInternal #wrapper .btnBgRedSm {
+      border: 0 none;
+      color: white;
+      background: #e83434; }
+      .aui.whiteHallInternal #wrapper .btnBgRedSm:hover {
+        background: #be2b2b;
+        color: white; }
+    .aui.whiteHallInternal #wrapper .btnIconSm {
+      font: normal 400 1em/1.28571em "Open Sans", sans-serif;
+      padding: 6px 8px;
+      border-width: 1px;
+      -webkit-border-radius: 50%;
+      -moz-border-radius: 50%;
+      border-radius: 50%; }
+    .aui.whiteHallInternal #wrapper .navbar.top-nav-bar {
+      margin-bottom: 0;
+      top: auto; }
+      .aui.whiteHallInternal #wrapper .navbar.top-nav-bar.navbar-fixed-top {
+        z-index: 990; }
+      .aui.whiteHallInternal #wrapper .navbar.top-nav-bar .brand {
+        line-height: 60px;
+        padding: 0px 15px; }
+        .aui.whiteHallInternal #wrapper .navbar.top-nav-bar .brand img {
+          max-height: 35px; }
+      .aui.whiteHallInternal #wrapper .navbar.top-nav-bar .navbar-inner {
+        background: #2c3d4d;
+        padding: 0 15px; }
+        @media (max-width: 979px) {
+          .aui.whiteHallInternal #wrapper .navbar.top-nav-bar .navbar-inner {
+            padding: 0; } }
+      .aui.whiteHallInternal #wrapper .navbar.top-nav-bar > .navbar-inner > .nav > li [class^="icomoon-"],
+      .aui.whiteHallInternal #wrapper .navbar.top-nav-bar > .navbar-inner > .nav > li [class*=" icomoon-"] {
+        color: #959fa7; }
+        .aui.whiteHallInternal #wrapper .navbar.top-nav-bar > .navbar-inner > .nav > li [class^="icomoon-"].bigIcon,
+        .aui.whiteHallInternal #wrapper .navbar.top-nav-bar > .navbar-inner > .nav > li [class*=" icomoon-"].bigIcon {
+          font: normal 400 1.71429em/1.16667em "icomoon";
+          line-height: 60px; }
+      .aui.whiteHallInternal #wrapper .navbar.top-nav-bar > .navbar-inner > .nav > li.notification-dropdown > a {
+        border-width: 0 1px 0 1px;
+        padding: 0 16px 0 15px;
+        border-left: 1px solid rgba(255, 255, 255, 0.1); }
+        .aui.whiteHallInternal #wrapper .navbar.top-nav-bar > .navbar-inner > .nav > li.notification-dropdown > a .notification-img-container {
+          margin: 0 6px; }
+      .aui.whiteHallInternal #wrapper .navbar.top-nav-bar > .navbar-inner > .nav > li.notification-dropdown > .dropdown-menu {
+        border: 0; }
+        @media (max-width: 979px) {
+          .aui.whiteHallInternal #wrapper .navbar.top-nav-bar > .navbar-inner > .nav > li.notification-dropdown > .dropdown-menu {
+            right: 0;
+            width: 300px;
+            margin-right: -85px; } }
+        .aui.whiteHallInternal #wrapper .navbar.top-nav-bar > .navbar-inner > .nav > li.notification-dropdown > .dropdown-menu .custom-dropdown-wrapper {
+          -webkit-box-shadow: 0px 0px 8px rgba(44, 61, 77, 0.3);
+          -moz-box-shadow: 0px 0px 8px rgba(44, 61, 77, 0.3);
+          box-shadow: 0px 0px 8px rgba(44, 61, 77, 0.3); }
+          .aui.whiteHallInternal #wrapper .navbar.top-nav-bar > .navbar-inner > .nav > li.notification-dropdown > .dropdown-menu .custom-dropdown-wrapper.notification {
+            padding: 10px;
+            background: #222a35; }
+            .aui.whiteHallInternal #wrapper .navbar.top-nav-bar > .navbar-inner > .nav > li.notification-dropdown > .dropdown-menu .custom-dropdown-wrapper.notification .custom-dropdown-container {
+              /*&.notification{
+                  &:last-child{
+                      @include border-bottom-left-radius(2px);
+                      @include border-bottom-right-radius(2px);
+                  }
+              }
+              
+              .img-container {
+                  float: left;
+                  padding: 0;
+                  .dropdown-img {
+                      height: 37px;
+                      width: 37px;
+                      display: inline-block;
+                      vertical-align: middle;
+                      border-radius: 100%;
+                  }
+              }
+              
+              .info-container {
+                  padding-left: 80px;
+                  p {
+                      margin-bottom: 0;
+                  }
+                  .user-name {
+                      font-size: 14px;
+                      margin: 0px;
+                      text-transform: capitalize;
+                  }
+                  .user-desig {
+                      color: blue;
+                      font-size: 12px;
+                  }
+                  .user-email {
+                      word-wrap: break-word;
+                      font-size: 12px;
+                      color: gray;
+                  }
+                  .notification-link-container {
+                      
+                      @media screen and (min-width: $tablet-min) {
+                          min-width: 300px;
+                      }
+                      padding:0;
+                      .time-info {
+                          font-size: 11px;
+                      }
+                      a {
+                          color: blue;
+                          font-weight: normal;
+                          &:hover,
+                          &:focus {
+                              color: blue;
+                          }
+                      }
+                  }
+              }*/ }
+              .aui.whiteHallInternal #wrapper .navbar.top-nav-bar > .navbar-inner > .nav > li.notification-dropdown > .dropdown-menu .custom-dropdown-wrapper.notification .custom-dropdown-container .custom-dropdown-header-container {
+                padding: 10px;
+                color: #2a7bb2;
+                background: #e9f2f7;
+                -webkit-border-top-left-radius: 2px;
+                -moz-border-radius-topleft: 2px;
+                border-top-left-radius: 2px;
+                -webkit-border-top-right-radius: 2px;
+                -moz-border-radius-topright: 2px;
+                border-top-right-radius: 2px; }
+                .aui.whiteHallInternal #wrapper .navbar.top-nav-bar > .navbar-inner > .nav > li.notification-dropdown > .dropdown-menu .custom-dropdown-wrapper.notification .custom-dropdown-container .custom-dropdown-header-container a {
+                  font: normal 700 0.85714em/1.33333em "Open Sans", sans-serif;
+                  color: #2a7bb2;
+                  text-decoration: none; }
+              .aui.whiteHallInternal #wrapper .navbar.top-nav-bar > .navbar-inner > .nav > li.notification-dropdown > .dropdown-menu .custom-dropdown-wrapper.notification .custom-dropdown-container .notification-list {
+                list-style: none;
+                margin-left: 0; }
+                .aui.whiteHallInternal #wrapper .navbar.top-nav-bar > .navbar-inner > .nav > li.notification-dropdown > .dropdown-menu .custom-dropdown-wrapper.notification .custom-dropdown-container .notification-list .notification-item {
+                  background: white;
+                  padding: 10px; }
+                  .aui.whiteHallInternal #wrapper .navbar.top-nav-bar > .navbar-inner > .nav > li.notification-dropdown > .dropdown-menu .custom-dropdown-wrapper.notification .custom-dropdown-container .notification-list .notification-item:last-child {
+                    -webkit-border-bottom-left-radius: 2px;
+                    -moz-border-radius-bottomleft: 2px;
+                    border-bottom-left-radius: 2px;
+                    -webkit-border-bottom-right-radius: 2px;
+                    -moz-border-radius-bottomright: 2px;
+                    border-bottom-right-radius: 2px; }
+                  .aui.whiteHallInternal #wrapper .navbar.top-nav-bar > .navbar-inner > .nav > li.notification-dropdown > .dropdown-menu .custom-dropdown-wrapper.notification .custom-dropdown-container .notification-list .notification-item + .notification-item {
+                    border-top: 1px solid #e9f2f7; }
+                  .aui.whiteHallInternal #wrapper .navbar.top-nav-bar > .navbar-inner > .nav > li.notification-dropdown > .dropdown-menu .custom-dropdown-wrapper.notification .custom-dropdown-container .notification-list .notification-item .img-container {
+                    float: left;
+                    padding: 0; }
+                    .aui.whiteHallInternal #wrapper .navbar.top-nav-bar > .navbar-inner > .nav > li.notification-dropdown > .dropdown-menu .custom-dropdown-wrapper.notification .custom-dropdown-container .notification-list .notification-item .img-container .dropdown-img {
+                      height: 35px;
+                      width: 35px;
+                      display: inline-block;
+                      vertical-align: middle;
+                      border-radius: 100%; }
+                  .aui.whiteHallInternal #wrapper .navbar.top-nav-bar > .navbar-inner > .nav > li.notification-dropdown > .dropdown-menu .custom-dropdown-wrapper.notification .custom-dropdown-container .notification-list .notification-item .info-container {
+                    padding-left: 45px; }
+                    .aui.whiteHallInternal #wrapper .navbar.top-nav-bar > .navbar-inner > .nav > li.notification-dropdown > .dropdown-menu .custom-dropdown-wrapper.notification .custom-dropdown-container .notification-list .notification-item .info-container p {
+                      margin-bottom: 0; }
+                    .aui.whiteHallInternal #wrapper .navbar.top-nav-bar > .navbar-inner > .nav > li.notification-dropdown > .dropdown-menu .custom-dropdown-wrapper.notification .custom-dropdown-container .notification-list .notification-item .info-container .notification-link-container {
+                      padding: 0; }
+                      @media screen and (min-width: 767px) {
+                        .aui.whiteHallInternal #wrapper .navbar.top-nav-bar > .navbar-inner > .nav > li.notification-dropdown > .dropdown-menu .custom-dropdown-wrapper.notification .custom-dropdown-container .notification-list .notification-item .info-container .notification-link-container {
+                          min-width: 230px; } }
+                      .aui.whiteHallInternal #wrapper .navbar.top-nav-bar > .navbar-inner > .nav > li.notification-dropdown > .dropdown-menu .custom-dropdown-wrapper.notification .custom-dropdown-container .notification-list .notification-item .info-container .notification-link-container .time-info {
+                        font: normal 400 0.85714em/1.33333em "Open Sans", sans-serif;
+                        margin-top: 5px;
+                        color: #2a7bb2; }
+                      .aui.whiteHallInternal #wrapper .navbar.top-nav-bar > .navbar-inner > .nav > li.notification-dropdown > .dropdown-menu .custom-dropdown-wrapper.notification .custom-dropdown-container .notification-list .notification-item .info-container .notification-link-container a {
+                        color: #2c3d4d;
+                        font: normal 700 1em/1.28571em "Open Sans", sans-serif; }
+                        .aui.whiteHallInternal #wrapper .navbar.top-nav-bar > .navbar-inner > .nav > li.notification-dropdown > .dropdown-menu .custom-dropdown-wrapper.notification .custom-dropdown-container .notification-list .notification-item .info-container .notification-link-container a:hover, .aui.whiteHallInternal #wrapper .navbar.top-nav-bar > .navbar-inner > .nav > li.notification-dropdown > .dropdown-menu .custom-dropdown-wrapper.notification .custom-dropdown-container .notification-list .notification-item .info-container .notification-link-container a:focus {
+                          color: #2c3d4d; }
+      .aui.whiteHallInternal #wrapper .navbar.top-nav-bar > .navbar-inner > .nav > li.profile-dropdown > a {
+        color: white; }
+      .aui.whiteHallInternal #wrapper .navbar.top-nav-bar > .navbar-inner > .nav > li.profile-dropdown .icomoon-arrow-down {
+        color: white;
+        font: normal 400 0.57143em/1.5em "icomoon"; }
+      .aui.whiteHallInternal #wrapper .navbar.top-nav-bar > .navbar-inner > .nav > li.profile-dropdown > .dropdown-menu {
+        width: 100%;
+        background: #222a35;
+        -webkit-box-shadow: 0px 0px 8px rgba(44, 61, 77, 0.3);
+        -moz-box-shadow: 0px 0px 8px rgba(44, 61, 77, 0.3);
+        box-shadow: 0px 0px 8px rgba(44, 61, 77, 0.3); }
+        .aui.whiteHallInternal #wrapper .navbar.top-nav-bar > .navbar-inner > .nav > li.profile-dropdown > .dropdown-menu > li > a {
+          color: white;
+          font: normal 400 0.78571em/1.36364em "Open Sans", sans-serif;
+          padding: 10px 10px 10px 15px; }
+          .aui.whiteHallInternal #wrapper .navbar.top-nav-bar > .navbar-inner > .nav > li.profile-dropdown > .dropdown-menu > li > a [class^="icomoon-"],
+          .aui.whiteHallInternal #wrapper .navbar.top-nav-bar > .navbar-inner > .nav > li.profile-dropdown > .dropdown-menu > li > a [class*=" icomoon-"] {
+            color: white; }
+          .aui.whiteHallInternal #wrapper .navbar.top-nav-bar > .navbar-inner > .nav > li.profile-dropdown > .dropdown-menu > li > a:hover, .aui.whiteHallInternal #wrapper .navbar.top-nav-bar > .navbar-inner > .nav > li.profile-dropdown > .dropdown-menu > li > a:focus {
+            background-color: #2c3d4d;
+            background-image: none; }
+          .aui.whiteHallInternal #wrapper .navbar.top-nav-bar > .navbar-inner > .nav > li.profile-dropdown > .dropdown-menu > li > a .nav-item-label {
+            margin-left: 5px; }
+      .aui.whiteHallInternal #wrapper .navbar.top-nav-bar > .navbar-inner > .nav > li.dropdown.open > a {
+        background: #222a35; }
+      .aui.whiteHallInternal #wrapper .navbar.top-nav-bar > .navbar-inner > .nav > li.dropdown .dropdown-menu {
+        border-radius: 0;
+        margin-top: 0;
+        border-width: 1px 0 0 0;
+        border-color: rgba(0, 0, 0, 0.1);
+        padding-top: 0;
+        padding-bottom: 0; }
+        .aui.whiteHallInternal #wrapper .navbar.top-nav-bar > .navbar-inner > .nav > li.dropdown .dropdown-menu:before, .aui.whiteHallInternal #wrapper .navbar.top-nav-bar > .navbar-inner > .nav > li.dropdown .dropdown-menu:after {
+          border: none; }
+      .aui.whiteHallInternal #wrapper .navbar.top-nav-bar > .navbar-inner > .nav > li > a {
+        line-height: 60px;
+        height: 60px;
+        padding: 0px 15px;
+        border-left: 1px solid rgba(255, 255, 255, 0.1);
+        text-shadow: none;
+        display: inline-block;
+        vertical-align: middle; }
+        .aui.whiteHallInternal #wrapper .navbar.top-nav-bar > .navbar-inner > .nav > li > a.btn-navbar {
+          background-color: #222a35;
+          background-image: none;
+          box-shadow: none;
+          font: normal 400 1em/1.28571em "Open Sans", sans-serif;
+          margin: 0;
+          display: none; }
+          .aui.whiteHallInternal #wrapper .navbar.top-nav-bar > .navbar-inner > .nav > li > a.btn-navbar.collapsed {
+            background-color: #2c3d4d; }
+          @media (max-width: 979px) {
+            .aui.whiteHallInternal #wrapper .navbar.top-nav-bar > .navbar-inner > .nav > li > a.btn-navbar {
+              display: inline-block; } }
+        .aui.whiteHallInternal #wrapper .navbar.top-nav-bar > .navbar-inner > .nav > li > a .notification-img-container {
+          display: inline-block;
+          position: relative; }
+        .aui.whiteHallInternal #wrapper .navbar.top-nav-bar > .navbar-inner > .nav > li > a .notification-badge {
+          background: white;
+          display: block;
+          position: absolute;
+          top: 14px;
+          right: -1px;
+          line-height: 15px;
+          height: 15px;
+          width: 15px;
+          text-align: center;
+          color: #2c3d4d;
+          text-shadow: 0 1px rgba(0, 0, 0, 0.25);
+          border-radius: 100%;
+          -webkit-box-shadow: none;
+          box-shadow: none;
+          vertical-align: baseline;
+          margin: 0;
+          font: normal 400 0.78571em/1.36364em "Open Sans", sans-serif;
+          padding: 0;
+          z-index: 2; }
+        .aui.whiteHallInternal #wrapper .navbar.top-nav-bar > .navbar-inner > .nav > li > a .profile-img {
+          max-width: 32px;
+          border-radius: 50%;
+          margin-right: 10px; }
+    .aui.whiteHallInternal #wrapper .navbar-static-side-collapse > ul {
+      list-style: none;
+      padding: 0;
+      margin: 0; }
+      .aui.whiteHallInternal #wrapper .navbar-static-side-collapse > ul li {
+        border-bottom: 1px solid #e9f2f7;
+        color: #2c3d4d;
+        background: white;
+        font: normal 700 0.78571em/1.36364em "Open Sans", sans-serif; }
+        .aui.whiteHallInternal #wrapper .navbar-static-side-collapse > ul li a {
+          padding: 15px;
+          display: block;
+          color: #2c3d4d;
+          text-decoration: none;
+          border-radius: 0;
+          margin-bottom: 0; }
+          .aui.whiteHallInternal #wrapper .navbar-static-side-collapse > ul li a .nav-label {
+            margin-left: 10px; }
+          .aui.whiteHallInternal #wrapper .navbar-static-side-collapse > ul li a:hover, .aui.whiteHallInternal #wrapper .navbar-static-side-collapse > ul li a:focus {
+            color: #2c3d4d; }
+        .aui.whiteHallInternal #wrapper .navbar-static-side-collapse > ul li.selected, .aui.whiteHallInternal #wrapper .navbar-static-side-collapse > ul li:hover {
+          background: #e9f2f7;
+          color: #2a7bb2; }
+          .aui.whiteHallInternal #wrapper .navbar-static-side-collapse > ul li.selected a, .aui.whiteHallInternal #wrapper .navbar-static-side-collapse > ul li:hover a {
+            color: #2a7bb2; }
+    .aui.whiteHallInternal #wrapper .breadcrumb.breadcrumb-horizontal {
+      background: transparent;
+      padding: 8px 0;
+      margin-bottom: 0; }
+      .aui.whiteHallInternal #wrapper .breadcrumb.breadcrumb-horizontal li {
+        font: normal 400 0.78571em/1.36364em "Open Sans", sans-serif; }
+        .aui.whiteHallInternal #wrapper .breadcrumb.breadcrumb-horizontal li a {
+          color: #2c3d4d;
+          text-decoration: none; }
+        .aui.whiteHallInternal #wrapper .breadcrumb.breadcrumb-horizontal li.last a {
+          color: #959fa7; }
+    .aui.whiteHallInternal #wrapper .navbar-static-side {
+      z-index: 980;
+      position: absolute;
+      width: 220px; }
+      @media (max-width: 979px) {
+        .aui.whiteHallInternal #wrapper .navbar-static-side {
+          display: none; } }
+      .aui.whiteHallInternal #wrapper .navbar-static-side > ul {
+        list-style: none;
+        padding: 0;
+        margin: 0; }
+        .aui.whiteHallInternal #wrapper .navbar-static-side > ul li {
+          border-bottom: 1px solid #e9f2f7;
+          color: #2c3d4d;
+          font: normal 700 0.78571em/1.36364em "Open Sans", sans-serif; }
+          .aui.whiteHallInternal #wrapper .navbar-static-side > ul li a {
+            padding: 15px;
+            display: block;
+            color: #2c3d4d;
+            text-decoration: none; }
+            .aui.whiteHallInternal #wrapper .navbar-static-side > ul li a .nav-label {
+              margin-left: 10px; }
+            .aui.whiteHallInternal #wrapper .navbar-static-side > ul li a:hover, .aui.whiteHallInternal #wrapper .navbar-static-side > ul li a:focus {
+              color: #2c3d4d; }
+          .aui.whiteHallInternal #wrapper .navbar-static-side > ul li.selected, .aui.whiteHallInternal #wrapper .navbar-static-side > ul li:hover {
+            background: rgba(233, 242, 247, 0.5);
+            color: #2a7bb2; }
+            .aui.whiteHallInternal #wrapper .navbar-static-side > ul li.selected a, .aui.whiteHallInternal #wrapper .navbar-static-side > ul li:hover a {
+              color: #2a7bb2; }
+    .aui.whiteHallInternal #wrapper .panel {
+      margin-bottom: 15px;
+      margin-top: 15px;
+      background: white;
+      -webkit-border-radius: 2px;
+      -moz-border-radius: 2px;
+      border-radius: 2px;
+      -webkit-box-shadow: none;
+      -moz-box-shadow: none;
+      box-shadow: none; }
+      .aui.whiteHallInternal #wrapper .panel .panel-heading {
+        padding: 11px 15px;
+        border-bottom: 1px solid #e0e0e0; }
+      .aui.whiteHallInternal #wrapper .panel .panel-title {
+        margin-top: 0;
+        margin-bottom: 0;
+        font: normal 700 1em/1.28571em "Open Sans", sans-serif;
+        color: inherit; }
+      .aui.whiteHallInternal #wrapper .panel .panel-title-right {
+        font: normal 400 0.92857em/1.30769em "Open Sans", sans-serif; }
+      .aui.whiteHallInternal #wrapper .panel .panel-body {
+        padding: 15px; }
+        .aui.whiteHallInternal #wrapper .panel .panel-body:after, .aui.whiteHallInternal #wrapper .panel .panel-body:before {
+          display: table;
+          content: " "; }
+        .aui.whiteHallInternal #wrapper .panel .panel-body:after {
+          clear: both; }
+        .aui.whiteHallInternal #wrapper .panel .panel-body .sub-row {
+          padding-bottom: 10px; }
+          .aui.whiteHallInternal #wrapper .panel .panel-body .sub-row .row-fluid [class*="span"] {
+            min-height: 0; }
+          .aui.whiteHallInternal #wrapper .panel .panel-body .sub-row + .sub-row {
+            padding-top: 10px;
+            border-top: 1px solid #f0f0f0; }
+            .aui.whiteHallInternal #wrapper .panel .panel-body .sub-row + .sub-row:last-child {
+              padding-bottom: 0; }
+      .aui.whiteHallInternal #wrapper .panel.panel-maxHeigth > .panel-body {
+        height: 230px;
+        max-height: 230px; }
+      .aui.whiteHallInternal #wrapper .panel.panel-default, .aui.whiteHallInternal #wrapper .panel.panel-blue {
+        border: 1px solid #e0e0e0; }
+        .aui.whiteHallInternal #wrapper .panel.panel-default > .panel-heading, .aui.whiteHallInternal #wrapper .panel.panel-blue > .panel-heading {
+          -webkit-border-top-left-radius: 2px;
+          -moz-border-radius-topleft: 2px;
+          border-top-left-radius: 2px;
+          -webkit-border-top-right-radius: 2px;
+          -moz-border-radius-topright: 2px;
+          border-top-right-radius: 2px;
+          border-color: #e0e0e0;
+          text-transform: uppercase; }
+      .aui.whiteHallInternal #wrapper .panel.panel-default > .panel-heading {
+        background: #f0f0f0;
+        color: #273e74; }
+      .aui.whiteHallInternal #wrapper .panel.panel-blue {
+        border: 0 none; }
+        .aui.whiteHallInternal #wrapper .panel.panel-blue > .panel-heading {
+          background: #0082c6;
+          color: white;
+          border: 1px solid #0082c6;
+          border-bottom-color: #006ba2; }
+        .aui.whiteHallInternal #wrapper .panel.panel-blue > .panel-body {
+          border: 1px solid #e0e0e0;
+          border-top: 0 none; }
+        .aui.whiteHallInternal #wrapper .panel.panel-blue.panel-portlet > .panel-body {
+          border: 0 none;
+          -webkit-box-shadow: 0px 3px 5px 0px rgba(0, 0, 0, 0.1);
+          -moz-box-shadow: 0px 3px 5px 0px rgba(0, 0, 0, 0.1);
+          box-shadow: 0px 3px 5px 0px rgba(0, 0, 0, 0.1); }
+    .aui.whiteHallInternal #wrapper #dashboard .fg-yellow {
+      color: #ffba00; }
+    .aui.whiteHallInternal #wrapper #dashboard .fg-red {
+      color: #d44647; }
+    .aui.whiteHallInternal #wrapper #dashboard .fg-green {
+      color: #189a80; }
+    .aui.whiteHallInternal #wrapper #dashboard .fg-blue {
+      color: #2a7bb2; }
+    .aui.whiteHallInternal #wrapper #dashboard .dashboard-small-widget {
+      border-radius: 2px;
+      -webkit-box-shadow: 0px 0px 5px rgba(44, 61, 77, 0.2);
+      -moz-box-shadow: 0px 0px 5px rgba(44, 61, 77, 0.2);
+      box-shadow: 0px 0px 5px rgba(44, 61, 77, 0.2); }
+      .aui.whiteHallInternal #wrapper #dashboard .dashboard-small-widget .widget-content {
+        padding: 15px;
+        background-color: white;
+        min-height: 100px;
+        box-sizing: border-box; }
+        .aui.whiteHallInternal #wrapper #dashboard .dashboard-small-widget .widget-content .widget-title {
+          font: normal 100 1em/1.28571em "Open Sans", sans-serif;
+          padding-bottom: 3px; }
+        .aui.whiteHallInternal #wrapper #dashboard .dashboard-small-widget .widget-content .widget-body .widget-icon {
+          font: normal 400 3.42857em/1.08333em "Open Sans", sans-serif; }
+        .aui.whiteHallInternal #wrapper #dashboard .dashboard-small-widget .widget-content .widget-body .count {
+          font: normal 100 3.42857em/1.08333em "Open Sans", sans-serif; }
+        .aui.whiteHallInternal #wrapper #dashboard .dashboard-small-widget .widget-content .widget-body .small-text {
+          font: normal 100 0.78571em/1.36364em "Open Sans", sans-serif; }
+        .aui.whiteHallInternal #wrapper #dashboard .dashboard-small-widget .widget-content .widget-body .big-text {
+          font: normal 100 1.71429em/1.16667em "Open Sans", sans-serif; }
+      .aui.whiteHallInternal #wrapper #dashboard .dashboard-small-widget .widget-footer {
+        background-color: #f4f8fb;
+        border-top: 1px solid #e9f2f7;
+        font: normal 100 0.78571em/1.36364em "Open Sans", sans-serif;
+        color: #2c3d4d;
+        white-space: nowrap; }
+        .aui.whiteHallInternal #wrapper #dashboard .dashboard-small-widget .widget-footer .widget-footer-button {
+          width: 50%;
+          text-align: center; }
+          .aui.whiteHallInternal #wrapper #dashboard .dashboard-small-widget .widget-footer .widget-footer-button.create-new-button {
+            float: right;
+            border-left: 1px solid #e9f2f7; }
+          .aui.whiteHallInternal #wrapper #dashboard .dashboard-small-widget .widget-footer .widget-footer-button a {
+            color: inherit;
+            cursor: pointer;
+            padding-top: 13px;
+            padding-bottom: 13px;
+            display: block; }
+            .aui.whiteHallInternal #wrapper #dashboard .dashboard-small-widget .widget-footer .widget-footer-button a:hover {
+              background: #e9ebed;
+              text-decoration: none; }
+          .aui.whiteHallInternal #wrapper #dashboard .dashboard-small-widget .widget-footer .widget-footer-button.right {
+            width: 100%;
+            text-align: right;
+            box-sizing: border-box; }
+            .aui.whiteHallInternal #wrapper #dashboard .dashboard-small-widget .widget-footer .widget-footer-button.right a {
+              padding-right: 15px; }
+    .aui.whiteHallInternal #wrapper #dashboard .quick-stat-panel .panel-body {
+      padding: 0; }
+      .aui.whiteHallInternal #wrapper #dashboard .quick-stat-panel .panel-body .quick-stat-stats {
+        box-sizing: border-box;
+        padding: 20px 15px;
+        background-color: #f4f8fb; }
+        .aui.whiteHallInternal #wrapper #dashboard .quick-stat-panel .panel-body .quick-stat-stats .small-text {
+          font: normal 100 0.78571em/1.36364em "Open Sans", sans-serif; }
+        .aui.whiteHallInternal #wrapper #dashboard .quick-stat-panel .panel-body .quick-stat-stats .big-text {
+          font: normal 100 1.71429em/1.16667em "Open Sans", sans-serif; }
+    .aui.whiteHallInternal #wrapper #dashboard .top-cash-position-panel .panel-body {
+      padding: 0; }
+      .aui.whiteHallInternal #wrapper #dashboard .top-cash-position-panel .panel-body ul {
+        margin: 0;
+        list-style-type: none; }
+        .aui.whiteHallInternal #wrapper #dashboard .top-cash-position-panel .panel-body ul li {
+          background-color: white;
+          border-bottom: 1px solid #e9f2f7;
+          padding: 17px 15px;
+          font: normal 100 0.92857em/1.30769em "Open Sans", sans-serif;
+          color: #2c3d4d; }
+          .aui.whiteHallInternal #wrapper #dashboard .top-cash-position-panel .panel-body ul li:hover {
+            background-color: #f4f8fb; }
+          .aui.whiteHallInternal #wrapper #dashboard .top-cash-position-panel .panel-body ul li .org-name {
+            padding-right: 90px; }
+          .aui.whiteHallInternal #wrapper #dashboard .top-cash-position-panel .panel-body ul li .cash-amount {
+            width: 90px;
+            text-align: right;
+            font: normal 700 0.92857em/1.30769em "Open Sans", sans-serif;
+            color: #2a7bb2; }
+    @media (max-width: 480px) and (min-width: 320px) {
+      .aui.whiteHallInternal #wrapper #dashboard .dashboard-small-widget .widget-content .widget-body .big-text {
+        font: normal 400 1.28571em/1.22222em "Open Sans", sans-serif; }
+      .aui.whiteHallInternal #wrapper #dashboard .dashboard-small-widget .widget-content .widget-body .text-container {
+        margin: 10px 0; }
+      .aui.whiteHallInternal #wrapper #dashboard .quick-stat-panel .panel-body .quick-stat-stats .text-container {
+        margin: 10px 0; } }
+    @media (max-width: 767px) and (min-width: 480px) {
+      .aui.whiteHallInternal #wrapper #dashboard .dashboard-small-widget .widget-content .widget-body .text-container {
+        margin: 10px 0; }
+      .aui.whiteHallInternal #wrapper #dashboard .quick-stat-panel .panel-body .quick-stat-stats .text-container {
+        margin: 10px 0; } }
+    @media (max-width: 979px) and (min-width: 767px) {
+      .aui.whiteHallInternal #wrapper #dashboard .dashboard-sm-widget-wrapper .span2, .aui.whiteHallInternal #wrapper #dashboard .dashboard-sm-widget-wrapper .span6 {
+        width: 48%;
+        margin: 0 1%; }
+      .aui.whiteHallInternal #wrapper #dashboard .dashboard-small-widget .widget-content .widget-body .big-text {
+        font: normal 400 1.28571em/1.22222em "Open Sans", sans-serif; }
+      .aui.whiteHallInternal #wrapper #dashboard .dashboard-small-widget .widget-content .widget-body .text-container {
+        margin: 10px 0; }
+      .aui.whiteHallInternal #wrapper #dashboard .quick-stat-panel .panel-body .quick-stat-stats .big-text {
+        font: normal 400 1.28571em/1.22222em "Open Sans", sans-serif; }
+      .aui.whiteHallInternal #wrapper #dashboard .quick-stat-panel .panel-body .quick-stat-stats .text-container {
+        margin: 10px 0; } }
+    @media (max-width: 1200px) and (min-width: 979px) {
+      .aui.whiteHallInternal #wrapper #dashboard .dashboard-sm-widget-wrapper .span2, .aui.whiteHallInternal #wrapper #dashboard .dashboard-sm-widget-wrapper .span6 {
+        width: 48%;
+        margin: 0 1%; }
+      .aui.whiteHallInternal #wrapper #dashboard .dashboard-small-widget .widget-content .widget-body .big-text {
+        font: normal 400 1.28571em/1.22222em "Open Sans", sans-serif; }
+      .aui.whiteHallInternal #wrapper #dashboard .quick-stat-panel .panel-body .quick-stat-stats .big-text {
+        font: normal 400 1.28571em/1.22222em "Open Sans", sans-serif; } }
+    .aui.whiteHallInternal #wrapper .login {
+      padding: 0px;
+      background-color: white;
+      margin: 0px;
+      border-radius: 2px;
+      box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.5);
+      position: relative;
+      width: 320px; }
+      .aui.whiteHallInternal #wrapper .login form {
+        margin: 0px; }
+      .aui.whiteHallInternal #wrapper .login .logo {
+        width: 100%;
+        padding: 15px 0px; }
+        .aui.whiteHallInternal #wrapper .login .logo img {
+          width: 220px; }
+      .aui.whiteHallInternal #wrapper .login .header {
+        background-color: #f0f0f0;
+        padding: 10px 15px; }
+        .aui.whiteHallInternal #wrapper .login .header p {
+          color: #0082c6;
+          font-size: 13px;
+          margin: 0px; }
+          .aui.whiteHallInternal #wrapper .login .header p strong {
+            font-weight: bold; }
+      .aui.whiteHallInternal #wrapper .login .login-body {
+        padding: 15px 15px; }
+        .aui.whiteHallInternal #wrapper .login .login-body input[type="text"], .aui.whiteHallInternal #wrapper .login .login-body input[type="password"], .aui.whiteHallInternal #wrapper .login .login-body button[type="submit"] {
+          width: 100%; }
+        .aui.whiteHallInternal #wrapper .login .login-body .taglib-captcha {
+          display: inline-block;
+          width: 100%;
+          margin: 0px; }
+          .aui.whiteHallInternal #wrapper .login .login-body .taglib-captcha .control-group {
+            float: left;
+            width: 55%;
+            margin: 0px; }
+          .aui.whiteHallInternal #wrapper .login .login-body .taglib-captcha img.captcha {
+            float: right;
+            width: 31%;
+            margin-top: 20px;
+            margin-bottom: 0px; }
+          .aui.whiteHallInternal #wrapper .login .login-body .taglib-captcha span.refresh {
+            float: right;
+            margin-top: 25px;
+            margin-right: 10px; }
+      .aui.whiteHallInternal #wrapper .login .footer {
+        background-color: #f0f0f0;
+        padding: 10px 15px;
+        text-align: center; }
+        .aui.whiteHallInternal #wrapper .login .footer p {
+          color: black;
+          font-size: 13px;
+          margin: 0px; }
+        .aui.whiteHallInternal #wrapper .login .footer a {
+          color: #0082c6;
+          font-size: 13px;
+          margin: 0px; }
+        .aui.whiteHallInternal #wrapper .login .footer .image-link.text-color-gray {
+          color: #626262; }
+        .aui.whiteHallInternal #wrapper .login .footer button {
+          margin-right: 5px; }
+        .aui.whiteHallInternal #wrapper .login .footer .link {
+          padding-top: 10px;
+          color: #0082c6;
+          font-size: 13px; }
+          .aui.whiteHallInternal #wrapper .login .footer .link a:last-child {
+            color: #3d3d3d; }
+    .aui.whiteHallInternal #wrapper .resetpasswordContent {
+      padding: 15px 15px;
+      padding-top: 5px;
+      border-bottom: 1px solid #f0f0f0; }
+      .aui.whiteHallInternal #wrapper .resetpasswordContent h4 {
+        font: normal 700 1.14286em/1.25em "Open Sans", sans-serif;
+        color: #273e74;
+        text-decoration: none;
+        text-transform: capitalize;
+        margin: 10px 0px; }
+      .aui.whiteHallInternal #wrapper .resetpasswordContent p {
+        font: normal 400 0.85714em/1.33333em "Open Sans", sans-serif;
+        color: #3d3d3d;
+        text-decoration: none;
+        margin: 0px 0px; }
+    @media (max-width: 480px) and (min-width: 320px) {
+      .aui.whiteHallInternal #wrapper .mtXs15 {
+        margin-top: 15px; } }
+    @media (max-width: 767px) and (min-width: 480px) {
+      .aui.whiteHallInternal #wrapper .mtSmXs15 {
+        margin-top: 15px; } }
+    @media (max-width: 979px) and (min-width: 767px) {
+      .aui.whiteHallInternal #wrapper .mtSm15 {
+        margin-top: 15px; } }
+    @media (max-width: 1200px) and (min-width: 979px) {
+      .aui.whiteHallInternal #wrapper .mtSm15 {
+        margin-top: 15px; } }
+  .aui.whiteHallInternal .signed-in #content {
+    margin-top: 60px; }
+    @media (max-width: 979px) {
+      .aui.whiteHallInternal .signed-in #content {
+        margin-top: 0; } }
+  .aui.whiteHallInternal .signed-out #content {
+    margin-top: 0; }
+  .aui.whiteHallInternal .signed-out #wrapper .pageWrapper {
+    margin: 0;
+    border-left: none;
+    background: transparent; }
+  .aui.whiteHallInternal .portlet-borderless-container {
+    padding: 15px 0; }
+  .aui.whiteHallInternal .customPortlet {
+    padding: 15px 0; }
+    .aui.whiteHallInternal .customPortlet .portlet-topper {
+      background: #0082c6;
+      color: white;
+      padding: 12px 15px;
+      -webkit-border-top-left-radius: 2px;
+      -moz-border-radius-topleft: 2px;
+      border-top-left-radius: 2px;
+      -webkit-border-top-right-radius: 2px;
+      -moz-border-radius-topright: 2px;
+      border-top-right-radius: 2px; }
+      .aui.whiteHallInternal .customPortlet .portlet-topper .portlet-topper-toolbar {
+        top: 11px;
+        right: 15px;
+        padding: 0; }
+        .aui.whiteHallInternal .customPortlet .portlet-topper .portlet-topper-toolbar a i {
+          color: rgba(255, 255, 255, 0.6);
+          margin-right: 5px; }
+          .aui.whiteHallInternal .customPortlet .portlet-topper .portlet-topper-toolbar a i:last-child {
+            margin-top: 8px;
+            margin-right: 0; }
+          .aui.whiteHallInternal .customPortlet .portlet-topper .portlet-topper-toolbar a i.caret {
+            border-top-color: rgba(255, 255, 255, 0.6); }
+    .aui.whiteHallInternal .customPortlet .portlet-content {
+      -webkit-box-shadow: 0px 3px 5px 0px rgba(0, 0, 0, 0.1);
+      -moz-box-shadow: 0px 3px 5px 0px rgba(0, 0, 0, 0.1);
+      box-shadow: 0px 3px 5px 0px rgba(0, 0, 0, 0.1);
+      background: white;
+      padding: 15px; }
+  .aui.whiteHallInternal .portlet-msg-error {
+    display: none; }
+

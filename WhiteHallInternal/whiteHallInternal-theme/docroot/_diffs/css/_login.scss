@@ -1,0 +1,120 @@
+.login {
+		padding:0px;
+		background-color:$loginBGColor;
+		margin:0px;
+		border-radius:2px;
+		box-shadow:0px 0px 8px $loginBoxshdow;
+		position: relative;
+		width:320px;
+		
+		form{
+			margin:0px;
+		}
+		.logo{
+			width:100%;
+			padding:15px 0px;
+			
+			img{
+				width:220px;
+			}
+		}
+		.header{
+			background-color:$loginHeaderBg;
+			padding:10px 15px;
+			
+			p{
+				color:$loginHeaderText;
+				font-size:13px;
+				margin:0px;
+				
+				strong{
+					font-weight:bold;
+				}
+			}
+		}
+		.login-body{
+			padding:15px 15px;
+			
+			input[type="text"],input[type="password"],button[type="submit"]{
+				width:100%;
+			}
+			
+			.taglib-captcha{
+					display: inline-block;
+					width: 100%;
+					margin: 0px;
+					
+					.control-group {
+									float: left;
+									width: 55%;
+									margin: 0px;
+					}
+					
+					img.captcha {
+								float: right;
+								width: 31%;
+								margin-top: 20px;
+								margin-bottom: 0px;
+					}
+					
+					span.refresh{
+								float: right;
+								margin-top: 25px;
+								margin-right: 10px;
+					}
+			}
+		}
+		.footer{
+			background-color:$loginHeaderBg;
+			padding:10px 15px;
+			text-align:center;
+			
+			p{
+				color:$loginFooterParaharaphText;
+				font-size:13px;
+				margin:0px;
+			}
+			
+			a{
+				color:$loginLinkText;
+				font-size:13px;
+				margin:0px;
+			}
+			.image-link.text-color-gray{
+				color:$colorNeLiGray2;
+			}
+			button{
+				margin-right:5px;
+			}
+			
+			.link{
+				padding-top: 10px;
+				color: $loginLinkText;
+				font-size:13px;
+				
+				a:last-child{
+					color:$loginForgotLink;
+				}
+			}
+		}
+}/* Login End */
+.resetpasswordContent{
+			padding:15px 15px;
+			padding-top:5px;
+			border-bottom:1px solid $colorNeLiGray5;
+			
+			h4{
+				font: $font_700_16;
+				color: $resetpasswordtitle;
+				text-decoration: none;
+				text-transform: capitalize;
+				margin:10px 0px;
+			}
+			
+			p{
+				font: $font_400_12;
+				color: $resetpasswordText;
+				text-decoration: none;
+				margin:0px 0px;
+			}
+}/* Forgotpassword End */

@@ -1,0 +1,97 @@
+.panel{
+		
+	margin-bottom: 15px;
+	margin-top: 15px;
+    background: $panelBg;
+    @include border-radius(2px);
+	@include box-shadow(none);	
+	
+	.panel-heading {
+	    padding: 11px 15px;
+	    border-bottom: 1px solid $panelBorder;
+	}
+	
+	.panel-title {
+	    margin-top: 0;
+	    margin-bottom: 0;
+    	font: $font_700_14;
+	    color: inherit;
+	}
+	
+	.panel-title-right{
+		font: $font_400_13;
+	}
+	
+	.panel-body {
+	    padding: 15px;
+	    
+	    &:after, &:before{
+	    	display: table;
+   			content: " ";
+	    }
+	    &:after{
+	    	clear: both;
+	    }
+	    
+	    .sub-row{
+	    	.row-fluid [class*="span"]{
+	    		min-height: 0;
+	    	}
+	    	padding-bottom:10px;
+	    	
+	    	&+.sub-row{
+	    		padding-top:10px;
+	    		border-top: 1px solid $panelSubRowBr;
+	    		
+	    		&:last-child{
+	    			padding-bottom:0;
+	    		}
+	    	}
+	    }
+	}
+	
+	&.panel-maxHeigth{
+		&>.panel-body {
+			height: 230px;
+    		max-height: 230px;
+		}
+	}
+	
+	&.panel-default, &.panel-blue {
+	    border: 1px solid $panelBorder;
+	    &>.panel-heading{
+	    	@include border-top-left-radius(2px);
+	    	@include border-top-right-radius(2px);
+   			border-color: $panelBorder;
+   			text-transform: uppercase;
+	    }
+	}
+	
+	&.panel-default>.panel-heading{
+    	background: $panelHeaderBg;
+    	color: $panelHeadingFontcolor;
+    }
+	
+	&.panel-blue{
+		border: 0 none;
+		&>.panel-heading{
+	    	background: $panelHeaderBlueBg;
+	    	color: $panelBlueHeadingFontcolor;
+	    	border: 1px solid $panelBlueHeadingBordercolor;
+	    	border-bottom-color: $panelBlueHeadingBorderBottomcolor;
+	    }
+	    
+	    &>.panel-body{
+	    	border: 1px solid $panelBorder;
+	    	border-top: 0 none;
+	    }
+	    
+		&.panel-portlet{
+		    &>.panel-body{
+		    	border: 0 none;
+		    	@include box-shadow(0px 3px 5px 0px rgba(0,0,0,0.1));
+		    }
+		}
+	}
+
+}/* Panel Close */

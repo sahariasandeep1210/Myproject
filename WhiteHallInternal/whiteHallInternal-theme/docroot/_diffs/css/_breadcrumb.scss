@@ -1,0 +1,23 @@
+.breadcrumb{
+	&.breadcrumb-horizontal{
+		 background: $breadCrumbBg;
+   		 padding: 8px 0;
+   		 margin-bottom:0;
+   		 
+   		 li{
+   		 	font: $font_400_11;
+   		 	
+   		 	a{
+   		 		color: $breadCrumbLiClr;
+   		 		text-decoration: none;
+   		 	}
+   		 	
+   		 	&.last{
+   		 		a{
+   		 			color: $breadCrumbLiLastClr;
+   		 		}
+   		 		
+   		 	}
+   		 }
+	}	
+}
