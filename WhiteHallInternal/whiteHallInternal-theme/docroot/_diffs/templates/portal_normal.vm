@@ -45,14 +45,15 @@ $theme.include($body_top_include)
 						  <i class="icomoon-menu bigIcon"></i>
 						</a>
 					</li>
-					
-					<li class="dropdown notification-dropdown hidden-tablet hidden-phone">
-					  <a href="#" class="dropdown-toggle-">
-						<div class="notification-img-container">
-							<i class="icomoon-setting bigIcon notification-img"></i>
-						</div>
-					  </a>
-					</li>
+					#if ($show_dockbar)
+						<li class="dropdown notification-dropdown hidden-tablet hidden-phone">
+						  <a href="#" class="dropdown-toggle-">
+							<div class="notification-img-container">
+								<i class="icomoon-setting bigIcon notification-img"></i>
+							</div>
+						  </a>
+						</li>
+					#end
 					
 					<li class="dropdown notification-dropdown">
 					  <a href="#" class="dropdown-toggle-" data-toggle="dropdown">
@@ -100,23 +101,6 @@ $theme.include($body_top_include)
 									
 								</ul>
 								</div>
-								<!--
-								<div class="custom-dropdown-container notification">
-									<div class="img-container">
-										<img class="dropdown-img" src="$images_folder/dummy-prof-img.jpg" alt="" title="notification image">
-									</div>
-									<div class="info-container">
-										<div class="notification-link-container">
-											<a href="#" class="no-padding">Dockbar custom notification.</a>
-											<p class="time-info">3 minuates ago</p>
-										</div>
-										
-									</div>
-								</div>
-								-->
-								
-								
-								
 							</div>
 						</li>
 					  </ul>
@@ -152,66 +136,7 @@ $theme.include($body_top_include)
 				  </ul>
 				<div class="nav-collapse collapse">
 					<div class="navbar-static-side-collapse">
-					
-						
 						#parse ("$full_templates_path/navigation_mob.vm")
-						
-						<!--<ul aria-label="Site Pages" class="nav hidden-desktop" role="menubar">
-							<li class="lfr-nav-updateable" id="layout_97" role="presentation">	
-								<a aria-labelledby="layout_97" href="http://localhost:9090/web/whitehall-int/home" role="menuitem">
-									<i class="icomoon-setting"></i>
-									<span class="nav-label">WELCOME</span>
-								</a>
-							</li>
-							<li class="selected">
-								<a href="http://localhost:9090/web/whitehall-int/dashboard" role="menuitem">
-									<i class="icomoon-dashboard"></i>
-									<span class="nav-label">DASHBOARD</span>
-								</a>
-							</li>
-							
-							<li>
-								<a href="http://localhost:9090/web/whitehall-int/dashboard" role="menuitem">
-									<i class="icomoon-company"></i>
-									<span class="nav-label">COMPANY</span>
-								</a>
-							</li>
-							
-							<li>
-								<a href="http://localhost:9090/web/whitehall-int/dashboard" role="menuitem">
-									<i class="icomoon-invoice"></i>
-									<span class="nav-label">INVOICES</span>
-								</a>
-							</li>
-							
-							<li>
-								<a href="http://localhost:9090/web/whitehall-int/dashboard" role="menuitem">
-									<i class="icomoon-trade"></i>
-									<span class="nav-label">TRADES</span>
-								</a>
-							</li>
-							
-							<li>
-								<a href="http://localhost:9090/web/whitehall-int/dashboard" role="menuitem">
-									<i class="icomoon-portfolio"></i>
-									<span class="nav-label">PORTFOLIO</span>
-								</a>
-							</li>
-							
-							<li>
-								<a href="http://localhost:9090/web/whitehall-int/dashboard" role="menuitem">
-									<i class="icomoon-documents"></i>
-									<span class="nav-label">DOCUMENTS</span>
-								</a>
-							</li>
-							
-							<li>
-								<a href="http://localhost:9090/web/whitehall-int/dashboard" role="menuitem">
-									<i class="icomoon-tags"></i>
-									<span class="nav-label">TAGS</span>
-								</a>
-							</li>
-					    </ul>-->
 					  </div>
 				  	
 				</div><!--/.nav-collapse -->
@@ -249,66 +174,6 @@ $theme.include($body_top_include)
 		#if ($is_signed_in)
 			#parse ("$full_templates_path/navigation.vm")
 		#end
-		#if ($is_signed_in)
-		<!--<nav class="sort-pages modify-pages navbar-static-side nav" id="navigation" role="navigation">
-		    <ul aria-label="Site Pages" role="menubar">
-				<li class="lfr-nav-updateable" id="layout_97" role="presentation">	
-					<a aria-labelledby="layout_97" href="http://localhost:9090/web/whitehall-int/home" role="menuitem">
-						<i class="icomoon-setting"></i>
-						<span class="nav-label">WELCOME</span>
-					</a>
-				</li>
-				<li class="selected">
-					<a href="http://localhost:9090/web/whitehall-int/dashboard" role="menuitem">
-						<i class="icomoon-dashboard"></i>
-						<span class="nav-label">DASHBOARD</span>
-					</a>
-				</li>
-				
-				<li>
-					<a href="http://localhost:9090/web/whitehall-int/dashboard" role="menuitem">
-						<i class="icomoon-company"></i>
-						<span class="nav-label">COMPANY</span>
-					</a>
-				</li>
-				
-				<li>
-					<a href="http://localhost:9090/web/whitehall-int/dashboard" role="menuitem">
-						<i class="icomoon-invoice"></i>
-						<span class="nav-label">INVOICES</span>
-					</a>
-				</li>
-				
-				<li>
-					<a href="http://localhost:9090/web/whitehall-int/dashboard" role="menuitem">
-						<i class="icomoon-trade"></i>
-						<span class="nav-label">TRADES</span>
-					</a>
-				</li>
-				
-				<li>
-					<a href="http://localhost:9090/web/whitehall-int/dashboard" role="menuitem">
-						<i class="icomoon-portfolio"></i>
-						<span class="nav-label">PORTFOLIO</span>
-					</a>
-				</li>
-				
-				<li>
-					<a href="http://localhost:9090/web/whitehall-int/dashboard" role="menuitem">
-						<i class="icomoon-documents"></i>
-						<span class="nav-label">DOCUMENTS</span>
-					</a>
-				</li>
-				
-				<li>
-					<a href="http://localhost:9090/web/whitehall-int/dashboard" role="menuitem">
-						<i class="icomoon-tags"></i>
-						<span class="nav-label">TAGS</span>
-					</a>
-				</li>
-		    </ul>
-		</nav>
-		#end-->
 		
 		<div class="pageWrapper">
 			
@@ -329,11 +194,13 @@ $theme.include($body_top_include)
 					$theme.wrapPortlet("portlet.vm", $content_include)
 				#end
 				
-				<footer id="footer" role="contentinfo">
-					<p class="powered-by">
-						&copy; 2016 WhiteHall Finance. All rights reserved.
-					</p>
-				</footer>
+				#if ($is_signed_in)
+					<footer id="footer" role="contentinfo">
+						<p class="powered-by">
+							&copy; 2016 WhiteHall Finance. All rights reserved.
+						</p>
+					</footer>
+				#end
 			</div>
 			
 			

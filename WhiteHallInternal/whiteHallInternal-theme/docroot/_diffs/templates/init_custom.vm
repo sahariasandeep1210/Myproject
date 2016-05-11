@@ -6,3 +6,9 @@
 #set ($dockbar_portlet = "bvidockbar_WAR_bvidockbarportlet")
 #set ($dockbar_notification = "2_WAR_notificationsportlet")
 #set ($VOID = $velocityPortletPreferences.reset())
+
+#if ($dockbar == true)
+   #set ($css_class = "${css_class} dockbar-split")
+#end
+
+#set ($show_dockbar = $is_signed_in && $permissionChecker.isGroupAdmin($group_id))

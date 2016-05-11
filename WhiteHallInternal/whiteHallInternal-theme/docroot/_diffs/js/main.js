@@ -1,11 +1,37 @@
 AUI().ready(
+	'aui-carousel', 'liferay-hudcrumbs', 'liferay-navigation-interaction', 'event-outside', 'aui-sortable-layout', 'aui-toggler',
+	function(A) {
+		var navigation = A.one('#navigation');
 
-	/*
-	This function gets loaded when all the HTML, not including the portlets, is
-	loaded.
-	*/
+		if (navigation) {
+			navigation.plug(Liferay.NavigationInteraction);
+		}
 
-	function() {
+		var siteBreadcrumbs = A.one('#breadcrumbs');
+
+		if (siteBreadcrumbs) {
+			siteBreadcrumbs.plug(A.Hudcrumbs);
+		}
+		
+		var dockbar = A.one('.dockbar');
+
+		if (dockbar) {
+			A.all('#heading .notification-img-container .icomoon-setting').each(function(btnDockbarToggle) {
+				new A.Toggler(
+					{
+						content: dockbar,
+						header: btnDockbarToggle,
+						expanded: false
+					}
+				);
+			});
+		}
+		
+		
+
+
+
+
 	}
 );
 
@@ -50,4 +76,8 @@ $(function(){
 	$( window ).resize(function() {
 		if($("div.login")){$("div.login").centerDiv()};
 	});
+	
+	if($('.label-required').length > 0){
+	  $('.label-required').text('*');
+	 }
 });

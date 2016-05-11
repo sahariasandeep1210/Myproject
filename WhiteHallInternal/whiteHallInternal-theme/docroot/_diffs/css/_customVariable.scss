@@ -71,43 +71,62 @@ $arial_font_700_12:                     fontProperty(normal, $fontWeightBold, $f
 *	Color Configuration
 */
 
-//Primary Color -------------------------------------------------------------------------------------------
-$colorPrLiBlue1: 						#0082c6;
-$colorPrDaBlue1: 						#006ba2;
+//Primary  NIU Color -------------------------------------------------------------------------------------------
+
 $colorPrLiBlue3: 						#efefef;
 $colorPrLiBlue2: 						#273e74;
 $colorPrDaBlue2: 						#20335f;
-$colorPrLiOrange1: 						#f58634;
-$colorPrDaOrange1: 						#c96e2b;
 
-//Secondary Color -----------------------------------------------------------------------------------------
+	//Primary updated Color -------------------------------------------------------------------------------------------
+
+$colorPrLiOrange1: 						#feba12;
+$colorPrDaOrange1: 						#d89e0f;
+$colorPrLiGreen1: 						#189a80;
+$colorPrDaGreen1: 						#14836d;
+$colorPrLiBlue1: 						#2a7bb2;
+$colorPrDaBlue1: 						#246997;
+$colorPrLiRed1: 						#d44647;
+$colorPrDaRed1: 						#b43c3c;
+
+//Secondary NIU Color -----------------------------------------------------------------------------------------
 $colorSeLi_e5f2f9: 						#e5f2f9;
 $colorSeLi_e9ebf1: 						#e9ebf1;
 $colorSeLi_fef3ea: 						#fef3ea;
 $colorSeLi_e5e5e5:                      #e5e5e5;
 $colorSeLi_f9f9f9:                      #f9f9f9;
 
-//Status Primary Color ------------------------------------------------------------------------------------
+	//Secondary updated Color -----------------------------------------------------------------------------------------
+$colorSeLi_fffbf3: 						#fffbf3;
+$colorSeLi_fff8e7: 						#fff8e7;
+$colorSeLi_f3faf9: 						#f3faf9;
+$colorSeLi_e7f5f2: 						#e7f5f2;
+$colorSeLi_f4f8fb: 						#f4f8fb;
+$colorSeLi_e9f2f7: 						#e9f2f7;
+$colorSeLi_fdf6f6: 						#fdf6f6;
+$colorSeLi_fbecec: 						#fbecec;
+
+
+//Status NIU Primary Color ------------------------------------------------------------------------------------
 $colorPrLiRed1: 						#e83434;
 $colorPrDaRed1: 						#be2b2b;
 $colorPrLiGreen1: 						#7bb62e;
 $colorPrDaGreen1: 						#659526;
 
-//Status Secondary Color ----------------------------------------------------------------------------------
+//Status NIU Secondary Color ----------------------------------------------------------------------------------
 $colorSeLi_fdeaea: 						#fdeaea;
 $colorSeLi_f3fbea: 						#f3fbea;
 
-//Neutral Color -------------------------------------------------------------------------------------------
-$colorNeLiGray1: 						#3d3d3d;
-$colorNeDaGray1: 						#313131;
-$colorNeLiGray2: 						#626262;
-$colorNeDaGray2: 						#4e4e4e;
-$colorNeLiGray3: 						#9e9e9e;
-$colorNeDaGray3: 						#7e7e7e;
-$colorNeLiGray4: 						#e0e0e0;
-$colorNeDaGray4: 						#c9c9c9;
-$colorNeLiGray5: 						#f0f0f0;
-$colorNeDaGray5: 						#d8d8d8;
+//Neutral Updated Color -------------------------------------------------------------------------------------------
+$colorNeLiGray1: 						#222a35;
+$colorNeDaGray1: 						#1d242d;
+$colorNeLiGray2: 						#2c3d4d;
+$colorNeDaGray2: 						#253442;
+$colorNeLiGray3: 						#959fa7;
+$colorNeDaGray3: 						#7f878e;
+$colorNeLiGray4: 						#d5d9dc;
+$colorNeDaGray4: 						#b5b9bb;
+$colorNeLiGray5: 						#e9ebed;
+$colorNeDaGray5: 						#c6c8ca;
 $colorNeLiGray6: 						#ffffff;
 $colorNeDaGray6: 						$colorNeLiGray5;
 $colorNeBlack:	 						#000000;
@@ -143,7 +162,7 @@ $inputFocusborder:						$colorPrLiBlue1;
 $inputDisabledBrColor: 					$colorNeLiGray4;
 $inputDisabledFontColor:				$colorNeLiGray3;
 $inputDisabledBg:						$colorNeLiGray5;
-$labelFontcolor:						$colorNeLiGray1;
+$labelFontcolor:						#2c3d4d; //$colorNeLiGray1;
 $error:									$colorPrLiRed1;
 $successFont:							$colorPrDaGreen1;
 $successBorder:							$colorPrLiGreen1;
@@ -254,7 +273,7 @@ $loginBGColor:							$colorNeLiGray6;
 $loginFooterParaharaphText:				$colorNeBlack;
 $loginHeaderBg:							$colorNeLiGray5;
 $loginHeaderText:						$colorPrLiBlue1;
-$loginLinkText:							$colorPrLiBlue1;
+$loginLinkText:							$colorNeLiGray1;
 $loginForgotLink:						$colorNeLiGray1;
 $loginBoxshdow:							rgba($colorNeBlack, 0.5);
 $resetpasswordText:						$colorNeLiGray1;
@@ -331,6 +350,8 @@ $breadCrumbBg:							$bgTransparent;
 $breadCrumbLiClr:						#2c3d4d;
 $breadCrumbLiLastClr:					#959fa7;
 $pageWrapperBr: 						#ffffff;
+$loginLogoHeaderBg: 					#2c3d4d;
+$loginLogoLinkClr: 						#2c3d4d;
 
 /******************** Author: Aarif Puthawala ********************/
 

@@ -5,7 +5,11 @@
 		border-radius:2px;
 		box-shadow:0px 0px 8px $loginBoxshdow;
 		position: relative;
-		width:320px;
+		width:420px;
+		
+		@media (max-width: $mobile-max){
+			width:300px;
+		}
 		
 		form{
 			margin:0px;
@@ -13,6 +17,7 @@
 		.logo{
 			width:100%;
 			padding:15px 0px;
+			background: $loginLogoHeaderBg;
 			
 			img{
 				width:220px;
@@ -37,6 +42,12 @@
 			
 			input[type="text"],input[type="password"],button[type="submit"]{
 				width:100%;
+			}
+			
+			.control-group{
+				&+.control-group{
+					margin-bottom: 0;
+				}
 			}
 			
 			.taglib-captcha{
@@ -65,7 +76,6 @@
 			}
 		}
 		.footer{
-			background-color:$loginHeaderBg;
 			padding:10px 15px;
 			text-align:center;
 			
@@ -80,6 +90,11 @@
 				font-size:13px;
 				margin:0px;
 			}
+			
+			.footer-link-devide{
+				margin:0 10px;
+			}
+			
 			.image-link.text-color-gray{
 				color:$colorNeLiGray2;
 			}
@@ -88,7 +103,7 @@
 			}
 			
 			.link{
-				padding-top: 10px;
+				padding: 20px 0 10px 0;
 				color: $loginLinkText;
 				font-size:13px;
 				
