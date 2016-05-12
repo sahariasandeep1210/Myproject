@@ -1,3 +1,6 @@
+#set ($theme_display = $themeDisplay)
+#set ($portlet_display = $portletDisplay)
+
 #set ($dockbar = $theme.getSetting("dockbar-split"))
 #set ($navNotification = $theme.getSetting("nav-notification-Show"))
 #set ($VOID = $velocityPortletPreferences.setValue('display-style', '1'))
@@ -6,6 +9,12 @@
 #set ($dockbar_portlet = "bvidockbar_WAR_bvidockbarportlet")
 #set ($dockbar_notification = "2_WAR_notificationsportlet")
 #set ($VOID = $velocityPortletPreferences.reset())
+
+
+
+#set ($icon-class = $theme_display.getProperty('icon-class'))
+#set ($user = $permissionChecker.getUser() )
+#set ($my_account_url = $htmlUtil.escape($theme_display.getURLMyAccount().toString()))
 
 #if ($dockbar == true)
    #set ($css_class = "${css_class} dockbar-split")

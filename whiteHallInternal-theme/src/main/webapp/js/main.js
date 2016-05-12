@@ -76,4 +76,8 @@ $(function(){
 	$( window ).resize(function() {
 		if($("div.login")){$("div.login").centerDiv()};
 	});
+	
+	if($('.label-required').length > 0){
+	  $('.label-required').text('*');
+	 }
 });
