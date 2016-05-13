@@ -89,6 +89,16 @@ p{font: $paragraph;}
 	
 	@import "input";
 	
+	@import "tab";
+	
+	@import "well";
+	
+	@import "table";
+	
+	@import "fileUpload";
+	
+	@import "toggler";
+	
 	@import "footer";
 	
 	@import "dashboard";
@@ -208,4 +218,7 @@ p{font: $paragraph;}
 .portlet-msg-error{
 	display : none;
 }
+
+
+@import "datepicker";
 

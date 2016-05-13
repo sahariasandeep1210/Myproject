@@ -1,0 +1,24 @@
+.customWell{
+	background: $wellBg;
+	padding: 10px 15px;
+	border-radius: 2px;
+	border: 1px solid $wellBr;
+	margin-bottom: 15px;
+	
+	.singleLabel{
+		margin-top:5px;
+	}
+	
+	.control-group{
+		margin-bottom: 0;
+		
+		.input-append{
+			margin-bottom: 0;
+		}
+	}
+	
+	.actionContainer{
+		padding-bottom: 0;
+		text-align: left;
+	}
+}

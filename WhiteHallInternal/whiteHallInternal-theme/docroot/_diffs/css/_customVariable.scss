@@ -8,6 +8,7 @@ $arialFontFamily:                       'Arial', sans-serif;
 $iconFontFamily:                        'icomoon';
 
 //Font Weight ---------------------------------------------------------------------------------------------
+$fontWeightLighter:						100;
 $fontWeightNormal:						400;
 $fontWeightMedium:						500;
 $fontWeightBold:						700;
@@ -39,27 +40,33 @@ $headingH2:								fontProperty(normal, $fontWeightBold, $fontSize_14, $fontFami
 $headingH3:								fontProperty(normal, $fontWeightBold, $fontSize_12, $fontFamily);
 $headingH4:								fontProperty(normal, $fontWeightNormal, $fontSize_12, $fontFamily);
 $headingH5:								fontProperty(normal, $fontWeightNormal, $fontSize_11, $fontFamily);
-$paragraph:								$headingH5;
+$paragraph:								$headingH4;
 $inputIconfontSize:						getEmvalue(20,$defaultFontsize);
 $tdIconfontSize:						getEmvalue(14,12);
 $defaultFont:							fontProperty(normal, $fontWeightNormal, $fontSize_14, $fontFamily);
 $font_400_10:							fontProperty(normal, $fontWeightNormal, $fontSize_10, $fontFamily);
+$font_100_11:							fontProperty(normal, $fontWeightLighter, $fontSize_11, $fontFamily);
 $font_400_11:							fontProperty(normal, $fontWeightNormal, $fontSize_11, $fontFamily);
 $font2_400_11:							fontProperty(normal, $fontWeightNormal, $fontSize2_11, $fontFamily);
 $font_700_11:							fontProperty(normal, $fontWeightBold, $fontSize_11, $fontFamily);
 $font_400_12:							fontProperty(normal, $fontWeightNormal, $fontSize_12, $fontFamily);
 $font2_400_12:							fontProperty(normal, $fontWeightNormal, $fontSize2_12, $fontFamily);
 $font_700_12:							fontProperty(normal, $fontWeightBold, $fontSize_12, $fontFamily);
+$font_100_13:							fontProperty(normal, $fontWeightLighter, $fontSize_13, $fontFamily);
 $font_400_13:							fontProperty(normal, $fontWeightNormal, $fontSize_13, $fontFamily);
+$font_700_13:							fontProperty(normal, $fontWeightBold, $fontSize_13, $fontFamily);
+$font_100_14:							fontProperty(normal, $fontWeightLighter, $fontSize_14, $fontFamily);
 $font_400_14:							fontProperty(normal, $fontWeightNormal, $fontSize_14, $fontFamily);
 $font_700_14:							fontProperty(normal, $fontWeightBold, $fontSize_14, $fontFamily);
 $font_700_16:							fontProperty(normal, $fontWeightBold, $fontSize_16, $fontFamily);
 $font_400_18:							fontProperty(normal, $fontWeightNormal, $fontSize_18, $fontFamily);
 $font_700_18:							fontProperty(normal, $fontWeightBold, $fontSize_18, $fontFamily);
-$font_700_24:							fontProperty(normal, $fontWeightBold, $fontSize_24, $fontFamily);
+$font_100_24:							fontProperty(normal, $fontWeightLighter, $fontSize_24, $fontFamily);
 $font_400_24:							fontProperty(normal, $fontWeightNormal, $fontSize_24, $fontFamily);
 $font_700_24:							fontProperty(normal, $fontWeightBold, $fontSize_24, $fontFamily);
 $font_400_30:							fontProperty(normal, $fontWeightNormal, $fontSize_30, $fontFamily);
+$font_100_48:							fontProperty(normal, $fontWeightLighter, $fontSize_48, $fontFamily);
+$font_400_48:							fontProperty(normal, $fontWeightNormal, $fontSize_48, $fontFamily);
 $icon_font_400_8:						fontProperty(normal, $fontWeightNormal, $fontSize_8, $iconFontFamily);
 $icon_font2_400_16:						fontProperty(normal, $fontWeightNormal, $fontSize2_16, $iconFontFamily);
 $icon_font_400_20:						fontProperty(normal, $fontWeightNormal, $fontSize_20, $iconFontFamily);
@@ -73,14 +80,14 @@ $arial_font_700_12:                     fontProperty(normal, $fontWeightBold, $f
 
 //Primary  NIU Color -------------------------------------------------------------------------------------------
 
-$colorPrLiBlue3: 						#efefef;
-$colorPrLiBlue2: 						#273e74;
-$colorPrDaBlue2: 						#20335f;
+//$colorPrLiBlue3: 						#efefef;
+//$colorPrLiBlue2: 						#273e74;
+//$colorPrDaBlue2: 						#20335f;
 
 	//Primary updated Color -------------------------------------------------------------------------------------------
 
-$colorPrLiOrange1: 						#feba12;
-$colorPrDaOrange1: 						#d89e0f;
+$colorPrLiOrange1: 						#ffba00;
+$colorPrDaOrange1: 						#d99e00;
 $colorPrLiGreen1: 						#189a80;
 $colorPrDaGreen1: 						#14836d;
 $colorPrLiBlue1: 						#2a7bb2;
@@ -107,10 +114,10 @@ $colorSeLi_fbecec: 						#fbecec;
 
 
 //Status NIU Primary Color ------------------------------------------------------------------------------------
-$colorPrLiRed1: 						#e83434;
-$colorPrDaRed1: 						#be2b2b;
-$colorPrLiGreen1: 						#7bb62e;
-$colorPrDaGreen1: 						#659526;
+//$colorPrLiRed1: 						#e83434;
+//$colorPrDaRed1: 						#be2b2b;
+//$colorPrLiGreen1: 						#7bb62e;
+//$colorPrDaGreen1: 						#659526;
 
 //Status NIU Secondary Color ----------------------------------------------------------------------------------
 $colorSeLi_fdeaea: 						#fdeaea;
@@ -157,7 +164,7 @@ $inputborderColor: 						$colorNeLiGray4;
 $inputIconborderColor:					$colorNeLiGray4;
 $inputIconBg:							$colorNeLiGray6;
 $inputIconFontColor:					$colorNeDaGray4;
-$inputFontcolor:						$colorNeBlack;
+$inputFontcolor:						$colorNeLiGray2;
 $inputFocusborder:						$colorPrLiBlue1;
 $inputDisabledBrColor: 					$colorNeLiGray4;
 $inputDisabledFontColor:				$colorNeLiGray3;
@@ -173,7 +180,7 @@ $dropDownHoverBg:						$colorNeLiGray5;
 $dropDownMenuSeparator:					$colorNeLiGray4;
 $panelBg:								$colorNeLiGray6;
 $panelBorder:							$colorNeLiGray4;
-$panelHeadingFontcolor:					$colorPrLiBlue2;
+$panelHeadingFontcolor:					$colorPrLiBlue1;
 $panelBlueHeadingFontcolor:				$colorNeLiGray6;
 $panelBlueHeadingBordercolor:			$colorPrLiBlue1;
 $panelBlueHeadingBorderBottomcolor:		$colorPrDaBlue1;
@@ -198,7 +205,7 @@ $infoGroupDescStaticDefaultTitleClr:	$colorNeLiGray1;
 $infoGroupTitleStaticDefaultBg:			$colorNeLiGray5;
 $noteDefaultBgColor:					$colorSeLi_e5f2f9;
 $noteDefaultBrColor:					rgba($colorPrLiBlue1, 0.2);
-$noteTitleDescFontColor:				$colorPrLiBlue1;
+$noteTitleDescFontColor:				$colorPrDaBlue1;
 $btnGrayBg:								$colorNeLiGray6;
 $btnGrayBorder:							$colorNeLiGray4;
 $btnGrayFontColor:						$colorNeLiGray2;
@@ -218,12 +225,13 @@ $popoverBgColor:						$colorNeLiGray5;
 $popoverBorderColor:					$colorNeLiGray4;
 $popoverTitleFontColor:					$colorPrLiBlue1;
 $popoverBodyFontColor: 					$colorNeLiGray1;
+$datePickerBr:							#e0e0e0;
 $datePickerHeaderFontColor:				$colorPrLiBlue1;
 $datePickerTableBorderColor:			$colorNeLiGray4;
-$datePickerPrevNextDayColor:			$colorNeDaGray4;
+$datePickerPrevNextDayColor:			$colorNeLiGray3;
 $datePickerDayFontColor:				$colorNeBlack;
 $datePickerSelectedDayFontColor:		$colorNeLiGray6;
-$datePickerSelectedDayBg:				$colorPrLiBlue1;
+$datePickerSelectedDayBg:				$colorPrLiGreen1;
 $datePickerHoverDayBg:					$colorNeLiGray4;
 $datePickerHoverDayFontColor:			$colorNeBlack;
 $timePickerFontColor:					$colorNeBlack;
@@ -233,24 +241,32 @@ $modalHeaderFontClr:                    $fontWhite;
 $modalBodyFontClr:                      $colorNeLiGray1;
 $modalBodyWarningClr:                   $colorPrLiRed1;
 $modalFooterBg:                         $colorNeLiGray5;
-$toggleHeaderBg:                        $colorPrLiBlue1;
-$toggleHeaderCollapsedBg:               $colorNeLiGray2;
+$toggleHeaderBg:                        $colorNeLiGray2;
+$toggleHeaderCollapsedBg:               $colorNeLiGray3;
 $toggleHeaderFontClr:                   $fontWhite;
 $toggleContentBg:                       $colorNeLiGray6;
 $toggleContentFontClr:                  $colorNeLiGray1;
+$toggleContentBr:                  		$colorSeLi_e9f2f7;
 $searchContainerHeaderBg:               $colorNeLiGray5;
-$searchContainerHeaderFontClr:          $colorNeLiGray1;
-$searchContainerColFontClr:             $colorNeLiGray1;
+$searchContainerHeaderFontClr:          $colorNeLiGray2;
+$searchContainerColFontClr:             $colorNeLiGray2;
+$searchContainerColLinkFontClr:         $colorPrLiBlue1; 
 $searchContainerHighlightFontClr:       $colorPrLiOrange1;
 $searchContainerRowBg:                  $colorNeLiGray6;
 $searchContainerRowHoverBg:             $colorSeLi_f9f9f9;
 $searchContainerOddRowBg:               $colorNeLiGray6;
-$searchContainerSelectedRowBg:          $colorSeLi_e5f2f9;
+$searchContainerSelectedRowBg:          $colorSeLi_f4f8fb;
 $searchContainerBorderClr:              $colorNeLiGray4;
 $searchContainerPagiantionBg:           $colorNeLiGray6;
+$searchContainerPaginationBorder:       $colorSeLi_e5f2f9;
 $searchContainerPaginationBorder:       $colorNeLiGray4;
-$searchContainerPaginationBorder:       $colorNeLiGray4;
-$searchContainerPaginationClr:          $colorNeBlack;
+$searchContainerPaginationClr:          $colorNeLiGray2;
+$searchContainerPaginationPageLinkBr:   $colorSeLi_e9f2f7;
+$searchContainerPaginationPageLinkBg:  	$colorSeLi_e9f2f7;
+$searchContainerPaginationPageLinkClr:  $colorNeLiGray2;
+$PaginationDropdownHoverBg:  			$colorPrLiBlue1;
+$PaginationDropdownHoverClr:  			$colorNeLiGray6;
+
 $searchContainerPagerBorder:            $colorNeLiGray4;
 $searchContainerPagerFontClr:  			$colorNeLiGray1;
 $searchContainerPagerFirstLastBg:       $colorPrLiBlue1;
@@ -258,26 +274,26 @@ $searchContainerPagerFirstLastFontClr:  $colorNeLiGray6;
 $searchContainerLabelValueLabelBg:  	$colorNeLiGray5;
 $searchContainerTrashIconClr:			$colorPrLiRed1;
 $searchContainerEditIconClr:			$colorPrLiBlue1;
-$searchContainerUserIconClr:			$colorPrLiBlue2;
+$searchContainerUserIconClr:			$colorPrLiBlue1;
 $searchContainerFullColBg1:				$colorPrLiBlue1;
 $searchContainerFullColBg2:				$colorPrLiOrange1;
 $searchContainerFullColClr:				$colorNeLiGray6;
 $fileUploadInputBorder: 				$colorNeLiGray4;
 $fileUploadInputClr: 					$colorNeBlack;
 $fileUploadInputBg: 					$colorNeLiGray6;
-$fileUploadAddonBorder:					$colorPrLiBlue2;
+$fileUploadAddonBorder:					$colorPrLiBlue1;
 $fileUploadAddonClr:					$colorNeLiGray6;
-$fileUploadAddonBg:						$colorPrLiBlue2;
+$fileUploadAddonBg:						$colorPrLiBlue1;
 $actionContainer:      					$colorNeLiGray5;
 $loginBGColor:							$colorNeLiGray6;
 $loginFooterParaharaphText:				$colorNeBlack;
 $loginHeaderBg:							$colorNeLiGray5;
-$loginHeaderText:						$colorPrLiBlue1;
+$loginHeaderText:						$colorPrDaBlue1;
 $loginLinkText:							$colorNeLiGray1;
 $loginForgotLink:						$colorNeLiGray1;
 $loginBoxshdow:							rgba($colorNeBlack, 0.5);
 $resetpasswordText:						$colorNeLiGray1;
-$resetpasswordtitle:					$colorPrLiBlue2;
+$resetpasswordtitle:					$colorPrLiBlue1;
 $autoCompleteListHoverBg:				$colorNeLiGray5;
 $autoCompleteListSelectBg:				$colorPrLiBlue1;
 $autoCompleteListHoverClr:				$colorNeLiGray1;
@@ -293,16 +309,11 @@ $listHoverBg:							$colorNeLiGray5;
 $listSelectBg:							$colorPrLiBlue1;
 $popupDialogBg: 						$bgTransparent;
 $progressbarfontcolorWhite:				$colorNeLiGray6;
-$progressbarcomplited:					$colorPrLiBlue2;
+$progressbarcomplited:					$colorPrLiBlue1;
 $progressbaractive:						$colorPrLiOrange1;
 $progressbarinactive:					$colorNeDaGray4;
 $progressbarinactivetext:				$colorNeLiGray2;
 $progressbarinactivetext:				$colorNeLiGray2;
-$helpPageTitle:							$colorPrDaBlue1;
-$helpPagelsitStyeImage:					#{"../images/bulletGray.png"};
-$helpPagelsitTitleBg:					$colorNeLiGray5;
-$helpPagelistTitleFontColor:			$colorPrLiBlue2;
-$helpPagelistDescFontColor:				$colorNeLiGray1;
 $treeMenuLiPlusPath:					"../images/icon-plus.png";
 $treeMenuLiMinusPath:					"../images/icon-minus.png";
 $treeMenuLiBg:							$colorNeLiGray1;
@@ -353,6 +364,14 @@ $pageWrapperBr: 						#ffffff;
 $loginLogoHeaderBg: 					#2c3d4d;
 $loginLogoLinkClr: 						#2c3d4d;
 
+$tabLinkBr:								$bgTransparent;
+$tabLinkClr:							$colorNeLiGray2;
+$tabLinkBg:								$bgTransparent;
+$tabActiveLinkClr:						$colorPrDaBlue1;
+$tabActiveLinkBg:						$colorNeLiGray6;
+$tabContentBg:							$colorNeLiGray6;
+$tabContentClr:							$colorNeLiGray2;
+
 /******************** Author: Aarif Puthawala ********************/
 
 $colorYellow:							#ffba00;
@@ -371,12 +390,12 @@ $topCashListItemBorderColor:			#e9f2f7;
 $topCashListItemTextColor:				#2c3d4d;
 $topCashListItemAmountTextColor:		#2a7bb2;
 $topCashListItemBackHoverColor:			#f4f8fb;
-$fontWeightLighter:						100;
-$font_100_11:							fontProperty(normal, $fontWeightLighter, $fontSize_11, $fontFamily);
-$font_100_13:							fontProperty(normal, $fontWeightLighter, $fontSize_13, $fontFamily);
-$font_100_14:							fontProperty(normal, $fontWeightLighter, $fontSize_14, $fontFamily);
-$font_100_24:							fontProperty(normal, $fontWeightLighter, $fontSize_24, $fontFamily);
-$font_100_48:							fontProperty(normal, $fontWeightLighter, $fontSize_48, $fontFamily);
-$font_400_48:							fontProperty(normal, $fontWeightNormal, $fontSize_48, $fontFamily);
-$font_700_13:							fontProperty(normal, $fontWeightBold, $fontSize_13, $fontFamily);
+
+
+
+
+
+
+
+
 /************************ End of Section *************************/

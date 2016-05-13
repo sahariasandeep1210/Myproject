@@ -70,5 +70,6 @@
 	font: $font_400_14;
 	padding: 6px 8px;
 	border-width: 1px;
+	max-width: 32px;
 	@include border-radius(50%);
 }/* button-Icon Close */

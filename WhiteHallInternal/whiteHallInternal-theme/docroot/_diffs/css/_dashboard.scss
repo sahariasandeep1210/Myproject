@@ -172,10 +172,10 @@
     
     @media (max-width: $tablet-max) and (min-width: $tablet-min){
     	.dashboard-sm-widget-wrapper{
-    		.span2, .span6{
+    		/*.span2, .span6{
     			width: 48%;
     			margin: 0 1%;
-    		}
+    		}*/
     	}
     	
     	.dashboard-small-widget {
@@ -210,10 +210,10 @@
     @media (max-width: $desktop-min) and (min-width: $tablet-max){
     
     	.dashboard-sm-widget-wrapper{
-    		.span2, .span6{
+    		/*.span2, .span6{
     			width: 48%;
     			margin: 0 1%;
-    		}
+    		}*/
     	}
     	.dashboard-small-widget {
     		.widget-content {

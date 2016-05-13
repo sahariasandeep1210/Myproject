@@ -1,0 +1,43 @@
+.customFileUpload{
+	&>.control-group{
+		&:first-child{
+			display:none;
+		}
+	}
+	
+	label{
+		font: $font_400_13;
+		color: $labelFontcolor;
+		text-transform: capitalize;
+	}
+	
+	.input-append{
+		font: $font_400_14;
+		margin-bottom: 0;
+		input{
+			font: $font_400_13;
+			border: 1px solid $fileUploadInputBorder;
+			box-shadow: none;
+			background: $fileUploadInputBg;
+    		color: $fileUploadInputClr;
+		    padding: 4px 10px;
+		    cursor: pointer;
+		    
+		    &.fakeFileUploader{
+		    	@include calcPercentWidth(100%, 74.953px);
+		    }
+		}
+		
+		input + .add-on{
+			cursor: pointer;
+			font: $font_400_13;
+			line-height: 20px;
+			border: 1px solid $fileUploadAddonBorder;
+		    background: $fileUploadAddonBg;
+		    text-shadow: none;
+		    color: $fileUploadAddonClr;
+		    padding: 4px 10px;
+		    margin-left: -3px;
+		}
+	}
+}
