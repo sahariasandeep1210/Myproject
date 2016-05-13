@@ -22,6 +22,15 @@
 
 <aui:form action="" method="post" name="fm" id="test" enctype="multipart/form-data">
 	<div class="row-fluid">
+		<div class="span12">
+			<div class="title-container">
+				<div class="main-title">
+					MORRISON LIMITED
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row-fluid">
 		<div class="span3 spanSm6">
 			<aui:input name="" label="Duration" disabled="true" value="97" placeholder=""></aui:input>
 		</div>

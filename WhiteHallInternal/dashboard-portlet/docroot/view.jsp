@@ -21,7 +21,7 @@
 
 <div id="dashboard">
 	<div class="row-fluid dashboard-sm-widget-wrapper">
-		<div class="span2">
+		<div class="span2 spanSm6 spanMd6">
 			<div class="dashboard-small-widget">
 				<div class="widget-content fg-yellow">
 					<div class="widget-title">INVOICES</div>
@@ -40,8 +40,8 @@
 				</div>
 			</div>
 		</div>
-		<div class="span2">
-			<div class="dashboard-small-widget mtXs15 mtSmXs15">
+		<div class="span2 spanSm6 spanMd6">
+			<div class="dashboard-small-widget mtXs15">
 				<div class="widget-content fg-blue">
 					<div class="widget-title">COMPANY</div>
 					<div class="widget-body">
@@ -59,8 +59,8 @@
 				</div>
 			</div>
 		</div>
-		<div class="span2">
-			<div class="dashboard-small-widget mtSm15 mtSmXs15 mtXs15">
+		<div class="span2 spanSm6 spanMd6">
+			<div class="dashboard-small-widget mtSm15 mtMd15  mtXs15">
 				<div class="widget-content fg-green">
 					<div class="widget-title">INVESTORS</div>
 					<div class="widget-body">
@@ -78,8 +78,8 @@
 				</div>
 			</div>
 		</div>
-		<div class="span6">
-			<div class="dashboard-small-widget mtSm15 mtSmXs15 mtXs15">
+		<div class="span6 spanSm6 spanMd6">
+			<div class="dashboard-small-widget mtSm15 mtMd15 mtXs15">
 				<div class="widget-content">
 					<div class="widget-title">TRADES</div>
 					<div class="widget-body">

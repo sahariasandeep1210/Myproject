@@ -195,7 +195,7 @@ $theme.include($body_top_include)
 				#end
 				
 				#if ($is_signed_in)
-					<footer id="footer" role="contentinfo">
+					<footer id="footer" class="site-footer" role="contentinfo">
 						<p class="powered-by">
 							&copy; 2016 WhiteHall Finance. All rights reserved.
 						</p>
@@ -213,6 +213,7 @@ $theme.include($body_top_include)
 <script src="$javascript_folder/jquery.minv2.2.2.js"></script>
 <script src="$javascript_folder/bootstrap-collapse.js"></script>
 <script src="$javascript_folder/bootstrap-dropdown.js"></script>
+<script src="$javascript_folder/jquery.tablesorter.min.js"></script>
 
 $theme.include($body_bottom_include)
 

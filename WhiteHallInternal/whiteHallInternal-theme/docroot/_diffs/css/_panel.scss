@@ -33,6 +33,18 @@
 	    	clear: both;
 	    }
 	    
+	    .title-container{
+	    	padding-bottom: 10px;
+	    	border-bottom: 1px solid $actionContainer;
+	    	margin-bottom: 10px;
+	    	.main-title{
+		    	font: $font_700_16;
+		    	color: $tabContentClr;
+		    	display: inline-block;
+		    	
+		    }
+	    }
+	    
 	    .sub-row{
 	    	.row-fluid [class*="span"]{
 	    		min-height: 0;
