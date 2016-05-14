@@ -89,6 +89,16 @@ p{font: $paragraph;}
 	
 	@import "input";
 	
+	@import "tab";
+	
+	@import "well";
+	
+	@import "table";
+	
+	@import "fileUpload";
+	
+	@import "toggler";
+	
 	@import "footer";
 	
 	@import "dashboard";
@@ -199,6 +209,20 @@ p{font: $paragraph;}
 		@include box-shadow(0px 3px 5px 0px rgba(0,0,0,0.1));
 		background: $portletBodyBg;
 		padding: 15px;
+		
+		.portlet-body{
+			.title-container{
+		    	padding-bottom: 10px;
+		    	border-bottom: 1px solid $actionContainer;
+		    	margin-bottom: 10px;
+		    	.main-title{
+			    	font: $font_700_16;
+			    	color: $tabContentClr;
+			    	display: inline-block;
+			    	
+			    }
+		    }
+		}
 	}
 	
 	
@@ -208,4 +232,7 @@ p{font: $paragraph;}
 .portlet-msg-error{
 	display : none;
 }
+
+
+@import "datepicker";
 

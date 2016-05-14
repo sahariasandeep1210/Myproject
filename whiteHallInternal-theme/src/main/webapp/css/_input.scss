@@ -26,7 +26,7 @@
 		@include input-block-level();
 		&:focus, &:hover{
 			border: 1px solid $inputFocusborder;
-			@include box-shadow(0 0px 8px rgba(0,130,198,0.50),0 0 8px rgba(0,130,198,0.50));
+			@include box-shadow(0 0px 8px rgba(42, 119, 178,0.50),0 0 8px rgba(42, 119, 178,0.50));
 		}
 	}
 	
@@ -262,7 +262,17 @@
 	border-top: 1px solid $actionContainer;
 	padding: 15px 0;
 	text-align: right;
+	&.text-left{
+		text-align: left;
+	}
 	&.noBorder{
 		border-top: 0;
+	}
+	
+	&.pt0{
+		padding-top:0
+	}
+	&.pb0{
+		padding-bottom:0
 	}
 }/* actionContainer Close */
