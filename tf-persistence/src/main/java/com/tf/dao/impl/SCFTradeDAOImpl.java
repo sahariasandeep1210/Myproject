@@ -29,6 +29,7 @@ import com.tf.dao.AllotmentDAO;
 import com.tf.dao.SCFTradeDAO;
 import com.tf.model.Allotment;
 import com.tf.model.SCFTrade;
+import com.tf.persistance.util.DashboardModel;
 import com.tf.persistance.util.ValidationUtil;
 
 @Repository
@@ -1206,6 +1207,30 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 			_log.error("get failed", re);
 			throw re;
 		}
+	}
+	
+	public void setSettledTradeInformation(DashboardModel dashModel) {		
+		List<Object[]> tradeArray = sessionFactory
+						.getCurrentSession()
+						.createSQLQuery(
+								"SELECT SUM(trade_amount), COUNT(*) FROM scf_trade GROUP BY STATUS HAVING STATUS = 'Settled'").list();
+				for (Object[] row : tradeArray) {
+					dashModel.setSettledTradeAmount(row[0]!=null ?new BigDecimal(row[0].toString()):null);
+					dashModel.setSettledTradeCount(Long.valueOf(row[1].toString()));
+					
+				}		
+	}
+	
+	public void setLiveTradeInformation(DashboardModel dashModel) {		
+		List<Object[]> tradeArray = sessionFactory
+						.getCurrentSession()
+						.createSQLQuery(
+								"SELECT SUM(trade_amount), COUNT(*) FROM scf_trade GROUP BY STATUS HAVING STATUS != 'Settled'").list();
+				for (Object[] row : tradeArray) {
+					dashModel.setLiveTradeAmount(row[0]!=null ?new BigDecimal(row[0].toString()):null);
+					dashModel.setLiveTradeCount(Long.valueOf(row[1].toString()));
+					
+				}		
 	}
 	
 }

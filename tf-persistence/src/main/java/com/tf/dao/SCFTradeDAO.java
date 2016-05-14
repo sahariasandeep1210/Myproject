@@ -2,6 +2,7 @@
 package com.tf.dao;
 
 import com.tf.model.SCFTrade;
+import com.tf.persistance.util.DashboardModel;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -67,4 +68,8 @@ public interface SCFTradeDAO extends BaseDAO<SCFTrade, Serializable> {
 	public List<SCFTrade> getScfTradeListForInvestor(String searchtxt, Long investorID, int startIndex, int pageSize,boolean count);
 	
 	public SCFTrade findTradeDeatailsForInvestor(long tradeId,long investorID);
+	
+	public void setSettledTradeInformation(DashboardModel dashModel);
+	
+	public void setLiveTradeInformation(DashboardModel dashModel);
 }

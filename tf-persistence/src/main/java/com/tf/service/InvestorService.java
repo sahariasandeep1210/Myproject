@@ -6,7 +6,6 @@ import java.util.Map;
 
 import com.tf.model.Investor;
 import com.tf.model.InvestorPortfolio;
-import com.tf.persistance.util.DashboardModel;
 import com.tf.persistance.util.InvestorDTO;
 
 public interface InvestorService {
@@ -17,9 +16,7 @@ public interface InvestorService {
 	
 	public InvestorPortfolio findById(long id);
 	
-	public void updatePortfiloDetails(InvestorPortfolio investorActual,InvestorPortfolio investorChnaged,String username);
-	
-	public DashboardModel  getDashBoardInformation();
+	public void updatePortfiloDetails(InvestorPortfolio investorActual,InvestorPortfolio investorChnaged,String username);	
 	
 	public Map<Long,List<InvestorPortfolio>>  getInvestorPortfolioByUserId(long id);
 	

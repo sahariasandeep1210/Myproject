@@ -1,13 +1,5 @@
 package com.tf.dao.impl;
 
-import com.tf.dao.InvestorDAO;
-import com.tf.dao.UserDAO;
-import com.tf.model.Investor;
-import com.tf.model.InvestorPortfolio;
-import com.tf.persistance.util.DashboardModel;
-import com.tf.persistance.util.InvestorDTO;
-import com.tf.persistance.util.InvestorProtfolioDTO;
-
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
@@ -16,17 +8,23 @@ import java.util.List;
 import java.util.Map;
 
 import org.hibernate.Criteria;
-import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Projection;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.tf.dao.InvestorDAO;
+import com.tf.dao.UserDAO;
+import com.tf.model.Investor;
+import com.tf.model.InvestorPortfolio;
+import com.tf.persistance.util.DashboardModel;
+import com.tf.persistance.util.InvestorDTO;
+import com.tf.persistance.util.InvestorProtfolioDTO;
 
 @Repository
 @Transactional
@@ -114,9 +112,8 @@ public class InvestorDAOImpl extends BaseDAOImpl<InvestorPortfolio, Long>   impl
 	}
 
 
-	public DashboardModel  getDashBoardInformation() {
+	public DashboardModel  getDashBoardInformation(DashboardModel dasboardModel) {
 		try {
-			DashboardModel dasboardModel =new DashboardModel();
 				
 				Query query =sessionFactory.getCurrentSession().createQuery("SELECT SUM(myCreditLine) AS totalcap,SUM(availToInvest ) AS availinvest,SUM(amountInvested) AS amountInvested FROM InvestorPortfolio ");
 				
@@ -453,6 +450,22 @@ public class InvestorDAOImpl extends BaseDAOImpl<InvestorPortfolio, Long>   impl
 			_log.error("getInvestorPortfolioDataForGraph", e);
 		}
 		return null;
+	}
+	
+	public Long getInvestorCount() {
+
+		_log.debug("Inside getInvestorCount ");
+		try {
+
+			Long resultCount =
+				(Long) sessionFactory.getCurrentSession().createCriteria(Investor.class).setProjection(Projections.rowCount()).uniqueResult();
+			_log.info("getInvestorCount Count:: " + resultCount);
+			return resultCount;
+		}
+		catch (RuntimeException re) {
+			_log.error("getInvestorCount failed", re);
+			throw re;
+		}
 	}
 
 }

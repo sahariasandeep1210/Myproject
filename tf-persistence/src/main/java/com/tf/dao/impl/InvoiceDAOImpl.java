@@ -119,16 +119,16 @@ public void deleteInvoice(Invoice invoice){
 
 	public Long getInvoicesCount() {
 
-		_log.debug("Inside getCompanies ");
+		_log.debug("Inside getInvoicesCount ");
 		try {
 
 			Long resultCount =
 				(Long) sessionFactory.getCurrentSession().createCriteria(Invoice.class).setProjection(Projections.rowCount()).uniqueResult();
-			_log.info("Companies Count:: " + resultCount);
+			_log.info("getInvoicesCount Count:: " + resultCount);
 			return resultCount;
 		}
 		catch (RuntimeException re) {
-			_log.error("Companies Count failed", re);
+			_log.error("getInvoicesCount failed", re);
 			throw re;
 		}
 	}

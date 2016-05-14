@@ -15,7 +15,6 @@ import com.tf.dao.InvestorHistoryDAO;
 import com.tf.model.Investor;
 import com.tf.model.InvestorPortfolio;
 import com.tf.model.InvestorPortfolioHistory;
-import com.tf.persistance.util.DashboardModel;
 import com.tf.persistance.util.InvestorDTO;
 import com.tf.service.InvestorService;
 
@@ -64,13 +63,9 @@ public class InvestorServiceImpl implements InvestorService {
 		investor.setStartDate(currentDate);
 		investorDAO.update(investor);
 		
-	}
+	}	
 	
-	
-	
-	public DashboardModel  getDashBoardInformation(){
-		return investorDAO.getDashBoardInformation();
-	}
+
 
 	public Map<Long, List<InvestorPortfolio>> getInvestorPortfolioByUserId(
 			long id) {

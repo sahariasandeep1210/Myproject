@@ -1,0 +1,44 @@
+.customToggler{
+    .toggleHeader{
+        background: $toggleHeaderBg;
+        border:1px solid $toggleHeaderBg;
+        
+        color: $toggleHeaderFontClr;
+        padding: 10px 15px;
+        font: $font_400_14;
+        cursor: pointer;
+        margin-top: 10px;
+        
+        &:first-child{
+            margin-top:0;
+        }
+        &.toggler-header-collapsed{
+        	@include border-radius(2px);
+            background: $toggleHeaderCollapsedBg;
+            border:1px solid $toggleHeaderCollapsedBg;
+        }
+        
+        &.toggler-header-expanded{
+        	@include border-bottom-left-radius(0);
+        	@include border-bottom-right-radius(0);
+        	
+        	.icomoon-accordian-arrow-down{
+        		&:before{
+        			content: "\e901";
+        		}
+        	}
+        }
+    }
+    .toggler-content-wrapper{}
+    
+    .toggleContent{
+        @include border-bottom-left-radius(2px);
+        @include border-bottom-right-radius(2px);
+        font: $font_400_13;
+        padding: 14px 15px;
+        color: $toggleContentFontClr;
+        background: $toggleContentBg;
+        border:1px solid $toggleContentBr;
+        
+    }
+}/* custom toggler Close */
