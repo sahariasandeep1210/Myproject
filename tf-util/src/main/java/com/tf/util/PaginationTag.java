@@ -61,8 +61,8 @@ public class PaginationTag extends SimpleTagSupport {
         _log.info("totalPage is:" + totalPage);
         try {
         	        	
-        	getJspContext().getOut().write("<div class=\"pagination pagination-centered\">");
-        		getJspContext().getOut().write("<ul>");
+        	getJspContext().getOut().write("<div  id=\"pagination\" class=\"pagination pagination-centered\">");
+        		getJspContext().getOut().write("<ul class=\"pagination-content\">");
 			        	if (totalPage > 1){
 			        		if(paginationModel.isFirstPage()){
 			        			getJspContext().getOut().write("<li class=\"disabled\" ><a class=\"disabled\" href=\"javascript:void(0);\">«</a></li>");

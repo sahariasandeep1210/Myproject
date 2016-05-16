@@ -167,6 +167,20 @@ $(document).ready(
 				$("#updateStatus").val(updatedStatus);
 
 			});
+			
+			$("#tradeListTable").tablesorter({
+				 headers: {
+					 0:{
+						 sorter: false
+					 }
+				 }
+			});
+			
+			$(".filter-btn").on({
+				click: function(){
+					$(".filter-container").slideToggle();
+				}
+			});
 
 			$("#SellerPaymentDate").datepicker(
 					{
@@ -320,13 +334,28 @@ $(document).ready(
 				document.forms["scfTradeList"].action = url;
 				document.forms["scfTradeList"].submit();
 			});
+			
 			$("#updteTradeForm .ui-datepicker-trigger").remove();
 			
-			 $('.info-icon').tooltip({
-			        placement: 'left',
-			        title: 'Hello'
-			        });
+			
+			$(".dropdown-menu").on("click", "li", function(event){
 
+				var noOfRecords = parseInt($("#noOfRecords").val());
+				var pageSize = parseInt($("#curPageSize").val());
+				var newPageSize = parseInt($(this).attr('pageSize'));
+				$("#pageSize").val(newPageSize);
+				$("#currentPage").val(1);
+				if (noOfRecords < pageSize && newPageSize > pageSize) {
+					return;
+				} else {
+					var actionUrl = $("#defaultURL").val();
+					document.forms["scfTradeList"].action = actionUrl;
+					document.forms["scfTradeList"].submit();
+				}
+			
+	           
+	         });
+			
 
 		});
 
@@ -403,7 +432,7 @@ function changeExpandIcon(tradeID) {
 
 }
 
-$('table').tablesorter();
+
 
 function setPage(pageNumber) {
 	if ($("#sellerListTable").length) {

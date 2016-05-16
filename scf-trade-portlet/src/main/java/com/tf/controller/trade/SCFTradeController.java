@@ -209,6 +209,7 @@ public class SCFTradeController {
 			model.put(ACTIVETAB, "admintradelist");
 
 			viewName = "admintradelist";
+			//viewName = "test";
 		}
 		else if (request.isUserInRole(Constants.SCF_ADMIN)) {
 			BigDecimal totalTradeAmount = BigDecimal.ZERO;

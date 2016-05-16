@@ -44,6 +44,8 @@ public class DashBoardServiceImpl implements DashBoardService {
 		if(dashModel.getLiveTradeAmount()!=null){
 			dashModel.setTotalTradeAmount(dashModel.getLiveTradeAmount().add(dashModel.getSettledTradeAmount()));
 		}
+		
+		dashModel.setInvestors(investorDAO.getInvestorsByCashPosition());
 
 		return dashModel;
 	}

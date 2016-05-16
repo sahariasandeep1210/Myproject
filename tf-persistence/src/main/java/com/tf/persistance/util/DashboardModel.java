@@ -2,12 +2,16 @@ package com.tf.persistance.util;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.List;
+
+import com.tf.model.Investor;
+import com.tf.model.InvestorPortfolio;
 
 public class DashboardModel  implements Serializable{
 	
 
 
-	private static final long serialVersionUID = 6769277692385233924L;
+	private static final long serialVersionUID = -3709717967340206158L;
 	
 	private long investmentCap;
 	private long availToInvest;
@@ -26,6 +30,10 @@ public class DashboardModel  implements Serializable{
 	
 	private String createCompanyURL;
 	private String createInvoiceURL;
+	
+	private List<Investor> investors;
+	
+	List<InvestorPortfolio> investorPortfolios;
 	
 	public DashboardModel() {
 		
@@ -185,6 +193,34 @@ public class DashboardModel  implements Serializable{
 	public void setCreateInvoiceURL(String createInvoiceURL) {
 	
 		this.createInvoiceURL = createInvoiceURL;
+	}
+
+
+	
+	public List<Investor> getInvestors() {
+	
+		return investors;
+	}
+
+
+	
+	public void setInvestors(List<Investor> investors) {
+	
+		this.investors = investors;
+	}
+
+
+	
+	public List<InvestorPortfolio> getInvestorPortfolios() {
+	
+		return investorPortfolios;
+	}
+
+
+	
+	public void setInvestorPortfolios(List<InvestorPortfolio> investorPortfolios) {
+	
+		this.investorPortfolios = investorPortfolios;
 	}
 
 

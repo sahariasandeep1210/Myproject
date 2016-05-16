@@ -91,6 +91,8 @@ p{font: $paragraph;}
 	
 	@import "tab";
 	
+	@import "modal";
+	
 	@import "well";
 	
 	@import "table";
@@ -110,6 +112,24 @@ p{font: $paragraph;}
 	
 }/* #wrapper Close */
 
+
+/*
+* common
+*/
+
+.cursor-pointer{
+	cursor: pointer;
+}
+
+.mb10{
+	margin-bottom: 10px;
+}
+
+.mb15{
+	margin-bottom: 15px;
+}
+
+/* common Close */
 
 /*
 * sign in / out style

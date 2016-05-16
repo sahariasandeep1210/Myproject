@@ -7,11 +7,7 @@ AUI().ready(
 			navigation.plug(Liferay.NavigationInteraction);
 		}
 
-		var siteBreadcrumbs = A.one('#breadcrumbs');
-
-		if (siteBreadcrumbs) {
-			siteBreadcrumbs.plug(A.Hudcrumbs);
-		}
+		
 		
 		var dockbar = A.one('.dockbar');
 

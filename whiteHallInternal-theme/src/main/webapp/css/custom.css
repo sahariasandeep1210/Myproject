@@ -11,14 +11,4 @@
 	
 	@import "custom";
 	
-		.portlet-dockbar {
-		.dockbar {
-			display: none;
-
-			&.toggler-content-expanded {
-				display: block;
-			}
-		}
-	}
-	
 }

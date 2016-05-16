@@ -179,9 +179,7 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 			List<SCFTrade> scftrades =
 				(List<SCFTrade>) criteria.add(Restrictions.eq("inv.sellerCompanyRegistrationNumber", RegNum)).setFirstResult(startIndex).setMaxResults(
 					pageSize).list();
-			_log.debug("getScfTrades successful, result size: "
-
-			+ scftrades.size());
+			_log.debug("getScfTrades successful, result size: "	+ scftrades.size());
 			return scftrades;
 		}
 		catch (RuntimeException re) {

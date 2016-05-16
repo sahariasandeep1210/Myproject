@@ -53,35 +53,27 @@ public class DashboardController {
 		String userType=null;
 		ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
 		PermissionChecker permissionChecker = themeDisplay.getPermissionChecker();
-		
-		List<InvestorPortfolio> investorPortfolios=null;
+		DashboardModel dashModel=new DashboardModel();	
 
 		if (permissionChecker.isOmniadmin()) {
 			userType=Constants.WHITEHALL_ADMIN;
 			List<Investor> cashPosition =investorService.getCashPoition();
 			model.put("cashPosition",cashPosition);
 		} else if(request.isUserInRole(Constants.PRIMARY_INVESTOR_ADMIN)){
-			userType=Constants.PRIMARY_INVESTOR_ADMIN;
-			investorPortfolios=investorService.getInvestorPortfolioDataForGraph(null);
+			userType=Constants.PRIMARY_INVESTOR_ADMIN;			
 			viewName="investordashboard";
 		}else if(request.isUserInRole(Constants.SELLER_ADMIN)){
 			userType=Constants.SELLER_ADMIN;
+			dashModel.setInvestorPortfolios(investorService.getInvestorPortfolioDataForGraph(null));
 			viewName="sellerdashboard";
 		}else if(request.isUserInRole(Constants.SCF_ADMIN)){
 			long companyId = userService.getCompanybyUserID(themeDisplay.getUserId()).getId();
-			investorPortfolios=investorService.getInvestorPortfolioDataForGraph(companyId);
+			dashModel.setInvestorPortfolios(investorService.getInvestorPortfolioDataForGraph(companyId));
 			userType=Constants.SCF_ADMIN;
 			viewName="scfdashboard";
 		}
 		
-		
-	
-		
-		
-		DashboardModel dashModel=new DashboardModel();
-		model.put("investorPortfolios", investorPortfolios);
 		setPortletURls(dashModel,request);
-		//model.put("dashboardModel", investorService.getDashBoardInformation());
 		model.put("dashboardModel", dashBoardService.setDashBoardInformation(dashModel,userType, null));
 		
 		return new ModelAndView(viewName, model);		
@@ -97,9 +89,7 @@ public class DashboardController {
 
 	private void setPortletURls(DashboardModel dashModel, RenderRequest request) {
 		dashModel.setCreateCompanyURL(liferayUtility.getPortletURL( request, "tf-company-portlet","render","createCompany",true));
-		dashModel.setCreateInvoiceURL(liferayUtility.getPortletURL( request, "scf-invoice-portlet","render","createInvoice",true));
-		//map.put("mangaeCompanyURL", liferayUtility.getPortletURL( request, "tf-company-portlet",null,null,true));
-		//map.put("createPOURL", liferayUtility.setPortletURL(request, "tf-po-portlet","render","addPurchaseOrder",true)) ;
+		dashModel.setCreateInvoiceURL(liferayUtility.getPortletURL( request, "scf-invoice-portlet","render","createInvoice",true));	
 	}
 	
 

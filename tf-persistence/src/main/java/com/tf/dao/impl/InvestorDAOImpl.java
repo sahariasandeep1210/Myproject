@@ -22,6 +22,7 @@ import com.tf.dao.InvestorDAO;
 import com.tf.dao.UserDAO;
 import com.tf.model.Investor;
 import com.tf.model.InvestorPortfolio;
+import com.tf.model.SCFTrade;
 import com.tf.persistance.util.DashboardModel;
 import com.tf.persistance.util.InvestorDTO;
 import com.tf.persistance.util.InvestorProtfolioDTO;
@@ -466,6 +467,24 @@ public class InvestorDAOImpl extends BaseDAOImpl<InvestorPortfolio, Long>   impl
 			_log.error("getInvestorCount failed", re);
 			throw re;
 		}
+	}
+	
+	public List<Investor> getInvestorsByCashPosition() {		
+		
+		try {
+			Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Investor.class);
+			/*criteria.createAlias("company", "company");
+			ProjectionList prList = Projections.projectionList();
+			prList.add(Projections.property("company.name"));
+			prList.add(Projections.property("cashPosition"));
+			criteria.setProjection(prList);*/
+			criteria.addOrder(Order.desc("cashPosition"));
+			List<Investor> investors = (List<Investor>) criteria.setMaxResults(7).list();
+			return investors;
+		} catch (RuntimeException e) {
+			_log.error("getInvestorPortfolioDataForGraph", e);
+		}
+		return null;
 	}
 
 }

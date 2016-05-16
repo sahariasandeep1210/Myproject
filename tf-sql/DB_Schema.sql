@@ -540,10 +540,13 @@ ALTER TABLE tf_seller_scfcompany_mapping  ADD comment     VARCHAR(300) DEFAULT N
 ALTER TABLE tf_whitehall_transaction  ADD scf_trade_id VARCHAR(50) DEFAULT NULL;
 
 
-ALTER TABLE scf_trade ADD promisory_doc_id BIGINT(20) NULL
-ALTER TABLE scf_trade ADD promisory_doc_name VARCHAR(70) NULL
-ALTER TABLE scf_trade ADD promisory_doc_url  VARCHAR(800) NULL
-ALTER TABLE scf_trade ADD promisory_doc_type VARCHAR(100) NULL
+ALTER TABLE scf_trade ADD promisory_doc_id BIGINT(20) NULL ;
+ALTER TABLE scf_trade ADD promisory_doc_name VARCHAR(70) NULL ;
+ALTER TABLE scf_trade ADD promisory_doc_url  VARCHAR(800) NULL ;
+ALTER TABLE scf_trade ADD promisory_doc_type VARCHAR(100) NULL ;
 ALTER TABLE scf_trade MODIFY COLUMN insurance_doc_type VARCHAR(100) NULL;
-ALTER TABLE tf_general_setting ADD min_payment_date_duartion INT(11) NULL;
+
+
+
+ALTER TABLE tf_general_setting ADD COLUMN  min_payment_date_duartion INT(11) DEFAULT NULL;
 

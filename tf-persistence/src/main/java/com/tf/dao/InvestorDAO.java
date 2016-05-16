@@ -44,7 +44,8 @@ public interface InvestorDAO extends BaseDAO<InvestorPortfolio, Long> {
 	
 	public BigDecimal  getWhiteHallShare(long id);
 	
-	public Map<String,BigDecimal>  getProtfolioTotals();
+	public Map<String,BigDecimal>  getProtfolioTotals();	
+	
 	
 	public Long getInvestorIDByCompanyId(long companyId);
 	
@@ -58,5 +59,7 @@ public interface InvestorDAO extends BaseDAO<InvestorPortfolio, Long> {
 	public List<InvestorPortfolio> getInvestorPortfolioDataForGraph(Long scfCompanyId);
 	
 	public Long getInvestorCount() ;
+	
+	public List<Investor> getInvestorsByCashPosition() ;
 
 }

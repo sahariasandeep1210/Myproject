@@ -1,4 +1,4 @@
-<%@ taglib uri="http://java.sun.com/portlet_2_0" prefix="portlet"%>
+<%@include file="init.jsp"%>
 
 <portlet:defineObjects />
 
@@ -136,24 +136,11 @@
 				</div>
 				<div class="panel-body">
 					<ul>
+						<c:forEach items="${dashboardModel.investors}" var="investor">
 						<li><span class="pull-right cash-amount">&pound;
-								11,325,200</span><span class="org-name">ROYAL BANK GROUP
-								SERVICES LIMITED</span></li>
-						<li><span class="pull-right cash-amount">&pound;
-								10,245,500</span><span class="org-name">HSBC LIMITED</span></li>
-						<li><span class="pull-right cash-amount">&pound;
-								9,325,600</span><span class="org-name">CITI LIMITED</span></li>
-						<li><span class="pull-right cash-amount">&pound;
-								8,225,200</span><span class="org-name">LLOYDS LTD</span></li>
-						<li><span class="pull-right cash-amount">&pound;
-								6,325,200</span><span class="org-name">HALIFAX MORTGAGE SERVICES
-								LIMITED</span></li>
-						<li><span class="pull-right cash-amount">&pound;
-								4,545,600</span><span class="org-name">SOFTECH CONSULTANCY
-								LIMITED</span></li>
-						<li><span class="pull-right cash-amount">&pound;
-								3,655,100</span><span class="org-name">NETWORK CONSULTANCY
-								LIMITED</span></li>
+								${investor.cashPosition}</span><span class="org-name">${investor.company.name}</span></li>
+						
+						</c:forEach>
 					</ul>
 				</div>
 			</div>
