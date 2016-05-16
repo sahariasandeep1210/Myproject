@@ -276,3 +276,18 @@
 		padding-bottom:0
 	}
 }/* actionContainer Close */
+
+::-webkit-input-placeholder { /* Chrome */
+  color: $inputPlaceHolderClr;
+}
+:-ms-input-placeholder { /* IE 10+ */
+  color: $inputPlaceHolderClr;
+}
+::-moz-placeholder { /* Firefox 19+ */
+  color: $inputPlaceHolderClr;
+  opacity: 1;
+}
+:-moz-placeholder { /* Firefox 4 - 18 */
+  color: $inputPlaceHolderClr;
+  opacity: 1;
+}

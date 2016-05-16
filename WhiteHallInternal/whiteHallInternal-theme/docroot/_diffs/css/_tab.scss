@@ -40,7 +40,14 @@
 	    	color: $tabContentClr;
 	    	float: left;
 	    	display: inline-block;
+	    	
+	    	.sub-title{
+	    		margin-top: 8px;
+		    	font: $font3_400_11;
+		    	color: $tabContentClr;
+		    }
 	    }
+	    
 	    
 	    .btn-wrapper{
 	    	text-align: right;

@@ -11,6 +11,24 @@
         border: 1px solid $searchContainerBorderClr;
         border-left:0;
         
+        .inner-table-container{
+        	background: $searchContainerInnerTableBg;
+        	
+        	&:hover{
+        		background: $searchContainerInnerTableBg;
+        	}
+        	.table.inner-table{
+	        	tr{
+	        		th{
+	        			font: $arial_font2_700_12;
+	        		}
+	        		td{
+	        			font: $arial_font2_400_12;
+	        		}
+	        	}
+	        }
+        }
+        
         &.noBorder{
         	border: 0 none;
         	tr{
@@ -88,8 +106,16 @@
             	padding:9px 10px;
             	vertical-align: middle;
             	
+            	&.text-right{
+            		text-align: right;
+            	}
+            	
+            	.text-align-icon{
+            		padding-left: 60px;
+            	}
+            	
             	[class^="icomoon-"]{
-            		font: $icon_font2_400_16;
+            		
             	}
             	
             	
@@ -132,6 +158,7 @@
                 font: $arial_font_400_12;
                 background: $searchContainerRowBg;
                 border-left: 1px solid $searchContainerBorderClr; 
+                border-top: 1px solid $searchContainerBorderClr; 
                 a{
                 	color: $searchContainerColLinkFontClr;
                 	font-weight: bold;
@@ -334,6 +361,23 @@
         }
     }*/
     
+}
+
+
+.modal-body{
+	.customTableContainer{
+		table{
+			tr{
+				th{
+					font: $arial_font3_700_12;
+					text-align: left;
+				}
+				td{
+					font: $arial_font3_400_12;
+				}
+			}
+		}
+	}
 }
 
 				

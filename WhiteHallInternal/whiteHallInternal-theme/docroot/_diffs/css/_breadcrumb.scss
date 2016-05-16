@@ -1,21 +1,28 @@
 .breadcrumb{
 	&.breadcrumb-horizontal{
 		 background: $breadCrumbBg;
-   		 padding: 8px 0;
+   		 padding: 15px 0 0 0;
    		 margin-bottom:0;
    		 
    		 li{
    		 	font: $font_400_11;
    		 	
+   		 	.divider{
+   		 		text-shadow: none;
+   		 	}
    		 	a{
    		 		color: $breadCrumbLiClr;
    		 		text-decoration: none;
+   		 		text-shadow: none;
    		 	}
    		 	
    		 	&.last{
    		 		a{
    		 			color: $breadCrumbLiLastClr;
    		 		}
+   		 		.divider{
+	   		 		display: none;
+	   		 	}
    		 		
    		 	}
    		 }

@@ -197,6 +197,10 @@
             &.profile-dropdown {
                 &>a {
                     color: $topNavLinkClr;
+                    
+                    .header-user-name{
+                    	font: $font_400_13;
+                    }
                 }
                 .icomoon-arrow-down {
                     color: $topNavLinkClr;

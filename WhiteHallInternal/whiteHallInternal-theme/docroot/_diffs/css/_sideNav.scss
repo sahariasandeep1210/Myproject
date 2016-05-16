@@ -16,16 +16,24 @@
     		border-bottom: 1px solid $sideNavLinkBr;
     		color: $sideNavLinkClr;
     		
-    		font: $font_700_11;
+    		font: $font_400_11;
     		a{
     			padding: 15px;
     			display: block;
     			color: $sideNavLinkClr;
     			text-decoration: none;
-    			
+    			text-transform: uppercase;
+    			line-height:20px;
     			.nav-label{
-    				margin-left: 10px;
+    				margin-left: 6px;
     			}
+    			
+    			[class^="icomoon-"]{
+    				color: rgba($sideNavLinkClr, 0.5);
+            		font: $icon_font3_400_16;
+            		float: left;
+            	}
+            	
     			&:hover, &:focus{
     				color: $sideNavLinkClr;
     			}
@@ -34,10 +42,17 @@
     		&.selected, &:hover{
     			background: $sideNavLinkSelectedBg;
     			color: $sideNavLinkSelectedClr;
-    			
     			a{
     				color: $sideNavLinkSelectedClr;
+    				
+    				[class^="icomoon-"]{
+	    				color: $sideNavLinkSelectedClr;
+	            	}
     			}
+    		}
+    		
+    		&.selected{
+    			font-weight: bold;
     		}
     	}
     }

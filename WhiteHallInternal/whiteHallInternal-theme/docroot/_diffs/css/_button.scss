@@ -8,6 +8,11 @@
 	color: $btnGrayFontColor;
 	background: $btnGrayBg;
 	
+	&.active{
+		background: $btnGrayBorder;
+		color: $btnGrayFontColor;
+	}
+	
 	&:hover{
 		background: $btnGrayBorder;
 		color: $btnGrayFontColor;
@@ -68,7 +73,7 @@
 
 .btnIconSm{
 	font: $font_400_14;
-	padding: 6px 8px;
+	padding: 7px 9px;
 	border-width: 1px;
 	max-width: 32px;
 	@include border-radius(50%);
