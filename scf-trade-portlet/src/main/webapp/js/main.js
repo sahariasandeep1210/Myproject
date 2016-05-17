@@ -186,11 +186,7 @@ $(document).ready(
 					{
 						changeMonth : true,
 						dateFormat : 'dd/mm/yy',
-						changeYear : true,
-						showOn : "button",
-						buttonImage : "/tf-theme/images/calendar.jpg",
-						buttonImageOnly : true,
-						buttonText : "Select date",
+						changeYear : true,						
 						onClose : function(selectedDate) {
 							$("#investorPaymentDate").datepicker("option",
 									"minDate", selectedDate);
@@ -220,11 +216,7 @@ $(document).ready(
 					{
 						changeMonth : true,
 						dateFormat : 'dd/mm/yy',
-						changeYear : true,
-						showOn : "button",
-						buttonImage : "/tf-theme/images/calendar.jpg",
-						buttonImageOnly : true,
-						buttonText : "Select date",
+						changeYear : true,						
 						onClose : function(selectedDate) {
 							$("#closingDate").datepicker("option", "minDate",
 									selectedDate);
@@ -356,6 +348,31 @@ $(document).ready(
 	           
 	         });
 			
+			if($("#wantToInsure").is(":checked")){
+				  $("#updateTrade").show();
+			}
+			
+			$("#updateTrade").on("click",function(){
+				if($("#insuranceDocument").val()=="" && $("#insuranceDocumentLink").length<=0){
+					$("#insuranceDocument").css("border","1px solid red");
+				}else if($("#insuranceDocument").val()=="" && $("#promisoryDocument").val()==""){
+					$("#insuranceDocument").css("border","1px solid red");
+				}else{
+					$("#updteTradeForm").submit();
+				}
+			});
+			
+			$("#wantToInsure").on("click",function(){
+				  if(this.checked){
+					  $("#insuranceDocDiv").show();
+				      $("#updateTrade").show();
+				  }else{
+					  $("#updateTrade").hide();
+				      $("#insuranceDocDiv").hide();
+				  }
+
+			});
+			
 
 		});
 
@@ -478,11 +495,6 @@ function enableTab() {
 $("#fromDate").datepicker({
 	changeMonth : true,
 	changeYear : true,
-	showOn : "button",
-
-	buttonImage : "/tf-theme/images/calendar.jpg",
-	buttonImageOnly : true,
-	buttonText : "Select date",
 	onSelect : function(selected) {
 		$("#toDate").datepicker("option", "minDate", selected)
 
@@ -491,11 +503,7 @@ $("#fromDate").datepicker({
 
 $("#toDate").datepicker({
 	changeMonth : true,
-	changeYear : true,
-	showOn : "button",
-	buttonImage : "/tf-theme/images/calendar.jpg",
-	buttonImageOnly : true,
-	buttonText : "Select date",
+	changeYear : true,	
 	onSelect : function(selected) {
 		$("#fromDate").datepicker("option", "maxDate", selected)
 

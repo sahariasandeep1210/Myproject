@@ -9,6 +9,39 @@
 		margin-top:5px;
 	}
 	
+	.labelBigTextContaier{
+	
+		&.spacer{
+			margin-bottom: 10px;
+			padding-bottom: 10px;
+		}
+		&.border{
+			border-bottom: 1px solid $wellSmallLabelBigTextContainerBr;
+		}
+		
+		.smallLabelText{
+			font: $font_400_13;
+			color: $wellSmallLabelOfBigTextClr;
+			margin-bottom: 2px;
+		}	
+		.bigText{
+			font: $font_100_24;
+			
+			&.blue{
+				color: $wellSmallLabelBigTextClr;
+			}
+		}
+		
+		.with-button{
+			.bigText{
+				margin-bottom: 10px;
+			}
+		}
+	}
+	
+	
+	
+	
 	.control-group{
 		margin-bottom: 0;
 		

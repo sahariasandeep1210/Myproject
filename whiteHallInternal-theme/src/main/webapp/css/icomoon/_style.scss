@@ -1,10 +1,10 @@
 @font-face {
     font-family: 'icomoon';
-    src:    url('icomoonFonts/icomoon.eot?6jo3xe');
-    src:    url('icomoonFonts/icomoon.eot?6jo3xe#iefix') format('embedded-opentype'),
-        url('icomoonFonts/icomoon.ttf?6jo3xe') format('truetype'),
-        url('icomoonFonts/icomoon.woff?6jo3xe') format('woff'),
-        url('icomoonFonts/icomoon.svg?6jo3xe#icomoon') format('svg');
+    src:    url('icomoonFonts/icomoon.eot?b1hfe7');
+    src:    url('icomoonFonts/icomoon.eot?b1hfe7#iefix') format('embedded-opentype'),
+        url('icomoonFonts/icomoon.ttf?b1hfe7') format('truetype'),
+        url('icomoonFonts/icomoon.woff?b1hfe7') format('woff'),
+        url('icomoonFonts/icomoon.svg?b1hfe7#icomoon') format('svg');
     font-weight: normal;
     font-style: normal;
 }
@@ -24,6 +24,18 @@
     -moz-osx-font-smoothing: grayscale;
 }
 
+.icomoon-round-minus:before {
+    content: "\e91e";
+}
+.icomoon-round-plus:before {
+    content: "\e91f";
+}
+.icomoon-dashboard:before {
+    content: "\e908";
+}
+.icomoon-delete:before {
+    content: "\e91d";
+}
 .icomoon-edit:before {
     content: "\e91b";
 }
@@ -56,9 +68,6 @@
 }
 .icomoon-company:before {
     content: "\e907";
-}
-.icomoon-dashboard:before {
-    content: "\e908";
 }
 .icomoon-documents:before {
     content: "\e909";
