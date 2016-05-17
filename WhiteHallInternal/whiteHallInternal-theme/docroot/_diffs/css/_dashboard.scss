@@ -24,6 +24,7 @@
             .widget-title {
                 font: $font_100_14;
                 padding-bottom: 3px;
+                margin-bottom:10px;
             }
             .widget-body {
                 .widget-icon {
@@ -43,7 +44,7 @@
         .widget-footer {
             background-color: $smallWidgetFooterButtonBackColor;
             border-top: 1px solid $smallWidgetFooterBorderColor;
-            font: $font_100_11;
+            font: $font_400_11;
             color: $smallWidgetFooterTextColor;
             white-space: nowrap;
             .widget-footer-button {
