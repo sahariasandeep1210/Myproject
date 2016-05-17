@@ -10,6 +10,7 @@
 	<meta content="initial-scale=1.0, width=device-width" name="viewport" />
 	
 	<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700,300' rel='stylesheet' type='text/css'>
+	<link href='$css_folder/jquery-ui.css' rel='stylesheet' type='text/css'>
 	<script type="text/javascript" src="http://www.gstatic.com/charts/loader.js"></script>
 	
 	$theme.include($top_head_include)
@@ -35,7 +36,7 @@ $theme.include($body_top_include)
 			<div class="navbar top-nav-bar navbar-fixed-top">
 			  <div class="navbar-inner">
 				
-				<a class="brand visible-desktop" href="#"><img src="$images_folder/logo.png"></img></a>
+				<a class="brand visible-desktop" href="#"><img src="$images_folder/logo-admin.png"></img></a>
 				<a class="brand visible-phone visible-tablet" href="#"><img src="$images_folder/logo-small.png"></img></a>
 				
 				
@@ -109,7 +110,7 @@ $theme.include($body_top_include)
 					<li class="dropdown profile-dropdown">
 					  <a href="#" class="dropdown-toggle-" data-toggle="dropdown">
 						<img class="profile-img" src="$images_folder/dummy-prof-img.jpg" alt="" title="notification image">
-						<span class="hidden-tablet hidden-phone">Rene Moore</span>
+						<span class="hidden-tablet hidden-phone header-user-name">Rene Moore</span>
 						<i class="icomoon-arrow-down"></i>
 					  </a>
 					  <ul class="dropdown-menu">
@@ -211,6 +212,7 @@ $theme.include($body_top_include)
 </div>
 
 <script src="$javascript_folder/jquery.minv2.2.2.js"></script>
+<script src="$javascript_folder/jquery-ui.min.js"></script>
 <script src="$javascript_folder/bootstrap-collapse.js"></script>
 <script src="$javascript_folder/bootstrap-dropdown.js"></script>
 <script src="$javascript_folder/jquery.tablesorter.min.js"></script>

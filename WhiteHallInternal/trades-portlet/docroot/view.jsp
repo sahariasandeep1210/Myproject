@@ -31,7 +31,7 @@
 		  		<div class="main-title">MANAGE TRADES</div>
 		  	
 		  	<div class="btn-wrapper">
-		  			<aui:button cssClass="btnBrGrSm btnIconSm filter-btn" icon="icomoon-filter"></aui:button>
+		  			<aui:button cssClass="btnBrGrSm btnIconSm filter-btn active" icon="icomoon-filter"></aui:button>
 		  			<aui:button cssClass="btnBgGreenSm" value="Export"></aui:button>
 		  	</div>
 		  </div>
@@ -164,47 +164,40 @@ AUI().ready(function() {
 		  }
 		).render();
 	});
-	
-	AUI().use('aui-datepicker', function(A) {
-		new A.DatePicker({
-			trigger : 'input#<portlet:namespace/>startDate',
-			mask: '%d/%m/%Y',
-			popover : {
-				zIndex : 1011,
-				cssClass: 'popover-default datePicker-default'
-			},
-			on : {
-				selectionChange : function(event) {
-					console.log(event.newSelection)
-				}
-			}
-		});
-	});
-	
-	AUI().use('aui-datepicker', function(A) {
-		new A.DatePicker({
-			trigger : 'input#<portlet:namespace/>endDate',
-			mask: '%d/%m/%Y',
-			popover : {
-				zIndex : 1011,
-				cssClass: 'popover-default datePicker-default'
-			},
-			on : {
-				selectionChange : function(event) {
-					console.log(event.newSelection)
-				}
-			}
-		});
-	});
 });
 
-$(function() {		
+$(function() {
+	
+	$( "input#<portlet:namespace/>startDate" ).datepicker({
+      changeMonth: true,
+      changeYear: true,
+      showOtherMonths: true
+    });
+	
+	$( "input#<portlet:namespace/>endDate" ).datepicker({
+      changeMonth: true,
+      changeYear: true,
+      showOtherMonths: true
+    });
+	
 	$("#tablesorter-demo").tablesorter({
 		 headers: {
 			 0:{
 				 sorter: false
 			 }
 		 }
+	});
+	
+	$(".filter-btn").on({
+		click: function(){
+			var btn = $(this);
+			$(".filter-container").slideToggle(400, function(){
+				$(btn).removeClass("active");
+				if($(this).is(":visible")){
+					$(btn).addClass("active");
+				}
+			});
+		}
 	});
 });	
 </aui:script>
