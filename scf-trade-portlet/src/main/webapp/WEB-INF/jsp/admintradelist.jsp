@@ -129,15 +129,7 @@
 		
 		
 		 <div class="lfr-pagination">
-			  <!-- 	<div id="pagination" class="pagination pagination-centered">
-				  <ul class="pagination-content">
-				    <li><a href="#">&laquo;</a></li>
-				    <li><a href="#">1</a></li>
-				    <li><a href="#">2</a></li>
-				    <li><a href="#">3</a></li>
-				    <li><a href="#">&raquo;</a></li>
-				  </ul>
-				</div> -->
+			
 				<p:paginate  paginationModel="${paginationModel}"/>
 				
 				<div class="lfr-pagination-controls">

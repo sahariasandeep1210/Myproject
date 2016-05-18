@@ -215,6 +215,30 @@ $(document).ready(function() {
 		$('#scfCompany').attr('disabled', 'disabled');
 	}
 	
+	$(".dropdown-menu").on("click", "li", function(event){
+
+		var noOfRecords = parseInt($("#noOfRecords").val());
+		var pageSize = parseInt($("#currPageSize").val());
+		var newPageSize = parseInt($(this).attr('pageSize'));
+		$("#pageSize").val(newPageSize);
+		$("#currentPage").val(1);
+		if (noOfRecords < pageSize && newPageSize > pageSize) {
+			return;
+		} else {
+			var actionUrl = $("#defaultURL").val();
+			document.forms["invoicelist"].action = actionUrl;
+			document.forms["invoicelist"].submit();
+		}
+	
+       
+     });
+	
+	$(".filter-btn").on({
+		click: function(){
+			$(".filter-container").slideToggle();
+		}
+	});
+	
 	
 
 });
@@ -328,24 +352,18 @@ function setPage(pageNumber){
 $("#fromDate").datepicker({
 	changeMonth : true,
 	changeYear : true,
-	showOn : "button",
-	buttonImage : "/tf-theme/images/calendar.jpg",
-	buttonImageOnly : true,
-	buttonText : "Select date",
+	showOtherMonths: true,
     onSelect: function(selected) {
-				$("#toDate").datepicker("option","minDate", selected)
+				$("#toDate").datepicker("option","minDate", selected);
 		}
 	
 });
 $("#toDate").datepicker({
 	changeMonth : true,
 	changeYear : true,
-	showOn : "button",
-	buttonImage : "/tf-theme/images/calendar.jpg",
-	buttonImageOnly : true,
-	buttonText : "Select date",
+	showOtherMonths: true,
 	onSelect: function(selected) {
-				$("#fromDate").datepicker("option","maxDate", selected)
+				$("#fromDate").datepicker("option","maxDate", selected);
 				  
 		   }
 });

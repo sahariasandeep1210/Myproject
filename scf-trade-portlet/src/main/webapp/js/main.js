@@ -350,6 +350,7 @@ $(document).ready(
 	           
 	         });
 			
+			
 			if($("#wantToInsure").is(":checked")){
 				  $("#updateTrade").show();
 			}
