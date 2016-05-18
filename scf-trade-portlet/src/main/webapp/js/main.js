@@ -174,7 +174,9 @@ $(document).ready(
 						 sorter: false
 					 }
 				 }
-			});
+			}); 
+			
+			$("#tradeInvoiceTable").tablesorter();
 			
 			$(".filter-btn").on({
 				click: function(){

@@ -1,26 +1,27 @@
-	<%@include file="init.jsp"%>
+<%@include file="init.jsp"%>
 	
-	
-	<div class="row-fluid">
-            <div class="span6">
-                <div class="span3">
-                </div>
-            </div>
-
-            <div class="span6">
-                <div class="span12">
-                    <h5 style="float: right !important;">
-                        <a href="#" style="color: #295780; font-weight: bold;" id="exportTradeInvoice"> Export</a>
-                    </h5>
-                </div>
-            </div>
-        </div>
-	
-	
-	<div class="table-responsive">
-			<table class="table table-hover tablesorter table-bordered" id="tradeInvoiceTable"> 
-				<thead>
-					<tr>										
+<div id="myToggler" class="customToggler">
+  <div class="toggleHeader toggler-header-collapsed">
+  	<div class="toggle-title pull-left">Invoice within Trade</div>
+  	<div class="toggle-icon-container text-right">
+  		<i class="icomoon-accordian-arrow-down"></i>
+  	</div>
+  	
+  </div>
+  <div class="toggleContent toggler-content-collapsed">
+  	<div class="row-fluid">
+  		<div class="span12 text-right">
+  			<div class="actionContainer noBorder pt0">
+  				<aui:button cssClass="btnBgGreenSm" value="Export"></aui:button>
+  			</div>
+  			
+  		</div>
+  	</div>
+  	
+  	<div class="customTableContainer">
+	  	<table id="tradeInvoiceTable" class="tablesorter table">
+			<thead>
+				<tr>										
 						<th>Invoice Number</th>
 						<th>Seller Company</th>
 						<th>Date</th>
@@ -29,20 +30,26 @@
 						<th>Invoice Company</th>
 						<th>FinanceDate</th>
 					</tr>
-				</thead>
-				<tbody>
-						<c:forEach items="${invoiceList}" var="invoice">
+			</thead>
+			<tbody>
+			
+					<c:forEach items="${invoiceList}" var="invoice">
 							<tr>						
 								<td>${invoice.invoiceNumber}</td>
 								<td>${sellerName}</td>
 								<td><fmt:formatDate pattern="dd-MM-yyyy" value="${invoice.invoiceDate}" /></td>
-								<td>${invoice.invoiceAmount}</td>
+								<td class="blue_normal">${invoice.invoiceAmount}</td>
 								<td>${invoice.duration}</td>
 								<td>${invoice.scfCompany.name}</td>
 								<td><fmt:formatDate pattern="dd-MM-yyyy" value="${invoice.financeDate}" /></td>
 							</tr>
 						</c:forEach>
-						
-				</tbody>
-			</table>
-		</div>
+				
+			</tbody>
+		</table>
+	  </div>
+  </div>
+
+  
+</div>
+	
