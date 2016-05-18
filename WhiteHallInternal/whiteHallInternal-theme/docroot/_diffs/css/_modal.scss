@@ -5,7 +5,7 @@
 
 .customModal{
 	@include box-shadow( 0px 0px 8px rgba(0,0,0,0.5) );
-	z-index: 1000 !important;
+	z-index: 1050 !important;
 	.modal-header{
 		@include border-top-left-radius(2px);
         @include border-top-right-radius(2px);
@@ -25,7 +25,7 @@
 	}
 	
 	.modal-body{
-		font: $font_400_13;
+		font: $font_400_14;
 		color: $modalBodyFontClr;
 		.modalWarning{
 			padding: 13px 0;

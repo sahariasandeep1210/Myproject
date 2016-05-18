@@ -34,7 +34,6 @@
     .toggleContent{
         @include border-bottom-left-radius(2px);
         @include border-bottom-right-radius(2px);
-        font: $font_400_13;
         padding: 14px 15px;
         color: $toggleContentFontClr;
         background: $toggleContentBg;

@@ -119,11 +119,11 @@
             	&.bigger-icon{
             	
             		.text-align-text{
-            			margin-top: 2px;
+            			margin-top: 3px;
             		}
             		
             		[class^="icomoon-"]{
-	            		font: $font_400_16;	
+	            		font: $font2_400_16;	
 	            	}	
             	}
             	
@@ -172,6 +172,11 @@
                 	color: $searchContainerColLinkFontClr;
                 	font-weight: bold;
                 	text-decoration: underline;
+                	
+                	&.normal-link{
+                		color: $searchContainerColFontClr;
+                		font-weight: normal;	
+                	}
                 }   
             }
             
@@ -386,11 +391,11 @@
 		table{
 			tr{
 				th{
-					font: $arial_font3_700_12;
+					
 					text-align: left;
 				}
 				td{
-					font: $arial_font3_400_12;
+					
 				}
 			}
 		}

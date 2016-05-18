@@ -77,6 +77,44 @@ p{font: $paragraph;}
 
 	padding: 0;
 	
+	.divider{
+		width: 100%;
+		height: 1px;
+		border-top: 1px solid  $actionContainer;
+	}
+	
+	.title-container{
+    	.main-title{
+	    	font: $font_700_16;
+	    	color: $tabContentClr;
+	    	float: left;
+	    	display: inline-block;
+	    	
+	    	.sub-title{
+	    		margin-top: 8px;
+		    	font: $font3_400_11;
+		    	color: $tabContentClr;
+		    }
+	    }
+	    
+	    &.noBorder{
+	    	border-bottom: 0;
+	    }
+	    &.noSpacing{
+	    	margin-bottom:0;
+	    	padding-bottom:0;
+	    }
+	    
+	    
+	    .btn-wrapper{
+	    	text-align: right;
+	    	
+	    	.btn{
+	    		width: auto;
+	    	}
+	    }
+    }
+	
 	@import "button";
 	
 	@import "header";
