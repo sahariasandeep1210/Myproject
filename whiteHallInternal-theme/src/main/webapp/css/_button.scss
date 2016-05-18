@@ -1,3 +1,9 @@
+.btn{
+	@media (max-width: $tablet-max){
+		width: auto;
+	}
+}
+
 .btn+.btn{
 	margin-left: 10px;	
 }
@@ -68,6 +74,19 @@
 	&:hover{
 		background: $btnHoverRedBg;
 		color: $btnRedFontColor;
+	}
+}/* button-Green Close */
+
+.btnBgGraySm{
+	@extend .customButtonSmall;
+	@extend .customBgButtonSmall;
+	border: 0 none;
+	color: $btnGrayDaFontColor;
+	background: $btnGrayDaBg;
+	
+	&:hover{
+		background: $btnHoverGrayDaBg;
+		color: $btnGrayDaFontColor;
 	}
 }/* button-Green Close */
 

@@ -114,8 +114,17 @@
             		padding-left: 60px;
             	}
             	
-            	[class^="icomoon-"]{
+            	
+            	
+            	&.bigger-icon{
+            	
+            		.text-align-text{
+            			margin-top: 2px;
+            		}
             		
+            		[class^="icomoon-"]{
+	            		font: $font_400_16;	
+	            	}	
             	}
             	
             	
@@ -212,6 +221,14 @@
 		}
 		.green_normal{
 			color:$colorPrLiGreen1;
+		}
+		
+		.red_bold{
+			font:$font_700_12;
+			color:$colorPrLiRed1;
+		}
+		.red_normal{
+			color:$colorPrLiRed1;
 		}
 		
 		.gray_bg{

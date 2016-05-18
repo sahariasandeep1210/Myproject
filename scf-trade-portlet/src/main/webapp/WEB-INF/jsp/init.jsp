@@ -5,7 +5,8 @@
 <%@ taglib  	prefix="fmt"			uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib  	prefix="fn"				uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@taglib 		prefix="liferay-theme"	uri="http://liferay.com/tld/theme"  %>
-<%@ taglib  	prefix="liferay-ui" 		uri="http://liferay.com/tld/ui"%>
+<%@ taglib  	prefix="liferay-ui" 	uri="http://liferay.com/tld/ui"%>
+<%@ taglib 		prefix="aui"			uri="http://liferay.com/tld/aui"  %>
 <%@ taglib uri="http://whitehall.com/jsp/tld/p" prefix="p"%>
 
 <portlet:defineObjects/>
