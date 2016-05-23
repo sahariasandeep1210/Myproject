@@ -1,4 +1,6 @@
 @import "compass";
+@import "aui/variables";
+@import "aui/mixins";
 @import "mixins";
 @import "customVariables";
 @import "customMixins";
@@ -6,5 +8,6 @@
 @import "slick";
 @import "slick-theme";
 @import "sliderProMin";
+
 @import "custom";
 @import "customResponsive";

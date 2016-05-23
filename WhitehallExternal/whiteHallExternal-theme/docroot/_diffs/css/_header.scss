@@ -1,6 +1,15 @@
 .signed-in .headerContainer{
 	position: relative;
 }
+.header-back{
+	background: $blue1;
+    height: 80px;
+    
+    @media (max-width: $tablet-max){
+    	height: 70px;
+    }
+    
+}
 .headerContainer{
 	
 	padding: 19px 0;

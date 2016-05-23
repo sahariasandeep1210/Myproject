@@ -335,6 +335,167 @@
 	}
 	/* register-section */
 	
+	/*bussiness-application*/
+
+	&.bussiness-application {
+	    .des-p {
+	        P {
+	            line-height: 8px;
+	            font-size: $fontSize_14;
+	            @media screen and (max-width: $tablet-min) {
+	                line-height: 15px;
+	            }
+	        }
+	    }
+	    .sub-head {
+	        margin-bottom: 20px;
+	        p {
+	            font-size: $fontSize_24;
+	            color: $blue5;
+	            line-height: 15px;
+	            @media screen and (max-width: $tablet-min) {
+	                line-height: 28px;
+	            }
+	        }
+	        hr {
+	            margin: 0px 200px;
+	        }
+	    }
+	    .img-w {
+	        margin-bottom: 25px;
+	    }
+	    .panel {
+	        margin: 0px 100px;
+	        background-color: #fff;
+	        border: 1px solid #f5f5f5;
+	        -webkit-box-shadow: 0 0 15px #e9ebed;
+	        box-shadow: 0 0 15px #e9ebed;
+	        @media screen and (max-width: $tablet-min) {
+	            margin: 0px;
+	        }
+	    }
+	    .panel-heading {
+	        color: #333;
+	        background-color: $gray1;
+	        border-color: #ddd;
+	        border-bottom: 1px solid transparent;
+	        .green {
+	            &:before {
+	                background-color: $green1;
+	                color: $white;
+	            }
+	            &:after {
+	                background-color: $gray5;
+	            }
+	        }
+	        .white {
+	            &:before {
+	                background-color: $white;
+	                color: $gray5;
+	            }
+	            &:after {
+	                background-color: $white;
+	            }
+	        }
+	        .black {
+	            &:after {
+	                background-color: $gray5;
+	            }
+	            &:before {
+	                background-color: #2c3d4d;
+	                color: $white;
+	            }
+	        }
+	        .container {
+	            margin: auto;
+	            padding: 22px 0px 15px 0px;
+	            margin-left: 77px;
+	            @media screen and (max-width: $tablet-max) {
+	                margin-left: -40px;
+	            }
+	        }
+	        .progressbar {
+	            counter-reset: step;
+	            li {
+	                list-style-type: none;
+	                width: 33%;
+	                float: left;
+	                font-size: $fontSize_13;
+	                position: relative;
+	                text-align: center;
+	                &:before {
+	                    width: 40px;
+	                    height: 40px;
+	                    content: counter(step);
+	                    counter-increment: step;
+	                    line-height: 39px;
+	                    display: block;
+	                    text-align: center;
+	                    margin: 0 auto 10px auto;
+	                    border-radius: 50%;
+	                    font-size: $fontSize_16;
+	                }
+	                &:after {
+	                    width: 88%;
+	                    height: 1px;
+	                    content: '';
+	                    position: absolute;
+	                    top: 15px;
+	                    left: -44%;
+	                    @media screen and (max-width: $tablet-min) {}
+	                }
+	                &:first-child:after {
+	                    content: none;
+	                }
+	            }
+	        }
+	    }
+	    .panel-body {
+	        padding: 80px 15px;
+	        &.common {
+	            padding: 15px;
+	        }
+	        h4 {
+	            color: $blue5;
+	            margin: 0;
+	        }
+	        .nolabel {
+	            margin-top: 25px;
+	        }
+	        .allinput {
+	            height: auto;
+	            width: 100%;
+	        }
+	        .setinput {
+	            margin-top: 18px;
+	        }
+	        .btnfont {
+	            font-size: $fontSize_16;
+	        }
+	        hr {
+	            margin: 8px 0px;
+	            &.maxWidth{
+	            	max-width: 700px;
+	            	margin: 8px auto;
+	            }
+	        }
+	        .btncont {
+	            margin-top: 25px;
+	        }
+	        .btnsmall {
+	            line-height: 30px;
+	            font-size: $fontSize_13;
+	        }
+	        .labelfont {
+	            font-size: $fontSize_13;
+   				color: #2c3d4d;
+	        }
+	    }
+	}
+	
+	/*bussiness-application*/
+	
+	
 	/* About what we do */
 	&.about-what-we{
 		p{

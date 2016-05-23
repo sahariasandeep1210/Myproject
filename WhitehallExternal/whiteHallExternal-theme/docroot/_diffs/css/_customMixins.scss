@@ -24,8 +24,23 @@
 
 .customButtonMedium{
 	@extend .customButton;
-	font-size: $fontSize_13;
+	font-size: $fontSize_16;
 	line-height: 40px;
 	padding: 0 25px;
 	@include border-radius(30px);
 }
+
+@function getEmvalue($actualFontsize, $defaultFontsize){
+	@return $actualFontsize/$defaultFontsize#{em};
+}
+
+@function fontProperty($fontStyle, $fontWeight, $fontSize, $familyName){
+	@return #{$fontStyle} $fontWeight $fontSize $familyName;
+}
+
+@mixin calcPercentWidth($percentValue, $pxValue){
+   	width: -webkit-calc(#{$percentValue} - #{$pxValue});
+    widtht:    -moz-calc(#{$percentValue} - #{$pxValue});
+    width:         calc(#{$percentValue} - #{$pxValue});
+}
+
