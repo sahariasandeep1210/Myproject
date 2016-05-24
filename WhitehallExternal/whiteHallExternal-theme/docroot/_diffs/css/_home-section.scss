@@ -503,6 +503,10 @@
 		}
 		.main-header{
 			margin-bottom: 40px;
+			
+			@media screen and (max-width: $tablet-min){
+	           margin-bottom:10px;
+	        }
 		}
 	}
 	
@@ -511,13 +515,14 @@
 		background: $gray1;
 		
 		.sub-text{
-			margin-bottom: 50px;
+			
 		}
 		
 		.top-header{
 			font-size: $fontSize_38;
 			color: $green1;
 			margin-bottom: 20px;
+			margin-top: 40px;
 			
 		}
 	}
