@@ -335,6 +335,82 @@
 	}
 	/* register-section */
 	
+	
+	/*contact-round-section*/
+ 
+	 &.contact-round-section {
+	 
+	 	.map-section{
+	 		padding-left: 0;
+	 		padding-right: 0;
+	 	}
+	 	
+	     background: none;
+	     h2.main-header {
+	        
+	         margin-bottom: 50px;
+	     }
+	     .form-box{
+	     	box-shadow: 0 0 15px #e9ebed;
+	   		padding: 15px;
+	    	margin: 0px 70px;
+	    	margin-bottom: 40px;
+	    	@media screen and (max-width: $tablet-min){
+	    			margin:0;
+	    			}
+	     }
+	    
+	     .sub-head{
+	     	
+	       	margin-bottom: 20px;
+	     		p{
+	     			font-size:$fontSize_14;
+	     			margin-bottom: 20px;
+	     		}
+	  	     }
+	     
+	     .feature-img{
+	     	background-color:$blue5;
+	     	width:100px;
+	     	height:100px;
+	     	border-radius: 50%;
+	     	padding-top: 24px;
+	        margin: 0 auto;
+	    	margin-bottom: 20px;
+	     	
+	     	&.yellow{
+	     		background-color: $yellow1;
+	     	}
+	     	&.green{
+	     		background-color: $green1;
+	     	}
+	     }
+	      .map-body{
+	     	/*height: 500px;*/
+	     	width: 100%;
+	        margin:30px 0 0 0;
+	        padding: 0;
+	     }
+	     #map{
+	     	height: 400px;
+	     	width: 100%;
+	     	
+	     }
+	     .allinput{
+	     	height:auto;
+	     	width:100%;
+	     }
+	     .labelfont{
+	    		font-size:$fontSize_13;
+	    			}
+	    .btnfont{
+	    				font-size:$fontSize_16;
+	    			}
+	 }
+	 /*contact-round-section*/
+ 
+	
+	
 	/*bussiness-application*/
 
 	&.bussiness-application {
