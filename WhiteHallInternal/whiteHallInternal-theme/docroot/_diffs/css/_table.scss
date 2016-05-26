@@ -46,8 +46,14 @@
         
         &.label-value{
         	tr{
-        		td:first-child{
+        		td:nth-of-type(odd){
         			background: $searchContainerLabelValueLabelBg;
+        		}
+        		
+        		&:hover{
+        			td:nth-of-type(even){
+	        			background: $searchContainerRowBg;
+	        		}
         		}
         		
         	}

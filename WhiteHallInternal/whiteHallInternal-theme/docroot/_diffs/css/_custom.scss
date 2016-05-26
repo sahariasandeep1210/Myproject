@@ -87,7 +87,6 @@ p{font: $paragraph;}
     	.main-title{
 	    	font: $font_700_16;
 	    	color: $tabContentClr;
-	    	float: left;
 	    	display: inline-block;
 	    	
 	    	.sub-title{
@@ -97,8 +96,14 @@ p{font: $paragraph;}
 		    }
 	    }
 	    
+	    &.clearfix{
+	    	.main-title{
+	    		float: left;
+	    	}
+	    }
+	    
 	    &.noBorder{
-	    	border-bottom: 0;
+	    	border-bottom: 0 !important;
 	    }
 	    &.noSpacing{
 	    	margin-bottom:0;
@@ -169,6 +174,10 @@ p{font: $paragraph;}
 
 .mt15{
 	margin-top: 15px;
+}
+
+.mt20{
+	margin-top: 20px;
 }
 
 .mt0{
