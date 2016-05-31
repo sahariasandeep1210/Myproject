@@ -60,6 +60,50 @@ $white: 								#ffffff;
 $success: 								#7bb62e;
 $error: 								#e83434;
 
+// input
+// --------------------------------------------------------------------------------------------------------
+$defaultFontsize:						14;
+
+$colorNeLiGray2: 						#2c3d4d;
+$colorPrLiBlue1: 						#2a7bb2;
+$colorNeLiGray3: 						#959fa7;
+$colorNeLiGray4: 						#d5d9dc;
+$colorNeLiGray5: 						#e9ebed;
+$colorNeLiGray6: 						#ffffff;
+$colorNeDaGray4: 						#b5b9bb;
+$colorPrLiRed1: 						#d44647;
+$colorPrDaGreen1: 						#14836d;
+$colorPrLiGreen1: 						#189a80;
+
+$inputFontcolor:						$colorNeLiGray2;
+$inputFocusborder:						$colorPrLiBlue1;
+$inputborderColor: 						$colorNeLiGray4;
+$labelFontcolor:						$colorNeLiGray2;
+$inputDisabledBrColor: 					$colorNeLiGray4;
+$inputDisabledFontColor:				$colorNeLiGray3;
+$inputDisabledBg:						$colorNeLiGray5;
+$inputDisabledBrColor: 					$colorNeLiGray4;
+$error:									$colorPrLiRed1;
+$colorPrLiRed1: 						#d44647;
+$bgTransparent:							transparent;
+$inputIconborderColor:					$colorNeLiGray4;
+$inputIconBg:							$colorNeLiGray6;
+$inputIconfontSize:						getEmvalue(20,$defaultFontsize);
+$inputIconFontColor:					$colorNeDaGray4;
+$actionContainer:      					$colorNeLiGray5;
+$inputPlaceHolderClr:					$colorNeLiGray4;
+$successFont:							$colorPrDaGreen1;
+$successBorder:							$colorPrLiGreen1;
+
+$wizardProgressBg:						#428bca;
+$wizardProgressStepBg:					#e9ebed;
+$wizardProgressActStepBg:				#189A80;
+$wizardProgressStepActClr:				#fff;
+$wizardProgressStepComClr:				#fff;
+$wizardProgressComStepBg:				#2c3d4d;
+				
+
+
 
 // screen size
 // --------------------------------------------------------------------------------------------------------

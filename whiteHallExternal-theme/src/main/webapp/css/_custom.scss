@@ -101,6 +101,14 @@
 	/*Footer Css Add*/
 	@import "footer";
 	
+	/*Process step*/
+	@import "processStep";
+	
+	/*Input Css Add*/
+	@import "input";
+	
+	@import "responsiveUtil";
+	
 	/* inner page title small start */
     .inner-page-title-small,.inner-page-title-large{
     	h1{
@@ -135,5 +143,23 @@
     }
     /* inner page title small end */
 	    
+    /* common start */
+    .pt0{
+    	padding-top:0;
+   	}
     
+    .pb0{
+    	padding-bottom:0;
+    }
+    .mt0{
+    	margin-top: 0;
+    }
+    .mb0{
+    	margin-bottom: 0;
+    }
+    
+    .mb10{
+    	margin-bottom: 10px;
+    }
+    /* common end */
 } 

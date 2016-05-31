@@ -47,8 +47,8 @@
 			</ul>
 			#if (!$is_signed_in)
 				<div class="navBtnContainer pull-right">
-					<a href="#" class="customButtonSmall btnBgWhiteBlue" id="sign-in" rel="nofollow" data-toggle="tooltip" data-placement="bottom" title='#language ("login-title")'>#language ("login")</a>
-					<a href="#" class="customButtonSmall btnBgWhiteGreen" id="signup" rel="nofollow" data-toggle="tooltip" data-placement="bottom" title='#language ("signup-title")'>#language ("Free Account")</a>
+					<a href="$sign_in_url" class="customButtonSmall btnBgWhiteBlue" id="sign-in" rel="nofollow" data-toggle="tooltip" data-placement="bottom" title='#language ("login-title")'>#language ("login")</a>
+	
 				</div>
 			#end
 	

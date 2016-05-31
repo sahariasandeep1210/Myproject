@@ -1,0 +1,86 @@
+/* Phone small */
+@media (max-width: $mobile-max){
+	.mtXxs10{
+		margin-top: 10px !important;
+	}
+	
+	.mlxxs0{
+		margin-left: 0 !important;
+	}
+	
+}
+/*Phone*/
+@media (max-width: $tablet-min){
+	
+	.mtXs15{
+		margin-top: 15px;
+	}
+	.mtXs10{
+		margin-top: 10px !important;
+	}
+	
+	.mlxs0{
+		margin-left: 0 !important;
+	}
+}
+/*Tablet*/
+@media (max-width: $tablet-max) and (min-width: $tablet-min + 1){
+
+	.spanSm6{
+		width: 48%;
+		margin: 0 1% !important;;
+	}
+	
+	.mtSm15{
+		margin-top: 15px;
+	}
+	
+	.mtSm10{
+		margin-top: 10px;
+	}
+}
+/*Desktop*/
+@media (max-width: $desktop-min) and  (min-width: $tablet-max + 1){
+	
+	
+	.spanMd6{
+		width: 48%;
+		margin: 0 1%;
+	}
+	
+	.mtMd15{
+		margin-top: 15px;
+	}
+	.mtMd10{
+		margin-top: 10px;
+	}
+	
+}
+
+/* Large Desktop*/
+@media (min-width: $desktop-min + 1){
+	.mtLg15{
+		margin-top: 15px;
+	}
+}
+
+/*--*/
+@media (max-width: $mobile-max) and (min-width: $mobile-min){
+	
+}
+
+@media (max-width: $tablet-min) and (min-width: $mobile-max){
+	
+}
+
+
+
+@media (max-width: $tablet-max) and (min-width: $tablet-min){
+	
+	
+	
+}
+
+@media (max-width: $desktop-min) and (min-width: $tablet-max){
+	
+}

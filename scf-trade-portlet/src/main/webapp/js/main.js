@@ -356,13 +356,15 @@ $(document).ready(
 			}
 			
 			$("#updateTrade").on("click",function(){
-				if($("#insuranceDocument").val()=="" && $("#insuranceDocumentLink").length<=0){
+			/*	if($("#insuranceDocument").val()=="" && $("#insuranceDocumentLink").length<=0){
 					$("#insuranceDocument").css("border","1px solid red");
 				}else if($("#insuranceDocument").val()=="" && $("#promisoryDocument").val()==""){
 					$("#insuranceDocument").css("border","1px solid red");
 				}else{
-					$("#updteTradeForm").submit();
-				}
+					
+				}*/
+				
+				$("#updteTradeForm").submit();
 			});
 			
 			$("#wantToInsure").on("click",function(){
