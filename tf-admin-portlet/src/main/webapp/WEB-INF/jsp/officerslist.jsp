@@ -1,37 +1,32 @@
 <%@include file="init.jsp"%>
 
 
-<div class="row-fluid" >
-				<div class="span12" >
+
 					<c:choose>
 						<c:when test="${fn:length(companyModel.officers) gt 0}">
-							<div class="span12" ><h6>Officers information was updated on ${officersUpdateDate}.Please click on 'Update Officers information' to update officers information.</h6></div>
+							<p class="mb15" >Officers information was updated on ${officersUpdateDate}.Please click on 'Update Officers information' to update officers information.</p>
 						</c:when>
 						<c:otherwise>
-							<div class="span12" ><h6>Officers information Not Found! Please click on 'Fetch Officers Information' button to add officers to this company.</h6></div>
+							<p class="mb15">Officers information Not Found! Please click on 'Fetch Officers Information' button to add officers to this company.</p>
 						</c:otherwise>
 					</c:choose>
 					
 							
-								
-				</div>
-</div>
+
 						
-<div class="row-fluid">
+<div class="actionContainer text-left">
 	<c:if test="${fn:length(companyModel.officers) eq 0}">
-		<div class="span12">
-			<div class="span12">
+		
 				<h5 style="float: right !important;">
 					<input type="button" value="Fetch Officers Information"
-							class="btn btn-primary" data-url="${fetchOfficers}"
+							class="btn btnBgGreenSm" data-url="${fetchOfficers}"
 							id="fetchOfficers" />
 				</h5>
-			</div>
-		</div>
+		
 	</c:if>
 </div>
 
-<div class="table-responsive">
+<div class="customTableContainer">
 			<table class="table table-hover tablesorter table-bordered">
 				<thead>
 					<tr>

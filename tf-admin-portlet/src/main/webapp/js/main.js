@@ -199,10 +199,28 @@ $(function() {
 	
 	$("#companyDiv").hide();
 	$("#userDiv").hide();
-	enableDisableTab();
+	//enableDisableTab();
 	
 	$("#deleteCompany").hide();
 	 $('table').tablesorter();
+	 
+		$(".dropdown-menu").on("click", "li", function(event){
+
+			var noOfRecords = parseInt($("#noOfRecords").val());
+			var pageSize = parseInt($("#currPageSize").val());
+			var newPageSize = parseInt($(this).attr('pageSize'));
+			$("#pageSize").val(newPageSize);
+			$("#currentPage").val(1);
+			if (noOfRecords < pageSize && newPageSize > pageSize) {
+				return;
+			} else {
+				var actionUrl = $("#defaultURL").val();
+				document.forms["companyList"].action = actionUrl;
+				document.forms["companyList"].submit();
+			}
+		
+	       
+	     });
 	
 	
 	
@@ -314,12 +332,8 @@ $(document).ready(function(){
 	
 	$("#dateestablished").datepicker({
 		changeMonth : true,
-		changeYear : true,
-		showOn : "button",
-		maxDate : '0',
-		buttonImage : "/tf-theme/images/calendar.jpg",
-		buttonImageOnly : true,
-		buttonText : "Select date"
+		changeYear : true,		
+		maxDate : '0'
 	});
 	
 	 
@@ -339,7 +353,7 @@ function submitUserForms(url) {
 	document.forms["userDetail"].submit();
 }
 
-function enableDisableTab(){
+/*function enableDisableTab(){
 	var currentTab=$("#currScreen").val();
 	console.log("currentTab:::::"+currentTab);
 	if(currentTab=='Company'){
@@ -353,7 +367,7 @@ function enableDisableTab(){
 		$("#Company").removeClass("active");
 	}
 	
-}
+}*/
 
 
 function validateCompanyInfo(error_free) {

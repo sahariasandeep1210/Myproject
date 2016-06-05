@@ -1,21 +1,18 @@
 <%@include file="init.jsp"%>
 
-<div class="row-fluid">
-	 <div class="span6">
-		<!-- <h4>Manage Users</h4> -->
-	</div>
-	<div class="span6">
-		<div class="span12">
-			<h5 style="float: right !important;">
-				<a href="${createUserURL}&companyID=${companyModel.id}"
-					style="color: #295780; font-weight: bold;"><i
-					class="fa fa fa-plus"></i> Add User</a>
-			</h5>
-		</div>
-	</div>
-</div>
 
-<div class="table-responsive">
+
+	<div class="row-fluid">
+	  		<div class="span12 text-right">
+	  			<div class="actionContainer noBorder pt0">
+	  				<a href="${createUserURL}&companyID=${companyModel.id}" class="btn btnBgGreenSm"><i
+					class="fa fa fa-plus"></i> Add User</a>
+	  			</div>
+	  			
+	  		</div>
+	  	</div>
+
+<div class="customTableContainer">
 	<table class="table table-hover tablesorter table-bordered">
 		<thead>
 			<tr>

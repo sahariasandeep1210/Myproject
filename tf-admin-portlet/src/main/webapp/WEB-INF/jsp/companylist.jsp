@@ -7,14 +7,10 @@
 
 <portlet:renderURL var="defaultRenderURL" />
 
-<style>
-.aui input, .aui textarea, .aui .uneditable-input {
-	width: 100% !important;
-}
-</style>
 
 
-<div class="container-fluid">
+
+<div class="tab-content">
 
 
 	<form:form commandName="companyModel" method="post"
@@ -24,34 +20,31 @@
 	<input type="hidden" name="currPageSize" 	id="currPageSize"    	value="${paginationModel.pageSize}" /> 
 	<input type="hidden" name="noOfRecords" 	id="noOfRecords"    	value="${paginationModel.noOfRecords}" />
 	<input type="hidden" name="defaultURL" 		id="defaultURL" 		value="${defaultRenderURL}" />
+	<input type="hidden" name="pageSize"        id="pageSize"      		value="${paginationModel.pageSize}" />
 
-		<div class="row-fluid">
+		<div id="scf-tab" class="tab-pane">
 			<c:choose>
 				<c:when test="${permissionChecker.isOmniadmin()}">
-					<div class="span6">
-						<h4>Manage Companies</h4>
-						<%-- <h6 style="float: right !important;"><a href="${createURL}" style="color: #295780;font-weight: bold;"><i class="fa fa fa-plus"></i> Add Company</a></h6> --%>
-					</div>
-					<div class="span6">
-						
-						<div class="span12">
-							<h5 style="float: right !important;">
-								<a href="javascript:;"
-									style="color: #295780; font-weight: bold;" id="exportCompanies"><i
-									class="fa fa-file-excel-o fa-2"></i> Export</a>
-							</h5>
-						</div>
-					</div>
+					<div class="title-container clearfix">
+					 	<div class="main-title">Manage my Company</div>
+					 	
+					 	<div class="btn-wrapper">
+			  				<input type="button" class="btnBgGreenSm" value="Export"  id="exportCompanies"/>
+			  			</div>
+					 </div>
+				
+					
 				</c:when>
 				<c:otherwise>
-					<div class="span6">
-						<h4>Manage My Company</h4>
-					</div>
+					 <div class="title-container clearfix">
+					 	<div class="main-title">Manage my Company</div>
+					 </div>
 				</c:otherwise>			
-			</c:choose>
+			</c:choose>	
+			
 			
 		</div>
-		<div class="table-responsive">
+		<div class="customTableContainer">
 			<table class="table table-hover tablesorter table-bordered"  id="companyListTable">
 				<thead>
 					<tr>
@@ -96,33 +89,38 @@
 			</table>
 		</div>
 		<c:if test="${permissionChecker.isOmniadmin()}">
-		<div class="row-fluid" >
-			<div class="span6" >
-				<a
-					href="${createURL}"
-					class="btn btn-primary" style="color: #fff; font-weight: bold;"><i
-					class="fa fa fa-plus" ></i>
-					Add Company</a>
+			
+			<div class="actionContainer text-left">
+				<a href="${createURL}"	class="btn btnBgBuSm" >Add Company</a>			
 			</div>
-				<div class="span6" >
-					<div class="span4" >
+			
+			 <div class="lfr-pagination">			
+				<p:paginate  paginationModel="${paginationModel}"/>
+				
+				<div class="lfr-pagination-controls">
+					<div class="btn-group">
+					  <a class="btn btn-default dropdown-toggle" role="button" data-toggle="dropdown" href="#">${paginationModel.pageSize} items per page <i class="caret"></i></a>
+					  <ul id="menu1" class="dropdown-menu" role="menu" aria-labelledby="drop4">
+					  	  <li role="presentation" pageSize="2"><a role="menuitem" href="#">2 items per page</a></li>
+		                  <li role="presentation" pageSize="5"><a role="menuitem" href="#">5 items per page</a></li>
+		                  <li role="presentation" pageSize="10"><a role="menuitem" href="#">10 items per page</a></li>
+		                  <li role="presentation" pageSize="20"><a role="menuitem" href="#">20 items per page</a></li>
+		                  <li role="presentation" pageSize="30"><a role="menuitem" href="#">30 items per page</a></li>
+		                  <li role="presentation" pageSize="45"><a role="menuitem" href="#">45 items per page</a></li>
+		                  <li role="presentation" pageSize="60"><a role="menuitem" href="#">60 items per page</a></li>
+		                  <li role="presentation" pageSize="75"><a role="menuitem" href="#">75 items per page</a></li>
+		                </ul> 		              
 					</div>
-					<div class="span8" >
-											<label> Show &nbsp;</label>
-											<select id="pageSize" class="paginationselect" name="pageSize">
-												<option value="5">5</option>
-												<option value="10">10</option>
-												<option value="20">20</option>
-												<option value="30">30</option>
-												<option value="45">45</option>
-												<option value="60">60</option>
-												<option value="75">75</option>
-												<option value="100">100</option>
-											</select> 
-											<label>&nbsp; Results per page </label>
+					
+					<small class="search-results">Showing ${(paginationModel.currentPage-1)*paginationModel.pageSize+1} - 
+					<c:choose>
+							<c:when test="${paginationModel.currentPage*paginationModel.pageSize >= paginationModel.noOfRecords}">${paginationModel.noOfRecords}</c:when>
+							<c:otherwise>${paginationModel.currentPage*paginationModel.pageSize}</c:otherwise>
+					</c:choose>
+					 of ${paginationModel.noOfRecords} Results.</small>				
+					
 				</div>
-			</div>
-		</div>
+		  </div>			
 		</c:if>
 		
 		
@@ -132,4 +130,3 @@
 
 
 </div>
-	<p:paginate  paginationModel="${paginationModel}"/>

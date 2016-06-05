@@ -154,7 +154,7 @@
 				</c:if>
 				<c:choose>
 					<c:when test="${userType eq 'Seller Admin' }">
-						<input type="button" value="Request Finance" class="btn btnBgBuSm" id="requestFinance"data-url="${requestFinanceURL}" />
+						<input type="button" value="Request Finance" class="btn btnBgBuSm" id="requestFinance" data-url="${requestFinanceURL}" />
 					</c:when>
 					<c:otherwise>
 						<input type="button" value="Create Trade" class="btn btn-primary"	id="createTrade" data-url="${createTradeURL}" />

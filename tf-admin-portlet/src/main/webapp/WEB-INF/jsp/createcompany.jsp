@@ -32,47 +32,37 @@
 <liferay-ui:error key="default-error-message" 		message="default.error.message" /> 
 
 <div class="alert alert-danger" id="errorMsg"><i class="icon-remove-sign icon-2"></i> </div>
-<div class="container-fluid">
 	<c:choose>
 
 		<c:when test="${companyModel.id !=null && companyModel.id !=0}">
-			<div class="accordion" id="accordion2">
-				<div class="accordion-group">
-					<div class="accordion-heading">
-						<a class="accordion-toggle" data-toggle="collapse"
-							data-parent="#accordion2" href="#collapseOne"> Company
-							Information </a>
-					</div>
-					<div id="collapseOne" class="accordion-body collapse in">
-						<div class="accordion-inner">
-							<%@include file="createcompanyform.jsp"%>
-						</div>
+			<div id="myToggler" class="customToggler">
+				<div class="toggleHeader toggler-header-collapsed">
+					<div class="toggle-title pull-left">Company Information</div>
+					<div class="toggle-icon-container text-right">
+						<i class="icomoon-accordian-arrow-down"></i>
 					</div>
 				</div>
-				<div class="accordion-group">
-					<div class="accordion-heading">
-						<a class="accordion-toggle" data-toggle="collapse"
-							data-parent="#accordion2" href="#collapseTwo"> Users
-							Information </a>
-					</div>
-					<div id="collapseTwo" class="accordion-body collapse">
-						<div class="accordion-inner">
+				<div class="toggleContent toggler-content-collapsed">
+							<%@include file="createcompanyform.jsp"%>
+				</div>
+					<div class="toggleHeader toggler-header-collapsed">
+					  	<div class="toggle-title pull-left">User Information</div>
+					  	<div class="toggle-icon-container text-right">
+					  		<i class="icomoon-accordian-arrow-down"></i>
+					  	</div>
+	  				</div>
+						<div class="toggleContent toggler-content-collapsed">
 							<%@include file="userlist.jsp"%>
 						</div>
-					</div>
-				</div>
-				<div class="accordion-group">
-					<div class="accordion-heading">
-						<a class="accordion-toggle" data-toggle="collapse"
-							data-parent="#accordion2" href="#collapseThree"> Officers
-							Information </a>
-					</div>
-					<div id="collapseThree" class="accordion-body collapse">
-						<div class="accordion-inner" id="officersDiv">
+						<div class="toggleHeader toggler-header-collapsed">
+						  	<div class="toggle-title pull-left">Offer Information</div>
+						  	<div class="toggle-icon-container text-right">
+						  		<i class="icomoon-accordian-arrow-down"></i>
+						  	</div>
+					  	</div>
+						<div class="toggleContent toggler-content-collapsed" id="officersDiv">
 							<%@include file="officerslist.jsp"%>						
 						</div>
-					</div>
-				</div>
 				<c:if test="${userType eq 'SCF Company Admin'  && cmpType ne 'Seller'}">
 				     <div class="accordion-group">
 					<div class="accordion-heading">
@@ -113,22 +103,23 @@
 			</c:when>
 			<c:otherwise>
 					
-			<div class="row-fluid">
-				<div class="span6">
-					<input type="button" value="Go Back" class="btn btn-primary"
+			<div class="actionContainer text-left">
+					<input type="button" value="Go Back" class="btn btnBgBuSm"
 						data-url="${companyListURL}" id="cmpback" />
-				</div>
 			</div>
 			</c:otherwise>
 		</c:choose>
 		</c:when>
-		<c:otherwise>
-			<%@include file="createcompanyform.jsp"%>
+		<c:otherwise>  
+			<div  class="customToggler">
+				<div class="toggleContent toggler-content">
+						<%@include file="createcompanyform.jsp"%>
+				</div>
+			</div>
 		</c:otherwise>
 	</c:choose>
 
 
-</div>
 
 <div id="deleteCompany" title="Are you sure you want to delete?">
 	<div class="message">
@@ -151,4 +142,22 @@
     <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
   </div>
 </div>
+
+<aui:script>
+AUI().use('aui-toggler', function(A) {
+    new A.TogglerDelegate({
+        animated: true,
+        closeAllOnExpand: true,
+        container: '#myToggler',
+        content: '.toggleContent',
+        expanded: false,
+        header: '.toggleHeader',
+        transition: {
+          duration: 0.2,
+          easing: 'cubic-bezier(0, 0.1, 0, 1)'
+        }
+      });
+});
+
+</aui:script>
 

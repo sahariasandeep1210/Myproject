@@ -216,6 +216,7 @@ $theme.include($body_top_include)
 
 <script src="$javascript_folder/jquery.minv2.2.2.js"></script>
 <script src="$javascript_folder/jquery-ui.min.js"></script>
+<script src="$javascript_folder/jquery.inputmask.js"></script>
 <script src="$javascript_folder/bootstrap-collapse.js"></script>
 <script src="$javascript_folder/bootstrap-dropdown.js"></script>
 <script src="$javascript_folder/bootstrap-modal.js"></script>

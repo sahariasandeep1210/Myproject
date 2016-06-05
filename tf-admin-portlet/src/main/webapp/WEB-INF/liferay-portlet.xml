@@ -8,10 +8,10 @@
 		<!-- <instanceable>true</instanceable> -->
 		<requires-namespaced-parameters>false</requires-namespaced-parameters>		
 		<header-portlet-css>/css/main.css</header-portlet-css> 	
-		<footer-portlet-javascript>/js/jquery.inputmask.js</footer-portlet-javascript> 	
+		<!-- <footer-portlet-javascript>/js/jquery.inputmask.js</footer-portlet-javascript> 	
 		<footer-portlet-javascript>/js/tableExport.min.js</footer-portlet-javascript> 
 		<footer-portlet-javascript>/js/FileSaver.min.js</footer-portlet-javascript> 
-		<footer-portlet-javascript>/js/bootstrap.min.js</footer-portlet-javascript> 
+		<footer-portlet-javascript>/js/bootstrap.min.js</footer-portlet-javascript>  -->
 		<footer-portlet-javascript>/js/main.js</footer-portlet-javascript> 
 		
 	</portlet>
