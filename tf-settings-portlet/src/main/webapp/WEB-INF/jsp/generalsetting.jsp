@@ -3,30 +3,33 @@
 <portlet:actionURL var="saveGeneralSettings">
 	<portlet:param name="action" value="saveGeneralSettings" />
 </portlet:actionURL>
-<div class="container-fluid">
-      <div class="row-fluid">
-				<div class="span12" >
-					 <div class="span4"><h4>Manage General Settings</h4></div>	
-				</div>
-      </div>
+<div class="tab-content">
+
+	<div id="scf-tab" class="tab-pane">
+			  <div class="title-container clearfix">
+			  	
+			  		<div class="main-title">Manage General Settings</div>			  	
+			  	
+			  </div>
+		  	
+		</div>
 
 <form:form method="post" commandName="generalSettingModel"
 		class="form-horizontal" name="generalSettingForm">
 		<input type="hidden" value="${saveGeneralSettings}" id="saveSettingURL" />
 		<input type="hidden" value="${generalSetting.id}" name="id" />
 		
-		<div class="row-fluid">
-			<div class="span6">
+	
 
 
 
 
-				<div class="table-responsive" id="generalTable">
-					<table class="table  tablesorter table-bordered">
+				<div class="customTableContainer" id="generalTable" style="width: 50%;">
+					<table class="table  tablesorter table-bordered" >
 						<thead>
 							<tr>
 								<!-- <th width="5%"></th> -->
-								<th>Settings</th>
+								<th width="25%">Settings</th>
 								<th width="25%"></th>
 							</tr>
 						</thead>
@@ -36,7 +39,7 @@
 							      <td>
 							      <input type="text"
 												value="${generalSetting.whitehalShare}"
-												name="whitehalShare" id="profit">
+												name="whitehalShare" id="profit" class="field">
 							    </td> 
 							</tr>
 							<tr>
@@ -44,7 +47,7 @@
 							      <td>
 							         <input type="text"
 												value="${generalSetting.vat }"
-												name="vat" id="vat">
+												name="vat" id="vat" class="field">
 							      
 							      </td>
 							</tr>
@@ -53,7 +56,7 @@
 							      <td>
 							      <input type="text"
 												value="${generalSetting.sellerTransFee }"
-												name="sellerTransFee" id="transaction">
+												name="sellerTransFee" id="transaction" class="field">
 							       
 							      </td>
 							</tr>
@@ -62,7 +65,7 @@
 							      <td>
 							      <input type="text"
 												value="${generalSetting.sellerFinFee }"
-												name="sellerFinFee" id="finance">
+												name="sellerFinFee" id="finance" class="field">
 							         
 							      </td>
 							</tr>
@@ -71,7 +74,7 @@
 							      <td>
 							      <input type="text"
 												value="${generalSetting.minPaymentDateDuartion }"
-												name="minPaymentDateDuartion" id="minPaymentDateDuartion">
+												name="minPaymentDateDuartion" id="minPaymentDateDuartion" class="field">
 							         
 							      </td>
 							</tr>
@@ -81,12 +84,9 @@
 				</div>
 
 
-			</div>
-		</div>
-		<div class="row-fluid">
-			<div class="span6">
-				<input type="button" value="Update Settings" id="updateGeneralSettings" class="btn btn-primary" />
-			</div>
+			
+		<div class="text-left">
+				<input type="button" value="Update Settings" id="updateGeneralSettings" class="btn btnBgBuSm" />
 		</div>
 	</form:form>
 	</div>

@@ -21,8 +21,9 @@
 
 
 <ul class="nav nav-tabs">	
+	<li class="tab" id="generalSettings"><a href="${generalSettingsURL}"><liferay-ui:message key='general' /> <liferay-ui:message key='settings' /></a></li>
 	<li class="tab" id="investorSettings"><a	href="${investorSettingsURL}"><liferay-ui:message key='investor' /> <liferay-ui:message key='settings' /></a></li>
 	<li class="tab" id="sellerSetings"><a	href="${sellerSetingsURL}"><liferay-ui:message key='seller' /> <liferay-ui:message key='settings' /> </a></li>
-	<li class="tab" id="scfSettings"><a	href="${scfSettingsURL}"><liferay-ui:message key='scf.company' /> <liferay-ui:message key='settings' /></a></li>
-	<li class="tab" id="generalSettings"><a href="${generalSettingsURL}"><liferay-ui:message key='general' /> <liferay-ui:message key='settings' /></a></li>
+	<li class="tab" id="scfSettings"><a	href="#"><liferay-ui:message key='scf.company' /> <liferay-ui:message key='settings' /></a></li>
+	
 </ul>

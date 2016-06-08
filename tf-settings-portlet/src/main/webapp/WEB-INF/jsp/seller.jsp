@@ -6,7 +6,7 @@
 
 <portlet:resourceURL  var="settingURL"></portlet:resourceURL>
 
-<div class="container-fluid">
+<div class="tab-content">
 	
 	<form:form method="post" commandName="sellerDTO"
 		class="form-horizontal" name="settingForm" id="sellerSetting">

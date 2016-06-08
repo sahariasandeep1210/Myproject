@@ -107,6 +107,16 @@ Liferay.on(
 );
 
 $(function(){
+	
+	
+	
+	if ($("#portlet_new-password").length ) {
+		 
+	    $("#portlet_new-password").removeClass("customPortlet");
+	 
+	}
+	
+	
 	/* Div Block In Center Of the Screen */
     $.fn.centerDiv = function ()
     {

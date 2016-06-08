@@ -3,37 +3,32 @@
 <portlet:actionURL var="saveInvestorSettings">
 	<portlet:param name="action" value="saveInvestorSettings" />
 </portlet:actionURL>
-<div class="container-fluid">
-	<div class="row-fluid">
-		<div class="span12">
-			<div class="span4">
-				<h4>
-					<liferay-ui:message key='manage.investor.information' />
-				</h4>
-			</div>
+<div class="tab-content">
 
+	
+		<div id="scf-tab" class="tab-pane">
+			  <div class="title-container clearfix">			  	
+			  		<div class="main-title"><liferay-ui:message key='manage.investor.information' /></div>		  	
+			  </div>		  	
 		</div>
-	</div>
-	<div class="row-fluid">
-		<div class="span12">
-			<div class="span12">
-				<h6>
-					<liferay-ui:message key='manage.investor.message' />
-				</h6>
-			</div>
+		
+		<div id="scf-tab" class="tab-pane">
+			  <div class="title-container clearfix">			  	
+			  		<div ><h6><liferay-ui:message key='manage.investor.message' /></h6></div>		  	
+			  </div>		  	
+		</div>
+		
 
-		</div>
-	</div>
+	
 	<form:form method="post" commandName="investorModel"
 		class="form-horizontal" name="settingForm">
 		<input type="hidden" value="${saveInvestorSettings}" id="saveURL" />
-		<div class="row-fluid">
-			<div class="span6">
+		
 
 
 
 
-				<div class="table-responsive" id="investorTable">
+				<div class="customTableContainer" id="investorTable" style="width: 50%;">
 					<table class="table  tablesorter table-bordered">
 						<thead>
 							<tr>
@@ -71,12 +66,9 @@
 				</div>
 
 
-			</div>
-		</div>
-		<div class="row-fluid">
-			<div class="span6">
-				<input type="button" value="Update Settings" id="updateSettings" class="btn btn-primary" />
-			</div>
+		
+		<div class="text-left">
+				<input type="button" value="Update Settings" id="updateSettings" class="btn btnBgBuSm" />
 		</div>
 	</form:form>
 </div>

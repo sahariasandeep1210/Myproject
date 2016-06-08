@@ -8,6 +8,7 @@
 	<theme id="whiteHallInternal-theme" name="whiteHallInternal-theme">
 		<settings>
             <setting configurable="true" type="text" key="icon-class" value="icomoon-" />
+             <setting key="portlet-setup-show-borders-default" value="false"></setting>
         </settings>
 	</theme>
 </look-and-feel>
