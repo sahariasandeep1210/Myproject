@@ -10,9 +10,7 @@ $(function() {
 	$("#telNo").inputmask("999-999-9999");
 	$("#userTelNo").inputmask("999-999-9999");
 	
-	$("#exportCompanies").click(function(){
-		/* window.open('data:application/vnd.ms-excel,' + $('#dvData').html());
-		 e.preventDefault();*/	
+	$("#exportCompanies").click(function(){		
 		
 		$('#companyListTable').tableExport({
 			type : 'excel',
@@ -151,75 +149,11 @@ $(function() {
 	
 	
 	
-	
-	
-	
-	
-	$("#deleteCompany").dialog({
-		autoOpen : false,
-		resizable : false,
-		width : 415,
-		height : 300,
-		modal : true,
-		buttons : {
-			"Continue" : function () {
-				var url = $("#deleteURL").val();
-				submitTradeForms(url);
-			},
-			Cancel : function () {
-				$(this).dialog("close");
-			}
-		}
-	});
-	
-	
-	
 	$("#companyDiv").hide();
 	$("#userDiv").hide();
+	$("#confirmationDiv").hide();
 	enableDisableTab();
-	
-	$("#deleteCompany").hide();
-	 $('table').tablesorter();
-	
-	
-	
 
- /* var $table = $('table').tablesorter({
-    theme: 'blue',
-    widgets: ["zebra", "filter"],
-    widgetOptions : {
-      // filter_anyMatch replaced! Instead use the filter_external option
-      // Set to use a jQuery selector (or jQuery object) pointing to the
-      // external filter (column specific or any match)
-      filter_external : '.search',
-      // add a default type search to the first name column
-      filter_defaultFilter: { 1 : '~{query}' },
-      // include column filters
-      filter_columnFilters: true,
-      filter_placeholder: { search : 'Search...' },
-      filter_saveFilters : true,
-      filter_reset: '.reset'    
-    },
-    headers: { 
-  		10: 
-  		{ 
-  			sorter: false
-			} 
-		   }
-  });
-
-  // make demo search buttons work
-  $('button[data-column]').on('click', function(){
-    var $this = $(this),
-      totalColumns = $table[0].config.columns,
-      col = $this.data('column'), // zero-based index or "all"
-      filter = [];
-
-    // text to add to filter
-    filter[ col === 'all' ? totalColumns : col ] = $this.text();
-    $table.trigger('search', [ filter ]);
-    return false;
-  });*/
 
 });
 
@@ -285,20 +219,14 @@ $(document).ready(function(){
 	
 	$("#dateestablished").datepicker({
 		changeMonth : true,
-		changeYear : true,
-		showOn : "button",
-		maxDate : '0',
-		buttonImage : "/tf-theme/images/calendar.jpg",
-		buttonImageOnly : true,
-		buttonText : "Select date"
+		changeYear : true,		
+		maxDate : '0'		
 	});
 	
 	 
 });
 
-function deleteCompany() {
-	$("#deleteCompany").dialog("open");
-}
+
 
 function submitTradeForms(url) {
 	document.forms["companyDetail"].action = url;
@@ -313,14 +241,11 @@ function submitUserForms(url) {
 function enableDisableTab(){
 	var currentTab=$("#currScreen").val();
 	if(currentTab=='Company' || currentTab==''){
-		$("#companyDiv").show();
-		$("#Company").addClass("active");
-		$("#User").removeClass("active");
-		
-	}else{
-		$("#userDiv").show();
-		$("#User").addClass("active");
-		$("#Company").removeClass("active");
+		$("#companyDiv").show();		
+	}else if(currentTab=='User'){
+		$("#userDiv").show();		
+	}else {		
+		$("#confirmationDiv").show();
 	}
 	
 }

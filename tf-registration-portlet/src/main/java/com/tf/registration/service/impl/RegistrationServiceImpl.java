@@ -69,7 +69,8 @@ public class RegistrationServiceImpl implements RegistrationService {
 		loginURL.append("?registration=success");
 		PortalUtil.getHttpServletRequest(request).getSession().setAttribute("LIFERAY_SHARED_userPasswd", lruser.getPasswordUnencrypted());
 		_log.info("User Password :: "+lruser.getPasswordUnencrypted());
-		return loginURL.toString();
+		//return loginURL.toString();
+		return lruser.getPasswordUnencrypted();
 	}
 	
 	private com.liferay.portal.model.User addLiferayUser(User user,

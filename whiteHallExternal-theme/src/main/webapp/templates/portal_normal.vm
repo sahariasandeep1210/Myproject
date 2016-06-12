@@ -10,7 +10,7 @@
 	<meta content="initial-scale=1.0, width=device-width" name="viewport" />
 	
 	<link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
-	
+	<link href='$css_folder/jquery-ui.css' rel='stylesheet' type='text/css'>	
 	<link href='$css_folder/animate.css' rel='stylesheet' type='text/css'>
 	
 	$theme.include($top_head_include)
@@ -70,6 +70,7 @@
 	</div>
 
 	<script src="$javascript_folder/jqueryv2.2.2.min.js"></script>
+	<script src="$javascript_folder/jquery-ui.min.js"></script>
 	<script src="$javascript_folder/bootstrap.js"></script>
 	<script src="$javascript_folder/jquery.sliderPro.min.js"></script>
 	<script src="$javascript_folder/slick.min.js"></script>

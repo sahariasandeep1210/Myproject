@@ -15,3 +15,7 @@
 .portlet-title {
  display: none;
 }
+
+.error_show {
+	border: red 1px solid !important;
+}

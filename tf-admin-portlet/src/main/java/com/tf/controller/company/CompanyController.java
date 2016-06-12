@@ -252,26 +252,7 @@ public class CompanyController extends BaseController {
 			    return sellerScfMappings;		
 		   }
 	
-	/*@RenderMapping(params = "action=getSeller")
-	public String getScfAdminTrade(ModelMap model, RenderRequest request, RenderResponse response)
-		throws Exception {
-		
-		return "createcompany";
-	}
-	@ActionMapping(params = "action=saveSeller")
-	protected void saveSeller(ModelMap model, ActionRequest request,
-			ActionResponse response) throws Exception {
-		ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
-		long companyId=ParamUtil.getLong(request, "sellerCompany");
-		long compId = userService.getCompanybyUserID(themeDisplay.getUserId()).getId();
-		Company company =companyService.findById(companyId);
-		SellerScfCompanyMapping sellerScfMapping = new SellerScfCompanyMapping();
-		sellerScfMapping.setScfCompany(compId);
-		sellerScfMapping.setSellerCompany(company);
-		sellerScfMappingService.saveSeller(sellerScfMapping);
-		response.setRenderParameter("render", "createCompany");
-		
-	}*/
+	
 
 	@ActionMapping(params = "action=homePage")
 	protected void homePage(ModelMap model, ActionRequest request,

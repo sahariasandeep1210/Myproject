@@ -90,14 +90,7 @@
 
 </div>
 
-<div id="deleteCompany" title="Are you sure you want to delete?">
-	<div class="message">
-		Are you sure you want to delete this Company? 
-		<br />
-		Please remember all the information associated(Users,Trades,Invoices etc.) with company will also be deleted.
-		<hr>Press 'Continue' to delete or 'Cancel' to go back
-	</div>
-</div>
+
 
 <div id="myModal" class="modal  fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-header">
