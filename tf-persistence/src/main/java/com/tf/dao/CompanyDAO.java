@@ -18,7 +18,9 @@ public interface CompanyDAO extends BaseDAO<Company, Long>{
 	public String  getCompanyTypebyID(long id);
 	
 	public Company registerCompany(Company company);
+	
 	public Company getCompaniesByRegNum(String RegNum);
+	
 	public List<Long> deleteCompany(Long id);
 	
 	public List<Company> getCompanies(String companyType);
@@ -30,5 +32,10 @@ public interface CompanyDAO extends BaseDAO<Company, Long>{
 	public List<Company> getCompaniesById(Long id);
 	
 	public List<InvestorDTO> getInvestors();
+	
 	public Company getCompaniesByName(String name);
+	
+	public long validateCompanyName(Company cmp);
+	
+	public long validateCompanyRegNo(Company cmp);
 }

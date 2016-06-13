@@ -277,5 +277,37 @@ public class CompanyDAOImpl  extends BaseDAOImpl<Company, Long>   implements Com
 		throw re;
 	 }
 	}
+	
+	public long validateCompanyName(Company cmp){
+		
+		Long resultCount;
+		try {
+			resultCount =
+				(Long) sessionFactory.getCurrentSession().createCriteria(Company.class).add(Restrictions.eq("name", cmp.getName())).setProjection(
+					Projections.rowCount()).uniqueResult();
+			_log.info("Companies Count:: " + resultCount);
+		}
+		catch (Exception e) {
+			resultCount=0l;
+		}
+		return resultCount;
+		
+	}
+	
+	public long validateCompanyRegNo(Company cmp){
+		
+		Long resultCount;
+		try {
+			resultCount =
+				(Long) sessionFactory.getCurrentSession().createCriteria(Company.class).add(Restrictions.eq("regNumber", cmp.getRegNumber())).setProjection(
+					Projections.rowCount()).uniqueResult();
+			_log.info("Companies Count:: " + resultCount);
+		}
+		catch (Exception e) {
+			resultCount=0l;
+		}
+		return resultCount;
+		
+	}
 
 }

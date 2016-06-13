@@ -43,6 +43,8 @@ import com.tf.model.Officer;
 import com.tf.model.User;
 import com.tf.registration.service.RegistrationService;
 import com.tf.util.Registration;
+import com.tf.util.exception.DuplicateNameException;
+import com.tf.util.exception.DuplicateNumberException;
 
 /**
  * This controller is responsible for request/response handling on Registration
@@ -124,8 +126,20 @@ public class RegistrationController extends BaseController {
 		ActionRequest request,
 		ActionResponse response)
 		throws Exception {
-
-		response.setRenderParameter(CURRENT_SCREEN, USER);
+		try {
+			registrationService.validateCompany(registration.getCompany());
+			response.setRenderParameter(CURRENT_SCREEN, USER);
+		}
+		catch (Exception e) {			
+			response.setRenderParameter(CURRENT_SCREEN, COMPANY);
+			if(e instanceof DuplicateNameException){
+				SessionErrors.add(request, "company-duplicate-name");
+			}else if (e instanceof DuplicateNumberException){
+				SessionErrors.add(request, "error-company-registration");
+			}
+			
+		}
+		
 		model.put("registration", registration);
 	}
 
@@ -137,7 +151,7 @@ public class RegistrationController extends BaseController {
 		throws Exception {
 
 		try {
-			completeCompanyRegistration(registration, request, response);
+			completeCompanyRegistration(registration, request, response,model);
 			response.setRenderParameter(CURRENT_SCREEN, CONFIRMATION);
 		}
 		catch (PortalException e) {
@@ -161,7 +175,7 @@ public class RegistrationController extends BaseController {
 	}
 
 	private void completeCompanyRegistration(Registration registration,
-		ActionRequest request, ActionResponse response)
+		ActionRequest request, ActionResponse response,ModelMap model)
 		throws PortalException, SystemException, IOException {
 
 		String passwordUnencrypted;
@@ -171,7 +185,7 @@ public class RegistrationController extends BaseController {
 			com.liferay.portal.model.User.class.getName(), request);
 		passwordUnencrypted = registrationService.registerCompany(registration, themeDisplay, user,
 			serviceContext, request);
-		response.setRenderParameter("tempPassword", passwordUnencrypted);
+		model.put("tempPassword", passwordUnencrypted);
 	}
 
 	@RenderMapping(params = "render=createUser")

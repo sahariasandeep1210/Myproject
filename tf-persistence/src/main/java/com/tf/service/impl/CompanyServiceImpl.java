@@ -84,4 +84,14 @@ public class CompanyServiceImpl implements CompanyService {
 	public Company getCompaniesByName(String name){
 		return companyDAO.getCompaniesByName(name);
 	}
+
+	public long validateCompanyName(Company cmp) {		
+		return  companyDAO.validateCompanyName(cmp);
+	}
+
+	public long validateCompanyRegNo(Company cmp) {
+		return companyDAO.validateCompanyRegNo(cmp);
+	}
+	
+	
 }

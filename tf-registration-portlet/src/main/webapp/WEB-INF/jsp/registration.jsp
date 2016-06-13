@@ -25,7 +25,12 @@
 </liferay-ui:error>
 <liferay-ui:error 	key="error-company-registration">
 	<liferay-ui:message key="company.duplicate.registration.no"  arguments="${registration.company.regNumber}"></liferay-ui:message>
-</liferay-ui:error> 			
+</liferay-ui:error> 	
+<liferay-ui:error 	key="company-duplicate-name">
+	<liferay-ui:message key="company.duplicate.name"  arguments="${registration.company.name}"></liferay-ui:message>
+</liferay-ui:error>
+
+	
 <liferay-ui:error key="default-error-message" 		message="default.error.message" /> 
 
 
@@ -358,19 +363,19 @@
                 </div>
             </div>
 
-            <div class="row-fluid">
+          <%--   <div class="row-fluid">
                 <div class="span3 spanSm6">
                     <label class="labelfont mb0">Directors</label>
                     <label class="radio inline pt0">
-                         <%-- <form:radiobutton	path="user.companyDirector" value="Yes" id="yesOption" />Yes  --%>
+                         <form:radiobutton	path="user.companyDirector" value="Yes" id="yesOption" />Yes 
                          <input checked="checked" id="optionsRadios1" name="optionsRadios" type="radio" value="option1" /> Yes 
                      </label>
                     <label class="radio inline pt0">
-                       <%--  <form:radiobutton path="user.companyDirector" value="No" id="noOption" /> No  --%>
+                        <form:radiobutton path="user.companyDirector" value="No" id="noOption" /> No 
                         <input id="optionsRadios2" name="optionsRadios" type="radio" value="option2" /> No 
                      </label>
                 </div>
-            </div>
+            </div> --%>
             
             <div class="row-fluid" style="display:none;">
 				<div class="span6">
@@ -451,7 +456,7 @@
               <p>Please check your email for login instruction.Your temporary password is : ${tempPassword}</p>
             </div>
             
-            div class="button-container">
+            <div class="button-container text-center">
 				
 				<a  href="/web/guest/home" class="customButtonMedium btnBgGreen btnfont"  >Login</a>
 

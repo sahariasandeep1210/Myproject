@@ -32,7 +32,12 @@ public interface CompanyService {
 	public List<InvestorDTO> getInvestors();
 	
 	public Company loadById(long id);
+	
 	public Company getCompaniesByRegNum(String RegNum);
 	
 	public Company getCompaniesByName(String name);
+	
+	public long validateCompanyName(Company cmp);
+	
+	public long validateCompanyRegNo(Company cmp);
 }

@@ -1,22 +1,23 @@
 package com.tf.util.exception;
 
 
-public class DuplicateNumber extends Exception {
+public class DuplicateNumberException extends Exception {
 
-	private static final long serialVersionUID = -2375048068700158916L;
+	private static final long serialVersionUID = -2512854533811162524L;
+	
 	
 	private String message = null;
 	 
-    public DuplicateNumber() {
+    public DuplicateNumberException() {
         super();
     }
  
-    public DuplicateNumber(String message) {
+    public DuplicateNumberException(String message) {
         super(message);
         this.message = message;
     }
  
-    public DuplicateNumber(Throwable cause) {
+    public DuplicateNumberException(Throwable cause) {
         super(cause);
     }
  

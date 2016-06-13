@@ -28,6 +28,8 @@ import com.tf.persistance.util.CompanyStatus;
 import com.tf.registration.service.RegistrationService;
 import com.tf.service.CompanyService;
 import com.tf.util.Registration;
+import com.tf.util.exception.DuplicateNameException;
+import com.tf.util.exception.DuplicateNumberException;
 
 @Transactional(rollbackFor = Exception.class)
 @Service
@@ -111,4 +113,17 @@ public class RegistrationServiceImpl implements RegistrationService {
 					serviceContext);
 		return lruser;
 	}
+
+	@Override
+	public void validateCompany(Company company) throws DuplicateNameException, DuplicateNumberException {
+		if(companyService.validateCompanyName(company) > 0){
+			throw new DuplicateNameException();
+		}
+		if(companyService.validateCompanyRegNo(company) > 0){
+			throw new DuplicateNumberException();
+		}
+		
+	}
+
+	
 }

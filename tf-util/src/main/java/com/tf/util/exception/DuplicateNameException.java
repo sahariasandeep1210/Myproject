@@ -1,23 +1,24 @@
 package com.tf.util.exception;
 
 
-public class DuplicateName  extends Exception {
+public class DuplicateNameException  extends Exception {
 	
+
+	private static final long serialVersionUID = 2492485670974026195L;
 	
-	private static final long serialVersionUID = -4668549774144001671L;
 	
 	private String message = null;
 	 
-    public DuplicateName() {
+    public DuplicateNameException() {
         super();
     }
  
-    public DuplicateName(String message) {
+    public DuplicateNameException(String message) {
         super(message);
         this.message = message;
     }
  
-    public DuplicateName(Throwable cause) {
+    public DuplicateNameException(Throwable cause) {
         super(cause);
     }
  
