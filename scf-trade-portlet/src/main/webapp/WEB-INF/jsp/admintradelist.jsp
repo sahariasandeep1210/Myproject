@@ -26,19 +26,14 @@
         <input type="hidden" name="curPageSize"         	id="curPageSize"   			value="${paginationModel.pageSize}" />
         <input type="hidden" name="noOfRecords"     		id="noOfRecords"        	value="${paginationModel.noOfRecords}" />
         <input type="hidden" name="defaultURL"         		id="defaultURL"      		value="${defaultRenderURL}" />
-        <input type="hidden" name="getAdminTradeURL"        id="getAdminTradeURL"      	value="${defaultRenderURL}" />
+        <input type="hidden" name="defaultRender"        	id="defaultRender"      	value="${defaultRenderURL}" />
         <input type="hidden" name="pageSize"        		id="pageSize"      			value="${paginationModel.pageSize}" />
                 
         
 		<input type="hidden" id="tradeID" name="tradeID">
 		<input type="hidden" id="status" name="status">
 				<%@include file="tradefilter.jspf"%> 
-		<!--   <div class="row-fluid">
-			<div class="span6">
-				 <input type="button" value="Search" id="adminTradeReport" class="btn btn-primary" />
-			</div>
-
-		</div> -->
+	
 		
 		<div class="customTableContainer">
 			<table class="tablesorter table" id="tradeListTable">

@@ -14,7 +14,7 @@ public interface InvestorDAO extends BaseDAO<InvestorPortfolio, Long> {
 	
 	public InvestorPortfolio  getInvestorByCompanyId(long id);
 	
-	public DashboardModel  getDashBoardInformation(DashboardModel dasboardModel);
+	public DashboardModel  getDashBoardInformation(DashboardModel dasboardModel,Long scfCompanyID);
 	
 	public Map<Long,List<InvestorPortfolio>>  getInvestorPortfolioByUserId(long id);
 
@@ -61,5 +61,6 @@ public interface InvestorDAO extends BaseDAO<InvestorPortfolio, Long> {
 	public Long getInvestorCount() ;
 	
 	public List<Investor> getInvestorsByCashPosition() ;
-
+	
+	public BigDecimal getTotalCreditAvailForGraph(long scfCompanyId);
 }

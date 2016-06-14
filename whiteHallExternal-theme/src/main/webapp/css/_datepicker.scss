@@ -1,0 +1,179 @@
+/* 
+*	Datepicker
+*/
+
+.popover-default.datePicker-default{
+	
+	@include box-shadow(0 0 8px rgba(0,0,0,0.2));
+	border: 1px solid $datePickerBr;
+	
+	*,*:focus{
+		outline: 0;
+	}
+
+	.popover-content{
+		padding: 10px;
+		
+		.yui3-calendar-content{
+			background: $bgTransparent;
+			padding: 0;
+			border: 0 none;		
+			@include border-radius(0px);
+		}
+		
+		.yui3-calendar-header-label{
+			color: $datePickerHeaderFontColor;
+			text-transform: uppercase;
+		}
+		
+		.yui3-calendar-grid{
+			table-layout: fixed;
+		}
+		
+		.yui3-calendar-weekday{
+			padding: 10px;
+			text-align: center;
+		}
+		
+		.yui3-calendar-day, 
+		.yui3-calendar-prevmonth-day, 
+		.yui3-calendar-nextmonth-day{
+			padding: 10px;
+			border: 1px solid $datePickerTableBorderColor;
+			font: $font2_400_12;
+			color: $datePickerDayFontColor;
+		}
+		
+		.yui3-calendar-prevmonth-day, 
+		.yui3-calendar-nextmonth-day{
+			color: $datePickerPrevNextDayColor;
+		}
+		
+		.yui3-calendar-day-selected{
+			color: $datePickerSelectedDayFontColor;
+			background: $datePickerSelectedDayBg;
+		}
+		
+		.yui3-calendar-day:hover{
+			background: $datePickerHoverDayBg;
+			color: $datePickerHoverDayFontColor;
+		}
+	}
+}/* .popover-default.datePicker-default Close */
+
+/* 
+*	jQuery UI Datepicker
+*/
+
+.ui-datepicker{
+	@include box-shadow(0 0 8px rgba(0,0,0,0.2));
+	padding: 10px;
+	&.ui-widget-content{
+		background: #fff;
+		
+		.ui-datepicker-header{
+			background: #fff;
+			border: none;
+			
+			.ui-datepicker-title{
+				select{
+					padding: 0 0 0 10px;
+					margin: 0;
+					background: url(../images/select-box-arrowdown.png) no-repeat 95% 6px white;
+					-webkit-appearance: none;
+					  -moz-appearance: none;
+					   -ms-appearance: none;
+					    -o-appearance: none;
+					       appearance: none;
+				}
+				
+				.ui-datepicker-month{
+					margin-right: 5px;
+				}
+				.ui-datepicker-year{
+					margin-left: 5px;
+				}
+			}
+			.ui-datepicker-prev{
+				    background: url(../images/date-arrow-left.png);
+				    background-repeat: no-repeat;
+				    background-position: 50% 50%;
+				    top: 5px;
+				    left: 0;
+				    cursor: pointer;
+				    .ui-icon{
+				    	background-image: none;
+				    }
+				    
+				    &.ui-datepicker-prev-hover{
+				    	border: none;
+				    	left: 0;
+				    	
+				    }
+			}
+			
+			.ui-datepicker-next{
+				background: url(../images/date-arrow-right.png);
+				background-repeat: no-repeat;
+				background-position: 50% 50%;
+				top: 5px;
+				right: 0;
+				cursor: pointer;
+			    .ui-icon{
+			    	background-image: none;
+			    }
+			    
+			    &.ui-datepicker-next-hover{
+			    	border: none;
+			    	right: 0;
+			    	
+			    }
+			}
+		}
+		
+		.ui-datepicker-calendar{
+			margin-bottom: 0;
+		}
+	}
+	td{
+		padding: 0;
+		border: 1px solid $datePickerTableBorderColor;
+		a{
+			text-align: center;
+			background: #fff;
+			border: none;
+			text-decoration: none;
+			font: $font2_400_12;
+			color: $datePickerDayFontColor;
+			padding: 10px;
+		}
+		
+		&.ui-datepicker-other-month{
+			opacity: 1;
+			.ui-state-default{
+				font: $font2_400_12;
+				padding: 10px;
+				color: $datePickerPrevNextDayColor;
+				text-align: center;
+				border: none;
+				background: #fff;
+			}
+		}
+		
+		&.ui-datepicker-current-day{
+			a{
+				color: $datePickerSelectedDayFontColor;
+				background: $datePickerSelectedDayBg;
+			}
+		}
+		
+		&:hover{
+			a{
+				background: $datePickerHoverDayBg;
+				color: $datePickerHoverDayFontColor;
+			}
+		}
+	}
+}
+
+/* jQuery UI Datepicker Close */

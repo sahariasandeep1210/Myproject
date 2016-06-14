@@ -7,26 +7,26 @@
 		<div class="span6">
 			<div class="panel panel-blue quick-stat-panel">
 				<div class="panel-heading">
-					<h3 class="panel-title">WHITEHALL QUICK STAT</h3>
+					<h3 class="panel-title">Credit Line Availability</h3>
 				</div>
 				<div class="panel-body">
 					<div class="quick-stat-stats row-fluid">
 						<div class="span4 fg-blue">
 							<div class="text-container">
 								<div class="small-text">TOTAL CREDIT LINE</div>
-								<div class="big-text">&pound; ${dashboardModel.investmentCap}</div>
+								<div class="big-text">&pound; <fmt:formatNumber type="number" maxFractionDigits="3" value="${dashboardModel.investmentCap}"  /></div>
 							</div>
 						</div>
 						<div class="span4 fg-red">
 							<div class="text-container">
-								<div class="small-text">AVAILABLE TO INVEST</div>
-								<div class="big-text">&pound; ${dashboardModel.availToInvest}</div>
+								<div class="small-text">CREDIT AVAILABLE</div>
+								<div class="big-text">&pound; <fmt:formatNumber type="number" maxFractionDigits="3" value="${dashboardModel.availToInvest}"  /></div>
 							</div>
 						</div>
 						<div class="span4 fg-green">
 							<div class="text-container">
 								<div class="small-text">AMOUNT INVESTED</div>
-								<div class="big-text">&pound; ${dashboardModel.amountInvested}</div>
+								<div class="big-text">&pound; <fmt:formatNumber type="number" maxFractionDigits="3" value="${dashboardModel.amountInvested}"  /></div>
 							</div>
 						</div>
 					</div>
@@ -37,28 +37,17 @@
 		<div class="span6">
 			<div class="panel panel-blue quick-stat-panel">
 				<div class="panel-heading">
-					<h3 class="panel-title">Credit Line Availability</h3>
+					<h3 class="panel-title">Available Credit Line with BPS</h3>
 				</div>
 				<div class="panel-body">	
 						<div class="quick-stat-stats row-fluid">
 						<div class="span4 fg-blue">
 							<div class="text-container">
-								<div class="small-text">TOTAL CREDIT LINE</div>
-								<div class="big-text">&pound; ${dashboardModel.investmentCap}</div>
+								<div class="small-text">Credit Available</div>
+								<div class="big-text">&pound; <fmt:formatNumber type="number" maxFractionDigits="3" value="${dashboardModel.totalCreditAvail}"  /></div>
 							</div>
 						</div>
-						<%-- <div class="span4 fg-red">
-							<div class="text-container">
-								<div class="small-text">AVAILABLE TO INVEST</div>
-								<div class="big-text">&pound; ${dashboardModel.availToInvest}</div>
-							</div>
-						</div>
-						<div class="span4 fg-green">
-							<div class="text-container">
-								<div class="small-text">AMOUNT INVESTED</div>
-								<div class="big-text">&pound; ${dashboardModel.amountInvested}</div>
-							</div>
-						</div> --%>
+						
 					</div>			
 					<div id="barchart"></div>
 				</div>
@@ -74,7 +63,7 @@
 	function drawChart() {
 		var data = google.visualization.arrayToDataTable([
 				[ 'Investment', 'Money' ], [ 'Total Credit Line', parseInt('${dashboardModel.investmentCap}') ],
-				[ 'Available to Invest', parseInt('${dashboardModel.availToInvest}') ], [ 'Amount Invested', parseInt('${dashboardModel.amountInvested}') ] ]);
+				[ 'Credit Available', parseInt('${dashboardModel.availToInvest}') ], [ 'Amount Invested', parseInt('${dashboardModel.amountInvested}') ] ]);
 		
 		var barChartdata = new google.visualization.DataTable();		
 		barChartdata.addColumn('string', 'Discount Rate');

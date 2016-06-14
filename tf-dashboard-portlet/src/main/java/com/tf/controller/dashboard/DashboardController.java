@@ -1,5 +1,6 @@
 package com.tf.controller.dashboard;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import javax.portlet.RenderRequest;
@@ -51,6 +52,7 @@ public class DashboardController {
 		_log.info("Render Dashboard");
 		String viewName="admindashboard";
 		String userType=null;
+		Long companyId =null;
 		ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
 		PermissionChecker permissionChecker = themeDisplay.getPermissionChecker();
 		DashboardModel dashModel=new DashboardModel();	
@@ -67,23 +69,18 @@ public class DashboardController {
 			dashModel.setInvestorPortfolios(investorService.getInvestorPortfolioDataForGraph(null));
 			viewName="sellerdashboard";
 		}else if(request.isUserInRole(Constants.SCF_ADMIN)){
-			long companyId = userService.getCompanybyUserID(themeDisplay.getUserId()).getId();
+			companyId = userService.getCompanybyUserID(themeDisplay.getUserId()).getId();
 			dashModel.setInvestorPortfolios(investorService.getInvestorPortfolioDataForGraph(companyId));
+			dashModel.setTotalCreditAvail(investorService.getTotalCreditAvailForGraph(companyId));
 			userType=Constants.SCF_ADMIN;
 			viewName="scfdashboard";
 		}
 		
 		setPortletURls(dashModel,request);
-		model.put("dashboardModel", dashBoardService.setDashBoardInformation(dashModel,userType, null));
+		model.put("dashboardModel", dashBoardService.setDashBoardInformation(dashModel,userType, companyId));
 		
 		return new ModelAndView(viewName, model);		
 	}
-
-	
-	
-
-
-
 
 
 
@@ -91,6 +88,10 @@ public class DashboardController {
 		dashModel.setCreateCompanyURL(liferayUtility.getPortletURL( request, "tf-company-portlet","render","createCompany",true));
 		dashModel.setCreateInvoiceURL(liferayUtility.getPortletURL( request, "scf-invoice-portlet","render","createInvoice",true));	
 	}
+
+	
+
+
 	
 
 }

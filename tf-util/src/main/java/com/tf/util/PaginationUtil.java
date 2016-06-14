@@ -10,7 +10,7 @@ public class PaginationUtil {
 	public  PaginationModel preparePaginationModel(PortletRequest request) {
 		PaginationModel paginationModel=new PaginationModel();
 		int currentPage=ParamUtil.getInteger(request, "currentPage",1);
-		int pageSize=ParamUtil.getInteger(request, "pageSize",5);
+		int pageSize=ParamUtil.getInteger(request, "pageSize",10);
 		int startIndex=currentPage==1?0:(currentPage -1)*pageSize;
 		paginationModel.setCurrentPage(currentPage);
 		paginationModel.setPageSize(pageSize);		

@@ -28,6 +28,8 @@ $defaultfontFamily:						'Montserrat', sans-serif;
 $defaultfontWeight:						$fontWeight400  !default;
 $defaultfontSize:						$fontSize_14 !default;
 $defaultlineHeight:						24px !default;
+$fontFamily: 							'Open Sans', sans-serif;
+$iconFontFamily:                        'icomoon';
 
 // Color Config
 //-----------------------------------------------------------------------------------------------------
@@ -59,6 +61,7 @@ $white: 								#ffffff;
 
 $success: 								#7bb62e;
 $error: 								#e83434;
+$colorNeBlack:	 						#000000;
 
 // input
 // --------------------------------------------------------------------------------------------------------
@@ -112,3 +115,19 @@ $tablet-max:							979px;
 $tablet-min:							767px;
 $mobile-max:							480px;
 $mobile-min:							320px;
+
+
+
+$datePickerBr:							#e0e0e0;
+$datePickerHeaderFontColor:				$colorPrLiBlue1;
+$datePickerTableBorderColor:			$colorNeLiGray4;
+$datePickerPrevNextDayColor:			$colorNeLiGray3;
+$datePickerDayFontColor:				$colorNeBlack;
+$datePickerSelectedDayFontColor:		$colorNeLiGray6;
+$datePickerSelectedDayBg:				$colorPrLiGreen1;
+$datePickerHoverDayBg:					$colorNeLiGray4;
+$datePickerHoverDayFontColor:			$colorNeBlack;
+$fontWeightNormal:						400;
+$lineheightInc:							4;
+$fontSize2_12:							getEmvalue(12,13)/getEmvalue(12 + $lineheightInc,12);
+$font2_400_12:							fontProperty(normal, $fontWeightNormal, $fontSize2_12, $fontFamily);

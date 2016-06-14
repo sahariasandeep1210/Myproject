@@ -10,6 +10,16 @@
 		-moz-box-sizing: inherit;
 		box-sizing: inherit;
 	}
+	
+	.input-append *,
+	.input-append *:before,
+	.input-append *:after {
+    -webkit-box-sizing: initial !important;
+    -moz-box-sizing: initial !important;
+    box-sizing: initial !important;
+	}
+	
+
 		
 	body{
 	

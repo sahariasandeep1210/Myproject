@@ -2,13 +2,13 @@
 <%@include file="init.jsp"%>
 
 
-<div class="row-fluid">
+<!-- <div class="row-fluid">
 	<div class="span2">
 		<label class="span12"></label>
 	</div>
-	<div class="span10">
-		<div class="table-responsive" id="${tradeID}_table">
-		<table class="table  tablesorter table-bordered historytable" >
+	<div class="span10"> -->
+		<div id="${tradeID}_table">
+		<table class="table  tablesorter table-bordered historytable table inner-table" >
 			<thead>
 				<tr>
 					<th>Allotment Amount</th>
@@ -41,6 +41,6 @@
 		</table>
 	</div>
 	
-	</div>
+<!-- 	</div>
 	
-</div>
+</div> -->

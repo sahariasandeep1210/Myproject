@@ -28,10 +28,10 @@ public class DashBoardServiceImpl implements DashBoardService {
 	@Autowired
 	private SCFTradeDAO scfTradeDAO;
 
-	public DashboardModel setDashBoardInformation(DashboardModel dashModel,String userType, Company scfCompany) {
+	public DashboardModel setDashBoardInformation(DashboardModel dashModel,String userType, Long scfCompanyID) {
 		
 		//setting credit line details
-		investorDAO.getDashBoardInformation(dashModel);
+		investorDAO.getDashBoardInformation(dashModel,scfCompanyID);
 		
 		//setting Count information
 		dashModel.setCompanyCount(companyDAO.getCompaniesCount(CompanyStatus.DELETED.getValue()));

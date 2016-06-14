@@ -248,7 +248,7 @@ public class SCFTradeController {
 				totalTradeAmount = totalTradeAmount.add(scf.getTradeAmount());
 			}
 			model.put("totalTradeAmount", totalTradeAmount);
-			viewName = "tradelist";
+			viewName = "scftradelist";
 		}
 		else if (request.isUserInRole(Constants.SELLER_ADMIN)) {
 			String search = ParamUtil.getString(request, "Search");

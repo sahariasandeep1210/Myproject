@@ -47,5 +47,7 @@ public interface InvestorService {
 	public List<Investor> getCashPoition();
 	
 	public List<InvestorPortfolio> getInvestorPortfolioDataForGraph(Long scfCompanyId);
+	
+	public BigDecimal getTotalCreditAvailForGraph(long scfCompanyId);
 
 }

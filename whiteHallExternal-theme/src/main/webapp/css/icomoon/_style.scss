@@ -1,0 +1,123 @@
+@font-face {
+    font-family: 'icomoon';
+    src:    url('icomoonFonts/icomoon.eot?b1hfe7');
+    src:    url('icomoonFonts/icomoon.eot?b1hfe7#iefix') format('embedded-opentype'),
+        url('icomoonFonts/icomoon.ttf?b1hfe7') format('truetype'),
+        url('icomoonFonts/icomoon.woff?b1hfe7') format('woff'),
+        url('icomoonFonts/icomoon.svg?b1hfe7#icomoon') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+[class^="icomoon-"], [class*=" icomoon-"] {
+    /* use !important to prevent issues with browser extensions that change fonts */
+    font-family: 'icomoon' !important;
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+
+    /* Better Font Rendering =========== */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.icomoon-round-minus:before {
+    content: "\e91e";
+}
+.icomoon-round-plus:before {
+    content: "\e91f";
+}
+.icomoon-dashboard:before {
+    content: "\e908";
+}
+.icomoon-delete:before {
+    content: "\e91d";
+}
+.icomoon-edit:before {
+    content: "\e91b";
+}
+.icomoon-history:before {
+    content: "\e91c";
+}
+.icomoon-menu:before {
+    content: "\e91a";
+}
+.icomoon-accordian-arrow-down:before {
+    content: "\e900";
+}
+.icomoon-accordian-arrow-up:before {
+    content: "\e901";
+}
+.icomoon-arrow-down:before {
+    content: "\e902";
+}
+.icomoon-calendar:before {
+    content: "\e903";
+}
+.icomoon-checkbox:before {
+    content: "\e904";
+}
+.icomoon-checkbox-selected:before {
+    content: "\e905";
+}
+.icomoon-close:before {
+    content: "\e906";
+}
+.icomoon-company:before {
+    content: "\e907";
+}
+.icomoon-documents:before {
+    content: "\e909";
+}
+.icomoon-filter:before {
+    content: "\e90a";
+}
+.icomoon-invoice:before {
+    content: "\e90b";
+}
+.icomoon-logout:before {
+    content: "\e90c";
+}
+.icomoon-minus:before {
+    content: "\e90d";
+}
+.icomoon-my-account:before {
+    content: "\e90e";
+}
+.icomoon-my-profile:before {
+    content: "\e90f";
+}
+.icomoon-no-document:before {
+    content: "\e910";
+}
+.icomoon-notification:before {
+    content: "\e911";
+}
+.icomoon-plus:before {
+    content: "\e912";
+}
+.icomoon-portfolio:before {
+    content: "\e913";
+}
+.icomoon-radio-button:before {
+    content: "\e914";
+}
+.icomoon-radio-button-selected:before {
+    content: "\e915";
+}
+.icomoon-search:before {
+    content: "\e916";
+}
+.icomoon-setting:before {
+    content: "\e917";
+}
+.icomoon-tags:before {
+    content: "\e918";
+}
+.icomoon-trade:before {
+    content: "\e919";
+}
+

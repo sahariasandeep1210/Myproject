@@ -18,15 +18,10 @@ $(document).ready(
 			
 
 			$("#adminTradeReport").click(function() {
-				var updateURL = $("#getAdminTradeURL").val();
+				var updateURL = $("#defaultRender").val();
 				document.forms["scfTradeList"].action = updateURL;
 				document.forms["scfTradeList"].submit();
-			});
-			$("#scfAdminTradeReport").click(function() {
-				var updateURL = $("#getScfAdminTradeURL").val();
-				document.forms["scfTradeList"].action = updateURL;
-				document.forms["scfTradeList"].submit();
-			});
+			});		
 
 			$("#sellerTradeReport").click(function() {
 				var updateURL = $("#getSellerTradeURL").val();
@@ -243,8 +238,8 @@ $(document).ready(
 				var breakdownURL = $(this).attr('data-url');
 				var tradeID = $(this).attr('tradeID');
 				// resting icon
-				$("[id$='_icon']").removeClass('fa-minus-square');
-				$("[id$='_icon']").addClass('fa-plus-square');
+				$("[id$='_icon']").removeClass('icomoon-minus cursor-pointer credit-break');
+				$("[id$='_icon']").addClass('icomoon-plus cursor-pointer credit-break');
 				// hiding all other history rows
 				$(".historyRow").hide();
 				if ($(this).parent().parent().hasClass("highlightedClass")) {
@@ -445,11 +440,11 @@ function ajaxindicatorstop() {
 
 function changeExpandIcon(tradeID) {
 	if ($("#" + tradeID + "_row").css('display') == 'none') {
-		$("#" + tradeID + "_icon").removeClass('fa-minus-square');
-		$("#" + tradeID + "_icon").addClass('fa-plus-square');
+		$("#" + tradeID + "_icon").removeClass('icomoon-minus cursor-pointer credit-break');
+		$("#" + tradeID + "_icon").addClass('icomoon-plus cursor-pointer credit-break');
 	} else {
-		$("#" + tradeID + "_icon").removeClass('fa-plus-square');
-		$("#" + tradeID + "_icon").addClass('fa-minus-square');
+		$("#" + tradeID + "_icon").removeClass('icomoon-plus cursor-pointer credit-break');
+		$("#" + tradeID + "_icon").addClass('icomoon-minus cursor-pointer credit-break');
 	}
 
 }

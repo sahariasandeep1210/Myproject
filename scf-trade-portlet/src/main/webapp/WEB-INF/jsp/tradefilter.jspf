@@ -3,11 +3,9 @@
 
 <div class="title-container clearfix">
 		  	
-		  		<div class="main-title">MANAGE TRADES</div>
+		  		<div class="main-title">Manage Trades</div>
 		  	
-		  	<div class="btn-wrapper">
-		  			<!-- <aui:button cssClass="btnBrGrSm btnIconSm filter-btn"  icon="icomoon-filter"></aui:button>
-		  			<aui:button cssClass="btnBgGreenSm" ></aui:button> -->
+		  	<div class="btn-wrapper">		  			
 		  			 <aui:button cssClass="btnBrGrSm btnIconSm filter-btn active"  icon="icomoon-filter"></aui:button>
 		  			<input type="button" class="btnBgGreenSm" value="Export" />
 		  	</div>

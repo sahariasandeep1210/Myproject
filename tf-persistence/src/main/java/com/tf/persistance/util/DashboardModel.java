@@ -10,8 +10,7 @@ import com.tf.model.InvestorPortfolio;
 public class DashboardModel  implements Serializable{
 	
 
-
-	private static final long serialVersionUID = -3709717967340206158L;
+	private static final long serialVersionUID = -5692926682223891504L;
 	
 	private long investmentCap;
 	private long availToInvest;
@@ -34,6 +33,8 @@ public class DashboardModel  implements Serializable{
 	private List<Investor> investors;
 	
 	List<InvestorPortfolio> investorPortfolios;
+	
+	private BigDecimal totalCreditAvail;
 	
 	public DashboardModel() {
 		
@@ -224,6 +225,20 @@ public class DashboardModel  implements Serializable{
 	}
 
 
+	
+	public BigDecimal getTotalCreditAvail() {
+	
+		return totalCreditAvail;
+	}
+
+
+	
+	public void setTotalCreditAvail(BigDecimal totalCreditAvail) {
+	
+		this.totalCreditAvail = totalCreditAvail;
+	}
+
+
 	@Override
 	public String toString() {
 
@@ -231,8 +246,9 @@ public class DashboardModel  implements Serializable{
 			", invoiceCount=" + invoiceCount + ", companyCount=" + companyCount + ", investorCount=" + investorCount + ", settledTradeAmount=" +
 			settledTradeAmount + ", liveTradeAmount=" + liveTradeAmount + ", totalTradeAmount=" + totalTradeAmount + ", settledTradeCount=" +
 			settledTradeCount + ", liveTradeCount=" + liveTradeCount + ", createCompanyURL=" + createCompanyURL + ", createInvoiceURL=" +
-			createInvoiceURL + "]";
-	}	
+			createInvoiceURL + ", investors=" + investors + ", investorPortfolios=" + investorPortfolios + ", totalCreditAvail=" + totalCreditAvail +
+			"]";
+	}
 	
 
 }

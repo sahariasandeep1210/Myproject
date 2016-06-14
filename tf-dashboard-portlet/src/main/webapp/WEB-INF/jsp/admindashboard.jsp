@@ -2,6 +2,8 @@
 
 <portlet:defineObjects />
 
+
+
 <div id="dashboard">
 	<div class="row-fluid dashboard-sm-widget-wrapper">
 		<div class="span2 spanSm6 spanMd6">
@@ -70,20 +72,20 @@
 							<div class="span4 fg-blue">
 								<div class="text-container">
 									<div class="small-text">${dashboardModel.settledTradeCount} PAID</div>
-									<div class="big-text">&pound; ${dashboardModel.settledTradeAmount}</div>
+									<div class="big-text">&pound; <fmt:formatNumber type="number" maxFractionDigits="3" value="${dashboardModel.settledTradeAmount}"  /></div>
 								</div>
 								
 							</div>
 							<div class="span4 fg-red">
 								<div class="text-container">
 									<div class="small-text">${dashboardModel.liveTradeCount} UNPAID</div>
-									<div class="big-text">&pound; ${dashboardModel.liveTradeAmount}</div>
+									<div class="big-text">&pound;  <fmt:formatNumber type="number" maxFractionDigits="3" value="${dashboardModel.liveTradeAmount}"  /></div>
 								</div>
 							</div>
 							<div class="span4 fg-green">
 								<div class="text-container">
 									<div class="small-text">TOTAL SCF TRADE</div>
-									<div class="big-text">&pound; ${dashboardModel.totalTradeAmount}</div>
+									<div class="big-text">&pound;  <fmt:formatNumber type="number" maxFractionDigits="3" value="${dashboardModel.totalTradeAmount}"  /></div>
 								</div>
 							</div>
 						</div>
@@ -109,19 +111,19 @@
 						<div class="span4 fg-blue">
 							<div class="text-container">
 								<div class="small-text">TOTAL CREDIT LINE</div>
-								<div class="big-text">&pound; ${dashboardModel.investmentCap}</div>
+								<div class="big-text">&pound; <fmt:formatNumber type="number" maxFractionDigits="3" value="${dashboardModel.investmentCap}"  /></div>
 							</div>
 						</div>
 						<div class="span4 fg-red">
 							<div class="text-container">
 								<div class="small-text">AVAILABLE TO INVEST</div>
-								<div class="big-text">&pound; ${dashboardModel.availToInvest}</div>
+								<div class="big-text">&pound; <fmt:formatNumber type="number" maxFractionDigits="3" value="${dashboardModel.availToInvest}"  /></div>
 							</div>
 						</div>
 						<div class="span4 fg-green">
 							<div class="text-container">
 								<div class="small-text">AMOUNT INVESTED</div>
-								<div class="big-text">&pound; ${dashboardModel.amountInvested}</div>
+								<div class="big-text">&pound; <fmt:formatNumber type="number" maxFractionDigits="3" value="${dashboardModel.amountInvested}"  /></div>
 							</div>
 						</div>
 					</div>
@@ -138,7 +140,7 @@
 					<ul>
 						<c:forEach items="${dashboardModel.investors}" var="investor">
 						<li><span class="pull-right cash-amount">&pound;
-								${investor.cashPosition}</span><span class="org-name">${investor.company.name}</span></li>
+								<fmt:formatNumber type="number" maxFractionDigits="3" value="${investor.cashPosition}"  /></span><span class="org-name">${investor.company.name}</span></li>
 						
 						</c:forEach>
 					</ul>

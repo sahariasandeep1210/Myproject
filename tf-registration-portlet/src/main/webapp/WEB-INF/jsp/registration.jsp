@@ -120,7 +120,7 @@
 						<label class="control-label" for="dateEst">Date Established *</label>
 						<div class="input-append">						
 							<form:input path="company.dateestablished" cssClass="field"	id="dateestablished" />
-							<span	class="add-on" ><i	class="icomoon-calendar"></i></span>
+							<span	class="add-on" ><i	class="icomoon-calendar" ></i></span>
 						</div>						
 					</div>
                 </div>

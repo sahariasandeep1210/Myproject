@@ -2,6 +2,7 @@
 @import "aui/variables";
 @import "aui/mixins";
 @import "mixins";
+@import "icomoon/style";
 @import "customVariables";
 @import "customMixins";
 @import "spacing";
@@ -19,3 +20,6 @@
 .error_show {
 	border: red 1px solid !important;
 }
+
+
+@import "datepicker";

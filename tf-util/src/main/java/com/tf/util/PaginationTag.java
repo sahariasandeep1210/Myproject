@@ -27,7 +27,7 @@ public class PaginationTag extends SimpleTagSupport {
     //pagination model
     private PaginationModel paginationModel;
     //default page Size 
-    private int PAGINATION_INTERVAL = 5;
+    private int PAGINATION_INTERVAL = 10;
     
  
 

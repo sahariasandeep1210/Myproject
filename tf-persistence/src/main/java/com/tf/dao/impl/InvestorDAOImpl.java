@@ -113,11 +113,17 @@ public class InvestorDAOImpl extends BaseDAOImpl<InvestorPortfolio, Long>   impl
 	}
 
 
-	public DashboardModel  getDashBoardInformation(DashboardModel dasboardModel) {
+	public DashboardModel  getDashBoardInformation(DashboardModel dasboardModel,Long scfCompanyID) {
 		try {
-				
-				Query query =sessionFactory.getCurrentSession().createQuery("SELECT SUM(myCreditLine) AS totalcap,SUM(availToInvest ) AS availinvest,SUM(amountInvested) AS amountInvested FROM InvestorPortfolio ");
-				
+			StringBuilder queryBuilder=new StringBuilder();
+			queryBuilder.append("SELECT SUM(myCreditLine) AS totalcap,SUM(availToInvest ) AS availinvest,SUM(amountInvested) AS amountInvested FROM InvestorPortfolio");
+			if(scfCompanyID!=null && scfCompanyID>0l){
+				queryBuilder.append(" WHERE company_id=:scfCompanyID");
+			}
+				Query query =sessionFactory.getCurrentSession().createQuery(queryBuilder.toString());
+				if(scfCompanyID!=null && scfCompanyID>0l){
+					query.setParameter("scfCompanyID", scfCompanyID);
+				}
 				 List<Object[]> list = query.list();
 			        for(Object[] arr : list){
 			        	dasboardModel.setInvestmentCap(arr[0]!=null?Long.valueOf(arr[0].toString()):0);
@@ -452,6 +458,27 @@ public class InvestorDAOImpl extends BaseDAOImpl<InvestorPortfolio, Long>   impl
 		}
 		return null;
 	}
+	
+	public BigDecimal getTotalCreditAvailForGraph(
+		long scfCompanyId) {
+				BigDecimal totalCreditAvail=BigDecimal.ZERO;			
+			StringBuilder builder=new StringBuilder();
+			builder.append("SELECT SUM(availToInvest)  FROM InvestorPortfolio");
+			if(scfCompanyId>0l){
+				builder.append(" WHERE company_id=:scfCompanyId");
+			}
+			try {
+				Query query=sessionFactory.getCurrentSession().createQuery(builder.toString());
+				if(scfCompanyId>0l){
+					query.setParameter("scfCompanyId", scfCompanyId);
+				}
+				totalCreditAvail =(BigDecimal)query.setFirstResult(0).setMaxResults(5).uniqueResult();
+				
+			} catch (RuntimeException e) {
+				_log.error("getInvestorPortfolioDataForGraph", e);
+			}
+	return totalCreditAvail;
+}
 	
 	public Long getInvestorCount() {
 
