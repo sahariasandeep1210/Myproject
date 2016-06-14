@@ -25,8 +25,8 @@ $(document).ready(
 
 			$("#sellerTradeReport").click(function() {
 				var updateURL = $("#getSellerTradeURL").val();
-				document.forms["sellerList"].action = updateURL;
-				document.forms["sellerList"].submit();
+				document.forms["scfTradeList"].action = updateURL;
+				document.forms["scfTradeList"].submit();
 			});
 
 			$("#historyReport").click(function() {
@@ -64,8 +64,8 @@ $(document).ready(
 					return;
 				} else {
 					var actionUrl = $("#defaultURL").val();
-					document.forms["sellerList"].action = actionUrl;
-					document.forms["sellerList"].submit();
+					document.forms["scfTradeList"].action = actionUrl;
+					document.forms["scfTradeList"].submit();
 				}
 			});
 
@@ -82,34 +82,17 @@ $(document).ready(
 					document.forms["scfTradeList"].submit();
 				}
 			});
-			$("#exportAdmin").click(function() {
+			$("#exportData").click(function() {				
 				$('#tradeListTable').tableExport({
 					type : 'excel',
 					escape : 'false',
 				    fileName : 'TradeList',
 					worksheetName : 'TradeList'
 				});
-
 			});
-			$("#exportScfAdmin").click(function() {
-				$('#tradeListTable').tableExport({
-					type : 'excel',
-					escape : 'false',
-				    fileName : 'TradeList',
-					worksheetName : 'TradeList'
-				});
-
-			});
-
-			$("#exportSeller").click(function() {
-				$('#sellerListTable').tableExport({
-					type : 'excel',
-					escape : 'false',
-					fileName : 'sellerList',
-					worksheetName : 'SellerList'
-				});
-
-			});
+			
+			
+			
 			$("#exportSingleTradeHistory").click(function() {
 				$('#singleTradeHistoryTable').tableExport({
 					type : 'excel',
@@ -350,28 +333,12 @@ $(document).ready(
 				  $("#updateTrade").show();
 			}
 			
-			$("#updateTrade").on("click",function(){
-			/*	if($("#insuranceDocument").val()=="" && $("#insuranceDocumentLink").length<=0){
-					$("#insuranceDocument").css("border","1px solid red");
-				}else if($("#insuranceDocument").val()=="" && $("#promisoryDocument").val()==""){
-					$("#insuranceDocument").css("border","1px solid red");
-				}else{
-					
-				}*/
+			$("#updateTrade").on("click",function(){	
 				
 				$("#updteTradeForm").submit();
 			});
 			
-			$("#wantToInsure").on("click",function(){
-				  if(this.checked){
-					  $("#insuranceDocDiv").show();
-				      $("#updateTrade").show();
-				  }else{
-					  $("#updateTrade").hide();
-				      $("#insuranceDocDiv").hide();
-				  }
-
-			});
+		
 			
 
 		});
@@ -455,9 +422,9 @@ function setPage(pageNumber) {
 	if ($("#sellerListTable").length) {
 		$("#currentPage").val(pageNumber);
 		var actionUrl = $("#defaultURL").val();
-		document.forms["sellerList"].action = actionUrl;
-		document.forms["sellerList"].submit();
-	} else if ($("#tradeListTable").length) {
+		document.forms["scfTradeList"].action = actionUrl;
+		document.forms["scfTradeList"].submit();
+	} else if ($("#scfTradeList").length) {
 		$("#currentPage").val(pageNumber);
 		var actionUrl = $("#defaultURL").val();
 		document.forms["scfTradeList"].action = actionUrl;

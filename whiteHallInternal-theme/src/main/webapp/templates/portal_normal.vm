@@ -220,7 +220,9 @@ $theme.include($body_top_include)
 <script src="$javascript_folder/bootstrap-collapse.js"></script>
 <script src="$javascript_folder/bootstrap-dropdown.js"></script>
 <script src="$javascript_folder/bootstrap-modal.js"></script>
-<script src="$javascript_folder/jquery.tablesorter.min.js"></script>
+<script src="$javascript_folder/jquery.tablesorter.min.js"></script> 
+<script src="$javascript_folder/tableExport.min.js"></script> 
+
 $theme.include($body_bottom_include)
 
 $theme.include($bottom_include)

@@ -118,7 +118,6 @@
 					for="roundingDetailsSection">
 					 Insurance Document  
 					 	<c:if test="${not empty scfTradeModel.insuranceDocURL}">
-							- <a href="${scfTradeModel.insuranceDocURL}" target="_blank" >Download</a> 
 							<c:set value="true" var="docPresent"></c:set>
 						</c:if>	
 					
@@ -131,7 +130,17 @@
 					<div class="control-group form-inline">
 						<label class="checkbox" 	for="wantToInsure">
 							 <input 	class="field" 		id="wantToInsure"	name="wantToInsure" type="checkbox"  checked="${docPresent}">
-							<span class="checkBoxIcon"></span> Want to Insure?
+							<span class="checkBoxIcon"></span> 
+							<c:choose>
+								<c:when test="${docPresent}">
+									<a href="${scfTradeModel.insuranceDocURL}" target="_blank" >Insurance Document</a> 
+								</c:when>
+								<c:otherwise>
+									Want to Insure?
+								</c:otherwise>							
+							</c:choose>
+							
+							
 						</label>
 					</div>
 				</div>

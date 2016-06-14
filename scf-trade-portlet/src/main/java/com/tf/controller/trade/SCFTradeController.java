@@ -42,7 +42,13 @@ import com.liferay.portal.kernel.util.JavaConstants;
 import com.liferay.portal.kernel.util.MimeTypesUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.model.ResourceConstants;
+import com.liferay.portal.model.Role;
+import com.liferay.portal.model.RoleConstants;
+import com.liferay.portal.security.permission.ActionKeys;
 import com.liferay.portal.security.permission.PermissionChecker;
+import com.liferay.portal.service.ResourcePermissionLocalServiceUtil;
+import com.liferay.portal.service.RoleLocalServiceUtil;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.ServiceContextFactory;
 import com.liferay.portal.theme.ThemeDisplay;
@@ -198,7 +204,7 @@ public class SCFTradeController {
 			model.put("from", from);
 			model.put("to", to);
 			model.put("value", value);
-			model.put("userType", Constants.ADMIN);
+			model.put("userType", Constants.WHITEHALL_ADMIN);
 			model.put("totalTradeAmount", totalTradeAmount);
 			model.put("totalInvestorProfit", totalInvestorProfit);
 			model.put("totalWhiteHallShare", totalWhiteHallShare);
@@ -248,6 +254,7 @@ public class SCFTradeController {
 				totalTradeAmount = totalTradeAmount.add(scf.getTradeAmount());
 			}
 			model.put("totalTradeAmount", totalTradeAmount);
+			model.put("userType", Constants.SCF_ADMIN);
 			viewName = "scftradelist";
 		}
 		else if (request.isUserInRole(Constants.SELLER_ADMIN)) {
@@ -261,6 +268,7 @@ public class SCFTradeController {
 			noOfRecords = scfTradeService.getScfTradeListWithSearchCount(search, regNum);
 			}
 			model.put("search", search);
+			model.put("userType", Constants.SELLER_ADMIN);
 			viewName = "sellertradelist";
 		}else{
 			String search = ParamUtil.getString(request, "Search");
@@ -272,6 +280,7 @@ public class SCFTradeController {
 				noOfRecords=(long) list.size();
 			}
 			model.put("search", search);
+			model.put("userType", Constants.PRIMARY_INVESTOR_ADMIN);
 			viewName = "inverstortradelist";
 		}
 		model.put("scftrades", scftrades);
@@ -528,6 +537,9 @@ public class SCFTradeController {
 							   mimeType = MimeTypesUtil.getContentType(scfTradeDTO.getInsuranceDocument().getInputStream(), scfTradeDTO.getInsuranceDocument().getName());
 							   Folder incFolder= DLAppServiceUtil.addFolder(repositoryId, scfFolder.getFolderId(), "Insurance", "InsuranceFolder", serviceContextDlFolder);
 							   incfileEntry= DLAppServiceUtil.addFileEntry(themeDisplay.getScopeGroupId(), incFolder.getFolderId(), scfTradeDTO.getInsuranceDocument().getOriginalFilename(), mimeType, scfTradeDTO.getInsuranceDocument().getOriginalFilename(), "InsuranceDoc", "InsuranceDoc", scfTradeDTO.getInsuranceDocument().getInputStream(), scfTradeDTO.getInsuranceDocument().getSize(), serviceContextDlFolder);
+							   Role powerUser = RoleLocalServiceUtil.getRole(themeDisplay.getCompanyId(), RoleConstants.POWER_USER);
+							   String[] actions = new String[] { ActionKeys.VIEW }; 
+							   ResourcePermissionLocalServiceUtil.setResourcePermissions(themeDisplay.getCompanyId(), DLFileEntry.class.getName(), ResourceConstants.SCOPE_COMPANY, String.valueOf(incfileEntry.getFileEntryId()), powerUser.getRoleId(), actions);
 							}
 							 if(scfTradeDTO.getPromisoryDocument()!=null && scfTradeDTO.getPromisoryDocument().getSize()>0){
 								 mimeType = MimeTypesUtil.getContentType(scfTradeDTO.getPromisoryDocument().getInputStream(), scfTradeDTO.getPromisoryDocument().getName());
@@ -547,11 +559,17 @@ public class SCFTradeController {
 								 mimeType = MimeTypesUtil.getContentType(scfTradeDTO.getInsuranceDocument().getInputStream(), scfTradeDTO.getInsuranceDocument().getName());
 								 Folder incFolder= DLAppServiceUtil.addFolder(repositoryId, scfFolder.getFolderId(), "Insurance", "InsuranceFolder", serviceContextDlFolder);
 								 incfileEntry= DLAppServiceUtil.addFileEntry(themeDisplay.getScopeGroupId(), incFolder.getFolderId(), scfTradeDTO.getInsuranceDocument().getOriginalFilename(), mimeType, scfTradeDTO.getInsuranceDocument().getOriginalFilename(), "InsuranceDoc", "InsuranceDoc", scfTradeDTO.getInsuranceDocument().getInputStream(), scfTradeDTO.getInsuranceDocument().getSize(), serviceContextDlFolder);
+								 Role powerUser = RoleLocalServiceUtil.getRole(themeDisplay.getCompanyId(), RoleConstants.POWER_USER);
+								 String[] actions = new String[] { ActionKeys.VIEW }; 
+								 ResourcePermissionLocalServiceUtil.setResourcePermissions(themeDisplay.getCompanyId(), DLFileEntry.class.getName(), ResourceConstants.SCOPE_COMPANY, String.valueOf(incfileEntry.getFileEntryId()), powerUser.getRoleId(), actions);
 							 }
 							 if(scfTradeDTO.getPromisoryDocument()!=null && scfTradeDTO.getPromisoryDocument().getSize()>0){
 								 mimeType = MimeTypesUtil.getContentType(scfTradeDTO.getPromisoryDocument().getInputStream(), scfTradeDTO.getPromisoryDocument().getName());
 								 Folder proFolder= DLAppServiceUtil.addFolder(repositoryId, scfFolder.getFolderId(), "Promisory", "PromisoryFolder", serviceContextDlFolder);
 								 profileEntry= DLAppServiceUtil.addFileEntry(themeDisplay.getScopeGroupId(), proFolder.getFolderId(), scfTradeDTO.getPromisoryDocument().getOriginalFilename(), mimeType, scfTradeDTO.getPromisoryDocument().getOriginalFilename(), "PromisoryDoc", "PromisoryDoc", scfTradeDTO.getPromisoryDocument().getInputStream(), scfTradeDTO.getPromisoryDocument().getSize(), serviceContextDlFolder);
+								 Role powerUser = RoleLocalServiceUtil.getRole(themeDisplay.getCompanyId(), RoleConstants.POWER_USER);
+								 String[] actions = new String[] { ActionKeys.VIEW }; 
+								 ResourcePermissionLocalServiceUtil.setResourcePermissions(themeDisplay.getCompanyId(), DLFileEntry.class.getName(), ResourceConstants.SCOPE_COMPANY, String.valueOf(profileEntry.getFileEntryId()), powerUser.getRoleId(), actions);
 							 }
 						} catch (Exception e) {
 							_log.error("Error Occured" + e.getMessage());

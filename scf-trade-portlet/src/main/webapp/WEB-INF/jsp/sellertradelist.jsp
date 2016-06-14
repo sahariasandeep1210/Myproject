@@ -10,63 +10,30 @@
 <portlet:resourceURL var="tradeURL"></portlet:resourceURL>
 <portlet:renderURL var="defaultRenderURL" />
 
-
-<style>
-.aui input, .aui textarea, .aui .uneditable-input {
-	width: 100% !important;
-}
-</style>
-
 <portlet:renderURL var="supplierURL">
 	<portlet:param name="render" value="singleTrade" />
 </portlet:renderURL>
 
-<div class="container-fluid">
+<div class="tab-content">
 
 
 	<form:form commandName="scfSellerTradeModel" method="post" action=" "
-		id="sellerList" name="sellerList" autocomplete="off">
-		<input type="hidden" name="currentPage" id="currentPage"
-			value="${paginationModel.currentPage}" />
-		<input type="hidden" name="currPageSize" id="currPageSize"
-			value="${paginationModel.pageSize}" />
-		<input type="hidden" name="noOfRecords" id="noOfRecords"
-			value="${paginationModel.noOfRecords}" />
-		<input type="hidden" name="defaultURL" id="defaultURL"
-			value="${defaultRenderURL}" />
-		<input type="hidden" name="getSellerTradeURL" id="getSellerTradeURL"
-			value="${defaultRenderURL}" />
-		<input type="hidden" id="tradeURL" name="tradeURL" value="${tradeURL}" />
-		<input type="hidden" id="invoices" name="invoices"
-			value="${trade.invoices}">
+		id="sellerList" name="scfTradeList" autocomplete="off">
+		<input type="hidden" 	name="currentPage" 			id="currentPage" 		value="${paginationModel.currentPage}" />
+		<input type="hidden" 	name="currPageSize" 		id="currPageSize" 		value="${paginationModel.pageSize}" />
+		<input type="hidden" 	name="noOfRecords" 			id="noOfRecords"		value="${paginationModel.noOfRecords}" />
+		<input type="hidden" 	name="defaultURL" 			id="defaultURL"			value="${defaultRenderURL}" />
+		<input type="hidden" 	name="getSellerTradeURL" 	id="getSellerTradeURL"	value="${defaultRenderURL}" />
+		<input type="hidden" 	name="tradeURL"				id="tradeURL"  			value="${tradeURL}" />
+		<input type="hidden" 	name="invoices" 			id="invoices" 			value="${trade.invoices}">
+		<input type="hidden" 	name="pageSize"        	  	id="pageSize"      		value="${paginationModel.pageSize}" /> 
+		<input type="hidden" 	name="defaultRender"        id="defaultRender"      value="${defaultRenderURL}" />
 
 
-		<div class="row-fluid">
-			<div class="search-seller">
-				<input type="text" name="Search" placeholder="Search Here"
-					id="search" value="${search}"> <input type="button"
-					id="sellerTradeReport" class="btn btn-primary" value="Search" />
-			</div>
-		</div>
-		<div class="row-fluid">
-			<div class="span6">
-				<div class="span3">
-					<h4>Manage Trade</h4>
-				</div>
-			</div>
+		 <%@include file="tradefilter.jspf"%> 
 
-			<div class="span6">
-				<div class="span12">
-					<h5 style="float: right !important;">
-						<a href="#" style="color: #295780; font-weight: bold;"
-							id="exportSeller"> Export</a>
-					</h5>
-				</div>
-			</div>
-		</div>
-
-		<div class="table-responsive">
-			<table class="table  tablesorter table-bordered" id="sellerListTable">
+		<div class="customTableContainer">
+			<table class="table  tablesorter table-bordered" id="tradeListTable">
 				<thead>
 					<tr>
 						<th>Trade #</th>
@@ -125,25 +92,33 @@
 				</tbody>
 			</table>
 		</div>
-		<div class="row-fluid">
-			<div class="span6"></div>
-			<div class="span6">
-				<div class="span4"></div>
-				<div class="span8">
-					<label class="diplay-inline"> Show &nbsp;</label> <select
-						id="pageSize" class="paginationselect" name="pageSize">
-						<option value="5">5</option>
-						<option value="10">10</option>
-						<option value="20">20</option>
-						<option value="30">30</option>
-						<option value="45">45</option>
-						<option value="60">60</option>
-						<option value="75">75</option>
-						<option value="100">100</option>
-					</select> <label class="diplay-inline">&nbsp; Results per page </label>
+	 	<div class="lfr-pagination">			
+				<p:paginate  paginationModel="${paginationModel}"/>
+				
+				<div class="lfr-pagination-controls">
+					<div class="btn-group">
+					  <a class="btn btn-default dropdown-toggle" role="button" data-toggle="dropdown" href="#">${paginationModel.pageSize} items per page <i class="caret"></i></a>
+					  <ul id="menu1" class="dropdown-menu" role="menu" aria-labelledby="drop4">
+					  	  <li role="presentation" pageSize="2"><a role="menuitem" href="#">2 items per page</a></li>
+		                  <li role="presentation" pageSize="5"><a role="menuitem" href="#">5 items per page</a></li>
+		                  <li role="presentation" pageSize="10"><a role="menuitem" href="#">10 items per page</a></li>
+		                  <li role="presentation" pageSize="20"><a role="menuitem" href="#">20 items per page</a></li>
+		                  <li role="presentation" pageSize="30"><a role="menuitem" href="#">30 items per page</a></li>
+		                  <li role="presentation" pageSize="45"><a role="menuitem" href="#">45 items per page</a></li>
+		                  <li role="presentation" pageSize="60"><a role="menuitem" href="#">60 items per page</a></li>
+		                  <li role="presentation"  pageSize="75"><a role="menuitem" href="#">75 items per page</a></li>
+		                </ul> 		              
+					</div>
+					
+					<small class="search-results">Showing ${(paginationModel.currentPage-1)*paginationModel.pageSize+1} - 
+					<c:choose>
+							<c:when test="${paginationModel.currentPage*paginationModel.pageSize >= paginationModel.noOfRecords}">${paginationModel.noOfRecords}</c:when>
+							<c:otherwise>${paginationModel.currentPage*paginationModel.pageSize}</c:otherwise>
+					</c:choose>
+					 of ${paginationModel.noOfRecords} Results.</small>
+					
+					
 				</div>
-			</div>
-		</div>
+		  </div>
 	</form:form>
 </div>
-<p:paginate paginationModel="${paginationModel}" />
