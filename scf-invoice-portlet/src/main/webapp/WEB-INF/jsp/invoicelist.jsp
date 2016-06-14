@@ -70,6 +70,8 @@
 
 
 	<div class="tab-content">
+	<div class="alert alert-error" id="errormsg" style="display: none;">
+	</div>
 	
 		<form name="invoicelist" method="post" action="${invoiceDocumentsURL}" id="invoicelist">
 		<input 	type="hidden" name="invoices" 				id="invoices"> 

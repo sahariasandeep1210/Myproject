@@ -65,28 +65,24 @@
 										</div>
 									</td>
 									<td>${trade.status}</td>
-									<td class="bigger-icon red_normal"><c:choose>
-											<c:when test="${fn:length(trade.invoices) gt 1}">
-												<%-- <img
-													src="${themeDisplay.pathThemeImages}/folder-full-accept-icon_24.png" /> --%>
-													<i class="icomoon-no-document"></i>
+									<c:choose>
+											<c:when test="${fn:length(trade.invoices) gt 1}">												
+												<td class="bigger-icon green_normal"><i class="icomoon-no-document"></i></td>
 											</c:when>
 											<c:otherwise>
-												<i class="icomoon-no-document"></i>
-												<%-- <img
-													src="${themeDisplay.pathThemeImages}/folder-full-delete-icon_24.png" /> --%>
+												<td class="bigger-icon red_normal"><i class="icomoon-no-document"></i></td>												
 											</c:otherwise>
-										</c:choose></td>
+										</c:choose>
 								</tr>
 								<tr class="historyRow" id="${trade.id}_row">
-									<td colspan=7></td>
+									<td colspan=8></td>
 								</tr>
 
 							</c:forEach>
 						</c:when>
 						<c:otherwise>
 							<tr>
-								<td colspan="7" align="center">No records found!</td>
+								<td colspan="8" align="center">No records found!</td>
 							</tr>
 						</c:otherwise>
 					</c:choose>
