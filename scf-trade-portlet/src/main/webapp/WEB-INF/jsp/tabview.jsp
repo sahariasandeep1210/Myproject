@@ -18,7 +18,7 @@
 
 <ul class="nav nav-tabs">
 	<li  id="scftradesTab"><a href="${tradesURL}">SCF TRADE </a></li>
-	<c:if test="${userType eq 'Admin'}">
+	<c:if test="${userType eq 'Admin' || userType eq 'WhiteHall Admin'}">
 		<li  id="tradehis"><a href="${tradeHistoryURL}">TRADE HISTORY </a></li>
 	</c:if>
 </ul>

@@ -64,17 +64,11 @@
 								<tr onclick="window.location.href='${createURL}&companyID=${company.id}'">
 									<td>${company.name} </td>
 									<td>${company.regNumber}</td>
-									<td>${company.addRegistered}</td>
+									<td>${company.address.region}, ${company.address.country}</td>
 									<td><fmt:formatDate pattern="dd-MM-yyyy" value="${company.dateestablished}" /></td>
 									<td>${company.website}</td>
 									<td>${company.telnumber}</td>
 									<td>${company.activestatus}</td>							
-									<%-- <td>
-										<button class="btn deleteButton" data-title="Delete" type="button"
-											tradeId="${trade.id}">
-											<i class="fa fa-trash fa-2"></i>
-										</button>
-									</td> --%>
 		
 								</tr>
 							</c:forEach>

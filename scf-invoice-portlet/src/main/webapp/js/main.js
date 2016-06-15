@@ -173,21 +173,13 @@ $(document).ready(function() {
 	
 	$("#invoiceDate,#dueDate").datepicker({
 		changeMonth : true,
-		changeYear : true,
-		showOn : "button",	
-		buttonImage : "/tf-theme/images/calendar.jpg",
-		buttonImageOnly : true,
-		buttonText : "Select date"
+		changeYear : true		
 	});
 	
 	$("#paymentDate").datepicker({
 		changeMonth : true,
 		changeYear : true,
-		showOn : "button",
-		minDate : 0,
-		buttonImage : "/tf-theme/images/calendar.jpg",
-		buttonImageOnly : true,
-		buttonText : "Select date"
+		minDate : 0		
 	});
 	
 	

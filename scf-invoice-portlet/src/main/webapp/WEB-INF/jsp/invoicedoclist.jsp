@@ -69,21 +69,7 @@
 <form:form commandName="invoiceModel" id="importInvoiceForm"
 	method="post" action="${importInvoiceURL}" name="importInvoicForm"
 	enctype="multipart/form-data">
-	<%-- <div id="wrapperfirst" class="hideclass">
-		<div id="myModal" class="modal  fade" tabindex="-1" role="dialog"	aria-labelledby="myModalLabel" aria-hidden="true">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-				<h3 id="myModalLabel">Upload Invoice</h3>
-			</div>
-			<div class="modal-body">
-				<%@include file="addinvoice.jsp"%>
-			</div>
-			<div class="modal-footer">
-				<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-				<input type="button" value="Upload Invoice" class="btn btn-primary"  id="uploadInvoices"/>
-			</div>
-		</div>
-	</div> --%>
+	
 		<div id="myModal" class="modal  fade customModal" 
 			role="dialog" aria-labelledby="myModalLabel"  tabindex="-1"
 			aria-hidden="true">
@@ -103,21 +89,17 @@
 <c:if test="${documentUpload}">
 <div id="wrappersecond" class="hideclass">
 	<form:form  id="saveInvoiceForm" method="post" action="${saveInvoicesURL}" name="saveInvoicForm" >
-		<div id="confirmationModel" class=" modal fade" tabindex="-1"
+		<div id="confirmationModel" class=" modal fade customModal" tabindex="-1"
 			role="dialog" aria-labelledby="confirmationModelLabel"
 			aria-hidden="true">
 			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" id="first"
-					aria-hidden="true">×</button>
+				<!-- <button type="button" class=" icomoon-close close" data-dismiss="modal" 
+					aria-hidden="true">×</button> -->
+					<button type="button" class=" icomoon-close close"	data-dismiss="modal" id="first" aria-hidden="true"></button>
 				<h3 id="myModalLabel">Invoice Preview</h3>
 			</div>
-			<div class="modal-body">
 				<%@include file="invoicelisttablepreview.jsp"%>
-			</div>
-			<div class="modal-footer">
-				<button class="btn" id="invoice-popup-close" data-dismiss="modal" aria-hidden="true">Close</button>
-				<input type="submit" value="Save Invoices" class="btn btn-primary" id="last"/>
-			</div>
+			
 		</div>
 	</form:form>
 	</div>

@@ -31,7 +31,7 @@
 
 <liferay-ui:error key="default-error-message" 		message="default.error.message" /> 
 
-<div class="container-fluid">
+<div class="tab-content">
 	<form:form commandName="userModel" method="post"
 		action="${createUserURL}" id="createUser"  name="userDetail">
 		<input type="hidden" value="${deleteUserURL}" id="deleteURL"> 
@@ -39,9 +39,16 @@
 		<input type="hidden" value="${userModel.liferayUserId}" id="liferayUserId" name="liferayUserId">
 		<div class="row-fluid">
 			<div class="span12">
-				<div class="span4">
-					<h4>Add User Information</h4>
-				</div>
+					<h2>
+						<c:choose>
+							<c:when test="${userModel.id ==null || userModel.id ==0}">
+								Add
+							</c:when>
+							<c:otherwise>
+								Update
+							</c:otherwise>						
+						</c:choose>					
+					 User Information</h2>
 			</div>
 		</div>
 		<div class="row-fluid">
@@ -55,107 +62,111 @@
 		
 		<c:if test="${userModel.id ==null || userModel.id ==0}">
 			<div class="row-fluid">
-				<div class="span6">
-					<label class="span6">Officer:</label> <select id="officer"
-						name="officer" data-url="${fetchOfficerInfoURL}">
+				<div class="span3">
+					<div class="control-group">
+					<label class="control-label" for="orgType">Officer:</label>	
+					<select id="officer" name="officer" data-url="${fetchOfficerInfoURL}" class="aui-field-select">
 						<option value="">--- Select ---</option>
 						<c:forEach var="officer" items="${officers}">
 							<option value="${officer.id}" <c:if test="${officer.iduser !=null && officer.iduser !=0}">disabled style="background-color: #4786BC;color: white;" </c:if>>${officer.name}</option>
 						</c:forEach>
 
 					</select>
+					</div>
 				</div>
 			</div>
 		</c:if>
 
 
 		<div class="row-fluid">
-			<div class="span6">
-				<label class="span6">Title:<span class="requiredStar">*</span></label>
-				<input type="hidden" name="id" value="${userModel.id}"/>
-				<form:input path="title"  cssClass="span6" id="title"/>
+			<div class="span3">
+				<div class="control-group">
+					<label class="control-label">Title* </label>
+					<input type="hidden" name="id" value="${userModel.id}"/>
+					<form:input path="title"  cssClass="field" id="title"/>
+				</div>
 
 			</div>
-			<div class="span6">
-				<label class="span6">Username:<span class="requiredStar">*</span></label>
-				<form:input path="username" cssClass="span6"  id="username" />
+			<div class="span3">
+				<div class="control-group">
+					<label class="control-label">Username:<span class="requiredStar">*</span></label>
+					<form:input path="username" cssClass="field"  id="username" />
+				</div>
+			</div>
+			<div class="span3">
+				<div class="control-group">
+					<label class="control-label">Email:<span class="requiredStar">*</span></label>
+					<form:input path="email" cssClass="field"  id="email" />
+				</div>
 			</div>
 		</div>
 		<div class="row-fluid">
-			<div class="span6">
-				<label class="span6">First Name:<span class="requiredStar">*</span></label>
-				<form:input path="firstName" cssClass="span6" id="firstname"/>
+			<div class="span3">
+				<div class="control-group">
+					<label class="control-label">First Name:<span class="requiredStar">*</span></label>
+					<form:input path="firstName" cssClass="field" id="firstname"/>
+				</div>
 
 			</div>
-			<div class="span6">
-				<label class="span6">Middle Name:</label>
-				<form:input path="middleName" cssClass="span6" id="middleName" />
-
+			<div class="span3">
+				<div class="control-group">
+					<label class="control-label">Middle Name:</label>
+					<form:input path="middleName" cssClass="field" id="middleName" />
+				</div>
 			</div>
-
+			<div class="span3">
+				<div class="control-group">
+					<label class="control-label">Last Name:<span class="requiredStar">*</span></label>
+					<form:input path="lastName" cssClass="field"  id="lastname"/>
+				</div>
+			</div>
 		</div>
+	
 		<div class="row-fluid">
-			<div class="span6">
-				<label class="span6">Last Name:<span class="requiredStar">*</span></label>
-				<form:input path="lastName" cssClass="span6"  id="lastname"/>
+			<div class="span3">
+				<div class="control-group">
+					<label class="control-label">Telephone No:<span class="requiredStar">*</span></label>
+					<form:input path="mobile" cssClass="field" id="userTelNo" />
+				</div>
+			</div>
+			<div class="span3">
+				<div class="control-group">
+					<label class="control-label">Occupation:</label>
+					<form:input path="level" cssClass="field" id="occupation"/>
+				</div>
 			</div>
 			
-			<div class="span6">
-				<label class="span6">Email:<span class="requiredStar">*</span></label>
-				<form:input path="email" cssClass="span6"  id="email" />
-			</div>
-			
-		</div>
-		<div class="row-fluid">
-			<div class="span6">
-				<label class="span6">Telephone No:<span class="requiredStar">*</span></label>
-				<form:input path="mobile" cssClass="span6" id="userTelNo" />
-
-			</div>
-			<div class="span6">
-				<label class="span6">Occupation:</label>
-				<form:input path="level" cssClass="span6" id="occupation"/>
-			</div>			
-		</div>
-
-		<div class="row-fluid">
-			
-			<div class="span6">
-				<label class="span6">Officer Role</label>
-				<!-- <div class="span6"> -->
-					<select id="companyDirector" name="companyDirector" class="span6" >
+			<div class="span3">
+				<div class="control-group">
+					<label class="control-label">Officer Role</label>
+					<select id="companyDirector" name="companyDirector" class="aui-field-select" >
 						<option value="other">Other</option>
 						<option value="director">Director</option>
 						<option value="secretary">Secretary</option>												
 					</select>
-					<%-- <label class="span3"> 
-						<form:radiobutton path="companyDirector" value="Yes" id="yesOption" />Yes
-					</label> 
-					<label class="span3"> 
-						<form:radiobutton  path="companyDirector" value="No" id="noOption" />No
-					</label> --%>
-			<!-- 	</div> -->
-			</div>
-			
+				</div>				
+			</div>			
 		</div>
+			
 		<div class="row-fluid">
-			<div class="span6">			
-				<label class="span6">User Type:</label>
-				<form:select path="type" items="${userTypesMap}" class="dropdown"  id="type"  placeholder="User Type"  />
+			<div class="span3">		
+				<div class="control-group">	
+				<label class="control-label">User Type:</label>
+				<form:select path="type" items="${userTypesMap}" class="aui-field-select"  id="type"  placeholder="User Type"  />
+				</div>
 			</div>
 		</div>
 
-		<div class="row-fluid">
-			<div class="span6">
+		<div class="actionContainer text-left">
 			<c:choose>
 				<c:when test="${userModel.id !=null && userModel.id !=0}">
-					<input type="button" value="Update"		 			 class="btn btn-primary"  data-url="${createUserURL}" id="userUpdate" />
-					<input type="button" value="Delete"		 class="btn btn-danger"   onclick="deleteCompany()" />
-					<input type="button" value="Go Back" 			 class="btn btn-primary"  data-url="${createURL}&companyID=${userModel.company.id}"	id="cmpbackBtn"  />
+					<input type="button" value="Update"		 			class="btn btnBgBuSm"  data-url="${createUserURL}" id="userUpdate" />
+					<input type="button" value="Delete"		 			class="btn btnBgRedSm"   onclick="deleteCompany()" />
+					<input type="button" value="Go Back" 			 	class="btn btnBgBuSm"  data-url="${createURL}&companyID=${userModel.company.id}"	id="cmpbackBtn"  />
 				</c:when>
 				<c:otherwise>
-					<input type="button" value="Add User" 			 class="btn btn-primary"  data-url="${createUserURL}" id="userAdd" />
-					<input type="button" value="Go Back" 			 class="btn btn-primary"  data-url="${createURL}&companyID=${companyID}"	id="cmpbackBtn"  />
+					<input type="button" value="Add User" 			 class="btn btnBgGreenSm"  data-url="${createUserURL}" id="userAdd" />
+					<input type="button" value="Go Back" 			 class="btn btnBgBuSm"  data-url="${createURL}&companyID=${companyID}"	id="cmpbackBtn"  />
 				</c:otherwise>
 			
 			</c:choose>
@@ -163,8 +174,6 @@
 				
 				
 				
-				<%-- <button formaction="${defaultRender}" class="btn btn-primary"><i class="fa fa-reply fa-1"></i>  Go Back</button>  --%>
-			</div>
 		</div>
 
 

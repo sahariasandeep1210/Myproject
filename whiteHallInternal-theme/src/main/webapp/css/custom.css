@@ -22,3 +22,7 @@
 	}
 	
 }
+
+.error_show {
+	border: red 1px solid !important;
+}

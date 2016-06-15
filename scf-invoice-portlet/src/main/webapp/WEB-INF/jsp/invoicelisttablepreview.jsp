@@ -3,26 +3,13 @@
 	<portlet:param name="render" value="updateInvoices" />
 </portlet:renderURL>
 <portlet:resourceURL id="closeSessionValues" var="closeSessionValuesURL" ></portlet:resourceURL> 
-	<div class="row-fluid">
-		<div class="span6">
-			<div class="span12"></div>
-		</div>
-		<div class="span6">
-
-			<div class="span12">
-				<h5 style="float: right !important;">
-					<a href="javascript:;" style="color: #295780; font-weight: bold;"
-						id="exportInvoices"> Export</a>
-				</h5>
-			</div>
-		</div>
-	</div>
+			  	
     <c:choose>
 			<c:when test="${fn:length(validInvoiceList) gt 0}">
 			  <span class="alert alert-success">Valid Invoices</span><br>
 			</c:when>
 	</c:choose>	
-	<div class="table-responsive">
+	<div class="customTableContainer">
 		<table class="table table-hover tablesorter table-bordered"
 			id="invoiceListTable">
 			<thead>
@@ -95,7 +82,7 @@
 					</c:when>
 					<c:otherwise>
 					    <c:set var="valid"  scope="page" value="false" />
-					    <td class="alert alert-danger" colspan="6" align="center">There are  no  valid invoices.</td>
+					    <td class="" colspan="6" align="center">There are  no  valid invoices.</td>
 					</c:otherwise>
 				</c:choose>
 			</tbody>
@@ -104,11 +91,11 @@
 	<c:if test="${valid}">
 	<c:choose>
 					<c:when test="${fn:length(invalidnvoiceList) gt 0}">
-					  <span class="alert alert-danger">Invalid Invoices.</span><br>
-					  <span class="alert alert-danger">These invoices are already present on our platform or not valid.</span><br>
+					  <span class="">Invalid Invoices.</span><br>
+					  <span class="">These invoices are already present on our platform or not valid.</span><br>
 					</c:when>
     </c:choose>
-	<div class="table-responsive">
+	<div class="customTableContainer">
 		<table class="table table-hover tablesorter table-bordered"
 			id="invoiceListTable">
 			<thead>
@@ -183,4 +170,14 @@
 		</table>
 	</div>
 	</c:if>
+	
+	
+<div class="modal-footer">
+<!-- 	<button class="btn btnBrGrSm" data-dismiss="modal" aria-hidden="true">Close</button>
+	<button class="btn btnBgGreenSm" id="uploadInvoices">UPLOAD INVOICE</button>
+	<input type="button" value="Upload Invoice" class="btn btnBgGreenSm"  id="uploadInvoices"/> -->
+	
+	<button class="btn btnBrGrSm" id="invoice-popup-close" data-dismiss="modal" aria-hidden="true">Close</button>
+	<input type="submit" value="Save Invoices" class="btn btnBgGreenSm" id="last"/>
+</div>
 

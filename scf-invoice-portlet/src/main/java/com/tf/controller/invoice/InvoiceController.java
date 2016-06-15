@@ -202,6 +202,7 @@ public class InvoiceController {
 		ActionRequest request, ActionResponse response) {
 
 		Long invoiceId = ParamUtil.getLong(request, "invoiceId", 0);
+		invoice.setId(invoiceId);
 		long scfCompanyId = ParamUtil.getLong(request, "scfCompany");
 
 		try {
@@ -230,11 +231,16 @@ public class InvoiceController {
 				model.put("company", company);
 				response.setRenderParameter("render", "createInvoice");
 
-			}else if(generalSetting!=null && ((invoice.getPaymentDate().getTime()-new Date().getTime())/ (1000 * 60 * 60 * 24))<generalSetting.getMinPaymentDateDuartion()){
+			} else if((invoice.getPaymentDate().getTime()-new Date().getTime())/ (1000 * 60 * 60 * 24) < 0){
+				SessionErrors.add(request, "invoice.minPaymentDuration.invalid");
+				model.put("invoiceModel", invoice);
+				response.setRenderParameter("render", "createInvoice");
+				
+			} else if((generalSetting!=null && generalSetting.getMinPaymentDateDuartion() !=null) && (((invoice.getPaymentDate().getTime()-new Date().getTime())/ (1000 * 60 * 60 * 24)) < generalSetting.getMinPaymentDateDuartion())){
 				SessionErrors.add(request, "invoice.minPaymentDuration.error");
 				model.put(
 						"errorMessage",LanguageUtil.get(portletConfig, request.getLocale(), "invoice.payment.duration.error"));
-				model.put("invoice", invoice);
+				model.put("invoiceModel", invoice);
 				model.put("company", company);
 				model.put("minPaymentDurationDate", generalSetting.getMinPaymentDateDuartion());
 				response.setRenderParameter("render", "createInvoice");
@@ -254,7 +260,7 @@ public class InvoiceController {
 					inv.setCurrency(invoice.getCurrency());
 					inv.setInvoiceDesc(invoice.getInvoiceDesc());
 					Company scfCompany =
-						companyService.findById(invoice.getScfCompany());
+						companyService.findById(invoice.getScfCompany(	));
 					inv.setScfCompany(scfCompany);
 					List<Invoice> invoices = new ArrayList<Invoice>();
 					invoices.add(inv);
@@ -377,7 +383,7 @@ public class InvoiceController {
 			Invoice invoice = invoiceService.getInvoicesById(invoiceId);
 			Company scfCompanies = invoice.getScfCompany();
 			invoiceModel.setId(invoice.getId());
-			invoiceModel.setCompanyId(scfCompanies.getId());
+			invoiceModel.setScfCompany(scfCompanies.getId());
 			invoiceModel.setInvoiceNumber(invoice.getInvoiceNumber());
 			invoiceModel.setInvoiceDate((invoice.getInvoiceDate()));
 			invoiceModel.setSellerRegNo(invoice.getSellerCompanyRegistrationNumber());
@@ -410,7 +416,7 @@ public class InvoiceController {
 		throws Exception {
 		Long invoiceId=ParamUtil.getLong(request, "invoiceId");
 		Invoice invoice=invoiceService.getInvoicesById(invoiceId);
-		//invoiceService.deleteInvoice(invoice);
+		invoiceService.deleteInvoice(invoice);
 		PortletConfig portletConfig =
 						(PortletConfig) request.getAttribute(JavaConstants.JAVAX_PORTLET_CONFIG);
 					SessionMessages.add(request, "invoice.success.delete");
