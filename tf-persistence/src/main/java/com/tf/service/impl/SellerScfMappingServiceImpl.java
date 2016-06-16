@@ -31,4 +31,8 @@ public class SellerScfMappingServiceImpl implements SellerScfMappingService{
 		sellerScfMappingDAO.updateStatus(id, status,comment);
 	}
 	
+	public Long getSellerScfompany(Long sellerComapanyId){
+		return sellerScfMappingDAO.getSellerScfompany(sellerComapanyId);
+	}
+	
 }

@@ -1212,11 +1212,17 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 						.getCurrentSession()
 						.createSQLQuery(
 								"SELECT SUM(trade_amount), COUNT(*) FROM scf_trade GROUP BY STATUS HAVING STATUS = 'Settled'").list();
+			if(tradeArray !=null && tradeArray.size() >0 ){
 				for (Object[] row : tradeArray) {
 					dashModel.setSettledTradeAmount(row[0]!=null ?new BigDecimal(row[0].toString()):null);
 					dashModel.setSettledTradeCount(Long.valueOf(row[1].toString()));
 					
-				}		
+				}
+			}else{
+				dashModel.setSettledTradeAmount(BigDecimal.ZERO);
+				dashModel.setSettledTradeCount(0);
+			}
+						
 	}
 	
 	public void setLiveTradeInformation(DashboardModel dashModel) {		
@@ -1224,11 +1230,16 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 						.getCurrentSession()
 						.createSQLQuery(
 								"SELECT SUM(trade_amount), COUNT(*) FROM scf_trade GROUP BY STATUS HAVING STATUS != 'Settled'").list();
-				for (Object[] row : tradeArray) {
-					dashModel.setLiveTradeAmount(row[0]!=null ?new BigDecimal(row[0].toString()):null);
-					dashModel.setLiveTradeCount(Long.valueOf(row[1].toString()));
-					
-				}		
+			if(tradeArray !=null && tradeArray.size() >0 ){
+					for (Object[] row : tradeArray) {
+						dashModel.setLiveTradeAmount(row[0]!=null ?new BigDecimal(row[0].toString()):null);
+						dashModel.setLiveTradeCount(Long.valueOf(row[1].toString()));
+						
+					}	
+			} else {
+				dashModel.setLiveTradeAmount(BigDecimal.ZERO);
+				dashModel.setLiveTradeCount(0);
+			}
 	}
 	
 }

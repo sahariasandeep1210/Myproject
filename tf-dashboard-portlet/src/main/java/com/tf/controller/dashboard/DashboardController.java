@@ -1,6 +1,5 @@
 package com.tf.controller.dashboard;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 import javax.portlet.RenderRequest;
@@ -19,11 +18,11 @@ import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.security.permission.PermissionChecker;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.tf.model.Investor;
-import com.tf.model.InvestorPortfolio;
 import com.tf.persistance.util.Constants;
 import com.tf.persistance.util.DashboardModel;
 import com.tf.service.DashBoardService;
 import com.tf.service.InvestorService;
+import com.tf.service.SellerScfMappingService;
 import com.tf.service.UserService;
 import com.tf.util.LiferayUtility;
 
@@ -47,6 +46,9 @@ public class DashboardController {
 	@Autowired
 	protected UserService userService;
 	
+	@Autowired
+	protected SellerScfMappingService sellerScfMappingService;
+	
 	@RenderMapping
 	protected ModelAndView renderCompanyList(ModelMap model,RenderRequest request, RenderResponse response) throws Exception {		
 		_log.info("Render Dashboard");
@@ -62,16 +64,23 @@ public class DashboardController {
 			List<Investor> cashPosition =investorService.getCashPoition();
 			model.put("cashPosition",cashPosition);
 		} else if(request.isUserInRole(Constants.PRIMARY_INVESTOR_ADMIN)){
-			userType=Constants.PRIMARY_INVESTOR_ADMIN;			
+		    Long investorID=investorService.getInvestorIDByCompanyId(liferayUtility.getWhitehallCompanyID(request));
+			dashModel.setInvestorPortfolios(investorService.getInvestorPortfolioDataForInvestorGraph(investorID)); 
+			dashModel.setTotalCreditAvail(investorService.getTotalCreditAvailForInvestorGraph(investorID));
+			userType=Constants.PRIMARY_INVESTOR_ADMIN;	
+			model.put("investorID", investorID);
 			viewName="investordashboard";
 		}else if(request.isUserInRole(Constants.SELLER_ADMIN)){
+			Long sellerCmpID = userService.getCompanybyUserID(themeDisplay.getUserId()).getId();
+			companyId=sellerScfMappingService.getSellerScfompany(sellerCmpID);			
+			dashModel.setInvestorPortfolios(investorService.getInvestorPortfolioDataForGraph(companyId));
+			dashModel.setTotalCreditAvail(investorService.getTotalCreditAvailForGraph(companyId));
 			userType=Constants.SELLER_ADMIN;
-			dashModel.setInvestorPortfolios(investorService.getInvestorPortfolioDataForGraph(null));
 			viewName="sellerdashboard";
 		}else if(request.isUserInRole(Constants.SCF_ADMIN)){
 			companyId = userService.getCompanybyUserID(themeDisplay.getUserId()).getId();
 			dashModel.setInvestorPortfolios(investorService.getInvestorPortfolioDataForGraph(companyId));
-			dashModel.setTotalCreditAvail(investorService.getTotalCreditAvailForGraph(companyId));
+			dashModel.setTotalCreditAvail(investorService.getTotalCreditAvailForGraph(companyId));			
 			userType=Constants.SCF_ADMIN;
 			viewName="scfdashboard";
 		}

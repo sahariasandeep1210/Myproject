@@ -22,7 +22,6 @@ import com.tf.dao.InvestorDAO;
 import com.tf.dao.UserDAO;
 import com.tf.model.Investor;
 import com.tf.model.InvestorPortfolio;
-import com.tf.model.SCFTrade;
 import com.tf.persistance.util.DashboardModel;
 import com.tf.persistance.util.InvestorDTO;
 import com.tf.persistance.util.InvestorProtfolioDTO;
@@ -459,6 +458,50 @@ public class InvestorDAOImpl extends BaseDAOImpl<InvestorPortfolio, Long>   impl
 		return null;
 	}
 	
+	public List<InvestorPortfolio> getInvestorPortfolioDataForInvestorGraph(
+		Long investorID) {	
+		StringBuilder builder=new StringBuilder();
+		builder.append("SELECT SUM(availToInvest) , discountRate FROM InvestorPortfolio");
+		if(investorID!=null && investorID>0l){
+			builder.append(" where investor.investorId=:investorID");
+		}
+		builder.append(" GROUP BY discountRate");
+		try {
+			Query query=sessionFactory.getCurrentSession().createQuery(builder.toString());
+			if(investorID!=null && investorID>0l){
+				query.setParameter("investorID", investorID);
+			}
+			List<InvestorPortfolio> investorPortfolios =query.setFirstResult(0).setMaxResults(5).list();
+			if(investorPortfolios!=null && investorPortfolios.size()>0){
+				return investorPortfolios;
+			}
+	} catch (RuntimeException e) {
+		_log.error("getInvestorPortfolioDataForGraph", e);
+	}
+	return null;
+}
+	
+	public BigDecimal getTotalCreditAvailForInvestorGraph(
+		Long investorID) {
+				BigDecimal totalCreditAvail=BigDecimal.ZERO;			
+			StringBuilder builder=new StringBuilder();
+			builder.append("SELECT SUM(availToInvest)  FROM InvestorPortfolio");			
+			if(investorID!=null && investorID>0l){
+				builder.append(" where investor.investorId=:investorID");
+			}
+			try {
+				Query query=sessionFactory.getCurrentSession().createQuery(builder.toString());
+				if(investorID>0l){
+					query.setParameter("investorID", investorID);
+				}
+				totalCreditAvail =(BigDecimal)query.uniqueResult();
+				
+			} catch (RuntimeException e) {
+				_log.error("getInvestorPortfolioDataForGraph", e);
+			}
+	return totalCreditAvail;
+}
+	
 	public BigDecimal getTotalCreditAvailForGraph(
 		long scfCompanyId) {
 				BigDecimal totalCreditAvail=BigDecimal.ZERO;			
@@ -472,7 +515,7 @@ public class InvestorDAOImpl extends BaseDAOImpl<InvestorPortfolio, Long>   impl
 				if(scfCompanyId>0l){
 					query.setParameter("scfCompanyId", scfCompanyId);
 				}
-				totalCreditAvail =(BigDecimal)query.setFirstResult(0).setMaxResults(5).uniqueResult();
+				totalCreditAvail =(BigDecimal)query.uniqueResult();
 				
 			} catch (RuntimeException e) {
 				_log.error("getInvestorPortfolioDataForGraph", e);

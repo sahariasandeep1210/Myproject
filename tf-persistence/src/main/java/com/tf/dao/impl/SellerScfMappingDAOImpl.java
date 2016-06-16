@@ -1,7 +1,9 @@
+
 package com.tf.dao.impl;
 
 import com.tf.dao.SellerScfMappingDAO;
 import com.tf.model.SellerScfCompanyMapping;
+import com.tf.persistance.util.Constants;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -18,34 +20,35 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 @Transactional
-public class SellerScfMappingDAOImpl extends BaseDAOImpl<SellerScfCompanyMapping, Serializable> implements SellerScfMappingDAO  {
+public class SellerScfMappingDAOImpl extends BaseDAOImpl<SellerScfCompanyMapping, Serializable> implements SellerScfMappingDAO {
+
 	public SellerScfMappingDAOImpl() {
 
 		super(SellerScfCompanyMapping.class);
 	}
-	
+
 	@SuppressWarnings("unchecked")
-	public List<SellerScfCompanyMapping> getSellerScfMapping(int startIndex, int pageSize,Long sellerComapanyId,Long scfCompanyId,String status[]) {
+	public List<SellerScfCompanyMapping> getSellerScfMapping(int startIndex, int pageSize, Long sellerComapanyId, Long scfCompanyId, String status[]) {
 
 		_log.debug("Inside getSellerScfMapping  ");
 		try {
 			List<SellerScfCompanyMapping> results = new ArrayList<SellerScfCompanyMapping>();
 
-				Session session = sessionFactory.getCurrentSession();
-				Criteria criteria =
-					session.createCriteria(SellerScfCompanyMapping.class);
-				if(sellerComapanyId!=null && sellerComapanyId>0){
-					criteria.createAlias("sellerCompany","sc");
-					criteria.add(Restrictions.eq("sc.id", sellerComapanyId));
-				}
-				if(scfCompanyId!=null && scfCompanyId!=null){
-					criteria.add(Restrictions.eq("scfCompany", scfCompanyId));
-				}
-				if(status!=null){
-					criteria.add(Restrictions.in("status", status));
-				}
-					results = (List<SellerScfCompanyMapping>) criteria.list();
-			
+			Session session = sessionFactory.getCurrentSession();
+			Criteria criteria =
+				session.createCriteria(SellerScfCompanyMapping.class);
+			if (sellerComapanyId != null && sellerComapanyId > 0) {
+				criteria.createAlias("sellerCompany", "sc");
+				criteria.add(Restrictions.eq("sc.id", sellerComapanyId));
+			}
+			if (scfCompanyId != null && scfCompanyId != null) {
+				criteria.add(Restrictions.eq("scfCompany", scfCompanyId));
+			}
+			if (status != null) {
+				criteria.add(Restrictions.in("status", status));
+			}
+			results = (List<SellerScfCompanyMapping>) criteria.list();
+
 			_log.debug("getSellerScfMapping successful, result size: " + results.size());
 			return results;
 		}
@@ -55,7 +58,46 @@ public class SellerScfMappingDAOImpl extends BaseDAOImpl<SellerScfCompanyMapping
 		}
 	}
 
+	/**
+	 * @param startIndex
+	 * @param pageSize
+	 * @param sellerComapanyId
+	 * @param status
+	 * @return Seller's SCF Company infomation
+	 */
+	@SuppressWarnings("unchecked")
+	public Long getSellerScfompany(Long sellerComapanyId) {
+
+		_log.debug("Inside getSellerScfMapping  ");
+		try {
+			List<SellerScfCompanyMapping> results = new ArrayList<SellerScfCompanyMapping>();
+
+			Session session = sessionFactory.getCurrentSession();
+			Criteria criteria =
+				session.createCriteria(SellerScfCompanyMapping.class);
+			if (sellerComapanyId != null && sellerComapanyId > 0) {
+				criteria.createAlias("sellerCompany", "sc");
+				criteria.add(Restrictions.eq("sc.id", sellerComapanyId));
+			}	
+			criteria.add(Restrictions.eq("status", Constants.STATUS.APPROVED.toString()));			
+			// temp code
+			results = (List<SellerScfCompanyMapping>) criteria.setMaxResults(1).list();
+			if(results!=null && results.size() >0){
+				_log.debug("getSellerScfMapping successful, result size: " + results.size());
+				return results.get(0).getScfCompany();
+			}
+
+			
+		}
+		catch (RuntimeException re) {
+			_log.error("getSellerScfMapping failed", re);
+			throw re;
+		}
+		return null;
+	}
+
 	public Long getSellerScfMappingCount() {
+
 		_log.debug("Inside getSellerScfMapping ");
 		try {
 			Criteria criteria = (Criteria) sessionFactory.getCurrentSession().createCriteria(SellerScfCompanyMapping.class);
@@ -70,34 +112,37 @@ public class SellerScfMappingDAOImpl extends BaseDAOImpl<SellerScfCompanyMapping
 			throw re;
 		}
 	}
-	
-	public void saveSeller(SellerScfCompanyMapping sellerScfMapping){
+
+	public void saveSeller(SellerScfCompanyMapping sellerScfMapping) {
+
 		_log.debug("Inside saveSeller ");
 		try {
-		Session session = sessionFactory.getCurrentSession();
-        session.save(sellerScfMapping);
-		}catch(RuntimeException re){
+			Session session = sessionFactory.getCurrentSession();
+			session.save(sellerScfMapping);
+		}
+		catch (RuntimeException re) {
 			_log.error("saveSeller failed", re);
 			throw re;
 		}
-		
-		
+
 	}
 
-	public void updateStatus(Long id, String status,String comment ) {
+	public void updateStatus(Long id, String status, String comment) {
+
 		_log.debug("Inside updateStatus ");
 		try {
 			Session session = sessionFactory.getCurrentSession();
-			Query query=session.createSQLQuery("UPDATE tf_seller_scfcompany_mapping SET status=:status,comment=:comment,update_date=NOW() WHERE id=:id");
+			Query query =
+				session.createSQLQuery("UPDATE tf_seller_scfcompany_mapping SET status=:status,comment=:comment,update_date=NOW() WHERE id=:id");
 			query.setParameter("status", status);
 			query.setParameter("id", id);
 			query.setParameter("comment", comment);
 			query.executeUpdate();
-		} catch (HibernateException e) {
-			_log.error("updateStatus failed",e);
+		}
+		catch (HibernateException e) {
+			_log.error("updateStatus failed", e);
 			throw e;
 		}
 	}
-	
 
 }

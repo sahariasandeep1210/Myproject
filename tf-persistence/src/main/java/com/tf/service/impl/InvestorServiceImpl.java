@@ -151,4 +151,12 @@ public class InvestorServiceImpl implements InvestorService {
 	public BigDecimal getTotalCreditAvailForGraph(long scfCompanyId){
 		return investorDAO.getTotalCreditAvailForGraph(scfCompanyId);
 	}
+	
+	public List<InvestorPortfolio> getInvestorPortfolioDataForInvestorGraph(Long investorID){
+		return investorDAO.getInvestorPortfolioDataForInvestorGraph(investorID);
+	}
+	
+	public BigDecimal getTotalCreditAvailForInvestorGraph(Long investorID){
+		return investorDAO.getTotalCreditAvailForInvestorGraph(investorID);
+	}
 }
