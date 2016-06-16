@@ -137,7 +137,8 @@ $(document).ready(function() {
             }
         });
       
-      $('#investorModel').on('click', '.editInvestor', function() {
+      $('#investorModel').on('click', '.editInvestor', function(event) {
+    	  event.preventDefault(); 
     	  $('#editTemplate :input').not(':button, :submit, :reset, :hidden').each(function() {          		 
 	        	$(this).removeClass("error_show");         	   
 	     });
@@ -223,7 +224,8 @@ $("#toDate").datepicker({
     	  
       });
       
-      $('#investorModel').on('click', '.historybtn', function() {
+      $('#investorModel').on('click', '.historybtn', function(event) {
+    	  event.preventDefault(); 
   	   var historyURL=$(this).attr('data-url'); 
   	   var protfolioID=$(this).attr('protID');
   	   //hiding all other history rows
