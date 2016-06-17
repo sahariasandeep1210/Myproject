@@ -16,17 +16,31 @@ $(document).ready(function() {
 			});
 		});
 		
+		
+		$(".dropdown-menu").on("click", "li", function(event){
+
+			var noOfRecords = parseInt($("#noOfRecords").val());
+			var pageSize = parseInt($("#curPageSize").val());
+			var newPageSize = parseInt($(this).attr('pageSize'));
+			$("#pageSize").val(newPageSize);
+			$("#currentPage").val(1);
+			if (noOfRecords < pageSize && newPageSize > pageSize) {
+				return;
+			} else {
+				var actionUrl = $("#defaultURL").val();
+				document.forms["reportList"].action = actionUrl;
+				document.forms["reportList"].submit();
+			}
+		
+           
+         });
+		
 
 });
 
 $("#fromDate").datepicker({
 	changeMonth : true,
 	changeYear : true,
-	showOn : "button",
-
-	buttonImage : "/tf-theme/images/calendar.jpg",
-	buttonImageOnly : true,
-	buttonText : "Select date",
 	onSelect : function(selected) {
 		$("#toDate").datepicker("option", "minDate", selected)
 
@@ -35,11 +49,7 @@ $("#fromDate").datepicker({
 
 $("#toDate").datepicker({
 	changeMonth : true,
-	changeYear : true,
-	showOn : "button",
-	buttonImage : "/tf-theme/images/calendar.jpg",
-	buttonImageOnly : true,
-	buttonText : "Select date",
+	changeYear : true,	
 	onSelect : function(selected) {
 		$("#fromDate").datepicker("option", "maxDate", selected)
 

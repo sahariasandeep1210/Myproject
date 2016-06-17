@@ -301,10 +301,9 @@ public class InvoiceServiceImpl implements InvoiceService{
 		Date d2=c2.getTime();
         long diff=d1.getTime()-d2.getTime();
         int noofdays=(int)(diff/(1000*24*60*60));
-        return noofdays;
-		
-		
+        return noofdays;		
 	}
+	
 	private  Date nextWorkingDate(Date date,List<Date> holidayList) {
 		Calendar c = Calendar.getInstance();
 		c.setTime(date);

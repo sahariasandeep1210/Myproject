@@ -164,6 +164,14 @@ $(document).ready(function(){
 		submitTradeForms(url);
 	});
 	
+	$("#homePageUser").click(function(){
+		$("#currScreen").val('Company');
+		var url = $(this).attr('data-url');
+		submitTradeForms(url);
+	});
+	
+	
+	
 	//registration first step
 	$("#continue").click(function(){
 		var error_free = true;

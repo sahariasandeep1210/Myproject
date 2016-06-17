@@ -90,7 +90,7 @@
 			  	
 			  	<div class="btn-wrapper">
 			  			<aui:button cssClass="btnBrGrSm btnIconSm filter-btn active"  icon="icomoon-filter"></aui:button>
-			  			<input type="button" class="btnBgGreenSm" value="Export" />
+			  			<input type="button" class="btnBgGreenSm" value="Export" id="exportInvoiceList" />
 			  	</div>
 			  </div>
 		  	

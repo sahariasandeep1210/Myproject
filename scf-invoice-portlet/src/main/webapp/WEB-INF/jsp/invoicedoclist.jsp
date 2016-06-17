@@ -16,13 +16,13 @@
 		  	<div class="main-title">Manage Invoice Documents</div>
 		  	
 		  	<div class="btn-wrapper">		  			
-		  			<input type="button" class="btnBgGreenSm" value="Export" />
+		  			<input type="button" class="btnBgGreenSm" value="Export" id="exportInvoiceDocs" />
 		  	</div>
 		  	
 	</div>
 
 		<div class="customTableContainer" >
-				<table class="table table-hover tablesorter table-bordered">
+				<table class="table table-hover tablesorter table-bordered" id="invoiceDocTable">
 					<thead>
 						<tr>
 							<th>Name</th>

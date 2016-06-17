@@ -44,7 +44,7 @@ $(document).ready(function() {
 			document.forms["createInvoiceForm"].submit();
 	 });
 	
-	 $("#exportInvoices").click(function(){			
+	 $("#exportInvoiceList").click(function(){			
 			$('#invoiceListTable').tableExport({
 				type : 'excel',
 				escape : 'false',
@@ -53,6 +53,15 @@ $(document).ready(function() {
 			});			
 	});
 
+	 
+	 $("#exportInvoiceDocs").click(function(){			
+			$('#invoiceDocTable').tableExport({
+				type : 'excel',
+				escape : 'false',
+				fileName: 'invoiceDocList',
+				worksheetName: 'InvoicesDocList'
+			});			
+	});
 	$('ul.nav-pills li a').click(function (e) {
 		  $('ul.nav-pills li.active').removeClass('active');
 		  $(this).parent('li').addClass('active');

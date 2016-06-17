@@ -1,6 +1,10 @@
 <%@include file="init.jsp"%>
 
 
+<portlet:renderURL var="defaultURL">
+	<portlet:param name="currentScreen" value="Company" />
+</portlet:renderURL>
+
 <portlet:actionURL var="regCompanyURL">
 	<portlet:param name="action" value="registerCompany" />
 </portlet:actionURL>
@@ -399,7 +403,7 @@
 				
 			<c:if test="${currentScreen =='User'}">
 				<a  href="javascript:void(0)" class="customButtonMedium btnBgGreen btnfont" data-url="${regCompanyURL}" id="registerSeller" >Register</a>
-				<a  href="javascript:void(0)" class="customButtonMedium btnBgGray btnfont mlxxs0 mtXxs10" data-url="${homePageURL}" id="homePage" >Go Back</a>
+				<a  href="javascript:void(0)" class="customButtonMedium btnBgGray btnfont mlxxs0 mtXxs10" data-url="${defaultURL}" id="homePageUser" >Go Back</a>
 			</c:if>
 
 		</div>
