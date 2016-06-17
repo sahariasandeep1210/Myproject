@@ -6,102 +6,57 @@
 </portlet:renderURL>
 
 
-<div class="container-fluid">
+<div class="panel panel-blue mt0">
+
+	<div class="panel-heading">
+    	<h3 class="panel-title">TRADE INFORMATION</h3>
+  	</div>
+  	<div class="panel-body">
+
 	<form:form commandName="scfTradeModel" method="post"
 		action="${updateTradeUrl}" id="updteTradeForm" autocomplete="off"
 		name="TradeDetail" enctype="multipart/form-data">
-		<input type="hidden" value="${invoiceIds}" name="invoiceIds"> 
-		<div class="row-fluid">
-			<div class="span12" style="padding-bottom: 30px;">
-				<div class="span4"></div>
-				<div class="span4">
-					<h4>
-					<c:choose>
-						<c:when test="${scfTradeModel.id !=null && scfTradeModel.id !=0}">
-							Trade Information
-						</c:when>
-						<c:otherwise>
-							Add Trade Information
-						</c:otherwise>
-					
-					</c:choose>		
-					
-					
-					</h4>
-				</div>
-			</div>
-		</div>
+		<input type="hidden" value="${invoiceIds}" name="invoiceIds">
+		
 
 
 		<div style="display:none" class="row-fluid">
 			<div class="span6">
 				<form:input path="scfId" readonly="true"  cssClass="span6"  id="scfId"/>
 				<form:input path="id" readonly="true"  cssClass="span6"  id="scfId"/>
-			</div>
-
-		</div>
-		<div class="row-fluid">
-			<div class="span6">
-				<label class="span6">Duration:</label>
-				<form:input path="duration" readonly="true"  cssClass="span6"  id="duration"/>
-
-			</div>
-			<div class="span6">
-				<label class="span6">Closing Date:</label>
-				<form:input path="closingDate"  disabled="true" cssClass="span5" id="closingDate" />
-
-			</div>
-
-		</div>
-		<div class="row-fluid">
-			<div class="span6">
-				<label class="span6">Opening Date:</label>
-				<form:input path="openingDate" disabled="true" cssClass="span5" id="openingDate" />
-
-			</div>
-
-			<div class="span6">
-				<label class="span6">Investor Payment Date:</label>
-				<form:input path="investorPaymentDate" disabled="true" cssClass="span5"
-					id="investorPaymentDate" />
-
-			</div>
-
-		</div>
-		<div class="row-fluid">
-			<div class="span6">
-				<label class="span6">Seller Payment Date:</label>
-				<form:input path="SellerPaymentDate" disabled="true" readonly="true" cssClass="span5"
-					id="SellerPaymentDate" />
-
-			</div>
-			<div class="span6">
-				<label class="span6">Trade Amount:</label>
-				<form:input path="tradeAmount" readonly="true" cssClass="span6" />
-			</div>
-		</div>
-
-		<div class="row-fluid">
-			<div class="span6">
-				<label class="span6">Company Name:</label>
-				<label class="span6">${scfTradeModel.company.name}</label>
 				<input type="hidden" value="${scfTradeModel.company.id}" name="companyID">
-				<%-- <form:select path="companyId" items="${companyIdMap}"
-					class="dropdown span6" id="companyId" placeholder="Company Name" /> --%>
 			</div>
-
-
-			<div class="span6">
-				<label class="span6">Trade Notes:</label>
-				<form:input path="tradeNotes" readonly="true" cssClass="span6" />
-
-			</div>
-
-
 
 		</div>
 		
-		<div class="table-responsive" >
+		<div class="customTableContainer mb15">
+			<table class="table label-value">
+				<tr>
+					<td><b>Duration</b></td>
+					<td>${scfTradeModel.duration}</td>
+					<td><b>Investor Payment Date</b></td>
+					<td>${scfTradeModel.investorPaymentDate}</td>
+				</tr>
+				<tr>
+					<td><b>Seller Payment Date</b></td>
+					<td>${scfTradeModel.sellerPaymentDate}</td>
+					<td><b>Trade Amount</b></td>
+					<td><fmt:formatNumber type="number" maxFractionDigits="3" value="${scfTradeModel.tradeAmount}" /></td>
+				</tr>
+				<tr>
+					<td><b>Company Name</b></td>
+					<td>${scfTradeModel.company.name}</td>
+					<td><b>Trade Notes</b></td>
+					<td>${scfTradeModel.tradeNotes}</td>
+				</tr>				
+			</table>
+		</div>
+		
+		
+		
+
+		
+		<div class="customTableContainer" >
 
             <table class="table  tablesorter table-bordered" id="tradeListTable">
                 <thead>
@@ -110,7 +65,8 @@
                         <th>BPS( Per Year)</th>
                         <th>Duration</th>
                         <th>Whitehall Profit Share</th>
-                        <th>Investors Fees ( TOTAL)</th>
+                         <th>Investors Gross Profit</th>
+                        <th>Investors Net profit( TOTAL)</th>
                         <th>Allotment date</th>
 
                     </tr>
@@ -120,11 +76,12 @@
                         <c:when test="${fn:length(allotments) gt 0}">
                             <c:forEach items="${allotments}" var="allotment">
                                 <tr>
-                                    <td>${allotment.allotmentAmount}</td>
-                                    <td>${allotment.marketDiscount}</td>
+                                    <td class="rightalign blue_normal"><fmt:formatNumber type="number" maxFractionDigits="3" value="${allotment.allotmentAmount}" /></td>
+                                    <td class="rightalign">${allotment.marketDiscount}</td>
                                     <td>${allotment.noOfdays}</td>
-                                    <td>${allotment.whitehallProfitShare }</td>
-                                    <td>${allotment.investorNetProfit }</td>
+                                    <td class="rightalign red_bold">${allotment.whitehallProfitShare }</td>
+                                    <td class="rightalign green_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${allotment.investorGrossProfit}" /></td>
+                                    <td class="rightalign green_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${allotment.investorNetProfit}" /></td>
                                     <td><fmt:formatDate value="${allotment.allotmentDate}"
                                             pattern="dd-MM-yyyy HH:mm" /></td>
 
@@ -137,28 +94,44 @@
             </table>
         </div>
 
-		<div class="row-fluid">
-			<div class="faqflip"><div class="fa fa-chevron-down"></div>Invoices within Trade</div>
-			<div class="faqpanel">
-				  <%@include file="invoicelisttable.jsp"%>
-			</div>
-		</div>
+		 
 		<br>
-
-
-		<div class="row-fluid">
-			<div class="span6">
-							
-					<input type="button"
-					value="Go Back" class="btn btn-primary"
+		 <%@include file="invoicelisttable.jsp"%>
+		 
+		  <div class="actionContainer noBorder text-left">
+			<input type="button"
+					value="Go Back" class="btn btnBgBuSm"
 					data-url="${defaultRender}" id="tradeback" />
 					<input type="button" style="display:none" value="Update" id="updateTrade" class="btn btn-primary"/>
-			</div>
-		</div>
+		  </div>
+
+
 
 	</form:form>
+	</div>
 
 </div>
+
+<aui:script>
+AUI().ready(function() {	
+
+	
+	AUI().use('aui-toggler', function(A) {
+        new A.TogglerDelegate({
+            animated: true,
+            closeAllOnExpand: true,
+            container: '#myToggler',
+            content: '.toggleContent',
+            expanded: false,
+            header: '.toggleHeader',
+            transition: {
+              duration: 0.2,
+              easing: 'cubic-bezier(0, 0.1, 0, 1)'
+            }
+          });
+    });
+});
+</aui:script>
 
 
 

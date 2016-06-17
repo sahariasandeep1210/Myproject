@@ -93,7 +93,7 @@ public class AllotmentDAOImpl extends BaseDAOImpl<Allotment, Long>   implements 
 			prList.add(Projections.groupProperty("marketDiscount"));
 			prList.add(Projections.sum("allotmentAmount"));
 			prList.add(Projections.sum("whitehallProfitShare"));
-			prList.add(Projections.sum("investorNetProfit"));
+			prList.add(Projections.sum("investorGrossProfit"));
 			prList.add(Projections.property("noOfdays"));
 			prList.add(Projections.property("allotmentDate"));
 			cr.setProjection(prList);
@@ -104,7 +104,7 @@ public class AllotmentDAOImpl extends BaseDAOImpl<Allotment, Long>   implements 
 				allotment.setMarketDiscount(Integer.valueOf(row[0].toString()));
 				allotment.setAllotmentAmount(new BigDecimal (row[1].toString()));
 				allotment.setWhitehallProfitShare(new BigDecimal(row[2].toString()) );
-				allotment.setInvestorNetProfit(new BigDecimal (row[3].toString()));
+				allotment.setInvestorGrossProfit(new BigDecimal (row[3].toString()));
 				allotment.setNoOfdays(Integer.valueOf(row[4].toString()));
 				allotment.setAllotmentDate(formatter.parse(row[5].toString()));
 				allotmentList.add(allotment);

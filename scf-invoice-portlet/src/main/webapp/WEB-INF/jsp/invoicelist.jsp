@@ -62,7 +62,7 @@
 <liferay-portlet:renderURL portletName="<%=portletId%>"
 	var="createTradeURL" plid="<%=plid%>"
 	windowState="<%=WindowState.NORMAL.toString()%>">
-	<liferay-portlet:param name="render" value="createTrade" />
+	<liferay-portlet:param name="render" value="singleTrade" />
 </liferay-portlet:renderURL>
 
 <%@include file="tabview.jsp"%>

@@ -7,5 +7,6 @@
 <%@taglib 		prefix="liferay-theme"		uri="http://liferay.com/tld/theme"  %>
 <%@ taglib 		prefix="liferay-portlet" 	uri="http://liferay.com/tld/portlet" %>
 <%@ taglib  	prefix="liferay-ui" 		uri="http://liferay.com/tld/ui"%>
+<%@ taglib 		prefix="aui"				uri="http://liferay.com/tld/aui"  %>
 <portlet:defineObjects/>
 <%@ taglib uri="http://whitehall.com/jsp/tld/p" prefix="p"%>

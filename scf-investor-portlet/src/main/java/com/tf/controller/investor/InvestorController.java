@@ -138,7 +138,6 @@ public class InvestorController {
 		throws Exception {
 		Investor inves=null;
 		List<InvestorTransaction> investorList = new ArrayList<InvestorTransaction>();
-		List<InvestorTransaction> invList = null;
 		Company company = null;
 		List<com.tf.persistance.util.InvestorDTO> investors = null;
 		ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
@@ -188,14 +187,12 @@ public class InvestorController {
 						totalReceivablesPosition = totalReceivablesPosition.add(receivablesPosition);
 					}
 					totalAsset = inves.getCashPosition().add(totalReceivablesPosition);
-					invList =
-						investorTransactionService.getInvestorTransactionByTransactionType(
-							investorId, transactionType, fromDate, toDate, paginationModel.getStartIndex(), paginationModel.getPageSize());
+					investorList =	investorTransactionService.getInvestorTransactionByTransactionType(	investorId, transactionType, fromDate, toDate, paginationModel.getStartIndex(), paginationModel.getPageSize());
 					noOfRecords = investorTransactionService.getInvestorsCounts(investorId, transactionType, fromDate, toDate);
 					model.put("transactionType", transactionType);
 					model.put("from", from);
 					model.put("to", to);
-					model.put("invList", invList);
+					//model.put("invList", invList);
 					for (com.tf.persistance.util.InvestorDTO inv : investors) {
 						if (inv.getInvestorID() == investorId) {
 							model.put("companyname", inv.getName());

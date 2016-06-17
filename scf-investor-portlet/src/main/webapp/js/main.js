@@ -2,12 +2,12 @@
 $(document).ready(function() {
 	
 	  investorIndex = 0;
-	  $("#pageSize").val($("#currPageSize").val());
+	  $("#pageSize").val($("#curPageSize").val());
 	  $("#saveProtfolios").hide(); 
 	  $(".historyRow").hide();
 	  $("#errorMsg").hide(); 
 	  enableTab();
-	  $('table').tablesorter();
+	  //$('table').tablesorter();
 	  
 	  $("#pageSize").change(function (){
 			var noOfRecords=parseInt($("#noOfRecords").val());
@@ -169,40 +169,44 @@ $(document).ready(function() {
     
         $("#balanceDate").datepicker({
   		changeMonth : true,
-  		changeYear : true,
-  		showOn : "button",
-  		maxDate : '0',
-  		buttonImage : "/tf-theme/images/calendar.jpg",
-  		buttonImageOnly : true,
-  		buttonText : "Select date"
-  		
+  		changeYear : true,  		
+  		maxDate : '0' 		
     });
+        
+
+		$(".dropdown-menu").on("click", "li", function(event){
+
+			var noOfRecords = parseInt($("#noOfRecords").val());
+			var pageSize = parseInt($("#curPageSize").val());
+			var newPageSize = parseInt($(this).attr('pageSize'));
+			$("#pageSize").val(newPageSize);
+			$("#currentPage").val(1);
+			if (noOfRecords < pageSize && newPageSize > pageSize) {
+				return;
+			} else {
+				var actionUrl = $("#defaultURL").val();
+				document.forms["investorBalanceForm"].action = actionUrl;
+				document.forms["investorBalanceForm"].submit();
+			}
+		
+           
+         });
   	
   	 
   });
 
 $("#fromDate").datepicker({
 		changeMonth : true,
-		changeYear : true,
-		showOn : "button",
-		
-		buttonImage : "/tf-theme/images/calendar.jpg",
-		buttonImageOnly : true,
-		buttonText : "Select date",
+		changeYear : true,	
 	    onSelect: function(selected) {
   				$("#toDate").datepicker("option","minDate", selected)
   				  
-  		   }
-			
+  		   }			
 	});
 	
 $("#toDate").datepicker({
 		changeMonth : true,
-		changeYear : true,
-		showOn : "button",
-		buttonImage : "/tf-theme/images/calendar.jpg",
-		buttonImageOnly : true,
-		buttonText : "Select date",
+		changeYear : true,		
 		onSelect: function(selected) {
   				$("#fromDate").datepicker("option","maxDate", selected)
   				  
@@ -315,8 +319,8 @@ $("#toDate").datepicker({
 });
   $("#casReport").click(function (){
 		var updateURL=$("#getCasReport").val();
-		document.forms["casReportForm"].action = updateURL;
-        document.forms["casReportForm"].submit();
+		document.forms["investorBalanceForm"].action = updateURL;
+        document.forms["investorBalanceForm"].submit();
 });
       $("#cancelSetting").click(function (){
     		document.forms["investorBalanceForm"].reset();
@@ -386,7 +390,7 @@ $("#toDate").datepicker({
   	  
     });
       
-      $('.filterable .btn-filter').click(function(){
+      $('.filterable .filter-btn').click(function(){
           var $panel = $(this).parents('.filterable'),
           $filters = $panel.find('.filters input'),
           $tbody = $panel.find('.table tbody');
@@ -554,8 +558,8 @@ function setPage(pageNumber) {
 	} else if($("#casReportTable").length){
 		$("#currentPage").val(pageNumber);
 		var actionUrl = $("#defaultCasURL").val();
-		document.forms["casReportForm"].action = actionUrl;
-		document.forms["casReportForm"].submit();
+		document.forms["investorBalanceForm"].action = actionUrl;
+		document.forms["investorBalanceForm"].submit();
 	}else if ($("#cashReportTable").length) {
 		$("#currentPage").val(pageNumber);
 		var actionUrl = $("#defaultCashURL").val();

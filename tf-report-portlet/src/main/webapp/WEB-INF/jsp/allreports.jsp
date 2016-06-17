@@ -6,7 +6,7 @@
 <portlet:actionURL var="getReportURL">
 	<portlet:param name="report" value="getReport" />
 </portlet:actionURL>
-<div class="container-fluid">
+<div class="tab-content">
 
 	<form:form commandName="reportModel" method="post"
 		action="" id="reportList" autocomplete="off" name="reportList">
@@ -69,7 +69,7 @@
 					</div>
 			
 		</div>
-		<div class="table-responsive">
+		<div class="customTableContainer">
 			<table class="table table-hover tablesorter table-bordered"  id="reportListTable">
 				<thead>
 					<tr>

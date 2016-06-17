@@ -26,3 +26,11 @@
 .error_show {
 	border: red 1px solid !important;
 }
+
+      .aui.whiteHallInternal #wrapper .customTableContainer table.label-value tr td:first-child {
+          background: #F4F8FB; 
+          }
+          
+            .aui.whiteHallInternal #wrapper .customTableContainer table.label-value tr td:nth-child(3) {
+          background: #F4F8FB; 
+          }
