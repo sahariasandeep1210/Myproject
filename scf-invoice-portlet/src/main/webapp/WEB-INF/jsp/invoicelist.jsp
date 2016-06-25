@@ -41,6 +41,11 @@
 		arguments="${scfCompany}"></liferay-ui:message>
 </liferay-ui:error>
 
+<liferay-ui:error key="invoice.minPaymentDuration.error">
+	<liferay-ui:message key="invoice.payment.duration.error"
+		arguments="${minPaymentDurationDate}"></liferay-ui:message>
+</liferay-ui:error>
+
 <%
 	List<Portlet> portletList = PortletLocalServiceUtil.getPortlets();
 	String portletId = null;

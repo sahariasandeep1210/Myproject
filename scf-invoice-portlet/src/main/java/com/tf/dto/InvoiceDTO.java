@@ -8,10 +8,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 public class InvoiceDTO  implements Serializable{
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 3355005747582882864L;
+
+	private static final long serialVersionUID = -4213667135092864080L;
+	
+	
 	//invoice Document fields
 	private Long scfCompany;
 	private String fileType;
@@ -19,7 +19,7 @@ public class InvoiceDTO  implements Serializable{
 	
 	//invoice fields
 	private Long id;
-	private Long  invoiceNumber;
+	private String  invoiceNumber;
 	private Date invoiceDate;
 	private String sellerRegNo;
 	private String sellerVatNumber;
@@ -71,11 +71,11 @@ public class InvoiceDTO  implements Serializable{
 		this.id = id;
 	}
 
-	public Long getInvoiceNumber() {
+	public String getInvoiceNumber() {
 		return invoiceNumber;
 	}
 
-	public void setInvoiceNumber(Long invoiceNumber) {
+	public void setInvoiceNumber(String invoiceNumber) {
 		this.invoiceNumber = invoiceNumber;
 	}
 

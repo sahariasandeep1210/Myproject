@@ -1,29 +1,25 @@
 
 package com.tf.dao.impl;
 
-import java.math.BigDecimal;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.mysql.jdbc.StringUtils;
 import com.tf.dao.InvoiceDAO;
-import com.tf.model.Company;
+import com.tf.model.GenericListModel;
 import com.tf.model.Invoice;
 import com.tf.persistance.util.ValidationUtil;
 import com.tf.service.CompanyService;
@@ -102,28 +98,38 @@ public void deleteInvoice(Invoice invoice){
 		}
 }
 	@SuppressWarnings("unchecked")
-	public List<Invoice> getInvoices(int startIndex, int pageSize) {
-
-		_log.debug("Inside getInvoice ");
+	public GenericListModel getInvoices(Long companyID,int startIndex, int pageSize,String registrationNo) {
+		_log.debug("Inside getInvoices ");
 		try {
-			List<Invoice> results =
-				(List<Invoice>) sessionFactory.getCurrentSession().createQuery("from Invoice").setFirstResult(startIndex).setMaxResults(pageSize).list();
-			_log.debug("GetCompanies successful, result size: " + results.size());
-			return results;
+		        Criteria criteria=sessionFactory.getCurrentSession().createCriteria(Invoice.class);
+		    	if(companyID!=null){
+		    	    criteria.add(Restrictions.eq("scfCompany.id", companyID));
+		    	}else if(StringUtils.isNotBlank(registrationNo)){
+		    	    criteria.add(Restrictions.eq("sellerCompanyRegistrationNumber", registrationNo));
+		    	}
+			List<Invoice> results =(List<Invoice>)criteria.addOrder(Order.desc("updateDate")).setFirstResult(startIndex).setMaxResults(pageSize).list();
+			GenericListModel genericModel=new GenericListModel();
+			genericModel.setCount(getInvoicesCount(companyID,registrationNo));
+			genericModel.setList(results);
+			_log.debug("getInvoices successful, result size: " + results.size());	
+			return genericModel;
 		}
 		catch (RuntimeException re) {
-			_log.error("GetCompanies failed", re);
+			_log.error("getInvoices failed", re);
 			throw re;
 		}
 	}
 
-	public Long getInvoicesCount() {
-
+	public Long getInvoicesCount(Long companyID,String registrationNo) {
 		_log.debug("Inside getInvoicesCount ");
 		try {
-
-			Long resultCount =
-				(Long) sessionFactory.getCurrentSession().createCriteria(Invoice.class).setProjection(Projections.rowCount()).uniqueResult();
+		    	Criteria criteria=sessionFactory.getCurrentSession().createCriteria(Invoice.class);		
+			if(companyID!=null){
+		    	    criteria.add(Restrictions.eq("scfCompany.id", companyID));
+		    	}else if(StringUtils.isNotBlank(registrationNo)){
+		    	    criteria.add(Restrictions.eq("sellerCompanyRegistrationNumber", registrationNo));
+		    	}
+			Long resultCount =(Long)criteria.setProjection(Projections.rowCount()).uniqueResult();
 			_log.info("getInvoicesCount Count:: " + resultCount);
 			return resultCount;
 		}
@@ -151,24 +157,7 @@ public void deleteInvoice(Invoice invoice){
 		}
 	}
 
-	@SuppressWarnings("unchecked")
-	public List<Invoice> getInvoices(long companyID, int startIndex, int pageSize) {
 
-		_log.debug("Inside getInvoices ");
-		try {
-
-			List<Invoice> results =
-				(List<Invoice>) sessionFactory.getCurrentSession().createCriteria(Invoice.class).add(Restrictions.eq("scfCompany.id", companyID)).setFirstResult(
-					startIndex).setMaxResults(pageSize).list();
-			_log.debug("getInvoices successful, result size: " + results.size());
-			return results;
-		}
-		catch (RuntimeException re) {
-			_log.error("getScfgetInvoicesTrades failed", re);
-			throw re;
-		}
-
-	}
 
 	@SuppressWarnings("unchecked")
 	public List<Invoice> getInvoicesByCompanyNumber(String companyNumber, int startIndex, int pageSize) {
@@ -209,7 +198,6 @@ public void deleteInvoice(Invoice invoice){
 	}
 
 	public void updateInvoices(List<Invoice> invoices) {
-
 		try {
 			Session session = sessionFactory.getCurrentSession();
 			for (Invoice invoice : invoices) {
@@ -226,7 +214,6 @@ public void deleteInvoice(Invoice invoice){
 	/* New method added for finding the RegistrationNumber */
 	@SuppressWarnings("unchecked")
 	public List<Invoice> findByRegNum(String regNum) {
-
 		try {
 			List<Invoice> invoices =
 				(List<Invoice>) sessionFactory.getCurrentSession().createCriteria(Invoice.class).add(
@@ -245,41 +232,7 @@ public void deleteInvoice(Invoice invoice){
 			throw e;
 		}
 	}
-
-	public Long getInvoiceCounts(String regNum) {
-
-		_log.debug("Inside getInvoiceCounts ");
-		try {
-
-			Long resultCount =
-				(Long) sessionFactory.getCurrentSession().createCriteria(Invoice.class).add(
-					Restrictions.eq("sellerCompanyRegistrationNumber", regNum)).setProjection(Projections.rowCount()).uniqueResult();
-			_log.debug("getInvoiceCounts  " + resultCount);
-			return resultCount;
-		}
-		catch (RuntimeException re) {
-			_log.error("getInvoiceCounts Count failed", re);
-			throw re;
-		}
-	}
-
-	public Long getInvsCounts(long companyID) {
-
-		_log.debug("Inside getInvoiceCounts ");
-		try {
-
-			Long resultCount =
-				(Long) sessionFactory.getCurrentSession().createCriteria(Invoice.class).add(Restrictions.eq("scfCompany.id", companyID)).setProjection(
-					Projections.rowCount()).uniqueResult();
-			_log.debug("getInvoiceCounts  " + resultCount);
-			return resultCount;
-		}
-		catch (RuntimeException re) {
-			_log.error("getInvoiceCounts Count failed", re);
-			throw re;
-		}
-	}
-
+	
 	@SuppressWarnings("unchecked")
 	public List<Invoice> getInvoicesByRegNum(String regNum) {
 
@@ -299,15 +252,13 @@ public void deleteInvoice(Invoice invoice){
 
 	}
 
-	public Invoice getInvoicesByInvoiceNumAndCompanyId(long id, long companyId) {
-
+	public Invoice getInvoicesByInvoiceNumAndCompanyId(String invoiceNo, long companyId) {
 		try {
 			Invoice invoice =
-				(Invoice) sessionFactory.getCurrentSession().createCriteria(Invoice.class).add(Restrictions.eq("invoiceNumber", id)).add(
+				(Invoice) sessionFactory.getCurrentSession().createCriteria(Invoice.class).add(Restrictions.eq("invoiceNumber", invoiceNo)).add(
 					Restrictions.eq("scfCompany.id", companyId)).uniqueResult();
 			_log.debug("getInvoicesByInvoiceNumber successful, result size: " + invoice);
 			return invoice;
-
 		}
 		catch (RuntimeException re) {
 			_log.error("getInvoicesByInvoiceNumber failed", re);
@@ -315,19 +266,28 @@ public void deleteInvoice(Invoice invoice){
 		}
 	}
 
+	
+	
+	
 	@SuppressWarnings("unchecked")
-	public List<Invoice> getInvoicesByFilter(String search, Date frmDate, Date toDate, String value, int startIndex, int pageSize) {
+	public GenericListModel getInvoicesByFilter(String search, Date frmDate, Date toDate, String value, int startIndex, int pageSize,Long companyID,String registrationNo) {
 		_log.debug("Inside getInvoicesByFilter");
-		List<Invoice> invoicelist = new ArrayList<Invoice>();		
+		GenericListModel genericModel=new GenericListModel();
 		try {
 				DetachedCriteria criteria = DetachedCriteria.forClass(Invoice.class);	
 				Disjunction or = Restrictions.disjunction();
-				if (validationUtil.isNumeric(search)) {
-					or.add(Restrictions.like("invoiceNumber",Long.valueOf(search)));
-				}else{
+					or.add(Restrictions.like("invoiceNumber",search,MatchMode.ANYWHERE));
 					or.add(Restrictions.like("status", search, MatchMode.ANYWHERE));
 					or.add(Restrictions.like("company.name", search, MatchMode.ANYWHERE));
-				}				
+					
+					
+				if(companyID!=null){
+				   	    criteria.add(Restrictions.eq("scfCompany.id", companyID));
+				 }else if(StringUtils.isNotBlank(registrationNo)){
+				    	    criteria.add(Restrictions.eq("sellerCompanyRegistrationNumber", registrationNo));
+				 }
+				
+				
 				if (frmDate != null && toDate != null) {
 					criteria.add(Restrictions.ge(value, frmDate));
 					criteria.add(Restrictions.le(value, toDate));
@@ -337,9 +297,13 @@ public void deleteInvoice(Invoice invoice){
 				}
 				else if (frmDate == null && toDate != null) {
 					criteria.add(Restrictions.le(value, toDate));
-				}				
-				invoicelist = criteria.getExecutableCriteria(sessionFactory.getCurrentSession()).createAlias("scfCompany", "company")
+				}	
+				criteria.addOrder(Order.desc("updateDate"));
+				List<Invoice> invoicelist = criteria.getExecutableCriteria(sessionFactory.getCurrentSession()).createAlias("scfCompany", "company")
 							  .add(or).setFirstResult(startIndex).setMaxResults(pageSize).list();
+				
+				genericModel.setCount(getInvoicesByFilterCount(search,frmDate,toDate,value,companyID,registrationNo));
+				genericModel.setList(invoicelist);
 				_log.debug("getInvoicesByFilter successful, result size: " + invoicelist.size());
           	
 		}catch (RuntimeException re) {
@@ -347,73 +311,24 @@ public void deleteInvoice(Invoice invoice){
 			throw re;
 		}
 		
-		return invoicelist;
+		return genericModel;
 
 	}
 	
-	@Deprecated
-	public Long getInvoicesByFilterNumberCount(String search, Date frmDate, Date toDate, String value) {
-		_log.debug("Inside getInvoicesByFilterCount ");
-		try {
-			Query query=null;
-			if (validationUtil.isNumeric(search)) {
-				String qry="";
-				if( StringUtils.isNullOrEmpty(value)){
-				   qry="select invoice_number,payment_date,invoice_amout,duration,status ,(select idcompany from tf_company cmp where cmp.idcompany=scf_company) from scf_invoice invoice WHERE invoice.invoice_number like (:invoiceNumber)"; 
-				}else if(("invoiceDate").equals(value) && frmDate != null && toDate != null){
-					   qry="select invoice_number,payment_date,invoice_amout,duration,status ,(select idcompany from tf_company cmp where cmp.idcompany=scf_company) from scf_invoice invoice WHERE invoice.invoice_number like (:invoiceNumber) and invoice.invoice_date BETWEEN (:fromDate) and (:toDate)";
-				}else if (("invoiceDate").equals(value) && frmDate != null && toDate == null) {
-					   qry="select invoice_number,payment_date,invoice_amout,duration,status ,(select idcompany from tf_company cmp where cmp.idcompany=scf_company) from scf_invoice invoice WHERE invoice.invoice_number like (:invoiceNumber) and invoice.invoice_date  >= (:fromDate)";
-				}else if (("invoiceDate").equals(value) && frmDate == null && toDate != null) {
-					   qry="select invoice_number,payment_date,invoice_amout,duration,status ,(select idcompany from tf_company cmp where cmp.idcompany=scf_company) from scf_invoice invoice WHERE invoice.invoice_number like (:invoiceNumber) and invoice.invoice_date  <= (:toDate)"; 
-				}else if (("financeDate").equals(value) && frmDate != null && toDate != null){
-					   qry="select invoice_number,payment_date,invoice_amout,duration,status ,(select idcompany from tf_company cmp where cmp.idcompany=scf_company) from scf_invoice invoice WHERE invoice.invoice_number like (:invoiceNumber) and invoice.finance_date BETWEEN (:fromDate) and (:toDate)";
-
-				}else if (("financeDate").equals(value) && frmDate != null && toDate == null) {
-					   qry="select invoice_number,payment_date,invoice_amout,duration,status ,(select idcompany from tf_company cmp where cmp.idcompany=scf_company) from scf_invoice invoice WHERE invoice.invoice_number like (:invoiceNumber) and invoice.finance_date >= (:fromDate)"; 
-					
-				}else if (("financeDate").equals(value) && frmDate == null && toDate != null) {
-					   qry="select invoice_number,payment_date,invoice_amout,duration,status ,(select idcompany from tf_company cmp where cmp.idcompany=scf_company) from scf_invoice invoice WHERE invoice.invoice_number like (:invoiceNumber) and invoice.finance_date <= (:toDate)";
-				}else if (("paymentDate").equals(value) && frmDate != null && toDate != null){
-					   qry="select invoice_number,payment_date,invoice_amout,duration,status ,(select idcompany from tf_company cmp where cmp.idcompany=scf_company) from scf_invoice invoice WHERE invoice.invoice_number like (:invoiceNumber) and invoice.payment_date BETWEEN (:fromDate) and (:toDate)";
-
-				}else if (("paymentDate").equals(value) && frmDate != null && toDate == null){
-					   qry="select invoice_number,payment_date,invoice_amout,duration,status ,(select idcompany from tf_company cmp where cmp.idcompany=scf_company) from scf_invoice invoice WHERE invoice.invoice_number like (:invoiceNumber) and invoice.payment_date >= (:fromDate)";
-
-				}else if (("paymentDate").equals(value) && frmDate == null && toDate != null) {
-					   qry="select invoice_number,payment_date,invoice_amout,duration,status ,(select idcompany from tf_company cmp where cmp.idcompany=scf_company) from scf_invoice invoice WHERE invoice.invoice_number like (:invoiceNumber) and invoice.payment_date  <= (:toDate)"; 
-				}
-				 query = sessionFactory.getCurrentSession().createSQLQuery(qry);
-				if (!StringUtils.isNullOrEmpty(search)) {
-				query.setParameter("invoiceNumber", "%"+search+"%");
-				}
-				if (frmDate != null) {
-				query.setParameter("fromDate", frmDate);
-				}
-				if (toDate != null) {
-				query.setParameter("toDate", toDate);
-				}
-			}	
-				Long resultCount  = Long.valueOf(query.list().size());
-		        return resultCount;
-			}catch (RuntimeException re) {
-		_log.error("getInvoicesByFilterCount failed", re);
-		throw re;
-		}
-
-}
-	public Long getInvoicesByFilterCount(String search, Date frmDate, Date toDate, String value) {
+	public Long getInvoicesByFilterCount(String search, Date frmDate, Date toDate, String value,Long companyID,String registrationNo) {
 		_log.debug("Inside getInvoicesByFilterCount ");
 		try {
 			DetachedCriteria criteria = DetachedCriteria.forClass(Invoice.class);
 			Disjunction or = Restrictions.disjunction();
-			if (validationUtil.isNumeric(search)) {
-				or.add(Restrictions.like("invoiceNumber",Long.valueOf(search)));
-			}else{
+				or.add(Restrictions.like("invoiceNumber",search,MatchMode.ANYWHERE));
 				or.add(Restrictions.like("status", search, MatchMode.ANYWHERE));
 				or.add(Restrictions.like("company.name", search, MatchMode.ANYWHERE));
-			}
 			
+			if(companyID!=null){
+		   	    criteria.add(Restrictions.eq("scfCompany.id", companyID));
+        		 }else if(StringUtils.isNotBlank(registrationNo)){
+        		    	    criteria.add(Restrictions.eq("sellerCompanyRegistrationNumber", registrationNo));
+        		 }
 			if (frmDate != null && toDate != null) {
 				criteria.add(Restrictions.ge(value, frmDate));
 				criteria.add(Restrictions.le(value, toDate));
@@ -435,7 +350,7 @@ public void deleteInvoice(Invoice invoice){
 		}
 	}
 
-	public int validInvoiceImport(Long invoiceNumber, Long Id) {
+	public int validInvoiceImport(String invoiceNumber, Long Id) {
 		_log.debug("Inside validInvoiceImport ");
 		int valid=0;
 		Query query=null;
@@ -463,4 +378,19 @@ public void deleteInvoice(Invoice invoice){
 		return valid;
 	}
 
+	public Long getInvoicesCount() {
+	    	try {
+		    Criteria criteria = sessionFactory.getCurrentSession()
+			    .createCriteria(Invoice.class);
+		    Long resultCount = (Long) criteria.setProjection(
+			    Projections.rowCount()).uniqueResult();
+		    _log.info("getInvoicesCount Count:: " + resultCount);
+		    return resultCount;
+		} catch (Exception e) {
+		    // TODO: handle exception
+		}
+	    	 return 0l;
+	}
+	
+	
 }

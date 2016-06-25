@@ -7,56 +7,41 @@ import java.util.Map;
 import java.util.Set;
 
 import com.tf.model.Company;
+import com.tf.model.GenericListModel;
 import com.tf.model.Invoice;
 import com.tf.persistance.util.InSuffcientFund;
+import com.tf.persistance.util.InvalidDuration;
 
 public interface InvoiceService {
 	 
 	public void deleteInvoice(Invoice invoice);	
-	public void addInvoices(List<Invoice> invoices);
-	public Long getInvoicesByFilterNumberCount(String search, Date frmDate, Date toDate, String value);
-	public Long getInvoicesByFilterCount(String search,Date frmDate,Date toDate,String value);
 	
-	public List<Invoice> getInvoices(int startIndex,int pageSize);
+	public void addInvoices(List<Invoice> invoices);	
 
 	public Map<Company, BigDecimal> getInvoicesAmount(String invoiceIds);
 	
-	public List<Invoice> getInvoicesByFilter(String search,Date frmDate,Date toDate,String value,int startIndex,int pageSize);
+	public GenericListModel getInvoicesByFilter(String search,Date frmDate,Date toDate,String value,int startIndex,int pageSize,Long companyID,String registrationNo);
 	
 	public Set<Invoice> getInvoices(String invoiceIds);
-
-	public List<Invoice> getInvoices(long companyID,int startIndex,int pageSize);
 	
-	public List<Invoice> getInvoicesBytradeId(long id);
-	
-	public List<Invoice> getInvoicesByCompanyNumber(String companyNumber,int startIndex,int pageSize);
-	
-	public List<Invoice> getInvoicesByCompanyNoAndStatus(String companyNumber,String status);
+	public List<Invoice> getInvoicesBytradeId(long id);	
 	
 	public void updateInvoicesStatus(List<String> invoiceIds,String Status);
 	
 	public void updateInvoicesStatusWithTrade(List<String> invoiceIds,String status,Long tradeLong);
 	
-	public Date triggerAllotment(List<String> invoiceIds,long sellerCompanyID,long userId) throws InSuffcientFund;
+	public Date triggerAllotment(List<String> invoiceIds,long sellerCompanyID,long userId) throws InSuffcientFund, InvalidDuration;
 	
-	public Invoice getInvoicesByInvoiceNumAndCompanyId(long id,long companyId);		
-
-	public List<Invoice> getInvoicesByRegNum(String regNum);
-	
-	public List<Invoice> findByRegNum(String regNum);
-	
-	public Long getInvoicesCount();
+	public Invoice getInvoicesByInvoiceNumAndCompanyId(String invoiceNumber,long companyId);	
 	
 	public Invoice getInvoicesById(long id);
-	
-	public Long getInvoiceCounts(String regNum);
-	
-	public Long getInvsCounts(long companyID);
 	
 	public Invoice findById(Long id); 
 	
 	public String getSellerRegNumberByTradeID(long id);
 	
-	public int validInvoiceImport(Long invoiceNumber, Long Id);
+	public int validInvoiceImport(String invoiceNumber, Long Id);
+
+	public GenericListModel getInvoices(Long companyID, int startIndex,int pageSize, String registrationNo);
 
 }

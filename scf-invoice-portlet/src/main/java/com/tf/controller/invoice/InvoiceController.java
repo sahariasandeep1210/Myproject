@@ -60,11 +60,13 @@ import com.mysql.jdbc.StringUtils;
 import com.tf.dto.InvoiceDTO;
 import com.tf.model.Company;
 import com.tf.model.GeneralSetting;
+import com.tf.model.GenericListModel;
 import com.tf.model.Invoice;
 import com.tf.model.InvoiceDocument;
 import com.tf.persistance.util.CompanyTypes;
 import com.tf.persistance.util.Constants;
 import com.tf.persistance.util.InSuffcientFund;
+import com.tf.persistance.util.InvalidDuration;
 import com.tf.persistance.util.InvoiceStatus;
 import com.tf.persistance.util.ValidationUtil;
 import com.tf.service.CompanyService;
@@ -155,7 +157,7 @@ public class InvoiceController {
 			List<InvoiceDocument> invoiceDocumentList =	new ArrayList<InvoiceDocument>();
 			if (liferayUtility.getPermissionChecker(request).isOmniadmin()) {
 				invoiceDocumentList =invoiceDocumentService.getInvoiceDocuments();
-				companyList = companyService.getCompanies("5");
+				companyList = companyService.getCompanies(CompanyTypes.SCF_COMPANY.getValue());
 				model.put("userType", Constants.ADMIN);
 			}
 			else if (request.isUserInRole(Constants.SCF_ADMIN)) {
@@ -432,8 +434,6 @@ public class InvoiceController {
 		throws Exception {
 
 		try {
-			List<Invoice> invoices = new ArrayList<Invoice>();
-			Long noOfRecords = 0l;
 			PaginationModel paginationModel =
 				paginationUtil.preparePaginationModel(request);
 			ThemeDisplay themeDisplay =
@@ -445,93 +445,37 @@ public class InvoiceController {
 			String value = ParamUtil.getString(request, "dateList");
 			String from = ParamUtil.getString(request, "fromDate");
 			String to = ParamUtil.getString(request, "toDate");
+			Long companyID=null;
+			String registrationNo=null;
+			GenericListModel genericListModel=null;
 			if (!StringUtils.isNullOrEmpty(from)) {
 				fromDate = formatter.parse(from);
 			}
 			if (!StringUtils.isNullOrEmpty(to)) {
 				toDate = formatter.parse(to);
 			}
+			
+			
 			if (liferayUtility.getPermissionChecker(request).isOmniadmin() ||
-				request.isUserInRole(Constants.WHITEHALL_ADMIN)) {
-				
-				if(validationUtil.isNumeric(search)){
-					invoices =invoiceService.getInvoicesByFilter(
-										search, fromDate, toDate, value,
-										paginationModel.getStartIndex(), paginationModel.getPageSize());
-					noOfRecords=invoiceService.getInvoicesByFilterCount(search, fromDate, toDate, value);
-				}else if(!StringUtils.isNullOrEmpty(search) || !StringUtils.isNullOrEmpty(value)){
-				invoices =
-					invoiceService.getInvoicesByFilter(
-						search, fromDate, toDate, value,
-						paginationModel.getStartIndex(), paginationModel.getPageSize());
-				noOfRecords =
-					invoiceService.getInvoicesByFilterCount(
-						search, fromDate, toDate, value);
-				}else{
-				
-				invoices =
-					invoiceService.getInvoices(
-						paginationModel.getStartIndex(),
-						paginationModel.getPageSize());
-				noOfRecords = invoiceService.getInvoicesCount();
-				}
-				
+				request.isUserInRole(Constants.WHITEHALL_ADMIN)) {				
 				model.put("userType", Constants.ADMIN);
 			}
 			else if (request.isUserInRole(Constants.SCF_ADMIN)) {
-				if(validationUtil.isNumeric(search)){
-					invoices =invoiceService.getInvoicesByFilter(
-										search, fromDate, toDate, value,
-										paginationModel.getStartIndex(), paginationModel.getPageSize());
-					noOfRecords=invoiceService.getInvoicesByFilterNumberCount(search, fromDate, toDate, value);
-				}else if(!StringUtils.isNullOrEmpty(search) || !StringUtils.isNullOrEmpty(value)){
-				invoices =
-					invoiceService.getInvoicesByFilter(
-						search, fromDate, toDate, value,
-						paginationModel.getStartIndex(), paginationModel.getPageSize());
-				noOfRecords =
-					invoiceService.getInvoicesByFilterCount(
-						search, fromDate, toDate, value);
-				}else{
-				invoices =
-					invoiceService.getInvoices(
-						themeDisplay.getUser().getUserId(),
-						paginationModel.getStartIndex(),
-						paginationModel.getPageSize());
-				noOfRecords =
-					invoiceService.getInvsCounts(themeDisplay.getUser().getUserId());
-				}
+			        companyID = liferayUtility.getWhitehallCompanyID(request);
 				model.put("userType", Constants.SCF_ADMIN);
 			}
 			else if (request.isUserInRole(Constants.SELLER_ADMIN)) {
-				long companyId =
-					userService.getCompanyIDbyUserID(themeDisplay.getUserId());
-				if(validationUtil.isNumeric(search)){
-					invoices =invoiceService.getInvoicesByFilter(
-										search, fromDate, toDate, value,
-										paginationModel.getStartIndex(), paginationModel.getPageSize());
-					noOfRecords=invoiceService.getInvoicesByFilterNumberCount(search, fromDate, toDate, value);
-				}else if(!StringUtils.isNullOrEmpty(search) || !StringUtils.isNullOrEmpty(value)){
-				invoices =
-					invoiceService.getInvoicesByFilter(
-						search, fromDate, toDate, value,
-						paginationModel.getStartIndex(), paginationModel.getPageSize());
-				noOfRecords =
-					invoiceService.getInvoicesByFilterCount(
-						search, fromDate, toDate, value);
-				}else{
-				invoices =
-					invoiceService.getInvoicesByCompanyNumber(
-						companyService.findById(companyId).getRegNumber(),
-						paginationModel.getStartIndex(),
-						paginationModel.getPageSize());
-				noOfRecords =
-					invoiceService.getInvoiceCounts(companyService.findById(
-						companyId).getRegNumber());
-				}
+				long companyId = userService.getCompanyIDbyUserID(themeDisplay.getUserId());
+				registrationNo=companyService.findById(companyId).getRegNumber();				
 				model.put("userType", Constants.SELLER_ADMIN);
 			}
 			
+			if(!StringUtils.isNullOrEmpty(search) || !StringUtils.isNullOrEmpty(value)){
+			    	   genericListModel =invoiceService.getInvoicesByFilter(search, fromDate, toDate, value,
+						paginationModel.getStartIndex(), paginationModel.getPageSize(),companyID,registrationNo);
+				}else{				
+				    genericListModel = invoiceService.getInvoices(companyID,paginationModel.getStartIndex(), paginationModel.getPageSize(),registrationNo);
+			}			
 			model.put("tradeURL",liferayUtility.getPortletURL(request, "scf-trade-portlet", "render", "createTrade", true));
 			model.put("value", value);
 			model.put("search", search);
@@ -541,9 +485,9 @@ public class InvoiceController {
 			request.getPortletSession().removeAttribute("invoiceList");
 			request.getPortletSession().removeAttribute("validInvoiceList");
 			request.getPortletSession().removeAttribute("invalidnvoiceList");
-			paginationUtil.setPaginationInfo(noOfRecords, paginationModel);
+			paginationUtil.setPaginationInfo(genericListModel.getCount(), paginationModel);
 			model.put("paginationModel", paginationModel);
-			model.put("invoicesList", invoices);
+			model.put("invoicesList", genericListModel.getList());
 			model.put("defaultRender", Boolean.TRUE);
 			model.put(ACTIVETAB, "invoiceslist");
 		}
@@ -598,7 +542,7 @@ public class InvoiceController {
 						Cell cell = cellIterator.next();
 						// Get the Cell object
 						if (index == 0) {
-							invoiceModel.setInvoiceNumber((long) cell.getNumericCellValue());
+							invoiceModel.setInvoiceNumber(cell.getStringCellValue());
 						}
 						else if (index == 1) {
 							invoiceModel.setInvoiceDate(cell.getDateCellValue());
@@ -606,7 +550,7 @@ public class InvoiceController {
 						}
 						else if (index == 2) {
 							cell.setCellType(Cell.CELL_TYPE_STRING);
-							if (!StringUtils.isNullOrEmpty(cell.getStringCellValue()) &&
+						/*	if (!StringUtils.isNullOrEmpty(cell.getStringCellValue()) &&
 								!cell.getStringCellValue().startsWith("0")) {
 								// this fix to add 0 as prefix to company number
 								// as
@@ -616,10 +560,10 @@ public class InvoiceController {
 								sb.append(cell.getStringCellValue());
 								invoiceModel.setSellerCompanyRegistrationNumber(sb.toString());
 								sb = null;
-							}
-							else {
+							}*/
+							//else {
 								invoiceModel.setSellerCompanyRegistrationNumber(cell.getStringCellValue());
-							}
+							//}
 
 						}
 						else if (index == 3) {
@@ -827,10 +771,14 @@ public class InvoiceController {
 
 		}
 		catch (InSuffcientFund e) {
-			Invoice invoice =
-				invoiceService.findById(Long.valueOf(invoicesIdList.get(0)));
+			Invoice invoice = invoiceService.findById(Long.valueOf(invoicesIdList.get(0)));
 			model.put("scfCompany", invoice.getScfCompany().getName());
 			SessionErrors.add(request, "invoice.allotment.error");
+			e.getMessage();
+		}		
+		catch (InvalidDuration e) {
+			model.put("minPaymentDurationDate", e.getDuration());
+			SessionErrors.add(request, "invoice.minPaymentDuration.error");
 			e.getMessage();
 		}
 	}

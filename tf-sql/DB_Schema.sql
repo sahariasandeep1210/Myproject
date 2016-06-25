@@ -550,3 +550,7 @@ ALTER TABLE scf_trade MODIFY COLUMN insurance_doc_type VARCHAR(100) NULL;
 
 ALTER TABLE tf_general_setting ADD COLUMN  min_payment_date_duartion INT(11) DEFAULT NULL;
 
+# Added on 25th June
+ALTER TABLE scf_invoice   MODIFY COLUMN   invoice_number  VARCHAR(25);
+ALTER TABLE scf_invoice   ADD COLUMN      create_date DATE DEFAULT NULL;
+ALTER TABLE scf_invoice   ADD COLUMN      update_date DATE DEFAULT NULL;

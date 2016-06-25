@@ -5,13 +5,17 @@ import com.tf.dao.InvoiceDAO;
 import com.tf.dao.SCFTradeDAO;
 import com.tf.dao.UserDAO;
 import com.tf.model.Company;
+import com.tf.model.GeneralSetting;
+import com.tf.model.GenericListModel;
 import com.tf.model.Invoice;
 import com.tf.model.SCFTrade;
 import com.tf.persistance.util.AllotmentEngine;
 import com.tf.persistance.util.InSuffcientFund;
+import com.tf.persistance.util.InvalidDuration;
 import com.tf.persistance.util.InvestorProtfolioDTO;
 import com.tf.persistance.util.InvoiceStatus;
 import com.tf.persistance.util.TradeStatus;
+import com.tf.service.GeneralSettingService;
 import com.tf.service.InvoiceService;
 import com.tf.service.SCFTradeService;
 
@@ -39,9 +43,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class InvoiceServiceImpl implements InvoiceService{
 
 	@Autowired
-	private InvoiceDAO invoiceDAO;
-	
-	
+	private InvoiceDAO invoiceDAO;	
 	
 	@Autowired
 	private InvestorDAO investorDAO;
@@ -59,25 +61,17 @@ public class InvoiceServiceImpl implements InvoiceService{
 	private AllotmentEngine allotmentEngine;
 	
 	@Autowired
-	private com.tf.persistance.util.InSuffcientFund fund ;
+	private AllotmentDAO allotmentDAO;
 	
 	@Autowired
-	private AllotmentDAO allotmentDAO;
+	protected GeneralSettingService generalSettingService;
 
-	public void addInvoices(List<Invoice> invoice) {		
-		 
-		 invoiceDAO.addInvoices(invoice);	
-		 
+	public void addInvoices(List<Invoice> invoice) {		 
+		 invoiceDAO.addInvoices(invoice);		 
 	}
 
-	public List<Invoice> getInvoices(int startIndex,int pageSize) {
-		List<Invoice> invoices=invoiceDAO.getInvoices( startIndex, pageSize);
-		return invoices;
-	}
-	public Long getInvoicesCount(){
-		Long long1=invoiceDAO.getInvoicesCount();
-		return  long1;
-	}
+	
+	
 	
 	public Map<Company,BigDecimal> getInvoicesAmount(String invoiceIds){
 		Map<Company,BigDecimal> invoiceInfoMap=new LinkedHashMap<Company,BigDecimal>();
@@ -112,22 +106,13 @@ public class InvoiceServiceImpl implements InvoiceService{
 		
 	}
 	
-	public List<Invoice> getInvoices(long userId,int startIndex,int pageSize){
-		long companyId=userDAO.getCompanyIDbyUserID(userId);
-		return invoiceDAO.getInvoices(companyId,startIndex,pageSize);
-	}
-
 	
-	public List<Invoice> getInvoicesByCompanyNumber(String companyNumber,int startIndex,int pageSize){
-		return invoiceDAO.getInvoicesByCompanyNumber(companyNumber,startIndex,pageSize);
-	}
+	
 	
 	public List<Invoice> getInvoicesByCompanyNoAndStatus(String companyNumber,String status){
 		return invoiceDAO.getInvoicesByCompanyNoAndStatus(companyNumber,status);
 	}
-	public Long getInvoiceCounts(String regNum){
-		return invoiceDAO.getInvoiceCounts(regNum);
-	}
+	
 	
 	public void updateInvoicesStatus(List<String> invoiceIds,String status){
 		Invoice invoice;
@@ -157,8 +142,8 @@ public class InvoiceServiceImpl implements InvoiceService{
 		
 	}
 	
-	@Transactional(rollbackFor={Exception.class,InSuffcientFund.class})
-	public Date triggerAllotment(List<String> invoiceIds,long sellerCmpId,long userId) throws InSuffcientFund   {		
+	@Transactional(rollbackFor={Exception.class,InSuffcientFund.class,InvalidDuration.class})
+	public Date triggerAllotment(List<String> invoiceIds,long sellerCmpId,long userId) throws InSuffcientFund, InvalidDuration   {		
 		Date date=new Date();
 		Company company=null;
 		Invoice invoice;
@@ -292,7 +277,7 @@ public class InvoiceServiceImpl implements InvoiceService{
 		  }
 		return newFormatCode;
 	}
-	private  int duration(Date paymentdate,Date financedate){
+	private  int duration(Date paymentdate,Date financedate) throws InvalidDuration{
 		Calendar c1 = Calendar.getInstance();
 		Calendar c2 = Calendar.getInstance();
 		c1.setTime(paymentdate);
@@ -301,6 +286,10 @@ public class InvoiceServiceImpl implements InvoiceService{
 		Date d2=c2.getTime();
         long diff=d1.getTime()-d2.getTime();
         int noofdays=(int)(diff/(1000*24*60*60));
+        GeneralSetting generalSetting=generalSettingService.getGeneralSetting();
+        if((generalSetting!=null && generalSetting.getMinPaymentDateDuartion() !=null) && (noofdays < generalSetting.getMinPaymentDateDuartion())){        	
+        	throw new InvalidDuration(generalSetting.getMinPaymentDateDuartion());	
+        }
         return noofdays;		
 	}
 	
@@ -329,54 +318,46 @@ public class InvoiceServiceImpl implements InvoiceService{
 		return invoiceDAO.getInvoicesById(id);
 	}
 	
-	public Long getInvsCounts(long userId){
-		long companyId=userDAO.getCompanyIDbyUserID(userId);
-		return invoiceDAO.getInvsCounts(companyId);
-	}
-	
-	public List<Invoice> getInvoicesByRegNum(String regNum){
-		return invoiceDAO.getInvoicesByRegNum(regNum);
-	}
 	
 	public List<Invoice> getInvoicesBytradeId(long id){
 		return invoiceDAO.getInvoicesBytradeId(id);
 	}
 	
-	public Invoice getInvoicesByInvoiceNumAndCompanyId(long id,long companyId){
-		return invoiceDAO.getInvoicesByInvoiceNumAndCompanyId(id,companyId);
+	public Invoice getInvoicesByInvoiceNumAndCompanyId(String invoiceNo,long companyId){
+		return invoiceDAO.getInvoicesByInvoiceNumAndCompanyId(invoiceNo,companyId);
 	}
 	
 	public Invoice findById(Long id){
 		return invoiceDAO.findById(id); 
 	}
 	
-	public List<Invoice> getInvoicesByFilter(String search,Date frmDate,Date toDate,String value,int startIndex,int pageSize){
-		return invoiceDAO.getInvoicesByFilter(search, frmDate, toDate, value, startIndex, pageSize);
+	public GenericListModel getInvoicesByFilter(String search,Date frmDate,Date toDate,String value,int startIndex,int pageSize,Long companyID,String registrationNo){
+		return invoiceDAO.getInvoicesByFilter(search, frmDate, toDate, value, startIndex, pageSize,companyID,registrationNo);
 	}
-	public Long getInvoicesByFilterCount(String search,Date frmDate,Date toDate,String value){
-		return invoiceDAO.getInvoicesByFilterCount(search, frmDate, toDate, value);
-	}
+	
 
 	public String getSellerRegNumberByTradeID(long id) {
 		//there should be exception handling here
 		String sellerRegNumber=getInvoicesBytradeId(id).get(0).getSellerCompanyRegistrationNumber();
 		return sellerRegNumber;
 	}
+	
 	public void deleteInvoice(Invoice invoice){
 		invoiceDAO.deleteInvoice(invoice);
 	}
-	
-	public Long getInvoicesByFilterNumberCount(String search, Date frmDate, Date toDate, String value){
-		return invoiceDAO.getInvoicesByFilterNumberCount(search, frmDate, toDate, value);
-	}
-
-	public int validInvoiceImport(Long invoiceNumber, Long Id) {
-		if(invoiceNumber==null || invoiceNumber<=0){
+		
+	public int validInvoiceImport(String invoiceNumber, Long Id) {
+		if(StringUtils.isBlank(invoiceNumber)){
 			return 1;
 		}else{
 			return invoiceDAO.validInvoiceImport(invoiceNumber, Id);
-		}
-		
-		
+		}		
 	}
+
+	public GenericListModel getInvoices(Long companyID, int startIndex,
+		int pageSize, String registrationNo) {
+	    return invoiceDAO.getInvoices(companyID, startIndex, pageSize, registrationNo);
+	}
+
+
 }

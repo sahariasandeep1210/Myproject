@@ -16,10 +16,8 @@ import javax.persistence.Table;
 @Table(name = "scf_invoice")
 public class Invoice implements Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -584301302166760342L;
+
+    	private static final long serialVersionUID = -5860678209842565066L;
 
 	@Id
 	@Column(name = "id")
@@ -27,7 +25,7 @@ public class Invoice implements Serializable {
 	private Long id;
 
 	@Column(name = "invoice_number")
-	private Long invoiceNumber;
+	private String invoiceNumber;
 
 	@Column(name = "invoice_date")
 	private Date invoiceDate;
@@ -57,7 +55,7 @@ public class Invoice implements Serializable {
 	private String currency;	
 	
 	@ManyToOne  
-    @JoinColumn(name = "scf_company")  
+	@JoinColumn(name = "scf_company")  
 	private Company scfCompany;
 	
 	@Column(name = "finance_date")
@@ -67,13 +65,18 @@ public class Invoice implements Serializable {
 	private String status;
 	
 	@ManyToOne(cascade=CascadeType.ALL)	
-    @JoinColumn(name = "trade_id")
+	@JoinColumn(name = "trade_id")
 	private SCFTrade scfTrade;
+	
+	@Column(name = "create_date")
+	private Date createDate;
+	
+	@Column(name = "update_date")
+	private Date updateDate;
 	
 
 
 	public Invoice() {
-		// TODO Auto-generated constructor stub
 	}
 
 	public Long getId() {
@@ -84,11 +87,11 @@ public class Invoice implements Serializable {
 		this.id = id;
 	}
 
-	public Long getInvoiceNumber() {
+	public String getInvoiceNumber() {
 		return invoiceNumber;
 	}
 
-	public void setInvoiceNumber(Long invoiceNumber) {
+	public void setInvoiceNumber(String invoiceNumber) {
 		this.invoiceNumber = invoiceNumber;
 	}
 
@@ -195,18 +198,39 @@ public class Invoice implements Serializable {
 
 	public void setStatus(String status) {
 		this.status = status;
+	}	
+
+
+	public Date getCreateDate() {
+	    return createDate;
+	}
+
+	public void setCreateDate(Date createDate) {
+	    this.createDate = createDate;
+	}
+
+	public Date getUpdateDate() {
+	    return updateDate;
+	}
+
+	public void setUpdateDate(Date updateDate) {
+	    this.updateDate = updateDate;
 	}
 
 	@Override
 	public String toString() {
-		return "Invoice [id=" + id + ", invoiceNumber=" + invoiceNumber
-				+ ", invoiceDate=" + invoiceDate
-				+ ", sellerCompanyRegistrationNumber="
-				+ sellerCompanyRegistrationNumber + ", sellerCompanyVatNumber="
-				+ sellerCompanyVatNumber + ", invoiceAmount=" + invoiceAmount
-				+ ", vatAmount=" + vatAmount + ", invoiceDesc=" + invoiceDesc
-				+ ", duration=" + duration + ", payment_date=" + payment_date
-				+ ", currency=" + currency +  "]";
+	    return "Invoice [id=" + id + ", invoiceNumber=" + invoiceNumber
+		    + ", invoiceDate=" + invoiceDate
+		    + ", sellerCompanyRegistrationNumber="
+		    + sellerCompanyRegistrationNumber
+		    + ", sellerCompanyVatNumber=" + sellerCompanyVatNumber
+		    + ", invoiceAmount=" + invoiceAmount + ", vatAmount="
+		    + vatAmount + ", invoiceDesc=" + invoiceDesc
+		    + ", duration=" + duration + ", payment_date="
+		    + payment_date + ", currency=" + currency + ", scfCompany="
+		    + scfCompany + ", financeDate=" + financeDate + ", status="
+		    + status + ", scfTrade=" + scfTrade + ", createDate="
+		    + createDate + ", updateDate=" + updateDate + "]";
 	}	
 
 }
