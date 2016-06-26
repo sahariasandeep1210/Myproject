@@ -98,6 +98,7 @@ public class SCFTradeServiceImpl implements SCFTradeService {
 					invTransaction.setTranscationType(TranscationStatus.INVESTED.getValue());
 					invTransaction.setTranscationDate(date);
 					invTransaction.setTradeID(investorTransaction.getTradeID());
+					invTransaction.setScfTradeId(investorTransaction.getScfTradeId());
 					invTransaction.setReference("Invested");
 					investorTransactionDAO.saveEntity(invTransaction);
 					
@@ -251,6 +252,7 @@ public class SCFTradeServiceImpl implements SCFTradeService {
 			invTransactionRepaid.setTranscationType(TranscationStatus.REPAID.getValue());
 			invTransactionRepaid.setTranscationDate(date);
 			invTransactionRepaid.setTradeID(scfTrade.getId());
+			invTransactionRepaid.setScfTradeId(scfTrade.getScfId());
 			invTransactionRepaid.setReference(TranscationStatus.REPAID.getValue());
 			investorTransactionDAO.saveEntity(invTransactionRepaid);
 
@@ -261,6 +263,7 @@ public class SCFTradeServiceImpl implements SCFTradeService {
 			invTransactionProfit.setTranscationType(TranscationStatus.PROFIT.getValue());
 			invTransactionProfit.setTranscationDate(date);
 			invTransactionProfit.setTradeID(scfTrade.getId());
+			invTransactionProfit.setScfTradeId(scfTrade.getScfId());
 			invTransactionProfit.setReference(TranscationStatus.PROFIT.getValue());
 			investorTransactionDAO.saveEntity(invTransactionProfit);
 
@@ -271,6 +274,7 @@ public class SCFTradeServiceImpl implements SCFTradeService {
 			invTransactionFee.setTranscationType(TranscationStatus.WHITEHALL_FEE.getValue());
 			invTransactionFee.setTranscationDate(date);
 			invTransactionFee.setTradeID(scfTrade.getId());
+			invTransactionFee.setScfTradeId(scfTrade.getScfId());
 			invTransactionFee.setReference(TranscationStatus.WHITEHALL_FEE.getValue());
 			investorTransactionDAO.saveEntity(invTransactionFee);
 		}

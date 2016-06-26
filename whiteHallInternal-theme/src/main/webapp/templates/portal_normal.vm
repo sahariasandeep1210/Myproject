@@ -56,56 +56,15 @@ $theme.include($body_top_include)
 						</li>
 					#end
 					
-					<li class="dropdown notification-dropdown">
-					  <a href="#" class="dropdown-toggle-" data-toggle="dropdown">
-						<div class="notification-img-container">
-							<i class="icomoon-notification bigIcon notification-img" alt=""></i>
-							<span class="badge notification-badge">1</span>
-						</div>
-					  </a>
-					  <ul class="dropdown-menu">
-						<li>
-							<div class="custom-dropdown-wrapper notification">
-								<div class="custom-dropdown-container">
-									<div class="custom-dropdown-header-container">
-										<div class="clearfix">
-											<a class="pull-left" href="#">Notifications</a>
-											<a class="pull-right" href="#">Mark as read</a>
-										</div>
-									</div>
-								</div>
-								<div class="custom-dropdown-container">
-								<ul class="notification-list">
-									<li class="notification-item">
-										<div class="img-container">
-											<img class="dropdown-img" src="$images_folder/dummy-prof-img.jpg" alt="" title="notification image">
-										</div>
-										<div class="info-container">
-											<div class="notification-link-container">
-												<a href="#" class="no-padding">Dockbar custom notification.</a>
-												<p class="time-info">3 minuates ago</p>
-											</div>
-										</div>
-									</li>
-									
-									<li class="notification-item">
-										<div class="img-container">
-											<img class="dropdown-img" src="$images_folder/dummy-prof-img.jpg" alt="" title="notification image">
-										</div>
-										<div class="info-container">
-											<div class="notification-link-container">
-												<a href="#" class="no-padding">Dockbar custom notification.</a>
-												<p class="time-info">3 minuates ago</p>
-											</div>
-										</div>
-									</li>
-									
-								</ul>
-								</div>
-							</div>
-						</li>
-					  </ul>
-					</li>
+					
+					
+					$request.setAttribute("RENDER_PORTLET_BOUNDARY", false)
+					#set ($VOID = $velocityPortletPreferences.setValue("portlet-setup-show-borders", "false"))
+					#set ($VOID = $velocityPortletPreferences.setValue("portlet-setup-show-borders-default", "false"))
+					#set ($VOID = $velocityPortletPreferences.setValue("portletSetupShowBorders", "false"))
+					set ($VOID = $theme.runtime("tfcustomnotificationportlet_WAR_tfcustomnotificationportlet", "", $velocityPortletPreferences.toString()))    
+					$velocityPortletPreferences.reset()
+					
 					
 					<li class="dropdown profile-dropdown">
 					  <a href="#" class="dropdown-toggle-" data-toggle="dropdown">

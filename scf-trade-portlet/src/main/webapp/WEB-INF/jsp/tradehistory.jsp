@@ -9,19 +9,15 @@
 	<portlet:param name="trade" value="getTradeHistory" />
 </portlet:actionURL>
 
-<div class="container-fluid">
+<div class="tab-content">
 
 	<form:form method="post" commandName="tradehistoryModel"
-		class="form-horizontal" name="tradehistoryForm" id="tradehistoryForm"
+		 name="tradehistoryForm" id="tradehistoryForm"
 		autocomplete="off">
-		<input type="hidden" value="${tradeHistoryURL}"
-			id="getTradeHistorys" />
-		<input type="hidden" name="currentPage" id="currentPage"
-			value="${paginationModel.currentPage}" />
-		<input type="hidden" name="noOfRecords" id="noOfRecords"
-			value="${paginationModel.noOfRecords}" />
-		<input type="hidden" name="defaultURL" id="defaultURL"
-			value="${tradeHistoryURL}" />
+		<input type="hidden" 						id="getTradeHistorys" 	value="${tradeHistoryURL}"		 />
+		<input type="hidden" name="currentPage" 	id="currentPage" 		value="${paginationModel.currentPage}" />
+		<input type="hidden" name="noOfRecords" 	id="noOfRecords"		value="${paginationModel.noOfRecords}" />
+		<input type="hidden" name="defaultURL" 		id="defaultURL"			value="${tradeHistoryURL}" />
 
 		<div class="table-responsive">
 		
@@ -79,8 +75,7 @@
 			</table>
 
 
-			<table class="table  tablesorter table-bordered"
-				id="tradeHistoryTable">
+			<table class="customTableContainer"	id="tradeHistoryTable">
 				<colgroup>
 					<col style="width: 9.09%;">
 					<col style="width: 9.09%;">

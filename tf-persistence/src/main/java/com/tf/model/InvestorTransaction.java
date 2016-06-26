@@ -14,12 +14,7 @@ import javax.persistence.Table;
 @Table(name="tf_investor_transaction")
 public class InvestorTransaction implements Serializable {
 
-	
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1234933124020707177L;
+    private static final long serialVersionUID = -2882102523316303744L;
 
 	@Id
 	@Column(name="id")
@@ -43,6 +38,9 @@ public class InvestorTransaction implements Serializable {
 	
 	@Column(name="reference") 
 	private String reference;
+	
+	@Column(name="scf_trade_id") 
+	private String scfTradeId;
 	
 	public InvestorTransaction(){
 		
@@ -106,6 +104,24 @@ public class InvestorTransaction implements Serializable {
 		this.reference = reference;
 
 	}
+
+	public String getScfTradeId() {
+	    return scfTradeId;
+	}
+
+	public void setScfTradeId(String scfTradeId) {
+	    this.scfTradeId = scfTradeId;
+	}
+
+	@Override
+	public String toString() {
+	    return "InvestorTransaction [id=" + id + ", investorID="
+		    + investorID + ", amount=" + amount + ", transcationType="
+		    + transcationType + ", transcationDate=" + transcationDate
+		    + ", tradeID=" + tradeID + ", reference=" + reference
+		    + ", scfTradeId=" + scfTradeId + "]";
+	}
+	
 	
 	
 }

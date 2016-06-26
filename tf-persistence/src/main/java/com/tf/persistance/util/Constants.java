@@ -10,6 +10,7 @@ public class Constants {
 	
 	public static final String OMNI_ADMIN					= "Administrator";	
 	public static final String WHITEHALL_ADMIN				= "WhiteHall Admin";
+	
 	public static enum STATUS {
 	    PENDING,
 	    APPROVED,
