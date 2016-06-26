@@ -58,21 +58,32 @@
 		
 		
 		<div class="row-fluid">
-		
 			<div class="span3">
 				<div class="control-group">
 					<label class="control-label">Invoice Number:</label>
 					<form:input path="invoiceNumber" cssClass="field" id="invoiceNumber"  readonly="${readOnly}" />
 				</div>
 			</div>
-			
 			<div class="span3">
 				<div class="control-group">
 					<label class="control-label">Seller Reg No:</label>
-					<form:input path="sellerRegNo" cssClass="field" id="sellerRegNo" readonly="${readOnly}"  />
+					<c:choose>
+						<c:when test="${not empty sellerRegList }">
+							<select id="sellerRegNo" name="sellerRegNo"
+								class="aui-field-select">
+								<option value="" selected="selected" disabled="disabled">Select Supplier*</option>
+								<c:forEach var="company" items="${sellerRegList}">
+									<option value="${company.regNumber}">${company.name}</option>
+								</c:forEach>
+							</select>
+						</c:when>
+						<c:otherwise>
+							<form:input path="sellerRegNo" cssClass="field" id="sellerRegNo"
+								readonly="${readOnly}" />
+						</c:otherwise>
+					</c:choose>
 				</div>
 			</div>
-			
 			<div class="span3">
 				<div class="control-group">
 					<label class="control-label">Invoice Amount:</label>

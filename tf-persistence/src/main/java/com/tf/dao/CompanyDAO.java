@@ -38,4 +38,6 @@ public interface CompanyDAO extends BaseDAO<Company, Long>{
 	public long validateCompanyName(Company cmp);
 	
 	public long validateCompanyRegNo(Company cmp);
+	
+	public List<Company> getSellerCompanies(String companyType);
 }

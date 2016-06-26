@@ -184,17 +184,22 @@ public class InvoiceController {
 		RenderRequest request, RenderResponse response)
 		throws Exception {
 		List<Company> companyList = new ArrayList<Company>();
+		List<Company> sellerRegList = new ArrayList<Company>();
 		ThemeDisplay themeDisplay =
 						(ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
         if(liferayUtility.getPermissionChecker(request).isOmniadmin() ||
 				request.isUserInRole(Constants.WHITEHALL_ADMIN)){
     		companyList = companyService.getCompanies("5");
+    		
         }else if(request.isUserInRole(Constants.SCF_ADMIN)){
-        	long companyId =
-        					userService.getCompanyIDbyUserID(themeDisplay.getUserId());
+        	long companyId =userService.getCompanyIDbyUserID(themeDisplay.getUserId());
         	companyList=companyService.getCompaniesById(companyId);
+        	invoice.setScfCompany(companyId);
         }
+        //getting the all seller 
+        sellerRegList=companyService.getSellerCompanies(CompanyTypes.SELLER.getValue());
 		model.put("companyList", companyList);
+		model.put("sellerRegList", sellerRegList);
 		return new ModelAndView("createinvoice", model);
 	}
 

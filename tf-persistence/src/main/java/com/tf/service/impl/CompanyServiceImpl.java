@@ -92,6 +92,10 @@ public class CompanyServiceImpl implements CompanyService {
 	public long validateCompanyRegNo(Company cmp) {
 		return companyDAO.validateCompanyRegNo(cmp);
 	}
+
+	public List<Company> getSellerCompanies(String companyType) {
+		return  companyDAO.getSellerCompanies(companyType);
+	}
 	
 	
 }

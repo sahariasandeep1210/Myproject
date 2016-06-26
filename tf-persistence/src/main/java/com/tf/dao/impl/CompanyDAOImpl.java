@@ -310,4 +310,28 @@ public class CompanyDAOImpl  extends BaseDAOImpl<Company, Long>   implements Com
 		
 	}
 
+	public List<Company> getSellerCompanies(String companyType) {
+		_log.debug("Inside getSellerCompanies ");
+		try {
+
+			List<Company> results = (List<Company>) sessionFactory
+					.getCurrentSession()
+					.createCriteria(Company.class)
+					.setProjection(
+							Projections.projectionList()
+									.add(Projections.property("id"), "id")
+									.add(Projections.property("name"), "name")
+									.add(Projections.property("regNumber"), "regNumber"))
+					.add(Restrictions.eq("companyType", companyType))
+					.setResultTransformer(
+							Transformers.aliasToBean(Company.class)).list();
+			_log.debug("GetCompanies successful, result size: "
+					+ results.size());
+			return results;
+		} catch (RuntimeException re) {
+			_log.error("getSellerCompanies failed", re);
+			throw re;
+		}
+	}
+
 }
