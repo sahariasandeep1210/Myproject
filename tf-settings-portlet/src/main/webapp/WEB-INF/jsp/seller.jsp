@@ -9,13 +9,49 @@
 <div class="tab-content">
 	
 	<form:form method="post" commandName="sellerDTO"
-		class="form-horizontal" name="settingForm" id="sellerSetting">
+		class="" name="settingForm" id="sellerSetting">
 		<input type="hidden" value="${saveSellerSettings}" id="saveURL" />
 		<input type="hidden" value="${sellerDTO.id}" name="id" />
  		
      <input type="hidden" id="settingURL" name="settingURL" value="${settingURL}"/>
+     
+     <div class="customWell filter-container">
+		  	<div class="row-fluid">
+				<div class="span3 spanSm6">
+					<div class="control-group">
+						<label class="control-label">Supplier</label>
+						<select id="sellerCompany" name="sellerCompany"  class="aui-field-select">
+							<option value="">---Select---</option>
+							<c:forEach var="company" items="${companyList}" >
+								<option value="${company.id}"  <c:if test="${ company.id eq sellerCompany}">selected="selected" </c:if>>${company.name}</option>
+							</c:forEach>			
+						</select>
+					</div>
+				</div>
 
-       <div class="row-fluid">
+				<div class="span3 spanSm6 mtXs10">
+		  			<div class="control-group">
+		  				<label class="control-label">Seller Transaction Fee</label>
+		  				<form:input path="sellerTransFee" cssClass="field" id="transaction" />
+					</div>
+		  		</div>
+		  		
+		  		<div class="span3 spanSm6 mtSm10 mtXs10">
+				  	<div class="control-group">
+							<label class="control-label">Seller Finance Fee</label>
+							 <form:input path="sellerFinFee" cssClass="field" id="finance"/>
+					</div>
+		  		</div>
+		  		
+		  		<div class="span3 spanSm6 mtSm10 mtXs10">
+		  				<div class="actionContainer noBorder text-left">
+						<input type="button" value="Update Settings" id="updateSettings" class="btnBgBuSm" />
+					</div>
+		  		</div>
+		  	</div>		 
+	</div>
+
+       <%-- <div class="row-fluid">
           <div class="span6">
               <label class="span6">Seller Company:</label>
 			<select id="sellerCompany" name="sellerCompany"  placeholder="Seller Company">
@@ -47,9 +83,9 @@
 			</div>
 		</div>
 		
-		<br>
+		<br> --%>
 		
-		<div class="row-fluid">
+		<%-- <div class="row-fluid">
 		<div class="span6">
 			<div class="span12">
 				<h4>
@@ -65,10 +101,10 @@
 					</h5>
 				</div>
 			</div>
-	</div>
+	</div> --%>
 		
 			
-		<div class="table-responsive">
+		<div class="customTableContainer">
 			<table class="table  tablesorter table-bordered" id="settingListTable">
 				<thead>
 					<tr>

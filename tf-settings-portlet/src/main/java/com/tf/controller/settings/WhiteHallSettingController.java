@@ -185,10 +185,7 @@ public class WhiteHallSettingController {
 			Gson gson=new Gson();
 		    settingmodel=gson.toJson(cloneSellerList);
 		    response.getWriter().println(settingmodel);		
-		}else{
-			 response.getWriter().println("");		
-		}
-	   
+		}	   
 		} catch (Exception e) {
 			_log.error("Error occured while fetchSettings"+e.getMessage());
 			response.setProperty(ResourceResponse.HTTP_STATUS_CODE, "400");

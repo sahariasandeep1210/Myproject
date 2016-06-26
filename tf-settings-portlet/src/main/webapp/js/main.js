@@ -73,9 +73,15 @@ $("#sellerCompany").change(function() {
 						userSelection: userSel 					
 						  }, 
 					success: function(data){
-						var setting=jQuery.parseJSON(data);
-						$("#transaction").val(setting.sellerTransFee);
-						$("#finance").val(setting.sellerFinFee);
+						if(data){
+							var setting=jQuery.parseJSON(data);
+							$("#transaction").val(setting.sellerTransFee);
+							$("#finance").val(setting.sellerFinFee);
+						}else{
+							$("#transaction").val("");
+							$("#finance").val("");
+						}			
+						
 					} ,
 					error: function(jqXHR, textStatus, errorThrown) {
 						$("#transaction").val("");
