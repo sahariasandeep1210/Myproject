@@ -145,4 +145,22 @@ public class SellerScfMappingDAOImpl extends BaseDAOImpl<SellerScfCompanyMapping
 		}
 	}
 
+	public Long getSellerScfMappingCountBasedOnId(Long scfCompanyID) {
+		_log.debug("Inside getSellerScfMapping ");
+		try {
+			Criteria criteria = (Criteria) sessionFactory.getCurrentSession().createCriteria(SellerScfCompanyMapping.class);
+			criteria.add(Restrictions.eq("scfCompany", scfCompanyID));
+			criteria.add(Restrictions.eq("status", Constants.STATUS.PENDING.toString()));	
+			Long resultCount =
+				(Long) criteria.setProjection(
+					Projections.rowCount()).uniqueResult();
+			_log.info("getSellerScfMapping Count:: " + resultCount);
+			return resultCount;
+		}
+		catch (RuntimeException re) {
+			_log.error("getSellerScfMapping Count failed", re);
+			throw re;
+		}
+	}
+
 }

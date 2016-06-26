@@ -16,4 +16,6 @@ public interface SellerScfMappingService {
 	public void updateStatus(Long id, String status,String comment);
 	
 	public Long getSellerScfompany(Long sellerComapanyId);
+	
+	public Long getSellerScfMappingCountBasedOnId(Long scfCompanyID);
 }

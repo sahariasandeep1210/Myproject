@@ -34,5 +34,8 @@ public class SellerScfMappingServiceImpl implements SellerScfMappingService{
 	public Long getSellerScfompany(Long sellerComapanyId){
 		return sellerScfMappingDAO.getSellerScfompany(sellerComapanyId);
 	}
+	public Long getSellerScfMappingCountBasedOnId(Long scfCompanyID) {
+		 return sellerScfMappingDAO.getSellerScfMappingCountBasedOnId(scfCompanyID);
+	}
 	
 }
