@@ -59,7 +59,7 @@ public class ReportController {
 			paginationUtil.setPaginationInfo(noOfRecords, paginationModel);
 			model.put("paginationModel", paginationModel);
 			model.put("reportList", reportList);
-			model.put("totalEarnins", whiteHallTransactionService.getWhiteHallEarnings());
+			model.put("totalEarnins", whiteHallTransactionService.getWhiteHallEarnings(null,null,null));
 
 		}catch(Exception e){
 			_log.error("ReportController.renderReportList() - error occured while rendering Report"
@@ -101,6 +101,7 @@ public class ReportController {
 		noOfRecords=whiteHallTransactionService.getReportListWithSearchCount(search, fromDate, toDate);
 		paginationUtil.setPaginationInfo(noOfRecords, paginationModel);
 		model.put("whiteHallTransactions", whiteHallTransactions);
+		model.put("totalEarnins", whiteHallTransactionService.getWhiteHallEarnings(search,fromDate,toDate));
 		model.put("search", search);
 		model.put("from", from);
 		model.put("to", to);

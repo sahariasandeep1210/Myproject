@@ -19,5 +19,5 @@ public interface WhiteHallTransactionDAO extends BaseDAO<WhiteHallTransaction, S
 	
 	public Long getReportListWithSearchCount(String searchtxt, Date fromDate, Date toDate);
 	
-	public BigDecimal getWhiteHallEarnings();
+	public BigDecimal getWhiteHallEarnings(String searchtxt,Date fromDate,Date toDate);
 }

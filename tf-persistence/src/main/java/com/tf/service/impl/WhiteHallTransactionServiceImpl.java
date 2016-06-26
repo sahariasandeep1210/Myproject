@@ -34,8 +34,8 @@ public class WhiteHallTransactionServiceImpl implements WhiteHallTransactionServ
 		return whiteHallTransactionDAO.getReportListWithSearchCount(searchtxt, fromDate, toDate);
 	}
 	
-	public BigDecimal getWhiteHallEarnings(){
-		return whiteHallTransactionDAO.getWhiteHallEarnings();
+	public BigDecimal getWhiteHallEarnings(String searchtxt,Date fromDate,Date toDate){
+		return whiteHallTransactionDAO.getWhiteHallEarnings(searchtxt,fromDate,toDate);
 	}
 
 }

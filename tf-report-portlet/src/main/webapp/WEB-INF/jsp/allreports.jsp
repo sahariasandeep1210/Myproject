@@ -21,7 +21,7 @@
                 
 	
 	
-	 <div class="customWell filter-container">
+	 <div class="customWell filter-container"> 
 		  	<div class="row-fluid">
 		  		<div class="span3 spanSm6">
 
@@ -53,11 +53,12 @@
 		  		</div>
 		  		
 		  		<div class="span3 spanSm6 mtSm10 mtXs10">
-		  			<div class="actionContainer noBorder text-left">
+		  			<div class=""> 
 		  				<input type="button" value="Search" id="TransactionReport"		class="btnBgBuSm" />
 		  			</div>
 		  			
 		  		</div>
+		  		
 		  	</div>
 		  	
 		  <div class="row-fluid">
@@ -87,7 +88,7 @@
 						<th>TransactionType</th>
 						<th>Amount</th>
 						<th>Trade#</th>
-						<th>CompanyName</th>
+					<!-- 	<th>CompanyName</th> -->
 						<th>Reference</th>
 					</tr>
 				</thead>
@@ -116,8 +117,8 @@
 									</td>
 									
 									<td class="${amountClass}"><fmt:formatNumber type="number" maxFractionDigits="3" value="${report.amount}"  /></td>
-									<td>${report.tradeID}</td>
-									<td>${report.company.name}</td>
+									<td>${report.scfTradeId}</td>
+									<%-- <td>${report.company.name}</td> --%>
 									<td>${report.reference}</td>
 								</tr>
 							</c:forEach>
@@ -144,7 +145,7 @@
 									</td>
 									<td class="${amountClass}"><fmt:formatNumber type="number" maxFractionDigits="3" value="${report.amount}"  /></td>
 									<td>${report.tradeID}</td>
-									<td>${report.company.name}</td>
+									<<%-- td>${report.company.name}</td> --%>
 									<td>${report.reference}</td>
 								</tr>
 							</c:forEach>

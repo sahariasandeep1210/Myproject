@@ -79,7 +79,7 @@ public class SellerScfMappingDAOImpl extends BaseDAOImpl<SellerScfCompanyMapping
 				criteria.createAlias("sellerCompany", "sc");
 				criteria.add(Restrictions.eq("sc.id", sellerComapanyId));
 			}	
-			criteria.add(Restrictions.eq("status", Constants.STATUS.APPROVED.toString()));			
+			criteria.add(Restrictions.eq("status", Constants.STATUS.APPROVED.getValue()));			
 			// temp code
 			results = (List<SellerScfCompanyMapping>) criteria.setMaxResults(1).list();
 			if(results!=null && results.size() >0){
@@ -150,7 +150,7 @@ public class SellerScfMappingDAOImpl extends BaseDAOImpl<SellerScfCompanyMapping
 		try {
 			Criteria criteria = (Criteria) sessionFactory.getCurrentSession().createCriteria(SellerScfCompanyMapping.class);
 			criteria.add(Restrictions.eq("scfCompany", scfCompanyID));
-			criteria.add(Restrictions.eq("status", Constants.STATUS.PENDING.toString()));	
+			criteria.add(Restrictions.eq("status", Constants.STATUS.PENDING.getValue()));	
 			Long resultCount =
 				(Long) criteria.setProjection(
 					Projections.rowCount()).uniqueResult();

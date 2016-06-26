@@ -12,8 +12,19 @@ public class Constants {
 	public static final String WHITEHALL_ADMIN				= "WhiteHall Admin";
 	
 	public static enum STATUS {
-	    PENDING,
-	    APPROVED,
-	    REJECTED
+	    PENDING("Pending"),
+	    APPROVED("Approve"),
+	    REJECTED("Reject");
+	    
+	    private final String value;
+		
+	    STATUS(String value){
+		this.value = value;
+	     }
+
+	   public String getValue() {
+		return value;
+	    }
+
 	}
 }

@@ -143,7 +143,7 @@ public class CompanyController extends BaseController {
 				SellerScfCompanyMapping sellerScfMapping = new SellerScfCompanyMapping();
 				sellerScfMapping.setScfCompany(compId);
 				sellerScfMapping.setSellerCompany(comp);
-				sellerScfMapping.setStatus(Constants.STATUS.APPROVED.toString());
+				sellerScfMapping.setStatus(Constants.STATUS.APPROVED.getValue());
 				sellerScfMapping.setUpdateDate(Calendar.getInstance().getTime());
 				sellerScfMappingService.saveSeller(sellerScfMapping);
 			}
@@ -157,7 +157,7 @@ public class CompanyController extends BaseController {
 				SellerScfCompanyMapping sellerScfMapping = new SellerScfCompanyMapping();
 				sellerScfMapping.setScfCompany(scfCompanyId);
 				sellerScfMapping.setSellerCompany(comp);
-				sellerScfMapping.setStatus(Constants.STATUS.PENDING.toString());
+				sellerScfMapping.setStatus(Constants.STATUS.PENDING.getValue());
 				sellerScfMapping.setComment("Member Requetsed");
 				sellerScfMapping.setUpdateDate(Calendar.getInstance().getTime());
 				sellerScfMappingService.saveSeller(sellerScfMapping);
@@ -203,7 +203,7 @@ public class CompanyController extends BaseController {
 		List<SellerScfCompanyMapping> sellerScfMappings=null; 
 		PaginationModel paginationModel = paginationUtil.preparePaginationModel(request);
 		sellerScfMappings = sellerScfMappingService.getSellerScfMapping(
-				paginationModel.getStartIndex(), paginationModel.getPageSize(),null, companyID, new String[]{Constants.STATUS.PENDING.toString()});
+				paginationModel.getStartIndex(), paginationModel.getPageSize(),null, companyID, new String[]{Constants.STATUS.PENDING.getValue()});
 		ModelMap model=new ModelMap();
 		model.put("sellerScfMappings", sellerScfMappings);
 		return new ModelAndView("mytask", model);
@@ -217,7 +217,7 @@ public class CompanyController extends BaseController {
 		String comment=request.getParameter("comment");
 		if(org.apache.commons.lang.StringUtils.isNotEmpty(status) && org.apache.commons.lang.StringUtils.isNotEmpty(id)){
 			boolean statusBoolean=Boolean.parseBoolean(status);
-			sellerScfMappingService.updateStatus(Long.parseLong(id), statusBoolean?Constants.STATUS.APPROVED.toString():Constants.STATUS.REJECTED.toString(),comment);
+			sellerScfMappingService.updateStatus(Long.parseLong(id), statusBoolean?Constants.STATUS.APPROVED.getValue():Constants.STATUS.REJECTED.getValue(),comment);
 			response.sendRedirect(liferayUtility.getPortletURL(request, "tf-company-portlet", "render", "myTaskRender", true));
 		}
 	}

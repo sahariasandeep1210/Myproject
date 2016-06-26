@@ -8,6 +8,7 @@ import javax.portlet.ActionResponse;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -19,6 +20,7 @@ import org.springframework.web.portlet.bind.annotation.RenderMapping;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.tf.model.SellerScfCompanyMapping;
 import com.tf.model.WhiteHallTransaction;
@@ -51,16 +53,28 @@ public class CustomNotificationController {
 	protected ModelAndView renderReportList(
 			@ModelAttribute("reportModel") WhiteHallTransaction whiteHallTransaction, ModelMap model,
 			RenderRequest request, RenderResponse response) throws Exception {
-		long companyID=liferayUtility.getWhitehallCompanyID(request);
-		List<SellerScfCompanyMapping> sellerScfMappings=null; 
-		Long count=sellerScfMappingService.getSellerScfMappingCountBasedOnId(companyID);
-		if(Validator.isNotNull(count) && count>0){
-			PaginationModel paginationModel = paginationUtil.preparePaginationModel(request);
-			sellerScfMappings = sellerScfMappingService.getSellerScfMapping(
-					paginationModel.getStartIndex(), paginationModel.getPageSize(),null, companyID, new String[]{Constants.STATUS.PENDING.toString()});
+		List<SellerScfCompanyMapping> sellerScfMappings; 
+		Long count;
+		if (request.isUserInRole(Constants.SCF_ADMIN)) {
+		    long companyID = liferayUtility
+			    .getWhitehallCompanyID(request);
+		    sellerScfMappings = null;
+		    count = sellerScfMappingService
+			    .getSellerScfMappingCountBasedOnId(companyID);
+		    if (Validator.isNotNull(count) && count > 0) {
+			PaginationModel paginationModel = paginationUtil
+				.preparePaginationModel(request);
+			sellerScfMappings = sellerScfMappingService
+				.getSellerScfMapping(paginationModel
+					.getStartIndex(), paginationModel
+					.getPageSize(), null, companyID,
+					new String[] { Constants.STATUS.PENDING
+						.getValue() });
+		    }
+		    model.put("sellerScfMappings", sellerScfMappings);
+			model.put("count", count);
 		}
-		model.put("sellerScfMappings", sellerScfMappings);
-		model.put("count", count);
+		
 	        return new ModelAndView("notification", model);
 	}
 	
@@ -69,11 +83,10 @@ public class CustomNotificationController {
 	@ActionMapping(params = "action=taskApproveReject")
 	public void taskApproveReject(ActionRequest request,ActionResponse response, ModelMap modelMap) throws IOException {
 		String id=request.getParameter("id");
-		String status=request.getParameter("status");
+		String status=ParamUtil.getString(request, "status","");
 		System.out.println("into actionMapping");
 		if(org.apache.commons.lang.StringUtils.isNotEmpty(status) && org.apache.commons.lang.StringUtils.isNotEmpty(id)){
-			boolean statusBoolean=Boolean.parseBoolean(status);
-			sellerScfMappingService.updateStatus(Long.parseLong(id), statusBoolean?Constants.STATUS.APPROVED.toString():Constants.STATUS.REJECTED.toString(),"");
+			sellerScfMappingService.updateStatus(Long.parseLong(id), status,status);
 		}
 	}
     private static Log _log = LogFactoryUtil.getLog(CustomNotificationController.class);

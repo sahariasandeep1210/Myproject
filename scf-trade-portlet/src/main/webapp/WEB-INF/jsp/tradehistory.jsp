@@ -11,28 +11,26 @@
 
 <div class="tab-content">
 
-	<form:form method="post" commandName="tradehistoryModel"
-		 name="tradehistoryForm" id="tradehistoryForm"
-		autocomplete="off">
+	<form:form method="post" commandName="tradehistoryModel"  name="tradehistoryForm" id="tradehistoryForm"	autocomplete="off">
 		<input type="hidden" 						id="getTradeHistorys" 	value="${tradeHistoryURL}"		 />
 		<input type="hidden" name="currentPage" 	id="currentPage" 		value="${paginationModel.currentPage}" />
 		<input type="hidden" name="noOfRecords" 	id="noOfRecords"		value="${paginationModel.noOfRecords}" />
 		<input type="hidden" name="defaultURL" 		id="defaultURL"			value="${tradeHistoryURL}" />
-
-		<div class="table-responsive">
+		
+		
+		<div class="title-container clearfix">
+		  	
+		  		<div class="main-title green_bold">Total : <fmt:formatNumber type="number" maxFractionDigits="3" value="${totalTradeAmount}" /> </div>
+		  	
+		  	<div class="btn-wrapper">		  			
+		  			 <aui:button cssClass="btnBrGrSm btnIconSm filter-btn active"  icon="icomoon-filter"></aui:button>
+		  			<input type="button" class="btnBgGreenSm" value="Export"  id="exportData"/>
+		  	</div>
+		  	
+		</div>
 		
 			<table class="addtextCenter" id="tradeHisTable">
-				<colgroup>
-					<col style="width: 9.09%;">
-					<col style="width: 9.09%;">
-					<col style="width: 9.09%;">
-					<col style="width: 9.09%;">
-					<col style="width: 9.09%;">
-					<col style="width: 9.09%;">
-
-				</colgroup>
-				<thead>
-				</thead>
+			
 				<tbody>
 					<tr>
 						<td><label class="span6"><span class="total">TOTAL
@@ -74,21 +72,9 @@
 				</tbody>
 			</table>
 
-
-			<table class="customTableContainer"	id="tradeHistoryTable">
-				<colgroup>
-					<col style="width: 9.09%;">
-					<col style="width: 9.09%;">
-					<col style="width: 9.09%;">
-					<col style="width: 9.09%;">
-					<col style="width: 9.09%;">
-					<col style="width: 9.09%;">
-					<col style="width: 9.09%;">
-					<col style="width: 9.09%;">
-					<col style="width: 9.09%;">
-					<col style="width: 9.09%;">
-					<col style="width: 9.09%;">
-				</colgroup>
+           <div class="customTableContainer">
+			<table class="table table-hover tablesorter table-bordered"	id="tradeHistoryTable">
+			
 				<thead>
 					<tr>
 						<th>SCF Company</th>
@@ -140,8 +126,8 @@
 					</c:choose>
 				</tbody>
 			</table>
+			 </div>
 
-		</div>
 	</form:form>
 </div>
 <p:paginate paginationModel="${paginationModel}" />

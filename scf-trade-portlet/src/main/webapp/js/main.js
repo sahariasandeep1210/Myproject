@@ -83,7 +83,7 @@ $(document).ready(
 				}
 			});
 			$("#exportData").click(function() {				
-				$('#tradeListTable').tableExport({
+				$('#tradeListTable, #tradeHistoryTable').tableExport({
 					type : 'excel',
 					escape : 'false',
 				    fileName : 'TradeList',

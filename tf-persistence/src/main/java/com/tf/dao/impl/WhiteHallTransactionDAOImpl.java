@@ -84,20 +84,9 @@ public class WhiteHallTransactionDAOImpl extends BaseDAOImpl<WhiteHallTransactio
 			List<WhiteHallTransaction> results=new ArrayList<WhiteHallTransaction>();
 
 			Session session = sessionFactory.getCurrentSession();
-			Criteria criteria =
-							session.createCriteria(WhiteHallTransaction.class);
-			Disjunction or = Restrictions.disjunction();
-			or.add(Restrictions.like("reference", searchtxt, MatchMode.ANYWHERE));
-			or.add(Restrictions.like("companyType", searchtxt, MatchMode.ANYWHERE));
-			or.add(Restrictions.like("transcationType", searchtxt, MatchMode.ANYWHERE));
-			if(!StringUtils.isEmpty(fromDate)){
-				_log.info("From Date " + fromDate);
-				criteria.add(Restrictions.ge("transcationDate", fromDate));
-	         }
-			if(!StringUtils.isEmpty(toDate)){
-				_log.info("To Date"+toDate);
-				criteria.add(Restrictions.le("transcationDate",toDate));
-			}
+			Criteria criteria =session.createCriteria(WhiteHallTransaction.class);
+			Disjunction or = addFilterParameter(searchtxt,
+				fromDate, toDate, criteria);
 			results = (List<WhiteHallTransaction>) criteria.add(or).setFirstResult(startIndex).setMaxResults(pageSize).list();
 			_log.debug("getReportListWithSearch successful, result size: " + results.size());
 			return results;
@@ -109,25 +98,32 @@ public class WhiteHallTransactionDAOImpl extends BaseDAOImpl<WhiteHallTransactio
 		}
 
 	}
+
+
+	private Disjunction addFilterParameter(String searchtxt, Date fromDate,
+		Date toDate, Criteria criteria) {
+	    Disjunction or = Restrictions.disjunction();
+	    or.add(Restrictions.like("reference", searchtxt, MatchMode.ANYWHERE));
+	    or.add(Restrictions.like("companyType", searchtxt, MatchMode.ANYWHERE));
+	    or.add(Restrictions.like("transcationType", searchtxt, MatchMode.ANYWHERE));
+	    if(!StringUtils.isEmpty(fromDate)){
+	    	_log.info("From Date " + fromDate);
+	    	criteria.add(Restrictions.ge("transcationDate", fromDate));
+      }
+	    if(!StringUtils.isEmpty(toDate)){
+	    	_log.info("To Date"+toDate);
+	    	criteria.add(Restrictions.le("transcationDate",toDate));
+	    }
+	    return or;
+	}
 	public Long getReportListWithSearchCount(String searchtxt, Date fromDate, Date toDate) {
 		_log.debug("Inside getReportListWithSearch ");
 		try {
 
 			Session session = sessionFactory.getCurrentSession();
-			Criteria criteria =
-							session.createCriteria(WhiteHallTransaction.class);
-			Disjunction or = Restrictions.disjunction();
-			or.add(Restrictions.like("reference", searchtxt, MatchMode.ANYWHERE));
-			or.add(Restrictions.like("companyType", searchtxt, MatchMode.ANYWHERE));
-			or.add(Restrictions.like("transcationType", searchtxt, MatchMode.ANYWHERE));
-			if(!StringUtils.isEmpty(fromDate)){
-				_log.info("From Date " + fromDate);
-				criteria.add(Restrictions.ge("transcationDate", fromDate));
-	         }
-			if(!StringUtils.isEmpty(toDate)){
-				_log.info("To Date"+toDate);
-				criteria.add(Restrictions.le("transcationDate",toDate));
-			}
+    			Criteria criteria =session.createCriteria(WhiteHallTransaction.class);
+    			Disjunction or = addFilterParameter(searchtxt,
+				fromDate, toDate, criteria);
 			Long resultCount = (Long) criteria.add(or).setProjection(Projections.rowCount()).uniqueResult();
 			_log.debug("getReportListWithSearch successful, result size: " + resultCount);
 			return resultCount;
@@ -141,7 +137,7 @@ public class WhiteHallTransactionDAOImpl extends BaseDAOImpl<WhiteHallTransactio
 	}
 	
 	@SuppressWarnings("unchecked")
-	public BigDecimal getWhiteHallEarnings() {
+	public BigDecimal getWhiteHallEarnings(String searchtxt,Date fromDate,Date toDate) {
 		BigDecimal totalEarning= BigDecimal.ZERO;
 		BigDecimal tempTotalEarning= BigDecimal.ZERO;
 		BigDecimal totalExpenses= BigDecimal.ZERO;	
@@ -152,12 +148,20 @@ public class WhiteHallTransactionDAOImpl extends BaseDAOImpl<WhiteHallTransactio
 		try {
 			
 			Criteria cr = sessionFactory.getCurrentSession().createCriteria(WhiteHallTransaction.class);
-			              
+			           
 			ProjectionList prList = Projections.projectionList();
 			prList.add(Projections.groupProperty("transcationType"));
 			prList.add(Projections.sum("amount"));			
 			cr.setProjection(prList);
-			rows = (List<Object[]>) cr.list();
+			if(searchtxt!=null || fromDate !=null || toDate !=null){
+
+				Disjunction or = addFilterParameter(searchtxt,
+					fromDate, toDate, cr); 
+				rows = (List<Object[]>) cr.add(or).list();
+			}else{
+			    rows = (List<Object[]>) cr.list();
+			}
+			
 			for(Object[] row:rows){
 				//row[0].toString().equals(TranscationStatus.WHITEHALL_FEE.getValue()) || row[0].toString().equals(TranscationStatus.WHITEHALL_PROFIT.getValue())
 				if(row[0].toString()!=null && ( row[0].toString().equals(TradeStatus.INVESTOR_PAID.getValue()) || row[0].toString().equals(TradeStatus.SCF_REPAYMENT.getValue()) 
