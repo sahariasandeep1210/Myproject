@@ -12,14 +12,12 @@ public class InvalidDuration extends Exception {
 	private int duration;
 
 	
-	public int getDuration() {
-	
+	public int getDuration() {	
 		return duration;
 	}
 
 	
-	public void setDuration(int duration) {
-	
+	public void setDuration(int duration) {	
 		this.duration = duration;
 	}
 

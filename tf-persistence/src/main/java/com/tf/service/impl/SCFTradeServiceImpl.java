@@ -44,7 +44,6 @@ public class SCFTradeServiceImpl implements SCFTradeService {
 	private WhiteHallTransactionDAO whiteHallTransactionDAO;
 
 	public List<SCFTrade> getScfTrades(int startIndex, int pageSize) {
-
 		return scfTradeDAO.getScfTrades(startIndex, pageSize);
 	}
 
@@ -70,14 +69,15 @@ public class SCFTradeServiceImpl implements SCFTradeService {
 
 	@Transactional(rollbackFor={Exception.class,InSuffcientFund.class})
 	public void updateTradeLifeCycle(SCFTrade scfTrade) throws InSuffcientFund {
-
+	    	Date date = new Date();
+	    	scfTrade.setUpdatDate(date);
 		scfTradeDAO.update(scfTrade);
 		boolean tradeUpdate = Boolean.FALSE;
 		
 			if (TradeStatus.ALLOTMENT_PAID.getValue().equalsIgnoreCase(scfTrade.getStatus())) {
 				List<InvestorTransaction> transcations = investorTransactionDAO.getInvestorTransactionByTrade(scfTrade.getId());
 				updateAllotments(scfTrade, TranscationStatus.INVESTED.getValue());
-				Date date = new Date();
+				
 				// adding transaction information
 				for (InvestorTransaction investorTransaction : transcations) {
 					// adding investment entries
@@ -282,7 +282,6 @@ public class SCFTradeServiceImpl implements SCFTradeService {
 	}
 
 	public List<SCFTrade> getScfTrades(Long companyID, int startIndex, int pageSize) {
-
 		return scfTradeDAO.getScfTrades(companyID, startIndex, pageSize);
 	}
 
@@ -297,13 +296,11 @@ public class SCFTradeServiceImpl implements SCFTradeService {
 	}
 
 	public List<SCFTrade> getScfTradeList(String RegNum, int startIndex, int pageSize) {
-
 		List<SCFTrade> scfTrades = scfTradeDAO.getScfTradeList(RegNum, startIndex, pageSize);
 		return scfTrades;
 	}
 
 	public List<SCFTrade> getScfTradeListWithSearch(String searchtxt, String RegNum, int startIndex, int pageSize) {
-
 		List<SCFTrade> scfTrades = scfTradeDAO.getScfTradeListWithSearch(searchtxt, RegNum, startIndex, pageSize);
 		return scfTrades;
 	}
@@ -374,7 +371,6 @@ public class SCFTradeServiceImpl implements SCFTradeService {
 	}
 
 	public List<SCFTrade> getAdminTradeListWithSearch(String searchtxt, Date fromDate, Date toDate, String value, int startIndex, int pageSize) {
-
 		return scfTradeDAO.getAdminTradeListWithSearch(searchtxt, fromDate, toDate, value, startIndex, pageSize);
 	}
 
@@ -385,7 +381,6 @@ public class SCFTradeServiceImpl implements SCFTradeService {
 
 	public List<SCFTrade> getScfAdminTradeListWithSearch(
 		long companyId, String searchtxt, Date fromDate, Date toDate, String value, int startIndex, int pageSize) {
-
 		return scfTradeDAO.getScfAdminTradeListWithSearch(companyId, searchtxt, fromDate, toDate, value, startIndex, pageSize);
 	}
 	public Long getScfAdminTradeListWithSearchCount(long companyId, String searchtxt, Date fromDate, Date toDate, String value) {

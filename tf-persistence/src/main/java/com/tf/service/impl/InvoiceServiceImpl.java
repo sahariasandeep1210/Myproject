@@ -176,7 +176,8 @@ public class InvoiceServiceImpl implements InvoiceService{
 		scfTrade.setClosingDate(nextWorkingDate(scfTrade.getInvestorPaymentDate(), holidayList));
 		
 		scfTrade.setCompany(company);
-		scfTrade.setCreateDate(new Date());
+		scfTrade.setCreateDate(date);
+		scfTrade.setUpdatDate(date);
 		scfTrade.setStatus(TradeStatus.NEW.getValue());
 		scfTrade.setTradeAmount(tradeAmount);
 		scfTrade.setTradeNotes("Finance requested by Supplier");

@@ -22,8 +22,8 @@ public class InvestorTransaction implements Serializable {
 	private static final long serialVersionUID = 1234933124020707177L;
 
 	@Id
-    @Column(name="id")
-    @GeneratedValue
+	@Column(name="id")
+	@GeneratedValue
 	private Long id;
 	
 	@Column(name="investor_id")

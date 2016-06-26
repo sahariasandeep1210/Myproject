@@ -590,15 +590,8 @@ public class SCFTradeController {
 					}
 					scfTrade.setUpdatDate(new Date());
 					scfTradeService.updateTrade(scfTrade);
-				}
-				/*SCFTrade scfTrade = transformTOScfTrade(scfTradeDTO);
-				scfTrade.setStatus(TradeStatus.NEW.getValue());*/
-				//scfTrade = scfTradeService.save(scfTrade);
-
-				/*if (scfTrade.getWantToInsure()) {
-					addInsuranceDocument(scfTradeDTO, request, themeDisplay, currentSideID, parentFolderId, serviceContextDlFolder, scfTrade);
-				}*/
-			 } 
+				}				
+			   } 
 			}
 			
 		catch (Exception e) {

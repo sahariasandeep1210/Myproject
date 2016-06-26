@@ -261,6 +261,7 @@ public class InvoiceController {
 					inv.setPayment_date(invoice.getPaymentDate());
 					inv.setCurrency(invoice.getCurrency());
 					inv.setInvoiceDesc(invoice.getInvoiceDesc());
+					inv.setUpdateDate(new Date());
 					Company scfCompany =
 						companyService.findById(invoice.getScfCompany(	));
 					inv.setScfCompany(scfCompany);
@@ -360,6 +361,7 @@ public class InvoiceController {
 	private Invoice transfromInvoiceDtoToInvoiceModel(InvoiceDTO invoice) {
 
 		Invoice invoiceModel = new Invoice();
+		Date date=new Date();
 		invoiceModel.setInvoiceNumber(invoice.getInvoiceNumber());
 		invoiceModel.setInvoiceDate(invoice.getInvoiceDate());
 		invoiceModel.setSellerCompanyRegistrationNumber(invoice.getSellerRegNo());
@@ -369,6 +371,8 @@ public class InvoiceController {
 		invoiceModel.setPayment_date(invoice.getPaymentDate());
 		invoiceModel.setCurrency(invoice.getCurrency());
 		invoiceModel.setStatus(InvoiceStatus.NEW.getValue());
+		invoiceModel.setCreateDate(date);
+		invoiceModel.setUpdateDate(date);
 		Company scfCompany = companyService.findById(invoice.getScfCompany());
 		invoiceModel.setScfCompany(scfCompany);
 		return invoiceModel;
@@ -590,7 +594,10 @@ public class InvoiceController {
 					if(valid!=null && valid>0){
 						invalidnvoiceList.add(invoiceModel);
 					}else{
-						validInvoiceList.add(invoiceModel);
+					    Date date=new Date();
+					    invoiceModel.setCreateDate(date);
+					    invoiceModel.setUpdateDate(date);
+					    validInvoiceList.add(invoiceModel);
 					}
 				}
 

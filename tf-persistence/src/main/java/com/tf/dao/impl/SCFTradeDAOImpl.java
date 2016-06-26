@@ -17,6 +17,7 @@ import org.hibernate.Session;
 import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
@@ -58,7 +59,7 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 			if (!ids.isEmpty()) {
 				Session session = sessionFactory.getCurrentSession();
 				Criteria criteria =
-					session.createCriteria(SCFTrade.class).add(Restrictions.in("id", ids)).setFetchMode("invoices", FetchMode.JOIN).setFetchMode(
+					session.createCriteria(SCFTrade.class).add(Restrictions.in("id", ids)).addOrder(Order.desc("updatDate")).setFetchMode("invoices", FetchMode.JOIN).setFetchMode(
 						"allotments", FetchMode.JOIN).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 				results = (List<SCFTrade>) criteria.list();
 			}
@@ -170,7 +171,7 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 
 		_log.debug("Inside getScfTrades ");
 		try {
-			Criteria criteria = sessionFactory.getCurrentSession().createCriteria(SCFTrade.class);
+			Criteria criteria = sessionFactory.getCurrentSession().createCriteria(SCFTrade.class).addOrder(Order.desc("updatDate"));
 			criteria.createAlias("invoices", "inv");
 			ProjectionList prList = Projections.projectionList();
 			prList.add((Projections.distinct(Projections.property("inv.scfTrade"))));
@@ -195,7 +196,7 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 		_log.debug("Inside getScfTradeListWithSearch ");
 		List<SCFTrade> scftrades = new ArrayList<SCFTrade>();
 		try {
-			Criteria criteria = sessionFactory.getCurrentSession().createCriteria(SCFTrade.class);
+			Criteria criteria = sessionFactory.getCurrentSession().createCriteria(SCFTrade.class).addOrder(Order.desc("updatDate"));
 			criteria.createAlias("invoices", "inv");
 			criteria.createAlias("company", "company");
 			Disjunction or = Restrictions.disjunction();
@@ -265,7 +266,7 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 			if (!ids.isEmpty()) {
 				Session session = sessionFactory.getCurrentSession();
 				Criteria criteria =
-					session.createCriteria(SCFTrade.class).add(Restrictions.in("id", ids)).setFetchMode("invoices", FetchMode.JOIN).setFetchMode(
+					session.createCriteria(SCFTrade.class).add(Restrictions.in("id", ids)).addOrder(Order.desc("updatDate")).setFetchMode("invoices", FetchMode.JOIN).setFetchMode(
 						"allotments", FetchMode.JOIN).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 				results = (List<SCFTrade>) criteria.list();
 			}
@@ -883,7 +884,9 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 			if (!ids.isEmpty()) {
 				Session session = sessionFactory.getCurrentSession();
 				criteria =
-					session.createCriteria(SCFTrade.class).add(Restrictions.in("id", ids)).createAlias("company", "company").setFetchMode(
+					session.createCriteria(SCFTrade.class).add(Restrictions.in("id", ids)).createAlias("company", "company")
+					.addOrder(Order.desc("updatDate"))
+					.setFetchMode(
 						"invoices", FetchMode.JOIN).setFetchMode("allotments", FetchMode.JOIN).setFetchMode("company", FetchMode.JOIN).setResultTransformer(
 						Criteria.DISTINCT_ROOT_ENTITY);
 				 
@@ -993,7 +996,7 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 			if (!ids.isEmpty()) {
 				Session session = sessionFactory.getCurrentSession();
 				criteria =
-					session.createCriteria(SCFTrade.class).add(Restrictions.in("id", ids)).setFetchMode("invoices", FetchMode.JOIN).setFetchMode(
+					session.createCriteria(SCFTrade.class).add(Restrictions.in("id", ids)).addOrder(Order.desc("updatDate")).setFetchMode("invoices", FetchMode.JOIN).setFetchMode(
 						"allotments", FetchMode.JOIN).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 			}
 			Disjunction or = Restrictions.disjunction();
@@ -1148,7 +1151,7 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 		_log.debug("Inside getScfTradeListWithSearch ");
 		List<SCFTrade> scftrades = new ArrayList<SCFTrade>();
 		try {
-			Criteria criteria = sessionFactory.getCurrentSession().createCriteria(SCFTrade.class);
+			Criteria criteria = sessionFactory.getCurrentSession().createCriteria(SCFTrade.class).addOrder(Order.desc("updatDate"));
 			criteria.createAlias("allotments", "alt");
 			criteria.createAlias("company", "company");
 			

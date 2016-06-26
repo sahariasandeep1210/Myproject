@@ -73,8 +73,10 @@ public class DashboardController {
 		}else if(request.isUserInRole(Constants.SELLER_ADMIN)){
 			Long sellerCmpID = userService.getCompanybyUserID(themeDisplay.getUserId()).getId();
 			companyId=sellerScfMappingService.getSellerScfompany(sellerCmpID);			
-			dashModel.setInvestorPortfolios(investorService.getInvestorPortfolioDataForGraph(companyId));
-			dashModel.setTotalCreditAvail(investorService.getTotalCreditAvailForGraph(companyId));
+			if (companyId !=null && companyId >0) {
+			    dashModel  .setInvestorPortfolios(investorService.getInvestorPortfolioDataForGraph(companyId));
+			    dashModel.setTotalCreditAvail(investorService.getTotalCreditAvailForGraph(companyId));
+			}
 			userType=Constants.SELLER_ADMIN;
 			viewName="sellerdashboard";
 		}else if(request.isUserInRole(Constants.SCF_ADMIN)){
