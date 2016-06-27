@@ -461,11 +461,11 @@ public class InvestorDAOImpl extends BaseDAOImpl<InvestorPortfolio, Long>   impl
 	public List<InvestorPortfolio> getInvestorPortfolioDataForInvestorGraph(
 		Long investorID) {	
 		StringBuilder builder=new StringBuilder();
-		builder.append("SELECT SUM(availToInvest) , discountRate FROM InvestorPortfolio");
+		builder.append("SELECT availToInvest, discountRate, company.name FROM InvestorPortfolio");
 		if(investorID!=null && investorID>0l){
 			builder.append(" where investor.investorId=:investorID");
 		}
-		builder.append(" GROUP BY discountRate");
+		builder.append(" ORDER BY  company.id");
 		try {
 			Query query=sessionFactory.getCurrentSession().createQuery(builder.toString());
 			if(investorID!=null && investorID>0l){

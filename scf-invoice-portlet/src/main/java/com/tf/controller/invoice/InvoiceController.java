@@ -388,7 +388,11 @@ public class InvoiceController {
 		@ModelAttribute("invoiceModel") InvoiceDTO invoiceModel,
 		ModelMap model, RenderRequest request, RenderResponse response)
 		throws Exception {
-		List<Company> companyList = companyService.getCompanies(CompanyTypes.SCF_COMPANY.getValue());
+	    	List<Company> sellerRegList = new ArrayList<Company>();
+		List<Company> companyList = new ArrayList<Company>();
+		ThemeDisplay themeDisplay =(ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
+		
+		
 		long invoiceId = ParamUtil.getLong(request, "invoiceID");
 		if (invoiceId > 0) {
 			Invoice invoice = invoiceService.getInvoicesById(invoiceId);
@@ -408,12 +412,30 @@ public class InvoiceController {
 			invoiceModel.setStatus(invoice.getStatus());
 			model.put("scfCompanies", scfCompanies);
 			model.put("invoices", invoice);
+			companyList.add(scfCompanies);
+			if(!InvoiceStatus.NEW.getValue().equalsIgnoreCase(invoice.getStatus())){
+			    sellerRegList.add(companyService.getCompaniesByRegNum(invoice.getSellerCompanyRegistrationNumber()));
+			}else{
+			    //getting the all seller 
+			    sellerRegList=companyService.getSellerCompanies(CompanyTypes.SELLER.getValue());
+			}
+			
+			if( (liferayUtility.getPermissionChecker(request).isOmniadmin() ||
+				request.isUserInRole(Constants.WHITEHALL_ADMIN) && !InvoiceStatus.NEW.getValue().equalsIgnoreCase(invoice.getStatus()))){
+			companyList = companyService.getCompanies(CompanyTypes.SCF_COMPANY.getValue());
+			
+	                }
+			
 		}
+		
+		
+		
 		if(request.isUserInRole(Constants.SELLER_ADMIN)){
 			model.put("userType",Constants.SELLER_ADMIN);
 			model.put("readOnly", Boolean.TRUE);
 		}
 		
+	        model.put("sellerRegList", sellerRegList);
 		model.put("companyList", companyList);
 		model.put("invoiceModel", invoiceModel);
 		return new ModelAndView("createinvoice", model);

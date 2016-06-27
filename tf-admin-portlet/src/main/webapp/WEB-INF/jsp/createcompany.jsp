@@ -64,32 +64,30 @@
 							<%@include file="officerslist.jsp"%>						
 						</div>
 				<c:if test="${userType eq 'SCF Company Admin'  && cmpType ne 'Seller'}">
-				     <div class="accordion-group">
-					<div class="accordion-heading">
-						<a class="accordion-toggle" data-toggle="collapse"
-							data-parent="#accordion2" href="#collapseFour"> Sellers
-							Information </a>
-					</div>
-					<div id="collapseFour" class="accordion-body collapse">
-						<div class="accordion-inner">
-							<%@include file="sellerlist.jsp"%>						
+				
+							<div class="toggleHeader toggler-header-collapsed">
+							<div class="toggle-title pull-left">Seller Information</div>
+							<div class="toggle-icon-container text-right">
+								<i class="icomoon-accordian-arrow-down"></i>
+							</div>
 						</div>
-					</div>
-				</div>
+						<div class="toggleContent toggler-content-collapsed">
+									<%@include file="sellerlist.jsp"%>	
+						</div>
+				 
 				</c:if>
 				<c:if test="${userType eq 'Seller Admin'}">
-				     <div class="accordion-group">
-					<div class="accordion-heading">
-						<a class="accordion-toggle" data-toggle="collapse"
-							data-parent="#accordion2" href="#collapseFour"> SCF Company
-							Information </a>
-					</div>
-					<div id="collapseFour" class="accordion-body collapse">
-						<div class="accordion-inner">
-							<%@include file="scfcompanylist.jsp"%>						
+				
+					<div class="toggleHeader toggler-header-collapsed">
+							<div class="toggle-title pull-left">SCF Company Information</div>
+							<div class="toggle-icon-container text-right">
+								<i class="icomoon-accordian-arrow-down"></i>
+							</div>
 						</div>
-					</div>
-				</div>
+						<div class="toggleContent toggler-content-collapsed">
+									<%@include file="scfcompanylist.jsp"%>	
+						</div>
+					
 				</c:if>
 			</div>
 		<c:choose>

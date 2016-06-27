@@ -28,8 +28,8 @@ public class InvestorPortfolio implements Serializable{
 	private static final long serialVersionUID = 2443204712670444306L;
 
 	@Id
-    @Column(name="investor_portfolio_id")
-    @GeneratedValue
+	@Column(name="investor_portfolio_id")
+	@GeneratedValue
 	private Long investorProtId;	
 	
 	@ManyToOne(cascade=CascadeType.ALL)	

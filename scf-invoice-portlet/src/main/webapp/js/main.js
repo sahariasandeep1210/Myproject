@@ -208,12 +208,14 @@ $(document).ready(function() {
 	
 	
 	//adding condition for Seller
-	if(userType=='Seller Admin'){
+	if(userType=='Seller Admin'  || status =='TRADE_GENERATED'){
+		console.log("triggered");
 		//removing datepicker image
 		$(".ui-datepicker-trigger").remove();
 		
-		//disabling SCF company select box
+		//disabling SCF company select box 
 		$('#scfCompany').attr('disabled', 'disabled');
+		$('#sellerRegNo').attr('disabled', 'disabled');
 	}
 	
 	$(".dropdown-menu").on("click", "li", function(event){

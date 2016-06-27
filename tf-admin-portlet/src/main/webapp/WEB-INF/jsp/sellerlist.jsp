@@ -9,29 +9,35 @@
 </portlet:renderURL>
 <portlet:renderURL var="defaultRenderURL"></portlet:renderURL>
 
-<div class="container-fluid">
 	<form:form commandName="sellerListModel" method="post" action=""
 		id="sellerList" autocomplete="off" name="sellerList">
 		<input type="hidden" value="${createURL}" id="saveURL" />
         <input type="hidden" value="${companyId}" id="companyID" name="companyID"/>
-         
-		<div class="row-fluid">
-			<div class="span6">
-				<label class="span6">Seller Company List:</label> 
-				<select id="sellerCompany" name="sellerCompany">
-					<option value="">---Select---</option>
-                  <c:forEach var="company" items="${companies}">
-					<option value="${company.id}">${company.name}</option>
-				</c:forEach>					
-			</select>
-			</div>
-			<div class="span6">
-				<input type="button" value="Add" id="addSeller"
-					class="btn btn-primary" />
-			</div>
+          <div class="customWell filter-container">
+				<div class="row-fluid">
+					
+					
+					<div class="span3 spanSm6">
+					<div class="control-group">
+						<label class="control-label">Supplier</label>						
+						<select id="sellerCompany" name="sellerCompany" class="aui-field-select">
+							<option value="">---Select---</option>
+		                  <c:forEach var="company" items="${companies}">
+							<option value="${company.id}">${company.name}</option>
+						</c:forEach>					
+					</select>
+					</div>
+				</div>
+				
+				<div class="span3 spanSm6 mtSm10 mtXs10">
+		  				<div class="actionContainer noBorder text-left">
+						<input type="button" value="Add" id="addSeller"				class="btnBgGreenSm" />
+					</div>
+		  		</div>				
+				</div>
 		</div>
-<br>
-		<div class="table-responsive">
+		
+		<div class="customTableContainer">
 			<table class="table table-hover tablesorter table-bordered"
 				id="reportListTable">
 				<thead>
@@ -68,4 +74,3 @@
 		</div>
 	</form:form>
 
-</div>

@@ -64,7 +64,7 @@ public class DashboardController {
 			List<Investor> cashPosition =investorService.getCashPoition();
 			model.put("cashPosition",cashPosition);
 		} else if(request.isUserInRole(Constants.PRIMARY_INVESTOR_ADMIN)){
-		    Long investorID=investorService.getInvestorIDByCompanyId(liferayUtility.getWhitehallCompanyID(request));
+		    	Long investorID=investorService.getInvestorIDByCompanyId(liferayUtility.getWhitehallCompanyID(request));
 			dashModel.setInvestorPortfolios(investorService.getInvestorPortfolioDataForInvestorGraph(investorID)); 
 			dashModel.setTotalCreditAvail(investorService.getTotalCreditAvailForInvestorGraph(investorID));
 			userType=Constants.PRIMARY_INVESTOR_ADMIN;	

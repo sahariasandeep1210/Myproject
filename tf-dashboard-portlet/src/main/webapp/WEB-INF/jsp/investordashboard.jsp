@@ -9,7 +9,7 @@
 		<div class="span6">
 			<div class="panel panel-blue quick-stat-panel">
 				<div class="panel-heading">
-					<h3 class="panel-title">Available Credit Line with BPS</h3>
+					<h3 class="panel-title">Available Credit Line</h3>
 				</div>
 				<div class="panel-body">	
 						<div class="quick-stat-stats row-fluid">
@@ -63,11 +63,11 @@
 	
 		
 		var barChartdata = new google.visualization.DataTable();		
-		barChartdata.addColumn('string', 'Discount Rate');
+		barChartdata.addColumn('string', 'SCF Company');
 		barChartdata.addColumn('number', 'Avail To Invest');
 		      
 	  <c:forEach var="element" items='${dashboardModel.investorPortfolios}'>
-	  		barChartdata.addRow(["${element[1]}",parseFloat("${element[0]}")]);
+	  		barChartdata.addRow(["${element[2]}",parseFloat("${element[0]}")]);
       </c:forEach>
       
       var barChartOptions = {	        		

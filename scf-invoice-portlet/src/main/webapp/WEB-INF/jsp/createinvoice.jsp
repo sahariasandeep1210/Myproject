@@ -37,7 +37,7 @@
 		<input type="hidden" name="invoiceId" value="${invoiceModel.id}">
 		<input type="hidden" name="userType" value="${userType}" id="userType">
 		<input type="hidden" name="deleteInvoiceURL" value="${deleteInvoiceURL}" id="deleteInvoiceURL">
-		<input type="hidden" name="status" value="${invoiceModel.status}" >
+		<input type="hidden" name="status" value="${invoiceModel.status}"  id="status">
 		
 	<div class="row-fluid">
 				<div class="span12"
@@ -66,14 +66,15 @@
 			</div>
 			<div class="span3">
 				<div class="control-group">
-					<label class="control-label">Seller Reg No:</label>
+					<label class="control-label">Supplier:</label>
 					<c:choose>
 						<c:when test="${not empty sellerRegList }">
 							<select id="sellerRegNo" name="sellerRegNo"
 								class="aui-field-select">
 								<option value="" selected="selected" disabled="disabled">Select Supplier*</option>
 								<c:forEach var="company" items="${sellerRegList}">
-									<option value="${company.regNumber}">${company.name}</option>
+									<option value="${company.regNumber}" 
+									<c:if test="${company.regNumber eq invoiceModel.sellerRegNo}">selected="selected" </c:if> >${company.name}</option>
 								</c:forEach>
 							</select>
 						</c:when>
