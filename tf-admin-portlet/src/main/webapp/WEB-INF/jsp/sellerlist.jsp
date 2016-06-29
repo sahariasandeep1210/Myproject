@@ -53,7 +53,8 @@
 					 <c:choose>
 						<c:when test="${fn:length(sellerScfMappings) gt 0}">
 							<c:forEach items="${sellerScfMappings}" var="seller"> 
-					<tr  onclick="window.location.href='${createURL}&companyID=${seller.sellerCompany.id}'">
+						<%-- 	onclick="window.location.href='${createURL}&companyID=${seller.sellerCompany.id}'" --%>
+					<tr>
 						<td>${seller.sellerCompany.name}</td>
 						<td>${seller.sellerCompany.regNumber}</td>
 					   <td><fmt:formatDate pattern="dd-MM-yyyy" value="${seller.sellerCompany.dateestablished}"/></td>

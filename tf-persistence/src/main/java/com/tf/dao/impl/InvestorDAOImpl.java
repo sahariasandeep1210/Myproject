@@ -10,6 +10,8 @@ import java.util.Map;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.criterion.CriteriaSpecification;
+import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
@@ -18,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.tf.dao.GeneralSettingDAO;
 import com.tf.dao.InvestorDAO;
 import com.tf.dao.UserDAO;
 import com.tf.model.Investor;
@@ -32,6 +35,10 @@ public class InvestorDAOImpl extends BaseDAOImpl<InvestorPortfolio, Long>   impl
 	
 	@Autowired
 	private UserDAO userDAO;
+	
+	
+	@Autowired
+	private GeneralSettingDAO generalSettingDAO;
 	
 	public InvestorPortfolio  getInvestorByCompanyId(long id) {
 		_log.debug("getting User instance with id: " + id);
@@ -387,6 +394,7 @@ public class InvestorDAOImpl extends BaseDAOImpl<InvestorPortfolio, Long>   impl
 				
 				whitehallShare = (BigDecimal) sessionFactory.getCurrentSession().createQuery("select investor.whitehallShare from Investor investor where investor.id = :id").setLong("id",id).uniqueResult();
 				if (whitehallShare == null) {
+				    whitehallShare=generalSettingDAO.getGeneralSetting().getWhitehalShare()!=null ?generalSettingDAO.getGeneralSetting().getWhitehalShare():BigDecimal.ZERO;
 					_log.debug("get successful, no instance found");
 				} else {
 					_log.debug("get successful, instance found");
@@ -459,13 +467,13 @@ public class InvestorDAOImpl extends BaseDAOImpl<InvestorPortfolio, Long>   impl
 	}
 	
 	public List<InvestorPortfolio> getInvestorPortfolioDataForInvestorGraph(
-		Long investorID) {	
+		Long investorID) {
 		StringBuilder builder=new StringBuilder();
-		builder.append("SELECT availToInvest, discountRate, company.name FROM InvestorPortfolio");
+		builder.append("SELECT SUM(availToInvest), discountRate FROM InvestorPortfolio");
 		if(investorID!=null && investorID>0l){
 			builder.append(" where investor.investorId=:investorID");
 		}
-		builder.append(" ORDER BY  company.id");
+		builder.append(" GROUP BY  discountRate");
 		try {
 			Query query=sessionFactory.getCurrentSession().createQuery(builder.toString());
 			if(investorID!=null && investorID>0l){
@@ -479,7 +487,30 @@ public class InvestorDAOImpl extends BaseDAOImpl<InvestorPortfolio, Long>   impl
 		_log.error("getInvestorPortfolioDataForGraph", e);
 	}
 	return null;
-}
+		
+	    	/*try {
+		    Session session = sessionFactory.getCurrentSession();
+		    Criteria criteria = session
+			    .createCriteria(InvestorPortfolio.class);
+		    criteria.createAlias("company", "cmp");
+		    Disjunction or = Restrictions.disjunction();
+		    or.add(Restrictions.eq("investor.investorId", investorID));
+		    criteria.add(or);
+		    ProjectionList projList = Projections.projectionList();
+		    projList.add(Projections.property("availToInvest"));
+		    projList.add(Projections.property("discountRate"));
+		    projList.add(Projections.property("cmp.name"));
+		    projList.add(Projections.property("cmp.id"));
+		    criteria.setProjection(projList);
+		    List<InvestorPortfolio> investorPortfolios = criteria.setResultTransformer(
+				CriteriaSpecification.ROOT_ENTITY).list();
+		    return investorPortfolios;
+		} catch (Exception e) {
+		    // TODO: handle exception
+		}
+	    	return null;*/
+	    
+	}
 	
 	public BigDecimal getTotalCreditAvailForInvestorGraph(
 		Long investorID) {

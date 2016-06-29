@@ -12,7 +12,7 @@
 					<h3 class="panel-title">Available Credit Line</h3>
 				</div>
 				<div class="panel-body">	
-						<div class="quick-stat-stats row-fluid">
+				<%-- 		<div class="quick-stat-stats row-fluid">
 						<div class="span4 fg-blue">
 							<div class="text-container">
 								<div class="small-text">Available Credit Line</div>
@@ -20,7 +20,7 @@
 							</div>
 						</div>
 						
-					</div>			
+					</div> --%>			
 					<div id="barchart"></div>
 				</div>
 			</div>
@@ -64,14 +64,18 @@
 		
 		var barChartdata = new google.visualization.DataTable();		
 		barChartdata.addColumn('string', 'SCF Company');
-		barChartdata.addColumn('number', 'Avail To Invest');
+		barChartdata.addColumn('number', 'Live');			
+		barChartdata.addColumn('number', 'Settled');
+		barChartdata.addColumn('number', 'Available');
 		      
-	  <c:forEach var="element" items='${dashboardModel.investorPortfolios}'>
-	  		barChartdata.addRow(["${element[2]}",parseFloat("${element[0]}")]);
+	
+	  <c:forEach var="element" items="${dashboardModel.map}">
+	  		barChartdata.addRow(["${element.value.companyName}",parseFloat("${element.value.liveTradeAmount}"),parseFloat("${element.value.settledTradeAmount}"),parseFloat("${element.value.availTradeAmount}")]);
       </c:forEach>
       
       var barChartOptions = {	        		
-     		 legend: { position: "none" }
+     		 legend: { position: "top" },
+     		isStacked: true
        };
 
 		

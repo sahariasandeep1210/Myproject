@@ -14,6 +14,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
 @Table(name="scf_trade")
@@ -130,9 +132,13 @@ public class SCFTrade  implements Serializable{
 	@Column(name="promisory_note")
 	private String promisoryNote;
 	
+	
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="create_date")
 	private Date createDate;
 	
+	
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="update_date")
 	private Date updatDate;
 	

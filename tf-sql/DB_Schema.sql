@@ -550,7 +550,17 @@ ALTER TABLE scf_trade MODIFY COLUMN insurance_doc_type VARCHAR(100) NULL;
 
 ALTER TABLE tf_general_setting ADD COLUMN  min_payment_date_duartion INT(11) DEFAULT NULL;
 
-# Added on 25th June
+# Added on 25th June 2016
 ALTER TABLE scf_invoice   MODIFY COLUMN   invoice_number  VARCHAR(25);
 ALTER TABLE scf_invoice   ADD COLUMN      create_date DATE DEFAULT NULL;
 ALTER TABLE scf_invoice   ADD COLUMN      update_date DATE DEFAULT NULL;
+
+ALTER TABLE tf_investor_transaction  ADD scf_trade_id VARCHAR(50) DEFAULT NULL;
+
+# Added on 29th June 2016
+ALTER TABLE scf_invoice   MODIFY COLUMN   create_date   DATETIME DEFAULT NULL;
+ALTER TABLE scf_invoice   MODIFY COLUMN   update_date   DATETIME DEFAULT NULL;
+
+
+ALTER TABLE scf_trade   MODIFY COLUMN   create_date   DATETIME DEFAULT NULL;
+ALTER TABLE scf_trade   MODIFY COLUMN   update_date   DATETIME DEFAULT NULL;

@@ -7,5 +7,6 @@ public interface DashBoardService {
 	
 	
 	public DashboardModel setDashBoardInformation(DashboardModel dashModel,String userType,Long scfCompanyID);
+	public void setInvestorStackedBarChartInformation(DashboardModel dashModel,Long investorId);
 
 }

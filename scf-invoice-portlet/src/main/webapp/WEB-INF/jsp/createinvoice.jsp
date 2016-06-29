@@ -37,7 +37,7 @@
 		<input type="hidden" name="invoiceId" value="${invoiceModel.id}">
 		<input type="hidden" name="userType" value="${userType}" id="userType">
 		<input type="hidden" name="deleteInvoiceURL" value="${deleteInvoiceURL}" id="deleteInvoiceURL">
-		<input type="hidden" name="status" value="${invoiceModel.status}"  id="status">
+		<input type="hidden" name="status" value="${invoiceModel.status}"  id="invoicestatus">
 		
 	<div class="row-fluid">
 				<div class="span12"

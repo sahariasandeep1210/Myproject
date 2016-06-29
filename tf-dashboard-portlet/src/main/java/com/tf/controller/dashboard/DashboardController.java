@@ -65,6 +65,7 @@ public class DashboardController {
 			model.put("cashPosition",cashPosition);
 		} else if(request.isUserInRole(Constants.PRIMARY_INVESTOR_ADMIN)){
 		    	Long investorID=investorService.getInvestorIDByCompanyId(liferayUtility.getWhitehallCompanyID(request));
+		    	dashBoardService.setInvestorStackedBarChartInformation(dashModel,investorID);
 			dashModel.setInvestorPortfolios(investorService.getInvestorPortfolioDataForInvestorGraph(investorID)); 
 			dashModel.setTotalCreditAvail(investorService.getTotalCreditAvailForInvestorGraph(investorID));
 			userType=Constants.PRIMARY_INVESTOR_ADMIN;	
@@ -74,7 +75,7 @@ public class DashboardController {
 			Long sellerCmpID = userService.getCompanybyUserID(themeDisplay.getUserId()).getId();
 			companyId=sellerScfMappingService.getSellerScfompany(sellerCmpID);			
 			if (companyId !=null && companyId >0) {
-			    dashModel  .setInvestorPortfolios(investorService.getInvestorPortfolioDataForGraph(companyId));
+			    dashModel.setInvestorPortfolios(investorService.getInvestorPortfolioDataForGraph(companyId));
 			    dashModel.setTotalCreditAvail(investorService.getTotalCreditAvailForGraph(companyId));
 			}
 			userType=Constants.SELLER_ADMIN;

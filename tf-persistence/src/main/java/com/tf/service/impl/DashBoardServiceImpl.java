@@ -50,5 +50,9 @@ public class DashBoardServiceImpl implements DashBoardService {
 		return dashModel;
 	}
 	
+	public void setInvestorStackedBarChartInformation(DashboardModel dashModel,Long investorId){
+	    scfTradeDAO.setInvestorStackedBarChartInformation(dashModel, investorId);
+	}
+	
 
 }

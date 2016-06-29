@@ -3,6 +3,7 @@ package com.tf.persistance.util;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 import com.tf.model.Investor;
 import com.tf.model.InvestorPortfolio;
@@ -10,8 +11,9 @@ import com.tf.model.InvestorPortfolio;
 public class DashboardModel  implements Serializable{
 	
 
-	private static final long serialVersionUID = -5692926682223891504L;
-	
+
+    	private static final long serialVersionUID = -2161787055134981763L;
+    	
 	private long investmentCap;
 	private long availToInvest;
 	private long amountInvested;
@@ -35,6 +37,8 @@ public class DashboardModel  implements Serializable{
 	List<InvestorPortfolio> investorPortfolios;
 	
 	private BigDecimal totalCreditAvail;
+	
+	 Map<Long,StackedChartDTO> map;
 	
 	public DashboardModel() {
 		
@@ -236,6 +240,16 @@ public class DashboardModel  implements Serializable{
 	public void setTotalCreditAvail(BigDecimal totalCreditAvail) {
 	
 		this.totalCreditAvail = totalCreditAvail;
+	}
+
+
+	public Map<Long, StackedChartDTO> getMap() {
+	    return map;
+	}
+
+
+	public void setMap(Map<Long, StackedChartDTO> map) {
+	    this.map = map;
 	}
 
 

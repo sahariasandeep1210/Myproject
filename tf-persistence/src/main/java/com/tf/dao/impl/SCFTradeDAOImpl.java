@@ -7,7 +7,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
@@ -27,11 +29,15 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import com.tf.dao.AllotmentDAO;
+import com.tf.dao.InvestorDAO;
 import com.tf.dao.SCFTradeDAO;
 import com.tf.model.Allotment;
+import com.tf.model.InvestorPortfolio;
 import com.tf.model.SCFTrade;
 import com.tf.persistance.util.DashboardModel;
+import com.tf.persistance.util.TradeStatus;
 import com.tf.persistance.util.ValidationUtil;
+import com.tf.persistance.util.StackedChartDTO;
 
 @Repository
 @Transactional
@@ -46,7 +52,11 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 	protected ValidationUtil validationUtil;
 	
 	@Autowired
-	protected AllotmentDAO allotmentDAO;
+	protected AllotmentDAO allotmentDAO;  
+	
+	
+	@Autowired
+	protected InvestorDAO investorDAO; 
 
 
 	@SuppressWarnings("unchecked")
@@ -1243,6 +1253,71 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 				dashModel.setLiveTradeAmount(BigDecimal.ZERO);
 				dashModel.setLiveTradeCount(0);
 			}
+	}
+	
+	public void setInvestorStackedBarChartInformation(DashboardModel dashModel,Long investorId) {
+	    Map<Long,StackedChartDTO> map = new LinkedHashMap<Long,StackedChartDTO>();
+	    StringBuilder qeryString = new StringBuilder();
+	    qeryString.append("SELECT t.company_id,SUM(a.allotment_amount), t.status ,c.name ");
+	    qeryString.append("FROM scf_trade  t, tf_allotments a, tf_company c ");
+	    qeryString.append("WHERE  t.id = a.trade_id ");
+	    qeryString.append("AND t.company_id=c.idcompany ");
+	    qeryString.append("AND a.investor_id=:investorId ");
+	    qeryString.append("AND t.status <> 'Closed' AND  t.status <> 'Hold'  ");
+	    qeryString.append("GROUP BY t.company_id, t.status  ");
+	    Query query= sessionFactory.getCurrentSession().createSQLQuery(qeryString.toString());
+	    if(investorId>0l){
+		query.setParameter("investorId", investorId);
+	    }
+	    StackedChartDTO stackedChartDTOtemp;
+		List<Object[]> graphArray = query.list();
+			if(graphArray !=null && graphArray.size() >0 ){
+					for (Object[] row : graphArray) {
+					    	if(map.get(Long.valueOf(row[0].toString())) !=null){
+					    	    stackedChartDTOtemp =map.get(Long.valueOf(row[0].toString()));
+					    	    setTradeAmount(row, stackedChartDTOtemp);
+					    	}else{
+					    	    StackedChartDTO stackedChartDTO=new StackedChartDTO();
+					    	    stackedChartDTO.setCompanyName(row[3].toString());
+					    	    setTradeAmount(row,stackedChartDTO);
+					    	    map.put(Long.valueOf(row[0].toString()), stackedChartDTO);
+					    	}
+						
+						
+					}	
+			}
+			
+			StringBuilder builder=new StringBuilder();
+			builder.append("SELECT availToInvest, discountRate, company.name, company.id FROM InvestorPortfolio");
+			if(investorId!=null && investorId>0l){
+				builder.append(" where investor.investorId=:investorID");
+			}
+			builder.append(" ORDER BY  company.id");
+			try {
+				 query=sessionFactory.getCurrentSession().createQuery(builder.toString());
+				if(investorId!=null && investorId>0l){
+					query.setParameter("investorID", investorId);
+				}
+				List<Object[]> investorPortfolios =query.setFirstResult(0).setMaxResults(5).list();
+				if(investorPortfolios!=null && investorPortfolios.size()>0){
+					for(Object[] objArray : investorPortfolios){
+					    map.get(Long.valueOf(objArray[3].toString())).setAvailTradeAmount(objArray[0]!=null ?new BigDecimal(objArray[0].toString()):BigDecimal.ZERO);
+					}
+				}
+			} catch(Exception e){
+			    e.printStackTrace();
+			}
+			
+			dashModel.setMap(map);
+	}
+
+	private void setTradeAmount(Object[] row,
+		StackedChartDTO stackedChartDTO) {
+	    if(row[2] !=null && TradeStatus.SETTLED.toString().equalsIgnoreCase(row[2].toString())){
+	    stackedChartDTO.setSettledTradeAmount(stackedChartDTO.getSettledTradeAmount().add(row[1]!=null ?new BigDecimal(row[1].toString()):BigDecimal.ZERO));
+	    }else{
+	    stackedChartDTO.setLiveTradeAmount(stackedChartDTO.getLiveTradeAmount().add(row[1]!=null ?new BigDecimal(row[1].toString()):BigDecimal.ZERO)); ;
+	    }
 	}
 	
 }

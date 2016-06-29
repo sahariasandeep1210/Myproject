@@ -12,6 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 
 @Entity
@@ -24,8 +26,8 @@ public class WhiteHallTransaction implements  Serializable {
 	
 
 	@Id
-    @Column(name="id")
-    @GeneratedValue
+	@Column(name="id")
+	@GeneratedValue
 	private Long id;	
 	
 	@Column(name="amount")
@@ -34,6 +36,7 @@ public class WhiteHallTransaction implements  Serializable {
 	@Column(name="transcation_type") 
 	private String transcationType;
 	
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="transcation_date") 
 	private Date transcationDate;
 	

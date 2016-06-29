@@ -415,6 +415,8 @@ public class InvoiceController {
 			companyList.add(scfCompanies);
 			if(!InvoiceStatus.NEW.getValue().equalsIgnoreCase(invoice.getStatus())){
 			    sellerRegList.add(companyService.getCompaniesByRegNum(invoice.getSellerCompanyRegistrationNumber()));
+			    //making it read only when status other than New
+			    model.put("readOnly", Boolean.TRUE);
 			}else{
 			    //getting the all seller 
 			    sellerRegList=companyService.getSellerCompanies(CompanyTypes.SELLER.getValue());

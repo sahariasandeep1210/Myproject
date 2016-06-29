@@ -9,6 +9,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
 @Table(name="tf_investor_transaction")
@@ -30,6 +32,7 @@ public class InvestorTransaction implements Serializable {
 	@Column(name="transcation_type") 
 	private String transcationType;
 	
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="transcation_date") 
 	private Date transcationDate;
 	

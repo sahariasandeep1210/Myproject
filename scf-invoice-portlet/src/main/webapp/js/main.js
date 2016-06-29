@@ -206,9 +206,10 @@ $(document).ready(function() {
 	    	closeSessionValues();
 	    });
 	
-	
+	var invoicestatus=$("#invoicestatus").val();
+	console.log("status::"+invoicestatus);
 	//adding condition for Seller
-	if(userType=='Seller Admin'  || status =='TRADE_GENERATED'){
+	if(userType=='Seller Admin'  || invoicestatus =='TRADE_GENERATED'){
 		console.log("triggered");
 		//removing datepicker image
 		$(".ui-datepicker-trigger").remove();

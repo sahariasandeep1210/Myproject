@@ -12,6 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 @Entity
 @Table(name = "scf_invoice")
 public class Invoice implements Serializable {
@@ -58,6 +60,8 @@ public class Invoice implements Serializable {
 	@JoinColumn(name = "scf_company")  
 	private Company scfCompany;
 	
+	
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "finance_date")
 	private Date financeDate;
 	
@@ -68,9 +72,12 @@ public class Invoice implements Serializable {
 	@JoinColumn(name = "trade_id")
 	private SCFTrade scfTrade;
 	
+	
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "create_date")
 	private Date createDate;
 	
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "update_date")
 	private Date updateDate;
 	
