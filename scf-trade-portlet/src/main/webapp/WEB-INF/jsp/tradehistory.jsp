@@ -16,61 +16,63 @@
 		<input type="hidden" name="currentPage" 	id="currentPage" 		value="${paginationModel.currentPage}" />
 		<input type="hidden" name="noOfRecords" 	id="noOfRecords"		value="${paginationModel.noOfRecords}" />
 		<input type="hidden" name="defaultURL" 		id="defaultURL"			value="${tradeHistoryURL}" />
-		
-		
-		<div class="title-container clearfix">
+		<input 	type="hidden" name="pageSize"        		id="pageSize"      			value="${paginationModel.pageSize}" />
+		<input 	type="hidden" name="currPageSize" 			id="currPageSize"			value="${paginationModel.pageSize}" /> 
+			
+			<div class="title-container clearfix">
 		  	
-		  		<div class="main-title green_bold">Total : <fmt:formatNumber type="number" maxFractionDigits="3" value="${totalTradeAmount}" /> </div>
+		  		<div class="main-title">Trade History</div>
 		  	
 		  	<div class="btn-wrapper">		  			
 		  			 <aui:button cssClass="btnBrGrSm btnIconSm filter-btn active"  icon="icomoon-filter"></aui:button>
 		  			<input type="button" class="btnBgGreenSm" value="Export"  id="exportData"/>
 		  	</div>
 		  	
-		</div>
-		
-			<table class="addtextCenter" id="tradeHisTable">
+			</div>
 			
-				<tbody>
-					<tr>
-						<td><label class="span6"><span class="total">TOTAL
-									ALL</span></label></td>
-						<td>${totalTradeAmount}</td>
-						<td><input type="text" name="Search"
-							placeholder="Search With SCF CompanyName" id="search" value="${companyName}"></td>
-						<td></td>
-					</tr>
+ <div class="customWell filter-container">
+		  	<div class="row-fluid">
+			<div class="span3 spanSm6">
+				<div class="control-group">
+					<div class="input-append">
+						<input     type="text" name="Search" placeholder="Search" id="search" value="${companyName}" />
+						<span class="add-on"><i	class="icomoon-search"></i></span>
+					</div>
+				</div>
+			</div>
 
-					<tr>
-						<td><label class="span6">Select Date Range :</label></td>
-						<td><input name="fromDate" id="fromDate" placeholder="From" value="${fromDate}"/>
-						</td>
-
-						<td><input name="toDate" id="toDate" placeholder="To" value="${toDate}"/></td>
-						<td></td>
-					</tr>
-					<tr>
-						<td></td>
-						<td></td>
-						<td><input type="button" value="Search" id="historyReport"
-							class="btn btn-primary" /></td>
-						<td></td>
-					</tr>
-					<tr>
-						<td></td>
-						<td></td>
-						<td colspan="4">
-							<h5 style="text-align: right;">
-								<a href="#" style="color: #295780; font-weight: bold;"
-									id="exportTradeHistory"> Export</a>
-							</h5>
-						</td>
-
-					</tr>
-
-
-				</tbody>
-			</table>
+			  		
+		  		<div class="span3 spanSm6 mtSm10 mtXs10">
+				  	<div class="control-group">
+						<div class="input-append">
+							<input name="fromDate" id="fromDate" placeholder="From" value="${fromDate}" type="text"/>
+							<span	class="add-on" ><i	class="icomoon-calendar"></i></span>
+						</div>
+					</div>
+		  		</div>
+		  		
+		  		<div class="span3 spanSm6 mtSm10 mtXs10">
+		  			<div class="control-group">
+						<div class="input-append">
+							<input name="toDate" id="toDate" placeholder="To" value="${toDate}" type="text"/>
+							<span	class="add-on" ><i	class="icomoon-calendar"></i></span>
+						</div>
+					</div>
+		  		</div>
+		  	</div>
+		  	<div class="row-fluid">
+		  		<div class="span12">
+		  			<div class="actionContainer noBorder text-left">
+		  				 <input type="button" value="Search" id="historyReport"	class="btnBgBuSm" />
+		  			</div>
+		  			
+		  		</div>
+		  	</div>
+	</div>
+				
+		
+		
+			
 
            <div class="customTableContainer">
 			<table class="table table-hover tablesorter table-bordered"	id="tradeHistoryTable">
@@ -88,12 +90,21 @@
 				<tbody>
 					<c:choose>
 						<c:when test="${fn:length(scfTradesHistory) gt 0}">
+							<tr>
+									<td>Totals</td>
+									<td><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalTradeAmount}" /> </td>
+									<td></td>
+									<td></td>
+									<td></td>
+									<td></td>
+								</tr>
 							<c:forEach items="${scfTradesHistory}" var="trade">
+								
 								<tr>
 									<td><span class='underline'><a
 											href="javascript:void(0);"
 											onclick="window.location.href='${histryURL}&compID=${trade.insuranceDocId}'">${trade.tradeNotes}</a></span></td>
-									<td>${trade.tradeAmount}</td>
+									<td><fmt:formatNumber type="number" maxFractionDigits="3" value="${trade.tradeAmount}" /> </td>
 									<td>ALL</td>
 									<td>N/A</td>
 									<td>${trade.duration}</td>
@@ -103,13 +114,21 @@
 							</c:forEach>
 						</c:when>
 						<c:when test="${fn:length(scfTradesList) gt 0}">
+							<tr>
+									<td>Totals</td>
+									<td><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalTradeAmount}" /> </td>
+									<td></td>
+									<td></td>
+									<td></td>
+									<td></td>
+								</tr>
 							<c:forEach items="${scfTradesList}" var="trade">
-
+								
 								<tr>
 									<td><span class='underline'><a
 											href="javascript:void(0);"
 											onclick="window.location.href='${histryURL}&compID=${trade.insuranceDocId}'">${trade.tradeNotes}</a></span></td>
-									<td>${trade.tradeAmount}</td>
+									<td><fmt:formatNumber type="number" maxFractionDigits="3" value="${trade.tradeAmount}" /> </td>
 									<td>ALL</td>
 									<td>N/A</td>
 									<td>${trade.duration}</td>
@@ -119,6 +138,7 @@
 							</c:forEach>
 						</c:when>
 						<c:otherwise>
+							
 							<tr>
 								<td colspan="9" align="center">No records found!</td>
 							</tr>
@@ -130,4 +150,3 @@
 
 	</form:form>
 </div>
-<p:paginate paginationModel="${paginationModel}" />

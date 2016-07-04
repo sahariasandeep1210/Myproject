@@ -189,7 +189,7 @@
 										</c:choose>
 								</div>
 							</td>
-							<td>${investorTransaction.tradeID}</td>
+							<td>${investorTransaction.scfTradeId}</td>
 							<td class="${amountClass}"><fmt:formatNumber type="number" maxFractionDigits="3" value="${investorTransaction.amount}"  /></td>
 							<td>${investorTransaction.reference}</td>
 						</tr>

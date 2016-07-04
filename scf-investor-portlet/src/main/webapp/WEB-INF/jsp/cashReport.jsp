@@ -19,10 +19,10 @@
 	<portlet:renderURL var="defaultRenderURL" />
 
 
-<div class="container-fluid">
+<div class="tab-content">
 
 <form:form method="post" commandName="cashReportModel"
-		class="form-horizontal" autocomplete="off" name="cashReportForm" id="cashReportForm"> 
+		 autocomplete="off" name="cashReportForm" id="cashReportForm"> 
 		      <input type="hidden" value="${getCashURL}" id="getCashReports" />
 		      <input type="hidden" name="currentPage"  id="currentPage"   value="${paginationModel.currentPage}" />
 		      <input type="hidden" name="currPageSize" 	id="currPageSize"    	value="${paginationModel.pageSize}" /> 
@@ -31,74 +31,104 @@
 		      <input type="hidden" name="getCashs"   id="getCashs" 	  value="${cashReportURL}" />
 		      <input type="hidden" name="investorID" value="${investorId}">
 		      
-		      <div class="row-fluid">
-       		 <div class="span6">
-				<label class="span6">Investor Name:</label>
-				   ${companyname} 
-	          </div>
-	         
-       </div>
-		<div class="row-fluid">
-			<div class="span6">
-				<label class="span6">Cash Position:</label>
-				   	${investor.cashPosition}
-				   
-	        </div>
-	    </div>
-	    <div class="row-fluid">
-			<div class="span6">
-				<label class="span6">Receivables Position:</label>
-				   				${totalReceivablesPosition}
-				   
-			</div>
-		</div>
-	    <div class="row-fluid">
-			<div class="span6">
-				<label class="span6">Total Asset Value:</label>
-				    				  ${totalAsset}
-				    
-			</div>
-	    </div>
-		
-		
-	  <div class="row-fluid">
-	         <div class="span6">
-                <label class="span6">Select Date Range :</label>
-                    <input name="fromDate" class="span9" id="fromDate" placeholder="From" value="${from}" />
-             </div>
-		<div class="span6">
-              <input name="toDate" Class="span9" id="toDate" placeholder="To" value="${to}"/>
-	     </div>
-	  </div>
-		<br>
-		
-		<div class="row-fluid">
-          <div class="span6">
-              <label class="span6">Select Transaction Type :</label>
-			<select id="transaction " name="transaction">
-				<option value="">---Select---</option>
-					<option value="<%=TranscationStatus.DEPOSIT.getValue()%>" <c:if test="${ transactionType eq 'Deposit'}">selected="selected" </c:if>>Deposit</option>
-					<option value="<%=TranscationStatus.WITHDRAWAL.getValue()%>" <c:if test="${ transactionType eq 'Withdrawal'}">selected="selected" </c:if>>WithDrawal</option>
-					<option value="<%=TranscationStatus.INVESTED.getValue()%>" <c:if test="${ transactionType eq 'Invested'}">selected="selected" </c:if>>Invested</option>
-					<option value="<%=TranscationStatus.REPAID.getValue()%>" <c:if test="${ transactionType eq 'Repaid'}">selected="selected" </c:if>>Repaid</option>
-					<option value="<%=TranscationStatus.PROFIT.getValue()%>" <c:if test="${ transactionType eq 'Profit'}">selected="selected" </c:if>>Profit</option>	
-					<option value="<%=TranscationStatus.WHITEHALL_FEE.getValue()%>" <c:if test="${ transactionType eq 'Whitehall Fee'}">selected="selected" </c:if>>Whitehall Fee</option>					
-									
-			</select>
-           </div>
-       </div>
-       <div class="row-fluid">
-			<div class="span6">
-				<label class="span6">Total Selected :</label>
-			</div>
-	 </div>
-	 <div class="row-fluid">
-			<div class="span6" id="buttons">
-				<input type="button" value="Submit" id="cashReport" class="btn btn-primary" />
-		 </div>
-	</div>
-		<br>
-	<div class="table-responsive">
+		       <div class="customWell">	
+		       
+		       			<div class="row-fluid">
+				   			<div class="span12">
+				   				<div class="labelBigTextContaier spacer border">
+						   			<div class="smallLabelText">
+						   				Investor Name
+						   			</div>
+						   			
+						   			<div class="bigText">
+						   				${companyname} 
+						   			</div>
+						   		</div>	
+				   			</div>
+				   		</div>	
+				   		<div class="row-fluid">
+				   			<div class="span3 spanSm6">
+				   				<div class="labelBigTextContaier">
+						   			<div class="smallLabelText">
+						   				Cash Position
+						   			</div>
+						   			
+						   			<div class="bigText blue">
+						   				&pound; <fmt:formatNumber type="number" maxFractionDigits="3" value="${investor.cashPosition}"  />
+						   			</div>
+						   		</div>
+				   			</div>
+				   			
+				   			<div class="span3 spanSm6">
+				   				<div class="labelBigTextContaier mtXs15">
+						   			<div class="smallLabelText">
+						   				Receivables Position 
+						   			</div>
+						   			
+						   			<div class="bigText blue">
+						   				&pound; <fmt:formatNumber type="number" maxFractionDigits="3" value="${totalReceivablesPosition}"  />
+						   			</div>
+						   		</div>
+				   			</div>
+				   			
+				   			<div class="span3 spanSm6">
+				   				<div class="labelBigTextContaier mtSm15 mtXs15">
+						   			<div class="smallLabelText">
+						   				Total Asset Value 
+						   			</div>
+						   			
+						   			<div class="bigText blue">
+						   				&pound; <fmt:formatNumber type="number" maxFractionDigits="3" value="${totalAsset}"  />
+						   			</div>
+						   		</div>
+				   			</div>	   		
+			   		</div>
+			   		<div class="row-fluid">
+		   			<div class="span3 spanSm6 mtSm15 mtXs15 mtLg15">
+		   				 <div class="control-group">
+		   					<label class="control-label" for="dateEs">From</label>
+			   				<div class="input-append">						
+								<input name="fromDate" class="span9" id="fromDate" placeholder="From" value="${from}" type="text" />
+									<span	class="add-on" ><i	class="icomoon-calendar"></i></span>
+							</div>
+						</div> 
+		   			</div>
+		   			
+		   			<div class="span3 spanSm6 mtSm15 mtXs15 mtLg15">
+		   				<div class="control-group">
+		   					<label class="control-label" for="dateEs">To</label>
+			   				<div class="input-append">						
+									  <input name="toDate" Class="span9" id="toDate" placeholder="To" value="${to}" type="text"/>
+									<span	class="add-on" ><i	class="icomoon-calendar"></i></span>
+							</div>
+						</div>
+		   			</div>
+		   			
+		   			<div class="span3 spanSm6 mtSm15 mtXs15 mtLg15">
+		   				<div class="control-group">
+		   					<label class="control-label" for="transcationType">Transaction Type</label>	
+		   					<select id="transaction " name="transaction">
+									<option value="">---Select---</option>
+									<option value="<%=TranscationStatus.DEPOSIT.getValue()%>" <c:if test="${ transactionType eq 'Deposit'}">selected="selected" </c:if>>Deposit</option>
+									<option value="<%=TranscationStatus.WITHDRAWAL.getValue()%>" <c:if test="${ transactionType eq 'Withdrawal'}">selected="selected" </c:if>>WithDrawal</option>
+									<option value="<%=TranscationStatus.INVESTED.getValue()%>" <c:if test="${ transactionType eq 'Invested'}">selected="selected" </c:if>>Invested</option>
+									<option value="<%=TranscationStatus.REPAID.getValue()%>" <c:if test="${ transactionType eq 'Repaid'}">selected="selected" </c:if>>Repaid</option>
+									<option value="<%=TranscationStatus.PROFIT.getValue()%>" <c:if test="${ transactionType eq 'Profit'}">selected="selected" </c:if>>Profit</option>	
+									<option value="<%=TranscationStatus.WHITEHALL_FEE.getValue()%>" <c:if test="${ transactionType eq 'Whitehall Fee'}">selected="selected" </c:if>>Whitehall Fee</option>					
+													
+							</select>
+							</div>		   				
+		   			</div>	
+		   			<div class="span3 spanSm6 mtSm15 mtXs15 mtLg15">
+		   				<div class="actionContainer noBorder text-left">
+							<input type="button" value="Submit" id="cashReport" class="btnBgBuSm" />
+						</div>
+		   			</div>	   			
+		   		</div>	  
+		       </div>
+
+	
+	<div class="customTableContainer">
 			<table class="table  tablesorter table-bordered" id="cashReportTable">
 				<thead>
 					<tr>
@@ -119,49 +149,29 @@
 						<c:forEach items="${investorList}" var="investorTransaction">
 
 							<tr>
-								<td><fmt:formatDate pattern="dd-MM-yyyy"
-										value="${investorTransaction.transcationDate}" /></td>
-								<td>${investorTransaction.transcationType}
+								<td><fmt:formatDate pattern="dd-MM-yyyy"	value="${investorTransaction.transcationDate}" /></td>
+								<td  class="text-right bigger-icon">
+									<div class="pull-left text-align-text">${investorTransaction.transcationType}</div>
+									<div class="text-align-icon">	
 								  <c:choose>
 											<c:when test="${investorTransaction.transcationType eq 'Deposit' ||investorTransaction.transcationType eq 'Repaid' || investorTransaction.transcationType eq 'Profit' }">
-												<img height="30" width="30" src="${themeDisplay.pathThemeImages}/green.png" style=" float: right; vertical-align: middle; font-size: 20px"/>
+												<i class="icomoon-round-plus green_normal cursor-pointer"></i>
+												<c:set var="amountClass"  value="rightalign green_bold"/>
 											</c:when>
 											<c:otherwise>
-												<img height="30" width="30" src="${themeDisplay.pathThemeImages}/red.png" style=" float: right; vertical-align: middle; font-size: 20px"/>
+												<i class="icomoon-round-minus red_normal cursor-pointer"></i>
+													<c:set var="amountClass" value="rightalign red_bold"/>
 											</c:otherwise>										
 										</c:choose>
+										</div>
 								</td>
-								<td>${investorTransaction.tradeID}</td>
-								<td>${investorTransaction.amount}</td>
+								<td>${investorTransaction.scfTradeId}</td>
+								<td class="${amountClass} rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${investorTransaction.amount}"  /></td>
 								<td>${investorTransaction.reference}</td>
 							</tr>
 						</c:forEach>
 						</c:when>
-						 <c:when test="${fn:length(invList) gt 0}">
-
-
-						<c:forEach items="${invList}" var="inv">
-
-							<tr>
-								<td><fmt:formatDate pattern="dd-MM-yyyy"
-										value="${inv.transcationDate}" /></td>
-								<td>${inv.transcationType}
-								    <c:choose>
-											<c:when test="${inv.transcationType eq 'Deposit' ||inv.transcationType eq 'Repaid' || inv.transcationType eq 'Profit' }">
-												<img height="30" width="30" src="${themeDisplay.pathThemeImages}/green.png" style=" float: right; vertical-align: middle; font-size: 20px"/>
-											</c:when>
-											<c:otherwise>
-												<img height="30" width="30" src="${themeDisplay.pathThemeImages}/red.png" style=" float: right; vertical-align: middle; font-size: 20px"/>
-											</c:otherwise>										
-										</c:choose>
-								</td>
-								<td></td>
-								<td>${inv.amount}</td>
-								<td></td>
-							</tr>
-						</c:forEach>
-						</c:when>
-					   <c:otherwise>
+											   <c:otherwise>
 
 						<tr>
 							<td colspan="9" align="center">No records found!</td>
@@ -194,10 +204,11 @@
 			</div>
 		</div>
 	</form:form>
+	<div class="back-actions">
+    <a href="javascript:void(0);" onclick="window.location.href='${backURL}&investorID=${investorId}'"  class="btnBgBuSm">Back</a>
+</div>
 </div>
         <p:paginate  paginationModel="${paginationModel}"/>
         
         
-<div class="back-actions">
-    <a href="javascript:void(0);" onclick="window.location.href='${backURL}&investorID=${investorId}'"  class="btn btn-primary btn-lg">Back</a>
-</div>
+

@@ -93,6 +93,7 @@ public class AllotmentEngine {
 			allotment.setScfTrade(trade);
 			allotment.setInvestorID(investor.getInvestorId());
 			invTranscation.setTradeID(trade.getId());
+			invTranscation.setScfTradeId(trade.getScfId());
 
 			if(sameRateCount <= 1 ){
 

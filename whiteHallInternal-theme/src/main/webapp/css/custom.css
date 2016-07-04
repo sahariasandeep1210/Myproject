@@ -34,3 +34,15 @@
             .aui.whiteHallInternal #wrapper .customTableContainer table.label-value tr td:nth-child(3) {
           background: #F4F8FB; 
           }
+          
+          
+          
+          
+          .rightalign {
+          	text-align: right !important;
+          }
+          
+          .leftalign {
+          	text-align: left !important;
+          }
+          

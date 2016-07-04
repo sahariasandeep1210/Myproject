@@ -30,8 +30,8 @@
         <input type="hidden" name="pageSize"        		id="pageSize"      			value="${paginationModel.pageSize}" />
                 
         
-		<input type="hidden" id="tradeID" name="tradeID">
-		<input type="hidden" id="status" name="status">
+		<input type="hidden" id="tradeID" name="tradeID" />
+		<input type="hidden" id="status" name="status" />
 				<%@include file="tradefilter.jspf"%> 
 	
 		
@@ -105,12 +105,7 @@
 			</table>
 		</div>
 		
-	<%-- 	<div class="row-fluid" >
-			<div class="span3">
-							<input type="button" value="Update Status" 	class="btn btn-primary span6" id="updateStatus"  data-url="${updateStatusURL}" />
-							<input type="button" value="Update Status" 	class="btnBgBuSm"			  id="updateStatus"  data-url="${updateStatusURL}"/>			
-			</div>	
-		</div> --%>
+	
 		
 		<div class="row-fluid" id="buttonDiv">
 		  		<div class="span12">

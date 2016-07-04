@@ -5,7 +5,7 @@
 <portlet:param name="page" value="cashBack"/>
 </portlet:actionURL>
 
-<div class="container-fluid">
+<div class="tab-content">
 
 <form:form method="post" commandName="receivableReportModel"
 		class="form-horizontal" name="receivableReportForm" id="receivableReportForm" autocomplete="off"> 
@@ -14,76 +14,28 @@
                 <input type="hidden" name="defaultRenderURL"   id="defaultRenderURL" 	  value="${renderURL}" />
                 <input type="hidden" name="investorID" value="${investorId}">
                 
-                 
+                  <div class="customWell">	
+                  	<div class="row-fluid">
+				   			<div class="span12">
+				   				<div class="labelBigTextContaier spacer border">
+						   			<div class="smallLabelText">
+						   				Investor Receivable Report
+						   			</div>
+						   			
+						   			<%-- <div class="bigText">
+						   				${companyname} 
+						   			</div> --%>
+						   		</div>	
+				   			</div>
+				   		</div>
+                  </div>
  
-	<div class="row-fluid">
-		<div class="span6">
-			<div class="span6">
-				<h4>Investor Receivable Report</h4>
-			</div>
-		</div>
-	</div>
+	
 	
 
-	<div class="table-responsive">
-			
-			
-			<table class="addtextCenter" id="receivableReportTable">
-				<colgroup>
-                <col style="width: 9.09%;">
-                <col style="width: 9.09%;">
-                <col style="width: 9.09%;">
-                <col style="width: 9.09%;">
-                <col style="width: 9.09%;">
-                <col style="width: 9.09%;">
-                <col style="width: 9.09%;">
-                <col style="width: 9.09%;">
-                <col style="width: 9.09%;">
-                <col style="width: 9.09%;">
-                <col style="width: 9.09%;">
-            	</colgroup>
-				<thead>
-				</thead>
-				<tbody>      
-						<tr>
-							<td><span class="total">TOTAL ALL</span></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td>${totalAllotAmount}</td>
-                            <td>${totalMajurity}</td>
-                            <td>${totalFinance}</td>
-                            <td>${totalNet}</td>
-                            <td>${totalAmount}</td>
-                            <td></td>
-						</tr>
-						<tr>
-						    <td>
-						        <h5>
-                                 <a href="#" style="color: #295780; font-weight: bold;" id="exportReceivable"> Export</a>
-                                </h5>
-						      </td>
-						</tr>
-						
-						
-					</tbody>
-				</table>
-	
+	<div class="customTableContainer">
                     
 			<table class="table  tablesorter table-bordered" id="receivableReportTable">
-				<colgroup>
-                <col style="width: 9.09%;">
-                <col style="width: 9.09%;">
-                <col style="width: 9.09%;">
-                <col style="width: 9.09%;">
-                <col style="width: 9.09%;">
-                <col style="width: 9.09%;">
-                <col style="width: 9.09%;">
-                <col style="width: 9.09%;">
-                <col style="width: 9.09%;">
-                <col style="width: 9.09%;">
-                <col style="width: 9.09%;">
-            	</colgroup>
 				<thead>
 					<tr>
 					   
@@ -104,26 +56,34 @@
 				<tbody>
 				<c:choose>
                         <c:when test="${fn:length(dtos) gt 0}">
-                             <c:forEach items="${dtos}" var="allotment">
-				            
-						<tr>
-							<td>${allotment.name}</td>
-                            <td><fmt:formatDate value="${allotment.allotmentDate}"
-                                            pattern="dd-MM-yyyy" /></td>
-                            <td><fmt:formatDate pattern="dd-MM-yyyy"
-                                value="${allotment.closingDate}" /></td>							
-                            <td width="7%">${allotment.noOfdays}</td>
-							<td>${allotment.allotmentAmount}</td>
-							<td>${allotment.majurityGross}</td>
-							<td>${allotment.financeFee}</td>
-							<td>${allotment.majurityNet}</td>
-							<td>${allotment.returnAmount}</td>
-							<td>${allotment.returns}</td>
-							<td>${allotment.status}</td>
-							
-						</tr>
-						</c:forEach>
-                                </c:when>
+                        			<tr>
+										<td><b>Totals</b></td>
+			                            <td></td>
+			                            <td></td>
+			                            <td></td>
+			                            <td class="rightalign green_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalAllotAmount}"  /></td>
+			                            <td class="rightalign green_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalMajurity}"  /></td>
+			                            <td class="rightalign green_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalFinance}"  /></td>
+			                            <td class="rightalign green_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalNet}"  /></td>
+			                            <td class="rightalign green_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalAmount}"  /></td>
+			                            <td></td>
+								</tr>
+		                        <c:forEach items="${dtos}" var="allotment">						            
+									<tr>
+										<td>${allotment.name}</td>
+			                            <td><fmt:formatDate value="${allotment.allotmentDate}" pattern="dd-MM-yyyy" /></td>
+			                            <td><fmt:formatDate pattern="dd-MM-yyyy" value="${allotment.closingDate}" /></td>							
+			                            <td width="7%">${allotment.noOfdays}</td>
+										<td class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${allotment.allotmentAmount}"  /></td>
+										<td class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${allotment.majurityGross}"  /></td>
+										<td class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${allotment.financeFee}"  /></td>
+										<td class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${allotment.majurityNet}"  /></td>
+										<td class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${allotment.returnAmount}"  /></td>
+										<td class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${allotment.returns}"  /></td>
+										<td>${allotment.status}</td>
+									</tr>
+								</c:forEach>
+                             </c:when>
  					       <c:otherwise>
  					       <tr>							
  					          <td colspan="9" align="center">No records found!</td>
@@ -138,5 +98,5 @@
 	</div>	
 	        <p:paginate  paginationModel="${paginationModel}"/>
 	<div class="back-actions">
-    <a href="javascript:void(0);" onclick="window.location.href='${backURL}&investorID=${investorId}'"  class="btn btn-primary btn-lg">Back</a>
+    <a href="javascript:void(0);" onclick="window.location.href='${backURL}&investorID=${investorId}'"  class="btnBgBuSm">Back</a>
 </div>

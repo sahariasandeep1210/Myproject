@@ -12,41 +12,60 @@
 </portlet:actionURL>
 
 
-<div class="container-fluid">
+<div class="tab-content">
 
-	<form:form method="post" commandName="singlehistoryModel"
-		class="form-horizontal" name="singlehistoryForm"
+	<form:form method="post" commandName="singlehistoryModel" name="singlehistoryForm"
 		id="singlehistoryForm" autocomplete="off">
-		<input type="hidden" name="compID" value="${compID}">
-		
-		<input type="hidden" value="${defaultURL}"
-			id="getTradeSellerHis" />
-		<input type="hidden" name="currentPage" id="currentPage"
-			value="${paginationModel.currentPage}" />
-		<input type="hidden" name="noOfRecords" id="noOfRecords"
-			value="${paginationModel.noOfRecords}" />
-		<input type="hidden" name="defaultURL" id="defaultURL"
-			value="${defaultURL}" />
+		<input type="hidden" name="compID" value="${compID}">		
+		<input type="hidden" value="${defaultURL}" 		id="getTradeSellerHis" />
+		<input type="hidden" name="currentPage" id="currentPage" value="${paginationModel.currentPage}" />
+		<input type="hidden" name="noOfRecords" id="noOfRecords"	value="${paginationModel.noOfRecords}" />
+		<input type="hidden" name="defaultURL" id="defaultURL" 	value="${defaultURL}" />
 			
+		<div class="customWell filter-container">
+		  	<div class="row-fluid">
+			<div class="span3 spanSm6">
+				<div class="control-group">
+					<div class="input-append">
+						<input type="text" name="Search"	placeholder="Search Here" id="search" value="${companyName}">
+						<span class="add-on"><i	class="icomoon-search"></i></span>
+					</div>
+				</div>
+			</div>
+
+			  		
+		  		<div class="span3 spanSm6 mtSm10 mtXs10">
+				  	<div class="control-group">
+						<div class="input-append">
+							<input name="fromDate" id="fromDate" placeholder="From" value="${fromDate}" type="text" />
+							<span	class="add-on" ><i	class="icomoon-calendar"></i></span>
+						</div>
+					</div>
+		  		</div>
+		  		
+		  		<div class="span3 spanSm6 mtSm10 mtXs10">
+		  			<div class="control-group">
+						<div class="input-append">
+							<input name="toDate" id="toDate" placeholder="To" value="${toDate}" type="text"/>
+							<span	class="add-on" ><i	class="icomoon-calendar"></i></span>
+						</div>
+					</div>
+		  		</div>
+		  	</div>
+		  	<div class="row-fluid">
+		  		<div class="span12">
+		  			<div class="actionContainer noBorder text-left">
+		  				<!--  <input type="button" value="Search" id="historyReport"	class="" /> -->
+		  				 <input type="button" value="Search" id="sellerReport"		class="btnBgBuSm" />
+		  			</div>
+		  			
+		  		</div>
+		  	</div>
+	</div>
+	
+
+			<%-- <table class="addtextCenter" id="singleHisTable">
 			
-		<div>
-     
-			<a href="javascript:void(0);"
-				onclick="window.location.href='${backURL}'"><i
-				class="fa fa-reply"></i> Back</a>
-		</div>
-		<div class="table-responsive">
-
-			<table class="addtextCenter" id="singleHisTable">
-				<colgroup>
-					<col style="width: 9.09%;">
-					<col style="width: 9.09%;">
-					<col style="width: 9.09%;">
-					<col style="width: 9.09%;">
-					<col style="width: 9.09%;">
-					<col style="width: 9.09%;">
-
-				</colgroup>
 				<thead>
 				</thead>
 				<tbody>
@@ -85,24 +104,11 @@
 						</td>
 					</tr>
 				</tbody>
-			</table>
+			</table> --%>
 
-
+ <div class="customTableContainer">
 			<table class="table  tablesorter table-bordered"
-				id="singleTradeHistoryTable">
-				<colgroup>
-					<col style="width: 9.09%;">
-					<col style="width: 9.09%;">
-					<col style="width: 9.09%;">
-					<col style="width: 9.09%;">
-					<col style="width: 9.09%;">
-					<col style="width: 9.09%;">
-					<col style="width: 9.09%;">
-					<col style="width: 9.09%;">
-					<col style="width: 9.09%;">
-					<col style="width: 9.09%;">
-					<col style="width: 9.09%;">
-				</colgroup>
+				id="singleTradeHistoryTable">			
 				<thead>
 					<tr>
 						<th>SCF Company</th>
@@ -116,7 +122,16 @@
 				<tbody>
 					<c:choose>
 						<c:when test="${fn:length(scfTradesHistory) gt 0}">
+								<tr>
+									<td>Totals</td>
+									<td><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalTradeAmount}" /> </td>
+									<td></td>
+									<td></td>
+									<td></td>
+									<td></td>
+								</tr>
 							<c:forEach items="${scfTradesHistory}" var="trade">
+							
 							
 								<tr>
 								    
@@ -130,7 +145,16 @@
 							</c:forEach>
 						</c:when>
 						<c:when test="${fn:length(scfTradesList) gt 0}">
+							<tr>
+									<td>Totals</td>
+									<td><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalTradeAmount}" /> </td>
+									<td></td>
+									<td></td>
+									<td></td>
+									<td></td>
+								</tr>
 						   <c:forEach items="${scfTradesList}" var="trade">
+						   		
 						   
 								<tr>
 									<td>${trade.tradeNotes}</td>
@@ -151,8 +175,20 @@
 					</c:choose>
 				</tbody>
 			</table>
+			</div>
 
-		</div>
+		
+		 	<div class="row-fluid">
+		  		<div class="span12">
+		  			<div class="actionContainer noBorder text-left">
+		  				 <a href="javascript:void(0);"	class="btnBgBuSm" onclick="window.location.href='${backURL}'"> Back</a>
+		  			</div>
+		  			
+		  		</div>
+		  	</div>
 	</form:form>
+	
+	
+	
 </div>
 <p:paginate paginationModel="${paginationModel}" />

@@ -7,8 +7,11 @@ $(function() {
 	
 	$("#errorMsg").hide(); 
 	
-	$("#telNo").inputmask("999-999-9999");
-	$("#userTelNo").inputmask("999-999-9999");
+	//$("#telNo").inputmask("999-999-9999");
+	//$("#userTelNo").inputmask("999-999-9999");
+	
+	$("#telNo").inputmask("99 99999-99999");
+	$("#userTelNo").inputmask("99 99999-99999");
 	
 	$("#exportCompanies").click(function(){		
 		

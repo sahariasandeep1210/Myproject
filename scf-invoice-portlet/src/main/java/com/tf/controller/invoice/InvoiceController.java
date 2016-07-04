@@ -642,6 +642,7 @@ public class InvoiceController {
 		}
 		catch (Exception e) {
 			model.put("errorOccured", true);
+			response.setRenderParameter("render", "invoiceDocuments");
 			e.printStackTrace();
 
 		}

@@ -85,7 +85,7 @@
 		   				 <div class="control-group">
 		   					<label class="control-label" for="dateEs">From</label>
 			   				<div class="input-append">						
-								<input name="fromDate" class="span9" id="fromDate" placeholder="mm/dd/yyyy" value="${from}"/>
+								<input name="fromDate" class="span9" id="fromDate" placeholder="mm/dd/yyyy" value="${from}" type="text"/>
 									<span	class="add-on" ><i	class="icomoon-calendar"></i></span>
 							</div>
 						</div> 
@@ -95,7 +95,7 @@
 		   				<div class="control-group">
 		   					<label class="control-label" for="dateEs">To</label>
 			   				<div class="input-append">						
-									 <input name="toDate" Class="span9" id="toDate" placeholder="mm/dd/yyyy" value="${to}"/>
+									 <input name="toDate" Class="span9" id="toDate" placeholder="mm/dd/yyyy" value="${to}" type="text"/>
 									<span	class="add-on" ><i	class="icomoon-calendar"></i></span>
 							</div>
 						</div>
@@ -171,8 +171,8 @@
 											</c:choose>
 										</div>
 							</td>
-							<td>${investorTransaction.tradeID}</td>
-							<td class="${amountClass}"><fmt:formatNumber type="number" maxFractionDigits="3" value="${investorTransaction.amount}"  /> </td>
+							<td>${investorTransaction.scfTradeId}</td>
+							<td class="${amountClass} rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${investorTransaction.amount}"  /> </td>
 							<td></td>
 						</tr>
 						</c:forEach>

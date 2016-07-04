@@ -32,7 +32,7 @@
 								  <ul class="notification-list">
 								 <form method="post" action="${taskApproveRejectURL}" name="notificationForm"> 
 								   <input type="hidden"  name="id" id="mappingId" />
-								   <input type="hidden"  name="status"  id="status"/>
+								   <input type="hidden"  name="status"  id="currentStatus"/>
 								<c:choose>
 								  <c:when test="${not empty count && count gt 0}">
 								  <c:forEach var="object" items="${sellerScfMappings}">
@@ -72,7 +72,7 @@
 $(document).ready(function() {
     $(".approve_reject").on("click",function(){
     	$("#mappingId").val($(this).attr('data-id'));
-    	$("#status").val($(this).val());
+    	$("#currentStatus").val($(this).val());
     	document.forms["notificationForm"].submit();
    }); 
 });

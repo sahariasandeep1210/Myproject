@@ -303,6 +303,7 @@ $(document).ready(
 				var url = $(this).attr('data-url');
 				var updatedStatus = $(this).val();
 				$("#status").val(updatedStatus);
+				
 				document.forms["scfTradeList"].action = url;
 				document.forms["scfTradeList"].submit();
 			});

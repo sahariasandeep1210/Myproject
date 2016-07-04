@@ -1301,7 +1301,14 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 				List<Object[]> investorPortfolios =query.setFirstResult(0).setMaxResults(5).list();
 				if(investorPortfolios!=null && investorPortfolios.size()>0){
 					for(Object[] objArray : investorPortfolios){
-					    map.get(Long.valueOf(objArray[3].toString())).setAvailTradeAmount(objArray[0]!=null ?new BigDecimal(objArray[0].toString()):BigDecimal.ZERO);
+					    if(map.get(Long.valueOf(objArray[3].toString())) !=null){
+						 map.get(Long.valueOf(objArray[3].toString())).setAvailTradeAmount(objArray[0]!=null ?new BigDecimal(objArray[0].toString()):BigDecimal.ZERO);
+					    }else{
+						StackedChartDTO stackedChartDTO=new StackedChartDTO();
+						stackedChartDTO.setAvailTradeAmount(objArray[0]!=null ?new BigDecimal(objArray[0].toString()):BigDecimal.ZERO);
+						map.put(Long.valueOf(objArray[3].toString()), stackedChartDTO);
+					    }
+					   
 					}
 				}
 			} catch(Exception e){

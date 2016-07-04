@@ -364,7 +364,6 @@ public class InvestorController {
 		BigDecimal totalAsset = BigDecimal.ZERO;
 		List<InvestorTransaction> investorList = new ArrayList<InvestorTransaction>();
 		List<com.tf.persistance.util.InvestorDTO> investors = null;
-		List<InvestorTransaction> invList=null;
 		investors = companyService.getInvestors();
 		Long noOfRecords = 0l;
 		PaginationModel paginationModel = paginationUtil.preparePaginationModel(request);
@@ -395,7 +394,7 @@ public class InvestorController {
 			investorList = investorTransactionService.getInvestors(investorID, paginationModel.getStartIndex(), paginationModel.getPageSize());
 			noOfRecords = investorTransactionService.getInvestorsCount(investorID);
 			}else{
-			 invList =investorTransactionService.getInvestorTransactionByTransactionType(
+			    investorList =investorTransactionService.getInvestorTransactionByTransactionType(
 								investorId, transactionType, fromDate, toDate, paginationModel.getStartIndex(), paginationModel.getPageSize());
 			noOfRecords = investorTransactionService.getInvestorsCounts(investorId, transactionType, fromDate, toDate);
 			}
@@ -409,7 +408,6 @@ public class InvestorController {
 			model.put("investorList", investorList);
 			model.put("investorId", investorID);
 			model.put("paginationModel", paginationModel);
-			model.put("invList", invList);
 			model.put("investorID", investorID);
 			model.put("investor", investor);
 			model.put("totalReceivablesPosition", totalReceivablesPosition);
