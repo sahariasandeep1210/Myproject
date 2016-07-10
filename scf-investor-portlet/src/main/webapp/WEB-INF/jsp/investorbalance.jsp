@@ -33,7 +33,7 @@
 		      <input type="hidden" name="defaultURL"   id="defaultURL"      		value="${getInvestorDetailsURL}" />
 		      <input type="hidden" name="pageSize"     id="pageSize"      			value="${paginationModel.pageSize}" />
 		      <input type="hidden" name="curPageSize"  id="curPageSize"   			value="${paginationModel.pageSize}" />
-		      <input type="hidden" name="currPageSize" id="currPageSize"   			value="${paginationModel.pageSize}" />
+		      
 		      
 		     <div class="customWell">
 				<div class="row-fluid">
@@ -134,7 +134,7 @@
 			  		<div class="span12">
 			  			<div class="actionContainer noBorder text-left">
 			  				<input type="button" value="Submit"   id="updatebalance" class="btnBgBuSm" />
-							<input type="button" value="Cancel" id="cancelSetting" class="btnBrGrSm" />
+							<!-- <input type="button" value="Cancel" id="cancelSetting" class="btnBrGrSm" /> -->
 			  			</div>
 			  			
 			  		</div>

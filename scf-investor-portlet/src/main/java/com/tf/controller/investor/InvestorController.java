@@ -145,11 +145,11 @@ public class InvestorController {
 		BigDecimal receivablesPosition = BigDecimal.ZERO;
 		BigDecimal totalReceivablesPosition = BigDecimal.ZERO;
 		BigDecimal totalAsset = BigDecimal.ZERO;
-		DateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+		DateFormat formatter = new SimpleDateFormat(Constants.DATE_FORMAT);
 		if (request.isUserInRole(Constants.PRIMARY_INVESTOR_ADMIN)) {
 			if (companyId > 0) {
 				investors = companyService.getInvestors();
-				Date fromDate = formatter.parse("2/1/1970");
+				Date fromDate = formatter.parse("1-2-1970");
 				Date toDate = new Date();
 				String transactionType = ParamUtil.getString(request, "transaction");
 				String from = ParamUtil.getString(request, "fromDate");
@@ -367,8 +367,8 @@ public class InvestorController {
 		investors = companyService.getInvestors();
 		Long noOfRecords = 0l;
 		PaginationModel paginationModel = paginationUtil.preparePaginationModel(request);
-		DateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
-		Date fromDate = formatter.parse("2/1/1970");
+		DateFormat formatter = new SimpleDateFormat(Constants.DATE_FORMAT);
+		Date fromDate = formatter.parse("1-2-1970");
 		Date toDate = new Date();
 		long investorId = ParamUtil.getLong(request, "investorID");
 		String transactionType = ParamUtil.getString(request, "transaction");
@@ -725,5 +725,13 @@ public class InvestorController {
 		dto.setStatus(allots.getStatus());
 		return dto;
 
+	}
+	@RenderMapping(params = "render=test")
+	protected ModelAndView test(
+		@ModelAttribute("investorBalanceModel") InvestorTransaction investorBalanceModel, ModelMap model, RenderRequest request,
+		RenderResponse response)
+		throws Exception {
+	    	System.out.println("----hello");
+		return new ModelAndView("investorprotfolio", model);
 	}
 }

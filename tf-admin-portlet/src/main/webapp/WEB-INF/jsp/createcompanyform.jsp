@@ -108,7 +108,7 @@
 		<div class="row-fluid">
   			<div class="span3">
   				<div class="control-group">
-					<label class="control-label" for="telNo"> Telephone No * </label>
+					<label class="control-label" for="telNo"> Telephone No * <i class="icon-info-sign tooltipPhone" data-toggle="tooltip" title="Ex. For UK 44 12345-12345" ></i> </label>
 					<form:input path="telnumber"  id="telNo"  cssClass="field"  />
 				</div>
   			</div>
@@ -128,7 +128,15 @@
   			<div class="span3">
 				<div class="control-group">
 					<label class="control-label" for="comType"> Company Type</label>
-					<form:select path="companyType" items="${companyTypeMap}"	class="aui-field-select" id="companyType" placeholder="CompanyType Type" />
+					
+					<c:choose>
+						<c:when test="${permissionChecker.isOmniadmin()}">
+							<form:select path="companyType" items="${companyTypeMap}"	class="aui-field-select" id="companyType" placeholder="CompanyType Type" />
+						</c:when>
+						<c:otherwise>	
+							${cmpType}					
+						</c:otherwise>
+					</c:choose>					
 				</div>
   			</div>
   		</div>

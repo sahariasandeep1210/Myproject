@@ -1,5 +1,6 @@
 package com.tf.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -13,9 +14,12 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "scf_invoice_document")
-public class InvoiceDocument {
+public class InvoiceDocument  implements Serializable{
 	
 	
+
+    	private static final long serialVersionUID = 2221142131625726861L;
+
 	@Id
 	@Column(name = "id")
 	@GeneratedValue

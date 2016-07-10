@@ -125,7 +125,7 @@
 		<div class="row-fluid">
 			<div class="span3">
 				<div class="control-group">
-					<label class="control-label">Telephone No:<span class="requiredStar">*</span></label>
+					<label class="control-label">Telephone No:<span class="requiredStar">*</span> <i class="icon-info-sign tooltipPhone" data-toggle="tooltip" title="Ex. For UK 44 12345-12345" ></i></label>
 					<form:input path="mobile" cssClass="field" id="userTelNo" />
 				</div>
 			</div>

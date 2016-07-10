@@ -9,20 +9,7 @@ $(document).ready(function() {
 	  enableTab();
 	  //$('table').tablesorter();
 	  
-	  $("#pageSize").change(function (){
-			var noOfRecords=parseInt($("#noOfRecords").val());
-			var pageSize=parseInt($("#currPageSize").val());
-			var newPageSize=parseInt($(this).val());
-			$("#currentPage").val(1);
-			if(noOfRecords<pageSize && newPageSize>pageSize){
-				return;
-			}else{
-				var actionUrl=$("#defaultCashURL").val();
-				var actionUrl=$("#getCashs").val();
-				document.forms["cashReportForm"].action = actionUrl;
-				document.forms["cashReportForm"].submit();	
-			}
-		});
+
 	  
 	  $("#exportBalances").click(function(){
 			
@@ -33,7 +20,18 @@ $(document).ready(function() {
 				worksheetName: 'BalanceList'
 			});
 			
-		});
+		}); 
+		
+		 $("#exportData").click(function(){
+				
+				$('#cashReportTable').tableExport({
+					type : 'excel',
+					escape : 'false',
+					fileName: 'CashReport',
+					worksheetName: 'CashReport'
+				});
+				
+			});
 		
 	  $("#exportReceivable").click(function(){
 			
@@ -170,7 +168,8 @@ $(document).ready(function() {
         $("#balanceDate").datepicker({
   		changeMonth : true,
   		changeYear : true,  		
-  		maxDate : '0' 		
+  		maxDate : '0',
+  		dateFormat: 'dd-mm-yy'
     });
         
 
@@ -185,8 +184,18 @@ $(document).ready(function() {
 				return;
 			} else {
 				var actionUrl = $("#defaultURL").val();
-				document.forms["investorBalanceForm"].action = actionUrl;
-				document.forms["investorBalanceForm"].submit();
+				  if($("#investorBalanceForm").length){
+					  document.forms["investorBalanceForm"].action = actionUrl;
+					  document.forms["investorBalanceForm"].submit();
+				  }else if($("#cashReportForm").length){
+					  document.forms["cashReportForm"].action = actionUrl;
+					  document.forms["cashReportForm"].submit();
+				  } else if($("#receivableReportForm").length){
+					  document.forms["receivableReportForm"].action = actionUrl;
+					  document.forms["receivableReportForm"].submit();
+				  } 
+				  
+				
 			}
 		
            
@@ -198,6 +207,7 @@ $(document).ready(function() {
 $("#fromDate").datepicker({
 		changeMonth : true,
 		changeYear : true,	
+		dateFormat: 'dd-mm-yy',
 	    onSelect: function(selected) {
   				$("#toDate").datepicker("option","minDate", selected)
   				  
@@ -206,7 +216,8 @@ $("#fromDate").datepicker({
 	
 $("#toDate").datepicker({
 		changeMonth : true,
-		changeYear : true,		
+		changeYear : true,	
+		dateFormat: 'dd-mm-yy',
 		onSelect: function(selected) {
   				$("#fromDate").datepicker("option","maxDate", selected)
   				  

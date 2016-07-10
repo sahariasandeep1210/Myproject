@@ -38,12 +38,12 @@
 						<c:when test="${fn:length(investorList) gt 0}">
 							<c:set var="currentInvestor" value="" />
 								<tr>
-									<td class="highlightrow">Totals</td>
+									<td class="highlightrow"><b>Totals</b></td>
 									<td></td>
-									<td><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalsMap.myCreditLine}" /></td>
+									<td class="rightalign blue_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalsMap.myCreditLine}" /></td>
 									<td></td>
-									<td><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalsMap.amountInvested}" /></td>
-									<td><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalsMap.availToInvest}" /></td>
+									<td class="rightalign blue_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalsMap.amountInvested}" /></td>
+									<td class="rightalign blue_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalsMap.availToInvest}" /></td>
 									<!-- <td></td> -->
 								</tr>
 							<c:forEach items="${investorList}" var="investorProt"
@@ -51,14 +51,10 @@
 								<tr>
 									<td>${investorProt.investor.company.name}</td>
 									<td>${investorProt.company.name}</td>
-									<td><fmt:formatNumber type="number" maxFractionDigits="3"
-											value="${investorProt.myCreditLine}" /></td>
+									<td class="rightalign blue_bold"><fmt:formatNumber type="number" maxFractionDigits="3"	value="${investorProt.myCreditLine}" /></td>
 									<td>${investorProt.discountRate}</td>
-									<td><fmt:formatNumber type="number" maxFractionDigits="3"
-											value="${investorProt.amountInvested}" /></td>
-									<td><fmt:formatNumber type="number" maxFractionDigits="3"
-											value="${investorProt.availToInvest}" /></td>
-									<!-- <td></td> -->
+									<td class="rightalign blue_bold"><fmt:formatNumber type="number" maxFractionDigits="3"	value="${investorProt.amountInvested}" /></td>
+									<td class="rightalign blue_bold"><fmt:formatNumber type="number" maxFractionDigits="3"	value="${investorProt.availToInvest}" /></td>
 								</tr>
 							</c:forEach>
 						</c:when>

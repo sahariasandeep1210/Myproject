@@ -89,8 +89,11 @@ Liferay.Portlet.ready(
 	portletId: the current portlet's id
 	node: the Alloy Node object of the current portlet
 	*/
+		
 
 	function(portletId, node) {
+		
+		
 	}
 );
 
@@ -103,17 +106,17 @@ Liferay.on(
 	*/
 
 	function() {
+		console.log("Len:::::11"+$("#navigation").find(".delete-tab").length);
 	}
 );
 
 $(function(){
+	console.log("Len:::::"+$("#navigation").find(".delete-tab").length);
+	$("#navigation").find(".delete-tab").remove();
 	
 	
-	
-	if ($("#portlet_new-password").length ) {
-		 
-	    $("#portlet_new-password").removeClass("customPortlet");
-	 
+	if ($("#portlet_new-password").length ) {		 
+	    $("#portlet_new-password").removeClass("customPortlet");	 
 	}
 	
 	

@@ -4,6 +4,8 @@ $(function() {
 	
 	//enableDisableoptions();
 	
+	$('.tooltipPhone').tooltip();
+	
 	$("#addSeller").click(function() {
 		var updateURL = $("#saveURL").val();
 		document.forms["sellerList"].action = updateURL;
@@ -300,7 +302,6 @@ $(document).ready(function(){
 	$("#registerSeller").click(function(){
 		var error_free = true;
 		error_free = validateUserInfo(error_free);
-		console.log("error_free:::"+error_free)
 		if (error_free) {
 			var url = $(this).attr('data-url');
 			submitTradeForms(url);
@@ -333,7 +334,8 @@ $(document).ready(function(){
 	$("#dateestablished").datepicker({
 		changeMonth : true,
 		changeYear : true,		
-		maxDate : '0'
+		maxDate : '0',
+		dateFormat: 'dd-mm-yy'
 	});
 	
 	 
@@ -399,6 +401,7 @@ function validateCompanyInfo(error_free) {
 			}
 		}	
 	}
+	error_free=validatePhoneNo(error_free,$("#telNo"));
 	return error_free;
 }
 
@@ -427,6 +430,8 @@ function validateUserInfo(error_free){
 			element.removeClass("error_show");
 		}
 	}
+	error_free=validatePhoneNo(error_free,$("#userTelNo"));
+	
 	return error_free;
 	
 }
@@ -519,4 +524,22 @@ function setPage(pageNumber){
 	var actionUrl=$("#defaultURL").val();
 	document.forms["companyList"].action = actionUrl;
 	document.forms["companyList"].submit();	
+}
+
+
+function validatePhoneNo(error_free,element){
+	element.removeClass("error_show");
+	var telNo=element.val();
+	
+	if(element.inputmask('unmaskedvalue').length < 12){
+		element.addClass("error_show");
+		 error_free = false;
+	}else{
+		var splitValues= telNo.split(' ');
+		if(splitValues[1].startsWith("0")){
+			element.addClass("error_show");
+			error_free = false;
+		}
+	}	
+	return error_free;
 }

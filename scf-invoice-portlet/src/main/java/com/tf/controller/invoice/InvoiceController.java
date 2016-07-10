@@ -21,6 +21,7 @@ import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
 
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -126,7 +127,7 @@ public class InvoiceController {
 
 			public void setAsText(String value) {
 				try {
-					setValue(new SimpleDateFormat("MM/dd/yyyy").parse(value));
+					setValue(new SimpleDateFormat(Constants.DATE_FORMAT).parse(value));
 				}
 				catch (Exception e) {
 					setValue(value);
@@ -135,7 +136,7 @@ public class InvoiceController {
 
 			public String getAsText() {
 				if (getValue() != null) {
-					return new SimpleDateFormat("MM/dd/yyyy").format((Date) getValue());
+					return new SimpleDateFormat(Constants.DATE_FORMAT).format((Date) getValue());
 				}
 				else {
 					return null;
@@ -189,7 +190,7 @@ public class InvoiceController {
 						(ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
         if(liferayUtility.getPermissionChecker(request).isOmniadmin() ||
 				request.isUserInRole(Constants.WHITEHALL_ADMIN)){
-    		companyList = companyService.getCompanies("5");
+    		companyList = companyService.getCompanies(CompanyTypes.SCF_COMPANY.getValue());
     		
         }else if(request.isUserInRole(Constants.SCF_ADMIN)){
         	long companyId =userService.getCompanyIDbyUserID(themeDisplay.getUserId());
@@ -471,9 +472,10 @@ public class InvoiceController {
 				paginationUtil.preparePaginationModel(request);
 			ThemeDisplay themeDisplay =
 				(ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
-			DateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+			DateFormat formatter = new SimpleDateFormat(Constants.DATE_FORMAT);
 			Date fromDate = null;
 			Date toDate = null;
+			String tradeURL=null;
 			String search = ParamUtil.getString(request, "Search");
 			String value = ParamUtil.getString(request, "dateList");
 			String from = ParamUtil.getString(request, "fromDate");
@@ -488,7 +490,7 @@ public class InvoiceController {
 				toDate = formatter.parse(to);
 			}
 			
-			
+			tradeURL=liferayUtility.getPortletURL(request, "scf-trade-portlet", "render", "createTrade", true);
 			if (liferayUtility.getPermissionChecker(request).isOmniadmin() ||
 				request.isUserInRole(Constants.WHITEHALL_ADMIN)) {				
 				model.put("userType", Constants.ADMIN);
@@ -499,7 +501,8 @@ public class InvoiceController {
 			}
 			else if (request.isUserInRole(Constants.SELLER_ADMIN)) {
 				long companyId = userService.getCompanyIDbyUserID(themeDisplay.getUserId());
-				registrationNo=companyService.findById(companyId).getRegNumber();				
+				registrationNo=companyService.findById(companyId).getRegNumber();
+				tradeURL=liferayUtility.getPortletURL(request, "scf-trade-portlet", "render", "singleTrade", true);
 				model.put("userType", Constants.SELLER_ADMIN);
 			}
 			
@@ -508,8 +511,8 @@ public class InvoiceController {
 						paginationModel.getStartIndex(), paginationModel.getPageSize(),companyID,registrationNo);
 				}else{				
 				    genericListModel = invoiceService.getInvoices(companyID,paginationModel.getStartIndex(), paginationModel.getPageSize(),registrationNo);
-			}			
-			model.put("tradeURL",liferayUtility.getPortletURL(request, "scf-trade-portlet", "render", "createTrade", true));
+			}
+			model.put("tradeURL",tradeURL);
 			model.put("value", value);
 			model.put("search", search);
 			model.put("from", from);
@@ -551,9 +554,9 @@ public class InvoiceController {
 		Company scfCompany = companyService.findById(invoice.getScfCompany());
 
 		try {
-			workbook =
-				new XSSFWorkbook(invoice.getInvoiceDoc().getInputStream());
+			workbook =new XSSFWorkbook(invoice.getInvoiceDoc().getInputStream());
 			int numberOfSheets = workbook.getNumberOfSheets();
+			DataFormatter formatter = new DataFormatter();
 			for (int i = 0; i < numberOfSheets; i++) {
 				Sheet sheet = workbook.getSheetAt(i);
 				// every sheet has rows, iterate over them
@@ -575,7 +578,8 @@ public class InvoiceController {
 						Cell cell = cellIterator.next();
 						// Get the Cell object
 						if (index == 0) {
-							invoiceModel.setInvoiceNumber(cell.getStringCellValue());
+						    	//invoiceModel.setInvoiceDate(cell.getDateCellValue());
+							invoiceModel.setInvoiceNumber(formatter.formatCellValue(cell));
 						}
 						else if (index == 1) {
 							invoiceModel.setInvoiceDate(cell.getDateCellValue());
@@ -641,6 +645,7 @@ public class InvoiceController {
 			response.setRenderParameter("render", "invoiceDocuments");
 		}
 		catch (Exception e) {
+		    	model.put("documentUpload", Boolean.TRUE);
 			model.put("errorOccured", true);
 			response.setRenderParameter("render", "invoiceDocuments");
 			e.printStackTrace();

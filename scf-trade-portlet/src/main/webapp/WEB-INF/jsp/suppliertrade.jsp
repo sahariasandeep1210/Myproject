@@ -82,7 +82,7 @@
                
            <div class="actionContainer noBorder text-left">
 			<!-- <button class="btn btnBgBuSm" type="button"> GO BACK </button> -->
-			    <a href="/group/guest/scf-trade" class="btn btnBgBuSm">Back</a>
+			    <a href="#" class="btn btnBgBuSm" id="tradeback">Back</a>
 		  </div>
         
     </form:form>

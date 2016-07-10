@@ -142,21 +142,7 @@
 		</div>
 		
 		<div id="editTemplate" class="hide customWell filter-container">
-		<!-- 	<div class="row-fluid">
-				<div class="span6">
-					<div class="span6">
-						<label>SCF Company</label>
-					</div>
-					<div class="span6">
-							<label>My Credit Line</label>
-					</div>
-				</div>
-				<div class="span6">
-					<div class="span6">
-						<label>Discount Rate</label>
-					</div>
-				</div>
-			</div> -->
+	
 		
 		
 			<div class="row-fluid" >

@@ -17,6 +17,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.tf.company.service.LiferayService;
 import com.tf.model.CompanyType;
+import com.tf.persistance.util.Constants;
 import com.tf.service.CompanyService;
 import com.tf.service.CompanyServices;
 import com.tf.service.CompanyTypeService;
@@ -83,7 +84,7 @@ public class BaseController {
 		binder.registerCustomEditor(Date.class, new PropertyEditorSupport() {
 			public void setAsText(String value) {
 				try {
-					setValue(new SimpleDateFormat("MM/dd/yyyy").parse(value));
+					setValue(new SimpleDateFormat(Constants.DATE_FORMAT).parse(value));
 				} catch (Exception e) {
 					setValue(null);
 				}
@@ -91,7 +92,7 @@ public class BaseController {
 
 			public String getAsText() {
 				if (getValue() != null) {
-					return new SimpleDateFormat("MM/dd/yyyy")
+					return new SimpleDateFormat(Constants.DATE_FORMAT)
 							.format((Date) getValue());
 				} else {
 					return null;

@@ -98,7 +98,26 @@
 					<button type="button" class=" icomoon-close close"	data-dismiss="modal" id="first" aria-hidden="true"></button>
 				<h3 id="myModalLabel">Invoice Preview</h3>
 			</div>
-				<%@include file="invoicelisttablepreview.jsp"%>
+			<c:choose>
+				<c:when test="${errorOccured}">
+					 <div class="tab-content">	
+                  	<div class="row-fluid">
+				   			<div class="span12">
+				   				<div class="labelBigTextContaier spacer border">
+						   			<div class="smallLabelText">
+						   				Error occured while importing invoices.Please validate your file.
+						   			</div>	   			
+						   			
+						   		</div>	
+				   			</div>
+				   		</div>
+                  </div>
+				</c:when>
+				<c:otherwise>
+					<%@include file="invoicelisttablepreview.jsp"%>
+				</c:otherwise>
+			</c:choose>
+				
 			
 		</div>
 	</form:form>

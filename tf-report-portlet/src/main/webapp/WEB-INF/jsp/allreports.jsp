@@ -60,7 +60,7 @@
 		  		</div>
 		  		
 		  	</div>
-		  	
+		  	<br>
 		  <div class="row-fluid">
 			<div class="span6">
 				<label class="span6">Total Earnings:</label>

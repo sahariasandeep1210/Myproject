@@ -1,5 +1,11 @@
 <%@include file="init.jsp"%>
 
+<style>
+	.customDatepick {
+	    min-height: 20px !important;
+	    }
+	
+</style>
 
 <portlet:renderURL var="defaultURL">
 	<portlet:param name="currentScreen" value="Company" />
@@ -35,14 +41,14 @@
 </liferay-ui:error>
 
 	
-<liferay-ui:error key="default-error-message" 		message="default.error.message" /> 
+
 
 
 	<form:form commandName="registration" method="post"
 		action="${regCompanyURL}" id="createCompany" name="companyDetail">
 		<input type="hidden" value="${currentScreen}" name="currentScreen" id="currScreen"> 
 		
-		
+<liferay-ui:error key="default-error-message" 		message="default.error.message" /> 		
 		
 		<!-- START: Company information -->
 <section class="home-section bussiness-application high-padding" id="companyDiv">
@@ -123,7 +129,7 @@
                     <div class="control-group">
 						<label class="control-label" for="dateEst">Date Established *</label>
 						<div class="input-append">						
-							<form:input path="company.dateestablished" cssClass="field"	id="dateestablished" />
+							<form:input path="company.dateestablished" cssClass="field customDatepick"	id="dateestablished"  />
 							<span	class="add-on" ><i	class="icomoon-calendar" ></i></span>
 						</div>						
 					</div>
@@ -175,7 +181,7 @@
             <div class="row-fluid">
                 <div class="span3 spanSm6">
                     <div class="control-group">
-						<label class="control-label" for="teleNo">Telephone No *</label>
+						<label class="control-label" for="teleNo">Telephone No * <i class="icon-info-sign tooltipPhone" data-toggle="tooltip" title="Ex. For UK 44 12345-12345" ></i></label>
 						<form:input path="company.telnumber" cssClass="field"  id="telNo"/>
 					</div>
                 </div>
@@ -354,7 +360,7 @@
             <div class="row-fluid">
                 <div class="span3 spanSm6">
                     <div class="control-group">
-						<label class="control-label" for="bussTeleNo">Telephone No *</label>
+						<label class="control-label" for="bussTeleNo">Telephone No * <i class="icon-info-sign tooltipPhone" data-toggle="tooltip" title="Ex. For UK 44 12345-12345" ></i></label>
 						<form:input path="user.mobile" cssClass="field"  id="userTelNo"/>
 					</div>
                 </div>

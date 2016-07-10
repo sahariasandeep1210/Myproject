@@ -89,6 +89,15 @@ $(document).ready(
 				    fileName : 'TradeList',
 					worksheetName : 'TradeList'
 				});
+			}); 
+			
+			$("#exportInvoices").click(function() {				
+				$('#tradeInvoiceTable').tableExport({
+					type : 'excel',
+					escape : 'false',
+				    fileName : 'TradeInvoices',
+					worksheetName : 'TradeInvoices'
+				});
 			});
 			
 			
@@ -294,9 +303,12 @@ $(document).ready(
 				$("#insuranceDocDiv").slideToggle();
 			});
 
-			$("#tradeAdd,#tradeback").click(function() {
-				var url = $(this).attr('data-url');
-				submitTradeForms(url);
+			$("#tradeAdd,#tradeback").click(function(event) {
+				
+				event.preventDefault();
+			    history.back(1);
+				//var url = $(this).attr('data-url');
+				//submitTradeForms(url);
 			});
 
 			$("#updateStatus").click(function() {

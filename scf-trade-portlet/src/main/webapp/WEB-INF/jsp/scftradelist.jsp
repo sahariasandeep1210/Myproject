@@ -67,10 +67,10 @@
 									<td>${trade.status}</td>
 									<c:choose>
 											<c:when test="${fn:length(trade.invoices) gt 1}">												
-												<td class="bigger-icon green_normal" title="MultiInvoice"><i class="fa fa-files-o"></i></td>
+												<td class="bigger-icon green_normal" title="MultiInvoice"><i class="fa fa-files-o"></i> Yes</td>
 											</c:when>
 											<c:otherwise>
-												<td class="bigger-icon red_normal" title="SingleInvoice"><i class="fa fa-file-o"></i></td>												
+												<td class="bigger-icon red_normal" title="SingleInvoice"><i class="fa fa-file-o"></i>No</td>												
 											</c:otherwise>
 										</c:choose>
 								</tr>

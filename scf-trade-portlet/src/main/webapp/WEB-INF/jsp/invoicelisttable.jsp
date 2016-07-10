@@ -12,7 +12,7 @@
   	<div class="row-fluid">
   		<div class="span12 text-right">
   			<div class="actionContainer noBorder pt0">
-  				<aui:button cssClass="btnBgGreenSm" value="Export"></aui:button>
+  				<aui:button cssClass="btnBgGreenSm" value="Export" id="exportInvoices"></aui:button>
   			</div>
   			
   		</div>

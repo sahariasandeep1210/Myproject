@@ -64,47 +64,7 @@
 	</div>
 	
 
-			<%-- <table class="addtextCenter" id="singleHisTable">
 			
-				<thead>
-				</thead>
-				<tbody>
-					<tr>
-						<td><label class="span6"><span class="total">TOTAL
-									ALL</span></label></td>
-						<td>${totalTradeAmount}</td>
-						<td><input type="text" name="Search"
-							placeholder="Search Here" id="search" value="${companyName}"></td>
-						<td></td>
-					</tr>
-
-					<tr>
-						<td><label class="span6">Select Date Range :</label></td>
-						<td><input name="fromDate" id="fromDate" placeholder="From" value="${fromDate}" />
-						</td>
-
-						<td><input name="toDate" id="toDate" placeholder="To" value="${toDate}"/></td>
-						<td></td>
-					</tr>
-					<tr>
-						<td></td>
-						<td></td>
-						<td><input type="button" value="Search" id="sellerReport"
-							class="btn btn-primary" /></td>
-						<td></td>
-					</tr>
-					<tr>
-						<td></td>
-						<td></td>
-						<td colspan="4">
-							<h5 style="text-align: right;">
-								<a href="#" style="color: #295780; font-weight: bold;"
-									id="exportSingleTradeHistory"> Export</a>
-							</h5>
-						</td>
-					</tr>
-				</tbody>
-			</table> --%>
 
  <div class="customTableContainer">
 			<table class="table  tablesorter table-bordered"
@@ -124,7 +84,7 @@
 						<c:when test="${fn:length(scfTradesHistory) gt 0}">
 								<tr>
 									<td>Totals</td>
-									<td><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalTradeAmount}" /> </td>
+									<td class="rightalign blue_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalTradeAmount}" /> </td>
 									<td></td>
 									<td></td>
 									<td></td>
@@ -136,8 +96,8 @@
 								<tr>
 								    
 									<td>${trade.tradeNotes}</td>
-									<td>${trade.tradeAmount}</td>
-									<td>${trade.id}</td>
+									<td class="rightalign blue_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${trade.tradeAmount}" /></td>
+									<td>${trade.scfId}</td>
 									<td>${trade.status }</td>
 									<td>${trade.duration }</td>
 									<td>${trade.insuranceDocName}</td>
@@ -147,7 +107,7 @@
 						<c:when test="${fn:length(scfTradesList) gt 0}">
 							<tr>
 									<td>Totals</td>
-									<td><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalTradeAmount}" /> </td>
+									<td class="rightalign blue_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalTradeAmount}" /> </td>
 									<td></td>
 									<td></td>
 									<td></td>
@@ -158,8 +118,8 @@
 						   
 								<tr>
 									<td>${trade.tradeNotes}</td>
-									<td>${trade.tradeAmount}</td>
-									<td>${trade.id}</td>
+									<td class="rightalign blue_bold"> <fmt:formatNumber type="number" maxFractionDigits="3" value="${trade.tradeAmount}" /> </td>
+									<td>${trade.scfId}</td>
 									<td>${trade.status }</td>
 									<td>${trade.duration }</td>
 									<td>${trade.insuranceDocName}</td>

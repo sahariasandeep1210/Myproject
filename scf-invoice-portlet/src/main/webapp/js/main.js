@@ -182,13 +182,15 @@ $(document).ready(function() {
 	
 	$("#invoiceDate,#dueDate").datepicker({
 		changeMonth : true,
-		changeYear : true		
+		changeYear : true,
+		dateFormat: 'dd-mm-yy'
 	});
 	
 	$("#paymentDate").datepicker({
 		changeMonth : true,
 		changeYear : true,
-		minDate : 0		
+		minDate : 0,
+		dateFormat: 'dd-mm-yy'
 	});
 	
 	
@@ -357,6 +359,7 @@ $("#fromDate").datepicker({
 	changeMonth : true,
 	changeYear : true,
 	showOtherMonths: true,
+	dateFormat: 'dd-mm-yy',
     onSelect: function(selected) {
 				$("#toDate").datepicker("option","minDate", selected);
 		}
@@ -366,6 +369,7 @@ $("#toDate").datepicker({
 	changeMonth : true,
 	changeYear : true,
 	showOtherMonths: true,
+	dateFormat: 'dd-mm-yy',
 	onSelect: function(selected) {
 				$("#fromDate").datepicker("option","maxDate", selected);
 				  

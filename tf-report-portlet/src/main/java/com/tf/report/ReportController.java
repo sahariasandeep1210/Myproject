@@ -25,6 +25,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.mysql.jdbc.StringUtils;
 import com.tf.model.WhiteHallTransaction;
+import com.tf.persistance.util.Constants;
 import com.tf.service.WhiteHallTransactionService;
 import com.tf.util.PaginationUtil;
 import com.tf.util.model.PaginationModel;
@@ -81,7 +82,7 @@ public class ReportController {
 		throws Exception {
 
 		List<WhiteHallTransaction> whiteHallTransactions = null;
-		DateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+		DateFormat formatter = new SimpleDateFormat(Constants.DATE_FORMAT);
 		Date fromDate = null;
 		Date toDate = null;
 		String search = ParamUtil.getString(request, "Search");

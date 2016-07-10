@@ -63,6 +63,7 @@ public class DashboardController {
 			userType=Constants.WHITEHALL_ADMIN;
 			List<Investor> cashPosition =investorService.getCashPoition();
 			model.put("cashPosition",cashPosition);
+			model.put("dashboardModel", dashBoardService.setDashBoardInformation(dashModel,userType, companyId));			
 		} else if(request.isUserInRole(Constants.PRIMARY_INVESTOR_ADMIN)){
 		    	Long investorID=investorService.getInvestorIDByCompanyId(liferayUtility.getWhitehallCompanyID(request));
 		    	dashBoardService.setInvestorStackedBarChartInformation(dashModel,investorID);
@@ -77,6 +78,8 @@ public class DashboardController {
 			if (companyId !=null && companyId >0) {
 			    dashModel.setInvestorPortfolios(investorService.getInvestorPortfolioDataForGraph(companyId));
 			    dashModel.setTotalCreditAvail(investorService.getTotalCreditAvailForGraph(companyId));
+			    model.put("dashboardModel", dashBoardService.setDashBoardInformation(dashModel,userType, companyId));
+				
 			}
 			userType=Constants.SELLER_ADMIN;
 			viewName="sellerdashboard";
@@ -86,10 +89,11 @@ public class DashboardController {
 			dashModel.setTotalCreditAvail(investorService.getTotalCreditAvailForGraph(companyId));			
 			userType=Constants.SCF_ADMIN;
 			viewName="scfdashboard";
+			model.put("dashboardModel", dashBoardService.setDashBoardInformation(dashModel,userType, companyId));
+			
 		}
 		
 		setPortletURls(dashModel,request);
-		model.put("dashboardModel", dashBoardService.setDashBoardInformation(dashModel,userType, companyId));
 		
 		return new ModelAndView(viewName, model);		
 	}

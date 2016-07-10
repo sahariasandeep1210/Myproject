@@ -91,8 +91,8 @@
 					<c:choose>
 						<c:when test="${fn:length(scfTradesHistory) gt 0}">
 							<tr>
-									<td>Totals</td>
-									<td><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalTradeAmount}" /> </td>
+									<td><b>Totals</b></td>
+									<td class="rightalign blue_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalTradeAmount}" /> </td>
 									<td></td>
 									<td></td>
 									<td></td>
@@ -104,7 +104,7 @@
 									<td><span class='underline'><a
 											href="javascript:void(0);"
 											onclick="window.location.href='${histryURL}&compID=${trade.insuranceDocId}'">${trade.tradeNotes}</a></span></td>
-									<td><fmt:formatNumber type="number" maxFractionDigits="3" value="${trade.tradeAmount}" /> </td>
+									<td class="rightalign blue_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${trade.tradeAmount}" /> </td>
 									<td>ALL</td>
 									<td>N/A</td>
 									<td>${trade.duration}</td>

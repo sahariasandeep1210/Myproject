@@ -3,9 +3,16 @@
 	<portlet:param name="render" value="updateInvoices" />
 </portlet:renderURL>
 <portlet:resourceURL id="closeSessionValues" var="closeSessionValuesURL" ></portlet:resourceURL> 
-			  	
+<div class="tab-content">  	
 	<c:if test="${fn:length(validInvoiceList) gt 0}">
-		<span class="alert alert-success">Valid Invoices</span><br>
+		<c:if test="${fn:length(invalidnvoiceList) gt 0}">
+		  <div class="customWell">	
+				<div class="row-fluid">
+					<span><b>Valid Invoices</span></b><br>
+				</div>
+			</div>
+		</c:if>
+		
 		
 	<div class="customTableContainer">
 		<table class="table table-hover tablesorter table-bordered"
@@ -51,8 +58,13 @@
 	</div>
 	</c:if>
 		<c:if test="${fn:length(invalidnvoiceList) gt 0}">
-			<span class="">Invalid Invoices.</span><br>
-			<span class="">These invoices are already present on our platform or not valid.</span><br>
+		<br>
+		<div class="customWell">
+			<div class="row-fluid">
+				<span class=""><b>Invalid Invoices.</b></span><br>
+				<span class="">These invoices are already present on our platform or not valid.</span><br>
+			</div>
+		</div>
 	
 	<div class="customTableContainer">
 		<table class="table table-hover tablesorter table-bordered"
@@ -129,10 +141,12 @@
 		</table>
 	</div>
 	</c:if>
-	
+	</div>
 	
 <div class="modal-footer">	
 	<button class="btn btnBrGrSm" id="invoice-popup-close" data-dismiss="modal" aria-hidden="true">Close</button>
 	<input type="submit" value="Save Invoices" class="btn btnBgGreenSm" id="last"/>
 </div>
+
+
 
