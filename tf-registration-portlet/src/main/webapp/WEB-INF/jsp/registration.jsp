@@ -25,7 +25,7 @@
 
 <portlet:resourceURL id="fetchCompanyDetails" var="fetchCompanyDetails" ></portlet:resourceURL> 
 
-<div class="" id="errorMsg"><i class="icon-remove-sign icon-2"></i> </div>
+<div class="" id="errorMsg"> </div>
 
 <liferay-ui:error 	key="error-user-email">
 	<liferay-ui:message key="user.email.error"  arguments="${registration.user.email}"></liferay-ui:message>
@@ -113,7 +113,7 @@
 
                 <div class="span3 spanSm6">
                 	<div class="control-group">
-						<label class="control-label" for="alName">Alternate Name *</label>
+						<label class="control-label" for="alName">Alternate Name </label>
 						<form:input path="company.altname" cssClass="field" />
 					</div>
                 </div>
@@ -188,14 +188,14 @@
 
                 <div class="span3 spanSm6">
                     <div class="control-group">
-						<label class="control-label" for="url">URL *</label>
+						<label class="control-label" for="url">URL </label>
 						<form:input path="company.website" cssClass="field" />
 					</div>
                 </div>
 
                 <div class="span3 spanSm6">
                 	<div class="control-group">
-                		<label class="control-label" for="selectionStyle">Organisation Type *</label>					
+                		<label class="control-label" for="selectionStyle">Organisation Type </label>					
 						<form:select path="company.orgType" items="${orgTypeMap}"	class="aui-field-select" id="orgType" placeholder="Organisation Type" />
 					</div>
                 </div>
@@ -337,7 +337,7 @@
 
                 <div class="span3 spanSm6">
                     <div class="control-group">
-						<label class="control-label" for="mname">Middle Name *</label>
+						<label class="control-label" for="mname">Middle Name </label>
 						<form:input path="user.middleName" cssClass="field"  />
 					</div>
                 </div>

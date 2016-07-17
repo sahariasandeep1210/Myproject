@@ -91,7 +91,7 @@ public class BaseController {
 		Map<Long,String> cmpTypeMap=new LinkedHashMap<Long, String>();
 		cmpTypeMap.put(0l, "Select");
 		for(CompanyType companyType : companyTypes){
-		    if(Constants.ADMIN.equalsIgnoreCase(companyType.getName())){
+		    if(!Constants.ADMIN.equalsIgnoreCase(companyType.getName())){
 			cmpTypeMap.put(companyType.getId(), companyType.getName());
 		    }			
 		}

@@ -51,7 +51,7 @@
   				<div class="control-group">
 					<label class="control-label" for="dateEs"> Date Established *</label>
 					<div class="input-append">						
-						<form:input path="dateestablished" cssClass="field"	id="dateestablished" />
+						<form:input path="dateestablished" cssClass="field"	id="dateEst" />
 							<span	class="add-on" ><i	class="icomoon-calendar"></i></span>
 					</div>
 				</div>

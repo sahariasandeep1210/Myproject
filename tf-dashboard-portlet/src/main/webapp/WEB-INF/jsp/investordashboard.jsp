@@ -11,16 +11,7 @@
 				<div class="panel-heading">
 					<h3 class="panel-title">Credit Line</h3>
 				</div>
-				<div class="panel-body">	
-				<%-- 		<div class="quick-stat-stats row-fluid">
-						<div class="span4 fg-blue">
-							<div class="text-container">
-								<div class="small-text">Available Credit Line</div>
-								<div class="big-text">&pound; <fmt:formatNumber type="number" maxFractionDigits="3" value="${dashboardModel.totalCreditAvail}"  /></div>
-							</div>
-						</div>
-						
-					</div> --%>			
+				<div class="panel-body">					
 					<div id="stackedBarChart"></div>
 				</div>
 			</div>
@@ -55,6 +46,7 @@
 		var barChartdata = new google.visualization.DataTable();		
 		barChartdata.addColumn('string', 'Discount Rate');
 		barChartdata.addColumn('number', 'Avail To Invest');
+		barChartdata.addColumn({type: 'string', role: 'style'});
 		      
 
       
@@ -66,7 +58,7 @@
       </c:forEach>
       
 	  <c:forEach var="element" items='${dashboardModel.investorPortfolios}'>
-		barChartdata.addRow(["${element[1]}",parseFloat("${element[0]}")]);
+		barChartdata.addRow(["${element[1]}",parseFloat("${element[0]}"), '#ff9900' ]);
 	</c:forEach>
       
       var stackedBarChartOptions = {	        		
@@ -74,7 +66,10 @@
      		 isStacked: true
        };
       var barChartOptions = {	        		
-      		 legend: { position: "none" }
+      		 legend: { position: "none"
+      			
+      			 	 
+      			 }
         };
 
 		

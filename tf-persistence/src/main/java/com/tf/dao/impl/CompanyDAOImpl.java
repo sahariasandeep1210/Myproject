@@ -81,9 +81,10 @@ public class CompanyDAOImpl  extends BaseDAOImpl<Company, Long>   implements Com
 			
 			List<Company> results = (List<Company>) sessionFactory.getCurrentSession().createCriteria(Company.class)
 				   .setProjection(Projections.projectionList()
-				   .add(Projections.property("id"), "id")
+				   .add(Projections.property("id"), "id")				  
 				   .add(Projections.property("name"), "name"))
 				   .add(Restrictions.eq("companyType", companyType))
+				   .add(Restrictions.ne("activestatus", CompanyStatus.DELETED.getValue()))
 				   .setResultTransformer(Transformers.aliasToBean(Company.class)).list();
 			_log.debug("GetCompanies successful, result size: "
 					+ results.size());
@@ -234,7 +235,7 @@ public class CompanyDAOImpl  extends BaseDAOImpl<Company, Long>   implements Com
 		InvestorDTO investorDTO;
 		List<Object[]> rows=new ArrayList<Object[]>();      
 		try{
-			String sql="select  inv.investor_id, company.name from  tf_investor inv ,tf_company company where inv.company_id=company.idcompany";
+			String sql="select  inv.investor_id, company.name from  tf_investor inv ,tf_company company where inv.company_id=company.idcompany and  company.active_status !="+CompanyStatus.DELETED.getValue()+"";
 			Query query = sessionFactory.getCurrentSession().createSQLQuery(sql);
 		    rows=query.list();
 		    for(Object[] row : rows){
@@ -322,6 +323,7 @@ public class CompanyDAOImpl  extends BaseDAOImpl<Company, Long>   implements Com
 									.add(Projections.property("name"), "name")
 									.add(Projections.property("regNumber"), "regNumber"))
 					.add(Restrictions.eq("companyType", companyType))
+					.add(Restrictions.ne("activestatus", CompanyStatus.DELETED.getValue()))
 					.setResultTransformer(
 							Transformers.aliasToBean(Company.class)).list();
 			_log.debug("GetCompanies successful, result size: "

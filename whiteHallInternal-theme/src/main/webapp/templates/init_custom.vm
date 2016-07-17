@@ -10,14 +10,21 @@
 #set ($dockbar_notification = "2_WAR_notificationsportlet")
 #set ($VOID = $velocityPortletPreferences.reset())
 
+#set ($VOID = $velocityPortletPreferences.reset())
+
+
+
 
 
 #set ($icon-class = $theme_display.getProperty('icon-class'))
 #set ($user = $permissionChecker.getUser() )
-#set ($my_account_url = $htmlUtil.escape($theme_display.getURLMyAccount().toString()))
+##set ($my_account_url = $htmlUtil.escape($theme_display.getURLMyAccount().toString()))
+## Liferay pop up link to display the account editing page of a user (Velocity)
+#set ($my_account_url = $theme_display.getURLMyAccount() + "&controlPanelCategory=my")
 
 #if ($dockbar == true)
    #set ($css_class = "${css_class} dockbar-split")
 #end
 
 #set ($show_dockbar = $is_signed_in && $permissionChecker.isGroupAdmin($group_id))
+#set ($userPortraitURL = $user.getPortraitURL($theme_display) )

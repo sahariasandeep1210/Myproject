@@ -14,7 +14,7 @@
 <portlet:resourceURL id="historyURL" var="historyURL" ></portlet:resourceURL> 
 <portlet:resourceURL id="crtLinebreakdownURL" var="crtLinebreakdownURL" ></portlet:resourceURL> 
 
-<div class="alert alert-danger" id="errorMsg"> </div>
+<div  id="errorMsg"> </div>
 
 
 <div class="tab-content">

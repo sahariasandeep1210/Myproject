@@ -6,38 +6,15 @@ $(function() {
 	
 	$('.tooltipPhone').tooltip();
 	
-	$("#addSeller").click(function() {
-		var updateURL = $("#saveURL").val();
-		document.forms["sellerList"].action = updateURL;
-		document.forms["sellerList"].submit();
-	});
-	
-	 $("#pageSize").val($("#currPageSize").val());
 	$("#errorMsg").hide(); 
+	
+	//$("#telNo").inputmask("999-999-9999");
+	//$("#userTelNo").inputmask("999-999-9999");
 	
 	$("#telNo").inputmask("99 99999-99999");
 	$("#userTelNo").inputmask("99 99999-99999");
 	
-	$("#pageSize").change(function (){
-		var noOfRecords=parseInt($("#noOfRecords").val());
-		var pageSize=parseInt($("#currPageSize").val());
-		var newPageSize=parseInt($(this).val());
-		$("#currentPage").val(1);
-		if(noOfRecords<pageSize && newPageSize>pageSize){
-			return;
-		}else{
-			var actionUrl=$("#defaultURL").val();
-			document.forms["companyList"].action = actionUrl;
-			document.forms["companyList"].submit();	
-		}
-		
-		
-		
-	});
-	
-	$("#exportCompanies").click(function(){
-		/* window.open('data:application/vnd.ms-excel,' + $('#dvData').html());
-		 e.preventDefault();*/	
+	$("#exportCompanies").click(function(){		
 		
 		$('#companyListTable').tableExport({
 			type : 'excel',
@@ -74,7 +51,7 @@ $(function() {
 							$("#registrationNo").val(companyObject.company_number);// clear 
 							$("#jurisdiction").val(companyObject.jurisdiction); 
 							var creatDate=new Date(companyObject.date_of_creation);
-							$("#dateEst").val(dateFormatter(creatDate));
+							$("#dateestablished").val(dateFormatter(creatDate));
 							$("#orgType").val(companyObject.type);
 							
 							//adding Address information
@@ -176,93 +153,11 @@ $(function() {
 	
 	
 	
-	
-	
-	
-	
-	$("#deleteCompany").dialog({
-		autoOpen : false,
-		resizable : false,
-		width : 415,
-		height : 300,
-		modal : true,
-		buttons : {
-			"Continue" : function () {
-				var url = $("#deleteURL").val();
-				submitTradeForms(url);
-			},
-			Cancel : function () {
-				$(this).dialog("close");
-			}
-		}
-	});
-	
-	
-	
 	$("#companyDiv").hide();
 	$("#userDiv").hide();
-	//enableDisableTab();
-	
-	$("#deleteCompany").hide();
-	 $('table').tablesorter();
-	 
-		$(".dropdown-menu").on("click", "li", function(event){
+	$("#confirmationDiv").hide();
+	enableDisableTab();
 
-			var noOfRecords = parseInt($("#noOfRecords").val());
-			var pageSize = parseInt($("#currPageSize").val());
-			var newPageSize = parseInt($(this).attr('pageSize'));
-			$("#pageSize").val(newPageSize);
-			$("#currentPage").val(1);
-			if (noOfRecords < pageSize && newPageSize > pageSize) {
-				return;
-			} else {
-				var actionUrl = $("#defaultURL").val();
-				document.forms["companyList"].action = actionUrl;
-				document.forms["companyList"].submit();
-			}
-		
-	       
-	     });
-	
-	
-	
-
- /* var $table = $('table').tablesorter({
-    theme: 'blue',
-    widgets: ["zebra", "filter"],
-    widgetOptions : {
-      // filter_anyMatch replaced! Instead use the filter_external option
-      // Set to use a jQuery selector (or jQuery object) pointing to the
-      // external filter (column specific or any match)
-      filter_external : '.search',
-      // add a default type search to the first name column
-      filter_defaultFilter: { 1 : '~{query}' },
-      // include column filters
-      filter_columnFilters: true,
-      filter_placeholder: { search : 'Search...' },
-      filter_saveFilters : true,
-      filter_reset: '.reset'    
-    },
-    headers: { 
-  		10: 
-  		{ 
-  			sorter: false
-			} 
-		   }
-  });
-
-  // make demo search buttons work
-  $('button[data-column]').on('click', function(){
-    var $this = $(this),
-      totalColumns = $table[0].config.columns,
-      col = $this.data('column'), // zero-based index or "all"
-      filter = [];
-
-    // text to add to filter
-    filter[ col === 'all' ? totalColumns : col ] = $this.text();
-    $table.trigger('search', [ filter ]);
-    return false;
-  });*/
 
 });
 
@@ -272,6 +167,14 @@ $(document).ready(function(){
 		var url = $(this).attr('data-url');
 		submitTradeForms(url);
 	});
+	
+	$("#homePageUser").click(function(){
+		$("#currScreen").val('Company');
+		var url = $(this).attr('data-url');
+		submitTradeForms(url);
+	});
+	
+	
 	
 	//registration first step
 	$("#continue").click(function(){
@@ -302,6 +205,7 @@ $(document).ready(function(){
 	$("#registerSeller").click(function(){
 		var error_free = true;
 		error_free = validateUserInfo(error_free);
+		console.log("error_free:::"+error_free)
 		if (error_free) {
 			var url = $(this).attr('data-url');
 			submitTradeForms(url);
@@ -325,28 +229,17 @@ $(document).ready(function(){
 		submitUserForms(url);
 	});
 	
-	$("#backBtn").click(function(){
-		var url = $(this).attr('data-url');
-		document.forms["companyDetail"].action = url;
-		document.forms["companyDetail"].submit();
-	});
-	
-	$("#dateEst").datepicker({
+	$("#dateestablished").datepicker({
 		changeMonth : true,
 		changeYear : true,		
 		maxDate : '0',
-		dateFormat: 'dd-mm-yy',
-		 onSelect: function () {
-		       $('#dateEst').val(this.value);
-		   }
+		dateFormat: 'dd-mm-yy'
 	});
 	
 	 
 });
 
-function deleteCompany() {
-	$("#deleteCompany").dialog("open");
-}
+
 
 function submitTradeForms(url) {
 	document.forms["companyDetail"].action = url;
@@ -358,21 +251,17 @@ function submitUserForms(url) {
 	document.forms["userDetail"].submit();
 }
 
-/*function enableDisableTab(){
+function enableDisableTab(){
 	var currentTab=$("#currScreen").val();
-	console.log("currentTab:::::"+currentTab);
-	if(currentTab=='Company'){
-		$("#companyDiv").show();
-		$("#Company").addClass("active");
-		$("#User").removeClass("active");
-		
-	}else{
-		$("#userDiv").show();
-		$("#User").addClass("active");
-		$("#Company").removeClass("active");
+	if(currentTab=='Company' || currentTab==''){
+		$("#companyDiv").show();		
+	}else if(currentTab=='User'){
+		$("#userDiv").show();		
+	}else {		
+		$("#confirmationDiv").show();
 	}
 	
-}*/
+}
 
 
 function validateCompanyInfo(error_free) {
@@ -380,7 +269,7 @@ function validateCompanyInfo(error_free) {
 	var elements = [];
 	elements[0] = "companyName";
 	elements[1] = "registrationNo";
-	elements[2] = "dateEst";
+	elements[2] = "dateestablished";
 	elements[3] = "address1";
 	elements[4] = "region";
 	elements[5] = "country";
@@ -388,30 +277,46 @@ function validateCompanyInfo(error_free) {
 	elements[7] = "telNo";
 	elements[8] = "companyType";
 	
-
-	
 	$("#errorMsg").hide();
 	$("#errorMsg").removeClass("alert alert-danger");
 	$("#errorMsg").html();
-	
 	for (i = 0; i < elements.length; i++) {
 		var element = $("#" + elements[i]);
-		if(element.length){
-			var eleValue = element.val();
-			if (eleValue == '' || eleValue == null || (element.is('select') && element[0].selectedIndex == 0)) {
-				element.addClass("error_show");
-				error_free = false;				
-				$("#errorMsg").show();
-				$("#errorMsg").addClass("alert alert-danger");
-				$("#errorMsg").html(errormessage);
-			} else {
-				element.removeClass("error_show");
-			}
-		}	
+		var eleValue = element.val();
+		if (eleValue == '' || eleValue == null || (element.is('select') && element[0].selectedIndex == 0)) {
+			element.addClass("error_show");
+			error_free = false;
+			$("#errorMsg").show();
+			$("#errorMsg").addClass("alert alert-danger");
+			$("#errorMsg").html(errormessage);
+		} else {
+			element.removeClass("error_show");
+		}
 	}
+	
 	error_free=validatePhoneNo(error_free,$("#telNo"));
 	return error_free;
 }
+
+function validatePhoneNo(error_free,element){
+	element.removeClass("error_show");
+	var telNo=element.val();
+	
+	if(element.inputmask('unmaskedvalue').length < 12){
+		element.addClass("error_show");
+		 error_free = false;
+	}else{
+		var splitValues= telNo.split(' ');
+		if(splitValues[1].startsWith("0")){
+			element.addClass("error_show");
+			error_free = false;
+		}
+	}	
+	
+	return error_free;
+	
+}
+
 
 function validateUserInfo(error_free){
 	var elements = [];
@@ -421,7 +326,6 @@ function validateUserInfo(error_free){
 	elements[3] = "lastname";
 	elements[4] = "email";
 	elements[5] = "userTelNo";
-	
 	
 	$("#errorMsg").hide();
 	$("#errorMsg").removeClass("alert alert-danger");
@@ -440,8 +344,8 @@ function validateUserInfo(error_free){
 			element.removeClass("error_show");
 		}
 	}
-	error_free=validatePhoneNo(error_free,$("#userTelNo"));
 	
+	error_free=validatePhoneNo(error_free,$("#userTelNo"));
 	return error_free;
 	
 }
@@ -502,7 +406,6 @@ function ajaxindicatorstop()
 }
 
 
-
 function dateFormatter (dateObject) {
     var d = new Date(dateObject);
     var day = d.getDate();
@@ -514,7 +417,7 @@ function dateFormatter (dateObject) {
     if (month < 10) {
         month = "0" + month;
     }
-    var date = month+ "/" + day  + "/" + year;
+    var date = day + "-" + month  + "-" + year;
 
     return date;
 }
@@ -527,29 +430,4 @@ function enableDisableoptions(){
 	}
 	
 	
-}
-
-function setPage(pageNumber){
-	$("#currentPage").val(pageNumber);
-	var actionUrl=$("#defaultURL").val();
-	document.forms["companyList"].action = actionUrl;
-	document.forms["companyList"].submit();	
-}
-
-
-function validatePhoneNo(error_free,element){
-	element.removeClass("error_show");
-	var telNo=element.val();
-	
-	if(element.inputmask('unmaskedvalue').length < 12){
-		element.addClass("error_show");
-		 error_free = false;
-	}else{
-		var splitValues= telNo.split(' ');
-		if(splitValues[1].startsWith("0")){
-			element.addClass("error_show");
-			error_free = false;
-		}
-	}	
-	return error_free;
 }

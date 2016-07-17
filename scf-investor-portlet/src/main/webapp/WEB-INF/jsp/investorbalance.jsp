@@ -21,7 +21,7 @@
 </portlet:actionURL>
 
 
-<div class="alert alert-danger" id="errorMsg"><i class="icon-remove-sign icon-2"></i> </div>
+<div  id="errorMsg"></div>
 
 <div class="tab-content">
  <form:form method="post" commandName="investorBalanceModel"
@@ -120,7 +120,7 @@
 						<div class="control-group">
 							<label class="control-label" for="amount">Date</label>
 							<div class="input-append">		
-									<input type="text" name="transcationDate" id="balanceDate" class="field" placeholder="mm/dd/yyyy">				
+									<input type="text" name="transcationDate" id="balanceDate" class="field" placeholder="dd-MM-yyyy">				
 									<span	class="add-on" ><i	class="icomoon-calendar"></i></span>
 							</div>
 							

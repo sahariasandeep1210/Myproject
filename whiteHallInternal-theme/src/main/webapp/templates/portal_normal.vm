@@ -68,24 +68,23 @@ $theme.include($body_top_include)
 					
 					<li class="dropdown profile-dropdown">
 					  <a href="#" class="dropdown-toggle-" data-toggle="dropdown">
-						<img class="profile-img" src="$images_folder/dummy-prof-img.jpg" alt="" title="notification image">
+						<img class="profile-img" src="$userPortraitURL" alt="" title="notification image">
 						<span class="hidden-tablet hidden-phone header-user-name">$user.getFullName()</span>
 						<i class="icomoon-arrow-down"></i>
 					  </a>
-					  <ul class="dropdown-menu">
-						<li>
+					  <ul class="dropdown-menu" id="myAccountUl">
+						<!-- <li>
 							<a href="#">
 								<i class="icomoon-my-profile"></i>
 								<span class="nav-item-label"> My Profile </span>
 							</a>
-						</li>
+						</li> -->
 						<li>
-							<a href="$my_account_url" id="navigation-my-account-url">
+							<a id="myAccountLink" href="javascript:Liferay.Util.openWindow({dialog: {destroyOnHide: true}, title: 'My Account', uri: '$my_account_url'});" id="navigation-my-account-url">
+							
 								<i class="icomoon-my-account"></i>
 								<span class="nav-item-label"> My Account </span>
-								<script>
-									Liferay.delegateClick('navigation-my-account-url', Liferay.Util.openInDialog);
-								</script>
+								
 							</a>
 						</li>
 						<li>

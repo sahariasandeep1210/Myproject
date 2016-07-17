@@ -85,7 +85,7 @@
 		   				 <div class="control-group">
 		   					<label class="control-label" for="dateEs">From</label>
 			   				<div class="input-append">						
-								<input name="fromDate" class="span9" id="fromDate" placeholder="mm/dd/yyyy" value="${from}" type="text"/>
+								<input name="fromDate" class="span9" id="fromDate" placeholder="dd-MM-yyyy" value="${from}" type="text"/>
 									<span	class="add-on" ><i	class="icomoon-calendar"></i></span>
 							</div>
 						</div> 
@@ -95,7 +95,7 @@
 		   				<div class="control-group">
 		   					<label class="control-label" for="dateEs">To</label>
 			   				<div class="input-append">						
-									 <input name="toDate" Class="span9" id="toDate" placeholder="mm/dd/yyyy" value="${to}" type="text"/>
+									 <input name="toDate" Class="span9" id="toDate" placeholder="dd-MM-yyyy" value="${to}" type="text"/>
 									<span	class="add-on" ><i	class="icomoon-calendar"></i></span>
 							</div>
 						</div>

@@ -6,6 +6,7 @@ $(document).ready(function() {
 	  $("#saveProtfolios").hide(); 
 	  $(".historyRow").hide();
 	  $("#errorMsg").hide(); 
+	  $("#errorMsg").removeClass("alert alert-danger");
 	  enableTab();
 	  //$('table').tablesorter();
 	  
@@ -227,6 +228,7 @@ $("#toDate").datepicker({
 	 
       $('#investorModel').on('click', '#editCancel', function() {
     	    $("#errorMsg").hide(); 
+    	    $("#errorMsg").removeClass("alert alert-danger");
     	   
     		$("#butonClass" ).hide(); 
     		$("#addProtfolioBtn" ).show();
@@ -341,6 +343,7 @@ $("#toDate").datepicker({
       
       $('#investorModel').on('click', '#updatebtn', function() {
     	  $("#errorMsg").hide(); 
+    	  $("#errorMsg").removeClass("alert alert-danger");
     	  	var errorFree=true;
     	  	var editutilisedVal= $("#editutilised").val();
     	  	var editmyCreditLneVal=$("#editmyCreditLne").val();
@@ -367,6 +370,7 @@ $("#toDate").datepicker({
      	    });
     	    if(editmyCreditLne < editutilised){
     	    	$("#errorMsg").show(); 
+    	    	$("#errorMsg").addClass("alert alert-danger");
     	    	$("#errorMsg").text("My Credit line can't be less than utilized amount");
     	    	$("#editmyCreditLne").addClass("error_show");
     	    	errorFree=false;
@@ -602,6 +606,7 @@ function validateInvestorInfo(error_free) {
 	elements[2] = "balanceDate";
 
 	$("#errorMsg").hide();
+	$("#errorMsg").removeClass("alert alert-danger");
 	$("#errorMsg").html();
 	for (i = 0; i < elements.length; i++) {
 		var element = $("#" + elements[i]);
@@ -610,6 +615,7 @@ function validateInvestorInfo(error_free) {
 			element.addClass("error_show");
 			error_free = false;
 			$("#errorMsg").show();
+			$("#errorMsg").addClass("alert alert-danger");
 			$("#errorMsg").html(errormess);
 		} else {
 			element.removeClass("error_show");

@@ -111,7 +111,8 @@ Liferay.on(
 );
 
 $(function(){
-	console.log("Len:::::"+$("#navigation").find(".delete-tab").length);
+	
+	$('#myAccountLink, #myAccountUl').prop('onclick',null).off('click');
 	$("#navigation").find(".delete-tab").remove();
 	
 	

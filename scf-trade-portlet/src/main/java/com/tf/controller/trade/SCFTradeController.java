@@ -125,7 +125,7 @@ public class SCFTradeController {
 			public void setAsText(String value) {
 
 				try {
-					setValue(new SimpleDateFormat("MM/dd/yyyy").parse(value));
+					setValue(new SimpleDateFormat(Constants.DATE_FORMAT).parse(value));
 				}
 				catch (Exception e) {
 					setValue(null);
@@ -135,7 +135,7 @@ public class SCFTradeController {
 			public String getAsText() {
 
 				if (getValue() != null) {
-					return new SimpleDateFormat("MM/dd/yyyy").format((Date) getValue());
+					return new SimpleDateFormat(Constants.DATE_FORMAT).format((Date) getValue());
 				}
 				else {
 					return null;
@@ -166,7 +166,7 @@ public class SCFTradeController {
 			BigDecimal totalSellerFees = BigDecimal.ZERO;
 			BigDecimal totalWhiteHallFees = BigDecimal.ZERO;
 			BigDecimal totalSellerAmount = BigDecimal.ZERO;
-			DateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+			DateFormat formatter = new SimpleDateFormat(Constants.DATE_FORMAT);
 			Date fromDate = null;
 			Date toDate = null;
 			String search = ParamUtil.getString(request, "Search");
@@ -219,7 +219,7 @@ public class SCFTradeController {
 		}
 		else if (request.isUserInRole(Constants.SCF_ADMIN)) {
 			BigDecimal totalTradeAmount = BigDecimal.ZERO;
-			DateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+			DateFormat formatter = new SimpleDateFormat(Constants.DATE_FORMAT);
 			Date fromDate = null;
 			Date toDate = null;
 			String search = ParamUtil.getString(request, "Search");
@@ -297,7 +297,7 @@ public class SCFTradeController {
 
 		List<SCFTrade> scfTrades = null;
 		BigDecimal totalTradeAmount = BigDecimal.ZERO;
-		DateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+		DateFormat formatter = new SimpleDateFormat(Constants.DATE_FORMAT);
 		Date fromDate = null;
 		Date toDate = null;
 		String companyName = ParamUtil.getString(request, "Search");
@@ -343,7 +343,7 @@ public class SCFTradeController {
 		List<SCFTrade> scfTrades = null;
 		List<SCFTrade> scfTradesList = null;
 		BigDecimal totalTradeAmount = BigDecimal.ZERO;
-		DateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+		DateFormat formatter = new SimpleDateFormat(Constants.DATE_FORMAT);
 		Date fromDate = null;
 		Date toDate = null;
 		String companyName = ParamUtil.getString(request, "Search");

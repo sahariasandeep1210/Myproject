@@ -31,7 +31,7 @@
 
 <liferay-ui:error key="default-error-message" 		message="default.error.message" /> 
 
-<div class="alert alert-danger" id="errorMsg"><i class="icon-remove-sign icon-2"></i> </div>
+<div class="" id="errorMsg"></div>
 
 	<c:choose>
 

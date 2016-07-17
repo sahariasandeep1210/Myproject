@@ -71,6 +71,7 @@ public class DashboardController {
 			dashModel.setTotalCreditAvail(investorService.getTotalCreditAvailForInvestorGraph(investorID));
 			userType=Constants.PRIMARY_INVESTOR_ADMIN;	
 			model.put("investorID", investorID);
+			model.put("dashboardModel", dashBoardService.setDashBoardInformation(dashModel,userType, companyId));
 			viewName="investordashboard";
 		}else if(request.isUserInRole(Constants.SELLER_ADMIN)){
 			Long sellerCmpID = userService.getCompanybyUserID(themeDisplay.getUserId()).getId();

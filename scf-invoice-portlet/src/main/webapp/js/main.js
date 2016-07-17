@@ -17,6 +17,7 @@ $(document).ready(function() {
 	$("#pageSize").val($("#currPageSize").val());
 	$("#requestFinance").hide();
 	$("#errorMsg").hide(); 
+	$("#errorMsg").removeClass("alert alert-danger");
 	$('table').tablesorter();	 
 	$("#pageSize").change(function (){
 			var noOfRecords=parseInt($("#noOfRecords").val());
@@ -86,6 +87,7 @@ $(document).ready(function() {
 			$("#requestFinance").hide();
 			$("#errormsg").text("");
 			$("#errormsg").hide();		
+			$("#errorMsg").removeClass("alert alert-danger");
 		}
 
 	});
@@ -101,6 +103,7 @@ $(document).ready(function() {
 		var scfCompany = []; 
 		 $("#errormsg").hide();
 		 $("#errormsg").text("");
+		$("#errorMsg").removeClass("alert alert-danger");
 		
 		 $("#invoicelist input:checkbox:checked").each(function () {
 			 invoiceDate.push($(this).attr("date-attr"));
@@ -122,9 +125,11 @@ $(document).ready(function() {
 		 }else{
 			 if(uniquescmp.length>1){
 				 $("#errormsg").text("All the invoices in a trade must be from same Invoice company");
+				 $("#errorMsg").addClass("alert alert-danger");
 				 $("#errormsg").show();				 
 			 } if(uniquesDates.length>1){
 				 $("#errormsg").text("All the invoices in a trade must be having same closing date");
+				 $("#errorMsg").addClass("alert alert-danger");
 				 $("#errormsg").show();
 			 }
 		 }
@@ -138,6 +143,7 @@ $(document).ready(function() {
 		
 		 $("#errormsg").hide();
 		 $("#errormsg").text("");
+		 $("#errorMsg").removeClass("alert alert-danger");
 		 
 		 $("#invoicelist input:checkbox:checked").each(function () {
 			 scfCompany.push($(this).attr("scfcompany-attr"));	
@@ -156,9 +162,11 @@ $(document).ready(function() {
 			document.forms["invoicelist"].submit();
 		 }else if(uniquescmp.length !=1 ){
 			 $("#errormsg").text("All the invoices in a trade must be from same Invoice company");
+			 $("#errorMsg").addClass("alert alert-danger");
 			 $("#errormsg").show();	
 		 }else if(uniquePaymentDate.length !=1 ){
 			 $("#errormsg").text("All the invoices in a trade must be having same payment date");
+			 $("#errorMsg").addClass("alert alert-danger");
 			 $("#errormsg").show();	
 		 }
 		
@@ -304,6 +312,7 @@ function validateInvoice(error_free) {
 	elements[6] ="scfCompany";
 	
 	$("#errorMsg").hide();
+	$("#errorMsg").removeClass("alert alert-danger");
 	$("#errorMsg").html();
 	
 	for (i = 0; i < elements.length; i++) {
@@ -314,6 +323,7 @@ function validateInvoice(error_free) {
 				element.addClass("error_show");
 				error_free = false;
 				$("#errorMsg").show();
+				$("#errorMsg").addClass("alert alert-danger");
 				$("#errorMsg").html(errormessage);
 			} else {
 				element.removeClass("error_show");

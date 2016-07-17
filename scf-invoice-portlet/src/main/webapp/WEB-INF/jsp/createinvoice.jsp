@@ -25,7 +25,7 @@
 
 
 
-<div class="alert alert-danger" id="errorMsg">
+<div  id="errorMsg">
 	
 </div>
 

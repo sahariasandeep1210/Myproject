@@ -11,7 +11,7 @@ public class Constants {
 	public static final String OMNI_ADMIN						= "Administrator";	
 	public static final String WHITEHALL_ADMIN					= "WhiteHall Admin";
 	
-	public static final String DATE_FORMAT						= "dd-MM-YYYY";
+	public static final String DATE_FORMAT						= "dd-MM-yyyy";
 	
 	public static enum STATUS {
 	    PENDING("Pending"),

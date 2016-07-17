@@ -1305,6 +1305,7 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 						 map.get(Long.valueOf(objArray[3].toString())).setAvailTradeAmount(objArray[0]!=null ?new BigDecimal(objArray[0].toString()):BigDecimal.ZERO);
 					    }else{
 						StackedChartDTO stackedChartDTO=new StackedChartDTO();
+						stackedChartDTO.setCompanyName(objArray[2].toString());
 						stackedChartDTO.setAvailTradeAmount(objArray[0]!=null ?new BigDecimal(objArray[0].toString()):BigDecimal.ZERO);
 						map.put(Long.valueOf(objArray[3].toString()), stackedChartDTO);
 					    }

@@ -21,7 +21,7 @@
 
 <portlet:resourceURL id="fetchOfficerInfo" var="fetchOfficerInfoURL" ></portlet:resourceURL> 
 
-<div class="alert alert-danger" id="errorMsg"><i class="icon-remove-sign icon-2"></i> </div>
+<div  id="errorMsg"> </div>
 <liferay-ui:error 	key="error-user-email">
 	<liferay-ui:message key="user.email.error"  arguments="${userModel.email}"></liferay-ui:message>
 </liferay-ui:error>
