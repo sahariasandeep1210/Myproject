@@ -90,8 +90,8 @@ AUI().ready(
 			
 			/*Start: Map*/
 			var marker;
-			var _lat = 50.7392361
-			var _long = -1.8312955
+			var _lat = 51.5076355
+			var _long = -0.0737034
 			function initMap() {
 		        var map = new google.maps.Map(document.getElementById('map'), {
 		          zoom: 15,
