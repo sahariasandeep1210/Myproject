@@ -6,7 +6,7 @@
 		<portlet-name>tf-contactus-portlet</portlet-name>
 		<icon>/icon.png</icon>
 		<requires-namespaced-parameters>false</requires-namespaced-parameters>	
-		<header-portlet-javascript>http://maps.googleapis.com/maps/api/js</header-portlet-javascript>
+		<header-portlet-javascript>https://maps.googleapis.com/maps/api/js?key=AIzaSyAdnsw9_F05P1BTnuvLrfWFeWzYAbTbrhc</header-portlet-javascript>
 	</portlet>
 	<role-mapper>
 		<role-name>administrator</role-name>

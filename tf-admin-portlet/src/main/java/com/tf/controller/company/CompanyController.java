@@ -1,34 +1,5 @@
 package com.tf.controller.company;
 
-import com.google.gson.Gson;
-import com.liferay.portal.DuplicateUserEmailAddressException;
-import com.liferay.portal.DuplicateUserScreenNameException;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.servlet.SessionErrors;
-import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.kernel.workflow.WorkflowConstants;
-import com.liferay.portal.security.permission.PermissionChecker;
-import com.liferay.portal.service.UserLocalServiceUtil;
-import com.liferay.portal.theme.ThemeDisplay;
-import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
-import com.tf.controller.BaseController;
-import com.tf.model.AddressModel;
-import com.tf.model.Company;
-import com.tf.model.CompanyModel;
-import com.tf.model.Investor;
-import com.tf.model.Officer;
-import com.tf.model.OfficerAddress;
-import com.tf.model.OfficerList;
-import com.tf.model.OfficerModel;
-import com.tf.model.SellerScfCompanyMapping;
-import com.tf.model.User;
-import com.tf.persistance.util.CompanyStatus;
-import com.tf.persistance.util.Constants;
-import com.tf.util.LiferayUtility;
-import com.tf.util.OfficerDTO;
-import com.tf.util.model.PaginationModel;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -56,6 +27,36 @@ import org.springframework.web.portlet.ModelAndView;
 import org.springframework.web.portlet.bind.annotation.ActionMapping;
 import org.springframework.web.portlet.bind.annotation.RenderMapping;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
+
+import com.google.gson.Gson;
+import com.liferay.portal.DuplicateUserEmailAddressException;
+import com.liferay.portal.DuplicateUserScreenNameException;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.servlet.SessionErrors;
+import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.kernel.workflow.WorkflowConstants;
+import com.liferay.portal.security.permission.PermissionChecker;
+import com.liferay.portal.service.UserLocalServiceUtil;
+import com.liferay.portal.theme.ThemeDisplay;
+import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
+import com.tf.controller.BaseController;
+import com.tf.model.AddressModel;
+import com.tf.model.Company;
+import com.tf.model.CompanyModel;
+import com.tf.model.Investor;
+import com.tf.model.Officer;
+import com.tf.model.OfficerAddress;
+import com.tf.model.OfficerList;
+import com.tf.model.OfficerModel;
+import com.tf.model.SellerScfCompanyMapping;
+import com.tf.model.User;
+import com.tf.persistance.util.CompanyStatus;
+import com.tf.persistance.util.Constants;
+import com.tf.service.UserService;
+import com.tf.util.OfficerDTO;
+import com.tf.util.model.PaginationModel;
 
 /**
  * This controller is responsible for request/response handling on
@@ -330,6 +331,7 @@ public class CompanyController extends BaseController {
 		long companyID = ParamUtil.getLong(request, "companyID");
 		if (userID != 0) {
 			user = userService.findById(userID);
+			synchronizeDataFromLifeary(user);
 		}
 		List<Officer> officers = officerService
 				.findOfficersByCompanyId(companyID);
@@ -342,6 +344,37 @@ public class CompanyController extends BaseController {
 		model.put("companyID", companyID);
 		model.put("userTypesMap", userTypesMap);
 		return new ModelAndView("createuser", model);
+	}
+
+	private void synchronizeDataFromLifeary(User user) throws PortalException, SystemException {
+	    boolean updateFlag=false;
+	    com.liferay.portal.model.User lrUser=UserLocalServiceUtil.getUser(user.getLiferayUserId());
+	    if(!(lrUser.getFirstName().equalsIgnoreCase(user.getFirstName()))){
+		user.setFirstName(lrUser.getFirstName());
+		updateFlag=true;
+	    }
+	    if(!(lrUser.getLastName().equalsIgnoreCase(user.getLastName()))){
+		user.setLastName(lrUser.getLastName());
+		updateFlag=true;
+	    }
+	    if(!(lrUser.getMiddleName().equalsIgnoreCase(user.getMiddleName()))){
+		user.setMiddleName(lrUser.getMiddleName());
+		updateFlag=true;
+	    }
+	    if(!(lrUser.getEmailAddress().equalsIgnoreCase(user.getEmail()))){
+		user.setEmail(lrUser.getEmailAddress());
+		updateFlag=true;
+	    }
+	    if(!(lrUser.getScreenName().equalsIgnoreCase(user.getUsername()))){
+		user.setUsername(lrUser.getScreenName());
+		updateFlag=true;
+	    }
+	    
+	    if(updateFlag){
+		//this code can be optimized
+		user = userService.findById(userService.addorUpdateUser(user));
+	    }
+	    
 	}
 
 	@ActionMapping(params = "action=createUser")

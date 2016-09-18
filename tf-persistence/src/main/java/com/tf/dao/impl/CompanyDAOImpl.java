@@ -235,8 +235,8 @@ public class CompanyDAOImpl  extends BaseDAOImpl<Company, Long>   implements Com
 		InvestorDTO investorDTO;
 		List<Object[]> rows=new ArrayList<Object[]>();      
 		try{
-			String sql="select  inv.investor_id, company.name from  tf_investor inv ,tf_company company where inv.company_id=company.idcompany and  company.active_status !="+CompanyStatus.DELETED.getValue()+"";
-			Query query = sessionFactory.getCurrentSession().createSQLQuery(sql);
+			String sql="select  inv.investor_id, company.name from  tf_investor inv ,tf_company company where inv.company_id=company.idcompany and  company.active_status !=:cmpStatus";
+			Query query = sessionFactory.getCurrentSession().createSQLQuery(sql).setString("cmpStatus", CompanyStatus.DELETED.getValue());
 		    rows=query.list();
 		    for(Object[] row : rows){
 		    	 investorDTO=new InvestorDTO();

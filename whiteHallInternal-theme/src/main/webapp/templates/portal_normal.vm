@@ -68,7 +68,7 @@ $theme.include($body_top_include)
 					
 					<li class="dropdown profile-dropdown">
 					  <a href="#" class="dropdown-toggle-" data-toggle="dropdown">
-						<img class="profile-img" src="$userPortraitURL" alt="" title="notification image">
+						<img class="profile-img" src="$userPortraitURL" alt="" title="User image">
 						<span class="hidden-tablet hidden-phone header-user-name">$user.getFullName()</span>
 						<i class="icomoon-arrow-down"></i>
 					  </a>

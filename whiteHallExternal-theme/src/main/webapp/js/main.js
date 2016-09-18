@@ -47,7 +47,7 @@ AUI().ready(
 				autoplay: false,
 				touchSwipe: false,
 				forceSize: 'fullWidth',
-				waitForLayers : true,
+				waitForLayers : false,
 				slideDistance: 0,
 			    autoScaleLayers: false,
 			    autoScaleReference: '50%'
@@ -90,21 +90,39 @@ AUI().ready(
 			
 			/*Start: Map*/
 			var marker;
-			var _lat = 51.5076355
-			var _long = -0.0737034
+			var _lat = 51.504564
+			var _long = -0.126229
+			
+			var address = 'London, UK';
 			function initMap() {
 		        var map = new google.maps.Map(document.getElementById('map'), {
-		          zoom: 15,
-		          center: {lat: _lat, lng: _long}
-				 		        });
+		        	 mapTypeId: google.maps.MapTypeId.TERRAIN,
+		             zoom: 6
+		          //zoom: 15,
+		         // center: {lat: _lat, lng: _long}
+				});
+		        
+		        var geocoder = new google.maps.Geocoder();
+		        geocoder.geocode({
+		            'address': address
+		         }, 
+		         function(results, status) {
+		            if(status == google.maps.GeocoderStatus.OK) {
+		               new google.maps.Marker({
+		                  position: results[0].geometry.location,
+		                  map: map
+		               });
+		               map.setCenter(results[0].geometry.location);
+		            }
+		         });
 
-		        marker = new google.maps.Marker({
+		     /*   marker = new google.maps.Marker({
 		          map: map,
 		          draggable: true,
 		          animation: google.maps.Animation.DROP,
 		          position: {lat: _lat, lng: _long}
-		        });
-		        marker.addListener('click', toggleBounce);
+		        });*/
+		       // marker.addListener('click', toggleBounce);
 		    }
 
 		    function toggleBounce() {

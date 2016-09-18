@@ -268,14 +268,8 @@ function validateCompanyInfo(error_free) {
 
 	var elements = [];
 	elements[0] = "companyName";
-	elements[1] = "registrationNo";
-	elements[2] = "dateestablished";
-	elements[3] = "address1";
-	elements[4] = "region";
-	elements[5] = "country";
-	elements[6] = "postalCode";
-	elements[7] = "telNo";
-	elements[8] = "companyType";
+	elements[1] = "telNo";
+	elements[2] = "companyType";
 	
 	$("#errorMsg").hide();
 	$("#errorMsg").removeClass("alert alert-danger");

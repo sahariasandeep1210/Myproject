@@ -22,5 +22,7 @@ public interface UserDAO {
 	public Object[] getUserTypeAndLifearyID(long id) ;
 
 	public String findUserOjectByCompanyId(long id);
+	
+	public Long findUserByEmail(String emailID);
 
 }

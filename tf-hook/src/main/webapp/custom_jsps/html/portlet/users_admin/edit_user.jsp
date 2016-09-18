@@ -181,7 +181,8 @@ if(request.isUserInRole("Administrator")){
 	
 }else{
 	String[] mainSections_new = {"details","password"};
-	String[] identificationSections_new = {"phone-numbers"};
+	//String[] identificationSections_new = {"phone-numbers"};
+	String[] identificationSections_new = {};
 	String[] miscellaneousSections_new = {};
 
 	mainSections = mainSections_new;

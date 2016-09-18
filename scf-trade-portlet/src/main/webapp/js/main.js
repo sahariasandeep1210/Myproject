@@ -174,7 +174,7 @@ $(document).ready(
 			$("#SellerPaymentDate").datepicker(
 					{
 						changeMonth : true,
-						dateFormat : 'dd/mm/yy',
+						dateFormat: 'dd-mm-yy',
 						changeYear : true,						
 						onClose : function(selectedDate) {
 							$("#investorPaymentDate").datepicker("option",
@@ -189,7 +189,7 @@ $(document).ready(
 			$("#investorPaymentDate").datepicker(
 					{
 						changeMonth : true,
-						dateFormat : 'dd/mm/yy',
+						dateFormat: 'dd-mm-yy',
 						changeYear : true,
 						showOn : "button",
 						buttonImage : "/tf-theme/images/calendar.jpg",
@@ -204,7 +204,7 @@ $(document).ready(
 			$("#openingDate").datepicker(
 					{
 						changeMonth : true,
-						dateFormat : 'dd/mm/yy',
+						dateFormat: 'dd-mm-yy',
 						changeYear : true,						
 						onClose : function(selectedDate) {
 							$("#closingDate").datepicker("option", "minDate",
@@ -273,7 +273,7 @@ $(document).ready(
 			$("#closingDate").datepicker(
 					{
 						changeMonth : true,
-						dateFormat : 'dd/mm/yy',
+						dateFormat: 'dd-mm-yy',
 						changeYear : true,
 						showOn : "button",
 						buttonImage : "/tf-theme/images/calendar.jpg",
@@ -475,6 +475,7 @@ function enableTab() {
 $("#fromDate").datepicker({
 	changeMonth : true,
 	changeYear : true,
+	dateFormat: 'dd-mm-yy',
 	onSelect : function(selected) {
 		$("#toDate").datepicker("option", "minDate", selected)
 
@@ -484,6 +485,7 @@ $("#fromDate").datepicker({
 $("#toDate").datepicker({
 	changeMonth : true,
 	changeYear : true,	
+	dateFormat: 'dd-mm-yy',
 	onSelect : function(selected) {
 		$("#fromDate").datepicker("option", "maxDate", selected)
 

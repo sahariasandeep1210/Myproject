@@ -11,7 +11,7 @@
 				</div>
 
                 <div class="sub-head text-center">
-                    <p>91 Henley Road,BOWCOMBE,PO30 7FB</p>
+                    <p>London,United Kingdom</p>
                 </div>
             </div>
 
@@ -21,7 +21,7 @@
 				</div>
 
                 <div class="sub-head text-center">
-                    <p>+44 078 1344 2246</p>
+                    <p></p>
                 </div>
             </div>
 
@@ -31,7 +31,7 @@
                 </div>
 
                 <div class="sub-head text-center">
-                    <p>hello@platformblack.com</p>
+                    <p>info@whitehallfinance.com</p>
                 </div>
             </div>
         </div>

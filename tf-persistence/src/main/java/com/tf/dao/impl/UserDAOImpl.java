@@ -171,5 +171,19 @@ public class UserDAOImpl extends BaseDAOImpl<User, Long>  implements UserDAO{
 			throw re;
 		}
 	}
+	
+	
+	public Long findUserByEmail(String emailID) {
+		_log.debug("getting User instance with email: " + emailID);
+		try {	
+			Long liferayUserID = (Long) sessionFactory.getCurrentSession().createQuery("select liferayUserId from User where email = :email").setString("email",emailID).uniqueResult();
+			
+			return liferayUserID;
+		} catch (RuntimeException re) {
+			re.printStackTrace();
+			_log.error("get failed", re);
+			throw re;
+		}
+	}
 
 }

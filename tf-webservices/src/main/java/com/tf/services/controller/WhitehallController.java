@@ -45,6 +45,13 @@ public class WhitehallController {
 	private SCFTradeService scfTradeService;
     
     
+        /**
+         * Returns List of invoices based on userId
+         * @param userID
+         * @param startIndex
+         * @param size
+         * @return
+         */
         @RequestMapping(value = "/invoices/{userID}",params = { "startIndex", "size" }, method = RequestMethod.GET)  
         public ResponseEntity<ListDTO> getInvoices(@PathVariable("userID") long userID,@RequestParam("startIndex") int startIndex, 
         	@RequestParam("size") int size) {  
@@ -66,6 +73,14 @@ public class WhitehallController {
     		
         }  
         
+        /**
+         * 
+         * Returns List of trades based on userId
+         * @param userID
+         * @param startIndex
+         * @param size
+         * @return
+         */
         @RequestMapping(value = "/trades/{userID}",params = { "startIndex", "size" }, method = RequestMethod.GET)  
         public ResponseEntity<ListDTO> getTrades(@PathVariable("userID") long userID,@RequestParam("startIndex") int startIndex, 
         	@RequestParam("size") int size) {  
@@ -88,6 +103,12 @@ public class WhitehallController {
     		
         } 
         
+        /**
+         * Return Invoice details
+         * @param userID
+         * @param invoiceID
+         * @return
+         */
         @RequestMapping(value = "/invoice/{userID}/{invoiceID}", method = RequestMethod.GET)  
         public ResponseEntity<Invoice> getInvoice(@PathVariable("userID") long userID,@PathVariable("invoiceID") long invoiceID) {  
             com.tf.model.Invoice invoice = invoiceService.getInvoicesById(invoiceID);
