@@ -46,11 +46,11 @@ public interface InvestorService {
 	
 	public List<Investor> getCashPoition();
 	
-	public List<InvestorPortfolio> getInvestorPortfolioDataForGraph(Long scfCompanyId);
+	public List<Object[]> getInvestorPortfolioDataForGraph(Long scfCompanyId);
 	
 	public BigDecimal getTotalCreditAvailForGraph(long scfCompanyId);
 	
-	public List<InvestorPortfolio> getInvestorPortfolioDataForInvestorGraph(Long investorID);
+	public List<Object[]> getInvestorPortfolioDataForInvestorGraph(Long investorID);
 	
 	public BigDecimal getTotalCreditAvailForInvestorGraph(Long investorID);
 

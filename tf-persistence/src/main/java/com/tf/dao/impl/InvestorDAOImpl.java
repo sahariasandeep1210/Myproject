@@ -441,7 +441,7 @@ public class InvestorDAOImpl extends BaseDAOImpl<InvestorPortfolio, Long>   impl
 	}
 
 
-	public List<InvestorPortfolio> getInvestorPortfolioDataForGraph(
+	public List<Object[]> getInvestorPortfolioDataForGraph(
 			Long scfCompanyId) {
 		/*String SQL_QUERY = "SELECT student.course, COUNT(student.course) FROM Student student GROUP BY student.course";  */
 		
@@ -456,7 +456,7 @@ public class InvestorDAOImpl extends BaseDAOImpl<InvestorPortfolio, Long>   impl
 			if(scfCompanyId!=null && scfCompanyId>0l){
 				query.setParameter("scfCompanyId", scfCompanyId);
 			}
-			List<InvestorPortfolio> investorPortfolios =query.setFirstResult(0).setMaxResults(5).list();
+			List<Object[]> investorPortfolios =query.setFirstResult(0).setMaxResults(5).list();
 			if(investorPortfolios!=null && investorPortfolios.size()>0){
 				return investorPortfolios;
 			}
@@ -466,7 +466,7 @@ public class InvestorDAOImpl extends BaseDAOImpl<InvestorPortfolio, Long>   impl
 		return null;
 	}
 	
-	public List<InvestorPortfolio> getInvestorPortfolioDataForInvestorGraph(
+	public List<Object[]> getInvestorPortfolioDataForInvestorGraph(
 		Long investorID) {
 		StringBuilder builder=new StringBuilder();
 		builder.append("SELECT SUM(availToInvest), discountRate FROM InvestorPortfolio");
@@ -479,7 +479,7 @@ public class InvestorDAOImpl extends BaseDAOImpl<InvestorPortfolio, Long>   impl
 			if(investorID!=null && investorID>0l){
 				query.setParameter("investorID", investorID);
 			}
-			List<InvestorPortfolio> investorPortfolios =query.setFirstResult(0).setMaxResults(5).list();
+			List<Object[]> investorPortfolios =query.setFirstResult(0).setMaxResults(5).list();
 			if(investorPortfolios!=null && investorPortfolios.size()>0){
 				return investorPortfolios;
 			}
@@ -487,29 +487,7 @@ public class InvestorDAOImpl extends BaseDAOImpl<InvestorPortfolio, Long>   impl
 		_log.error("getInvestorPortfolioDataForGraph", e);
 	}
 	return null;
-		
-	    	/*try {
-		    Session session = sessionFactory.getCurrentSession();
-		    Criteria criteria = session
-			    .createCriteria(InvestorPortfolio.class);
-		    criteria.createAlias("company", "cmp");
-		    Disjunction or = Restrictions.disjunction();
-		    or.add(Restrictions.eq("investor.investorId", investorID));
-		    criteria.add(or);
-		    ProjectionList projList = Projections.projectionList();
-		    projList.add(Projections.property("availToInvest"));
-		    projList.add(Projections.property("discountRate"));
-		    projList.add(Projections.property("cmp.name"));
-		    projList.add(Projections.property("cmp.id"));
-		    criteria.setProjection(projList);
-		    List<InvestorPortfolio> investorPortfolios = criteria.setResultTransformer(
-				CriteriaSpecification.ROOT_ENTITY).list();
-		    return investorPortfolios;
-		} catch (Exception e) {
-		    // TODO: handle exception
-		}
-	    	return null;*/
-	    
+			    
 	}
 	
 	public BigDecimal getTotalCreditAvailForInvestorGraph(

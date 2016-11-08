@@ -10,6 +10,7 @@ import com.tf.model.GenericListModel;
 import com.tf.model.Invoice;
 import com.tf.model.SCFTrade;
 import com.tf.persistance.util.AllotmentEngine;
+import com.tf.persistance.util.FinanceConfirmationDTO;
 import com.tf.persistance.util.InSuffcientFund;
 import com.tf.persistance.util.InvalidDuration;
 import com.tf.persistance.util.InvestorProtfolioDTO;
@@ -358,6 +359,48 @@ public class InvoiceServiceImpl implements InvoiceService{
 	public GenericListModel getInvoices(Long companyID, int startIndex,
 		int pageSize, String registrationNo) {
 	    return invoiceDAO.getInvoices(companyID, startIndex, pageSize, registrationNo);
+	}
+	
+	public FinanceConfirmationDTO triggerAllotmentCheck(List<String> invoiceIds,long sellerCmpId,long userId) throws InSuffcientFund, InvalidDuration   {		
+	    FinanceConfirmationDTO financeConfirmationDTO=new FinanceConfirmationDTO();
+	    if (invoiceIds!=null && invoiceIds.size()>0) {
+		    Date date = new Date();
+		    Company company = null;
+		    Invoice invoice;
+		    Date paymentdate = null;
+		    Date financedate = null;
+		    BigDecimal tradeAmount = BigDecimal.ZERO;
+		    List<Date> holidayList = new ArrayList<Date>();
+		    for (String id : invoiceIds) {
+			invoice = invoiceDAO.findById(Long.valueOf(id));
+			invoice.setFinanceDate(nextWorkingDate(date,
+				holidayList));
+			company = invoice.getScfCompany();
+			paymentdate = invoice.getPayment_date();
+			financedate = invoice.getFinanceDate();
+			invoice.setDuration(duration(paymentdate, financedate));
+			tradeAmount = tradeAmount.add(invoice
+				.getInvoiceAmount());
+		    }
+		    SCFTrade scfTrade = new SCFTrade();
+		    scfTrade.setDuration(duration(paymentdate,financedate));
+		    scfTrade.setCompany(company);		   
+		    scfTrade.setStatus(TradeStatus.NEW.getValue());
+		    scfTrade.setTradeAmount(tradeAmount);
+		    List<InvestorProtfolioDTO> list = investorDAO
+			    .findInvestorByRate(company.getId());
+		    list = getSameRateCountStamp(list);
+		    allotmentEngine.checkActualAllotment(list, scfTrade,
+			    sellerCmpId, userId);
+		    financeConfirmationDTO.setNoOfInvoices(invoiceIds.size());
+		    financeConfirmationDTO.setTotalAmount(tradeAmount);
+		    financeConfirmationDTO.setAllotmentAmount(scfTrade.getSellerNetAllotment());
+		    financeConfirmationDTO.setDuration(scfTrade.getDuration());
+		}
+		
+		
+		return financeConfirmationDTO;
+
 	}
 
 

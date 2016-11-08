@@ -3,25 +3,38 @@ package com.tf.services.dto;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
+
+@JsonInclude(value = Include.NON_NULL)
 public class Trade  implements Serializable{
 
-    private static final long serialVersionUID = 3246407086155941603L;
+    private static final long serialVersionUID = -1299179888564035196L;
     
     
     private long id;
     private String scfTradeID;
+    private String scfCompanyName;
     private BigDecimal tradeAmount;
     private String status;
     private Integer duration;
+    @JsonFormat(pattern="dd-MMM-yyyy")
     private Date openingDate;
+    @JsonFormat(pattern="dd-MMM-yyyy")
     private Date closingDate;
+    @JsonFormat(pattern="dd-MMM-yyyy")
     private Date sellerPaymentDate;
     private BigDecimal 	fixedCharges;
     private BigDecimal 	whitehallVariableFee;
     private BigDecimal 	investorFee;
     private BigDecimal 	grossCharges;
     private BigDecimal 	financeAmount;
+    
+    private List<Allotment> allotments;
     
     public Trade() {
 	
@@ -129,6 +142,22 @@ public class Trade  implements Serializable{
 
     public void setFinanceAmount(BigDecimal financeAmount) {
         this.financeAmount = financeAmount;
+    }
+
+    public List<Allotment> getAllotments() {
+        return allotments;
+    }
+
+    public void setAllotments(List<Allotment> allotments) {
+        this.allotments = allotments;
+    }
+
+    public String getScfCompanyName() {
+        return scfCompanyName;
+    }
+
+    public void setScfCompanyName(String scfCompanyName) {
+        this.scfCompanyName = scfCompanyName;
     }
 
     @Override

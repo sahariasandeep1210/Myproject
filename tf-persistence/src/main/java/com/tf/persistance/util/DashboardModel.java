@@ -34,7 +34,7 @@ public class DashboardModel  implements Serializable{
 	
 	private List<Investor> investors;
 	
-	List<InvestorPortfolio> investorPortfolios;
+	List<Object[]> investorPortfolios;
 	
 	private BigDecimal totalCreditAvail;
 	
@@ -216,14 +216,14 @@ public class DashboardModel  implements Serializable{
 
 
 	
-	public List<InvestorPortfolio> getInvestorPortfolios() {
+	public List<Object[]> getInvestorPortfolios() {
 	
 		return investorPortfolios;
 	}
 
 
 	
-	public void setInvestorPortfolios(List<InvestorPortfolio> investorPortfolios) {
+	public void setInvestorPortfolios(List<Object[]> investorPortfolios) {
 	
 		this.investorPortfolios = investorPortfolios;
 	}

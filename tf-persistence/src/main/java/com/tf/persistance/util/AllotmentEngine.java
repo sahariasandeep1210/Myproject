@@ -273,6 +273,94 @@ public class AllotmentEngine {
 		tradeAudit.setUserID(userId);
 		tradeAuditDAO.saveEntity(tradeAudit);
 	}
+	
+	
+	public void  checkActualAllotment(List<InvestorProtfolioDTO> investorsList,SCFTrade trade,long sellerCmpId,long userId) throws InSuffcientFund{
+
+		List<InvestorProtfolioDTO> investors = investorsList;
+		
+		BigDecimal currentAllotment =		BigDecimal.ZERO; 		
+		BigDecimal investorTotalGross = 	BigDecimal.ZERO; 
+		BigDecimal whitehallTotal =		BigDecimal.ZERO; 
+		BigDecimal investorTotalNet =		BigDecimal.ZERO; 
+		BigDecimal sellerFees =			BigDecimal.ZERO;
+		BigDecimal investorGrossProfit=		BigDecimal.ZERO;
+		BigDecimal whiteHallShare=		BigDecimal.ZERO;
+		SellerSetting sellerSetting = null;
+		GeneralSetting generalSetting = null;
+		int sameRateCount = 0; 
+
+		BigDecimal tradeAmount = trade.getTradeAmount(); 
+		BigDecimal pendingAllotment = tradeAmount; 
+
+		for (InvestorProtfolioDTO investor : investors) {
+
+			if(sameRateCount == 0 ){
+				sameRateCount = investor.getSameRateCount();
+			}
+			
+
+			if(sameRateCount <= 1 ){
+
+				if(investor.getAvailToInvest().compareTo(pendingAllotment) ==1){
+					currentAllotment = pendingAllotment; 
+				}else{
+					currentAllotment = investor.getAvailToInvest();
+				}
+			}else if (sameRateCount > 1){
+
+				currentAllotment = pendingAllotment.divide(new BigDecimal(sameRateCount),6, RoundingMode.HALF_UP) ;
+				if(investor.getAvailToInvest().compareTo(currentAllotment)==-1  ){
+					currentAllotment = investor.getAvailToInvest();
+				}
+			}
+			
+			setInvestmentInfo(currentAllotment, investor);					
+			investorGrossProfit=calculateInvestorGrossProfit(currentAllotment,investor.getDiscountRate(),trade.getDuration());
+			whiteHallShare=calculateWhiteHallShare(investorGrossProfit,investorService.getWhiteHallShare(investor.getInvestorId()));		
+			
+			investorTotalGross=investorTotalGross.add(investorGrossProfit);
+			whitehallTotal=whitehallTotal.add(whiteHallShare);
+			investorTotalNet=investorTotalNet.add(calculateInvestorNetProfit(investorGrossProfit,whiteHallShare));
+
+			pendingAllotment = pendingAllotment.subtract(currentAllotment) ; 
+			sameRateCount = sameRateCount - 1; 
+
+			if(pendingAllotment.compareTo(BigDecimal.ZERO) == 0){
+				break;
+			}
+
+		}
+		
+		//At this time pending allotment should be 0 if not it means insufficient allotment 
+		 if (pendingAllotment.compareTo(BigDecimal.ZERO)  > 0 ){				
+				throw new InSuffcientFund("Finance allotment failed for <SCF Company Name>'s  invoice.Please contact whileHall admin for more details.");			
+		}		
+		
+		sellerSetting=settingService.getSellerSetting(sellerCmpId);
+
+		if( sellerSetting != null){
+		    sellerFees=calculateSellerFees(trade.getDuration(), tradeAmount,sellerSetting);
+		}else{
+		    generalSetting=generalSettingService.getGeneralSetting();
+			sellerFees=calculateSellerFeesByGeneralSetting(trade.getDuration(), tradeAmount,generalSetting);
+		}
+		//setting back to Trade
+		trade.setInvestorTotalGross(investorTotalGross);
+		trade.setWhitehallTotalShare(whitehallTotal);
+		trade.setInvestorTotalProfit(investorTotalNet);
+		trade.setSellerFees(sellerFees);
+		if(sellerSetting != null){
+		    trade.setSellerTransFee(sellerSetting.getSellerTransFee());
+		}else{
+		    trade.setSellerTransFee(generalSetting.getSellerTransFee());
+		}
+		trade.setWhitehallTotalProfit(calculateWhitehallTotalProfit(whitehallTotal,sellerFees,trade.getSellerTransFee()));
+		//here we need to add VAT as well
+		trade.setWhitehallNetReceivable(calculateWhitehallTotalProfit(whitehallTotal,sellerFees,trade.getSellerTransFee()));
+		trade.setSellerNetAllotment(calculateSellerNetAllotment(tradeAmount,trade.getInvestorTotalProfit(),trade.getWhitehallNetReceivable()));		
+		
+	}
 
 	 
 

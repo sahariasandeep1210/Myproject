@@ -23,16 +23,19 @@ public class BasicLoginAuthenticationProvider implements AuthenticationProvider 
     @Autowired
     private UserDAO userDAO;
     
+    static final String ORIGIN = "Origin";
+    
     @Override
     public Authentication authenticate(Authentication authentication)
             throws AuthenticationException {
+	
         String name = authentication.getName();
         // You can get the password here
         String password = authentication.getCredentials().toString();
         Long userID=userDAO.findUserByEmail(name);
         try {
 	    // Your custom authentication logic here
-	        if (PasswordTrackerLocalServiceUtil.isSameAsCurrentPassword(userID, password)) {
+	        if (userID!=null && PasswordTrackerLocalServiceUtil.isSameAsCurrentPassword(userID, password)) {
 	            List<GrantedAuthority> grantedAuths = new ArrayList<>();
 	            grantedAuths.add(new SimpleGrantedAuthority("ROLE_USER"));
 	            return new UsernamePasswordAuthenticationToken(name, password, grantedAuths);

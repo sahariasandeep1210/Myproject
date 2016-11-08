@@ -143,7 +143,7 @@ public class InvestorServiceImpl implements InvestorService {
 		return investorDAO.getCashPoition();
 	}
 
-	public List<InvestorPortfolio> getInvestorPortfolioDataForGraph(
+	public List<Object[]> getInvestorPortfolioDataForGraph(
 			Long scfCompanyId) {
 		return investorDAO.getInvestorPortfolioDataForGraph(scfCompanyId);
 	}
@@ -152,7 +152,7 @@ public class InvestorServiceImpl implements InvestorService {
 		return investorDAO.getTotalCreditAvailForGraph(scfCompanyId);
 	}
 	
-	public List<InvestorPortfolio> getInvestorPortfolioDataForInvestorGraph(Long investorID){
+	public List<Object[]> getInvestorPortfolioDataForInvestorGraph(Long investorID){
 		return investorDAO.getInvestorPortfolioDataForInvestorGraph(investorID);
 	}
 	

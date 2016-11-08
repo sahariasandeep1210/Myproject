@@ -2,10 +2,13 @@ package com.tf.company.service.impl;
 
 import javax.portlet.ActionRequest;
 
+import org.springframework.aop.ThrowsAdvice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.liferay.portal.DuplicateUserEmailAddressException;
+import com.liferay.portal.DuplicateUserScreenNameException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.Role;
@@ -58,8 +61,31 @@ public class LifearyServiceImpl implements LiferayService {
 				lruser.setFirstName(user.getFirstName());
 				lruser.setLastName(user.getLastName());
 				lruser.setMiddleName(user.getMiddleName());
-				lruser.setEmailAddress(user.getEmail());
-				lruser.setScreenName(user.getUsername());
+				if(!(lruser.getEmailAddress().equalsIgnoreCase(user.getEmail()))){
+				    try {
+					com.liferay.portal.model.User liferayUser = UserLocalServiceUtil
+						.getUserByEmailAddress(themeDisplay.getCompanyId(),user.getEmail());
+					if(liferayUser!=null && liferayUser.getEmailAddress().equals(user.getEmail())){
+					    throw new DuplicateUserEmailAddressException(); 
+					}
+				    } catch (Exception e) {
+					lruser.setEmailAddress(user.getEmail());
+				    }   
+				    
+				}
+				if(!(lruser.getScreenName().equalsIgnoreCase(user.getUsername()))){
+				    
+				    try {
+					com.liferay.portal.model.User liferayUser = UserLocalServiceUtil
+						.getUserByScreenName(themeDisplay.getCompanyId(), user.getUsername());
+					if(liferayUser!=null && liferayUser.getScreenName().equals(user.getUsername())){
+					    throw new DuplicateUserScreenNameException(); 
+					}
+				    } catch (Exception e) {
+					lruser.setScreenName(user.getUsername());
+				    }   
+				    
+				}				
 				lruser.setJobTitle(user.getLevel());
 				UserLocalServiceUtil.updateUser(lruser);
 			}

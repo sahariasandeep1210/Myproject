@@ -24,5 +24,7 @@ public interface UserDAO {
 	public String findUserOjectByCompanyId(long id);
 	
 	public Long findUserByEmail(String emailID);
+	
+	public User  getUserbyLiferayID(long id);
 
 }

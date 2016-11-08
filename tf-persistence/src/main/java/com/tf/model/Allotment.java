@@ -28,12 +28,12 @@ public class Allotment implements Serializable {
 	
 
 	@Id
-    @Column(name="allotment_id")
-    @GeneratedValue
+	@Column(name="allotment_id")
+	@GeneratedValue
 	private Long allotmentId;
 	
 	@ManyToOne(cascade=CascadeType.ALL)	
-    @JoinColumn(name = "trade_id")
+	@JoinColumn(name = "trade_id")
 	private  SCFTrade scfTrade;	
 	
 	@Column(name="investor_id")

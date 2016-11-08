@@ -4,16 +4,20 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 @JsonInclude(value = Include.NON_NULL)
 public class Invoice implements Serializable {
     
+
     private static final long serialVersionUID = 8429617768756549750L;
+    
     
     private Long id;    
     private String invoiceNumber;
+    @JsonFormat(pattern="dd-MMM-yyyy")
     private Date invoiceDate;
     private String sellerCompanyRegistrationNumber;
     private String sellerCompanyVatNumber;
@@ -21,14 +25,18 @@ public class Invoice implements Serializable {
     private BigDecimal vatAmount;
     private String invoiceDesc;
     private int duration;
+    @JsonFormat(pattern="dd-MMM-yyyy")
     private Date payment_date;
     private String currency;
     private Long scfCompany;
     private String scfCompanyName;
+    @JsonFormat(pattern="dd-MMM-yyyy")
     private Date financeDate;
     private String status;
     private Long tradeID;
+    @JsonFormat(pattern="dd-MMM-yyyy")
     private Date createDate;
+    @JsonFormat(pattern="dd-MMM-yyyy")
     private Date updateDate;
    
     

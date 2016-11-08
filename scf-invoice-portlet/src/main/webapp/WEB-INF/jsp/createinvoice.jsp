@@ -169,7 +169,7 @@
 							<input type="button" value="Delete" class="btn btnBgRedSm"
 								id="invoiceDelete" />
 						</c:when>
-						<c:when test="${invoiceModel.id eq null }">
+						<c:when test="${invoiceModel.id eq null || invoiceModel.id ==0 }">
 						    	<input type="button" value="Add Invoice" class="btn btnBgGreenSm" id="invoiceAdd" />
                          </c:when>					
                    </c:choose>				

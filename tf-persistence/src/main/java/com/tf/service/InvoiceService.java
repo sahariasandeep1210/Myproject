@@ -9,6 +9,7 @@ import java.util.Set;
 import com.tf.model.Company;
 import com.tf.model.GenericListModel;
 import com.tf.model.Invoice;
+import com.tf.persistance.util.FinanceConfirmationDTO;
 import com.tf.persistance.util.InSuffcientFund;
 import com.tf.persistance.util.InvalidDuration;
 
@@ -43,5 +44,7 @@ public interface InvoiceService {
 	public int validInvoiceImport(String invoiceNumber, Long Id);
 
 	public GenericListModel getInvoices(Long companyID, int startIndex,int pageSize, String registrationNo);
+	
+	public FinanceConfirmationDTO triggerAllotmentCheck(List<String> invoiceIds,long sellerCmpId,long userId) throws InSuffcientFund, InvalidDuration;
 
 }

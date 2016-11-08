@@ -54,7 +54,6 @@ import com.tf.model.SellerScfCompanyMapping;
 import com.tf.model.User;
 import com.tf.persistance.util.CompanyStatus;
 import com.tf.persistance.util.Constants;
-import com.tf.service.UserService;
 import com.tf.util.OfficerDTO;
 import com.tf.util.model.PaginationModel;
 
@@ -393,7 +392,7 @@ public class CompanyController extends BaseController {
 			response.setRenderParameter("companyID", companyID.toString());
 			response.setRenderParameter("render", "createCompany");
 
-		} catch (PortalException e) {
+		} catch (Exception e) {
 			response.setRenderParameter("companyID", companyID.toString());
 			model.put("userModel", user);
 			if (e instanceof DuplicateUserEmailAddressException) {

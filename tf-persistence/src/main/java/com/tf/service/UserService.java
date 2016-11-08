@@ -22,5 +22,7 @@ public interface UserService {
 	public Company  getCompanybyUserID(long id);
 	
 	public Object[] getUserTypeAndLifearyID(long id) ;
+	
+	public User  getUserbyLiferayID(long id);
 
 }
