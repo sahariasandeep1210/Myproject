@@ -563,4 +563,26 @@ ALTER TABLE scf_invoice   MODIFY COLUMN   update_date   DATETIME DEFAULT NULL;
 
 
 ALTER TABLE scf_trade   MODIFY COLUMN   create_date   DATETIME DEFAULT NULL;
-ALTER TABLE scf_trade   MODIFY COLUMN   update_date   DATETIME DEFAULT NULL;
+ALTER TABLE scf_trade   MODIFY COLUMN   update_date   DATETIME DEFAULT NULL; 
+
+ALTER TABLE scf_invoice   MODIFY COLUMN   invoice_amout  DECIMAL(10,2);
+
+
+
+ALTER TABLE scf_trade   MODIFY COLUMN   trade_amount  DECIMAL(10,2);
+
+# ALTER TABLE scf_trade   MODIFY COLUMN   total_value  DECIMAL(10,2);
+
+
+ALTER TABLE tf_investor_portfolio   MODIFY COLUMN   available_to_invest  DECIMAL(10,2);
+ALTER TABLE tf_investor_portfolio   MODIFY COLUMN   amount_invested  DECIMAL(10,2);
+ALTER TABLE tf_investor_portfolio   MODIFY COLUMN   my_credit_line  DECIMAL(10,2);
+ALTER TABLE tf_investor_portfolio   MODIFY COLUMN   current_credit_line  DECIMAL(10,2);
+
+ALTER TABLE tf_investor_portfolio_history   MODIFY COLUMN   current_credit_line  DECIMAL(10,2);
+ALTER TABLE tf_investor_portfolio_history   MODIFY COLUMN   my_credit_line  DECIMAL(10,2);
+
+
+
+
+

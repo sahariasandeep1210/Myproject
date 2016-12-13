@@ -158,7 +158,7 @@ public class SCFTradeController {
 
 		PermissionChecker permissionChecker = themeDisplay.getPermissionChecker();
 
-		if (permissionChecker.isOmniadmin()) {
+		if (permissionChecker.isOmniadmin() || request.isUserInRole(Constants.WHITEHALL_ADMIN)) {
 			BigDecimal totalTradeAmount = BigDecimal.ZERO;
 			BigDecimal totalInvestorProfit = BigDecimal.ZERO;
 			BigDecimal totalWhiteHallShare = BigDecimal.ZERO;

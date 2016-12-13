@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.liferay.portal.DuplicateUserEmailAddressException;
 import com.liferay.portal.DuplicateUserScreenNameException;
+import com.liferay.portal.NoSuchUserException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.Role;
@@ -39,7 +40,7 @@ public class LifearyServiceImpl implements LiferayService {
 	
 	public void addUserInformation(User user, ActionRequest request,
 			boolean createUser, ThemeDisplay themeDisplay, Long officerId)
-			throws PortalException, SystemException {
+			throws PortalException, SystemException,DuplicateUserEmailAddressException,DuplicateUserScreenNameException {
 		if(user.getId() ==null){	
 			createUser=true;
 			com.liferay.portal.model.User lruser = liferayUtility.addLiferayUser(user, request);
@@ -68,7 +69,7 @@ public class LifearyServiceImpl implements LiferayService {
 					if(liferayUser!=null && liferayUser.getEmailAddress().equals(user.getEmail())){
 					    throw new DuplicateUserEmailAddressException(); 
 					}
-				    } catch (Exception e) {
+				    } catch (NoSuchUserException e) {
 					lruser.setEmailAddress(user.getEmail());
 				    }   
 				    
@@ -81,7 +82,7 @@ public class LifearyServiceImpl implements LiferayService {
 					if(liferayUser!=null && liferayUser.getScreenName().equals(user.getUsername())){
 					    throw new DuplicateUserScreenNameException(); 
 					}
-				    } catch (Exception e) {
+				    } catch (NoSuchUserException e) {
 					lruser.setScreenName(user.getUsername());
 				    }   
 				    

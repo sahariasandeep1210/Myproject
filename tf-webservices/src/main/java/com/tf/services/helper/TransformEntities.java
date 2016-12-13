@@ -4,11 +4,17 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.service.UserLocalServiceUtil;
 import com.tf.model.Company;
 import com.tf.model.SCFTrade;
+import com.tf.model.User;
 import com.tf.persistance.util.DashboardModel;
+import com.tf.service.UserService;
 import com.tf.services.dto.APRModel;
 import com.tf.services.dto.Address;
 import com.tf.services.dto.CreditAvailable;
@@ -19,6 +25,9 @@ import com.tf.services.dto.Trade;
 
 @Component
 public class TransformEntities {
+    
+    @Autowired
+    protected  UserService userService; 
     
     
     public List<Invoice> getInvoices(List<com.tf.model.Invoice> invoices){
@@ -54,19 +63,19 @@ public class TransformEntities {
 	invoice.setUpdateDate(inv.getUpdateDate());
     }
     
-    public List<Trade> getTrades(List<SCFTrade> trades){
+    public List<Trade> getTrades(List<SCFTrade> trades, boolean listInvoice){
 	
    	List<Trade> tradeList=new ArrayList<Trade>();
    	for(SCFTrade scfTrade : trades){
    	    Trade trade=new Trade();
-   	    transformTrade(scfTrade, trade);
+   	    transformTrade(scfTrade, trade,listInvoice);
    	    tradeList.add(trade);
    	}
    	return tradeList;
    	
        }
 
-    public void transformTrade(SCFTrade scfTrade, Trade trade) {
+    public void transformTrade(SCFTrade scfTrade, Trade trade,boolean listInvoice) {
 	trade.setId(scfTrade.getId());
 	trade.setScfCompanyName(scfTrade.getCompany().getName());
 	trade.setScfTradeID(scfTrade.getScfId());
@@ -81,6 +90,21 @@ public class TransformEntities {
 	trade.setInvestorFee(scfTrade.getInvestorTotalGross());
 	trade.setGrossCharges(getGrossCharges(scfTrade));
 	trade.setFinanceAmount(scfTrade.getSellerNetAllotment());
+	if(!listInvoice && scfTrade.getInvoices()!=null && scfTrade.getInvoices().size() >0){
+	    List<Invoice> invoices=new ArrayList<Invoice>();
+	    for(com.tf.model.Invoice inv : scfTrade.getInvoices()){
+		Invoice invoice =new Invoice();
+		invoice.setId(inv.getId());
+		invoice.setInvoiceNumber(inv.getInvoiceNumber());
+		invoice.setScfCompanyName(inv.getScfCompany()!=null ?inv.getScfCompany().getName():"");
+		invoice.setInvoiceDate(inv.getInvoiceDate());
+		invoice.setDuration(inv.getDuration());
+		invoices.add(invoice);
+		
+	    }
+	    trade.setInvoices(invoices);
+	    
+	}
     }
 
     private BigDecimal getGrossCharges(SCFTrade scfTrade) {
@@ -134,5 +158,36 @@ public class TransformEntities {
   	add.setPostalCode(address.getPostalCode());
   	add.setCountry(address.getCountry());  	
       }
+    
+    public void synchronizeDataFromLifeary(com.liferay.portal.model.User lrUser) throws PortalException, SystemException {
+	    boolean updateFlag=false;
+	    User user=userService.getUserbyLiferayID(lrUser.getUserId());
+	    if(!(lrUser.getFirstName().equalsIgnoreCase(user.getFirstName()))){
+		user.setFirstName(lrUser.getFirstName());
+		updateFlag=true;
+	    }
+	    if(!(lrUser.getLastName().equalsIgnoreCase(user.getLastName()))){
+		user.setLastName(lrUser.getLastName());
+		updateFlag=true;
+	    }
+	    if(!(lrUser.getMiddleName().equalsIgnoreCase(user.getMiddleName()))){
+		user.setMiddleName(lrUser.getMiddleName());
+		updateFlag=true;
+	    }
+	    if(!(lrUser.getEmailAddress().equalsIgnoreCase(user.getEmail()))){
+		user.setEmail(lrUser.getEmailAddress());
+		updateFlag=true;
+	    }
+	    if(!(lrUser.getScreenName().equalsIgnoreCase(user.getUsername()))){
+		user.setUsername(lrUser.getScreenName());
+		updateFlag=true;
+	    }
+	    
+	    if(updateFlag){
+		//this code can be optimized
+		user = userService.findById(userService.addorUpdateUser(user));
+	    }
+	    
+	}
 
 }

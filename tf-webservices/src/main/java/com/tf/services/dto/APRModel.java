@@ -1,6 +1,7 @@
 package com.tf.services.dto;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.List;
 
 public class APRModel implements Serializable {   
@@ -9,8 +10,8 @@ public class APRModel implements Serializable {
     private static final long serialVersionUID = 3028615564861791027L;
     
     
-    private Long totalCreditLine;
-    private Long creditAvailable;
+    private BigDecimal totalCreditLine;
+    private BigDecimal creditAvailable;
     private List<CreditAvailable> creditAvailableBreakDown;
     
     
@@ -19,22 +20,22 @@ public class APRModel implements Serializable {
     }
 
 
-    public Long getTotalCreditLine() {
+    public BigDecimal getTotalCreditLine() {
         return totalCreditLine;
     }
 
 
-    public void setTotalCreditLine(Long totalCreditLine) {
+    public void setTotalCreditLine(BigDecimal totalCreditLine) {
         this.totalCreditLine = totalCreditLine;
     }
 
 
-    public Long getCreditAvailable() {
+    public BigDecimal getCreditAvailable() {
         return creditAvailable;
     }
 
 
-    public void setCreditAvailable(Long creditAvailable) {
+    public void setCreditAvailable(BigDecimal creditAvailable) {
         this.creditAvailable = creditAvailable;
     }
 

@@ -10,8 +10,6 @@ import java.util.Map;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
-import org.hibernate.criterion.CriteriaSpecification;
-import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
@@ -132,9 +130,9 @@ public class InvestorDAOImpl extends BaseDAOImpl<InvestorPortfolio, Long>   impl
 				}
 				 List<Object[]> list = query.list();
 			        for(Object[] arr : list){
-			        	dasboardModel.setInvestmentCap(arr[0]!=null?Long.valueOf(arr[0].toString()):0);
-			        	dasboardModel.setAvailToInvest(arr[1]!=null?Long.valueOf(arr[1].toString()):0);
-			        	dasboardModel.setAmountInvested(arr[2]!=null?Long.valueOf(arr[2].toString()):0);
+			        	dasboardModel.setInvestmentCap(arr[0]!=null?new BigDecimal(arr[0].toString()):BigDecimal.ZERO);
+			        	dasboardModel.setAvailToInvest(arr[1]!=null?new BigDecimal(arr[1].toString()):BigDecimal.ZERO);
+			        	dasboardModel.setAmountInvested(arr[2]!=null?new BigDecimal(arr[2].toString()):BigDecimal.ZERO);
 			        } 
 			return dasboardModel;
 		} catch (RuntimeException re) {

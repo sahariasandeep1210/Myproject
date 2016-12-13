@@ -136,7 +136,7 @@ public class InvestorController {
 
 		_log.info("Render InvestorController ");
 		model.put(ACTIVETAB, Investor_Protfolios);
-		if (getPermissionChecker(request).isOmniadmin()) {
+		if (getPermissionChecker(request).isOmniadmin() || request.isUserInRole(Constants.WHITEHALL_ADMIN)) {
 			List<InvestorPortfolio> list = investorService.findAllInvestorProtFolios();
 			Map<String, BigDecimal> totalsMap = investorService.getProtfolioTotals();
 			model.put("totalsMap", totalsMap);
@@ -484,7 +484,7 @@ public class InvestorController {
 		List<InvestorPortfolio> investorPortfolioList) {
 
 		String viewName = "investorprotfolio";
-		if (getPermissionChecker(request).isOmniadmin()) {
+		if (getPermissionChecker(request).isOmniadmin() || request.isUserInRole(Constants.WHITEHALL_ADMIN)) {
 			List<InvestorPortfolio> list = investorService.findAllInvestorProtFolios();
 			Map<String, BigDecimal> totalsMap = investorService.getProtfolioTotals();
 			model.put("totalsMap", totalsMap);

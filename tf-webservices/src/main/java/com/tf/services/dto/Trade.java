@@ -12,8 +12,9 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 @JsonInclude(value = Include.NON_NULL)
 public class Trade  implements Serializable{
+    
 
-    private static final long serialVersionUID = -1299179888564035196L;
+    private static final long serialVersionUID = 1L;
     
     
     private long id;
@@ -35,6 +36,7 @@ public class Trade  implements Serializable{
     private BigDecimal 	financeAmount;
     
     private List<Allotment> allotments;
+    private List<Invoice> invoices;
     
     public Trade() {
 	
@@ -158,6 +160,14 @@ public class Trade  implements Serializable{
 
     public void setScfCompanyName(String scfCompanyName) {
         this.scfCompanyName = scfCompanyName;
+    }
+
+    public List<Invoice> getInvoices() {
+        return invoices;
+    }
+
+    public void setInvoices(List<Invoice> invoices) {
+        this.invoices = invoices;
     }
 
     @Override

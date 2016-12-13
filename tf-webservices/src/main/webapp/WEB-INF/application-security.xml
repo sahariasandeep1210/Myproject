@@ -11,6 +11,10 @@
 	</http> 
 	<http pattern="/useremail/**" security="none">  			
 	</http> 
+	<http pattern="/tf-webservices/syncuser/**" security="none">  			
+	</http>
+	<http pattern="/syncuser/**" security="none">  			
+	</http>
 	
 	
 	

@@ -132,7 +132,7 @@ public class WhitehallController {
             	List<SCFTrade> scftrades = scfTradeService.getScfTradeList(registrationNo, startIndex, size);
             	Long noOfRecords = scfTradeService.getScfTradeCounts(registrationNo);
     		if(scftrades !=null && scftrades.size() >0){
-    		    List<Trade> list=transformEntities.getTrades(scftrades);
+    		    List<Trade> list=transformEntities.getTrades(scftrades,true);
     		    
     		    listDTO.setList(list);
     		    listDTO.setPageSize(size);
@@ -155,7 +155,7 @@ public class WhitehallController {
             	List<SCFTrade> scftrades = scfTradeService.getScfTradeList(registrationNo, startIndex, size);
             	Long noOfRecords = scfTradeService.getScfTradeCounts(registrationNo);
     		if(scftrades !=null && scftrades.size() >0){
-    		    List<Trade> list=transformEntities.getTrades(scftrades);
+    		    List<Trade> list=transformEntities.getTrades(scftrades,true);
     		    
     		    listDTO.setList(list);
     		    listDTO.setPageSize(size);
@@ -184,7 +184,7 @@ public class WhitehallController {
 	   
 	   SCFTrade scfTrade = scfTradeService.findById(tradeID);
 	   Trade tradeDTO =new Trade();
-	   transformEntities.transformTrade(scfTrade, tradeDTO);
+	   transformEntities.transformTrade(scfTrade, tradeDTO,false);
 	   return new ResponseEntity<Trade>(tradeDTO, HttpStatus.OK);     
        }
     
@@ -378,10 +378,22 @@ public class WhitehallController {
          	return new ResponseEntity<SuccessResponse>(successResponse, HttpStatus.OK);   
          }    	   
         successResponse.setStatus("error");
-        successResponse.setMessage("This email is not registered with us.Please try again!");
+        successResponse.setMessage("Your answer does not match in our database!");
 	 return new ResponseEntity<SuccessResponse>(successResponse, HttpStatus.BAD_REQUEST);     
         }
         
+        
+        @RequestMapping(value = "/syncuser/{userID}",method = RequestMethod.GET )  
+        public ResponseEntity<String> syncUser(@PathVariable("userID") long userID) throws PortalException, SystemException {
+            	User user = UserLocalServiceUtil.getUser(userID);
+            	System.out.println("user:::"+user);
+            	if(user!=null){        
+            	    		transformEntities.synchronizeDataFromLifeary(user);
+            	    	System.out.println("Done:::");
+    			return new ResponseEntity<String>("success", HttpStatus.OK);   
+            	}    	   
+             return new ResponseEntity<String>("error", HttpStatus.BAD_REQUEST);   
+        }
         
         
         @ExceptionHandler(Exception.class)
@@ -398,7 +410,7 @@ public class WhitehallController {
       		ErrorResponse error = new ErrorResponse();
       		error.setErrorCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
       		error.setMessage("Finance allotment failed.Please contact whileHall admin for further details");
-      		return new ResponseEntity<ErrorResponse>(error, HttpStatus.INTERNAL_SERVER_ERROR);
+      		return new ResponseEntity<ErrorResponse>(error, HttpStatus.BAD_REQUEST);
       	}
         
         @ExceptionHandler(InvalidDuration.class)
@@ -406,7 +418,7 @@ public class WhitehallController {
       		ErrorResponse error = new ErrorResponse();
       		error.setErrorCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
       		error.setMessage("Payment date should be "+ex.getDuration()+" days later than today's Date");
-      		return new ResponseEntity<ErrorResponse>(error, HttpStatus.INTERNAL_SERVER_ERROR);
+      		return new ResponseEntity<ErrorResponse>(error, HttpStatus.BAD_REQUEST);
       	} 
       	    
       	@ExceptionHandler(NoSuchUserException.class)
@@ -414,7 +426,7 @@ public class WhitehallController {
       		ErrorResponse error = new ErrorResponse();
       		error.setErrorCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
       		error.setMessage("User doesn't exist");
-      		return new ResponseEntity<ErrorResponse>(error, HttpStatus.INTERNAL_SERVER_ERROR);
+      		return new ResponseEntity<ErrorResponse>(error, HttpStatus.BAD_REQUEST);
       	} 
         
         public String getDate(Date date) {	

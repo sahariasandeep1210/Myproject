@@ -6,17 +6,16 @@ import java.util.List;
 import java.util.Map;
 
 import com.tf.model.Investor;
-import com.tf.model.InvestorPortfolio;
 
 public class DashboardModel  implements Serializable{
 	
 
 
-    	private static final long serialVersionUID = -2161787055134981763L;
+    	private static final long serialVersionUID = -7367943227943130339L;
     	
-	private long investmentCap;
-	private long availToInvest;
-	private long amountInvested;
+	private BigDecimal investmentCap;
+	private BigDecimal availToInvest;
+	private BigDecimal amountInvested;
 	
 	private long invoiceCount;
 	private long companyCount;
@@ -45,37 +44,37 @@ public class DashboardModel  implements Serializable{
 	}
 
 	
-	public long getInvestmentCap() {
+	public BigDecimal getInvestmentCap() {
 	
 		return investmentCap;
 	}
 
 	
-	public void setInvestmentCap(long investmentCap) {
+	public void setInvestmentCap(BigDecimal investmentCap) {
 	
 		this.investmentCap = investmentCap;
 	}
 
 	
-	public long getAvailToInvest() {
+	public BigDecimal getAvailToInvest() {
 	
 		return availToInvest;
 	}
 
 	
-	public void setAvailToInvest(long availToInvest) {
+	public void setAvailToInvest(BigDecimal availToInvest) {
 	
 		this.availToInvest = availToInvest;
 	}
 
 	
-	public long getAmountInvested() {
+	public BigDecimal getAmountInvested() {
 	
 		return amountInvested;
 	}
 
 	
-	public void setAmountInvested(long amountInvested) {
+	public void setAmountInvested(BigDecimal amountInvested) {
 	
 		this.amountInvested = amountInvested;
 	}

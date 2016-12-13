@@ -22,8 +22,6 @@ import com.liferay.portal.security.auth.CompanyThreadLocal;
 import com.liferay.portal.service.RoleLocalServiceUtil;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.util.ContentUtil;
-import com.tf.dao.UserDAO;
-import com.tf.dao.impl.UserDAOImpl;
 import com.tf.persistance.util.Constants;
 
 public class CustomLoginPostEvent extends Action {
@@ -38,12 +36,9 @@ public class CustomLoginPostEvent extends Action {
 	public void run(HttpServletRequest request, HttpServletResponse response)
 			throws ActionException {
 		String userRole="";
-		try {
-		    
-		    UserDAO userDao=new UserDAOImpl();
-		    System.out.println("USerDAO::"+userDao.getUserbyLiferayUserID(11308));
+		try {		    
 
-		if(PortalUtil.getUser(request)!=null){
+		if(PortalUtil.getUser(request)!=null){		    
 			User user= PortalUtil.getUser(request);		
 			long companyId = CompanyThreadLocal.getCompanyId();	
 			String xmlName=LanguageUtil.get(LocaleUtil.getDefault(), "role.xml.file.name",xmlFileName);
