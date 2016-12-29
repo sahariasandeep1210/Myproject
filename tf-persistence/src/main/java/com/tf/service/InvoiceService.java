@@ -21,7 +21,7 @@ public interface InvoiceService {
 
 	public Map<Company, BigDecimal> getInvoicesAmount(String invoiceIds);
 	
-	public GenericListModel getInvoicesByFilter(String search,Date frmDate,Date toDate,String value,int startIndex,int pageSize,Long companyID,String registrationNo);
+	public GenericListModel getInvoicesByFilter(String search,String frmDate,String toDate,String value,int startIndex,int pageSize,Long companyID,String registrationNo);
 	
 	public Set<Invoice> getInvoices(String invoiceIds);
 	

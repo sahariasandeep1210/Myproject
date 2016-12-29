@@ -15,7 +15,7 @@ public interface InvoiceDAO extends BaseDAO<Invoice, Long> {
 	
 	public Long getInvoicesCount();
 	
-	public GenericListModel getInvoicesByFilter(String search,Date frmDate,Date toDate,String value,int startIndex,int pageSize,Long companyID,String registrationNo);
+	public GenericListModel getInvoicesByFilter(String search,String frmDate,String toDate,String value,int startIndex,int pageSize,Long companyID,String registrationNo);
 	
 	public List<Invoice> getInvoicesAmount(List<Long> invoiceIds);
 	
