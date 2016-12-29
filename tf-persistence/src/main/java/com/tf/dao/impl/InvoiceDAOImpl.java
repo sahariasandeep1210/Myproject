@@ -1,12 +1,19 @@
 
 package com.tf.dao.impl;
 
+import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
+import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Disjunction;
@@ -19,8 +26,10 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.tf.dao.InvoiceDAO;
+import com.tf.model.Company;
 import com.tf.model.GenericListModel;
 import com.tf.model.Invoice;
+import com.tf.persistance.util.Constants;
 import com.tf.persistance.util.ValidationUtil;
 import com.tf.service.CompanyService;
 
@@ -97,17 +106,102 @@ public void deleteInvoice(Invoice invoice){
 		throw e;
 		}
 }
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "unused", "rawtypes" })
 	public GenericListModel getInvoices(Long companyID,int startIndex, int pageSize,String registrationNo) {
 		_log.debug("Inside getInvoices ");
 		try {
-		        Criteria criteria=sessionFactory.getCurrentSession().createCriteria(Invoice.class);
-		    	if(companyID!=null){
-		    	    criteria.add(Restrictions.eq("scfCompany.id", companyID));
-		    	}else if(StringUtils.isNotBlank(registrationNo)){
-		    	    criteria.add(Restrictions.eq("sellerCompanyRegistrationNumber", registrationNo));
-		    	}
-			List<Invoice> results =(List<Invoice>)criteria.addOrder(Order.desc("updateDate")).setFirstResult(startIndex).setMaxResults(pageSize).list();
+			 List<Invoice> results = new ArrayList<Invoice>();;
+			if (companyID != null) {
+
+				String sqlQuery = "";
+				if (companyID != null && ! StringUtils.isNotBlank(registrationNo)) {
+					sqlQuery = "SELECT scf.*,tf.name FROM scf_invoice scf LEFT JOIN tf_company  tf ON tf.regnumber = scf.seller_company_registration_number where scf.scf_company = '"
+							+ companyID + "' ORDER BY scf.update_date DESC";
+				} else if (StringUtils.isNotBlank(registrationNo)) {
+					sqlQuery = "SELECT scf.*,tf.name FROM scf_invoice scf LEFT JOIN tf_company  tf ON tf.regnumber = scf.seller_company_registration_number where scf.seller_company_registration_number = '"
+							+ companyID + "' ORDER BY scf.update_date DESC";
+				}
+				SQLQuery query = (SQLQuery) sessionFactory.getCurrentSession()
+						.createSQLQuery(sqlQuery).setFirstResult(startIndex)
+						.setMaxResults(pageSize);
+				query.setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP);
+				List data = query.list();
+				if (null != data || data.size() > 0) {
+					for (Object invoiceObj : data) {
+						Map row = (Map) invoiceObj;
+						Invoice invoiceObject = new Invoice();
+						Company company = new Company();
+						invoiceObject.setId(Long.parseLong(row.get("id")
+								.toString()));
+						invoiceObject.setInvoiceNumber(row
+								.get("invoice_number").toString());
+
+						try {
+							DateFormat df = new SimpleDateFormat(
+									Constants.DATE_FORMAT);
+							Date paymentDate = df.parse(row.get("payment_date")
+									.toString());
+							invoiceObject.setPayment_date(paymentDate);
+						} catch (Exception e) {
+							System.out.println(e);
+						}
+
+						try {
+							invoiceObject.setSellerCompanyVatNumber(null == row
+									.get("seller_company_vat_number")
+									.toString() ? "" : row.get(
+									"seller_company_vat_number").toString());
+						} catch (Exception e) {
+							invoiceObject.setSellerCompanyVatNumber("");
+						}
+						try {
+							BigDecimal bt = new BigDecimal(null == row.get(
+									"vat_amount").toString() ? "" : row.get(
+									"vat_amount").toString());
+							invoiceObject.setVatAmount(bt);
+						} catch (Exception e) {
+							String ammount = "0";
+							BigDecimal vatAmmount = new BigDecimal(ammount);
+							invoiceObject.setVatAmount(vatAmmount);
+						}
+						invoiceObject.setSellerCompanyRegistrationNumber(row
+								.get("seller_company_registration_number")
+								.toString());
+						BigDecimal bd = new BigDecimal(row.get("invoice_amout")
+								.toString());
+						invoiceObject.setInvoiceAmount(bd);
+						invoiceObject.setInvoiceDesc(null == row.get(
+								"invoice_desc").toString() ? "" : row.get(
+								"invoice_desc").toString());
+						invoiceObject.setDuration(Integer.parseInt(null == row
+								.get("duration").toString() ? "1" : row.get(
+								"duration").toString()));
+
+						invoiceObject.setCurrency(null == row.get("currency")
+								.toString() ? "" : row.get("currency")
+								.toString());
+						company.setName(null == row.get("name").toString() ? ""
+								: row.get("name").toString());
+						invoiceObject.setScfCompany(company);
+						invoiceObject
+								.setStatus(null == row.get("status").toString() ? ""
+										: row.get("status").toString());
+						results.add(invoiceObject);
+					}
+				}
+			}
+			else{
+				 Criteria  criteria=sessionFactory.getCurrentSession().createCriteria(Invoice.class);
+			    	if(companyID!=null){
+			    	    criteria.add(Restrictions.eq("scfCompany.id", companyID));
+			    	}else if(StringUtils.isNotBlank(registrationNo)){
+			    	    criteria.add(Restrictions.eq("sellerCompanyRegistrationNumber", registrationNo));
+			    	}
+			    	results =(List<Invoice>)criteria.addOrder(Order.desc("updateDate")).setFirstResult(startIndex).setMaxResults(pageSize).list();
+			}
+			
+		       
+			
 			GenericListModel genericModel=new GenericListModel();
 			genericModel.setCount(getInvoicesCount(companyID,registrationNo));
 			genericModel.setList(results);
@@ -270,11 +364,129 @@ public void deleteInvoice(Invoice invoice){
 	
 	
 	@SuppressWarnings("unchecked")
-	public GenericListModel getInvoicesByFilter(String search, Date frmDate, Date toDate, String value, int startIndex, int pageSize,Long companyID,String registrationNo) {
+	public GenericListModel getInvoicesByFilter(String search, String frmDate, String toDate, String value, int startIndex, int pageSize,Long companyID,String registrationNo) {
 		_log.debug("Inside getInvoicesByFilter");
 		GenericListModel genericModel=new GenericListModel();
 		try {
-				DetachedCriteria criteria = DetachedCriteria.forClass(Invoice.class);	
+			
+			StringBuilder sqlQuery = new StringBuilder();
+			sqlQuery.append("SELECT scf.*,tf.name FROM scf_invoice scf LEFT JOIN tf_company  tf ON tf.regnumber = scf.seller_company_registration_number");
+			if(null != value && value.length()>3){
+				sqlQuery.append(" Where scf.status LIKE '"+search+"%' AND scf.invoice_number LIKE '"+search+"%' AND tf.name LIKE '"+search+"%'");
+			}else{
+				sqlQuery.append(" Where scf.status LIKE '"+search+"%' OR scf.invoice_number LIKE '"+search+"%' OR tf.name LIKE '"+search+"%'");
+			}
+			
+		
+			 if(companyID!=null){
+					sqlQuery.append(" AND scf.scf_company = '"+companyID+"'");
+			 }else if(StringUtils.isNotBlank(registrationNo)){
+				     sqlQuery.append(" AND scf.seller_company_registration_number = '"+registrationNo+"'");
+			 }
+			
+			if (frmDate != null && toDate != null) {
+				 
+				if(value.equals("invoiceDate")){
+					sqlQuery.append(" AND scf.invoice_date between '"+frmDate+"' AND  '"+toDate+"'");
+				} else if(value.equals("payment_date")){
+					sqlQuery.append(" AND scf.payment_date between '"+frmDate+"' AND  '"+toDate+"'");
+				} else if(value.equals("financeDate")){
+					sqlQuery.append(" AND scf.finance_date between '"+frmDate+"' AND  '"+toDate+"'");
+				}
+			}
+			else if (frmDate != null && toDate == null) {
+				if(value.equals("invoiceDate")){
+					sqlQuery.append(" AND scf.invoice_date >= '"+frmDate+"'");
+				} else if(value.equals("payment_date")){
+					sqlQuery.append(" AND scf.payment_date >= '"+frmDate+"'");
+				} else if(value.equals("financeDate")){
+					sqlQuery.append(" AND scf.finance_date >= '"+frmDate+"'");
+				}
+				
+			}
+			else if (frmDate == null && toDate != null) {
+				if(value.equals("invoiceDate")){
+					sqlQuery.append(" AND scf.invoice_date <= '"+toDate+"'");
+				} else if(value.equals("payment_date")){
+					sqlQuery.append(" AND scf.payment_date <= '"+toDate+"'");
+				} else if(value.equals("financeDate")){
+					sqlQuery.append(" AND scf.finance_date <= '"+toDate+"'");
+				}
+			}
+			sqlQuery.append(" ORDER BY scf.update_date DESC");
+			List<Invoice> invoicelist = new ArrayList<Invoice>();
+			
+			SQLQuery query = (SQLQuery) sessionFactory.getCurrentSession().createSQLQuery(sqlQuery.toString()).setFirstResult(startIndex)
+					.setMaxResults(pageSize);
+			query.setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP);
+			List data = query.list();
+			if (null != data || data.size() > 0) {
+
+				for (Object invoiceObj : data) {
+					Map row = (Map) invoiceObj;
+					Invoice invoiceObject = new Invoice();
+					Company company = new Company();
+					invoiceObject.setId(Long.parseLong(row.get("id")
+							.toString()));
+					invoiceObject.setInvoiceNumber(row
+							.get("invoice_number").toString());
+
+					try {
+						DateFormat df = new SimpleDateFormat(
+								Constants.DATE_FORMAT);
+						Date paymentDate = df.parse(row.get("payment_date")
+								.toString());
+						invoiceObject.setPayment_date(paymentDate);
+					} catch (Exception e) {
+						System.out.println(e);
+					}
+
+					try {
+						invoiceObject.setSellerCompanyVatNumber(null == row
+								.get("seller_company_vat_number")
+								.toString() ? "" : row.get(
+								"seller_company_vat_number").toString());
+					} catch (Exception e) {
+						invoiceObject.setSellerCompanyVatNumber("");
+					}
+					try {
+						BigDecimal bt = new BigDecimal(null == row.get(
+								"vat_amount").toString() ? "" : row.get(
+								"vat_amount").toString());
+						invoiceObject.setVatAmount(bt);
+					} catch (Exception e) {
+						String ammount = "0";
+						BigDecimal vatAmmount = new BigDecimal(ammount);
+						invoiceObject.setVatAmount(vatAmmount);
+					}
+					invoiceObject.setSellerCompanyRegistrationNumber(row
+							.get("seller_company_registration_number")
+							.toString());
+					BigDecimal bd = new BigDecimal(row.get("invoice_amout")
+							.toString());
+					invoiceObject.setInvoiceAmount(bd);
+					invoiceObject.setInvoiceDesc(null == row.get(
+							"invoice_desc").toString() ? "" : row.get(
+							"invoice_desc").toString());
+					invoiceObject.setDuration(Integer.parseInt(null == row
+							.get("duration").toString() ? "1" : row.get(
+							"duration").toString()));
+
+					invoiceObject.setCurrency(null == row.get("currency")
+							.toString() ? "" : row.get("currency")
+							.toString());
+					company.setName(null == row.get("name").toString() ? ""
+							: row.get("name").toString());
+					invoiceObject.setScfCompany(company);
+					invoiceObject
+							.setStatus(null == row.get("status").toString() ? ""
+									: row.get("status").toString());
+					invoicelist.add(invoiceObject);
+				}
+			
+				
+			}
+			/*	DetachedCriteria criteria = DetachedCriteria.forClass(Invoice.class);	
 				Disjunction or = Restrictions.disjunction();
 					or.add(Restrictions.like("invoiceNumber",search,MatchMode.ANYWHERE));
 					or.add(Restrictions.like("status", search, MatchMode.ANYWHERE));
@@ -300,7 +512,7 @@ public void deleteInvoice(Invoice invoice){
 				}	
 				criteria.addOrder(Order.desc("updateDate"));
 				List<Invoice> invoicelist = criteria.getExecutableCriteria(sessionFactory.getCurrentSession()).createAlias("scfCompany", "company")
-							  .add(or).setFirstResult(startIndex).setMaxResults(pageSize).list();
+							  .add(or).setFirstResult(startIndex).setMaxResults(pageSize).list();*/
 				
 				genericModel.setCount(getInvoicesByFilterCount(search,frmDate,toDate,value,companyID,registrationNo));
 				genericModel.setList(invoicelist);
@@ -315,9 +527,22 @@ public void deleteInvoice(Invoice invoice){
 
 	}
 	
-	public Long getInvoicesByFilterCount(String search, Date frmDate, Date toDate, String value,Long companyID,String registrationNo) {
+	public Long getInvoicesByFilterCount(String search, String frmDate, String toDate, String value,Long companyID,String registrationNo) {
 		_log.debug("Inside getInvoicesByFilterCount ");
 		try {
+			DateFormat formatter = new SimpleDateFormat(Constants.DATE_FORMAT);
+			Date fromDate = null ;
+			Date toDates = null;
+			try {
+				if(null != frmDate && frmDate.length()>0){
+					fromDate = formatter.parse(frmDate);
+				}
+				if(null != toDate && toDate.length()>0){
+					toDates = formatter.parse(toDate);
+				}
+			} catch (ParseException e) {
+				System.out.println(e);
+			}
 			DetachedCriteria criteria = DetachedCriteria.forClass(Invoice.class);
 			Disjunction or = Restrictions.disjunction();
 				or.add(Restrictions.like("invoiceNumber",search,MatchMode.ANYWHERE));
@@ -330,12 +555,12 @@ public void deleteInvoice(Invoice invoice){
         		    	    criteria.add(Restrictions.eq("sellerCompanyRegistrationNumber", registrationNo));
         		 }
 			if (frmDate != null && toDate != null) {
-				criteria.add(Restrictions.ge(value, frmDate));
-				criteria.add(Restrictions.le(value, toDate));
+				criteria.add(Restrictions.ge(value, fromDate));
+				criteria.add(Restrictions.le(value, toDates));
 			} else if (frmDate != null && toDate == null) {
-				criteria.add(Restrictions.ge(value, frmDate));
+				criteria.add(Restrictions.ge(value, fromDate));
 			} else if ( frmDate == null && toDate != null) {
-				criteria.add(Restrictions.le(value, toDate));
+				criteria.add(Restrictions.le(value, toDates));
 			}			
 			Long resultCount =
 				(Long) criteria.getExecutableCriteria(sessionFactory.getCurrentSession()).createAlias("scfCompany", "company").add(or).setProjection(

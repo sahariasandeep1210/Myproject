@@ -198,7 +198,9 @@ public class InvoiceController {
         	invoice.setScfCompany(companyId);
         }
         //getting the all seller 
-        sellerRegList=companyService.getSellerCompanies(CompanyTypes.SELLER.getValue());
+        //sellerRegList=companyService.getSellerCompanies(CompanyTypes.SELLER.getValue());
+        long companyId =userService.getCompanyIDbyUserID(themeDisplay.getUserId());
+        sellerRegList=companyService.getSellerCompaniesUsingJoin(CompanyTypes.SELLER.getValue(),companyId);
 		model.put("companyList", companyList);
 		model.put("sellerRegList", sellerRegList);
 		return new ModelAndView("createinvoice", model);
@@ -476,6 +478,8 @@ public class InvoiceController {
 			Date fromDate = null;
 			Date toDate = null;
 			String tradeURL=null;
+			String fromDateString = null;
+			String toDateString = null;
 			String search = ParamUtil.getString(request, "Search");
 			String value = ParamUtil.getString(request, "dateList");
 			String from = ParamUtil.getString(request, "fromDate");
@@ -488,6 +492,12 @@ public class InvoiceController {
 			}
 			if (!StringUtils.isNullOrEmpty(to)) {
 				toDate = formatter.parse(to);
+			}
+			if (!StringUtils.isNullOrEmpty(from)) {
+				fromDateString = Constants.formatDate(from);
+			}
+			if (!StringUtils.isNullOrEmpty(to)) {
+				toDateString = Constants.formatDate(to);
 			}
 			
 			tradeURL=liferayUtility.getPortletURL(request, "scf-trade-portlet", "render", "createTrade", true);
@@ -507,7 +517,7 @@ public class InvoiceController {
 			}
 			
 			if(!StringUtils.isNullOrEmpty(search) || !StringUtils.isNullOrEmpty(value)){
-			    	   genericListModel =invoiceService.getInvoicesByFilter(search, fromDate, toDate, value,
+			    	   genericListModel =invoiceService.getInvoicesByFilter(search, fromDateString, toDateString, value,
 						paginationModel.getStartIndex(), paginationModel.getPageSize(),companyID,registrationNo);
 				}else{				
 				    genericListModel = invoiceService.getInvoices(companyID,paginationModel.getStartIndex(), paginationModel.getPageSize(),registrationNo);
