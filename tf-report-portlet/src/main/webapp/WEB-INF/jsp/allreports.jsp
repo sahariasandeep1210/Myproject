@@ -116,7 +116,7 @@
 									
 									</td>
 									
-									<td class="${amountClass}"><fmt:formatNumber type="number" maxFractionDigits="3" value="${report.amount}"  /></td>
+									<td class="${amountClass}"><fmt:formatNumber type="number" maxFractionDigits="3" value="${report.amount}"  pattern="#0.00"/></td>
 									<td>${report.scfTradeId}</td>
 									<%-- <td>${report.company.name}</td> --%>
 									<td>${report.reference}</td>
