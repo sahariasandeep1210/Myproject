@@ -184,6 +184,7 @@ public class InvoiceController {
 		@ModelAttribute("invoiceModel") InvoiceDTO invoice, ModelMap model,
 		RenderRequest request, RenderResponse response)
 		throws Exception {
+		long companyId = 0 ;
 		List<Company> companyList = new ArrayList<Company>();
 		List<Company> sellerRegList = new ArrayList<Company>();
 		ThemeDisplay themeDisplay =
@@ -193,14 +194,16 @@ public class InvoiceController {
     		companyList = companyService.getCompanies(CompanyTypes.SCF_COMPANY.getValue());
     		
         }else if(request.isUserInRole(Constants.SCF_ADMIN)){
-        	long companyId =userService.getCompanyIDbyUserID(themeDisplay.getUserId());
+        	companyId =userService.getCompanyIDbyUserID(themeDisplay.getUserId());
         	companyList=companyService.getCompaniesById(companyId);
         	invoice.setScfCompany(companyId);
         }
         //getting the all seller 
-        //sellerRegList=companyService.getSellerCompanies(CompanyTypes.SELLER.getValue());
-        long companyId =userService.getCompanyIDbyUserID(themeDisplay.getUserId());
-        sellerRegList=companyService.getSellerCompaniesUsingJoin(CompanyTypes.SELLER.getValue(),companyId);
+        if(companyId == 0){
+        	sellerRegList=companyService.getSellerCompanies(CompanyTypes.SELLER.getValue());
+        }else{
+        	sellerRegList=companyService.getSellerCompaniesUsingJoin(CompanyTypes.SELLER.getValue(),companyId);
+        }
 		model.put("companyList", companyList);
 		model.put("sellerRegList", sellerRegList);
 		return new ModelAndView("createinvoice", model);
