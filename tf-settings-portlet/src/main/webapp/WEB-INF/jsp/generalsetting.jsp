@@ -78,6 +78,15 @@
 							         
 							      </td>
 							</tr>
+							<tr>
+							     <td>Min Level Of Investment</td>
+							      <td>
+							      <input type="text"
+												value="${generalSetting.minLevelOfInvestment }"
+												name="minLevelOfInvestment" id="minLevelOfInvestment" class="field">
+							         
+							      </td>
+							</tr>
 							
 					</tbody>
 					</table>
