@@ -9,6 +9,8 @@ public interface CompanyService {
 	
 	public List<Company> getCompaniesByStatus(String status,int startIndex,int pageSize);
 	
+	public List<Company> getCompaniesByStatusFilter(String status,int startIndex,int pageSize,String searchValue);
+	
 	public List<Company> getCompaniesByStatus(String status,long userID);
 	
 	public void addCompany(Company company);
@@ -42,4 +44,6 @@ public interface CompanyService {
 	public long validateCompanyRegNo(Company cmp);
 	
 	public List<Company> getSellerCompanies(String companyType);
+
+	public List<Company> getSellerCompaniesUsingJoin(String value,long companyId);
 }

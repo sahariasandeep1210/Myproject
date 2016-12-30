@@ -26,7 +26,11 @@ public class CompanyServiceImpl implements CompanyService {
 	public List<Company> getCompaniesByStatus(String status,int startIndex,int pageSize) {
 		return companyDAO.getCompaniesByStatus(status, startIndex, pageSize);
 	}
-
+	
+	@Transactional
+	 public List<Company> getCompaniesByStatusFilter(String status,int startIndex,int pageSize,String searchvalue) {
+	  return companyDAO.getCompaniesByStatusFilter(status, startIndex, pageSize,searchvalue);
+	 }
 	public List<Company> getCompaniesByStatus(String status,long userID){
 		long companyId=userDAO.getCompanyIDbyUserID(userID);
 		return companyDAO.getCompaniesByStatus(status,companyId);	
@@ -95,6 +99,10 @@ public class CompanyServiceImpl implements CompanyService {
 
 	public List<Company> getSellerCompanies(String companyType) {
 		return  companyDAO.getSellerCompanies(companyType);
+	}
+	
+	public List<Company> getSellerCompaniesUsingJoin(String companyType,long companyId) {
+		return  companyDAO.getSellerCompaniesUsingJoin(companyType,companyId);
 	}
 	
 	
