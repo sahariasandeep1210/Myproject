@@ -157,7 +157,7 @@
 			<div class="actionContainer text-left">
 				<c:if
 					test="${userType eq 'SCF Company Admin' || userType eq 'Admin'}">
-					<input type="button" 	value="Create Invoice" class="btn btnBgBuSm"		id="createInvoice" data-url="${createInvoiceURL}"  />
+					<input type="button" 	value="Create Invoice" class="btn btnBgBuSm" id="createInvoice" data-url="${createInvoiceURL}"  />
 				</c:if>
 				<c:choose>
 					<c:when test="${userType eq 'Seller Admin' }">

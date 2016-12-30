@@ -8,8 +8,6 @@ import java.util.Set;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.SQLQuery;
-import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
@@ -19,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.tf.dao.CompanyDAO;
 import com.tf.model.Company;
-import com.tf.model.Invoice;
 import com.tf.model.User;
 import com.tf.persistance.util.CompanyStatus;
 import com.tf.persistance.util.InvestorDTO;
@@ -34,11 +31,12 @@ public class CompanyDAOImpl  extends BaseDAOImpl<Company, Long>   implements Com
 		super(Company.class);
 	}
 	
-	@SuppressWarnings({ "unchecked", "unused" })
+	@SuppressWarnings("unchecked")
 	public List<Company> getCompaniesByStatus(String status,int startIndex,int pageSize) {
 		_log.debug("Inside getCompanies ");
 		try {
-			List<Company>	 results = (List<Company>) sessionFactory.getCurrentSession().createCriteria(Company.class).add(Restrictions.ne("activestatus", status)).setFirstResult(startIndex).setMaxResults(pageSize).list();
+			
+			List<Company> results = (List<Company>) sessionFactory.getCurrentSession().createCriteria(Company.class).add(Restrictions.ne("activestatus", status)).setFirstResult(startIndex).setMaxResults(pageSize).list();
 			_log.debug("GetCompanies successful, result size: "
 					+ results.size());
 			return results;
@@ -48,35 +46,34 @@ public class CompanyDAOImpl  extends BaseDAOImpl<Company, Long>   implements Com
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<Company> getCompaniesByStatusFilter(String status,
+			int startIndex, int pageSize, String searchValue) {
+		_log.debug("Inside getCompaniesByStatusFilter ");
+		List<Company> results=null;
+		try {
+			if(searchValue.matches("[0-9]+") == true){
+			    results = (List<Company>) sessionFactory.getCurrentSession().createCriteria(Company.class).add(Restrictions.like("regNumber", searchValue,MatchMode.ANYWHERE)).setFirstResult(startIndex).setMaxResults(pageSize).list();
+			    
+			   }else {
+			    results = (List<Company>) sessionFactory.getCurrentSession().createCriteria(Company.class).add(Restrictions.like("name", searchValue,MatchMode.ANYWHERE)).setFirstResult(startIndex).setMaxResults(pageSize).list();
+			   }
+			/*DetachedCriteria criteria = DetachedCriteria.forClass(Company.class); 
+			   Disjunction or = Restrictions.disjunction();
+			    //or.add(Restrictions.like("regnumber",searchValue,MatchMode.ANYWHERE));
+			    or.add(Restrictions.like("name", searchValue, MatchMode.ANYWHERE));
+			
+			List<Company> results = (List<Company>) criteria.getExecutableCriteria(sessionFactory.getCurrentSession()).add(or).setFirstResult(startIndex).setMaxResults(pageSize).list();
+			*/
+			_log.debug("GetCompanies successful, result size: "
+					+ results.size());
+			return results;
+		} catch (RuntimeException re) {
+			_log.error("GetCompanies failed", re);
+			throw re;
+		}
+	}
 	
-	@SuppressWarnings("unchecked")
-	 public List<Company> getCompaniesByStatusFilter(String status,
-	   int startIndex, int pageSize, String searchValue) {
-	  _log.debug("Inside getCompanies ");
-	  List<Company>	 results = null;
-	  try {
-		  
-	      DetachedCriteria criteria = DetachedCriteria.forClass(Company.class); 
-	      Disjunction or = Restrictions.disjunction();
-	      
-		       or.add(Restrictions.like("regNumber",searchValue,MatchMode.ANYWHERE));
-		       or.add(Restrictions.like("name", searchValue, MatchMode.ANYWHERE));
-	   
-	     results = (List<Company>) criteria.getExecutableCriteria(sessionFactory.getCurrentSession()).add(or).setFirstResult(startIndex).setMaxResults(pageSize).list();
-		 /* if(searchValue.matches("[0-9]+") == true){
-			   results = (List<Company>) sessionFactory.getCurrentSession().createQuery("from Company c where c.regNumber like :"+searchValue+"").setFirstResult(startIndex).setMaxResults(pageSize).list(); 
-		  }else{
-			  results = (List<Company>) sessionFactory.getCurrentSession().createQuery("from Company c where c.name like :"+searchValue+"").setFirstResult(startIndex).setMaxResults(pageSize).list();
-		  }*/
-		  _log.debug("GetCompanies successful, result size: "
-	     + results.size());
-	   return results;
-	  } catch (RuntimeException re) {
-	   _log.error("GetCompanies failed", re);
-	   throw re;
-	  }
-	 }
-	@SuppressWarnings("unchecked")
 	public Long getCompaniesCount(String status) {
 		_log.debug("Inside getCompanies ");
 		try {
@@ -89,7 +86,6 @@ public class CompanyDAOImpl  extends BaseDAOImpl<Company, Long>   implements Com
 			throw re;
 		}
 	}
-	
 	
 	
 	@SuppressWarnings("unchecked")
@@ -249,7 +245,6 @@ public class CompanyDAOImpl  extends BaseDAOImpl<Company, Long>   implements Com
 	
 	
 	
-	@SuppressWarnings("unchecked")
 	public List<Company> getCompaniesById(Long id){		
 		_log.debug("Inside getCompaniesById ");
 		try {
@@ -346,7 +341,6 @@ public class CompanyDAOImpl  extends BaseDAOImpl<Company, Long>   implements Com
 		
 	}
 
-	@SuppressWarnings("unchecked")
 	public List<Company> getSellerCompanies(String companyType) {
 		_log.debug("Inside getSellerCompanies ");
 		try {
@@ -371,38 +365,38 @@ public class CompanyDAOImpl  extends BaseDAOImpl<Company, Long>   implements Com
 			throw re;
 		}
 	}
-	
 	@SuppressWarnings("unchecked")
-	public List<Company> getSellerCompaniesUsingJoin(String companyType,long scfCcompany) {
-		_log.debug("Inside getSellerCompanies ");
-		try {
-			StringBuilder sb = new StringBuilder();
-			List<Company> results = new ArrayList<Company>();
-			sb.append("SELECT idcompany,NAME,regnumber FROM tf_company tf INNER JOIN tf_seller_scfcompany_mapping tfs ON tf.idcompany = tfs.seller_company");
-			sb.append(" WHERE tf.company_type ='" + companyType+"' AND tf.active_status <> '"+ CompanyStatus.DELETED.getValue()+ "' AND tfs.scf_company ='" + scfCcompany + "'");
-			SQLQuery query = (SQLQuery) sessionFactory.getCurrentSession()
-					.createSQLQuery(sb.toString());
-			query.setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP);
-			List data = query.list();
-			if (null != data || data.size() > 0) {
-				for (Object companyObj : data) {
-					Map row = (Map) companyObj;
-					Company company = new Company();
-					company.setId(Long.parseLong(row.get("idcompany")
-							.toString()));
-					company.setName(row.get("NAME").toString());
-					company.setRegNumber(row.get("regnumber").toString());
-					results.add(company);
-				}
-			}
+	 public List<Company> getSellerCompaniesUsingJoin(String companyType,long scfCcompany) {
+	  _log.debug("Inside getSellerCompanies ");
+	  try {
+	   StringBuilder sb = new StringBuilder();
+	   List<Company> results = new ArrayList<Company>();
+	   sb.append("SELECT idcompany,NAME,regnumber FROM tf_company tf INNER JOIN tf_seller_scfcompany_mapping tfs ON tf.idcompany = tfs.seller_company");
+	   sb.append(" WHERE tf.company_type ='" + companyType+"' AND tf.active_status <> '"+ CompanyStatus.DELETED.getValue()+ "' AND tfs.scf_company ='" + scfCcompany + "'");
+	   SQLQuery query = (SQLQuery) sessionFactory.getCurrentSession()
+	     .createSQLQuery(sb.toString());
+	   query.setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP);
+	   List data = query.list();
+	   if (null != data || data.size() > 0) {
+	    for (Object companyObj : data) {
+	     Map row = (Map) companyObj;
+	     Company company = new Company();
+	     company.setId(Long.parseLong(row.get("idcompany")
+	       .toString()));
+	     company.setName(row.get("NAME").toString());
+	     company.setRegNumber(row.get("regnumber").toString());
+	     results.add(company);
+	    }
+	   }
 
-			_log.debug("GetCompanies successful, result size: "
-					+ results.size());
-			return results;
-		} catch (RuntimeException re) {
-			_log.error("getSellerCompanies failed", re);
-			throw re;
-		}
-	}
+	   _log.debug("GetCompanies successful, result size: "
+	     + results.size());
+	   return results;
+	  } catch (RuntimeException re) {
+	   _log.error("getSellerCompanies failed", re);
+	   throw re;
+	  }
+	 }
+	
 
 }

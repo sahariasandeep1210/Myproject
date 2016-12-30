@@ -8,7 +8,7 @@ import com.tf.persistance.util.InvestorDTO;
 public interface CompanyDAO extends BaseDAO<Company, Long>{
 	
 	public List<Company> getCompaniesByStatus(String status,int startIndex,int pageSize);
-	
+
 	public List<Company> getCompaniesByStatusFilter(String status,int startIndex,int pageSize,String searchValue);
 	
 	public List<Company> getCompaniesByStatus(String status,long companyId);
@@ -42,6 +42,6 @@ public interface CompanyDAO extends BaseDAO<Company, Long>{
 	public long validateCompanyRegNo(Company cmp);
 	
 	public List<Company> getSellerCompanies(String companyType);
-
+	
 	public List<Company> getSellerCompaniesUsingJoin(String companyType,long companyId);
 }

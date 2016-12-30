@@ -44,6 +44,6 @@ public interface CompanyService {
 	public long validateCompanyRegNo(Company cmp);
 	
 	public List<Company> getSellerCompanies(String companyType);
-
+	
 	public List<Company> getSellerCompaniesUsingJoin(String value,long companyId);
 }
