@@ -6,7 +6,7 @@
 
 <div id="dashboard">
 	<div class="row-fluid">
-		<div class="span6">
+		<div class="span4">
 			<div class="panel panel-blue quick-stat-panel">
 				<div class="panel-heading">
 					<h3 class="panel-title">Credit Line</h3>
@@ -16,7 +16,7 @@
 				</div>
 			</div>
 		</div>
-	<div class="span6">
+	<div class="span4">
 			<div class="panel panel-blue quick-stat-panel">
 				<div class="panel-heading">
 					<h3 class="panel-title">Available Credit Line</h3>
@@ -24,6 +24,17 @@
 				<div class="panel-body">	
 					
 					<div id="barchart"></div>
+				</div>
+			</div>
+		</div>
+		<div class="span4">
+			<div class="panel panel-blue quick-stat-panel">
+				<div class="panel-heading">
+					<h3 class="panel-title">SETTLED TRADES</h3>
+				</div>
+				<div class="panel-body">	
+					
+					<div id="barChart_setteled"></div>
 				</div>
 			</div>
 		</div>
@@ -40,7 +51,7 @@
 		var stackedBarChartdata = new google.visualization.DataTable();		
 		stackedBarChartdata.addColumn('string', 'SCF Company');
 		stackedBarChartdata.addColumn('number', 'Live');			
-		stackedBarChartdata.addColumn('number', 'Settled');
+		//stackedBarChartdata.addColumn('number', 'Settled');
 		stackedBarChartdata.addColumn('number', 'Available');
 		
 		var barChartdata = new google.visualization.DataTable();		
@@ -48,18 +59,26 @@
 		barChartdata.addColumn('number', 'Avail To Invest');
 		barChartdata.addColumn({type: 'string', role: 'style'});
 		      
-
+		var barChartdata_settledAmount = new google.visualization.DataTable();		
+		barChartdata_settledAmount.addColumn('string', 'SETTLED TRADES');
+		barChartdata_settledAmount.addColumn('number', 'Settled');
+		barChartdata_settledAmount.addColumn({type: 'string', role: 'style'});
       
 	
 		      
 	
 	  <c:forEach var="element" items="${dashboardModel.map}">
-	  stackedBarChartdata.addRow(["${element.value.companyName}",parseFloat("${element.value.liveTradeAmount}"),parseFloat("${element.value.settledTradeAmount}"),parseFloat("${element.value.availTradeAmount}")]);
+	/*   parseFloat("${element.value.settledTradeAmount}"), */
+	  stackedBarChartdata.addRow(["${element.value.companyName}",parseFloat("${element.value.liveTradeAmount}"),parseFloat("${element.value.availTradeAmount}")]);
       </c:forEach>
       
 	  <c:forEach var="element" items='${dashboardModel.investorPortfolios}'>
 		barChartdata.addRow(["${element[1]}",parseFloat("${element[0]}"), '#ff9900' ]);
 	</c:forEach>
+	
+	<c:forEach var="element" items='${dashboardModel.map}'>
+	barChartdata_settledAmount.addRow(["${element.value.companyName}",parseFloat("${element.value.settledTradeAmount}"), '#ff9900' ]);
+</c:forEach>
       
       var stackedBarChartOptions = {	        		
      		 legend: { position: "top" },
@@ -71,7 +90,12 @@
       			 	 
       			 }
         };
-
+      var barChartOptions_settledAmount = {	        		
+       		 legend: { position: "none"
+       			
+       			 	 
+       			 }
+         };
 		
 		
 		var stackedBarChart = new google.visualization.ColumnChart(document.getElementById('stackedBarChart'));
@@ -79,6 +103,9 @@
 		
 		var barChart = new google.visualization.ColumnChart(document.getElementById('barchart'));
 		barChart.draw(barChartdata, barChartOptions);
+		
+		var barChart_setteled = new google.visualization.ColumnChart(document.getElementById('barChart_setteled'));
+		barChart_setteled.draw(barChartdata_settledAmount, barChartOptions_settledAmount);
 
 	}
 </script>
