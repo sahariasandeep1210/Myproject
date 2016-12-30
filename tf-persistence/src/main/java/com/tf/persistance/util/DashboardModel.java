@@ -30,7 +30,18 @@ public class DashboardModel  implements Serializable{
 	
 	private String createCompanyURL;
 	private String createInvoiceURL;
+	private String createInvestorURL;
 	
+	public String getCreateInvestorURL() {
+		return createInvestorURL;
+	}
+
+
+	public void setCreateInvestorURL(String createInvestorURL) {
+		this.createInvestorURL = createInvestorURL;
+	}
+
+
 	private List<Investor> investors;
 	
 	List<Object[]> investorPortfolios;

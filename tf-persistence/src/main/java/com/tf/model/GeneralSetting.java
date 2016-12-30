@@ -45,8 +45,22 @@ public class GeneralSetting implements Serializable{
 	@Column(name="min_payment_date_duartion")
 	private Integer MinPaymentDateDuartion;
 	
+	@Column(name="min_level_of_investment")
+	private Integer MinLevelOfInvestment;
 	
 	
+	public Integer getMinLevelOfInvestment() {
+		return MinLevelOfInvestment;
+	}
+
+
+
+	public void setMinLevelOfInvestment(Integer minLevelOfInvestment) {
+		MinLevelOfInvestment = minLevelOfInvestment;
+	}
+
+
+
 	public GeneralSetting() {
 		
 	}

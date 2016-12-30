@@ -72,5 +72,7 @@ public interface SCFTradeService {
 			Long investorID, int startIndex, int pageSize, boolean count);
 	
 	public SCFTrade findTradeDeatailsForInvestor(long tradeId,long investorID);
+	
+	public List getSumOfSCFTradeProperties(String searchText);
 
 }

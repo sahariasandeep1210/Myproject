@@ -64,6 +64,8 @@ public class InvestorDAOImpl extends BaseDAOImpl<InvestorPortfolio, Long>   impl
 		Map<Long,List<InvestorPortfolio>>  map=new HashMap<Long,List<InvestorPortfolio>>();
 		long companyId= userDAO.getCompanyIDbyUserID(id);
 		long investorID=getInvestorID(companyId);
+		System.out.println("companyId::::::::::::::"+companyId);
+		System.out.println("investorID::::::::::::::"+investorID);
 		try {
 			if(id!=0){
 				

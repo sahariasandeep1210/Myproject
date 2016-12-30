@@ -40,6 +40,7 @@ public class GeneralSettingServiceImpl implements GeneralSettingService {
 		generalSetting.setMinPaymentDateDuartion(generalSettingModel.getMinPaymentDateDuartion());
 		generalSetting.setVat(generalSettingModel.getVat());
 		generalSetting.setWhitehalShare(generalSettingModel.getWhitehalShare());
+		generalSetting.setMinLevelOfInvestment(generalSettingModel.getMinLevelOfInvestment());
 		return generalSetting;
 	}
 	

@@ -399,5 +399,9 @@ public class SCFTradeServiceImpl implements SCFTradeService {
 	public SCFTrade findTradeDeatailsForInvestor(long tradeId,long investorID){
 		return scfTradeDAO.findTradeDeatailsForInvestor(tradeId,investorID);
 	}
+	
+	public  List getSumOfSCFTradeProperties(String searchText){
+		  return scfTradeDAO.getSumOfSCFTradeProperties(searchText);
+		 }
 
 }

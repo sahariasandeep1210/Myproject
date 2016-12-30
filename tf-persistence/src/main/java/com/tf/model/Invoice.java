@@ -61,6 +61,8 @@ public class Invoice implements Serializable {
 	private Company scfCompany;
 	
 	
+	
+	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "finance_date")
 	private Date financeDate;
@@ -224,6 +226,14 @@ public class Invoice implements Serializable {
 	    this.updateDate = updateDate;
 	}
 
+	/*public Company getScfCompanyName() {
+		return scfCompanyName;
+	}
+
+	public void setScfCompanyName(Company scfCompanyName) {
+		this.scfCompanyName = scfCompanyName;
+	}
+*/
 	@Override
 	public String toString() {
 	    return "Invoice [id=" + id + ", invoiceNumber=" + invoiceNumber
