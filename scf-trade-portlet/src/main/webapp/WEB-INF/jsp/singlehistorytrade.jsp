@@ -84,7 +84,7 @@
 						<c:when test="${fn:length(scfTradesHistory) gt 0}">
 								<tr>
 									<td>Totals</td>
-									<td class="rightalign blue_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalTradeAmount}" /> </td>
+									<td class="rightalign blue_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalTradeAmount}" pattern="#0.00"/> </td>
 									<td></td>
 									<td></td>
 									<td></td>
@@ -96,7 +96,7 @@
 								<tr>
 								    
 									<td>${trade.tradeNotes}</td>
-									<td class="rightalign blue_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${trade.tradeAmount}" /></td>
+									<td class="rightalign blue_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${trade.tradeAmount}" pattern="#0.00"/></td>
 									<td>${trade.scfId}</td>
 									<td>${trade.status }</td>
 									<td>${trade.duration }</td>
@@ -107,7 +107,7 @@
 						<c:when test="${fn:length(scfTradesList) gt 0}">
 							<tr>
 									<td>Totals</td>
-									<td class="rightalign blue_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalTradeAmount}" /> </td>
+									<td class="rightalign blue_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalTradeAmount}" pattern="#0.00"/> </td>
 									<td></td>
 									<td></td>
 									<td></td>
@@ -118,7 +118,7 @@
 						   
 								<tr>
 									<td>${trade.tradeNotes}</td>
-									<td class="rightalign blue_bold"> <fmt:formatNumber type="number" maxFractionDigits="3" value="${trade.tradeAmount}" /> </td>
+									<td class="rightalign blue_bold"> <fmt:formatNumber type="number" maxFractionDigits="3" value="${trade.tradeAmount}" pattern="#0.00"/> </td>
 									<td>${trade.scfId}</td>
 									<td>${trade.status }</td>
 									<td>${trade.duration }</td>

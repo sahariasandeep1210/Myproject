@@ -271,14 +271,42 @@ public class SCFTradeController {
 			model.put("userType", Constants.SELLER_ADMIN);
 			viewName = "sellertradelist";
 		}else{
+			
+			   BigDecimal totalTradeAmount = BigDecimal.ZERO;
+			   BigDecimal totalSellerTransFee = BigDecimal.ZERO;
+			   BigDecimal totalSellerFees = BigDecimal.ZERO;
+			   BigDecimal totalInvestorTotalGross = BigDecimal.ZERO;
+			   BigDecimal totalSellerNetAllotment = BigDecimal.ZERO;
+			   BigDecimal totalGrossCharges = BigDecimal.ZERO;
+			
 			String search = ParamUtil.getString(request, "Search");
 		    Long companyId  = liferayUtility.getWhitehallCompanyID(request);
 		    Long investorID=investorService.getInvestorIDByCompanyId(companyId);
 		    scftrades = scfTradeService.getScfTradeListForInvestor(search, investorID, paginationModel.getStartIndex(), paginationModel.getPageSize(), false);
 			List<SCFTrade> list= scfTradeService.getScfTradeListForInvestor(search, investorID, paginationModel.getStartIndex(), paginationModel.getPageSize(), true);
-			if(list!=null & list.size()>0){
-				noOfRecords=(long) list.size();
-			}
+			
+			List listSum = scfTradeService.getSumOfSCFTradeProperties(search);
+			   if (null != listSum || listSum.size() > 0) {
+			    Object[] obj = (Object[]) listSum.get(0);
+			    totalTradeAmount = (BigDecimal) obj[0];
+			    totalSellerTransFee = (BigDecimal) obj[1];
+			    totalSellerFees = (BigDecimal) obj[2];
+			    totalInvestorTotalGross = (BigDecimal) obj[3];
+			    totalGrossCharges = totalGrossCharges.add(totalSellerTransFee)
+			      .add(totalSellerFees).add(totalInvestorTotalGross);
+			    totalSellerNetAllotment = (BigDecimal) obj[4];
+			   }
+			   if(list!=null & list.size()>0){
+			    noOfRecords=(long) list.size();
+			   }
+			   model.put("totalTradeAmount", totalTradeAmount);
+			   model.put("totalSellerTransFee", totalSellerTransFee);
+			   model.put("totalSellerFees", totalSellerFees);
+			   model.put("totalInvestorTotalGross", totalInvestorTotalGross);
+			   model.put("totalGrossCharges", totalGrossCharges);
+			   model.put("totalSellerNetAllotment", totalSellerNetAllotment);
+			
+			
 			model.put("search", search);
 			model.put("userType", Constants.PRIMARY_INVESTOR_ADMIN);
 			viewName = "inverstortradelist";

@@ -63,14 +63,14 @@
 									 <td class="underline"><a href="javascript:void(0);"
                                         onclick="window.location.href='${createURL}&tradeID=${trade.id}'">${trade.scfId}</a></td>
 									<td><strong>${trade.company.name} ( ${trade.duration} Days )</strong></td>
-									<td class="rightalign blue_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${trade.tradeAmount}"  /></td>
+									<td class="rightalign blue_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${trade.tradeAmount}"  pattern="#0.00"/></td>
 									<td></td>
-									<td class="rightalign green_bold" ><fmt:formatNumber type="number" maxFractionDigits="3" value="${trade.investorTotalGross}"  /></td>
-									<td class="rightalign blue_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${trade.whitehallTotalShare}"  /></td>
-									<td class="rightalign green_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${trade.investorTotalProfit}"  /></td>
-									<td class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${trade.sellerFees + trade.sellerTransFee}"  /></td>
-									<td class="rightalign blue_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${trade.whitehallTotalProfit}"  /></td>
-									<td class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${trade.sellerNetAllotment}"  /></td>	
+									<td class="rightalign green_bold" ><fmt:formatNumber type="number" maxFractionDigits="3" value="${trade.investorTotalGross}"  pattern="#0.00"/></td>
+									<td class="rightalign blue_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${trade.whitehallTotalShare}"  pattern="#0.00"/></td>
+									<td class="rightalign green_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${trade.investorTotalProfit}"  pattern="#0.00"/></td>
+									<td class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${trade.sellerFees + trade.sellerTransFee}"  pattern="#0.00"/></td>
+									<td class="rightalign blue_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${trade.whitehallTotalProfit}"  pattern="#0.00"/></td>
+									<td class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${trade.sellerNetAllotment}"  pattern="#0.00"/></td>	
 									<td>${trade.status}</td>						
 								</tr>
 								<c:if test="${fn:length(trade.allotments) gt 0}">
@@ -79,11 +79,11 @@
 											<td></td>
 											<td></td>
 											<td>${allotment.investorPortfolio.investor.company.name}</td> 
-											<td class="rightalign blue_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${allotment.allotmentAmount}"  /></td>
+											<td class="rightalign blue_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${allotment.allotmentAmount}"  pattern="#0.00"/></td>
 											<td class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${allotment.marketDiscount}"  /></td>
-											<td class="rightalign green_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${allotment.investorGrossProfit}"  /></td>
-											<td class="rightalign blue_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${allotment.whitehallProfitShare}"  /></td>
-											<td class="rightalign green_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${allotment.investorNetProfit}"  /></td>
+											<td class="rightalign green_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${allotment.investorGrossProfit}"  pattern="#0.00"/></td>
+											<td class="rightalign blue_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${allotment.whitehallProfitShare}"  pattern="#0.00"/></td>
+											<td class="rightalign green_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${allotment.investorNetProfit}"  pattern="#0.00"/></td>
 											<td></td>
 											<td></td>
 											<td></td>

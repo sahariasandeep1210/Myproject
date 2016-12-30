@@ -47,7 +47,7 @@
 						<th width="8%">Maturity Date</th>
 						<th>Supplier Payment Date</th>
 						<th>Fixed Charges</th>
-						<th>Whiethall Variable Fees</th>
+						<th>Whitehall Variable Fees</th>
 						<th>Investors Fees</th>
 						<th>Other Fees</th>
 						<th>Gross charges</th>
@@ -58,12 +58,36 @@
 				<tbody>
 					<c:choose>						
 						<c:when test="${fn:length(scftrades) gt 0}">
+
+							<tr>
+								<td><span class='underline'>Total</span></td>
+								<td></td>
+								<td class="rightalign"><fmt:formatNumber type="number"
+										maxFractionDigits="3" value="${totalTradeAmount}" pattern="#0.00"/></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td class="rightalign"><fmt:formatNumber type="number"
+										maxFractionDigits="3" value="${totalSellerTransFee}" pattern="#0.00"/></td>
+								<td class="rightalign"><fmt:formatNumber type="number"
+										maxFractionDigits="3" value="${totalSellerFees}" pattern="#0.00"/></td>
+								<td class="rightalign"><fmt:formatNumber type="number"
+										maxFractionDigits="3" value="${totalInvestorTotalGross}" pattern="#0.00"/></td>
+								<td></td>
+								<td class="rightalign"><fmt:formatNumber type="number"
+										maxFractionDigits="3" value="${totalGrossCharges}" pattern="#0.00"/></td>
+								<td class="rightalign"><fmt:formatNumber type="number"
+										maxFractionDigits="3" value="${totalSellerNetAllotment}" pattern="#0.00"/></td>
+
+							</tr>
 							<c:forEach items="${scftrades}" var="trade">
 								<tr>
 									<td><span class='underline'><a
 											href="${investorDetailsURL}&tradeID=${trade.id}">${trade.scfId}</a></span></td>
 									<td>${trade.company.name}</td>
-									<td  class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${trade.tradeAmount}"  /></td>
+									<td  class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${trade.tradeAmount}"  pattern="#0.00"/></td>
 									<td>${trade.status}</td>
 									<td>${trade.duration}</td>
 									<td><fmt:formatDate pattern="dd-MM-yyyy"
@@ -72,12 +96,12 @@
 											value="${trade.closingDate}" /></td>
 									<td><fmt:formatDate pattern="dd-MM-yyyy"
 											value="${trade.sellerPaymentDate}" /></td>
-									<td class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${trade.sellerTransFee}"  /></td>
-									<td class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${trade.sellerFees}"  /></td>
-									<td class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${trade.investorTotalGross}"  /></td>
+									<td class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${trade.sellerTransFee}"  pattern="#0.00"/></td>
+									<td class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${trade.sellerFees}"  pattern="#0.00"/></td>
+									<td class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${trade.investorTotalGross}"  pattern="#0.00"/></td>
 									<td></td>
-									<td class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${trade.sellerTransFee + trade.sellerFees + trade.investorTotalGross}"  /></td>
-									<td class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${trade.sellerNetAllotment}"  /></td>
+									<td class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${trade.sellerTransFee + trade.sellerFees + trade.investorTotalGross}"  pattern="#0.00"/></td>
+									<td class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${trade.sellerNetAllotment}"  pattern="#0.00"/></td>
 
 								</tr>
 

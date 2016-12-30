@@ -473,7 +473,6 @@ public class InvestorController {
 		Map<Long, BigDecimal> totalCreditMap = investorService.findTotalCreditLine(investorId);
 		setTotalCreditLine(totalCreditMap, investorPortfolioList);
 		companyList = prepareCompanyList(companyList, investorPortfolioList);
-		//System.out.println("investorHistoryList::::::::::::::::::::"+investorPortfolioList);
 		model.put("investorHistoryList", investorPortfolioList);
 		model.put(ACTIVETAB, viewName);
 
@@ -511,9 +510,7 @@ public class InvestorController {
 				investorId = entry.getKey();
 				model.put("investorID", investorId);
 				investorPortfolioList = entry.getValue();
-				//System.out.println("investorPortfolioList::::::::::::::::::::::"+investorPortfolioList);
-				//System.out.println("investorId::::::::::::::::::::::"+investorId);
-			}
+				}
 			Map<String, BigDecimal> totalsMap = investorService.getProtfolioTotals(investorId);
 			Map<Long, BigDecimal> totalCreditMap = investorService.findTotalCreditLine(investorId);
 			setTotalCreditLine(totalCreditMap, investorPortfolioList);

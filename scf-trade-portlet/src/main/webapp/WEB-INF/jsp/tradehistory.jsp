@@ -92,7 +92,7 @@
 						<c:when test="${fn:length(scfTradesHistory) gt 0}">
 							<tr>
 									<td><b>Totals</b></td>
-									<td class="rightalign blue_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalTradeAmount}" /> </td>
+									<td class="rightalign blue_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalTradeAmount}" pattern="#0.00"/> </td>
 									<td></td>
 									<td></td>
 									<td></td>
@@ -104,7 +104,7 @@
 									<td><span class='underline'><a
 											href="javascript:void(0);"
 											onclick="window.location.href='${histryURL}&compID=${trade.insuranceDocId}'">${trade.tradeNotes}</a></span></td>
-									<td class="rightalign blue_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${trade.tradeAmount}" /> </td>
+									<td class="rightalign blue_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${trade.tradeAmount}" pattern="#0.00"/> </td>
 									<td>ALL</td>
 									<td>N/A</td>
 									<td>${trade.duration}</td>
@@ -116,7 +116,7 @@
 						<c:when test="${fn:length(scfTradesList) gt 0}">
 							<tr>
 									<td>Totals</td>
-									<td><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalTradeAmount}" /> </td>
+									<td><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalTradeAmount}" pattern="#0.00"/> </td>
 									<td></td>
 									<td></td>
 									<td></td>
@@ -128,7 +128,7 @@
 									<td><span class='underline'><a
 											href="javascript:void(0);"
 											onclick="window.location.href='${histryURL}&compID=${trade.insuranceDocId}'">${trade.tradeNotes}</a></span></td>
-									<td><fmt:formatNumber type="number" maxFractionDigits="3" value="${trade.tradeAmount}" /> </td>
+									<td><fmt:formatNumber type="number" maxFractionDigits="3" value="${trade.tradeAmount}" pattern="#0.00"/> </td>
 									<td>ALL</td>
 									<td>N/A</td>
 									<td>${trade.duration}</td>
