@@ -143,8 +143,10 @@ public class PurchaseOrderController {
 	private PurchaseOrderModel transformPoDTOtoPoModel(PurchaseOrderDTO purchaseOrderDTO) {
 		PurchaseOrderModel purchaseOrderModel =new PurchaseOrderModel();
 		purchaseOrderModel.setId(purchaseOrderDTO.getId());
-		purchaseOrderModel.setSellerId(purchaseOrderDTO.getSellerId());
-		purchaseOrderModel.setDebtorCompany(purchaseOrderDTO.getDebtorCompany());
+		Long setSellerId = new Long(purchaseOrderDTO.getSellerId());
+		purchaseOrderModel.setSellerId(setSellerId);
+		Long debtorCompany = new Long(purchaseOrderDTO.getDebtorCompany());
+		purchaseOrderModel.setDebtorCompany(debtorCompany);
 		purchaseOrderModel.setPoNumber(purchaseOrderDTO.getPoNumber());
 		purchaseOrderModel.setPoDate(purchaseOrderDTO.getPoDate());
 		purchaseOrderModel.setPoAmount(purchaseOrderDTO.getPoAmount());
@@ -160,8 +162,14 @@ public class PurchaseOrderController {
 	private PurchaseOrderDTO transformPoModelToPoDTO(PurchaseOrderModel purchaseOrderModel) {
 		PurchaseOrderDTO purchaseOrderDTO =new PurchaseOrderDTO();
 		purchaseOrderDTO.setId(purchaseOrderModel.getId());
-		purchaseOrderDTO.setSellerId(purchaseOrderModel.getSellerId());
+		/*purchaseOrderDTO.setSellerId(purchaseOrderModel.getSellerId());
 		purchaseOrderDTO.setDebtorCompany(purchaseOrderModel.getDebtorCompany());
+		*/
+		Long setSellerId = new Long(purchaseOrderDTO.getSellerId());
+		purchaseOrderModel.setSellerId(setSellerId);
+		Long debtorCompany = new Long(purchaseOrderDTO.getDebtorCompany());
+		purchaseOrderModel.setDebtorCompany(debtorCompany);
+		
 		purchaseOrderDTO.setPoNumber(purchaseOrderModel.getPoNumber());
 		purchaseOrderDTO.setPoDate(purchaseOrderModel.getPoDate());
 		purchaseOrderDTO.setPoAmount(purchaseOrderModel.getPoAmount());
