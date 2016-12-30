@@ -14,19 +14,19 @@
 						<div class="span4 fg-blue">
 							<div class="text-container">
 								<div class="small-text">TOTAL CREDIT LINE</div>
-								<div class="big-text">&pound; <fmt:formatNumber type="number" maxFractionDigits="3" value="${dashboardModel.investmentCap}"  /></div>
+								<div class="big-text">&pound; <fmt:formatNumber type="number" maxFractionDigits="0" value="${dashboardModel.investmentCap}"  /></div>
 							</div>
 						</div>
 						<div class="span4 fg-red">
 							<div class="text-container">
 								<div class="small-text">CREDIT AVAILABLE</div>
-								<div class="big-text">&pound; <fmt:formatNumber type="number" maxFractionDigits="3" value="${dashboardModel.availToInvest}"  /></div>
+								<div class="big-text">&pound; <fmt:formatNumber type="number" maxFractionDigits="0" value="${dashboardModel.availToInvest}"  /></div>
 							</div>
 						</div>
 						<div class="span4 fg-green">
 							<div class="text-container">
 								<div class="small-text">AMOUNT INVESTED</div>
-								<div class="big-text">&pound; <fmt:formatNumber type="number" maxFractionDigits="3" value="${dashboardModel.amountInvested}"  /></div>
+								<div class="big-text">&pound; <fmt:formatNumber type="number" maxFractionDigits="0" value="${dashboardModel.amountInvested}"  /></div>
 							</div>
 						</div>
 					</div>
@@ -60,9 +60,10 @@
 		packages : [ "corechart" ]
 	});
 	google.charts.setOnLoadCallback(drawChart);
+	/*  [ 'Total Credit Line', parseInt('${dashboardModel.investmentCap}') ] */
 	function drawChart() {
 		var data = google.visualization.arrayToDataTable([
-				[ 'Investment', 'Money' ], [ 'Total Credit Line', parseInt('${dashboardModel.investmentCap}') ],
+				[ 'Investment', 'Money' ],
 				[ 'Credit Available', parseInt('${dashboardModel.availToInvest}') ], [ 'Amount Invested', parseInt('${dashboardModel.amountInvested}') ] ]);
 		
 		var barChartdata = new google.visualization.DataTable();		
@@ -81,7 +82,7 @@
 			pieHole : 0.4,
 			pieSliceText : 'none',
 			pieSliceBorderColor : 'transparent',
-			colors : [ '#2a7bb2', '#ffba00', '#189a80' ],
+			colors : [  '#ffba00', '#189a80' ],
 			chartArea:{
 	          	left:20,
 	            top:10,

@@ -105,7 +105,7 @@
 						<c:choose>						
 							<c:when test="${permissionChecker.isOmniadmin()}">
 								<a href="/group/guest/portfolio" class="shortcut"> <i
-									class="fa fa-user fa-4"></i> <span class="shortcut-label">Protfolio</span>
+									class="fa fa-user fa-4"></i> <span class="shortcut-label">Portfolio</span>
 								</a>
 							</c:when>
 							<c:otherwise>

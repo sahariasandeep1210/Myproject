@@ -110,6 +110,7 @@ public class DashboardController {
 	private void setPortletURls(DashboardModel dashModel, RenderRequest request) {
 		dashModel.setCreateCompanyURL(liferayUtility.getPortletURL( request, "tf-company-portlet","render","createCompany",true));
 		dashModel.setCreateInvoiceURL(liferayUtility.getPortletURL( request, "scf-invoice-portlet","render","createInvoice",true));	
+		dashModel.setCreateInvestorURL(liferayUtility.getPortletURL( request, "tf-company-portlet","render","createInvestor",true));
 	}
 
 	
