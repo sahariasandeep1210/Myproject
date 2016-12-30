@@ -36,10 +36,10 @@ $theme.include($body_top_include)
 			<div class="navbar top-nav-bar navbar-fixed-top">
 			  <div class="navbar-inner">
 				
-				<a class="brand visible-desktop" href="#"><img src="$images_folder/logo-admin.png"></img></a>
+				<a class="brand visible-desktop" href="www.whitehallfinance.com"><img src="$images_folder/logo-admin.png"></img></a>
 				<a class="brand visible-phone visible-tablet" href="#"><img src="$images_folder/logo-small.png"></img></a>
 				
-				
+				<span class="brand visible-desktop nav pull-center btn">$request.getSession().getAttribute("LIFERAY_SHARED_userRole")</span>
 				<ul class="nav pull-right">
 					<li class="dropdown">
 						<a type="button" class="btn btn-navbar collapsed" data-toggle="collapse" data-target=".nav-collapse">
