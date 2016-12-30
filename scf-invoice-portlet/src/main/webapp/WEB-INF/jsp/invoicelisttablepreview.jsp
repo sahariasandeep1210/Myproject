@@ -36,7 +36,7 @@
 								<td>${invoice.invoiceNumber}</td>
 								<td><fmt:formatDate pattern="dd-MM-yyyy"
 										value="${invoice.payment_date}" /></td>
-								<td>${invoice.invoiceAmount}</td>
+								<td>${invoice.invoiceAmount} </td>
 								<td>${invoice.duration}</td>
 								<td>${invoice.scfCompany.name}</td>								
 								<td>
