@@ -486,6 +486,7 @@ public class InvoiceController {
 			String to = ParamUtil.getString(request, "toDate");
 			Long companyID=null;
 			String registrationNo=null;
+			
 			GenericListModel genericListModel=null;
 			if (!StringUtils.isNullOrEmpty(from)) {
 				fromDate = formatter.parse(from);
