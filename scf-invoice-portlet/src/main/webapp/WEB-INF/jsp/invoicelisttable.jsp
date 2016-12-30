@@ -18,7 +18,10 @@
 					<th>PaymentDate</th>
 					<th>Amount</th>
 					<th>Duration</th>
-					<th>Invoice Company</th>
+					<c:if test="${userType =='SCF Company Admin'}">
+					<th>Supplier Company</th>
+					</c:if>
+					<th>Investor Company</th>
 					<th>Status</th>
 				</tr>
 			</thead>
