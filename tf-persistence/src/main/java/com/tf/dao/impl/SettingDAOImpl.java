@@ -1,15 +1,24 @@
 package com.tf.dao.impl;
 
-import com.tf.dao.SettingDAO;
-import com.tf.model.SellerSetting;
-
+import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
+import org.hibernate.Criteria;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
+
+import com.tf.dao.SettingDAO;
+import com.tf.model.Company;
+import com.tf.model.SellerSetting;
+import com.tf.model.SellerSettingModel;
+import com.tf.persistance.util.Constants;
 
 @Repository
 public class SettingDAOImpl  extends BaseDAOImpl<Object, Long>   implements SettingDAO  {
@@ -124,9 +133,61 @@ public class SettingDAOImpl  extends BaseDAOImpl<Object, Long>   implements Sett
 			throw re;
 		}
 	}
-	
-	
+	public List<SellerSettingModel> getSellersSettingUsingJoin() {
+		
+		_log.debug("Inside getSellerSettings ");
+		try {
+			
+			List<SellerSettingModel> SellerSettingModel = new ArrayList<SellerSettingModel>();	
+			StringBuilder sb = new StringBuilder();
+			sb.append("SELECT inttable.*,inttable.name AS company , cmptble.name AS scf_companyname ");
+			sb.append(" FROM (SELECT map.scf_company,map.seller_company,ss.*,cmp.name FROM tf_seller_scfcompany_mapping map, tf_seller_setting ss, tf_company cmp");
+			sb.append(" WHERE ss.company_id=map.seller_company AND map.status='Approve' AND cmp.idcompany=ss.company_id ) inttable, tf_company cmptble");
+			sb.append(" WHERE inttable.scf_company=cmptble.idcompany");
+			SQLQuery query = (SQLQuery) sessionFactory.getCurrentSession()
+					.createSQLQuery(sb.toString());
+			query.setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP);
+			List data = query.list();
+			if (null != data || data.size() > 0) {
+				for (Object sellerObj : data) {
+					Map row = (Map) sellerObj;
+					SellerSettingModel sellerSettingModel = new SellerSettingModel();
+					Company company = new Company();
+					sellerSettingModel.setId(Long.parseLong(row.get("id")
+							.toString()));
+					Date updateDate = null;
+					try{
+						DateFormat df = new SimpleDateFormat(Constants.DATE_FORMAT);
+						Date createDate = df.parse(row.get("create_date").toString());
+						sellerSettingModel.setCreateDate(createDate);
+					    updateDate = df.parse(row.get("update_date").toString());
+						sellerSettingModel.setUpdateDate(updateDate);
+					}catch(Exception e){
+						sellerSettingModel.setUpdateDate(updateDate);
+					}
+					
+					try {
+						BigDecimal big = new BigDecimal(row.get("seller_transaction_fee").toString());
+						sellerSettingModel.setSellerTransFee(big);
+					} catch (Exception e) {}
+					try {
+						BigDecimal big = new BigDecimal(row.get("seller_finance_fee").toString());
+						sellerSettingModel.setSellerFinFee(big);
+					} catch (Exception e) {
+					}
+					sellerSettingModel.setCompany(row.get("company").toString());
+					sellerSettingModel.setInvestorCompany(row.get("scf_companyname")
+							.toString());
+					SellerSettingModel.add(sellerSettingModel);
+				}
 
-	
-	
+			}
+
+			return SellerSettingModel;
+		} catch (RuntimeException re) {
+			_log.error("getSellerSettings failed", re);
+			throw re;
+		}
+	}
+
 }

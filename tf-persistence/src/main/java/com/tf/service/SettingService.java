@@ -3,6 +3,7 @@ package com.tf.service;
 import java.util.List;
 
 import com.tf.model.SellerSetting;
+import com.tf.model.SellerSettingModel;
 
 public interface SettingService {
 	
@@ -22,6 +23,8 @@ public interface SettingService {
 	List<SellerSetting> getSellersSetting();
 	
 	public SellerSetting getSellerSetting(long sellerCmpId);
+
+	public List<SellerSettingModel> getSellersSettingUsingJoin();
 	
 	
 	

@@ -31,6 +31,7 @@ import com.tf.dto.InvestorModel;
 import com.tf.model.Company;
 import com.tf.model.GeneralSetting;
 import com.tf.model.SellerSetting;
+import com.tf.model.SellerSettingModel;
 import com.tf.persistance.util.CompanyTypes;
 import com.tf.persistance.util.InvestorDTO;
 import com.tf.service.CompanyService;
@@ -127,7 +128,7 @@ public class WhiteHallSettingController {
 			
 			List<Company> companyList = new ArrayList<Company>();
 			companyList=companyService.getCompanies(CompanyTypes.SELLER.getValue());
-			List<SellerSetting> sellerSettings=settingService.getSellersSetting();				
+			List<SellerSettingModel> sellerSettings=settingService.getSellersSettingUsingJoin();				
 			model.put("sellerSettings", sellerSettings);
 			model.put("companyList", companyList);
             model.put(ACTIVETAB, SELLER);	

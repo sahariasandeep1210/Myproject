@@ -1,13 +1,14 @@
 package com.tf.service.impl;
 
-import com.tf.dao.SettingDAO;
-import com.tf.model.SellerSetting;
-import com.tf.service.SettingService;
-
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.tf.dao.SettingDAO;
+import com.tf.model.SellerSetting;
+import com.tf.model.SellerSettingModel;
+import com.tf.service.SettingService;
 
 @Service
 public class SettingServiceImpl implements SettingService {
@@ -47,6 +48,8 @@ public class SettingServiceImpl implements SettingService {
 		return settingDAO.getSellerSetting(sellerCmpId);
 	}
 	
-	
+	public List<SellerSettingModel> getSellersSettingUsingJoin(){
+		return settingDAO.getSellersSettingUsingJoin();
+	}
 
 }

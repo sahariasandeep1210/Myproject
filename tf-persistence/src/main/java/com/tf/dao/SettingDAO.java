@@ -1,6 +1,7 @@
 package com.tf.dao;
 
 import com.tf.model.SellerSetting;
+import com.tf.model.SellerSettingModel;
 
 import java.util.List;
 
@@ -21,5 +22,7 @@ public interface SettingDAO {
 	public List<SellerSetting> getSellersSetting();
 
 	public SellerSetting getSellerSetting(long sellerCmpId);
+
+	public List<SellerSettingModel> getSellersSettingUsingJoin();
 
 }

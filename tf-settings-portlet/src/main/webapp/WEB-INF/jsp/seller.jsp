@@ -109,6 +109,7 @@
 				<thead>
 					<tr>
 					    <th>Seller Name</th>
+					    <th>Supplier Company</th>
 						<th>Opening Date</th>
 						<th>Modify Date</th>
 						<th>Seller Transaction Fee</th>
@@ -118,7 +119,8 @@
 				<tbody>
 					<c:forEach items="${sellerSettings}" var="sellerSetting">
 						<tr>
-							<td>${sellerSetting.company.name} </td>
+							<td>${sellerSetting.company} </td>
+							<td>${sellerSetting.investorCompany} </td>
 							<td><fmt:formatDate pattern="dd-MM-yyyy" value="${sellerSetting.createDate}" /></td>
 							<td><fmt:formatDate pattern="dd-MM-yyyy" value="${sellerSetting.updateDate}" /></td>
 							<td>${sellerSetting.sellerTransFee}</td>
