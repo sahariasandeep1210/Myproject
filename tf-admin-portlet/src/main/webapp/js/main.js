@@ -15,8 +15,8 @@ $(function() {
 	 $("#pageSize").val($("#currPageSize").val());
 	$("#errorMsg").hide(); 
 	
-	$("#telNo").inputmask("99 99999-99999");
-	$("#userTelNo").inputmask("99 99999-99999");
+	/*$("#telNo").inputmask("99 9999999999999");*/
+	$("#userTelNo").inputmask("99 9999999999");
 	
 	$("#pageSize").change(function (){
 		var noOfRecords=parseInt($("#noOfRecords").val());
@@ -268,6 +268,20 @@ $(function() {
 
 $(document).ready(function(){
 	
+	$(".filter-btn").on({
+		click: function(){
+			$(".filter-container").slideToggle();
+		}
+	});
+	
+	$("#companyReport").click(function (){
+		var updateURL=$("#defaultURL").val();
+		//as search has been triggered we should reset the page number to 1
+		$("#currentPage").val(1);
+		document.forms["companyList"].action = updateURL;
+	    document.forms["companyList"].submit();
+	});
+	
 	$("#cmpback,#homePage").click(function(){
 		var url = $(this).attr('data-url');
 		submitTradeForms(url);
@@ -382,7 +396,7 @@ function validateCompanyInfo(error_free) {
 	elements[1] = "registrationNo";
 	elements[2] = "dateEst";
 	elements[3] = "address1";
-	elements[4] = "region";
+	//elements[4] = "region";
 	elements[5] = "country";
 	elements[6] = "postalCode";
 	elements[7] = "telNo";

@@ -38,6 +38,8 @@ public class BaseController {
 	@Autowired
 	protected CompanyService companyService;
 	
+	
+	
 	@Autowired
 	protected LiferayService liferayService;
 	

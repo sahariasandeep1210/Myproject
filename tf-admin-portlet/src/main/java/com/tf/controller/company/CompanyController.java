@@ -74,14 +74,23 @@ public class CompanyController extends BaseController {
 			RenderRequest request, RenderResponse response) throws Exception {
 		_log.info("CompanyController :: Render Company List");
 		try {
-			
+			String searchValue = ParamUtil.getString(request, "Search");
+			//System.out.println("searchvalue is:::::::::::::"+searchValue);
 			List<Company> companyList = new ArrayList<Company>();
 			ThemeDisplay themeDisplay = (ThemeDisplay) request
 					.getAttribute(WebKeys.THEME_DISPLAY);
-
-			companyList = prepareCompanyList(request, companyList,
-					themeDisplay, model);
+			if(searchValue==null || searchValue==""){
+				
+				companyList = prepareCompanyList(request, companyList,
+						themeDisplay, model);
+			}
+			else{
+				companyList = prepareCompanyListFilter(request, companyList,
+						themeDisplay, model,searchValue);
+			
+			}
 			model.put("allCompanies", companyList);
+			model.put("search", searchValue);
 			if(request.isUserInRole(Constants.SCF_ADMIN)){
 				long compId = userService.getCompanybyUserID(themeDisplay.getUserId()).getId();
 				model.put("companyId", compId);
@@ -94,6 +103,8 @@ public class CompanyController extends BaseController {
 		}
 		return new ModelAndView("companylist", model);
 	}
+
+	
 
 	@RenderMapping(params = "render=createCompany")
 	protected ModelAndView renderCreateCompany(
@@ -589,6 +600,154 @@ public class CompanyController extends BaseController {
 		paginationUtil.setPaginationInfo(noOfRecords, paginationModel);
 		model.put("paginationModel", paginationModel);
 		return companyList;
+	}
+	
+	private List<Company> prepareCompanyListFilter(RenderRequest request,
+			List<Company> companyList, ThemeDisplay themeDisplay, ModelMap model,String searchValue) {
+		Long noOfRecords = 0l;
+
+		PaginationModel paginationModel = paginationUtil
+				.preparePaginationModel(request);
+		if (getPermissionChecker(request).isOmniadmin()
+				|| request.isUserInRole(Constants.WHITEHALL_ADMIN)) {
+			_log.info("User is Omni Admin");
+			companyList = companyService.getCompaniesByStatusFilter(
+					CompanyStatus.DELETED.getValue(),
+					paginationModel.getStartIndex(),
+					paginationModel.getPageSize(),searchValue);
+			noOfRecords = companyService
+					.getCompaniesCount(CompanyStatus.DELETED.getValue());
+			_log.info("noOfRecords:::"+noOfRecords);
+
+		}else if (request.isUserInRole(Constants.SCF_ADMIN)) {
+			_log.info("User is SCF Admin");
+			long companyId = userService.getCompanyIDbyUserID(themeDisplay
+					.getUserId());
+			Company cmpObject = companyService.findById(companyId);
+			companyList.add(cmpObject);
+			noOfRecords = 1l;
+		} else if (request.isUserInRole(Constants.PRIMARY_INVESTOR_ADMIN)){
+			_log.info("User is Primary Investor Admin");
+			long companyId = userService.getCompanyIDbyUserID(themeDisplay
+					.getUserId());
+			Company cmpObject = companyService.findById(companyId);
+			companyList.add(cmpObject);
+			noOfRecords = 1l;
+			
+		} else {
+			_log.info("User is Seller Admin");
+			long companyId = userService.getCompanyIDbyUserID(themeDisplay
+					.getUserId());
+			Company cmpObject = companyService.findById(companyId);
+			companyList.add(cmpObject);
+			noOfRecords = 1l;
+		}
+
+		paginationUtil.setPaginationInfo(noOfRecords, paginationModel);
+		model.put("paginationModel", paginationModel);
+		return companyList;
+	}
+	
+	
+	@RenderMapping(params = "render=createInvestor")
+	protected ModelAndView renderCreateInvestor(
+			@ModelAttribute("companyModel") Company company, ModelMap model,
+			RenderRequest request, RenderResponse response) throws Exception {
+		long companyID = ParamUtil.getLong(request, "companyID");
+		ThemeDisplay themeDispay = (ThemeDisplay) request
+				.getAttribute(WebKeys.THEME_DISPLAY);
+		List<User> users;
+		List<Company> companyList = new ArrayList<Company>();
+		List<SellerScfCompanyMapping> sellerScfMappings=null; 
+		List<Company> scfFinalCompanyList=null;
+		List<Company> companies=null;
+		long sellerId=0l;
+		long scfCompanyId=0l;
+		try {
+			users = new ArrayList<User>();
+			if (companyID != 0) {
+				company = companyService.findById(companyID);
+				users = userService.findUserByCompanyId(companyID);
+				company.setOfficers(new LinkedHashSet<Officer>(officerService.findOfficersByCompanyId(companyID)));
+				model.put("cmpType", companyTypeMap.get(Long.valueOf(company.getCompanyType())));
+			}
+			if(request.isUserInRole(Constants.SCF_ADMIN)){
+				model.put("userType", Constants.SCF_ADMIN);
+				sellerId=ParamUtil.getLong(request, "sellerCompany");
+			}
+			if(request.isUserInRole(Constants.SELLER_ADMIN)){
+				model.put("userType", Constants.SELLER_ADMIN);
+				scfCompanyId=ParamUtil.getLong(request, "scfCompany");
+				model.put("companyId", companyID);
+				
+			}
+			
+			ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
+			if(request.isUserInRole(Constants.SCF_ADMIN)){			
+				long companyId = userService.getCompanybyUserID(themeDisplay.getUserId()).getId();
+				model.put("companyId", companyId);
+			}
+			/**
+			 * When the SCF_Admin gets login.
+			 * Adding the seller
+			 */
+			if(sellerId>0 && request.isUserInRole(Constants.SCF_ADMIN) ){
+				long compId = userService.getCompanybyUserID(themeDisplay.getUserId()).getId();
+				Company comp =companyService.findById(sellerId);
+				SellerScfCompanyMapping sellerScfMapping = new SellerScfCompanyMapping();
+				sellerScfMapping.setScfCompany(compId);
+				sellerScfMapping.setSellerCompany(comp);
+				sellerScfMapping.setStatus(Constants.STATUS.APPROVED.getValue());
+				sellerScfMapping.setUpdateDate(Calendar.getInstance().getTime());
+				sellerScfMappingService.saveSeller(sellerScfMapping);
+			}
+			/**
+			 * When the Seller gets login.
+			 * Adding the SCF_Company
+			 */
+			else if(scfCompanyId>0 && request.isUserInRole(Constants.SELLER_ADMIN)){
+				long compId = userService.getCompanybyUserID(themeDisplay.getUserId()).getId();
+				Company comp =companyService.findById(compId);
+				SellerScfCompanyMapping sellerScfMapping = new SellerScfCompanyMapping();
+				sellerScfMapping.setScfCompany(scfCompanyId);
+				sellerScfMapping.setSellerCompany(comp);
+				sellerScfMapping.setStatus(Constants.STATUS.PENDING.getValue());
+				sellerScfMapping.setComment("Member Requetsed");
+				sellerScfMapping.setUpdateDate(Calendar.getInstance().getTime());
+				sellerScfMappingService.saveSeller(sellerScfMapping);
+			}
+			Long noOfRecords = 0l;
+			PaginationModel paginationModel = paginationUtil.preparePaginationModel(request);
+			if(request.isUserInRole(Constants.SCF_ADMIN)){
+				sellerScfMappings=sellerScfMappingService.getSellerScfMapping(paginationModel.getStartIndex(), paginationModel.getPageSize(),null,companyID,null);
+				companyList = companyService.getCompanies("4");
+				companies=prepareCompanyList(companyList,sellerScfMappings,Constants.SCF_ADMIN);
+			}else{
+				sellerScfMappings=sellerScfMappingService.getSellerScfMapping(paginationModel.getStartIndex(), paginationModel.getPageSize(),companyID,null,null);
+				companyList = companyService.getCompanies("5");
+				companies=prepareCompanyList(companyList,sellerScfMappings,Constants.SELLER_ADMIN);
+				sellerScfMappings=prepareCompanyListForListing(sellerScfMappings);
+			}
+			noOfRecords=sellerScfMappingService.getSellerScfMappingCount();
+		
+			paginationUtil.setPaginationInfo(noOfRecords, paginationModel);
+			model.put("companies", companies);
+			model.put("sellerScfMappings", sellerScfMappings);
+			model.put("currentUser", themeDispay.getRealUser());
+			model.put("users", users);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			SessionErrors.add(request, "default-error-message");
+			_log.error("CompanyController.createCompany() - error occured while rendering add company screen"+ e.getMessage());
+		}
+		model.put("companyModel", company);
+		model.put("orgTypeMap", orgTypeMap);
+		model.put("companyTypeMap", companyTypeMap);
+		model.put("createInvestor", "createInvestor");
+		
+
+		return new ModelAndView("createcompany", model);
 	}
 
 }

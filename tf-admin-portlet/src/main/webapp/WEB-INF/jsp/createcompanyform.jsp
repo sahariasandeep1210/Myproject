@@ -16,7 +16,7 @@
   			</div>
   			<div class="span3">
   				<div class="control-group">
-  					<label class="control-label" for="CompanyNumber" > Company Number </label>
+  					<!-- <label class="control-label" for="CompanyNumber" > Company Number </label> -->
 					<input type="hidden" value="${fetchCompanyDetails}" id="fetchURL" />
 					<input type="button" value="Find Company Details"		class="btn btnBgBuSm" id="findCompany" />
 				</div>
@@ -81,8 +81,8 @@
 	  			</div>
 	  			<div class="span3">
 	  				<div class="control-group">
-						<label class="control-label" for="region"> Region * </label>
-						<form:input path="address.region" id="region"		placeholder="Region*" cssClass="field"  />
+						<label class="control-label" for="region"> Region  </label>
+						<form:input path="address.region" id="region"		placeholder="Region" cssClass="field"  />
 					</div>
 	  			</div>
 	  		</div>	
@@ -91,7 +91,7 @@
 	  			<div class="span3">
 	  				<div class="control-group">
 						<label class="control-label" for="country"> Country * </label>
-						<form:input path="address.country"  id="country"	placeholder="country*" cssClass="field"  />
+						<form:input path="address.country"  id="country" value="United Kingdom"	placeholder="country*" cssClass="field"  />
 					</div>
 	  			</div>
 	  			<div class="span3">
@@ -108,8 +108,8 @@
 		<div class="row-fluid">
   			<div class="span3">
   				<div class="control-group">
-					<label class="control-label" for="telNo"> Telephone No * <i class="icon-info-sign tooltipPhone" data-toggle="tooltip" title="Ex. For UK 44 12345-12345" ></i> </label>
-					<form:input path="telnumber"  id="telNo"  cssClass="field"  />
+					<label class="control-label" for="telNo"> Telephone No * <i class="icon-info-sign tooltipPhone" data-toggle="tooltip" title="Ex. For UK 44 1234512345" ></i> </label>
+					<form:input path="telnumber"  id="telNo"  cssClass="field"  maxlength="15"/>
 				</div>
   			</div>
   			<div class="span3">
@@ -120,18 +120,31 @@
   			</div>
   			<div class="span3">
 				<div class="control-group">
-					<label class="control-label" for="orgType"> Organisation Type</label>				
+					<label class="control-label" for="orgType"> Organization Type</label>				
 					<form:select path="orgType" items="${orgTypeMap}" class="aui-field-select"
 					id="orgType" placeholder="Organisation Type" />
 				</div>
   			</div>
   			<div class="span3">
 				<div class="control-group">
-					<label class="control-label" for="comType"> Company Type</label>
+					<label class="control-label" for="comType"> Company Type *</label>
 					
 					<c:choose>
 						<c:when test="${permissionChecker.isOmniadmin()}">
-							<form:select path="companyType" items="${companyTypeMap}"	class="aui-field-select" id="companyType" placeholder="CompanyType Type" />
+
+
+							<c:if test="${createInvestor == 'createInvestor'}">
+								<form:select path="companyType" class="aui-field-select"
+									id="companyType1" readonly="readonly">
+									<option value="1">Primary Investor</option>
+								</form:select>
+							</c:if>
+							<c:if test="${createInvestor != 'createInvestor'}">
+								<form:select path="companyType" items="${companyTypeMap}"
+									class="aui-field-select" id="companyType"
+									placeholder="CompanyType Type" />
+							</c:if>
+
 						</c:when>
 						<c:otherwise>	
 							${cmpType}					
@@ -161,7 +174,7 @@
   			</div>
   			<div class="span3">
   				<div class="control-group">
-					<label class="control-label" for="juridiction"> Juridiction </label>
+					<label class="control-label" for="juridiction"> Jurisdiction </label>
 					<form:input path="jurisdiction" cssClass="field" id="jurisdiction" />
 				</div>
   			</div>

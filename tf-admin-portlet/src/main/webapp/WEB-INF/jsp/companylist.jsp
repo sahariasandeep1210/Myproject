@@ -7,7 +7,9 @@
 
 <portlet:renderURL var="defaultRenderURL" />
 
-
+<portlet:actionURL var="getCompanyReportURL">
+	<portlet:param name="company" value="getCompanyReport" />
+</portlet:actionURL>
 
 
 <div class="tab-content">
@@ -29,11 +31,31 @@
 					 	<div class="main-title">Manage my Company</div>
 					 	
 					 	<div class="btn-wrapper">
+					 		<aui:button cssClass="btnBrGrSm btnIconSm filter-btn active"  icon="icomoon-filter"></aui:button>
 			  				<input type="button" class="btnBgGreenSm" value="Export"  id="exportCompanies"/>
 			  			</div>
 					 </div>
-				
-					
+					<div class="customWell filter-container">
+		  				<div class="row-fluid">
+							<div class="span3 spanSm6">
+								<div class="control-group">
+									<div class="input-append">
+									<input name="Search" type="text" placeholder="Search" id="search"	value="${search}" /> 
+									<span class="add-on"><i	class="icomoon-search"></i></span>
+									<i class="icon-info-sign tooltipSearch" data-toggle="tooltip" title="Search in for Company Name and Registration Number" ></i>
+									</div>
+								</div>
+							</div>
+							
+						  		<div class="span3 spanSm6 mtXs10">
+						  			<div class="actionContainer noBorder text-left">
+						  				 <input type="button" value="Search" id="companyReport" class="btnBgBuSm" />
+						  			</div>
+						  			
+						  		</div>
+						  	
+						</div>
+					</div>				
 				</c:when>
 				<c:otherwise>
 					 <div class="title-container clearfix">
@@ -52,8 +74,9 @@
 						<th>Registration No.</th>
 						<th>Address Registered</th>
 						<th>Established date</th>
-						<th>URL</th>
+						<!-- <th>URL</th> -->
 						<th>Tel Number</th>
+						<th>Type of Company</th>
 						<th>Status</th>						
 					</tr>
 				</thead>
@@ -66,10 +89,26 @@
 									<td>${company.regNumber}</td>
 									<td>${company.address.region}, ${company.address.country}</td>
 									<td><fmt:formatDate pattern="dd-MM-yyyy" value="${company.dateestablished}" /></td>
-									<td>${company.website}</td>
+									<%-- <td>${company.website}</td> --%>
 									<td>${company.telnumber}</td>
+								<c:if test="${company.companyType == '1'}">
+							         <td>Primary Investor</td>
+							    </c:if>
+							         <c:if test="${company.companyType == '2'}">
+							         <td>Secondary Investor</td>
+							         </c:if>
+							         <c:if test="${company.companyType == '3'}">
+							         <td>Admin</td>
+							         </c:if>
+							         <c:if test="${company.companyType == '4'}">
+							         <td>Seller</td>
+							         </c:if>
+							         <c:if test="${company.companyType == '5'}">
+							         <td>SCF Company</td>
+							         </c:if>
+									<%-- <td>${company.companyType}</td> --%>
 									<td>${company.activestatus}</td>							
-		
+									
 								</tr>
 							</c:forEach>
 						 </c:when>
