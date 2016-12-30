@@ -54,9 +54,9 @@
 					</div>
 				</div>
 				<div class="widget-footer">
-					<!-- <div class="widget-footer-button create-new-button">
-						<a>CREATE NEW</a>
-					</div> -->
+					<div class="widget-footer-button create-new-button">
+						<a href="${dashboardModel.createInvestorURL}">CREATE NEW</a>
+					</div>
 					<div class="widget-footer-button">
 						<a href="/group/guest/portfolio"> VIEW ALL</a>
 					</div>
