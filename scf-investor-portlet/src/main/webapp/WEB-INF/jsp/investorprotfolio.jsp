@@ -25,15 +25,16 @@
 <div class="title-container clearfix">
 					
 					
-					<div class="btn-wrapper">						
-						<button type="button" class="btnBgGreenSm addButton" id="addProtfolioBtn"><i class="fa fa-plus"></i> Add Protfolio</button>
+					<div class="btn-wrapper">		
+						<input type="button" class="btnBgGreenSm" value="Export"  id="exportInvestor"/>				
+						<button type="button" class="btnBgGreenSm addButton" id="addProtfolioBtn"><i class="fa fa-plus"></i> Add Portfolio</button>
 					</div>
 			  </div>
 
 
 	
 		<div class="customTableContainer">
-			<table class="table tablesorter table-bordered"  id="companyListTable">
+			<table class="table tablesorter  table-bordered"  id="companyListTable">
 				<thead>
 					<tr>
 						<th>SCF Company</th>
@@ -50,22 +51,22 @@
 					<c:when test="${fn:length(investorHistoryList) gt 0}">
 							<tr class="totalstr">
 								<td>Totals</td>
-								<td> <fmt:formatNumber type="number" maxFractionDigits="3" value="${totalsMap.creditLine}" /> </td>
-								<td><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalsMap.myCreditLine}" /></td>
+								<td> <fmt:formatNumber type="number" maxFractionDigits="3" value="${totalsMap.creditLine}"  pattern="#0.00"/> </td>
+								<td><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalsMap.myCreditLine}" pattern="#0.00"/></td>
 								<td></td>
-								<td><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalsMap.amountInvested}" /></td>
-								<td><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalsMap.availToInvest}" /></td>
+								<td><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalsMap.amountInvested}" pattern="#0.00"/></td>
+								<td><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalsMap.availToInvest}" pattern="#0.00"/></td>
 								<td>
 								</td>	
 							</tr>
 						<c:forEach items="${investorHistoryList}" var="investorProt" varStatus="loop">
 							<tr class="${loop.index % 2 == 0 ? 'evenrow' : 'oddrow'}">
 								<td id="${investorProt.investorProtId}_cmpname">${investorProt.company.name} </td>
-								<td id="${investorProt.investorProtId}_currcreditLine"><fmt:formatNumber type="number" maxFractionDigits="3" value="${investorProt.currentCreditLine}" /> <a href="javascript:void(0);"  data-url="${crtLinebreakdownURL}" class="breakdown"   style=" float: right; vertical-align: middle; font-size: 20px" scfcompany="${investorProt.company.id}" investorID="${investorProt.investor.investorId}"><i class="fa fa-plus-square-o"></i> </a></td>
-								<td id="${investorProt.investorProtId}_mycreditLine"><fmt:formatNumber type="number" maxFractionDigits="3" value="${investorProt.myCreditLine}" /></td>
+								<td id="${investorProt.investorProtId}_currcreditLine"><fmt:formatNumber type="number" maxFractionDigits="3" value="${investorProt.currentCreditLine}" pattern="#0.00"/> <a href="javascript:void(0);"  data-url="${crtLinebreakdownURL}" class="breakdown"   style=" float: right; vertical-align: middle; font-size: 20px" scfcompany="${investorProt.company.id}" investorID="${investorProt.investor.investorId}"><i class="fa fa-plus-square-o"></i> </a></td>
+								<td id="${investorProt.investorProtId}_mycreditLine"><fmt:formatNumber type="number" maxFractionDigits="3" value="${investorProt.myCreditLine}" pattern="#0.00"/></td>
 								<td id="${investorProt.investorProtId}_dicountRate">${investorProt.discountRate}</td>
-								<td id="${investorProt.investorProtId}_utilised"><fmt:formatNumber type="number" maxFractionDigits="3" value="${investorProt.amountInvested}" /></td>
-								<td><fmt:formatNumber type="number" maxFractionDigits="3" value="${investorProt.availToInvest}" /></td>
+								<td id="${investorProt.investorProtId}_utilised"><fmt:formatNumber type="number" maxFractionDigits="3" value="${investorProt.amountInvested}" pattern="#0.00"/></td>
+								<td><fmt:formatNumber type="number" maxFractionDigits="3" value="${investorProt.availToInvest}" pattern="#0.00"/></td>
 								<td><button title="Edit" class="editInvestor btnBgGreenSm btnIconSm" id="${investorProt.investorProtId}_"><i class="icomoon-edit"></i></button>  
 									<button title="History" class="historybtn btnBgBuSm btnIconSm" data-url="${historyURL}" protID="${investorProt.investorProtId}"><i class="icomoon-history"></i></button>  
 								</td>	
@@ -81,7 +82,7 @@
 					<c:otherwise>
 							<tr>
 								
-								<td colspan="7" align="center" style="text-align: center;">Protfolio information not found!</td>
+								<td colspan="7" align="center" style="text-align: center;">Portfolio information not found!</td>
 							</tr>
 					</c:otherwise>
 				</c:choose>
@@ -148,7 +149,7 @@
 			<div class="row-fluid" >
 					<div class="span3">
 						<div class="control-group">
-							<label class="control-label">SCF Company</label>
+							<label class="control-label">SCF Company test</label>
 							<input type="hidden" name="profolioId" id="profolioId"/>
 							<label class="scfCompany control-label" id="scfCompantName"  >Alternate Name:</label>
 						</div>
@@ -156,8 +157,9 @@
 					<div class="span3 mtXs10">
 						<div class="control-group">
 							<label  class="control-label">My Credit Line</label>
-							<input  	type="text" name="myCreditLine" 	class="field" 	id="editmyCreditLne" placeholder="My Credit Line*" />
+							<input  type="text" name="myCreditLine" 	class="field" 	id="editmyCreditLne" placeholder="My Credit Line*" />
 							<input type="hidden" id="editutilised" name="editutilised" />
+							
 						</div>
 					</div>
 					<div class="span3 mtXs10">
@@ -170,6 +172,9 @@
 									</c:forEach>			
 								</select>
 								</div>
+								<input type="hidden"
+												value="${generalSetting.minLevelOfInvestment }"
+												name="minLevelOfInvestment" id="minLevelOfInvestment" class="field">
 					</div>
 						 <div class="span3 mtXs10">
 						 	<div class="actionContainer text-left">

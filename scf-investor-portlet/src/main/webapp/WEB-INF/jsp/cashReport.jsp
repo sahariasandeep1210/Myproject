@@ -44,8 +44,13 @@
 						   			<div class="bigText">
 						   				${companyname} 
 						   			</div>
-						   		</div>	
-				   			</div>
+							   		</div>
+						<!-- <div class="btn-wrapper">
+							<input type="button" class="btnBgGreenSm" value="Export"
+								id="exportCashReport" />
+							
+						</div> -->
+					</div>
 				   		</div>	
 				   		<div class="row-fluid">
 				   			<div class="span3 spanSm6">
@@ -176,7 +181,7 @@
 										</div>
 								</td>
 								<td>${investorTransaction.scfTradeId}</td>
-								<td class="${amountClass} rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${investorTransaction.amount}"  /></td>
+								<td class="${amountClass} rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${investorTransaction.amount}"  pattern="#0.00"/></td>
 								<td>${investorTransaction.reference}</td>
 							</tr>
 						</c:forEach>

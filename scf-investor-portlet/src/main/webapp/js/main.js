@@ -10,7 +10,31 @@ $(document).ready(function() {
 	  enableTab();
 	  //$('table').tablesorter();
 	  
-
+	  $("#exportInvestor").click(function(){
+			/* window.open('data:application/vnd.ms-excel,' + $('#dvData').html());
+			 e.preventDefault();*/	
+			
+			$('#companyListTable').tableExport({
+				type : 'excel',
+				escape : 'false',
+				fileName: 'investorlist',
+				worksheetName: 'Investor List'
+			});
+			
+		});
+	  
+	  $("#exportCashReport").click(function(){
+			/* window.open('data:application/vnd.ms-excel,' + $('#dvData').html());
+			 e.preventDefault();*/	
+			
+			$('#casReportTable').tableExport({
+				type : 'excel',
+				escape : 'false',
+				fileName: 'cashReport',
+				worksheetName: 'Cash Report'
+			});
+			
+		});
 	  
 	  $("#exportBalances").click(function(){
 			
@@ -347,6 +371,7 @@ $("#toDate").datepicker({
     	  	var errorFree=true;
     	  	var editutilisedVal= $("#editutilised").val();
     	  	var editmyCreditLneVal=$("#editmyCreditLne").val();
+    	  	var minlevelofInvestment=$("#minLevelOfInvestment").val();
     	  	if(editutilisedVal!=null ){
     	  		editutilisedVal=editutilisedVal.replaceAll(',','');
     	  	}
@@ -375,7 +400,13 @@ $("#toDate").datepicker({
     	    	$("#editmyCreditLne").addClass("error_show");
     	    	errorFree=false;
     	    }
-    	    
+    	    if(editmyCreditLne < minlevelofInvestment){
+    	    	$("#errorMsg").show(); 
+    	    	$("#errorMsg").addClass("alert alert-danger");
+    	    	$("#errorMsg").text("My Credit line can't be less than Minimum Level Of Investment Amount "+minlevelofInvestment);
+    	    	$("#editmyCreditLne").addClass("error_show");
+    	    	errorFree=false;
+    	    }
     	  	
     	  	 if(errorFree){
     	  	 	document.forms["investorModel"].action = url;	  	  	

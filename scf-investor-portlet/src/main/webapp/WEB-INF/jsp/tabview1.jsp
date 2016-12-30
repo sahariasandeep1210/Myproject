@@ -15,6 +15,6 @@
 </form>
 
 <ul class="nav nav-tabs">
- <li class="tab" id="invesProtList"><a href="${investorProtURL}">Investor Protfolios </a></li>
+ <li class="tab" id="invesProtList"><a href="${investorProtURL}">Investor Portfolios </a></li>
  <li class="tab" id="casList"><a href="${cashReportURL}">Cash Report</a></li>	
 </ul>

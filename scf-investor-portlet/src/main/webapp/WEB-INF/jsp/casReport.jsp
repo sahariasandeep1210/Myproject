@@ -134,11 +134,23 @@
 								<input type="button" value="Submit" id="casReport" class="btnBgBuSm" />
 							</div>
 					 </div>
+					 
 				</div>
+				<div class="title-container clearfix">
+					
+					
+					<div class="btn-wrapper">
+							<input type="button" class="btnBgGreenSm" value="Export"
+								id="exportCashReport" />
+							
+						</div>
+			  </div>
+				
 		</div>
 	
 	<div class="customTableContainer">
-			<table class="table  tablesorter table-bordered investorCash" id="casReportTable" >
+	
+			<table class="table table-hover  table-bordered tablesorter" id="casReportTable" >
 				<thead>
 					<tr>
 					    <th>Date</th>
@@ -172,13 +184,13 @@
 										</div>
 							</td>
 							<td>${investorTransaction.scfTradeId}</td>
-							<td class="${amountClass} rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${investorTransaction.amount}"  /> </td>
+							<td class="${amountClass} rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${investorTransaction.amount}"  pattern="#0.00"/> </td>
 							<td></td>
 						</tr>
 						</c:forEach>
 						 </c:when>
 						 <c:otherwise>
-						 	<td colspan="5">No transcation information found!!</td>
+						 	<td colspan="5">No transaction information found!!</td>
 						 </c:otherwise>	   
 				</c:choose>
 				</tbody>

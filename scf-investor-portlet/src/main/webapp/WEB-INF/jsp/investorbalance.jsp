@@ -57,7 +57,7 @@
 				   			</div>
 				   			<div class="with-button">
 				   				<div class="bigText blue">
-					   				&pound; <fmt:formatNumber type="number" maxFractionDigits="3" value="${investor.cashPosition}"  />
+					   				&pound; <fmt:formatNumber type="number" maxFractionDigits="3" value="${investor.cashPosition}"  pattern="#0.00"/>
 					   			</div>
 					   			  	 <c:if test="${not empty investorID}">	         
 								             <a href="javascript:void(0);"  class="btnBgGraySm" onclick="window.location.href='${cashReportURL}&investorID=${investorID}'">Cash Report</a>
@@ -74,7 +74,7 @@
 				   			</div>
 				   			<div class="with-button">
 				   				<div class="bigText blue">
-					   				&pound; <fmt:formatNumber type="number" maxFractionDigits="3" value="${totalReceivablesPosition}"  />
+					   				&pound; <fmt:formatNumber type="number" maxFractionDigits="3" value="${totalReceivablesPosition}"  pattern="#0.00"/>
 					   			</div>
 					   			<a href="javascript:void(0);" onclick="window.location.href='${receivableReportURL}&investorID=${investorID}'" class="btnBgGraySm">Current Receivable</a>
 				   			</div>
@@ -89,7 +89,7 @@
 				   			</div>
 				   			
 			   				<div class="bigText blue">
-				   				&pound; <fmt:formatNumber type="number" maxFractionDigits="3" value="${totalAsset}"  />
+				   				&pound; <fmt:formatNumber type="number" maxFractionDigits="3" value="${totalAsset}"  pattern="#0.00"/>
 				   			</div>	   			
 				   			
 				   		</div>
@@ -190,7 +190,7 @@
 								</div>
 							</td>
 							<td>${investorTransaction.scfTradeId}</td>
-							<td class="${amountClass}"><fmt:formatNumber type="number" maxFractionDigits="3" value="${investorTransaction.amount}"  /></td>
+							<td class="${amountClass}"><fmt:formatNumber type="number" maxFractionDigits="3" value="${investorTransaction.amount}"  pattern="#0.00"/></td>
 							<td>${investorTransaction.reference}</td>
 						</tr>
 						</c:forEach>

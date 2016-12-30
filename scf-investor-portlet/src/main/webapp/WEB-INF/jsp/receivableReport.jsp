@@ -61,11 +61,11 @@
 			                            <td></td>
 			                            <td></td>
 			                            <td></td>
-			                            <td class="rightalign green_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalAllotAmount}"  /></td>
-			                            <td class="rightalign green_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalMajurity}"  /></td>
-			                            <td class="rightalign green_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalFinance}"  /></td>
-			                            <td class="rightalign green_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalNet}"  /></td>
-			                            <td class="rightalign green_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalAmount}"  /></td>
+			                            <td class="rightalign green_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalAllotAmount}"  pattern="#0.00"/></td>
+			                            <td class="rightalign green_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalMajurity}"  pattern="#0.00"/></td>
+			                            <td class="rightalign green_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalFinance}"  pattern="#0.00"/></td>
+			                            <td class="rightalign green_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalNet}"  pattern="#0.00"/></td>
+			                            <td class="rightalign green_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalAmount}"  pattern="#0.00"/></td>
 			                            <td></td>
 								</tr>
 		                        <c:forEach items="${dtos}" var="allotment">						            
@@ -74,12 +74,12 @@
 			                            <td><fmt:formatDate value="${allotment.allotmentDate}" pattern="dd-MM-yyyy" /></td>
 			                            <td><fmt:formatDate pattern="dd-MM-yyyy" value="${allotment.closingDate}" /></td>							
 			                            <td width="7%">${allotment.noOfdays}</td>
-										<td class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${allotment.allotmentAmount}"  /></td>
-										<td class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${allotment.majurityGross}"  /></td>
-										<td class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${allotment.financeFee}"  /></td>
-										<td class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${allotment.majurityNet}"  /></td>
-										<td class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${allotment.returnAmount}"  /></td>
-										<td class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${allotment.returns}"  /></td>
+										<td class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${allotment.allotmentAmount}"  pattern="#0.00"/></td>
+										<td class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${allotment.majurityGross}"  pattern="#0.00"/></td>
+										<td class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${allotment.financeFee}"  pattern="#0.00"/></td>
+										<td class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${allotment.majurityNet}"  pattern="#0.00"/></td>
+										<td class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${allotment.returnAmount}"  pattern="#0.00"/></td>
+										<td class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${allotment.returns}"  pattern="#0.00"/></td>
 										<td>${allotment.status}</td>
 									</tr>
 								</c:forEach>

@@ -44,6 +44,7 @@ import com.liferay.portal.theme.ThemeDisplay;
 import com.tf.controller.investor.util.InvestorDTO;
 import com.tf.model.Allotment;
 import com.tf.model.Company;
+import com.tf.model.GeneralSetting;
 import com.tf.model.Investor;
 import com.tf.model.InvestorPortfolio;
 import com.tf.model.InvestorPortfolioHistory;
@@ -54,6 +55,7 @@ import com.tf.persistance.util.InvestorModelDTO;
 import com.tf.persistance.util.TranscationStatus;
 import com.tf.service.AllotmentService;
 import com.tf.service.CompanyService;
+import com.tf.service.GeneralSettingService;
 import com.tf.service.InvestorHistoryService;
 import com.tf.service.InvestorService;
 import com.tf.service.InvestorTransactionService;
@@ -128,6 +130,9 @@ public class InvestorController {
 
 	@Autowired
 	protected SCFTradeService scfTradeService;
+	
+	@Autowired
+	private GeneralSettingService generalSettingService;
 
 	@RenderMapping(params = "render=investorProtfolios")
 	protected ModelAndView renderInvestorProtfolios(
@@ -468,6 +473,7 @@ public class InvestorController {
 		Map<Long, BigDecimal> totalCreditMap = investorService.findTotalCreditLine(investorId);
 		setTotalCreditLine(totalCreditMap, investorPortfolioList);
 		companyList = prepareCompanyList(companyList, investorPortfolioList);
+		//System.out.println("investorHistoryList::::::::::::::::::::"+investorPortfolioList);
 		model.put("investorHistoryList", investorPortfolioList);
 		model.put(ACTIVETAB, viewName);
 
@@ -494,11 +500,19 @@ public class InvestorController {
 		else {
 			List<Company> companyList = new ArrayList<Company>();
 			companyList = companyService.getCompanies("5");
+			
+			GeneralSetting generalSetting=generalSettingService.getGeneralSetting();
+			
+			model.put("generalSetting", generalSetting);
+			
+			
 			Map<Long, List<InvestorPortfolio>> map = investorService.getInvestorPortfolioByUserId(themeDisplay.getUserId());
 			for (Map.Entry<Long, List<InvestorPortfolio>> entry : map.entrySet()) {
 				investorId = entry.getKey();
 				model.put("investorID", investorId);
 				investorPortfolioList = entry.getValue();
+				//System.out.println("investorPortfolioList::::::::::::::::::::::"+investorPortfolioList);
+				//System.out.println("investorId::::::::::::::::::::::"+investorId);
 			}
 			Map<String, BigDecimal> totalsMap = investorService.getProtfolioTotals(investorId);
 			Map<Long, BigDecimal> totalCreditMap = investorService.findTotalCreditLine(investorId);
