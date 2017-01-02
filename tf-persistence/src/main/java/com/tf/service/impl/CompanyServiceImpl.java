@@ -105,4 +105,8 @@ public class CompanyServiceImpl implements CompanyService {
 		  return  companyDAO.getSellerCompaniesUsingJoin(companyType,companyId);
 		 }
 	
+	
+	public List<Company> getCompaniesByStatus(String status){
+	    return  companyDAO.getCompaniesByStatus(status);
+	}
 }

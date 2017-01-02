@@ -11,6 +11,8 @@
 	<portlet:param name="company" value="getCompanyReport" />
 </portlet:actionURL>
 
+<portlet:resourceURL id="exportCompanies" var="exportCompaniesURL" ></portlet:resourceURL> 
+
 
 <div class="tab-content">
 
@@ -32,7 +34,8 @@
 					 	
 					 	<div class="btn-wrapper">
 					 		<aui:button cssClass="btnBrGrSm btnIconSm filter-btn active"  icon="icomoon-filter"></aui:button>
-			  				<input type="button" class="btnBgGreenSm" value="Export"  id="exportCompanies"/>
+			  				<!-- <input type="button" class="btnBgGreenSm" value="Export"  id="exportCompanies"/> -->
+			  				<a href="${exportCompaniesURL}" class="btnBgGreenSm" >Export</a>
 			  			</div>
 					 </div>
 					<div class="customWell filter-container">

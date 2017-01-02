@@ -583,6 +583,11 @@ ALTER TABLE tf_investor_portfolio_history   MODIFY COLUMN   current_credit_line 
 ALTER TABLE tf_investor_portfolio_history   MODIFY COLUMN   my_credit_line  DECIMAL(10,2);
 
 
+ALTER TABLE tf_investor   MODIFY COLUMN   whitehall_share  DECIMAL(10,2);
+
+ALTER TABLE tf_general_setting ADD COLUMN  min_level_of_investment INT(11) DEFAULT NULL;
+
+
 
 
 

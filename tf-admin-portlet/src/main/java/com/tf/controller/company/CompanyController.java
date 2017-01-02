@@ -55,6 +55,7 @@ import com.tf.model.User;
 import com.tf.persistance.util.CompanyStatus;
 import com.tf.persistance.util.Constants;
 import com.tf.util.OfficerDTO;
+import com.tf.util.ReportUtility;
 import com.tf.util.model.PaginationModel;
 
 /**
@@ -75,7 +76,6 @@ public class CompanyController extends BaseController {
 		_log.info("CompanyController :: Render Company List");
 		try {
 			String searchValue = ParamUtil.getString(request, "Search");
-			//System.out.println("searchvalue is:::::::::::::"+searchValue);
 			List<Company> companyList = new ArrayList<Company>();
 			ThemeDisplay themeDisplay = (ThemeDisplay) request
 					.getAttribute(WebKeys.THEME_DISPLAY);
@@ -748,6 +748,19 @@ public class CompanyController extends BaseController {
 		
 
 		return new ModelAndView("createcompany", model);
+	}
+	
+	@ResourceMapping("exportCompanies")
+	protected void generateReport(ResourceRequest request, ResourceResponse response){			
+			try {
+			    List<Company> companies=companyService.getCompaniesByStatus(CompanyStatus.DELETED.getValue());
+			    ReportUtility.generateCusotomerDemoRepots(companies, response);
+			} catch (SystemException e) {
+				_log.error(e);
+			} catch (IOException e) {
+				_log.error(e);
+			}
+		
 	}
 
 }

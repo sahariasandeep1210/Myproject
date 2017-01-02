@@ -47,6 +47,23 @@ public class CompanyDAOImpl  extends BaseDAOImpl<Company, Long>   implements Com
 	}
 	
 	@SuppressWarnings("unchecked")
+	public List<Company> getCompaniesByStatus(String status) {
+		_log.debug("Inside getCompanies ");
+		try {
+			
+			List<Company> results = (List<Company>) sessionFactory.getCurrentSession().createCriteria(Company.class).add(Restrictions.ne("activestatus", status)).list();
+			_log.debug("GetCompanies successful, result size: "
+					+ results.size());
+			return results;
+		} catch (RuntimeException re) {
+			_log.error("GetCompanies failed", re);
+			throw re;
+		}
+	}
+	
+	
+	
+	@SuppressWarnings("unchecked")
 	public List<Company> getCompaniesByStatusFilter(String status,
 			int startIndex, int pageSize, String searchValue) {
 		_log.debug("Inside getCompaniesByStatusFilter ");

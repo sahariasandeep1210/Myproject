@@ -6,15 +6,25 @@ import java.util.Date;
 
 public class Constants {
 
-	public static final String ADMIN = "Admin";
-	public static final String SCF_ADMIN = "SCF Company Admin";
-	public static final String SELLER_ADMIN = "Seller Admin";
-	public static final String PRIMARY_INVESTOR_ADMIN = "Primary Investor Admin";
+	public static final String ADMIN 			= "Admin";
+	public static final String SCF_ADMIN 			= "SCF Company Admin";
+	public static final String SELLER_ADMIN		 	= "Seller Admin";
+	public static final String PRIMARY_INVESTOR_ADMIN 	= "Primary Investor Admin";
 
-	public static final String OMNI_ADMIN = "Administrator";
-	public static final String WHITEHALL_ADMIN = "WhiteHall Admin";
+	public static final String OMNI_ADMIN 			= "Administrator";
+	public static final String WHITEHALL_ADMIN 		= "WhiteHall Admin";
 
-	public static final String DATE_FORMAT = "dd-MM-yyyy";
+	public static final String DATE_FORMAT 			= "dd-MM-yyyy";
+	public static final String COMPANY 			= "Companies";
+	public static final String COMMA 			= ",";
+	public static final String SPACE 			= " ";
+	
+	
+	public static final String UNDERSCORE			= "_";
+	public static final String EQUAL			= "=";
+	public static final String SEMICOLON			= ";";
+	public static final String XLSX_FORMAT			= ".xlsx";
+	public static final String FILE_NAME			= "filename";
 
 	public static String formatDate(String inDate) {
 		String parsedDate = null;
