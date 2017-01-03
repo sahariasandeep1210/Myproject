@@ -15,7 +15,7 @@ $(function() {
 	 $("#pageSize").val($("#currPageSize").val());
 	$("#errorMsg").hide(); 
 	
-	/*$("#telNo").inputmask("99 9999999999999");*/
+	$("#telNo").inputmask("99 9999999999");
 	$("#userTelNo").inputmask("99 9999999999");
 	
 	$("#pageSize").change(function (){
@@ -397,10 +397,10 @@ function validateCompanyInfo(error_free) {
 	elements[2] = "dateEst";
 	elements[3] = "address1";
 	//elements[4] = "region";
-	elements[5] = "country";
-	elements[6] = "postalCode";
-	elements[7] = "telNo";
-	elements[8] = "companyType";
+	elements[4] = "country";
+	elements[5] = "postalCode";
+	elements[6] = "telNo";
+	elements[7] = "companyType";
 	
 
 	
@@ -412,6 +412,7 @@ function validateCompanyInfo(error_free) {
 		var element = $("#" + elements[i]);
 		if(element.length){
 			var eleValue = element.val();
+			
 			if (eleValue == '' || eleValue == null || (element.is('select') && element[0].selectedIndex == 0)) {
 				element.addClass("error_show");
 				error_free = false;				

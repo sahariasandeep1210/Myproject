@@ -39,26 +39,38 @@
 			  			</div>
 					 </div>
 					<div class="customWell filter-container">
-		  				<div class="row-fluid">
+						<div class="row-fluid">
 							<div class="span3 spanSm6">
 								<div class="control-group">
 									<div class="input-append">
-									<input name="Search" type="text" placeholder="Search" id="search"	value="${search}" /> 
-									<span class="add-on"><i	class="icomoon-search"></i></span>
-									<i class="icon-info-sign tooltipSearch" data-toggle="tooltip" title="Search in for Company Name and Registration Number" ></i>
+										<input name="Search" type="text" placeholder="Search"
+											id="search" value="${search}" /> <span class="add-on"><i
+											class="icomoon-search"></i></span> <i
+											class="icon-info-sign tooltipSearch" data-toggle="tooltip"
+											title="Please search by name and registration noPlease search by name and registration no"></i>
+									</div>
+									<div>
+										&nbsp;&nbsp;
+									</div>
+									
+								</div>
+
+							</div>
+							
+								
+							
+							<div class="span3 spanSm6 mtXs10">
+								<div class="control-group">
+
+									<div class="input-append">
+										<input type="button" value="Search" id="companyReport"
+											class="btnBgBuSm" />
 									</div>
 								</div>
 							</div>
-							
-						  		<div class="span3 spanSm6 mtXs10">
-						  			<div class="actionContainer noBorder text-left">
-						  				 <input type="button" value="Search" id="companyReport" class="btnBgBuSm" />
-						  			</div>
-						  			
-						  		</div>
-						  	
+
 						</div>
-					</div>				
+					</div>
 				</c:when>
 				<c:otherwise>
 					 <div class="title-container clearfix">

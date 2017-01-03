@@ -109,7 +109,7 @@
   			<div class="span3">
   				<div class="control-group">
 					<label class="control-label" for="telNo"> Telephone No * <i class="icon-info-sign tooltipPhone" data-toggle="tooltip" title="Ex. For UK 44 1234512345" ></i> </label>
-					<form:input path="telnumber"  id="telNo"  cssClass="field"  maxlength="15"/>
+					<form:input path="telnumber"  id="telNo"  cssClass="field" />
 				</div>
   			</div>
   			<div class="span3">
