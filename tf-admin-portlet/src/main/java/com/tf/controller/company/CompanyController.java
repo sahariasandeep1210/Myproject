@@ -615,8 +615,8 @@ public class CompanyController extends BaseController {
 					CompanyStatus.DELETED.getValue(),
 					paginationModel.getStartIndex(),
 					paginationModel.getPageSize(),searchValue);
-			noOfRecords = companyService
-					.getCompaniesCount(CompanyStatus.DELETED.getValue());
+			noOfRecords = companyService.getCompaniesCountByStatus(searchValue);
+			
 			_log.info("noOfRecords:::"+noOfRecords);
 
 		}else if (request.isUserInRole(Constants.SCF_ADMIN)) {

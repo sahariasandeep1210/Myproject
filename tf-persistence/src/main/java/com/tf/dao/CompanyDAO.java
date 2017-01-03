@@ -46,4 +46,6 @@ public interface CompanyDAO extends BaseDAO<Company, Long>{
 	public List<Company> getSellerCompaniesUsingJoin(String companyType,long companyId);
 	
 	public List<Company> getCompaniesByStatus(String status);
+	
+	public Long getCompaniesCountByStatus(String status);
 }

@@ -109,4 +109,8 @@ public class CompanyServiceImpl implements CompanyService {
 	public List<Company> getCompaniesByStatus(String status){
 	    return  companyDAO.getCompaniesByStatus(status);
 	}
+	
+	public Long getCompaniesCountByStatus(String status) {
+		return companyDAO.getCompaniesCountByStatus(status);	
+	}
 }

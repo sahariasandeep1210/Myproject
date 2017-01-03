@@ -416,4 +416,20 @@ public class CompanyDAOImpl  extends BaseDAOImpl<Company, Long>   implements Com
 	 }
 	
 
+	public Long getCompaniesCountByStatus(String status) {
+		_log.debug("Inside getCompaniesCountByStatus ");
+		try {
+			Long resultCount ;
+			if(status.matches("[0-9]+") == true){
+				resultCount = (Long) sessionFactory.getCurrentSession().createCriteria(Company.class).add(Restrictions.like("regNumber", status,MatchMode.ANYWHERE)).setProjection(Projections.rowCount()).uniqueResult();
+			   }else {
+				   resultCount = (Long) sessionFactory.getCurrentSession().createCriteria(Company.class).add(Restrictions.like("name", status,MatchMode.ANYWHERE)).setProjection(Projections.rowCount()).uniqueResult();
+			   }
+			_log.info("Companies Count:: "	+ resultCount);
+			return resultCount;
+		} catch (RuntimeException re) {
+			_log.error("Companies Count failed", re);
+			throw re;
+		}
+	}
 }

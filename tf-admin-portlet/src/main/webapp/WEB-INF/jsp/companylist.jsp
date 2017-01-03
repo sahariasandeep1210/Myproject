@@ -47,7 +47,7 @@
 											id="search" value="${search}" /> <span class="add-on"><i
 											class="icomoon-search"></i></span> <i
 											class="icon-info-sign tooltipSearch" data-toggle="tooltip"
-											title="Please search by name and registration noPlease search by name and registration no"></i>
+											title="Please search by name and registration no"></i>
 									</div>
 									<div>
 										&nbsp;&nbsp;
