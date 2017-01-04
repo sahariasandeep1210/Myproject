@@ -19,6 +19,7 @@ import com.tf.dao.CompanyDAO;
 import com.tf.model.Company;
 import com.tf.model.User;
 import com.tf.persistance.util.CompanyStatus;
+import com.tf.persistance.util.CompanyTypes;
 import com.tf.persistance.util.InvestorDTO;
 
 
@@ -414,6 +415,40 @@ public class CompanyDAOImpl  extends BaseDAOImpl<Company, Long>   implements Com
 	   throw re;
 	  }
 	 }
+	
+	@SuppressWarnings("unchecked")
+	 public List<Company> getSellerCompaniesUsingJoinForAdmin() {
+	  _log.debug("Inside getSellerCompanies ");
+	  try {
+	   StringBuilder sb = new StringBuilder();
+	   List<Company> results = new ArrayList<Company>();
+	   sb.append("SELECT idcompany,NAME,regnumber FROM tf_company tf INNER JOIN tf_seller_scfcompany_mapping tfs ON tf.idcompany = tfs.seller_company");
+	   sb.append(" WHERE tf.company_type ='"+CompanyTypes.SELLER.getValue()+"' AND tf.active_status <> '"+CompanyStatus.DELETED.getValue()+"' AND tfs.status = '"+CompanyStatus.APPROVE.getValue()+"' ");	  
+	  SQLQuery query = (SQLQuery) sessionFactory.getCurrentSession()
+	     .createSQLQuery(sb.toString());
+	   query.setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP);
+	   List data = query.list();
+	   if (null != data || data.size() > 0) {
+	    for (Object companyObj : data) {
+	     Map row = (Map) companyObj;
+	     Company company = new Company();
+	     company.setId(Long.parseLong(row.get("idcompany")
+	       .toString()));
+	     company.setName(row.get("NAME").toString());
+	     company.setRegNumber(row.get("regnumber").toString());
+	     results.add(company);
+	    }
+	   }
+
+	   _log.debug("GetCompanies successful, result size: "
+	     + results.size());
+	   return results;
+	  } catch (RuntimeException re) {
+	   _log.error("getSellerCompanies failed", re);
+	   throw re;
+	  }
+	 }
+	
 	
 
 	public Long getCompaniesCountByStatus(String status) {
