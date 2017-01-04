@@ -22,6 +22,7 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.servlet.HttpHeaders;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.tf.model.Company;
+import com.tf.persistance.util.CompanyStatus;
 import com.tf.persistance.util.Constants;
 
 public class ReportUtility {
@@ -81,7 +82,13 @@ public class ReportUtility {
 		
 		sheet.autoSizeColumn(cellNo);
 		cell = row.createCell(cellNo++);
-		cell.setCellValue(company.getCompanyType());	
+		String comType=(String)company.getCompanyType();
+		if(comType.equals("1") || comType == "1"){comType="Primary Investor";}
+		if(comType.equals("2") || comType == "2"){comType="Secondary Investor";}
+		if(comType.equals("3") || comType == "3"){comType="Admin";}
+		if(comType.equals("4") || comType == "4"){comType="Seller";}
+		if(comType.equals("5") || comType == "5"){comType="SCF Company";}
+		cell.setCellValue(comType);	
 		
 		
 		sheet.autoSizeColumn(cellNo);

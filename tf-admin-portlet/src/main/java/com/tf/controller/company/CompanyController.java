@@ -753,8 +753,14 @@ public class CompanyController extends BaseController {
 	@ResourceMapping("exportCompanies")
 	protected void generateReport(ResourceRequest request, ResourceResponse response){			
 			try {
+				if (getPermissionChecker(request).isOmniadmin()
+						|| request.isUserInRole(Constants.WHITEHALL_ADMIN)){
 			    List<Company> companies=companyService.getCompaniesByStatus(CompanyStatus.DELETED.getValue());
 			    ReportUtility.generateCusotomerDemoRepots(companies, response);
+				}
+				else{
+					
+				}
 			} catch (SystemException e) {
 				_log.error(e);
 			} catch (IOException e) {

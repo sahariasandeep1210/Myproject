@@ -44,10 +44,10 @@
 								<div class="control-group">
 									<div class="input-append">
 										<input name="Search" type="text" placeholder="Search"
-											id="search" value="${search}" /> <span class="add-on"><i
+											id="search" value="${search}" /><span class="add-on"><i
 											class="icomoon-search"></i></span><span><i
-											class="icon-info-sign tooltipSearch" data-toggle="tooltip"
-											title="Please search by name and registration no"></i></span>
+											class="icon-info-sign tooltipPhone" data-toggle="tooltip"
+											title="Please search by Name/Registration no"></i></span>
 									</div>
 									<div>
 										&nbsp;&nbsp;
