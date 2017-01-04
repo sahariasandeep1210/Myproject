@@ -200,7 +200,8 @@ public class InvoiceController {
         }
         //getting the all seller 
         if(companyId == 0){
-        	sellerRegList=companyService.getSellerCompanies(CompanyTypes.SELLER.getValue());
+        	///sellerRegList=companyService.getSellerCompanies(CompanyTypes.SELLER.getValue());
+        	sellerRegList=companyService.getSellerCompaniesUsingJoinForAdmin();
         }else{
         	sellerRegList=companyService.getSellerCompaniesUsingJoin(CompanyTypes.SELLER.getValue(),companyId);
         }
