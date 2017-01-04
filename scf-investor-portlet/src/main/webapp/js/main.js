@@ -8,7 +8,7 @@ $(document).ready(function() {
 	  $("#errorMsg").hide(); 
 	  $("#errorMsg").removeClass("alert alert-danger");
 	  enableTab();
-	  //$('table').tablesorter();
+	  $('table').tablesorter();
 	  
 	  $("#exportInvestor").click(function(){
 			/* window.open('data:application/vnd.ms-excel,' + $('#dvData').html());
