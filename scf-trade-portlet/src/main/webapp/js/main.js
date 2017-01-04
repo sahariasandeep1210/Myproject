@@ -1,7 +1,7 @@
 $(document).ready(
 		function() {
 			
-
+			$('.tooltipPhone').tooltip();
 			$(".historyRow").hide();
 			$("#buttonDiv").hide();
 			$("#pageSize").val($("#currPageSize").val());
