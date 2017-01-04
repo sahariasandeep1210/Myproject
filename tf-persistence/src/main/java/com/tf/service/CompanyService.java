@@ -45,7 +45,6 @@ public interface CompanyService {
 	
 	public List<Company> getSellerCompanies(String companyType);
 	
-	
 	public List<Company> getSellerCompaniesUsingJoinForAdmin();
 	
 	public List<Company> getSellerCompaniesUsingJoin(String value,long companyId);
