@@ -101,6 +101,12 @@ public class CompanyServiceImpl implements CompanyService {
 	public List<Company> getSellerCompanies(String companyType) {
 		return  companyDAO.getSellerCompanies(companyType);
 	}
+	
+	public List<Company> getSellerCompaniesUsingJoinForAdmin() {
+		return  companyDAO.getSellerCompaniesUsingJoinForAdmin();
+	}
+	
+	
 	public List<Company> getSellerCompaniesUsingJoin(String companyType,long companyId) {
 		  return  companyDAO.getSellerCompaniesUsingJoin(companyType,companyId);
 		 }
