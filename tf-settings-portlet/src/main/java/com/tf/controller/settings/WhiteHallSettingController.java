@@ -127,7 +127,7 @@ public class WhiteHallSettingController {
 		try {			
 			
 			List<Company> companyList = new ArrayList<Company>();
-			companyList=companyService.getCompanies(CompanyTypes.SELLER.getValue());
+			companyList=companyService.getSellerCompaniesUsingJoinForAdmin();
 			List<SellerSettingModel> sellerSettings=settingService.getSellersSettingUsingJoin();				
 			model.put("sellerSettings", sellerSettings);
 			model.put("companyList", companyList);

@@ -109,7 +109,7 @@
 				<thead>
 					<tr>
 					    <th>Seller Name</th>
-					    <th>Supplier Company</th>
+					    <th>SCF Company</th>
 						<th>Opening Date</th>
 						<th>Modify Date</th>
 						<th>Seller Transaction Fee</th>

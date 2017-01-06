@@ -102,6 +102,9 @@ public class Company implements Serializable {
 	@OneToOne(mappedBy = "company",cascade=CascadeType.ALL)    
 	private Investor investor;
 	
+	@OneToOne(mappedBy = "company",cascade=CascadeType.ALL)    
+	 private CompanyAccountDetail companyAccountDetail;
+	
 	public Company() {
 		// TODO Auto-generated constructor stub
 	}
@@ -329,6 +332,16 @@ public class Company implements Serializable {
 		} else if (!id.equals(other.id))
 			return false;
 		return true;
+	}
+
+	
+
+	public CompanyAccountDetail getCompanyAccountDetail() {
+		return companyAccountDetail;
+	}
+
+	public void setCompanyAccountDetail(CompanyAccountDetail companyAccountDetail) {
+		this.companyAccountDetail = companyAccountDetail;
 	}
 
 	@Override

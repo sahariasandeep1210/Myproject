@@ -149,6 +149,7 @@ public class CompanyDAOImpl  extends BaseDAOImpl<Company, Long>   implements Com
 		_log.debug("persisting Company instance");
 		try {
 			company.getAddress().setCompany(company);
+			company.getCompanyAccountDetail().setCompany(company);
 			sessionFactory.getCurrentSession().saveOrUpdate(company);
 			_log.debug("persist successful"+company);
 		} catch (RuntimeException re) {

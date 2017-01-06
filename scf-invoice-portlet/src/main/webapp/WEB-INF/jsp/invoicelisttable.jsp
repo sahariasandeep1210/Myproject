@@ -21,7 +21,10 @@
 					<c:if test="${userType =='SCF Company Admin'}">
 					<th>Supplier Company</th>
 					</c:if>
+					<c:if test="${userType !='SCF Company Admin'}">
 					<th>Investor Company</th>
+					</c:if>
+					
 					<th>Status</th>
 				</tr>
 			</thead>

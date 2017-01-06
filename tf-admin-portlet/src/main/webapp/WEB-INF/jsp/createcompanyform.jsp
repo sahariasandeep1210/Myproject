@@ -194,8 +194,45 @@
 				</div>
   			</div>
   		</div>
-		
-	
+		<div class="divider mb15"></div>
+  
+  <div class="row-fluid">
+  <div class="span3">
+      <div class="control-group">
+     <label class="control-label" for="accountNumber"> Account Number *</label>
+     <form:input path="companyAccountDetail.accountNumber" cssClass="field" id="accountNumber"/>
+    </div>
+     </div>
+     <div class="span3">
+      <div class="control-group">
+     <label class="control-label" for="accountName"> Account Name *</label>
+     <form:input path="companyAccountDetail.accountName" cssClass="field" id="accountName"/>
+    </div>
+     </div>
+     <div class="span3">
+      <div class="control-group">
+     <label class="control-label" for="sortCode"> Sort Code *</label>
+     <form:input path="companyAccountDetail.sortCode" cssClass="field" id="sortCode"/>
+    </div>
+     </div>
+     
+     
+    </div>
+  <div class="row-fluid">
+     <div class="span3">
+      <div class="control-group">
+     <label class="control-label" for="iban"> IBAN *</label>
+     <form:input path="companyAccountDetail.iban" cssClass="field" id="iban" />
+    </div>
+     </div>
+     <div class="span3">
+      <div class="control-group">
+     <label class="control-label" for="bankName"> Bank Name *</label>
+     <form:input path="companyAccountDetail.bankName" cssClass="field" id="bankName" />
+    </div>
+     </div>
+    </div>
+	 
 
 			<div class="actionContainer text-left">
 				<c:choose>

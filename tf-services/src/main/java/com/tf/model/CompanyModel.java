@@ -44,6 +44,17 @@ public class CompanyModel implements Serializable {
 	private String company_number;
 	private String jurisdiction;
 	
+	private CompanyAccountDetailModel companyAccountDetailModel;
+	
+	public CompanyAccountDetailModel getCompanyAccountDetailModel() {
+		return companyAccountDetailModel;
+	}
+
+	public void setCompanyAccountDetailModel(
+			CompanyAccountDetailModel companyAccountDetailModel) {
+		this.companyAccountDetailModel = companyAccountDetailModel;
+	}
+
 	public CompanyModel() {
 		// TODO Auto-generated constructor stub
 	}
@@ -183,6 +194,8 @@ public class CompanyModel implements Serializable {
 	public void setJurisdiction(String jurisdiction) {
 		this.jurisdiction = jurisdiction;
 	}
+
+	
 
 	@Override
 	public String toString() {

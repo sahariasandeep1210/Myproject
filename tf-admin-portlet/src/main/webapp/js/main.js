@@ -17,6 +17,8 @@ $(function() {
 	
 	$("#telNo").inputmask("99 9999999999");
 	$("#userTelNo").inputmask("99 9999999999");
+	$("#sortCode").inputmask("999999");
+	$("#accountNumber").inputmask("9999999999");
 	
 	$("#pageSize").change(function (){
 		var noOfRecords=parseInt($("#noOfRecords").val());
@@ -401,6 +403,12 @@ function validateCompanyInfo(error_free) {
 	elements[5] = "postalCode";
 	elements[6] = "telNo";
 	elements[7] = "companyType";
+	elements[8] = "accountNumber";
+	elements[9] = "accountName";
+	elements[10] = "sortCode";
+	elements[11] = "iban";
+	elements[12] = "bankName";
+	
 	
 
 	

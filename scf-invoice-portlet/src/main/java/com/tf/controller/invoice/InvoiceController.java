@@ -426,7 +426,8 @@ public class InvoiceController {
 			    model.put("readOnly", Boolean.TRUE);
 			}else{
 			    //getting the all seller 
-			    sellerRegList=companyService.getSellerCompanies(CompanyTypes.SELLER.getValue());
+			    //sellerRegList=companyService.getSellerCompanies(CompanyTypes.SELLER.getValue());
+			    sellerRegList=companyService.getSellerCompaniesUsingJoinForAdmin();
 			}
 			
 			if( (liferayUtility.getPermissionChecker(request).isOmniadmin() ||
