@@ -7,8 +7,8 @@ public enum CompanyStatus {
 	CREDITCHECKSUCCESS("Credit Check Success"),
 	ACTIVESTATUS("Active"),
 	DELETED("Deleted"),
-	DISABLED("Disabled");
-		
+	DISABLED("Disabled"),
+	APPROVE("Approve");	
 	private final String value;
 	
 	CompanyStatus(String value){
