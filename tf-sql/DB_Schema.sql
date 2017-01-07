@@ -587,6 +587,18 @@ ALTER TABLE tf_investor   MODIFY COLUMN   whitehall_share  DECIMAL(10,2);
 
 ALTER TABLE tf_general_setting ADD COLUMN  min_level_of_investment INT(11) DEFAULT NULL;
 
+CREATE TABLE tf_company_account_details(
+
+	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	idcompany BIGINT,
+	account_holder_name VARCHAR(20),
+	account_no VARCHAR(20),
+	bank_name VARCHAR(15),
+	sort_code VARCHAR(10), 
+	IBAN VARCHAR(20),
+	FOREIGN KEY (idcompany) REFERENCES tf_company(idcompany)
+)
+
 
 
 
