@@ -104,7 +104,7 @@ public class AllotmentEngine {
 				}
 			}else if (sameRateCount > 1){
 
-				currentAllotment = pendingAllotment.divide(new BigDecimal(sameRateCount),6, RoundingMode.HALF_UP) ;
+				currentAllotment = pendingAllotment.divide(new BigDecimal(sameRateCount),2, RoundingMode.HALF_UP) ;
 				if(investor.getAvailToInvest().compareTo(currentAllotment)==-1  ){
 					currentAllotment = investor.getAvailToInvest();
 				}
@@ -217,7 +217,7 @@ public class AllotmentEngine {
 	}
 	
 	private BigDecimal calculateInvestorGrossProfit(BigDecimal currentAllotment,Integer discountRate,Integer duration){		
-		BigDecimal invGrossProfit=((currentAllotment.multiply(new BigDecimal(discountRate))).divide(TEN_THOUSAND)).multiply(((new BigDecimal(duration)).divide(YEAR,6, RoundingMode.HALF_UP)));
+		BigDecimal invGrossProfit=((currentAllotment.multiply(new BigDecimal(discountRate))).divide(TEN_THOUSAND)).multiply(((new BigDecimal(duration)).divide(YEAR,2, RoundingMode.HALF_UP)));
 		invGrossProfit.setScale(2, RoundingMode.CEILING);
 		return invGrossProfit;
 	}
@@ -235,12 +235,12 @@ public class AllotmentEngine {
 	}
 	
 	private BigDecimal calculateSellerFees(Integer duration,BigDecimal tradeAmount,SellerSetting sellerSetting){		
-		BigDecimal sellerFees=((new BigDecimal(duration).multiply(sellerSetting.getSellerFinFee())).divide(TEN_THOUSAND,6, RoundingMode.HALF_UP)).multiply(tradeAmount);
+		BigDecimal sellerFees=((new BigDecimal(duration).multiply(sellerSetting.getSellerFinFee())).divide(TEN_THOUSAND,2, RoundingMode.HALF_UP)).multiply(tradeAmount);
 		sellerFees.setScale(2, RoundingMode.CEILING);
 		return sellerFees;
 	}
 	private BigDecimal calculateSellerFeesByGeneralSetting(Integer duration,BigDecimal tradeAmount,GeneralSetting generalSetting){		
-		BigDecimal sellerFees=((new BigDecimal(duration).multiply(generalSetting.getSellerFinFee())).divide(TEN_THOUSAND,6, RoundingMode.HALF_UP)).multiply(tradeAmount);
+		BigDecimal sellerFees=((new BigDecimal(duration).multiply(generalSetting.getSellerFinFee())).divide(TEN_THOUSAND,2, RoundingMode.HALF_UP)).multiply(tradeAmount);
 		sellerFees.setScale(2, RoundingMode.CEILING);
 		return sellerFees;
 	}
@@ -309,7 +309,7 @@ public class AllotmentEngine {
 				}
 			}else if (sameRateCount > 1){
 
-				currentAllotment = pendingAllotment.divide(new BigDecimal(sameRateCount),6, RoundingMode.HALF_UP) ;
+				currentAllotment = pendingAllotment.divide(new BigDecimal(sameRateCount),2, RoundingMode.HALF_UP) ;
 				if(investor.getAvailToInvest().compareTo(currentAllotment)==-1  ){
 					currentAllotment = investor.getAvailToInvest();
 				}
