@@ -131,61 +131,67 @@ public void deleteInvoice(Invoice invoice){
 						Map row = (Map) invoiceObj;
 						Invoice invoiceObject = new Invoice();
 						Company company = new Company();
-						invoiceObject.setId(Long.parseLong(row.get("id")
-								.toString()));
-						invoiceObject.setInvoiceNumber(row
-								.get("invoice_number").toString());
-
+						invoiceObject.setId(Long.parseLong(row.get("id").toString()));
+						invoiceObject.setInvoiceNumber(row.get("invoice_number").toString());
 						try {
-							DateFormat df = new SimpleDateFormat(
-									Constants.DATE_FORMAT);
-							Date paymentDate = df.parse(row.get("payment_date")
-									.toString());
+							DateFormat df = new SimpleDateFormat(Constants.DATE_FORMAT);
+							Date paymentDate = df.parse(row.get("payment_date").toString());
 							invoiceObject.setPayment_date(paymentDate);
 						} catch (Exception e) {
 							System.out.println(e);
 						}
-
 						try {
-							invoiceObject.setSellerCompanyVatNumber(null == row
-									.get("seller_company_vat_number")
-									.toString() ? "" : row.get(
-									"seller_company_vat_number").toString());
+							invoiceObject.setSellerCompanyVatNumber(null == row.get("seller_company_vat_number").toString() ? "" : row.get("seller_company_vat_number").toString());
 						} catch (Exception e) {
 							invoiceObject.setSellerCompanyVatNumber("");
 						}
 						try {
-							BigDecimal bt = new BigDecimal(null == row.get(
-									"vat_amount").toString() ? "" : row.get(
-									"vat_amount").toString());
+							BigDecimal bt = new BigDecimal(null == row.get("vat_amount").toString() ? "" : row.get("vat_amount").toString());
 							invoiceObject.setVatAmount(bt);
 						} catch (Exception e) {
 							String ammount = "0";
 							BigDecimal vatAmmount = new BigDecimal(ammount);
 							invoiceObject.setVatAmount(vatAmmount);
 						}
-						invoiceObject.setSellerCompanyRegistrationNumber(row
-								.get("seller_company_registration_number")
-								.toString());
-						BigDecimal bd = new BigDecimal(row.get("invoice_amout")
-								.toString());
-						invoiceObject.setInvoiceAmount(bd);
-						invoiceObject.setInvoiceDesc(null == row.get(
-								"invoice_desc").toString() ? "" : row.get(
-								"invoice_desc").toString());
-						invoiceObject.setDuration(Integer.parseInt(null == row
-								.get("duration").toString() ? "1" : row.get(
-								"duration").toString()));
-
-						invoiceObject.setCurrency(null == row.get("currency")
-								.toString() ? "" : row.get("currency")
-								.toString());
-						company.setName(null == row.get("name").toString() ? ""
-								: row.get("name").toString());
-						invoiceObject.setScfCompany(company);
-						invoiceObject
-								.setStatus(null == row.get("status").toString() ? ""
-										: row.get("status").toString());
+						try {
+							invoiceObject.setSellerCompanyRegistrationNumber(row.get("seller_company_registration_number").toString());
+						} catch (Exception e) {
+							invoiceObject.setSellerCompanyRegistrationNumber("");
+						}
+						
+						try {
+							BigDecimal bd = new BigDecimal(row.get("invoice_amout").toString());
+							invoiceObject.setInvoiceAmount(bd);
+						} catch (Exception e) {
+							invoiceObject.setInvoiceAmount(null);
+						}
+						try {
+							invoiceObject.setInvoiceDesc(null == row.get(	"invoice_desc").toString() ? "" : row.get("invoice_desc").toString());
+						} catch (Exception e) {
+							invoiceObject.setInvoiceDesc("");
+						}
+						try {
+							invoiceObject.setDuration(Integer.parseInt(null == row.get("duration").toString() ? "1" : row.get("duration").toString()));
+						} catch (Exception e) {
+							int duration = 0;
+							invoiceObject.setDuration(duration);
+						}
+						try {
+							invoiceObject.setCurrency(null == row.get("currency").toString() ? "" : row.get("currency").toString());
+						} catch (Exception e) {
+							invoiceObject.setCurrency("");
+						}
+						try {
+							company.setName(null == row.get("name").toString() ? "": row.get("name").toString());
+							invoiceObject.setScfCompany(company);
+						} catch (Exception e) {
+							invoiceObject.setScfCompany(company);
+						}
+						try {
+							invoiceObject.setStatus(null == row.get("status").toString() ? "": row.get("status").toString());
+						} catch (Exception e) {
+							invoiceObject.setStatus("");
+						}
 						results.add(invoiceObject);
 					}
 				}
