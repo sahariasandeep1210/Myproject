@@ -11,19 +11,19 @@
 				</div>
 				<div class="panel-body">
 					<div class="quick-stat-stats row-fluid">
-						<div class="span4 fg-blue">
+						<%-- <div class="span4 fg-blue">
 							<div class="text-container">
 								<div class="small-text">TOTAL CREDIT LINE</div>
 								<div class="big-text">&pound; <fmt:formatNumber type="number" maxFractionDigits="0" value="${dashboardModel.investmentCap}"  /></div>
 							</div>
-						</div>
-						<div class="span4 fg-red">
+						</div> --%>
+						<div class="span6 fg-red">
 							<div class="text-container">
 								<div class="small-text">CREDIT AVAILABLE</div>
 								<div class="big-text">&pound; <fmt:formatNumber type="number" maxFractionDigits="0" value="${dashboardModel.availToInvest}"  /></div>
 							</div>
 						</div>
-						<div class="span4 fg-green">
+						<div class="span6 fg-green">
 							<div class="text-container">
 								<div class="small-text">AMOUNT INVESTED</div>
 								<div class="big-text">&pound; <fmt:formatNumber type="number" maxFractionDigits="0" value="${dashboardModel.amountInvested}"  /></div>
