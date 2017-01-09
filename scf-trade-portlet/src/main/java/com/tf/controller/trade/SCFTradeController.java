@@ -166,13 +166,37 @@ public class SCFTradeController {
 			BigDecimal totalSellerFees = BigDecimal.ZERO;
 			BigDecimal totalWhiteHallFees = BigDecimal.ZERO;
 			BigDecimal totalSellerAmount = BigDecimal.ZERO;
+			
+			/*added by avneet*/
+			
+			BigDecimal totalTradeAmounts = BigDecimal.ZERO;
+			BigDecimal totalInvestorTotalGross = BigDecimal.ZERO;
+			BigDecimal totalWhitehallTotalShare = BigDecimal.ZERO;
+			BigDecimal totalInvestorTotalProfit = BigDecimal.ZERO;
+			BigDecimal totalWhitehallTotalProfit = BigDecimal.ZERO;
+			BigDecimal totalWhitehallSeller = BigDecimal.ZERO;
+			BigDecimal totalSellerNetAllotment = BigDecimal.ZERO;
+			
+			BigDecimal totalSellerTransFee = BigDecimal.ZERO;
+			BigDecimal totalSellerFeess =  BigDecimal.ZERO;
+			
+			
 			DateFormat formatter = new SimpleDateFormat(Constants.DATE_FORMAT);
 			Date fromDate = null;
 			Date toDate = null;
+			String fromDateString = null;
+			String toDateString = null;
 			String search = ParamUtil.getString(request, "Search");
 			String value = ParamUtil.getString(request, "dateList");
 			String from = ParamUtil.getString(request, "fromDate");
 			String to = ParamUtil.getString(request, "toDate");
+			if (!StringUtils.isNullOrEmpty(from)) {
+				fromDateString = Constants.formatDate(from);
+			}
+			if (!StringUtils.isNullOrEmpty(to)) {
+				toDateString = Constants.formatDate(to);
+			}
+			
 			if (!StringUtils.isNullOrEmpty(from)) {
 				fromDate = formatter.parse(from);
 			}
@@ -192,13 +216,51 @@ public class SCFTradeController {
 					totalWhiteHallFees = totalWhiteHallFees.add(scf.getWhitehallTotalProfit());
 					totalSellerAmount = totalSellerAmount.add(scf.getSellerNetAllotment());
 				}
+				
+				List listSum = scfTradeService.getSumOfSCFTradePropertiesForAdmin(search,null,null,null);
+				   if (null != listSum || listSum.size() > 0) {
+				    Object[] obj = (Object[]) listSum.get(0);
+				    
+				     totalTradeAmounts = (BigDecimal) obj[0];
+					 totalInvestorTotalGross = (BigDecimal) obj[1];
+					 totalWhitehallTotalShare =(BigDecimal) obj[2];
+					 totalInvestorTotalProfit = (BigDecimal) obj[3];
+					 totalWhitehallTotalProfit = (BigDecimal) obj[4];
+					 totalSellerNetAllotment = (BigDecimal) obj[5];
+					 totalSellerTransFee = (BigDecimal) obj[6];
+					 totalSellerFeess = (BigDecimal) obj[7];
+					 totalWhitehallSeller = totalWhitehallSeller.add(totalSellerFeess).add(totalSellerTransFee);
+				   }
 			}
 			else {
 				scftrades =
 					scfTradeService.getAdminTradeListWithSearch(
 						search, fromDate, toDate, value, paginationModel.getStartIndex(), paginationModel.getPageSize());
 				noOfRecords = scfTradeService.getAdminTradeListWithSearchCount(search, fromDate, toDate, value);
+				
+				List listSum = scfTradeService.getSumOfSCFTradePropertiesForAdmin(search, fromDateString, toDateString, value);
+				 if (null != listSum || listSum.size() > 0) {
+					    Object[] obj = (Object[]) listSum.get(0);
+					    
+					     totalTradeAmounts = (BigDecimal) obj[0];
+						 totalInvestorTotalGross = (BigDecimal) obj[1];
+						 totalWhitehallTotalShare =(BigDecimal) obj[2];
+						 totalInvestorTotalProfit = (BigDecimal) obj[3];
+						 totalWhitehallTotalProfit = (BigDecimal) obj[4];
+						 totalSellerNetAllotment = (BigDecimal) obj[5];
+						 totalSellerTransFee = (BigDecimal) obj[6];
+						 totalSellerFeess = (BigDecimal) obj[7];
+						 totalWhitehallSeller = totalWhitehallSeller.add(totalSellerFeess).add(totalSellerTransFee);
+					   }
 			}
+			
+			model.put("totalTradeAmounts", totalTradeAmounts);
+			model.put("totalInvestorTotalGross", totalInvestorTotalGross);
+			model.put("totalWhitehallTotalShare", totalWhitehallTotalShare);
+			model.put("totalInvestorTotalProfit", totalInvestorTotalProfit);
+			model.put("totalWhitehallTotalProfit", totalWhitehallTotalProfit);
+			model.put("totalSellerNetAllotment", totalSellerNetAllotment);
+			model.put("totalWhitehallSeller", totalWhitehallSeller);
 			
 			model.put("search", search);
 			model.put("from", from);
@@ -222,10 +284,12 @@ public class SCFTradeController {
 			DateFormat formatter = new SimpleDateFormat(Constants.DATE_FORMAT);
 			Date fromDate = null;
 			Date toDate = null;
+			
 			String search = ParamUtil.getString(request, "Search");
 			String value = ParamUtil.getString(request, "dateList");
 			String from = ParamUtil.getString(request, "fromDate");
 			String to = ParamUtil.getString(request, "toDate");
+			
 			if (!StringUtils.isNullOrEmpty(from)) {
 				fromDate = formatter.parse(from);
 			}

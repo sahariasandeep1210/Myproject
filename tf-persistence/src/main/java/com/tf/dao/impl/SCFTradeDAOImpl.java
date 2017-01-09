@@ -34,6 +34,7 @@ import com.tf.dao.SCFTradeDAO;
 import com.tf.model.Allotment;
 import com.tf.model.InvestorPortfolio;
 import com.tf.model.SCFTrade;
+import com.tf.persistance.util.Constants;
 import com.tf.persistance.util.DashboardModel;
 import com.tf.persistance.util.TradeStatus;
 import com.tf.persistance.util.ValidationUtil;
@@ -1357,6 +1358,55 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 					"investorTotalGross");
 			proList.add(Projections.sum("sellerNetAllotment"),
 					"sellerNetAllotment");
+			criteria.setProjection(proList);
+			Object[] obj = (Object[]) criteria.uniqueResult();
+			someOfValuesList.add(obj);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return someOfValuesList;
+
+	}
+	
+	
+	public List getSumOfSCFTradePropertiesForAdmin(String searchTxt,String fromDate, String toDate, String value) {
+		List<Object[]> someOfValuesList = new ArrayList<Object[]>();
+		try {
+			Criteria criteria = sessionFactory.getCurrentSession()
+					.createCriteria(SCFTrade.class);
+			criteria.createAlias("company", "company");
+			Disjunction or = Restrictions.disjunction();
+			if (org.apache.commons.lang.StringUtils.isNotBlank(searchTxt)) {
+				
+				if (validationUtil.isNumeric(searchTxt)) {
+					or.add(Restrictions.eq("tradeAmount",
+							BigDecimal.valueOf(Long.valueOf(searchTxt))));
+				}
+				or.add(Restrictions.like("status", searchTxt,MatchMode.ANYWHERE));
+				or.add(Restrictions.like("scfId", searchTxt, MatchMode.ANYWHERE));
+				or.add(Restrictions.like("company.name", searchTxt,MatchMode.ANYWHERE));
+				
+			}
+			if ((fromDate != null && toDate != null) || ((org.apache.commons.lang.StringUtils.isNotBlank(toDate)) && (org.apache.commons.lang.StringUtils.isNotBlank(fromDate)))){
+				or.add(Restrictions.ge(value, fromDate));
+				or.add(Restrictions.le(value, toDate));
+			}
+			else if (fromDate != null && toDate == null) {
+				or.add(Restrictions.ge(value, fromDate));
+			}
+			else if (fromDate == null && toDate != null) {
+				or.add(Restrictions.le(value, toDate));
+			}
+			criteria.add(or);
+			ProjectionList proList = Projections.projectionList();
+			proList.add(Projections.sum("tradeAmount"), "tradeAmount");
+			proList.add(Projections.sum("investorTotalGross"), "investorTotalGross");
+			proList.add(Projections.sum("whitehallTotalShare"), "whitehallTotalShare");
+			proList.add(Projections.sum("investorTotalProfit"),"investorTotalProfit");
+			proList.add(Projections.sum("whitehallTotalProfit"),"whitehallTotalProfit");
+			proList.add(Projections.sum("sellerNetAllotment"),"sellerNetAllotment");
+			proList.add(Projections.sum("sellerTransFee"), "sellerTransFee");
+			proList.add(Projections.sum("sellerFees"), "sellerFees");
 			criteria.setProjection(proList);
 			Object[] obj = (Object[]) criteria.uniqueResult();
 			someOfValuesList.add(obj);

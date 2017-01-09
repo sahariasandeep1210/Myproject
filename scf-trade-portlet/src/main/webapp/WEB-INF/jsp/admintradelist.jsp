@@ -57,6 +57,20 @@
 				
 					<c:choose>						
 						<c:when test="${fn:length(scftrades) gt 0}">
+						     <tr>
+									<td width="3%"></td>
+									 <td >Total</td>
+									<td></td>
+									<td class="rightalign blue_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalTradeAmounts}"  pattern="#0.00"/></td>
+									<td></td>
+									<td class="rightalign green_bold" ><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalInvestorTotalGross}"  pattern="#0.00"/></td>
+									<td class="rightalign blue_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalWhitehallTotalShare}"  pattern="#0.00"/></td>
+									<td class="rightalign green_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalInvestorTotalProfit}"  pattern="#0.00"/></td>
+									<td class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalWhitehallSeller}"  pattern="#0.00"/></td>
+									<td class="rightalign blue_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalWhitehallTotalProfit}"  pattern="#0.00"/></td>
+									<td class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalSellerNetAllotment}"  pattern="#0.00"/></td>	
+									<td></td>						
+								</tr>
 							<c:forEach items="${scftrades}" var="trade">
 								<tr>
 									<td width="3%"><input type="radio" value="${trade.id}" name="trade"  status-attr="${trade.status}" <c:if test="${trade.status eq 'Settled' || trade.status eq 'Closed'}">disabled="disabled"</c:if> ></td>

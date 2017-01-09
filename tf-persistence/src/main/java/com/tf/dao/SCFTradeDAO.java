@@ -76,4 +76,6 @@ public interface SCFTradeDAO extends BaseDAO<SCFTrade, Serializable> {
 	public void setInvestorStackedBarChartInformation(DashboardModel dashModel,Long investorId);
 
 	public List getSumOfSCFTradeProperties(String searchText);
+
+	public List getSumOfSCFTradePropertiesForAdmin(String search,String fromDate, String toDate, String value);
 }
