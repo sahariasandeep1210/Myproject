@@ -4,30 +4,14 @@
 
 <portlet:renderURL var="defaultRender">
 </portlet:renderURL>
-<!-- <div id="myToggler" class="customToggler">
-  <div class="toggleHeader toggler-header-collapsed">
-  	<div class="toggle-title pull-left">Invoice within Trade</div>
-  	<div class="toggle-icon-container text-right">
-  		<i class="icomoon-accordian-arrow-down"></i>
-  	</div>
-  	
-  </div>
-  <div  class="toggleContent toggler-content-collapsed"> -->
 
-<div id="myToggler" class="panel panel-blue mt0 customToggler">
-	
-	  <div class="toggleHeader toggler-header-collapsed">
-  	<div class="toggle-title pull-left"><h3 class="panel-title">TRADE INFORMATION </h3></div>
-  	<div class="toggle-icon-container text-right">
-  		<i class="icomoon-accordian-arrow-down"></i>
+
+<div class="panel panel-blue mt0">
+
+	<div class="panel-heading">
+    	<h3 class="panel-title">TRADE INFORMATION</h3>
   	</div>
-  	
-  </div>
-	
-	<!-- <div class="panel-heading">
-    	<h3 class="panel-title">TRADE INFORMATION  test2</h3>
-  	</div> -->
-  	<div class="panel-body toggleContent toggler-content-collapsed">
+  	<div class="panel-body">
 
 	<form:form commandName="scfTradeModel" method="post"
 		action="${updateTradeUrl}" id="updteTradeForm" autocomplete="off"
@@ -57,7 +41,7 @@
 					<td><b>Seller Payment Date</b></td>
 					<td>${scfTradeModel.sellerPaymentDate}</td>
 					<td><b>Trade Amount</b></td>
-					<td><fmt:formatNumber type="number" maxFractionDigits="3" value="${scfTradeModel.tradeAmount}" pattern="#0.00"/></td>
+					<td><fmt:formatNumber type="number" maxFractionDigits="3" value="${scfTradeModel.tradeAmount}" /></td>
 				</tr>
 				<tr>
 					<td><b>Company Name</b></td>
@@ -92,12 +76,12 @@
                         <c:when test="${fn:length(allotments) gt 0}">
                             <c:forEach items="${allotments}" var="allotment">
                                 <tr>
-                                    <td class="rightalign blue_normal"><fmt:formatNumber type="number" maxFractionDigits="3" value="${allotment.allotmentAmount}" pattern="#0.00"/></td>
+                                    <td class="rightalign blue_normal"><fmt:formatNumber type="number" maxFractionDigits="3" value="${allotment.allotmentAmount}" /></td>
                                     <td class="rightalign">${allotment.marketDiscount}</td>
                                     <td>${allotment.noOfdays}</td>
                                     <td class="rightalign red_bold">${allotment.whitehallProfitShare }</td>
-                                    <td class="rightalign green_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${allotment.investorGrossProfit}" pattern="#0.00"/></td>
-                                    <td class="rightalign green_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${allotment.investorNetProfit}" pattern="#0.00"/></td>
+                                    <td class="rightalign green_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${allotment.investorGrossProfit}" /></td>
+                                    <td class="rightalign green_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${allotment.investorNetProfit}" /></td>
                                     <td><fmt:formatDate value="${allotment.allotmentDate}"
                                             pattern="dd-MM-yyyy HH:mm" /></td>
 
@@ -112,24 +96,22 @@
 
 		 
 		<br>
-		
+		 <%@include file="invoicelisttable.jsp"%>
 		 
-		  
-
-
-
-	</form:form>
-	</div>
-	<br>
-<%@include file="invoicelisttable.jsp"%>
-</div>
-<br>
- <div class="actionContainer noBorder text-left">
+		  <div class="actionContainer noBorder text-left">
 			<input type="button"
 					value="Go Back" class="btn btnBgBuSm"
 					data-url="${defaultRender}" id="tradeback" />
 					<input type="button" style="display:none" value="Update" id="updateTrade" class="btn btn-primary"/>
 		  </div>
+
+
+
+	</form:form>
+	</div>
+
+</div>
+
 <aui:script>
 AUI().ready(function() {	
 
