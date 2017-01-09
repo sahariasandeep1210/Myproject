@@ -19,20 +19,25 @@
 
 
 
-<div id="myToggler" class="panel panel-blue quick-stat-panel customToggler" > 
-
-<div class="toggleHeader toggler-header-collapsed">
+<!-- <div id="myToggler" class="panel panel-blue quick-stat-panel customToggler" > 
+ -->
+ 
+<!-- <div class="toggleHeader">
   	<div class="toggle-title pull-left"><h3 class="panel-title">TRADE INFORMATION </h3></div>
   	<div class="toggle-icon-container text-right">
   		<i class="icomoon-accordian-arrow-down"></i>
   	</div>
   	
   </div>
+ -->
+<div class="panel panel-blue mt0">
 
-<!-- <div class="panel-heading"> <h3 class="panel-title">TRADE INFORMATION</h3> </div> -->
+	<div class="panel-heading">
+    	<h3 class="panel-title">TRADE INFORMATION</h3>
+  	</div>
 
 
-<div class="panel-body toggleContent toggler-content-collapsed" >
+<div class="panel-body" >
 
 
 <form:form commandName="scfTradeModel" method="post"	action="${updateTradeUrl}" id="updteTradeForm" autocomplete="off"
