@@ -56,7 +56,7 @@
 							<%@include file="userlist.jsp"%>
 						</div>
 						<div class="toggleHeader toggler-header-collapsed">
-						  	<div class="toggle-title pull-left">Offer Information</div>
+						  	<div class="toggle-title pull-left">Officer Information</div>
 						  	<div class="toggle-icon-container text-right">
 						  		<i class="icomoon-accordian-arrow-down"></i>
 						  	</div>

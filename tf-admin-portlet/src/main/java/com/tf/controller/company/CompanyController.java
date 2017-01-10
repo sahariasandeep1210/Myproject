@@ -280,6 +280,9 @@ public class CompanyController extends BaseController {
 				Company cmp = companyService.findById(company.getId());
 				company.setUsers(cmp.getUsers());
 				company.getAddress().setId(cmp.getAddress().getId());
+				if(cmp.getCompanyAccountDetail() !=null && cmp.getCompanyAccountDetail().getId() > 0){
+				    company.getCompanyAccountDetail().setId(cmp.getCompanyAccountDetail().getId());
+				}				
 				//company should only be updated by omni admin after registration
 				if (getPermissionChecker(request).isOmniadmin()
 						|| request.isUserInRole(Constants.WHITEHALL_ADMIN)){

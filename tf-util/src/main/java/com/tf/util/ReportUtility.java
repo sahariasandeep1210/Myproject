@@ -77,8 +77,13 @@ public class ReportUtility {
 		
 		sheet.autoSizeColumn(cellNo);
 		cell = row.createCell(cellNo++);
-		cell.setCellValue(company.getDateestablished());
-		cell.setCellStyle(cellDateStyle);
+		if(company.getDateestablished()!=null){
+		    cell.setCellValue(company.getDateestablished());
+		    cell.setCellStyle(cellDateStyle);
+		}else{
+		    cell.setCellValue("");
+		}
+		
 		
 		sheet.autoSizeColumn(cellNo);
 		cell = row.createCell(cellNo++);

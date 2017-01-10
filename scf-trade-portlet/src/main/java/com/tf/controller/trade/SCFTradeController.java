@@ -222,13 +222,13 @@ public class SCFTradeController {
 				    Object[] obj = (Object[]) listSum.get(0);
 				    
 				     totalTradeAmounts = (BigDecimal) obj[0];
-					 totalInvestorTotalGross = (BigDecimal) obj[1];
-					 totalWhitehallTotalShare =(BigDecimal) obj[2];
-					 totalInvestorTotalProfit = (BigDecimal) obj[3];
-					 totalWhitehallTotalProfit = (BigDecimal) obj[4];
-					 totalSellerNetAllotment = (BigDecimal) obj[5];
-					 totalSellerTransFee = (BigDecimal) obj[6];
-					 totalSellerFeess = (BigDecimal) obj[7];
+					 totalInvestorTotalGross = obj[1]!=null ?(BigDecimal) obj[1]:BigDecimal.ZERO;
+					 totalWhitehallTotalShare =obj[2]!=null ?(BigDecimal) obj[2]:BigDecimal.ZERO;
+					 totalInvestorTotalProfit = obj[3]!=null ? (BigDecimal) obj[3]:BigDecimal.ZERO;
+					 totalWhitehallTotalProfit = obj[4]!=null ?(BigDecimal) obj[4]:BigDecimal.ZERO;
+					 totalSellerNetAllotment = obj[5]!=null ?(BigDecimal) obj[5]:BigDecimal.ZERO;
+					 totalSellerTransFee = obj[6]!=null ? (BigDecimal) obj[6]:BigDecimal.ZERO;
+					 totalSellerFeess = obj[7]!=null ?(BigDecimal) obj[7]:BigDecimal.ZERO;
 					 totalWhitehallSeller = totalWhitehallSeller.add(totalSellerFeess).add(totalSellerTransFee);
 				   }
 			}
@@ -352,10 +352,10 @@ public class SCFTradeController {
 			List listSum = scfTradeService.getSumOfSCFTradeProperties(search);
 			   if (null != listSum || listSum.size() > 0) {
 			    Object[] obj = (Object[]) listSum.get(0);
-			    totalTradeAmount = (BigDecimal) obj[0];
-			    totalSellerTransFee = (BigDecimal) obj[1];
-			    totalSellerFees = (BigDecimal) obj[2];
-			    totalInvestorTotalGross = (BigDecimal) obj[3];
+			    totalTradeAmount = obj[0]!=null?(BigDecimal) obj[0]:BigDecimal.ZERO;
+			    totalSellerTransFee =  obj[1] !=null ? (BigDecimal) obj[1]:BigDecimal.ZERO;
+			    totalSellerFees = obj[2]!=null ?(BigDecimal) obj[2]:BigDecimal.ZERO;
+			    totalInvestorTotalGross = obj[3]!=null?(BigDecimal) obj[3]:BigDecimal.ZERO;
 			    totalGrossCharges = totalGrossCharges.add(totalSellerTransFee)
 			      .add(totalSellerFees).add(totalInvestorTotalGross);
 			    totalSellerNetAllotment = (BigDecimal) obj[4];
