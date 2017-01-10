@@ -11,8 +11,10 @@ $(function() {
 	//$("#telNo").inputmask("999-999-9999");
 	//$("#userTelNo").inputmask("999-999-9999");
 	
-	$("#telNo").inputmask("99 99999-99999");
-	$("#userTelNo").inputmask("99 99999-99999");
+	$("#telNo").inputmask("99 9999999999");
+	$("#userTelNo").inputmask("99 9999999999");
+	$("#sortCode").inputmask("999999");
+	$("#accountNumber").inputmask("9999999999");
 	
 	$("#exportCompanies").click(function(){		
 		
@@ -270,6 +272,11 @@ function validateCompanyInfo(error_free) {
 	elements[0] = "companyName";
 	elements[1] = "telNo";
 	elements[2] = "companyType";
+	elements[3] = "accountNumber";
+	elements[4] = "accountName";
+	elements[5] = "sortCode";
+	elements[6] = "iban";
+	elements[7] = "bankName";
 	
 	$("#errorMsg").hide();
 	$("#errorMsg").removeClass("alert alert-danger");

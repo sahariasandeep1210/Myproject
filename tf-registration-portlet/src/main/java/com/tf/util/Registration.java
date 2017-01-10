@@ -3,6 +3,7 @@ package com.tf.util;
 import java.io.Serializable;
 
 import com.tf.model.Company;
+import com.tf.model.CompanyAccountDetail;
 import com.tf.model.User;
 
 public class Registration implements Serializable {
@@ -12,6 +13,7 @@ public class Registration implements Serializable {
 	
 	private User user;
 	private Company company;
+	private CompanyAccountDetail companyAccountDetail;
 	
 	public Registration() {
 	}
@@ -30,6 +32,14 @@ public class Registration implements Serializable {
 
 	public void setCompany(Company company) {
 		this.company = company;
+	}
+
+	public CompanyAccountDetail getCompanyAccountDetail() {
+		return companyAccountDetail;
+	}
+
+	public void setCompanyAccountDetail(CompanyAccountDetail companyAccountDetail) {
+		this.companyAccountDetail = companyAccountDetail;
 	}
 
 	@Override
