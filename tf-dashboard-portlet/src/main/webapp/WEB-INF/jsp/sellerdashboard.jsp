@@ -1,6 +1,10 @@
 <%@include file="init.jsp"%>
+<portlet:renderURL var="defaultRenderURL" />
+<input type="hidden" name="defaultURL" 		id="defaultURL" 		value="${defaultRenderURL}" />
 
 <portlet:defineObjects />
+<form:form  method="post"
+		action="${defaultRenderURL}" id="dashBoard" autocomplete="off" name="dashBoard">
 
 <div id="dashboard">
 	<div class="row-fluid">
@@ -8,6 +12,23 @@
 			<div class="panel panel-blue quick-stat-panel">
 				<div class="panel-heading">
 					<h3 class="panel-title">Credit Line Availability</h3>
+					<br>
+					<c:choose>
+				<c:when test="${not empty sellerRegList }">
+					<select id="sellercompNo" name="sellercompNo"
+						class="aui-field-select">
+						<option value="" selected="selected" disabled="disabled">Select </option>
+						<c:forEach var="sellerCompany" items="${sellerRegList}">
+							<option value="${sellerCompany.id}" 
+							<c:if test="${sellerCompany.id eq companyId}">selected="selected" </c:if>>${sellerCompany.sellerCompany.name}</option>
+						</c:forEach>
+					</select>
+				</c:when>
+				
+			</c:choose>
+					<%-- <br>
+					<input type="hidden" id="comp" name="comp" value=""/>
+					<span id="showD">${compV}</span> --%>
 				</div>
 				<div class="panel-body">
 					<div class="quick-stat-stats row-fluid">
@@ -50,6 +71,7 @@
 		</div>
 	</div>
 </div>
+</form:form>
 <script type="text/javascript">
 	google.charts.load("current", {
 		packages : [ "corechart" ]

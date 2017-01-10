@@ -1,5 +1,6 @@
 package com.tf.controller.dashboard;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.portlet.RenderRequest;
@@ -14,10 +15,13 @@ import org.springframework.web.portlet.bind.annotation.RenderMapping;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.security.permission.PermissionChecker;
 import com.liferay.portal.theme.ThemeDisplay;
+import com.tf.model.Company;
 import com.tf.model.Investor;
+import com.tf.model.SellerScfCompanyMapping;
 import com.tf.persistance.util.Constants;
 import com.tf.persistance.util.DashboardModel;
 import com.tf.service.DashBoardService;
@@ -54,7 +58,7 @@ public class DashboardController {
 		_log.info("Render Dashboard");
 		String viewName = "admindashboard";
 		try {
-		    
+			List<SellerScfCompanyMapping> sellerRegList = new ArrayList<SellerScfCompanyMapping>();
 		    String userType=null;
 		    Long companyId =null;
 		    ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
@@ -77,7 +81,13 @@ public class DashboardController {
 		    	viewName="investordashboard";
 		    }else if(request.isUserInRole(Constants.SELLER_ADMIN)){
 		    	Long sellerCmpID = userService.getCompanybyUserID(themeDisplay.getUserId()).getId();
-		    	companyId=sellerScfMappingService.getSellerScfompany(sellerCmpID);			
+		    	sellerRegList = sellerScfMappingService.getSellerCompanies(sellerCmpID);
+		    	model.put("sellerRegList", sellerRegList);
+		    	companyId=ParamUtil.getLong(request, "sellercompNo");
+		    	if(companyId.equals("") || companyId==null || companyId==0){
+		    		companyId=sellerScfMappingService.getSellerScfompany(sellerCmpID);
+		    	}
+		    	model.put("companyId", companyId);
 		    	if (companyId !=null && companyId >0) {
 		    	    dashModel.setInvestorPortfolios(investorService.getInvestorPortfolioDataForGraph(companyId));
 		    	    dashModel.setTotalCreditAvail(investorService.getTotalCreditAvailForGraph(companyId));

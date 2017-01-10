@@ -1,5 +1,6 @@
 package com.tf.service;
 
+import com.tf.model.Company;
 import com.tf.model.SellerScfCompanyMapping;
 
 import java.util.List;
@@ -18,4 +19,6 @@ public interface SellerScfMappingService {
 	public Long getSellerScfompany(Long sellerComapanyId);
 	
 	public Long getSellerScfMappingCountBasedOnId(Long scfCompanyID);
+	
+	public List<SellerScfCompanyMapping> getSellerCompanies(Long sellerComp);
 }

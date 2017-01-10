@@ -1,22 +1,25 @@
 
 package com.tf.dao.impl;
 
-import com.tf.dao.SellerScfMappingDAO;
-import com.tf.model.SellerScfCompanyMapping;
-import com.tf.persistance.util.Constants;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
+import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.tf.dao.SellerScfMappingDAO;
+import com.tf.model.Company;
+import com.tf.model.SellerScfCompanyMapping;
+import com.tf.persistance.util.Constants;
 
 @Repository
 @Transactional
@@ -162,5 +165,49 @@ public class SellerScfMappingDAOImpl extends BaseDAOImpl<SellerScfCompanyMapping
 			throw re;
 		}
 	}
+	
+	
+	@SuppressWarnings("unchecked")
+	  public List<SellerScfCompanyMapping> getSellerCompanies(Long sellerComp) {
+	   _log.debug("Inside getSellerCompanies ");
+	   try {
+		   
+		 
+	    StringBuilder sb = new StringBuilder();
+	    List<SellerScfCompanyMapping> results = new ArrayList<SellerScfCompanyMapping>();
+	    sb.append(" SELECT tf.idcompany,tf.name FROM tf_company tf ,tf_seller_scfcompany_mapping tfs  ");
+	        sb.append(" WHERE  tf.idcompany = tfs.scf_company ");
+	         sb.append(" AND tfs.status='Approve' AND tfs.seller_company='"+sellerComp+"'");
+	    SQLQuery query = (SQLQuery) sessionFactory.getCurrentSession()
+	      .createSQLQuery(sb.toString());
+	    query.setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP);
+	    List data = query.list();
+	    if (null != data || data.size() > 0) {
+	     for (Object companyObj : data) {
+	      Map row = (Map) companyObj;
+	   SellerScfCompanyMapping sellerScfCompanyMapping = new SellerScfCompanyMapping();
+	      Company company = new Company();
+	      sellerScfCompanyMapping.setId(Long.parseLong(row.get("idcompany").toString()));
+	   //sellerScfCompanyMapping.setScfCompany(Long.parseLong(row.get("scf_company").toString()));
+	      company.setName(row.get("name").toString());
+	   sellerScfCompanyMapping.setSellerCompany(company);
+	      results.add(sellerScfCompanyMapping);
+	     }
+	    }
+
+	    _log.debug("GetCompanies successful, result size: "
+	      + results.size());
+	    return results;
+	   } catch (RuntimeException re) {
+	    _log.error("getSellerCompanies failed", re);
+	    throw re;
+	   }
+	  }
+	
+	
+	
+	
+	
+	
 
 }

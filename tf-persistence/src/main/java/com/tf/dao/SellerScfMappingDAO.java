@@ -19,4 +19,6 @@ public interface SellerScfMappingDAO   extends BaseDAO<SellerScfCompanyMapping, 
 	public Long getSellerScfompany(Long sellerComapanyId);
 	
 	public Long getSellerScfMappingCountBasedOnId(Long scfCompanyId);
+
+	public List<SellerScfCompanyMapping> getSellerCompanies(Long sellerComp);
 }
