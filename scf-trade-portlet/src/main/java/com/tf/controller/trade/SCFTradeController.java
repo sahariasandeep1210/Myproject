@@ -190,6 +190,8 @@ public class SCFTradeController {
 			String value = ParamUtil.getString(request, "dateList");
 			String from = ParamUtil.getString(request, "fromDate");
 			String to = ParamUtil.getString(request, "toDate");
+			String tradeID = ParamUtil.getString(request, "tradeID");
+			System.out.println(tradeID);
 			if (!StringUtils.isNullOrEmpty(from)) {
 				fromDateString = Constants.formatDate(from);
 			}
@@ -361,7 +363,7 @@ public class SCFTradeController {
 			    totalSellerNetAllotment = (BigDecimal) obj[4];
 			   }
 			   if(list!=null & list.size()>0){
-			    noOfRecords=(long) list.size();
+			    noOfRecords=(long) scftrades.size();
 			   }
 			   model.put("totalTradeAmount", totalTradeAmount);
 			   model.put("totalSellerTransFee", totalSellerTransFee);
