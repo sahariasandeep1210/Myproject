@@ -362,7 +362,7 @@ public class SCFTradeController {
 			      .add(totalSellerFees).add(totalInvestorTotalGross);
 			    totalSellerNetAllotment = (BigDecimal) obj[4];
 			   }
-			   if(list!=null & list.size()>0){
+			   if(scftrades!=null & scftrades.size()>0){
 			    noOfRecords=(long) scftrades.size();
 			   }
 			   model.put("totalTradeAmount", totalTradeAmount);
