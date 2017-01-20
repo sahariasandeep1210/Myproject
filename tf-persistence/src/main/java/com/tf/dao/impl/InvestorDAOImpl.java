@@ -63,7 +63,7 @@ public class InvestorDAOImpl extends BaseDAOImpl<InvestorPortfolio, Long>   impl
 		_log.debug("getting User instance with id: " + id);
 		Map<Long,List<InvestorPortfolio>>  map=new HashMap<Long,List<InvestorPortfolio>>();
 		long companyId= userDAO.getCompanyIDbyUserID(id);
-		long investorID=getInvestorID(companyId);
+		long investorID=getInvestorID(companyId);	
 		try {
 			if(id!=0){
 				
