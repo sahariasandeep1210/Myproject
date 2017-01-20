@@ -386,10 +386,8 @@ public class WhitehallController {
         @RequestMapping(value = "/syncuser/{userID}",method = RequestMethod.GET )  
         public ResponseEntity<String> syncUser(@PathVariable("userID") long userID) throws PortalException, SystemException {
             	User user = UserLocalServiceUtil.getUser(userID);
-            	System.out.println("user:::"+user);
             	if(user!=null){        
             	    		transformEntities.synchronizeDataFromLifeary(user);
-            	    	System.out.println("Done:::");
     			return new ResponseEntity<String>("success", HttpStatus.OK);   
             	}    	   
              return new ResponseEntity<String>("error", HttpStatus.BAD_REQUEST);   
