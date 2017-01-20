@@ -54,6 +54,7 @@ public class RegistrationServiceImpl implements RegistrationService {
 		user.setActive(Boolean.FALSE);
 		user.setLiferayUserId(lruser.getUserId());		
 		Company company = registration.getCompany();
+		company.setCompanyAccountDetail(registration.getCompanyAccountDetail());
 		if(company!=null && "1".equals(company.getCompanyType())){
 			  Investor investor=new Investor();
 			  investor.setCreateDate(new Date());
@@ -61,6 +62,7 @@ public class RegistrationServiceImpl implements RegistrationService {
 			 company.getInvestor().setCompany(company);
 		 }
 		company.getAddress().setCompany(company);
+		company.getCompanyAccountDetail().setCompany(company);
 		user.setCompany(company);
 		Set<User> users=new LinkedHashSet<User>();
 		users.add(user);
@@ -114,7 +116,6 @@ public class RegistrationServiceImpl implements RegistrationService {
 		return lruser;
 	}
 
-	@Override
 	public void validateCompany(Company company) throws DuplicateNameException, DuplicateNumberException {
 		if(companyService.validateCompanyName(company) > 0){
 			throw new DuplicateNameException();
