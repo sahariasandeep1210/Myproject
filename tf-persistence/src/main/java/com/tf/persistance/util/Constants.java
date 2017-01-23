@@ -42,6 +42,20 @@ public class Constants {
 		return parsedDate;
 	}
 
+	public static String formatDateInDDMMYYYY(String inDate) {
+		  String parsedDate = null;
+		  try {
+		   Date initDate = null;
+		   initDate = new SimpleDateFormat("yyyy-MM-dd").parse(inDate);
+		   SimpleDateFormat formatter1 = new SimpleDateFormat("dd-mm-yyyy");
+		   parsedDate = formatter1.format(initDate);
+		   return parsedDate;
+		  } catch (ParseException e) {
+		   
+		   e.printStackTrace();
+		  }
+		  return parsedDate;
+		 }
 	public static enum STATUS {
 		PENDING("Pending"), APPROVED("Approve"), REJECTED("Reject");
 
