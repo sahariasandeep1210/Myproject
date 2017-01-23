@@ -143,8 +143,11 @@ public void deleteInvoice(Invoice invoice){
 						invoiceObject.setInvoiceNumber(row.get("invoice_number").toString());
 						try {
 							DateFormat df = new SimpleDateFormat(Constants.DATE_FORMAT);
-							Date paymentDate = df.parse(row.get("payment_date").toString());
-							invoiceObject.setPayment_date(paymentDate);
+							/*Date paymentDate = df.parse(row.get("payment_date").toString());*/
+							String paymentDate= Constants.formatDateInDDMMYYYY(row.get("payment_date")
+									.toString());
+							Date paymentDate_New = df.parse(paymentDate);
+							invoiceObject.setPayment_date(paymentDate_New);
 						} catch (Exception e) {
 							System.out.println(e);
 						}
