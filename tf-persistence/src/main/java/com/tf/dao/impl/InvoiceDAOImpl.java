@@ -29,6 +29,7 @@ import com.tf.dao.InvoiceDAO;
 import com.tf.model.Company;
 import com.tf.model.GenericListModel;
 import com.tf.model.Invoice;
+import com.tf.model.SCFTrade;
 import com.tf.persistance.util.Constants;
 import com.tf.persistance.util.ValidationUtil;
 import com.tf.service.CompanyService;
@@ -113,16 +114,21 @@ public void deleteInvoice(Invoice invoice){
 			 List<Invoice> results = new ArrayList<Invoice>();;
 			if (companyID != null) {
 
-				String sqlQuery = "";
+				StringBuilder sqlQuery = new StringBuilder();
 				if (companyID != null && ! StringUtils.isNotBlank(registrationNo)) {
-					sqlQuery = "SELECT scf.*,tf.name FROM scf_invoice scf LEFT JOIN tf_company  tf ON tf.regnumber = scf.seller_company_registration_number where scf.scf_company = '"
-							+ companyID + "' ORDER BY scf.update_date DESC";
+					sqlQuery.append("SELECT scf.*,tf.name,st.id AS Scfid,st.scf_id FROM scf_invoice scf LEFT JOIN tf_company  tf ON tf.regnumber = scf.seller_company_registration_number ");
+					sqlQuery.append("LEFT JOIN scf_trade st ON scf.trade_id = st.id where scf.scf_company = '"+companyID+"'  ORDER BY scf.update_date DESC");
+							
 				} else if (StringUtils.isNotBlank(registrationNo)) {
-					sqlQuery = "SELECT scf.*,tf.name FROM scf_invoice scf LEFT JOIN tf_company  tf ON tf.regnumber = scf.seller_company_registration_number where scf.seller_company_registration_number = '"
-							+ companyID + "' ORDER BY scf.update_date DESC";
+					
+					sqlQuery.append("SELECT scf.*,tf.name,st.id,st.scf_id FROM scf_invoice scf LEFT JOIN tf_company  tf ON tf.regnumber = scf.seller_company_registration_number ");
+					sqlQuery.append("LEFT JOIN scf_trade st ON scf.trade_id = st.id where scf.seller_company_registration_number = '"+registrationNo+"'  ORDER BY scf.update_date DESC");
+							
+					/*sqlQuery = "SELECT scf.*,tf.name,st.id,st.scf_id FROM scf_invoice scf LEFT JOIN tf_company  tf ON tf.regnumber = scf.seller_company_registration_number where scf.seller_company_registration_number = '"
+							+ companyID + "' ORDER BY scf.update_date DESC";*/
 				}
 				SQLQuery query = (SQLQuery) sessionFactory.getCurrentSession()
-						.createSQLQuery(sqlQuery).setFirstResult(startIndex)
+						.createSQLQuery(sqlQuery.toString()).setFirstResult(startIndex)
 						.setMaxResults(pageSize);
 				query.setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP);
 				List data = query.list();
@@ -131,6 +137,8 @@ public void deleteInvoice(Invoice invoice){
 						Map row = (Map) invoiceObj;
 						Invoice invoiceObject = new Invoice();
 						Company company = new Company();
+						SCFTrade scfTrade = new SCFTrade();
+						
 						invoiceObject.setId(Long.parseLong(row.get("id").toString()));
 						invoiceObject.setInvoiceNumber(row.get("invoice_number").toString());
 						try {
@@ -192,6 +200,17 @@ public void deleteInvoice(Invoice invoice){
 						} catch (Exception e) {
 							invoiceObject.setStatus("");
 						}
+						try {
+							scfTrade.setId(Long.parseLong(null == row.get("Scfid").toString() ? "": row.get("Scfid").toString()));
+						} catch (Exception e) {
+							
+						}
+						try {
+							scfTrade.setScfId(null == row.get("scf_id").toString() ? "": row.get("scf_id").toString());
+						} catch (Exception e) {
+							
+						}
+						invoiceObject.setScfTrade(scfTrade);
 						results.add(invoiceObject);
 					}
 				}
@@ -376,7 +395,7 @@ public void deleteInvoice(Invoice invoice){
 		try {
 			
 			StringBuilder sqlQuery = new StringBuilder();
-			sqlQuery.append("SELECT scf.*,tf.name FROM scf_invoice scf LEFT JOIN tf_company  tf ON tf.regnumber = scf.seller_company_registration_number");
+			sqlQuery.append("SELECT scf.*,tf.name,st.id AS Scfid,st.scf_id FROM scf_invoice scf LEFT JOIN tf_company  tf ON tf.regnumber = scf.seller_company_registration_number LEFT JOIN scf_trade st ON scf.trade_id = st.id");
 			if(null != value && value.length()>3){
 				sqlQuery.append(" Where scf.status LIKE '"+search+"%' AND scf.invoice_number LIKE '"+search+"%' AND tf.name LIKE '"+search+"%'");
 			}else{
@@ -432,6 +451,7 @@ public void deleteInvoice(Invoice invoice){
 					Map row = (Map) invoiceObj;
 					Invoice invoiceObject = new Invoice();
 					Company company = new Company();
+					SCFTrade scfTrade = new SCFTrade();
 					invoiceObject.setId(Long.parseLong(row.get("id")
 							.toString()));
 					invoiceObject.setInvoiceNumber(row
@@ -440,9 +460,13 @@ public void deleteInvoice(Invoice invoice){
 					try {
 						DateFormat df = new SimpleDateFormat(
 								Constants.DATE_FORMAT);
-						Date paymentDate = df.parse(row.get("payment_date")
+						
+						/*Date paymentDate = df.parse(row.get("payment_date")
+								.toString());*/
+						String paymentDate= Constants.formatDateInDDMMYYYY(row.get("payment_date")
 								.toString());
-						invoiceObject.setPayment_date(paymentDate);
+						Date paymentDate_New = df.parse(paymentDate);
+						invoiceObject.setPayment_date(paymentDate_New);
 					} catch (Exception e) {
 						System.out.println(e);
 					}
@@ -487,6 +511,19 @@ public void deleteInvoice(Invoice invoice){
 					invoiceObject
 							.setStatus(null == row.get("status").toString() ? ""
 									: row.get("status").toString());
+					
+					try {
+						scfTrade.setId(Long.parseLong(null == row.get("Scfid").toString() ? "": row.get("Scfid").toString()));
+					} catch (Exception e) {
+						
+					}
+					try {
+						scfTrade.setScfId(null == row.get("scf_id").toString() ? "": row.get("scf_id").toString());
+					} catch (Exception e) {
+						
+					}
+					invoiceObject.setScfTrade(scfTrade);
+					
 					invoicelist.add(invoiceObject);
 				}
 			
