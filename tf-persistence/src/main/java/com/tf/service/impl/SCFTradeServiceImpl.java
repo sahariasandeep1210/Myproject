@@ -404,7 +404,7 @@ public class SCFTradeServiceImpl implements SCFTradeService {
 		  return scfTradeDAO.getSumOfSCFTradeProperties(searchText);
 		 }
 
-	public List getSumOfSCFTradePropertiesForAdmin(String search,String fromDate, String toDate, String value) {
+	public List getSumOfSCFTradePropertiesForAdmin(String search,Date fromDate, Date toDate, String value) {
 		
 		 return scfTradeDAO.getSumOfSCFTradePropertiesForAdmin(search,fromDate,toDate,value);
 	}

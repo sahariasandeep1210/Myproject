@@ -1369,7 +1369,7 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 	}
 	
 	
-	public List getSumOfSCFTradePropertiesForAdmin(String searchTxt,String fromDate, String toDate, String value) {
+	public List getSumOfSCFTradePropertiesForAdmin(String searchTxt,Date fromDate, Date toDate, String value) {
 		List<Object[]> someOfValuesList = new ArrayList<Object[]>();
 		try {
 			Criteria criteria = sessionFactory.getCurrentSession()
@@ -1387,7 +1387,7 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 				or.add(Restrictions.like("company.name", searchTxt,MatchMode.ANYWHERE));
 				
 			}
-			if ((fromDate != null && toDate != null) || ((org.apache.commons.lang.StringUtils.isNotBlank(toDate)) && (org.apache.commons.lang.StringUtils.isNotBlank(fromDate)))){
+			if (fromDate != null && toDate != null){
 				or.add(Restrictions.ge(value, fromDate));
 				or.add(Restrictions.le(value, toDate));
 			}
