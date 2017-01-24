@@ -1387,7 +1387,28 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 				or.add(Restrictions.like("company.name", searchTxt,MatchMode.ANYWHERE));
 				
 			}
-			if (fromDate != null && toDate != null){
+			Disjunction or2 = Restrictions.disjunction();
+			or2.add(Restrictions.between(value, fromDate, toDate));
+			if (fromDate != null && toDate == null && !value.equalsIgnoreCase("") && searchTxt.equalsIgnoreCase("")) {
+				criteria.add(Restrictions.ge(value, fromDate));
+			}
+			else if (fromDate == null && toDate != null && !value.equalsIgnoreCase("") && searchTxt.equalsIgnoreCase("")) {
+				criteria.add(Restrictions.le(value, toDate));
+			}
+			else if (fromDate != null && toDate != null && !value.equalsIgnoreCase("") && searchTxt.equalsIgnoreCase("")) {
+				criteria.add(or2);
+			}
+			else if (fromDate != null && toDate != null && !value.equalsIgnoreCase("") && !searchTxt.equalsIgnoreCase("")) {
+				criteria.add(or2).add(or);
+			}else if (fromDate != null && toDate == null && !value.equalsIgnoreCase("") && !searchTxt.equalsIgnoreCase("")) {
+				criteria.add(or).add(Restrictions.ge(value, fromDate));
+			}else if (fromDate == null && toDate != null && !value.equalsIgnoreCase("") && !searchTxt.equalsIgnoreCase("")) {
+				criteria.add(or).add(Restrictions.le(value, toDate));
+			}
+			/*else {
+				criteria.add(or);
+			}*/
+		/*	if (fromDate != null && toDate != null){
 				or.add(Restrictions.ge(value, fromDate));
 				or.add(Restrictions.le(value, toDate));
 			}
@@ -1396,7 +1417,7 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 			}
 			else if (fromDate == null && toDate != null) {
 				or.add(Restrictions.le(value, toDate));
-			}
+			}*/
 			criteria.add(or);
 			ProjectionList proList = Projections.projectionList();
 			proList.add(Projections.sum("tradeAmount"), "tradeAmount");
