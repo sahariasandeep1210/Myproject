@@ -240,7 +240,7 @@ public class SCFTradeController {
 						search, fromDate, toDate, value, paginationModel.getStartIndex(), paginationModel.getPageSize());
 				noOfRecords = scfTradeService.getAdminTradeListWithSearchCount(search, fromDate, toDate, value);
 				
-				List listSum = scfTradeService.getSumOfSCFTradePropertiesForAdmin(search, fromDateString, toDateString, value);
+				List listSum = scfTradeService.getSumOfSCFTradePropertiesForAdmin(search, fromDate, toDate, value);
 				 if (null != listSum || listSum.size() > 0) {
 					    Object[] obj = (Object[]) listSum.get(0);
 					    

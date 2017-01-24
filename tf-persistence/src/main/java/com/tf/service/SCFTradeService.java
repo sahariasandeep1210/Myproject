@@ -75,6 +75,6 @@ public interface SCFTradeService {
 	
 	public List getSumOfSCFTradeProperties(String searchText);
 
-	public List getSumOfSCFTradePropertiesForAdmin(String search,String fromDate, String toDate, String value);
+	public List getSumOfSCFTradePropertiesForAdmin(String search,Date fromDate, Date toDate, String value);
 
 }
