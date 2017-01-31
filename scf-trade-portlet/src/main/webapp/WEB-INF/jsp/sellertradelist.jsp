@@ -31,25 +31,25 @@
 
 
 		 <%@include file="tradefilter.jspf"%> 
-
+			<input type="hidden" id="sortVal" name="dynamicSort" />
 		<div class="customTableContainer">
 			<table class="table  tablesorter table-bordered" id="tradeListTable">
 				<thead>
 					<tr>
-						<th>Trade #</th>
-						<th>Scf Company</th>
-						<th>Trade Value</th>
-						<th>Status</th>
-						<th>Duration</th>
-						<th width="8%">Opening Date</th>
-						<th width="8%">Maturity Date</th>
-						<th>Supplier Payment Date</th>
-						<th>Fixed Charges</th>
-						<th>Whiethall Variable Fees</th>
-						<th>Investors Fees</th>
-						<th>Other Fees</th>
-						<th>Gross charges</th>
-						<th>Finance Amount</th>
+						<th>Trade # <br><img id="trade_SortAsc" src="<%=request.getContextPath()%>/css/up.png" alt="asc"/><img id="trade_SortDesc" src="<%=request.getContextPath()%>/css/down.png" alt="desc"/></th>
+					    <th>SCF Company <br><img id="scfCompany_SortAsc" src="<%=request.getContextPath()%>/css/up.png" alt="asc"/><img id="scfCompany_SortDesc" src="<%=request.getContextPath()%>/css/down.png" alt="desc"/></th>
+						<th>Trade Value <br><img id="allotment_SortAsc" src="<%=request.getContextPath()%>/css/up.png" alt="asc"/><img id="allotment_SortDesc" src="<%=request.getContextPath()%>/css/down.png" alt="desc"/></th>
+						<th>Status <br><img id="status_SortAsc" src="<%=request.getContextPath()%>/css/up.png" alt="asc"/><img id="status_SortDesc" src="<%=request.getContextPath()%>/css/down.png" alt="desc"/></th>
+						<th>Duration <br><img id="duration_SortAsc" src="<%=request.getContextPath()%>/css/up.png" alt="asc"/><img id="duration_SortDesc" src="<%=request.getContextPath()%>/css/down.png" alt="desc"/></th>
+						<th width="8%">Opening Date <br><img id="openingDate_SortAsc" src="<%=request.getContextPath()%>/css/up.png" alt="asc"/><img id="openingDate_SortDesc" src="<%=request.getContextPath()%>/css/down.png" alt="desc"/></th>
+						<th width="8%">Maturity Date <br><img id="closingDate_SortAsc" src="<%=request.getContextPath()%>/css/up.png" alt="asc"/><img id="closingDate_SortDesc" src="<%=request.getContextPath()%>/css/down.png" alt="desc"/></th>
+						<th>Supplier Payment Date <br><img id="supplierPaymentDate_SortAsc" src="<%=request.getContextPath()%>/css/up.png" alt="asc"/><img id="supplierPaymentDate_SortDesc" src="<%=request.getContextPath()%>/css/down.png" alt="desc"/></th>
+						<th>Fixed Charges </th>
+						<th>Whitehall Variable Fees <br><img id="sellerFees_SortAsc" src="<%=request.getContextPath()%>/css/up.png" alt="asc"/><img id="sellerFees_SortDesc" src="<%=request.getContextPath()%>/css/down.png" alt="desc"/></th>
+						<th>Investors Fees <br><img id="investorFee_SortAsc" src="<%=request.getContextPath()%>/css/up.png" alt="asc"/><img id="investorFee_SortDesc" src="<%=request.getContextPath()%>/css/down.png" alt="desc"/></th>
+						<th>Other Fees </th>
+						<th>Gross charges </th>
+						<th>Finance Amount <br><img id="financeAmount_SortAsc" src="<%=request.getContextPath()%>/css/up.png" alt="asc"/><img id="financeAmount_SortDesc" src="<%=request.getContextPath()%>/css/down.png" alt="desc"/></th>
 
 					</tr>
 				</thead>

@@ -191,7 +191,29 @@ public class SCFTradeController {
 			String from = ParamUtil.getString(request, "fromDate");
 			String to = ParamUtil.getString(request, "toDate");
 			String tradeID = ParamUtil.getString(request, "tradeID");
-			System.out.println(tradeID);
+			
+			/*Sorting code starts from here*/
+			String sortCompany = ParamUtil.getString(request, "dynamicSort");
+			
+			if(sortCompany==null || sortCompany==""){sortCompany="";}
+			/*if(sortCompany!=null || sortCompany!=""){
+			if(sortCompany=="scfCompany_asc" || sortCompany.equals("scfCompany_asc"))
+			{
+				sortCompany="asc";
+			}
+			if(sortCompany=="scfCompany_desc" || sortCompany.equals("scfCompany_desc")){
+				sortCompany="desc";
+			}
+			
+			if(sortCompany=="trade_SortAsc" || sortCompany.equals("trade_SortAsc")){
+				sortCompany="asc";
+				}
+			if(sortCompany=="trade_SortDesc" || sortCompany.equals("trade_SortDesc")){
+				sortCompany="desc";
+				}
+			
+			}*/
+			/*ends here*/
 			if (!StringUtils.isNullOrEmpty(from)) {
 				fromDateString = Constants.formatDate(from);
 			}
@@ -207,7 +229,7 @@ public class SCFTradeController {
 			}
 			if (StringUtils.isNullOrEmpty(search) && StringUtils.isNullOrEmpty(value)) {
 
-				scftrades = scfTradeService.getScfTrades(paginationModel.getStartIndex(), paginationModel.getPageSize());
+				scftrades = scfTradeService.getScfTrades(paginationModel.getStartIndex(), paginationModel.getPageSize(),sortCompany);
 				noOfRecords = scfTradeService.getScfTradesCount();
 				for (SCFTrade scf : scftrades) {
 					totalTradeAmount = totalTradeAmount.add(scf.getTradeAmount());
@@ -237,7 +259,7 @@ public class SCFTradeController {
 			else {
 				scftrades =
 					scfTradeService.getAdminTradeListWithSearch(
-						search, fromDate, toDate, value, paginationModel.getStartIndex(), paginationModel.getPageSize());
+						search, fromDate, toDate, value, paginationModel.getStartIndex(), paginationModel.getPageSize(),sortCompany);
 				noOfRecords = scfTradeService.getAdminTradeListWithSearchCount(search, fromDate, toDate, value);
 				
 				List listSum = scfTradeService.getSumOfSCFTradePropertiesForAdmin(search, fromDate, toDate, value);
@@ -292,6 +314,11 @@ public class SCFTradeController {
 			String from = ParamUtil.getString(request, "fromDate");
 			String to = ParamUtil.getString(request, "toDate");
 			
+			/*Sorting code starts from here*/
+			String sortCompany = ParamUtil.getString(request, "dynamicSort");
+		
+			if(sortCompany==null || sortCompany==""){sortCompany="";}
+			
 			if (!StringUtils.isNullOrEmpty(from)) {
 				fromDate = formatter.parse(from);
 			}
@@ -301,13 +328,13 @@ public class SCFTradeController {
 			long companyId = userService.getCompanybyUserID(themeDisplay.getUserId()).getId();
 
 			if (StringUtils.isNullOrEmpty(search) && StringUtils.isNullOrEmpty(value)) {
-				scftrades = scfTradeService.getScfTrades(companyId, paginationModel.getStartIndex(), paginationModel.getPageSize());
+				scftrades = scfTradeService.getScfTrades(companyId, paginationModel.getStartIndex(), paginationModel.getPageSize(),sortCompany);
 				noOfRecords = scfTradeService.getScfTradesCount(companyId);
 			}
 			else {
 				scftrades =
 					scfTradeService.getScfAdminTradeListWithSearch(
-						companyId, search, fromDate, toDate, value, paginationModel.getStartIndex(), paginationModel.getPageSize());
+						companyId, search, fromDate, toDate, value, paginationModel.getStartIndex(), paginationModel.getPageSize(),sortCompany);
 				noOfRecords = scfTradeService.getScfAdminTradeListWithSearchCount(companyId, search, fromDate, toDate, value);
 				
 			}
@@ -326,11 +353,14 @@ public class SCFTradeController {
 		else if (request.isUserInRole(Constants.SELLER_ADMIN)) {
 			String search = ParamUtil.getString(request, "Search");
 			String regNum = liferayUtility.getWhiteHallComapanyRegNo(request);
+			/*Sorting code starts from here*/
+			String sortCompany = ParamUtil.getString(request, "dynamicSort");
+			if(sortCompany==null || sortCompany==""){sortCompany="";}
 			if(StringUtils.isNullOrEmpty(search)){
-			scftrades = scfTradeService.getScfTradeList(regNum, paginationModel.getStartIndex(), paginationModel.getPageSize());
+			scftrades = scfTradeService.getScfTradeList(regNum, paginationModel.getStartIndex(), paginationModel.getPageSize(),sortCompany);
 			noOfRecords = scfTradeService.getScfTradeCounts(regNum);
 			}else{
-			scftrades = scfTradeService.getScfTradeListWithSearch(search, regNum, paginationModel.getStartIndex(), paginationModel.getPageSize());
+			scftrades = scfTradeService.getScfTradeListWithSearch(search, regNum, paginationModel.getStartIndex(), paginationModel.getPageSize(),sortCompany);
 			noOfRecords = scfTradeService.getScfTradeListWithSearchCount(search, regNum);
 			}
 			model.put("search", search);
@@ -344,12 +374,16 @@ public class SCFTradeController {
 			   BigDecimal totalInvestorTotalGross = BigDecimal.ZERO;
 			   BigDecimal totalSellerNetAllotment = BigDecimal.ZERO;
 			   BigDecimal totalGrossCharges = BigDecimal.ZERO;
+			   
+			   /*Sorting code starts from here*/
+				String sortCompany = ParamUtil.getString(request, "dynamicSort");
+				if(sortCompany==null || sortCompany==""){sortCompany="";}
 			
 			String search = ParamUtil.getString(request, "Search");
 		    Long companyId  = liferayUtility.getWhitehallCompanyID(request);
 		    Long investorID=investorService.getInvestorIDByCompanyId(companyId);
-		    scftrades = scfTradeService.getScfTradeListForInvestor(search, investorID, paginationModel.getStartIndex(), paginationModel.getPageSize(), false);
-			List<SCFTrade> list= scfTradeService.getScfTradeListForInvestor(search, investorID, paginationModel.getStartIndex(), paginationModel.getPageSize(), true);
+		    scftrades = scfTradeService.getScfTradeListForInvestor(search, investorID, paginationModel.getStartIndex(), paginationModel.getPageSize(), false,sortCompany);
+			List<SCFTrade> list= scfTradeService.getScfTradeListForInvestor(search, investorID, paginationModel.getStartIndex(), paginationModel.getPageSize(), true,sortCompany);
 			
 			List listSum = scfTradeService.getSumOfSCFTradeProperties(search);
 			   if (null != listSum || listSum.size() > 0) {

@@ -13,7 +13,7 @@ public interface SCFTradeService {
 
 	public Long getScfTradeByScfCompanyCount(String scfCompany, Date frmDate, Date toDate);
 
-	public List<SCFTrade> getScfTrades(int startIndex, int pageSize);
+	public List<SCFTrade> getScfTrades(int startIndex, int pageSize,String order);
 
 	public Long getScfTradeSellerCompanyCount(String scfCompany, Date frmDate, Date toDate, long compID);
 
@@ -39,7 +39,7 @@ public interface SCFTradeService {
 
 	public Long getHistoryCount(long companyId);
 
-	public List<SCFTrade> getScfTrades(Long companyID, int startIndex, int pageSize);
+	public List<SCFTrade> getScfTrades(Long companyID, int startIndex, int pageSize,String order);
 
 	public Long getScfTradesCountByCompanyId(Long companyID);
 
@@ -51,7 +51,7 @@ public interface SCFTradeService {
 
 	public String findByQueryId(String tradeId);
 
-	public List<SCFTrade> getScfTradeList(String RegNum, int startIndex, int pageSize);
+	public List<SCFTrade> getScfTradeList(String RegNum, int startIndex, int pageSize,String order);
 
 	public List<SCFTrade> getTradeHistoryList(int startIndex, int pageSize);
 
@@ -59,17 +59,17 @@ public interface SCFTradeService {
 
 	public Long getScfTradesHistoryCount();
 
-	public List<SCFTrade> getScfTradeListWithSearch(String search, String regNum, int startIndex, int pageSize);
+	public List<SCFTrade> getScfTradeListWithSearch(String search, String regNum, int startIndex, int pageSize,String order);
 
-	public List<SCFTrade> getAdminTradeListWithSearch(String search, Date fromDate, Date toDate, String value, int startIndex, int pageSize);
+	public List<SCFTrade> getAdminTradeListWithSearch(String search, Date fromDate, Date toDate, String value, int startIndex, int pageSize, String order);
 
 	public List<SCFTrade> getScfAdminTradeListWithSearch(
-		long companyId, String searchtxt, Date fromDate, Date toDate, String value, int startIndex, int pageSize);
+		long companyId, String searchtxt, Date fromDate, Date toDate, String value, int startIndex, int pageSize,String order);
 	
 	public Long getScfAdminTradeListWithSearchCount(long companyId, String searchtxt, Date fromDate, Date toDate, String value);
 	
 	public List<SCFTrade> getScfTradeListForInvestor(String searchtxt,
-			Long investorID, int startIndex, int pageSize, boolean count);
+			Long investorID, int startIndex, int pageSize, boolean count, String order);
 	
 	public SCFTrade findTradeDeatailsForInvestor(long tradeId,long investorID);
 	

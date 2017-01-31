@@ -43,8 +43,8 @@ public class SCFTradeServiceImpl implements SCFTradeService {
 	@Autowired
 	private WhiteHallTransactionDAO whiteHallTransactionDAO;
 
-	public List<SCFTrade> getScfTrades(int startIndex, int pageSize) {
-		return scfTradeDAO.getScfTrades(startIndex, pageSize);
+	public List<SCFTrade> getScfTrades(int startIndex, int pageSize,String order) {
+		return scfTradeDAO.getScfTrades(startIndex, pageSize, order);
 	}
 
 	public SCFTrade save(SCFTrade scfTrade) {
@@ -285,8 +285,8 @@ public class SCFTradeServiceImpl implements SCFTradeService {
 		return scfTradeDAO.getScfTradesByTradeId(tradeId);
 	}
 
-	public List<SCFTrade> getScfTrades(Long companyID, int startIndex, int pageSize) {
-		return scfTradeDAO.getScfTrades(companyID, startIndex, pageSize);
+	public List<SCFTrade> getScfTrades(Long companyID, int startIndex, int pageSize,String order) {
+		return scfTradeDAO.getScfTrades(companyID, startIndex, pageSize,order);
 	}
 
 	public Long getScfTradesCount(Long companyID) {
@@ -299,13 +299,13 @@ public class SCFTradeServiceImpl implements SCFTradeService {
 		return scfTradeDAO.getScfTradeCount(tradeId);
 	}
 
-	public List<SCFTrade> getScfTradeList(String RegNum, int startIndex, int pageSize) {
-		List<SCFTrade> scfTrades = scfTradeDAO.getScfTradeList(RegNum, startIndex, pageSize);
+	public List<SCFTrade> getScfTradeList(String RegNum, int startIndex, int pageSize,String order) {
+		List<SCFTrade> scfTrades = scfTradeDAO.getScfTradeList(RegNum, startIndex, pageSize,order);
 		return scfTrades;
 	}
 
-	public List<SCFTrade> getScfTradeListWithSearch(String searchtxt, String RegNum, int startIndex, int pageSize) {
-		List<SCFTrade> scfTrades = scfTradeDAO.getScfTradeListWithSearch(searchtxt, RegNum, startIndex, pageSize);
+	public List<SCFTrade> getScfTradeListWithSearch(String searchtxt, String RegNum, int startIndex, int pageSize,String order) {
+		List<SCFTrade> scfTrades = scfTradeDAO.getScfTradeListWithSearch(searchtxt, RegNum, startIndex, pageSize,order);
 		return scfTrades;
 	}
 
@@ -374,8 +374,8 @@ public class SCFTradeServiceImpl implements SCFTradeService {
 		return scfTradeDAO.getScfTradeListWithSearchCount(searchtxt, RegNum);
 	}
 
-	public List<SCFTrade> getAdminTradeListWithSearch(String searchtxt, Date fromDate, Date toDate, String value, int startIndex, int pageSize) {
-		return scfTradeDAO.getAdminTradeListWithSearch(searchtxt, fromDate, toDate, value, startIndex, pageSize);
+	public List<SCFTrade> getAdminTradeListWithSearch(String searchtxt, Date fromDate, Date toDate, String value, int startIndex, int pageSize, String order) {
+		return scfTradeDAO.getAdminTradeListWithSearch(searchtxt, fromDate, toDate, value, startIndex, pageSize, order);
 	}
 
 	public Long getAdminTradeListWithSearchCount(String searchtxt, Date fromDate, Date toDate, String value) {
@@ -384,16 +384,16 @@ public class SCFTradeServiceImpl implements SCFTradeService {
 	}
 
 	public List<SCFTrade> getScfAdminTradeListWithSearch(
-		long companyId, String searchtxt, Date fromDate, Date toDate, String value, int startIndex, int pageSize) {
-		return scfTradeDAO.getScfAdminTradeListWithSearch(companyId, searchtxt, fromDate, toDate, value, startIndex, pageSize);
+		long companyId, String searchtxt, Date fromDate, Date toDate, String value, int startIndex, int pageSize,String order) {
+		return scfTradeDAO.getScfAdminTradeListWithSearch(companyId, searchtxt, fromDate, toDate, value, startIndex, pageSize, order);
 	}
 	public Long getScfAdminTradeListWithSearchCount(long companyId, String searchtxt, Date fromDate, Date toDate, String value) {
 		return scfTradeDAO.getScfAdminTradeListWithSearchCount(companyId, searchtxt, fromDate, toDate, value);
 	}
 
 	public List<SCFTrade> getScfTradeListForInvestor(String searchtxt,
-		Long investorID, int startIndex, int pageSize, boolean count) {
-		return scfTradeDAO.getScfTradeListForInvestor(searchtxt, investorID, startIndex, pageSize, count);
+		Long investorID, int startIndex, int pageSize, boolean count, String order) {
+		return scfTradeDAO.getScfTradeListForInvestor(searchtxt, investorID, startIndex, pageSize, count,order);
 	}
 	
 	public SCFTrade findTradeDeatailsForInvestor(long tradeId,long investorID){

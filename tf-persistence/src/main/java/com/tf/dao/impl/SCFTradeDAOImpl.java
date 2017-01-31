@@ -61,17 +61,110 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 
 
 	@SuppressWarnings("unchecked")
-	public List<SCFTrade> getScfTrades(int startIndex, int pageSize) {
+	public List<SCFTrade> getScfTrades(int startIndex, int pageSize,String order) {
 
 		_log.debug("Inside getScfTrades  ");
 		try {
+			
 			List<SCFTrade> results = new ArrayList<SCFTrade>();
 			Collection<Long> ids = getIDListForPagination(startIndex, pageSize);
 			if (!ids.isEmpty()) {
 				Session session = sessionFactory.getCurrentSession();
 				Criteria criteria =
-					session.createCriteria(SCFTrade.class).add(Restrictions.in("id", ids)).addOrder(Order.desc("updatDate")).setFetchMode("invoices", FetchMode.JOIN).setFetchMode(
+					session.createCriteria(SCFTrade.class)
+					.add(Restrictions.in("id", ids))
+					//.addOrder(Order.desc("updatDate"))
+					.setFetchMode("invoices", FetchMode.JOIN)
+					.setFetchMode(
 						"allotments", FetchMode.JOIN).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+				criteria.createAlias("company","company");
+				//criteria.createAlias("allotments","allotments");
+				if("".equals(order)){
+					criteria.addOrder(Order.desc("updatDate"));
+		}
+				if("scfCompany_asc".equals(order)){
+					criteria.addOrder(Order.asc("company.name"));
+				}
+				if("scfCompany_desc".equals(order)){
+					criteria.addOrder(Order.desc("company.name"));
+				}
+				if("trade_SortAsc".equals(order)){
+					criteria.addOrder(Order.asc("scfId"));
+				}
+				if("trade_SortDesc".equals(order)){
+					criteria.addOrder(Order.desc("scfId"));
+				}
+				
+				if("allotment_SortAsc".equals(order)){
+					criteria.addOrder(Order.asc("tradeAmount"));
+				}
+				if("allotment_SortDesc".equals(order)){
+					criteria.addOrder(Order.desc("tradeAmount"));
+				}
+				
+				/*if("bps_SortAsc".equals(order)){
+					criteria.addOrder(Order.asc("allotments.marketDiscount"));
+				}
+				if("bps_SortDesc".equals(order)){
+					criteria.addOrder(Order.desc("allotments.marketDiscount"));
+				}*/
+				
+				if("investorGross_SortAsc".equals(order)){
+					criteria.addOrder(Order.asc("investorTotalGross"));
+				}
+				if("investorGross_SortDesc".equals(order)){
+					criteria.addOrder(Order.desc("investorTotalGross"));
+				}
+				
+				if("whiteHallShare_SortAsc".equals(order)){
+					criteria.addOrder(Order.asc("whitehallTotalShare"));
+				}
+				if("whiteHallShare_SortDesc".equals(order)){
+					criteria.addOrder(Order.desc("whitehallTotalShare"));
+				}
+				
+				
+				if("investorNetProfit_SortAsc".equals(order)){
+					criteria.addOrder(Order.asc("investorTotalProfit"));
+				}
+				if("investorNetProfit_SortDesc".equals(order)){
+					criteria.addOrder(Order.desc("investorTotalProfit"));
+				}
+				
+				if("sellerFees_SortAsc".equals(order)){
+					criteria.addOrder(Order.asc("sellerFees"));
+				}
+				if("sellerFees_SortDesc".equals(order)){
+					criteria.addOrder(Order.desc("sellerFees"));
+				}
+				
+				
+				if("whitehallGrossProfit_SortAsc".equals(order)){
+					criteria.addOrder(Order.asc("whitehallTotalProfit"));
+				}
+				if("whitehallGrossProfit_SortDesc".equals(order)){
+					criteria.addOrder(Order.desc("whitehallTotalProfit"));
+				}
+				
+				if("sellerAllotment_SortAsc".equals(order)){
+					criteria.addOrder(Order.asc("sellerNetAllotment"));
+				}
+				if("sellerAllotment_SortDesc".equals(order)){
+					criteria.addOrder(Order.desc("sellerNetAllotment"));
+				}
+				
+				if("status_SortAsc".equals(order)){
+					criteria.addOrder(Order.asc("status"));
+				}
+				if("status_SortDesc".equals(order)){
+					criteria.addOrder(Order.desc("status"));
+				}
+				
+				
+				
+				
+				
+				
 				results = (List<SCFTrade>) criteria.list();
 			}
 			_log.debug("getScfTrades successful, result size: " + results.size());
@@ -178,16 +271,92 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<SCFTrade> getScfTradeList(String RegNum, int startIndex, int pageSize) {
+	public List<SCFTrade> getScfTradeList(String RegNum, int startIndex, int pageSize,String order) {
 
 		_log.debug("Inside getScfTrades ");
 		try {
-			Criteria criteria = sessionFactory.getCurrentSession().createCriteria(SCFTrade.class).addOrder(Order.desc("updatDate"));
+			Criteria criteria = sessionFactory.getCurrentSession().createCriteria(SCFTrade.class);
 			criteria.createAlias("invoices", "inv");
 			ProjectionList prList = Projections.projectionList();
 			prList.add((Projections.distinct(Projections.property("inv.scfTrade"))));
 			criteria.setProjection(prList);
+			criteria.createAlias("company", "company");
 
+			if("".equals(order)){
+				criteria.addOrder(Order.desc("updatDate"));
+			}
+			if("scfCompany_asc".equals(order)){
+				criteria.addOrder(Order.asc("company.name"));
+			}
+			if("scfCompany_desc".equals(order)){
+				criteria.addOrder(Order.desc("company.name"));
+			}
+			if("trade_SortAsc".equals(order)){
+				criteria.addOrder(Order.asc("scfId"));
+			}
+			if("trade_SortDesc".equals(order)){
+				criteria.addOrder(Order.desc("scfId"));
+			}
+			if("allotment_SortAsc".equals(order)){
+				criteria.addOrder(Order.asc("tradeAmount"));
+			}
+			if("allotment_SortDesc".equals(order)){
+				criteria.addOrder(Order.desc("tradeAmount"));
+			}
+			if("status_SortAsc".equals(order)){
+				criteria.addOrder(Order.asc("status"));
+			}
+			if("status_SortDesc".equals(order)){
+				criteria.addOrder(Order.desc("status"));
+			}
+			if("duration_SortAsc".equals(order)){
+				criteria.addOrder(Order.asc("duration"));
+			}
+			if("duration_SortDesc".equals(order)){
+				criteria.addOrder(Order.desc("duration"));
+			}
+			if("openingDate_SortAsc".equals(order)){
+				criteria.addOrder(Order.asc("openingDate"));
+			}
+			if("openingDate_SortDesc".equals(order)){
+				criteria.addOrder(Order.desc("openingDate"));
+			}
+			if("closingDate_SortAsc".equals(order)){
+				criteria.addOrder(Order.asc("closingDate"));
+			}
+			if("closingDate_SortDesc".equals(order)){
+				criteria.addOrder(Order.desc("closingDate"));
+			}
+			
+			
+			if("supplierPaymentDate_SortAsc".equals(order)){
+				criteria.addOrder(Order.asc("SellerPaymentDate"));
+			}
+			if("supplierPaymentDate_SortDesc".equals(order)){
+				criteria.addOrder(Order.desc("SellerPaymentDate"));
+			}
+			
+			
+			if("sellerFees_SortAsc".equals(order)){
+				criteria.addOrder(Order.asc("sellerFees"));
+			}
+			if("sellerFees_SortDesc".equals(order)){
+				criteria.addOrder(Order.desc("sellerFees"));
+			}
+			
+			if("investorFee_SortAsc".equals(order)){
+				criteria.addOrder(Order.asc("investorTotalGross"));
+			}
+			if("investorFee_SortDesc".equals(order)){
+				criteria.addOrder(Order.desc("investorTotalGross"));
+			}
+			
+			if("financeAmount_SortAsc".equals(order)){
+				criteria.addOrder(Order.asc("sellerNetAllotment"));
+			}
+			if("financeAmount_SortDesc".equals(order)){
+				criteria.addOrder(Order.desc("sellerNetAllotment"));
+			}
 			List<SCFTrade> scftrades =
 				(List<SCFTrade>) criteria.add(Restrictions.eq("inv.sellerCompanyRegistrationNumber", RegNum)).setFirstResult(startIndex).setMaxResults(
 					pageSize).list();
@@ -202,14 +371,90 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<SCFTrade> getScfTradeListWithSearch(String searchtxt, String RegNum, int startIndex, int pageSize) {
+	public List<SCFTrade> getScfTradeListWithSearch(String searchtxt, String RegNum, int startIndex, int pageSize,String order) {
 
 		_log.debug("Inside getScfTradeListWithSearch ");
 		List<SCFTrade> scftrades = new ArrayList<SCFTrade>();
 		try {
-			Criteria criteria = sessionFactory.getCurrentSession().createCriteria(SCFTrade.class).addOrder(Order.desc("updatDate"));
+			Criteria criteria = sessionFactory.getCurrentSession().createCriteria(SCFTrade.class);
 			criteria.createAlias("invoices", "inv");
 			criteria.createAlias("company", "company");
+			if("".equals(order)){
+				criteria.addOrder(Order.desc("updatDate"));
+			}
+			if("scfCompany_asc".equals(order)){
+				criteria.addOrder(Order.asc("company.name"));
+			}
+			if("scfCompany_desc".equals(order)){
+				criteria.addOrder(Order.desc("company.name"));
+			}
+			if("trade_SortAsc".equals(order)){
+				criteria.addOrder(Order.asc("scfId"));
+			}
+			if("trade_SortDesc".equals(order)){
+				criteria.addOrder(Order.desc("scfId"));
+			}
+			if("allotment_SortAsc".equals(order)){
+				criteria.addOrder(Order.asc("tradeAmount"));
+			}
+			if("allotment_SortDesc".equals(order)){
+				criteria.addOrder(Order.desc("tradeAmount"));
+			}
+			if("status_SortAsc".equals(order)){
+				criteria.addOrder(Order.asc("status"));
+			}
+			if("status_SortDesc".equals(order)){
+				criteria.addOrder(Order.desc("status"));
+			}
+			if("duration_SortAsc".equals(order)){
+				criteria.addOrder(Order.asc("duration"));
+			}
+			if("duration_SortDesc".equals(order)){
+				criteria.addOrder(Order.desc("duration"));
+			}
+			if("openingDate_SortAsc".equals(order)){
+				criteria.addOrder(Order.asc("openingDate"));
+			}
+			if("openingDate_SortDesc".equals(order)){
+				criteria.addOrder(Order.desc("openingDate"));
+			}
+			if("closingDate_SortAsc".equals(order)){
+				criteria.addOrder(Order.asc("closingDate"));
+			}
+			if("closingDate_SortDesc".equals(order)){
+				criteria.addOrder(Order.desc("closingDate"));
+			}
+			
+			
+			if("supplierPaymentDate_SortAsc".equals(order)){
+				criteria.addOrder(Order.asc("SellerPaymentDate"));
+			}
+			if("supplierPaymentDate_SortDesc".equals(order)){
+				criteria.addOrder(Order.desc("SellerPaymentDate"));
+			}
+			
+			
+			if("sellerFees_SortAsc".equals(order)){
+				criteria.addOrder(Order.asc("sellerFees"));
+			}
+			if("sellerFees_SortDesc".equals(order)){
+				criteria.addOrder(Order.desc("sellerFees"));
+			}
+			
+			if("investorFee_SortAsc".equals(order)){
+				criteria.addOrder(Order.asc("investorTotalGross"));
+			}
+			if("investorFee_SortDesc".equals(order)){
+				criteria.addOrder(Order.desc("investorTotalGross"));
+			}
+			
+			if("financeAmount_SortAsc".equals(order)){
+				criteria.addOrder(Order.asc("sellerNetAllotment"));
+			}
+			if("financeAmount_SortDesc".equals(order)){
+				criteria.addOrder(Order.desc("sellerNetAllotment"));
+			}
+			
 			Disjunction or = Restrictions.disjunction();
 			if (validationUtil.isNumeric(searchtxt)) {
 				or.add(Restrictions.eq("tradeAmount", BigDecimal.valueOf(Long.valueOf(searchtxt))));
@@ -267,7 +512,7 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<SCFTrade> getScfTrades(Long companyID, int startIndex, int pageSize) {
+	public List<SCFTrade> getScfTrades(Long companyID, int startIndex, int pageSize,String order) {
 
 		_log.debug("Inside getScfTrades ");
 		try {
@@ -277,8 +522,55 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 			if (!ids.isEmpty()) {
 				Session session = sessionFactory.getCurrentSession();
 				Criteria criteria =
-					session.createCriteria(SCFTrade.class).add(Restrictions.in("id", ids)).addOrder(Order.desc("updatDate")).setFetchMode("invoices", FetchMode.JOIN).setFetchMode(
+					session.createCriteria(SCFTrade.class).add(Restrictions.in("id", ids)).setFetchMode("invoices", FetchMode.JOIN).setFetchMode(
 						"allotments", FetchMode.JOIN).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+				criteria.createAlias("company","company");
+				
+				if("".equals(order)){
+					criteria.addOrder(Order.desc("updatDate"));
+				}
+				if("scfCompany_asc".equals(order)){
+					criteria.addOrder(Order.asc("company.name"));
+				}
+				if("scfCompany_desc".equals(order)){
+					criteria.addOrder(Order.desc("company.name"));
+				}
+				if("trade_SortAsc".equals(order)){
+					criteria.addOrder(Order.asc("scfId"));
+				}
+				if("trade_SortDesc".equals(order)){
+					criteria.addOrder(Order.desc("scfId"));
+				}
+				if("allotment_SortAsc".equals(order)){
+					criteria.addOrder(Order.asc("tradeAmount"));
+				}
+				if("allotment_SortDesc".equals(order)){
+					criteria.addOrder(Order.desc("tradeAmount"));
+				}
+				if("status_SortAsc".equals(order)){
+					criteria.addOrder(Order.asc("status"));
+				}
+				if("status_SortDesc".equals(order)){
+					criteria.addOrder(Order.desc("status"));
+				}
+				if("duration_SortAsc".equals(order)){
+					criteria.addOrder(Order.asc("duration"));
+				}
+				if("duration_SortDesc".equals(order)){
+					criteria.addOrder(Order.desc("duration"));
+				}
+				if("openingDate_SortAsc".equals(order)){
+					criteria.addOrder(Order.asc("openingDate"));
+				}
+				if("openingDate_SortDesc".equals(order)){
+					criteria.addOrder(Order.desc("openingDate"));
+				}
+				if("closingDate_SortAsc".equals(order)){
+					criteria.addOrder(Order.asc("closingDate"));
+				}
+				if("closingDate_SortDesc".equals(order)){
+					criteria.addOrder(Order.desc("closingDate"));
+				}
 				results = (List<SCFTrade>) criteria.list();
 			}
 			_log.debug("getScfTrades successful, result size: " + results.size());
@@ -885,7 +1177,7 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<SCFTrade> getAdminTradeListWithSearch(String searchtxt, Date fromDate, Date toDate, String value, int startIndex, int pageSize) {
+	public List<SCFTrade> getAdminTradeListWithSearch(String searchtxt, Date fromDate, Date toDate, String value, int startIndex, int pageSize, String order) {
 		
 		_log.debug("Inside getAdminTradeListWithSearch ");
 		Criteria criteria = null;
@@ -896,7 +1188,7 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 				Session session = sessionFactory.getCurrentSession();
 				criteria =
 					session.createCriteria(SCFTrade.class).add(Restrictions.in("id", ids)).createAlias("company", "company")
-					.addOrder(Order.desc("updatDate"))
+					//.addOrder(Order.desc("updatDate"))
 					.setFetchMode(
 						"invoices", FetchMode.JOIN).setFetchMode("allotments", FetchMode.JOIN).setFetchMode("company", FetchMode.JOIN).setResultTransformer(
 						Criteria.DISTINCT_ROOT_ENTITY);
@@ -933,7 +1225,91 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 			else {
 				criteria.add(or);
 			}
-
+			/*sorting code*/
+			//criteria.createAlias("company","company");
+			//criteria.createAlias("allotments","allotments");
+			if("".equals(order)){
+				criteria.addOrder(Order.desc("updatDate"));
+	}
+			if("scfCompany_asc".equals(order)){
+				criteria.addOrder(Order.asc("company.name"));
+			}
+			if("scfCompany_desc".equals(order)){
+				criteria.addOrder(Order.desc("company.name"));
+			}
+			if("trade_SortAsc".equals(order)){
+				criteria.addOrder(Order.asc("scfId"));
+			}
+			if("trade_SortDesc".equals(order)){
+				criteria.addOrder(Order.desc("scfId"));
+			}
+			
+			if("allotment_SortAsc".equals(order)){
+				criteria.addOrder(Order.asc("tradeAmount"));
+			}
+			if("allotment_SortDesc".equals(order)){
+				criteria.addOrder(Order.desc("tradeAmount"));
+			}
+			
+			/*if("bps_SortAsc".equals(order)){
+				criteria.addOrder(Order.asc("allotments.marketDiscount"));
+			}
+			if("bps_SortDesc".equals(order)){
+				criteria.addOrder(Order.desc("allotments.marketDiscount"));
+			}*/
+			
+			if("investorGross_SortAsc".equals(order)){
+				criteria.addOrder(Order.asc("investorTotalGross"));
+			}
+			if("investorGross_SortDesc".equals(order)){
+				criteria.addOrder(Order.desc("investorTotalGross"));
+			}
+			
+			if("whiteHallShare_SortAsc".equals(order)){
+				criteria.addOrder(Order.asc("whitehallTotalShare"));
+			}
+			if("whiteHallShare_SortDesc".equals(order)){
+				criteria.addOrder(Order.desc("whitehallTotalShare"));
+			}
+			
+			
+			if("investorNetProfit_SortAsc".equals(order)){
+				criteria.addOrder(Order.asc("investorTotalProfit"));
+			}
+			if("investorNetProfit_SortDesc".equals(order)){
+				criteria.addOrder(Order.desc("investorTotalProfit"));
+			}
+			
+			if("sellerFees_SortAsc".equals(order)){
+				criteria.addOrder(Order.asc("sellerFees"));
+			}
+			if("sellerFees_SortDesc".equals(order)){
+				criteria.addOrder(Order.desc("sellerFees"));
+			}
+			
+			
+			if("whitehallGrossProfit_SortAsc".equals(order)){
+				criteria.addOrder(Order.asc("whitehallTotalProfit"));
+			}
+			if("whitehallGrossProfit_SortDesc".equals(order)){
+				criteria.addOrder(Order.desc("whitehallTotalProfit"));
+			}
+			
+			if("sellerAllotment_SortAsc".equals(order)){
+				criteria.addOrder(Order.asc("sellerNetAllotment"));
+			}
+			if("sellerAllotment_SortDesc".equals(order)){
+				criteria.addOrder(Order.desc("sellerNetAllotment"));
+			}
+			
+			if("status_SortAsc".equals(order)){
+				criteria.addOrder(Order.asc("status"));
+			}
+			if("status_SortDesc".equals(order)){
+				criteria.addOrder(Order.desc("status"));
+			}
+			
+			/*ends here*/
 			results= (List<SCFTrade>) criteria.list();
 
 			_log.debug("getAdminTradeListWithSearch successful, result size: " + results.size());
@@ -998,7 +1374,7 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 
 	@SuppressWarnings("unchecked")
 	public List<SCFTrade> getScfAdminTradeListWithSearch(
-		long companyId, String searchtxt, Date fromDate, Date toDate, String value, int startIndex, int pageSize) {
+		long companyId, String searchtxt, Date fromDate, Date toDate, String value, int startIndex, int pageSize,String order) {
 
 		_log.debug("Inside getScfAdminTradeListWithSearch ");
 		Criteria criteria = null;
@@ -1007,7 +1383,7 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 			if (!ids.isEmpty()) {
 				Session session = sessionFactory.getCurrentSession();
 				criteria =
-					session.createCriteria(SCFTrade.class).add(Restrictions.in("id", ids)).addOrder(Order.desc("updatDate")).setFetchMode("invoices", FetchMode.JOIN).setFetchMode(
+					session.createCriteria(SCFTrade.class).add(Restrictions.in("id", ids)).setFetchMode("invoices", FetchMode.JOIN).setFetchMode(
 						"allotments", FetchMode.JOIN).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 			}
 			Disjunction or = Restrictions.disjunction();
@@ -1033,6 +1409,53 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 			else {
 				criteria.add(or);
 			}
+			criteria.createAlias("company","company");
+			if("".equals(order)){
+				criteria.addOrder(Order.desc("updatDate"));
+			}
+			if("scfCompany_asc".equals(order)){
+				criteria.addOrder(Order.asc("company.name"));
+			}
+			if("scfCompany_desc".equals(order)){
+				criteria.addOrder(Order.desc("company.name"));
+			}
+			if("trade_SortAsc".equals(order)){
+				criteria.addOrder(Order.asc("scfId"));
+			}
+			if("trade_SortDesc".equals(order)){
+				criteria.addOrder(Order.desc("scfId"));
+			}
+			if("allotment_SortAsc".equals(order)){
+				criteria.addOrder(Order.asc("tradeAmount"));
+			}
+			if("allotment_SortDesc".equals(order)){
+				criteria.addOrder(Order.desc("tradeAmount"));
+			}
+			if("status_SortAsc".equals(order)){
+				criteria.addOrder(Order.asc("status"));
+			}
+			if("status_SortDesc".equals(order)){
+				criteria.addOrder(Order.desc("status"));
+			}
+			if("duration_SortAsc".equals(order)){
+				criteria.addOrder(Order.asc("duration"));
+			}
+			if("duration_SortDesc".equals(order)){
+				criteria.addOrder(Order.desc("duration"));
+			}
+			if("openingDate_SortAsc".equals(order)){
+				criteria.addOrder(Order.asc("openingDate"));
+			}
+			if("openingDate_SortDesc".equals(order)){
+				criteria.addOrder(Order.desc("openingDate"));
+			}
+			if("closingDate_SortAsc".equals(order)){
+				criteria.addOrder(Order.asc("closingDate"));
+			}
+			if("closingDate_SortDesc".equals(order)){
+				criteria.addOrder(Order.desc("closingDate"));
+			}
+			
 			List<SCFTrade> results = (List<SCFTrade>) criteria.list();
 			_log.debug("getAdminTradeListWithSearch successful, result size: " + results.size());
 			return results;
@@ -1157,15 +1580,91 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 		return ids;
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<SCFTrade> getScfTradeListForInvestor(String searchtxt,
-			Long invNum, int startIndex, int pageSize, boolean count) {
+			Long invNum, int startIndex, int pageSize, boolean count, String order) {
 		_log.debug("Inside getScfTradeListWithSearch ");
 		List<SCFTrade> scftrades = new ArrayList<SCFTrade>();
 		try {
-			Criteria criteria = sessionFactory.getCurrentSession().createCriteria(SCFTrade.class).addOrder(Order.desc("updatDate"));
+			Criteria criteria = sessionFactory.getCurrentSession().createCriteria(SCFTrade.class);
 			criteria.createAlias("allotments", "alt");
 			criteria.createAlias("company", "company");
+
+			if("".equals(order)){
+				criteria.addOrder(Order.desc("updatDate"));
+			}
+			if("scfCompany_asc".equals(order)){
+				criteria.addOrder(Order.asc("company.name"));
+			}
+			if("scfCompany_desc".equals(order)){
+				criteria.addOrder(Order.desc("company.name"));
+			}
+			if("trade_SortAsc".equals(order)){
+				criteria.addOrder(Order.asc("scfId"));
+			}
+			if("trade_SortDesc".equals(order)){
+				criteria.addOrder(Order.desc("scfId"));
+			}
+			if("allotment_SortAsc".equals(order)){
+				criteria.addOrder(Order.asc("tradeAmount"));
+			}
+			if("allotment_SortDesc".equals(order)){
+				criteria.addOrder(Order.desc("tradeAmount"));
+			}
+			if("status_SortAsc".equals(order)){
+				criteria.addOrder(Order.asc("status"));
+			}
+			if("status_SortDesc".equals(order)){
+				criteria.addOrder(Order.desc("status"));
+			}
+			if("duration_SortAsc".equals(order)){
+				criteria.addOrder(Order.asc("duration"));
+			}
+			if("duration_SortDesc".equals(order)){
+				criteria.addOrder(Order.desc("duration"));
+			}
+			if("openingDate_SortAsc".equals(order)){
+				criteria.addOrder(Order.asc("openingDate"));
+			}
+			if("openingDate_SortDesc".equals(order)){
+				criteria.addOrder(Order.desc("openingDate"));
+			}
+			if("closingDate_SortAsc".equals(order)){
+				criteria.addOrder(Order.asc("closingDate"));
+			}
+			if("closingDate_SortDesc".equals(order)){
+				criteria.addOrder(Order.desc("closingDate"));
+			}
 			
+			
+			if("supplierPaymentDate_SortAsc".equals(order)){
+				criteria.addOrder(Order.asc("SellerPaymentDate"));
+			}
+			if("supplierPaymentDate_SortDesc".equals(order)){
+				criteria.addOrder(Order.desc("SellerPaymentDate"));
+			}
+			
+			
+			if("sellerFees_SortAsc".equals(order)){
+				criteria.addOrder(Order.asc("sellerFees"));
+			}
+			if("sellerFees_SortDesc".equals(order)){
+				criteria.addOrder(Order.desc("sellerFees"));
+			}
+			
+			if("investorFee_SortAsc".equals(order)){
+				criteria.addOrder(Order.asc("investorTotalGross"));
+			}
+			if("investorFee_SortDesc".equals(order)){
+				criteria.addOrder(Order.desc("investorTotalGross"));
+			}
+			
+			if("financeAmount_SortAsc".equals(order)){
+				criteria.addOrder(Order.asc("sellerNetAllotment"));
+			}
+			if("financeAmount_SortDesc".equals(order)){
+				criteria.addOrder(Order.desc("sellerNetAllotment"));
+			}
 			if(org.apache.commons.lang.StringUtils.isNotBlank(searchtxt)){
 				Disjunction or = Restrictions.disjunction();
 				if (validationUtil.isNumeric(searchtxt)) {
@@ -1175,6 +1674,8 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 				or.add(Restrictions.like("scfId", searchtxt, MatchMode.ANYWHERE));
 				or.add(Restrictions.like("company.name", searchtxt, MatchMode.ANYWHERE));
 				criteria.add(or);
+				
+				
 			}
 			if (!count) {
 				ProjectionList prList = Projections.projectionList();

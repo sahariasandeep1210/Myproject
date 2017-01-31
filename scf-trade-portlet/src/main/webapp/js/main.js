@@ -21,7 +21,373 @@ $(document).ready(
 				var updateURL = $("#defaultRender").val();
 				document.forms["scfTradeList"].action = updateURL;
 				document.forms["scfTradeList"].submit();
-			});		
+			});	
+			
+			$("#scfCompany_SortAsc").click(function() {
+				
+				var updateURL = $("#defaultRender").val();
+				var sort="scfCompany_asc";
+				$('#sortVal').val(sort);
+				document.forms["scfTradeList"].action = updateURL;
+				document.forms["scfTradeList"].submit();
+			});
+			
+			$("#scfCompany_SortDesc").click(function() {
+				
+				var updateURL = $("#defaultRender").val();
+				var sort="scfCompany_desc";
+				$('#sortVal').val(sort);
+				document.forms["scfTradeList"].action = updateURL;
+				document.forms["scfTradeList"].submit();
+			});
+			/* ---------------------------------------*/
+			$("#trade_SortAsc").click(function() {
+				
+				var updateURL = $("#defaultRender").val();
+				var sort="trade_SortAsc";
+				$('#sortVal').val(sort);
+				document.forms["scfTradeList"].action = updateURL;
+				document.forms["scfTradeList"].submit();
+			});
+			
+			$("#trade_SortDesc").click(function() {
+				
+				var updateURL = $("#defaultRender").val();
+				var sort="trade_SortDesc";
+				$('#sortVal').val(sort);
+				document.forms["scfTradeList"].action = updateURL;
+				document.forms["scfTradeList"].submit();
+			});
+			
+			
+			$("#allotment_SortAsc").click(function() {
+				
+				var updateURL = $("#defaultRender").val();
+				var sort="allotment_SortAsc";
+				$('#sortVal').val(sort);
+				document.forms["scfTradeList"].action = updateURL;
+				document.forms["scfTradeList"].submit();
+			});
+			
+			$("#allotment_SortDesc").click(function() {
+				
+				var updateURL = $("#defaultRender").val();
+				var sort="allotment_SortDesc";
+				$('#sortVal').val(sort);
+				document.forms["scfTradeList"].action = updateURL;
+				document.forms["scfTradeList"].submit();
+			});
+			
+            $("#bps_SortAsc").click(function() {
+				
+				var updateURL = $("#defaultRender").val();
+				var sort="bps_SortAsc";
+				$('#sortVal').val(sort);
+				document.forms["scfTradeList"].action = updateURL;
+				document.forms["scfTradeList"].submit();
+			});
+			
+			$("#bps_SortDesc").click(function() {
+				
+				var updateURL = $("#defaultRender").val();
+				var sort="bps_SortDesc";
+				$('#sortVal').val(sort);
+				document.forms["scfTradeList"].action = updateURL;
+				document.forms["scfTradeList"].submit();
+			});
+			
+			$("#investorGross_SortAsc").click(function() {
+				
+				var updateURL = $("#defaultRender").val();
+				var sort="investorGross_SortAsc";
+				$('#sortVal').val(sort);
+				document.forms["scfTradeList"].action = updateURL;
+				document.forms["scfTradeList"].submit();
+			});
+			
+			$("#investorGross_SortDesc").click(function() {
+				
+				var updateURL = $("#defaultRender").val();
+				var sort="investorGross_SortDesc";
+				$('#sortVal').val(sort);
+				document.forms["scfTradeList"].action = updateURL;
+				document.forms["scfTradeList"].submit();
+			});
+			
+			$("#whiteHallShare_SortAsc").click(function() {
+				
+				var updateURL = $("#defaultRender").val();
+				var sort="whiteHallShare_SortAsc";
+				$('#sortVal').val(sort);
+				document.forms["scfTradeList"].action = updateURL;
+				document.forms["scfTradeList"].submit();
+			});
+			
+			$("#whiteHallShare_SortDesc").click(function() {
+				
+				var updateURL = $("#defaultRender").val();
+				var sort="whiteHallShare_SortDesc";
+				$('#sortVal').val(sort);
+				document.forms["scfTradeList"].action = updateURL;
+				document.forms["scfTradeList"].submit();
+			});
+			
+			
+			$("#investorNetProfit_SortAsc").click(function() {
+				
+				var updateURL = $("#defaultRender").val();
+				var sort="investorNetProfit_SortAsc";
+				$('#sortVal').val(sort);
+				document.forms["scfTradeList"].action = updateURL;
+				document.forms["scfTradeList"].submit();
+			});
+			
+			$("#investorNetProfit_SortDesc").click(function() {
+				
+				var updateURL = $("#defaultRender").val();
+				var sort="investorNetProfit_SortDesc";
+				$('#sortVal').val(sort);
+				document.forms["scfTradeList"].action = updateURL;
+				document.forms["scfTradeList"].submit();
+			});
+			
+			$("#sellerFees_SortAsc").click(function() {
+				
+				var updateURL = $("#defaultRender").val();
+				var sort="sellerFees_SortAsc";
+				$('#sortVal').val(sort);
+				document.forms["scfTradeList"].action = updateURL;
+				document.forms["scfTradeList"].submit();
+			});
+			
+			$("#sellerFees_SortDesc").click(function() {
+				
+				var updateURL = $("#defaultRender").val();
+				var sort="sellerFees_SortDesc";
+				$('#sortVal').val(sort);
+				document.forms["scfTradeList"].action = updateURL;
+				document.forms["scfTradeList"].submit();
+			});
+			
+			$("#whitehallGrossProfit_SortAsc").click(function() {
+				
+				var updateURL = $("#defaultRender").val();
+				var sort="whitehallGrossProfit_SortAsc";
+				$('#sortVal').val(sort);
+				document.forms["scfTradeList"].action = updateURL;
+				document.forms["scfTradeList"].submit();
+			});
+			
+			$("#whitehallGrossProfit_SortDesc").click(function() {
+				
+				var updateURL = $("#defaultRender").val();
+				var sort="whitehallGrossProfit_SortDesc";
+				$('#sortVal').val(sort);
+				document.forms["scfTradeList"].action = updateURL;
+				document.forms["scfTradeList"].submit();
+			});
+			
+			$("#sellerAllotment_SortAsc").click(function() {
+				
+				var updateURL = $("#defaultRender").val();
+				var sort="sellerAllotment_SortAsc";
+				$('#sortVal').val(sort);
+				document.forms["scfTradeList"].action = updateURL;
+				document.forms["scfTradeList"].submit();
+			});
+			
+			$("#sellerAllotment_SortDesc").click(function() {
+				
+				var updateURL = $("#defaultRender").val();
+				var sort="sellerAllotment_SortDesc";
+				$('#sortVal').val(sort);
+				document.forms["scfTradeList"].action = updateURL;
+				document.forms["scfTradeList"].submit();
+			});
+			
+			$("#status_SortAsc").click(function() {
+				
+				var updateURL = $("#defaultRender").val();
+				var sort="status_SortAsc";
+				$('#sortVal').val(sort);
+				document.forms["scfTradeList"].action = updateURL;
+				document.forms["scfTradeList"].submit();
+			});
+			
+			$("#status_SortDesc").click(function() {
+				
+				var updateURL = $("#defaultRender").val();
+				var sort="status_SortDesc";
+				$('#sortVal').val(sort);
+				document.forms["scfTradeList"].action = updateURL;
+				document.forms["scfTradeList"].submit();
+			});
+			
+			$("#duration_SortAsc").click(function() {
+				
+				var updateURL = $("#defaultRender").val();
+				var sort="duration_SortAsc";
+				$('#sortVal').val(sort);
+				document.forms["scfTradeList"].action = updateURL;
+				document.forms["scfTradeList"].submit();
+			});
+			
+			$("#duration_SortDesc").click(function() {
+				
+				var updateURL = $("#defaultRender").val();
+				var sort="duration_SortDesc";
+				$('#sortVal').val(sort);
+				document.forms["scfTradeList"].action = updateURL;
+				document.forms["scfTradeList"].submit();
+			});
+			
+			
+			$("#openingDate_SortAsc").click(function() {
+				
+				var updateURL = $("#defaultRender").val();
+				var sort="openingDate_SortAsc";
+				$('#sortVal').val(sort);
+				document.forms["scfTradeList"].action = updateURL;
+				document.forms["scfTradeList"].submit();
+			});
+			
+			$("#openingDate_SortDesc").click(function() {
+				
+				var updateURL = $("#defaultRender").val();
+				var sort="openingDate_SortDesc";
+				$('#sortVal').val(sort);
+				document.forms["scfTradeList"].action = updateURL;
+				document.forms["scfTradeList"].submit();
+			});
+			
+			$("#closingDate_SortAsc").click(function() {
+				
+				var updateURL = $("#defaultRender").val();
+				var sort="closingDate_SortAsc";
+				$('#sortVal').val(sort);
+				document.forms["scfTradeList"].action = updateURL;
+				document.forms["scfTradeList"].submit();
+			});
+			
+			$("#closingDate_SortDesc").click(function() {
+				
+				var updateURL = $("#defaultRender").val();
+				var sort="closingDate_SortDesc";
+				$('#sortVal').val(sort);
+				document.forms["scfTradeList"].action = updateURL;
+				document.forms["scfTradeList"].submit();
+			});
+			
+			$("#tradeAmount_SortAsc").click(function() {
+				
+				var updateURL = $("#defaultRender").val();
+				var sort="tradeAmount_SortAsc";
+				$('#sortVal').val(sort);
+				document.forms["scfTradeList"].action = updateURL;
+				document.forms["scfTradeList"].submit();
+			});
+			
+			$("#tradeAmount_SortDesc").click(function() {
+				
+				var updateURL = $("#defaultRender").val();
+				var sort="tradeAmount_SortDesc";
+				$('#sortVal').val(sort);
+				document.forms["scfTradeList"].action = updateURL;
+				document.forms["scfTradeList"].submit();
+			});
+			
+			$("#isMultiinvoice_SortAsc").click(function() {
+				
+				var updateURL = $("#defaultRender").val();
+				var sort="isMultiinvoice_SortAsc";
+				$('#sortVal').val(sort);
+				document.forms["scfTradeList"].action = updateURL;
+				document.forms["scfTradeList"].submit();
+			});
+			
+			$("#isMultiinvoice_SortDesc").click(function() {
+				
+				var updateURL = $("#defaultRender").val();
+				var sort="isMultiinvoice_SortDesc";
+				$('#sortVal').val(sort);
+				document.forms["scfTradeList"].action = updateURL;
+				document.forms["scfTradeList"].submit();
+			});
+			
+			$("#supplierPaymentDate_SortAsc").click(function() {
+				
+				var updateURL = $("#defaultRender").val();
+				var sort="supplierPaymentDate_SortAsc";
+				$('#sortVal').val(sort);
+				document.forms["scfTradeList"].action = updateURL;
+				document.forms["scfTradeList"].submit();
+			});
+			
+			$("#supplierPaymentDate_SortDesc").click(function() {
+				
+				var updateURL = $("#defaultRender").val();
+				var sort="supplierPaymentDate_SortDesc";
+				$('#sortVal').val(sort);
+				document.forms["scfTradeList"].action = updateURL;
+				document.forms["scfTradeList"].submit();
+			});
+			
+			$("#investorFee_SortAsc").click(function() {
+				
+				var updateURL = $("#defaultRender").val();
+				var sort="investorFee_SortAsc";
+				$('#sortVal').val(sort);
+				document.forms["scfTradeList"].action = updateURL;
+				document.forms["scfTradeList"].submit();
+			});
+			
+			$("#investorFee_SortDesc").click(function() {
+				
+				var updateURL = $("#defaultRender").val();
+				var sort="investorFee_SortDesc";
+				$('#sortVal').val(sort);
+				document.forms["scfTradeList"].action = updateURL;
+				document.forms["scfTradeList"].submit();
+			});
+			
+			
+			$("#grossCharges_SortAsc").click(function() {
+				
+				var updateURL = $("#defaultRender").val();
+				var sort="grossCharges_SortAsc";
+				$('#sortVal').val(sort);
+				document.forms["scfTradeList"].action = updateURL;
+				document.forms["scfTradeList"].submit();
+			});
+			
+			$("#grossCharges_SortDesc").click(function() {
+				
+				var updateURL = $("#defaultRender").val();
+				var sort="grossCharges_SortDesc";
+				$('#sortVal').val(sort);
+				document.forms["scfTradeList"].action = updateURL;
+				document.forms["scfTradeList"].submit();
+			});
+			
+			
+			$("#financeAmount_SortAsc").click(function() {
+				
+				var updateURL = $("#defaultRender").val();
+				var sort="financeAmount_SortAsc";
+				$('#sortVal').val(sort);
+				document.forms["scfTradeList"].action = updateURL;
+				document.forms["scfTradeList"].submit();
+			});
+			
+			$("#financeAmount_SortDesc").click(function() {
+				
+				var updateURL = $("#defaultRender").val();
+				var sort="financeAmount_SortDesc";
+				$('#sortVal').val(sort);
+				document.forms["scfTradeList"].action = updateURL;
+				document.forms["scfTradeList"].submit();
+			});
+			/*----------------------------------------*/
 
 			$("#sellerTradeReport").click(function() {
 				var updateURL = $("#getSellerTradeURL").val();
@@ -155,13 +521,13 @@ $(document).ready(
 
 			});
 			
-			$("#tradeListTable").tablesorter({
+			/*$("#tradeListTable").tablesorter({
 				 headers: {
 					 0:{
 						 sorter: false
 					 }
 				 }
-			}); 
+			}); */
 			
 			$("#tradeInvoiceTable").tablesorter();
 			
