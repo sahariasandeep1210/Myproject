@@ -32,6 +32,7 @@
 
 		 <%@include file="tradefilter.jspf"%> 
 			<input type="hidden" id="sortVal" name="dynamicSort" />
+				<input type="hidden" id="sortVal_order" name="sortVal_order" value="${sortCompany_order}"/>
 		<div class="customTableContainer">
 			<table class="table  tablesorter table-bordered" id="tradeListTable">
 				<thead>
