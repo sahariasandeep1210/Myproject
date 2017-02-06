@@ -13,7 +13,7 @@ public interface SCFTradeService {
 
 	public Long getScfTradeByScfCompanyCount(String scfCompany, Date frmDate, Date toDate);
 
-	public List<SCFTrade> getScfTrades(int startIndex, int pageSize,String order);
+	public List<SCFTrade> getScfTrades(int startIndex, int pageSize,String columnName,String order);
 
 	public Long getScfTradeSellerCompanyCount(String scfCompany, Date frmDate, Date toDate, long compID);
 
@@ -61,7 +61,7 @@ public interface SCFTradeService {
 
 	public List<SCFTrade> getScfTradeListWithSearch(String search, String regNum, int startIndex, int pageSize,String order);
 
-	public List<SCFTrade> getAdminTradeListWithSearch(String search, Date fromDate, Date toDate, String value, int startIndex, int pageSize, String order);
+	public List<SCFTrade> getAdminTradeListWithSearch(String search, Date fromDate, Date toDate, String value, int startIndex, int pageSize, String columnName,String order);
 
 	public List<SCFTrade> getScfAdminTradeListWithSearch(
 		long companyId, String searchtxt, Date fromDate, Date toDate, String value, int startIndex, int pageSize,String order);

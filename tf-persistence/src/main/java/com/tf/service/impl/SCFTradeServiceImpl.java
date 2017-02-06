@@ -43,8 +43,8 @@ public class SCFTradeServiceImpl implements SCFTradeService {
 	@Autowired
 	private WhiteHallTransactionDAO whiteHallTransactionDAO;
 
-	public List<SCFTrade> getScfTrades(int startIndex, int pageSize,String order) {
-		return scfTradeDAO.getScfTrades(startIndex, pageSize, order);
+	public List<SCFTrade> getScfTrades(int startIndex, int pageSize,String columnName,String order) {
+	    return scfTradeDAO.getScfTrades(startIndex, pageSize, columnName,order);
 	}
 
 	public SCFTrade save(SCFTrade scfTrade) {
@@ -374,8 +374,8 @@ public class SCFTradeServiceImpl implements SCFTradeService {
 		return scfTradeDAO.getScfTradeListWithSearchCount(searchtxt, RegNum);
 	}
 
-	public List<SCFTrade> getAdminTradeListWithSearch(String searchtxt, Date fromDate, Date toDate, String value, int startIndex, int pageSize, String order) {
-		return scfTradeDAO.getAdminTradeListWithSearch(searchtxt, fromDate, toDate, value, startIndex, pageSize, order);
+	public List<SCFTrade> getAdminTradeListWithSearch(String searchtxt, Date fromDate, Date toDate, String value, int startIndex, int pageSize,String columnName, String order) {
+	    return scfTradeDAO.getAdminTradeListWithSearch(searchtxt, fromDate, toDate, value, startIndex, pageSize, columnName,order);
 	}
 
 	public Long getAdminTradeListWithSearchCount(String searchtxt, Date fromDate, Date toDate, String value) {

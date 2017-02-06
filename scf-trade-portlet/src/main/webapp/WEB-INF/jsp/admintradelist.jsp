@@ -34,8 +34,8 @@
 		<input type="hidden" id="status" name="status" />
 		
 		
-		<input type="hidden" id="sortVal" name="dynamicSort" />
-		<input type="hidden" id="sortVal_order" name="sortVal_order" value="${sortCompany_order}"/>
+		<input type="hidden" id="sort_Column" name="sort_Column" value="${sort_Column}" />
+		<input type="hidden" id="sort_order" name="sort_order" value="${sort_order}"/>
 				<%@include file="tradefilter.jspf"%> 
 	
 		
@@ -44,7 +44,7 @@
 				<thead>
 					<tr>
 						<th width="3%" class=""></th>
-						<th>Trade # <br><img id="trade_SortAsc" src="<%=request.getContextPath()%>/images/up.png" alt="asc"/><img id="trade_SortDesc" src="<%=request.getContextPath()%>/images/down.png" alt="desc"/></th>
+						<th>Trade # <br><img column-name="scfId" class="sortColumn" src="<%=request.getContextPath()%>/images/up.png" alt="asc" order="asc"/><img column-name="scfId" class="sortColumn" src="<%=request.getContextPath()%>/images/down.png" alt="desc" order="desc"/></th>
 					    <th>SCF Company <br><img id="scfCompany_SortAsc" src="<%=request.getContextPath()%>/images/up.png" alt="asc"/><img id="scfCompany_SortDesc" src="<%=request.getContextPath()%>/images/down.png" alt="desc"/></th>
 					    <th>Allotment <br><img id="allotment_SortAsc" src="<%=request.getContextPath()%>/images/up.png" alt="asc"/><img id="allotment_SortDesc" src="<%=request.getContextPath()%>/images/down.png" alt="desc"/></th>
 					    <th>BPS <br><img id="bps_SortAsc" src="<%=request.getContextPath()%>/images/up.png" alt="asc"/><img id="bps_SortDesc" src="<%=request.getContextPath()%>/images/down.png" alt="desc"/></th>

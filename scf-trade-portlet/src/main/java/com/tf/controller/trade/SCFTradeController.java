@@ -191,40 +191,16 @@ public class SCFTradeController {
 			String value = ParamUtil.getString(request, "dateList");
 			String from = ParamUtil.getString(request, "fromDate");
 			String to = ParamUtil.getString(request, "toDate");
-			String tradeID = ParamUtil.getString(request, "tradeID");
+			String tradeID = ParamUtil.getString(request, "tradeID");			
 			
-			/*Sorting code starts from here*/
-			String sortCompany = ParamUtil.getString(request, "dynamicSort");
-			String sortCompany_order = ParamUtil.getString(request, "sortVal_order");
-			model.put("sortCompany_order", sortCompany_order);
-			if(sortCompany==null || sortCompany==""){
-				sortCompany="";
-				/*PortletSession session = request.getPortletSession();
-				sortCompany = (String) session.getAttribute("company", PortletSession.APPLICATION_SCOPE);
-			*/
-			}
-			/*if(sortCompany!=null || sortCompany!=""){
-				PortletSession session = request.getPortletSession();
-				session.setAttribute("company",sortCompany, PortletSession.APPLICATION_SCOPE);
-
-			}*/
-				/*if(sortCompany=="scfCompany_asc" || sortCompany.equals("scfCompany_asc"))
-			{
-				sortCompany="asc";
-			}
-			if(sortCompany=="scfCompany_desc" || sortCompany.equals("scfCompany_desc")){
-				sortCompany="desc";
-			}
 			
-			if(sortCompany=="trade_SortAsc" || sortCompany.equals("trade_SortAsc")){
-				sortCompany="asc";
-				}
-			if(sortCompany=="trade_SortDesc" || sortCompany.equals("trade_SortDesc")){
-				sortCompany="desc";
-				}
 			
-			}*/
-			/*ends here*/
+			String columnName = ParamUtil.getString(request, "sort_Column");
+			String order = ParamUtil.getString(request, "sort_order");
+			
+			model.put("sort_Column", columnName);
+			model.put("sort_order", order);
+			
 			if (!StringUtils.isNullOrEmpty(from)) {
 				fromDateString = Constants.formatDate(from);
 			}
@@ -240,7 +216,7 @@ public class SCFTradeController {
 			}
 			if (StringUtils.isNullOrEmpty(search) && StringUtils.isNullOrEmpty(value)) {
 
-				scftrades = scfTradeService.getScfTrades(paginationModel.getStartIndex(), paginationModel.getPageSize(),sortCompany);
+				scftrades = scfTradeService.getScfTrades(paginationModel.getStartIndex(), paginationModel.getPageSize(),columnName,order);
 				noOfRecords = scfTradeService.getScfTradesCount();
 				for (SCFTrade scf : scftrades) {
 					totalTradeAmount = totalTradeAmount.add(scf.getTradeAmount());
@@ -270,7 +246,7 @@ public class SCFTradeController {
 			else {
 				scftrades =
 					scfTradeService.getAdminTradeListWithSearch(
-						search, fromDate, toDate, value, paginationModel.getStartIndex(), paginationModel.getPageSize(),sortCompany);
+						search, fromDate, toDate, value, paginationModel.getStartIndex(), paginationModel.getPageSize(),columnName,order);
 				noOfRecords = scfTradeService.getAdminTradeListWithSearchCount(search, fromDate, toDate, value);
 				
 				List listSum = scfTradeService.getSumOfSCFTradePropertiesForAdmin(search, fromDate, toDate, value);

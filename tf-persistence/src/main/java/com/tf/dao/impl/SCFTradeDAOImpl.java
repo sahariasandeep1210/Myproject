@@ -61,13 +61,13 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 
 
 	@SuppressWarnings("unchecked")
-	public List<SCFTrade> getScfTrades(int startIndex, int pageSize,String order) {
+	public List<SCFTrade> getScfTrades(int startIndex, int pageSize,String columnName,String order) {
 
 		_log.debug("Inside getScfTrades  ");
 		try {
 			
 			List<SCFTrade> results = new ArrayList<SCFTrade>();
-			Collection<Long> ids = getIDListForPagination(startIndex, pageSize);
+			Collection<Long> ids = getIDListForPagination(startIndex, pageSize,columnName,order);
 			if (!ids.isEmpty()) {
 				Session session = sessionFactory.getCurrentSession();
 				Criteria criteria =
@@ -79,7 +79,22 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 						"allotments", FetchMode.JOIN).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 				criteria.createAlias("company","company");
 				//criteria.createAlias("allotments","allotments");
-				if("".equals(order)){
+				
+				if("".equals(columnName)){			
+					criteria.addOrder(Order.desc("updatDate"));
+				}
+				
+				else{
+				    if("asc".equals(order)){
+					criteria.addOrder(Order.asc(columnName));
+				    }
+				    if("desc".equals(order)){
+					criteria.addOrder(Order.desc(columnName));
+					}
+				}
+				
+				
+				/*if("".equals(order)){
 					
 					criteria.addOrder(Order.desc("updatDate"));
 				}
@@ -103,12 +118,12 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 					criteria.addOrder(Order.desc("tradeAmount"));
 				}
 				
-				/*if("bps_SortAsc".equals(order)){
+				if("bps_SortAsc".equals(order)){
 					criteria.addOrder(Order.asc("allotments.marketDiscount"));
 				}
 				if("bps_SortDesc".equals(order)){
 					criteria.addOrder(Order.desc("allotments.marketDiscount"));
-				}*/
+				}
 				
 				if("investorGross_SortAsc".equals(order)){
 					criteria.addOrder(Order.asc("investorTotalGross"));
@@ -159,9 +174,7 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 				}
 				if("status_SortDesc".equals(order)){
 					criteria.addOrder(Order.desc("status"));
-				}
-				
-				
+				}*/
 				
 				
 				
@@ -1178,7 +1191,7 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<SCFTrade> getAdminTradeListWithSearch(String searchtxt, Date fromDate, Date toDate, String value, int startIndex, int pageSize, String order) {
+	public List<SCFTrade> getAdminTradeListWithSearch(String searchtxt, Date fromDate, Date toDate, String value, int startIndex, int pageSize, String columnName,String order) {
 		
 		_log.debug("Inside getAdminTradeListWithSearch ");
 		Criteria criteria = null;
@@ -1518,10 +1531,104 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 
 	}
 
-	public Collection<Long> getIDListForPagination(int startIndex, int pageSize) {
+	public Collection<Long> getIDListForPagination(int startIndex, int pageSize,String columnName,String order) {
 
 		Session session = sessionFactory.getCurrentSession();
-		Criteria criteria = session.createCriteria(SCFTrade.class).setProjection(Projections.id());
+		Criteria criteria = session.createCriteria(SCFTrade.class).setProjection(Projections.id())
+		.setFetchMode("invoices", FetchMode.JOIN)
+		.setFetchMode("allotments", FetchMode.JOIN).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.createAlias("company","company");
+		if("".equals(columnName)){			
+			criteria.addOrder(Order.desc("updatDate"));
+		}
+		
+		else{
+		    if("asc".equals(order)){
+			criteria.addOrder(Order.asc(columnName));
+		    }
+		    if("desc".equals(order)){
+			criteria.addOrder(Order.desc(columnName));
+			}
+		}
+		    
+	
+		/*if("scfCompany_asc".equals(order)){
+			criteria.addOrder(Order.asc("company.name"));
+		}
+		if("scfCompany_desc".equals(order)){
+			criteria.addOrder(Order.desc("company.name"));
+		}
+		if("trade_SortAsc".equals(order)){
+			criteria.addOrder(Order.asc("scfId"));
+		}
+		if("trade_SortDesc".equals(order)){
+			criteria.addOrder(Order.desc("scfId"));
+		}
+		
+		if("allotment_SortAsc".equals(order)){
+			criteria.addOrder(Order.asc("tradeAmount"));
+		}
+		if("allotment_SortDesc".equals(order)){
+			criteria.addOrder(Order.desc("tradeAmount"));
+		}
+		
+		if("bps_SortAsc".equals(order)){
+			criteria.addOrder(Order.asc("allotments.marketDiscount"));
+		}
+		if("bps_SortDesc".equals(order)){
+			criteria.addOrder(Order.desc("allotments.marketDiscount"));
+		}
+		
+		if("investorGross_SortAsc".equals(order)){
+			criteria.addOrder(Order.asc("investorTotalGross"));
+		}
+		if("investorGross_SortDesc".equals(order)){
+			criteria.addOrder(Order.desc("investorTotalGross"));
+		}
+		
+		if("whiteHallShare_SortAsc".equals(order)){
+			criteria.addOrder(Order.asc("whitehallTotalShare"));
+		}
+		if("whiteHallShare_SortDesc".equals(order)){
+			criteria.addOrder(Order.desc("whitehallTotalShare"));
+		}
+		
+		
+		if("investorNetProfit_SortAsc".equals(order)){
+			criteria.addOrder(Order.asc("investorTotalProfit"));
+		}
+		if("investorNetProfit_SortDesc".equals(order)){
+			criteria.addOrder(Order.desc("investorTotalProfit"));
+		}
+		
+		if("sellerFees_SortAsc".equals(order)){
+			criteria.addOrder(Order.asc("sellerFees"));
+		}
+		if("sellerFees_SortDesc".equals(order)){
+			criteria.addOrder(Order.desc("sellerFees"));
+		}
+		
+		
+		if("whitehallGrossProfit_SortAsc".equals(order)){
+			criteria.addOrder(Order.asc("whitehallTotalProfit"));
+		}
+		if("whitehallGrossProfit_SortDesc".equals(order)){
+			criteria.addOrder(Order.desc("whitehallTotalProfit"));
+		}
+		
+		if("sellerAllotment_SortAsc".equals(order)){
+			criteria.addOrder(Order.asc("sellerNetAllotment"));
+		}
+		if("sellerAllotment_SortDesc".equals(order)){
+			criteria.addOrder(Order.desc("sellerNetAllotment"));
+		}
+		
+		if("status_SortAsc".equals(order)){
+			criteria.addOrder(Order.asc("status"));
+		}
+		if("status_SortDesc".equals(order)){
+			criteria.addOrder(Order.desc("status"));
+		}*/
 		criteria.setFirstResult(startIndex);
 		criteria.setMaxResults(pageSize);
 		@SuppressWarnings("unchecked")

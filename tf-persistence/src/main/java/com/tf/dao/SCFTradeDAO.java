@@ -12,7 +12,7 @@ public interface SCFTradeDAO extends BaseDAO<SCFTrade, Serializable> {
 
 	public Long getAdminTradeListWithSearchCount(String searchtxt, Date fromDate, Date toDate, String value);
 
-	public List<SCFTrade> getScfTrades(int startIndex, int pageSize,String order);
+	public List<SCFTrade> getScfTrades(int startIndex, int pageSize,String columnName,String order);
 
 	public Long getScfTradeSellerCompanyCount(String scfCompany, Date frmDate, Date toDate, long compID);
 
@@ -60,7 +60,7 @@ public interface SCFTradeDAO extends BaseDAO<SCFTrade, Serializable> {
 
 	public Long getScfTradeListWithSearchCount(String searchtxt, String RegNum);
 
-	public List<SCFTrade> getAdminTradeListWithSearch(String searchtxt, Date fromDate, Date toDate, String value, int startIndex, int pageSize, String order);
+	public List<SCFTrade> getAdminTradeListWithSearch(String searchtxt, Date fromDate, Date toDate, String value, int startIndex, int pageSize, String columnName,String order);
 
 	public List<SCFTrade> getScfAdminTradeListWithSearch(
 		long companyId, String searchtxt, Date fromDate, Date toDate, String value, int startIndex, int pageSize, String order);
