@@ -181,7 +181,7 @@ public class LiferayUtility {
 		_log.info("Email sent to : "+to);		
 	}
 	
-	public String getContentByURLTitle(ActionRequest request, String urlTitle){		
+	public String getContentByURLTitle(PortletRequest request, String urlTitle){		
 		_log.info("content funcation");
 		
 		ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);		

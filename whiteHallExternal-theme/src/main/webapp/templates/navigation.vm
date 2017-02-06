@@ -53,7 +53,7 @@
 			#end
 	
 			#if ($is_signed_in)
-				<div class="navBtnContainer">
+				<div class="navBtnContainer pull-right">
 					<a data-redirect="$is_login_redirect_required" href="$sign_out_url" class="customButtonSmall btnBgWhiteBlue" id="sign-out" rel="nofollow">#language ("signout")</a>
 				</div>
 			#end
