@@ -108,10 +108,13 @@ public void deleteInvoice(Invoice invoice){
 		}
 }
 	@SuppressWarnings({ "unchecked", "unused", "rawtypes" })
-	public GenericListModel getInvoices(Long companyID,int startIndex, int pageSize,String registrationNo) {
+	public GenericListModel getInvoices(Long companyID,int startIndex, int pageSize,String registrationNo, String app) {
 		_log.debug("Inside getInvoices ");
 		try {
-			 List<Invoice> results = new ArrayList<Invoice>();;
+			
+			 List<Invoice> results = new ArrayList<Invoice>();
+			 
+			 
 			if (companyID != null) {
 
 				StringBuilder sqlQuery = new StringBuilder();
@@ -220,6 +223,10 @@ public void deleteInvoice(Invoice invoice){
 			}
 			else{
 				 Criteria  criteria=sessionFactory.getCurrentSession().createCriteria(Invoice.class);
+				 if(app.equals("app")){
+					System.out.println("in app block");
+					 criteria.add(Restrictions.eq("status", "NEW"));
+				 }
 			    	if(companyID!=null){
 			    	    criteria.add(Restrictions.eq("scfCompany.id", companyID));
 			    	}else if(StringUtils.isNotBlank(registrationNo)){

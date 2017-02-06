@@ -196,7 +196,7 @@
 		<div class="row-fluid" id="butonClass">
 			<div class="span6">
 
-				<input type="button" value="Update Protfolio"	class="btn btnBgGreenSm" id="saveProtfolios" /> 
+				<input type="button" value="Update Portfolio"	class="btn btnBgGreenSm" id="saveProtfolios" /> 
 			</div>
 			<div class="span6"></div>
 		</div>

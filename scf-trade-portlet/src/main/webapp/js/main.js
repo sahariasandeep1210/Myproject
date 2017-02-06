@@ -8,6 +8,12 @@ $(document).ready(
 			$("#pagSize").val($("#curPageSize").val());
 			$("#pgSize").val($("#currPageSizes").val());
 			
+			var aa=$('#sortVal_order').val();
+			//alert("#"+aa);
+			if(aa!="" || aa!="undefined"){
+				$("#"+aa).hide();
+			}
+			
 			$("#dateList").change(function() {
 				var userSel=$(this).val();
 				if(userSel === 'undefined' || (! userSel )|| userSel === null){
@@ -28,6 +34,9 @@ $(document).ready(
 				var updateURL = $("#defaultRender").val();
 				var sort="scfCompany_asc";
 				$('#sortVal').val(sort);
+			
+				$('#sortVal_order').val("scfCompany_SortDesc");
+				
 				document.forms["scfTradeList"].action = updateURL;
 				document.forms["scfTradeList"].submit();
 			});
@@ -37,6 +46,7 @@ $(document).ready(
 				var updateURL = $("#defaultRender").val();
 				var sort="scfCompany_desc";
 				$('#sortVal').val(sort);
+				$('#sortVal_order').val("scfCompany_SortAsc");
 				document.forms["scfTradeList"].action = updateURL;
 				document.forms["scfTradeList"].submit();
 			});
@@ -46,6 +56,7 @@ $(document).ready(
 				var updateURL = $("#defaultRender").val();
 				var sort="trade_SortAsc";
 				$('#sortVal').val(sort);
+				$('#sortVal_order').val("trade_SortDesc");
 				document.forms["scfTradeList"].action = updateURL;
 				document.forms["scfTradeList"].submit();
 			});
@@ -55,6 +66,7 @@ $(document).ready(
 				var updateURL = $("#defaultRender").val();
 				var sort="trade_SortDesc";
 				$('#sortVal').val(sort);
+				$('#sortVal_order').val("trade_SortAsc");
 				document.forms["scfTradeList"].action = updateURL;
 				document.forms["scfTradeList"].submit();
 			});
@@ -65,6 +77,7 @@ $(document).ready(
 				var updateURL = $("#defaultRender").val();
 				var sort="allotment_SortAsc";
 				$('#sortVal').val(sort);
+				$('#sortVal_order').val("allotment_SortDesc");
 				document.forms["scfTradeList"].action = updateURL;
 				document.forms["scfTradeList"].submit();
 			});
@@ -74,6 +87,7 @@ $(document).ready(
 				var updateURL = $("#defaultRender").val();
 				var sort="allotment_SortDesc";
 				$('#sortVal').val(sort);
+				$('#sortVal_order').val("allotment_SortAsc");
 				document.forms["scfTradeList"].action = updateURL;
 				document.forms["scfTradeList"].submit();
 			});
@@ -83,6 +97,7 @@ $(document).ready(
 				var updateURL = $("#defaultRender").val();
 				var sort="bps_SortAsc";
 				$('#sortVal').val(sort);
+				$('#sortVal_order').val("bps_SortDesc");
 				document.forms["scfTradeList"].action = updateURL;
 				document.forms["scfTradeList"].submit();
 			});
@@ -92,6 +107,7 @@ $(document).ready(
 				var updateURL = $("#defaultRender").val();
 				var sort="bps_SortDesc";
 				$('#sortVal').val(sort);
+				$('#sortVal_order').val("bps_SortAsc");
 				document.forms["scfTradeList"].action = updateURL;
 				document.forms["scfTradeList"].submit();
 			});
@@ -101,6 +117,7 @@ $(document).ready(
 				var updateURL = $("#defaultRender").val();
 				var sort="investorGross_SortAsc";
 				$('#sortVal').val(sort);
+				$('#sortVal_order').val("investorGross_SortDesc");
 				document.forms["scfTradeList"].action = updateURL;
 				document.forms["scfTradeList"].submit();
 			});
@@ -110,6 +127,7 @@ $(document).ready(
 				var updateURL = $("#defaultRender").val();
 				var sort="investorGross_SortDesc";
 				$('#sortVal').val(sort);
+				$('#sortVal_order').val("investorGross_SortAsc");
 				document.forms["scfTradeList"].action = updateURL;
 				document.forms["scfTradeList"].submit();
 			});
@@ -119,6 +137,7 @@ $(document).ready(
 				var updateURL = $("#defaultRender").val();
 				var sort="whiteHallShare_SortAsc";
 				$('#sortVal').val(sort);
+				$('#sortVal_order').val("whiteHallShare_SortDesc");
 				document.forms["scfTradeList"].action = updateURL;
 				document.forms["scfTradeList"].submit();
 			});
@@ -128,6 +147,7 @@ $(document).ready(
 				var updateURL = $("#defaultRender").val();
 				var sort="whiteHallShare_SortDesc";
 				$('#sortVal').val(sort);
+				$('#sortVal_order').val("whiteHallShare_SortAsc");
 				document.forms["scfTradeList"].action = updateURL;
 				document.forms["scfTradeList"].submit();
 			});
@@ -138,6 +158,7 @@ $(document).ready(
 				var updateURL = $("#defaultRender").val();
 				var sort="investorNetProfit_SortAsc";
 				$('#sortVal').val(sort);
+				$('#sortVal_order').val("investorNetProfit_SortDesc");
 				document.forms["scfTradeList"].action = updateURL;
 				document.forms["scfTradeList"].submit();
 			});
@@ -147,6 +168,7 @@ $(document).ready(
 				var updateURL = $("#defaultRender").val();
 				var sort="investorNetProfit_SortDesc";
 				$('#sortVal').val(sort);
+				$('#sortVal_order').val("investorNetProfit_SortAsc");
 				document.forms["scfTradeList"].action = updateURL;
 				document.forms["scfTradeList"].submit();
 			});
@@ -156,6 +178,7 @@ $(document).ready(
 				var updateURL = $("#defaultRender").val();
 				var sort="sellerFees_SortAsc";
 				$('#sortVal').val(sort);
+				$('#sortVal_order').val("sellerFees_SortDesc");
 				document.forms["scfTradeList"].action = updateURL;
 				document.forms["scfTradeList"].submit();
 			});
@@ -165,6 +188,7 @@ $(document).ready(
 				var updateURL = $("#defaultRender").val();
 				var sort="sellerFees_SortDesc";
 				$('#sortVal').val(sort);
+				$('#sortVal_order').val("sellerFees_SortAsc");
 				document.forms["scfTradeList"].action = updateURL;
 				document.forms["scfTradeList"].submit();
 			});
@@ -174,6 +198,7 @@ $(document).ready(
 				var updateURL = $("#defaultRender").val();
 				var sort="whitehallGrossProfit_SortAsc";
 				$('#sortVal').val(sort);
+				$('#sortVal_order').val("whitehallGrossProfit_SortDesc");
 				document.forms["scfTradeList"].action = updateURL;
 				document.forms["scfTradeList"].submit();
 			});
@@ -183,6 +208,7 @@ $(document).ready(
 				var updateURL = $("#defaultRender").val();
 				var sort="whitehallGrossProfit_SortDesc";
 				$('#sortVal').val(sort);
+				$('#sortVal_order').val("whitehallGrossProfit_SortAsc");
 				document.forms["scfTradeList"].action = updateURL;
 				document.forms["scfTradeList"].submit();
 			});
@@ -192,6 +218,7 @@ $(document).ready(
 				var updateURL = $("#defaultRender").val();
 				var sort="sellerAllotment_SortAsc";
 				$('#sortVal').val(sort);
+				$('#sortVal_order').val("sellerAllotment_SortDesc");
 				document.forms["scfTradeList"].action = updateURL;
 				document.forms["scfTradeList"].submit();
 			});
@@ -201,6 +228,7 @@ $(document).ready(
 				var updateURL = $("#defaultRender").val();
 				var sort="sellerAllotment_SortDesc";
 				$('#sortVal').val(sort);
+				$('#sortVal_order').val("sellerAllotment_SortAsc");
 				document.forms["scfTradeList"].action = updateURL;
 				document.forms["scfTradeList"].submit();
 			});
@@ -210,6 +238,7 @@ $(document).ready(
 				var updateURL = $("#defaultRender").val();
 				var sort="status_SortAsc";
 				$('#sortVal').val(sort);
+				$('#sortVal_order').val("status_SortDesc");
 				document.forms["scfTradeList"].action = updateURL;
 				document.forms["scfTradeList"].submit();
 			});
@@ -219,6 +248,7 @@ $(document).ready(
 				var updateURL = $("#defaultRender").val();
 				var sort="status_SortDesc";
 				$('#sortVal').val(sort);
+				$('#sortVal_order').val("status_SortAsc");
 				document.forms["scfTradeList"].action = updateURL;
 				document.forms["scfTradeList"].submit();
 			});
@@ -228,6 +258,7 @@ $(document).ready(
 				var updateURL = $("#defaultRender").val();
 				var sort="duration_SortAsc";
 				$('#sortVal').val(sort);
+				$('#sortVal_order').val("duration_SortDesc");
 				document.forms["scfTradeList"].action = updateURL;
 				document.forms["scfTradeList"].submit();
 			});
@@ -237,6 +268,7 @@ $(document).ready(
 				var updateURL = $("#defaultRender").val();
 				var sort="duration_SortDesc";
 				$('#sortVal').val(sort);
+				$('#sortVal_order').val("duration_SortAsc");
 				document.forms["scfTradeList"].action = updateURL;
 				document.forms["scfTradeList"].submit();
 			});
@@ -247,6 +279,7 @@ $(document).ready(
 				var updateURL = $("#defaultRender").val();
 				var sort="openingDate_SortAsc";
 				$('#sortVal').val(sort);
+				$('#sortVal_order').val("openingDate_SortDesc");
 				document.forms["scfTradeList"].action = updateURL;
 				document.forms["scfTradeList"].submit();
 			});
@@ -256,6 +289,7 @@ $(document).ready(
 				var updateURL = $("#defaultRender").val();
 				var sort="openingDate_SortDesc";
 				$('#sortVal').val(sort);
+				$('#sortVal_order').val("openingDate_SortAsc");
 				document.forms["scfTradeList"].action = updateURL;
 				document.forms["scfTradeList"].submit();
 			});
@@ -265,6 +299,7 @@ $(document).ready(
 				var updateURL = $("#defaultRender").val();
 				var sort="closingDate_SortAsc";
 				$('#sortVal').val(sort);
+				$('#sortVal_order').val("closingDate_SortDesc");
 				document.forms["scfTradeList"].action = updateURL;
 				document.forms["scfTradeList"].submit();
 			});
@@ -274,6 +309,7 @@ $(document).ready(
 				var updateURL = $("#defaultRender").val();
 				var sort="closingDate_SortDesc";
 				$('#sortVal').val(sort);
+				$('#sortVal_order').val("closingDate_SortAsc");
 				document.forms["scfTradeList"].action = updateURL;
 				document.forms["scfTradeList"].submit();
 			});
@@ -283,6 +319,7 @@ $(document).ready(
 				var updateURL = $("#defaultRender").val();
 				var sort="tradeAmount_SortAsc";
 				$('#sortVal').val(sort);
+				$('#sortVal_order').val("tradeAmount_SortDesc");
 				document.forms["scfTradeList"].action = updateURL;
 				document.forms["scfTradeList"].submit();
 			});
@@ -292,6 +329,7 @@ $(document).ready(
 				var updateURL = $("#defaultRender").val();
 				var sort="tradeAmount_SortDesc";
 				$('#sortVal').val(sort);
+				$('#sortVal_order').val("tradeAmount_SortAsc");
 				document.forms["scfTradeList"].action = updateURL;
 				document.forms["scfTradeList"].submit();
 			});
@@ -301,6 +339,7 @@ $(document).ready(
 				var updateURL = $("#defaultRender").val();
 				var sort="isMultiinvoice_SortAsc";
 				$('#sortVal').val(sort);
+				$('#sortVal_order').val("isMultiinvoice_SortDesc");
 				document.forms["scfTradeList"].action = updateURL;
 				document.forms["scfTradeList"].submit();
 			});
@@ -310,6 +349,7 @@ $(document).ready(
 				var updateURL = $("#defaultRender").val();
 				var sort="isMultiinvoice_SortDesc";
 				$('#sortVal').val(sort);
+				$('#sortVal_order').val("isMultiinvoice_SortAsc");
 				document.forms["scfTradeList"].action = updateURL;
 				document.forms["scfTradeList"].submit();
 			});
@@ -319,6 +359,7 @@ $(document).ready(
 				var updateURL = $("#defaultRender").val();
 				var sort="supplierPaymentDate_SortAsc";
 				$('#sortVal').val(sort);
+				$('#sortVal_order').val("supplierPaymentDate_SortDesc");
 				document.forms["scfTradeList"].action = updateURL;
 				document.forms["scfTradeList"].submit();
 			});
@@ -328,6 +369,7 @@ $(document).ready(
 				var updateURL = $("#defaultRender").val();
 				var sort="supplierPaymentDate_SortDesc";
 				$('#sortVal').val(sort);
+				$('#sortVal_order').val("supplierPaymentDate_SortAsc");
 				document.forms["scfTradeList"].action = updateURL;
 				document.forms["scfTradeList"].submit();
 			});
@@ -337,6 +379,7 @@ $(document).ready(
 				var updateURL = $("#defaultRender").val();
 				var sort="investorFee_SortAsc";
 				$('#sortVal').val(sort);
+				$('#sortVal_order').val("investorFee_SortDesc");
 				document.forms["scfTradeList"].action = updateURL;
 				document.forms["scfTradeList"].submit();
 			});
@@ -346,6 +389,7 @@ $(document).ready(
 				var updateURL = $("#defaultRender").val();
 				var sort="investorFee_SortDesc";
 				$('#sortVal').val(sort);
+				$('#sortVal_order').val("investorFee_SortAsc");
 				document.forms["scfTradeList"].action = updateURL;
 				document.forms["scfTradeList"].submit();
 			});
@@ -356,6 +400,7 @@ $(document).ready(
 				var updateURL = $("#defaultRender").val();
 				var sort="grossCharges_SortAsc";
 				$('#sortVal').val(sort);
+				$('#sortVal_order').val("grossCharges_SortDesc");
 				document.forms["scfTradeList"].action = updateURL;
 				document.forms["scfTradeList"].submit();
 			});
@@ -365,6 +410,7 @@ $(document).ready(
 				var updateURL = $("#defaultRender").val();
 				var sort="grossCharges_SortDesc";
 				$('#sortVal').val(sort);
+				$('#sortVal_order').val("grossCharges_SortAsc");
 				document.forms["scfTradeList"].action = updateURL;
 				document.forms["scfTradeList"].submit();
 			});
@@ -375,6 +421,7 @@ $(document).ready(
 				var updateURL = $("#defaultRender").val();
 				var sort="financeAmount_SortAsc";
 				$('#sortVal').val(sort);
+				$('#sortVal_order').val("financeAmount_SortDesc");
 				document.forms["scfTradeList"].action = updateURL;
 				document.forms["scfTradeList"].submit();
 			});
@@ -384,6 +431,7 @@ $(document).ready(
 				var updateURL = $("#defaultRender").val();
 				var sort="financeAmount_SortDesc";
 				$('#sortVal').val(sort);
+				$('#sortVal_order').val("financeAmount_SortAsc");
 				document.forms["scfTradeList"].action = updateURL;
 				document.forms["scfTradeList"].submit();
 			});

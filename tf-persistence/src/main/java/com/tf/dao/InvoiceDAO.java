@@ -35,5 +35,5 @@ public interface InvoiceDAO extends BaseDAO<Invoice, Long> {
 	
 	public int validInvoiceImport(String invoiceNumber,Long Id);
 	
-	public GenericListModel getInvoices(Long companyID, int startIndex,int pageSize, String registrationNo);
+	public GenericListModel getInvoices(Long companyID, int startIndex,int pageSize, String registrationNo,String app);
 }

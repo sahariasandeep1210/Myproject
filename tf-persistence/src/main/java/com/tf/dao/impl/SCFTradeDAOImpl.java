@@ -80,8 +80,9 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 				criteria.createAlias("company","company");
 				//criteria.createAlias("allotments","allotments");
 				if("".equals(order)){
+					
 					criteria.addOrder(Order.desc("updatDate"));
-		}
+				}
 				if("scfCompany_asc".equals(order)){
 					criteria.addOrder(Order.asc("company.name"));
 				}

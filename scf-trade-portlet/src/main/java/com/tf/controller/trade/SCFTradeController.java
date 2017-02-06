@@ -13,6 +13,7 @@ import java.util.Map;
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 import javax.portlet.PortletConfig;
+import javax.portlet.PortletSession;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 import javax.portlet.ResourceRequest;
@@ -194,10 +195,20 @@ public class SCFTradeController {
 			
 			/*Sorting code starts from here*/
 			String sortCompany = ParamUtil.getString(request, "dynamicSort");
-			
-			if(sortCompany==null || sortCompany==""){sortCompany="";}
+			String sortCompany_order = ParamUtil.getString(request, "sortVal_order");
+			model.put("sortCompany_order", sortCompany_order);
+			if(sortCompany==null || sortCompany==""){
+				sortCompany="";
+				/*PortletSession session = request.getPortletSession();
+				sortCompany = (String) session.getAttribute("company", PortletSession.APPLICATION_SCOPE);
+			*/
+			}
 			/*if(sortCompany!=null || sortCompany!=""){
-			if(sortCompany=="scfCompany_asc" || sortCompany.equals("scfCompany_asc"))
+				PortletSession session = request.getPortletSession();
+				session.setAttribute("company",sortCompany, PortletSession.APPLICATION_SCOPE);
+
+			}*/
+				/*if(sortCompany=="scfCompany_asc" || sortCompany.equals("scfCompany_asc"))
 			{
 				sortCompany="asc";
 			}
@@ -316,7 +327,8 @@ public class SCFTradeController {
 			
 			/*Sorting code starts from here*/
 			String sortCompany = ParamUtil.getString(request, "dynamicSort");
-		
+			String sortCompany_order = ParamUtil.getString(request, "sortVal_order");
+			model.put("sortCompany_order", sortCompany_order);
 			if(sortCompany==null || sortCompany==""){sortCompany="";}
 			
 			if (!StringUtils.isNullOrEmpty(from)) {
@@ -355,6 +367,8 @@ public class SCFTradeController {
 			String regNum = liferayUtility.getWhiteHallComapanyRegNo(request);
 			/*Sorting code starts from here*/
 			String sortCompany = ParamUtil.getString(request, "dynamicSort");
+			String sortCompany_order = ParamUtil.getString(request, "sortVal_order");
+			model.put("sortCompany_order", sortCompany_order);
 			if(sortCompany==null || sortCompany==""){sortCompany="";}
 			if(StringUtils.isNullOrEmpty(search)){
 			scftrades = scfTradeService.getScfTradeList(regNum, paginationModel.getStartIndex(), paginationModel.getPageSize(),sortCompany);
@@ -377,6 +391,8 @@ public class SCFTradeController {
 			   
 			   /*Sorting code starts from here*/
 				String sortCompany = ParamUtil.getString(request, "dynamicSort");
+				String sortCompany_order = ParamUtil.getString(request, "sortVal_order");
+				model.put("sortCompany_order", sortCompany_order);
 				if(sortCompany==null || sortCompany==""){sortCompany="";}
 			
 			String search = ParamUtil.getString(request, "Search");

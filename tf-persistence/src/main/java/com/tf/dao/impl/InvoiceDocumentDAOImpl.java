@@ -29,6 +29,7 @@ public class InvoiceDocumentDAOImpl extends BaseDAOImpl<InvoiceDocument, Long> i
 	}
 
 	
+	@SuppressWarnings("unchecked")
 	public List<InvoiceDocument> getInvoiceDocuments(){
 		_log.debug("Inside getInvoice ");
 		try {
@@ -41,6 +42,7 @@ public class InvoiceDocumentDAOImpl extends BaseDAOImpl<InvoiceDocument, Long> i
 			throw re;
 		}
 	}
+	@SuppressWarnings("unchecked")
 	public List<InvoiceDocument> getInvoiceDocuments(long companyId){
 		try {
 			List<InvoiceDocument> results = (List<InvoiceDocument>) sessionFactory

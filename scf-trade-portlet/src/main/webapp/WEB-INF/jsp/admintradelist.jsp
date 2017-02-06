@@ -35,6 +35,7 @@
 		
 		
 		<input type="hidden" id="sortVal" name="dynamicSort" />
+		<input type="hidden" id="sortVal_order" name="sortVal_order" value="${sortCompany_order}"/>
 				<%@include file="tradefilter.jspf"%> 
 	
 		
@@ -43,17 +44,17 @@
 				<thead>
 					<tr>
 						<th width="3%" class=""></th>
-						<th>Trade # <br><img id="trade_SortAsc" src="<%=request.getContextPath()%>/css/up.png" alt="asc"/><img id="trade_SortDesc" src="<%=request.getContextPath()%>/css/down.png" alt="desc"/></th>
-					    <th>SCF Company <br><img id="scfCompany_SortAsc" src="<%=request.getContextPath()%>/css/up.png" alt="asc"/><img id="scfCompany_SortDesc" src="<%=request.getContextPath()%>/css/down.png" alt="desc"/></th>
-					    <th>Allotment <br><img id="allotment_SortAsc" src="<%=request.getContextPath()%>/css/up.png" alt="asc"/><img id="allotment_SortDesc" src="<%=request.getContextPath()%>/css/down.png" alt="desc"/></th>
-					    <th>BPS <br><img id="bps_SortAsc" src="<%=request.getContextPath()%>/css/up.png" alt="asc"/><img id="bps_SortDesc" src="<%=request.getContextPath()%>/css/down.png" alt="desc"/></th>
-						<th>Investor Gross Profit <br><img id="investorGross_SortAsc" src="<%=request.getContextPath()%>/css/up.png" alt="asc"/><img id="investorGross_SortDesc" src="<%=request.getContextPath()%>/css/down.png" alt="desc"/></th>
-						<th>WhiteHall Share<br><img id="whiteHallShare_SortAsc" src="<%=request.getContextPath()%>/css/up.png" alt="asc"/><img id="whiteHallShare_SortDesc" src="<%=request.getContextPath()%>/css/down.png" alt="desc"/></th>
-						<th>Investor Net Profit <br><img id="investorNetProfit_SortAsc" src="<%=request.getContextPath()%>/css/up.png" alt="asc"/><img id="investorNetProfit_SortDesc" src="<%=request.getContextPath()%>/css/down.png" alt="desc"/></th>	
-						<th>Seller Fees <br><img id="sellerFees_SortAsc" src="<%=request.getContextPath()%>/css/up.png" alt="asc"/><img id="sellerFees_SortDesc" src="<%=request.getContextPath()%>/css/down.png" alt="desc"/></th>
-						<th>WhiteHall Gross Profit <br><img id="whitehallGrossProfit_SortAsc" src="<%=request.getContextPath()%>/css/up.png" alt="asc"/><img id="whitehallGrossProfit_SortDesc" src="<%=request.getContextPath()%>/css/down.png" alt="desc"/></th>		
-						<th>Seller Allotment <br><img id="sellerAllotment_SortAsc" src="<%=request.getContextPath()%>/css/up.png" alt="asc"/><img id="sellerAllotment_SortDesc" src="<%=request.getContextPath()%>/css/down.png" alt="desc"/></th>
-						<th>Status <br><img id="status_SortAsc" src="<%=request.getContextPath()%>/css/up.png" alt="asc"/><img id="status_SortDesc" src="<%=request.getContextPath()%>/css/down.png" alt="desc"/></th>					
+						<th>Trade # <br><img id="trade_SortAsc" src="<%=request.getContextPath()%>/images/up.png" alt="asc"/><img id="trade_SortDesc" src="<%=request.getContextPath()%>/images/down.png" alt="desc"/></th>
+					    <th>SCF Company <br><img id="scfCompany_SortAsc" src="<%=request.getContextPath()%>/images/up.png" alt="asc"/><img id="scfCompany_SortDesc" src="<%=request.getContextPath()%>/images/down.png" alt="desc"/></th>
+					    <th>Allotment <br><img id="allotment_SortAsc" src="<%=request.getContextPath()%>/images/up.png" alt="asc"/><img id="allotment_SortDesc" src="<%=request.getContextPath()%>/images/down.png" alt="desc"/></th>
+					    <th>BPS <br><img id="bps_SortAsc" src="<%=request.getContextPath()%>/images/up.png" alt="asc"/><img id="bps_SortDesc" src="<%=request.getContextPath()%>/images/down.png" alt="desc"/></th>
+						<th>Investor Gross Profit <br><img id="investorGross_SortAsc" src="<%=request.getContextPath()%>/images/up.png" alt="asc"/><img id="investorGross_SortDesc" src="<%=request.getContextPath()%>/images/down.png" alt="desc"/></th>
+						<th>WhiteHall Share<br><img id="whiteHallShare_SortAsc" src="<%=request.getContextPath()%>/images/up.png" alt="asc"/><img id="whiteHallShare_SortDesc" src="<%=request.getContextPath()%>/images/down.png" alt="desc"/></th>
+						<th>Investor Net Profit <br><img id="investorNetProfit_SortAsc" src="<%=request.getContextPath()%>/images/up.png" alt="asc"/><img id="investorNetProfit_SortDesc" src="<%=request.getContextPath()%>/images/down.png" alt="desc"/></th>	
+						<th>Seller Fees <br><img id="sellerFees_SortAsc" src="<%=request.getContextPath()%>/images/up.png" alt="asc"/><img id="sellerFees_SortDesc" src="<%=request.getContextPath()%>/images/down.png" alt="desc"/></th>
+						<th>WhiteHall Gross Profit <br><img id="whitehallGrossProfit_SortAsc" src="<%=request.getContextPath()%>/images/up.png" alt="asc"/><img id="whitehallGrossProfit_SortDesc" src="<%=request.getContextPath()%>/images/down.png" alt="desc"/></th>		
+						<th>Seller Allotment <br><img id="sellerAllotment_SortAsc" src="<%=request.getContextPath()%>/images/up.png" alt="asc"/><img id="sellerAllotment_SortDesc" src="<%=request.getContextPath()%>/images/down.png" alt="desc"/></th>
+						<th>Status <br><img id="status_SortAsc" src="<%=request.getContextPath()%>/images/up.png" alt="asc"/><img id="status_SortDesc" src="<%=request.getContextPath()%>/images/down.png" alt="desc"/></th>					
 					</tr>
 				</thead>
 				<tbody>

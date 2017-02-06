@@ -521,12 +521,12 @@ public class InvoiceController {
 				tradeURL=liferayUtility.getPortletURL(request, "scf-trade-portlet", "render", "singleTrade", true);
 				model.put("userType", Constants.SELLER_ADMIN);
 			}
-			
+			String app="";
 			if(!StringUtils.isNullOrEmpty(search) || !StringUtils.isNullOrEmpty(value)){
 			    	   genericListModel =invoiceService.getInvoicesByFilter(search, fromDateString, toDateString, value,
 						paginationModel.getStartIndex(), paginationModel.getPageSize(),companyID,registrationNo);
 				}else{				
-				    genericListModel = invoiceService.getInvoices(companyID,paginationModel.getStartIndex(), paginationModel.getPageSize(),registrationNo);
+				    genericListModel = invoiceService.getInvoices(companyID,paginationModel.getStartIndex(), paginationModel.getPageSize(),registrationNo,app);
 			}
 			model.put("tradeURL",tradeURL);
 			model.put("value", value);

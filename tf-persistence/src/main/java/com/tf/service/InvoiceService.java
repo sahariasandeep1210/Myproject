@@ -43,7 +43,7 @@ public interface InvoiceService {
 	
 	public int validInvoiceImport(String invoiceNumber, Long Id);
 
-	public GenericListModel getInvoices(Long companyID, int startIndex,int pageSize, String registrationNo);
+	public GenericListModel getInvoices(Long companyID, int startIndex,int pageSize, String registrationNo,String app);
 	
 	public FinanceConfirmationDTO triggerAllotmentCheck(List<String> invoiceIds,long sellerCmpId,long userId) throws InSuffcientFund, InvalidDuration;
 

@@ -357,8 +357,8 @@ public class InvoiceServiceImpl implements InvoiceService{
 	}
 
 	public GenericListModel getInvoices(Long companyID, int startIndex,
-		int pageSize, String registrationNo) {
-	    return invoiceDAO.getInvoices(companyID, startIndex, pageSize, registrationNo);
+		int pageSize, String registrationNo,String app) {
+	    return invoiceDAO.getInvoices(companyID, startIndex, pageSize, registrationNo,app);
 	}
 	
 	public FinanceConfirmationDTO triggerAllotmentCheck(List<String> invoiceIds,long sellerCmpId,long userId) throws InSuffcientFund, InvalidDuration   {		
