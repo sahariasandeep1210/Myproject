@@ -119,7 +119,7 @@ public class BaseController {
 	private static Map<String, String> initialzeOrgTypeMap() {
 		Map<String, String> map = new LinkedHashMap<String, String>();
 		map.put("", "Select");
-		map.put("Company", "Company");
+		//map.put("Company", "Company");
 		map.put("ltd", "Ltd");
 		map.put("LLP", "LLP");
 		map.put("Partnership", "Partnership");

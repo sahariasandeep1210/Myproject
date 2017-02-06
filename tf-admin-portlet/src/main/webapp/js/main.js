@@ -15,7 +15,7 @@ $(function() {
 	 $("#pageSize").val($("#currPageSize").val());
 	$("#errorMsg").hide(); 
 	
-	$("#telNo").inputmask("99 9999999999");
+	$("#telNo").inputmask("999999999999");
 	$("#userTelNo").inputmask("99 9999999999");
 	$("#sortCode").inputmask("999999");
 	$("#accountNumber").inputmask("9999999999");
@@ -269,6 +269,8 @@ $(function() {
 });
 
 $(document).ready(function(){
+	
+	
 	
 	$(".filter-btn").on({
 		click: function(){
