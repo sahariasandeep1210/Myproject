@@ -41,7 +41,7 @@
 					<td><b>Seller Payment Date</b></td>
 					<td>${scfTradeModel.sellerPaymentDate}</td>
 					<td><b>Trade Amount</b></td>
-					<td><fmt:formatNumber type="number" maxFractionDigits="3" value="${scfTradeModel.tradeAmount}" /></td>
+					<td class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${scfTradeModel.tradeAmount}" pattern="#,###.00"/></td>
 				</tr>
 				<tr>
 					<td><b>Company Name</b></td>
@@ -76,12 +76,12 @@
                         <c:when test="${fn:length(allotments) gt 0}">
                             <c:forEach items="${allotments}" var="allotment">
                                 <tr>
-                                    <td class="rightalign blue_normal"><fmt:formatNumber type="number" maxFractionDigits="3" value="${allotment.allotmentAmount}" /></td>
+                                    <td class="rightalign blue_normal"><fmt:formatNumber type="number" maxFractionDigits="3" value="${allotment.allotmentAmount}" pattern="#,###.00"/></td>
                                     <td class="rightalign">${allotment.marketDiscount}</td>
                                     <td>${allotment.noOfdays}</td>
                                     <td class="rightalign red_bold">${allotment.whitehallProfitShare }</td>
-                                    <td class="rightalign green_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${allotment.investorGrossProfit}" /></td>
-                                    <td class="rightalign green_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${allotment.investorNetProfit}" /></td>
+                                    <td class="rightalign green_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${allotment.investorGrossProfit}" pattern="#,###.00"/></td>
+                                    <td class="rightalign green_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${allotment.investorNetProfit}" pattern="#,###.00"/></td>
                                     <td><fmt:formatDate value="${allotment.allotmentDate}"
                                             pattern="dd-MM-yyyy HH:mm" /></td>
 

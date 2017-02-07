@@ -88,7 +88,7 @@
 									<td><fmt:formatDate pattern="dd-MM-yyyy" value="${trade.openingDate}" /></td>
 									<td><fmt:formatDate pattern="dd-MM-yyyy" value="${trade.closingDate}" /></td>
 									<td class="blue_bold text-right">
-										<div class="pull-left"><fmt:formatNumber type="number" maxFractionDigits="3" value="${trade.tradeAmount}"  pattern="#0.00"/></div>
+										<div class="pull-left"><fmt:formatNumber type="number" maxFractionDigits="3" value="${trade.tradeAmount}"  pattern="#,###.00"/></div>
 										<div class="text-align-icon">
 											<a href="javascript:void(0);"	data-url="${breakdownURL}" class="breakdown" tradeID="${trade.id}">
 											<i id="${trade.id}_icon" class="icomoon-plus cursor-pointer credit-break"></i> </a>

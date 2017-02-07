@@ -93,7 +93,7 @@
 											href="javascript:void(0);"
 											onclick="window.location.href='${supplierURL}&tradeID=${trade.id}'">${trade.scfId}</a></span></td>
 									<td>${trade.company.name}</td>
-									<td  class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${trade.tradeAmount}"  pattern="#0.00"/></td>
+									<td  class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${trade.tradeAmount}"  pattern="#,###.00"/></td>
 									<td>${trade.status}</td>
 									<td>${trade.duration}</td>
 									<td><fmt:formatDate pattern="dd-MM-yyyy"
@@ -102,12 +102,12 @@
 											value="${trade.closingDate}" /></td>
 									<td><fmt:formatDate pattern="dd-MM-yyyy"
 											value="${trade.sellerPaymentDate}" /></td>
-									<td class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${trade.sellerTransFee}"  pattern="#0.00"/></td>
-									<td class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${trade.sellerFees}"  pattern="#0.00"/></td>
-									<td class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${trade.investorTotalGross}"  pattern="#0.00"/></td>
+									<td class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${trade.sellerTransFee}"  pattern="#,###.00"/></td>
+									<td class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${trade.sellerFees}"  pattern="#,###.00"/></td>
+									<td class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${trade.investorTotalGross}"  pattern="#,###.00"/></td>
 									<td></td>
-									<td class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${trade.sellerTransFee + trade.sellerFees + trade.investorTotalGross}"  pattern="#0.00"/></td>
-									<td class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${trade.sellerNetAllotment}"  pattern="#0.00"/></td>
+									<td class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${trade.sellerTransFee + trade.sellerFees + trade.investorTotalGross}"  pattern="#,###.00"/></td>
+									<td class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${trade.sellerNetAllotment}"  pattern="#,###.00"/></td>
 
 								</tr>
 
