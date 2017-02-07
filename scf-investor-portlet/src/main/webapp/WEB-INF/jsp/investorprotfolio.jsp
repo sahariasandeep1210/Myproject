@@ -51,22 +51,22 @@
 					<c:when test="${fn:length(investorHistoryList) gt 0}">
 							<tr class="totalstr">
 								<td>Totals</td>
-								<td> <fmt:formatNumber type="number" maxFractionDigits="3" value="${totalsMap.creditLine}"  pattern="#0.00"/> </td>
-								<td><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalsMap.myCreditLine}" pattern="#0.00"/></td>
+								<td class="rightalign"> <fmt:formatNumber type="number" maxFractionDigits="3" value="${totalsMap.creditLine}"  pattern="#,###.00"/> </td>
+								<td class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalsMap.myCreditLine}" pattern="#,###.00"/></td>
 								<td></td>
-								<td><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalsMap.amountInvested}" pattern="#0.00"/></td>
-								<td><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalsMap.availToInvest}" pattern="#0.00"/></td>
+								<td class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalsMap.amountInvested}" pattern="#,###.00"/></td>
+								<td class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalsMap.availToInvest}" pattern="#,###.00"/></td>
 								<td>
 								</td>	
 							</tr>
 						<c:forEach items="${investorHistoryList}" var="investorProt" varStatus="loop">
 							<tr class="${loop.index % 2 == 0 ? 'evenrow' : 'oddrow'}">
 								<td id="${investorProt.investorProtId}_cmpname">${investorProt.company.name} </td>
-								<td id="${investorProt.investorProtId}_currcreditLine"><fmt:formatNumber type="number" maxFractionDigits="3" value="${investorProt.currentCreditLine}" pattern="#0.00"/> <a href="javascript:void(0);"  data-url="${crtLinebreakdownURL}" class="breakdown"   style=" float: right; vertical-align: middle; font-size: 20px" scfcompany="${investorProt.company.id}" investorID="${investorProt.investor.investorId}"><i class="fa fa-plus-square-o"></i> </a></td>
-								<td id="${investorProt.investorProtId}_mycreditLine"><fmt:formatNumber type="number" maxFractionDigits="3" value="${investorProt.myCreditLine}" pattern="#0.00"/></td>
-								<td id="${investorProt.investorProtId}_dicountRate">${investorProt.discountRate}</td>
-								<td id="${investorProt.investorProtId}_utilised"><fmt:formatNumber type="number" maxFractionDigits="3" value="${investorProt.amountInvested}" pattern="#0.00"/></td>
-								<td><fmt:formatNumber type="number" maxFractionDigits="3" value="${investorProt.availToInvest}" pattern="#0.00"/></td>
+								<td id="${investorProt.investorProtId}_currcreditLine" class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${investorProt.currentCreditLine}" pattern="#,###.00"/> <a href="javascript:void(0);"  data-url="${crtLinebreakdownURL}" class="breakdown"   style=" float: right; vertical-align: middle; font-size: 20px" scfcompany="${investorProt.company.id}" investorID="${investorProt.investor.investorId}"><i class="fa fa-plus-square-o"></i> </a></td>
+								<td id="${investorProt.investorProtId}_mycreditLine" class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${investorProt.myCreditLine}" pattern="#,###.00"/></td>
+								<td id="${investorProt.investorProtId}_dicountRate" class="rightalign">${investorProt.discountRate}</td>
+								<td id="${investorProt.investorProtId}_utilised" class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${investorProt.amountInvested}" pattern="#,###.00"/></td>
+								<td class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${investorProt.availToInvest}" pattern="#,###.00"/></td>
 								<td><button title="Edit" class="editInvestor btnBgGreenSm btnIconSm" id="${investorProt.investorProtId}_"><i class="icomoon-edit"></i></button>  
 									<button title="History" class="historybtn btnBgBuSm btnIconSm" data-url="${historyURL}" protID="${investorProt.investorProtId}"><i class="icomoon-history"></i></button>  
 								</td>	

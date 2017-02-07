@@ -40,10 +40,10 @@
 								<tr>
 									<td class="highlightrow"><b>Totals</b></td>
 									<td></td>
-									<td class="rightalign blue_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalsMap.myCreditLine}" pattern="#0.00"/></td>
+									<td class="rightalign blue_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalsMap.myCreditLine}" pattern="#,###.00"/></td>
 									<td></td>
-									<td class="rightalign blue_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalsMap.amountInvested}" pattern="#0.00"/></td>
-									<td class="rightalign blue_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalsMap.availToInvest}" pattern="#0.00"/></td>
+									<td class="rightalign blue_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalsMap.amountInvested}" pattern="#,###.00"/></td>
+									<td class="rightalign blue_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalsMap.availToInvest}" pattern="#,###.00"/></td>
 									<!-- <td></td> -->
 								</tr>
 							<c:forEach items="${investorList}" var="investorProt"
@@ -51,10 +51,10 @@
 								<tr>
 									<td>${investorProt.investor.company.name}</td>
 									<td>${investorProt.company.name}</td>
-									<td class="rightalign blue_bold"><fmt:formatNumber type="number" maxFractionDigits="3"	value="${investorProt.myCreditLine}" pattern="#0.00"/></td>
+									<td class="rightalign blue_bold"><fmt:formatNumber type="number" maxFractionDigits="3"	value="${investorProt.myCreditLine}" pattern="#,###.00"/></td>
 									<td>${investorProt.discountRate}</td>
-									<td class="rightalign blue_bold"><fmt:formatNumber type="number" maxFractionDigits="3"	value="${investorProt.amountInvested}" pattern="#0.00"/></td>
-									<td class="rightalign blue_bold"><fmt:formatNumber type="number" maxFractionDigits="3"	value="${investorProt.availToInvest}" pattern="#0.00"/></td>
+									<td class="rightalign blue_bold"><fmt:formatNumber type="number" maxFractionDigits="3"	value="${investorProt.amountInvested}" pattern="#,###.00"/></td>
+									<td class="rightalign blue_bold"><fmt:formatNumber type="number" maxFractionDigits="3"	value="${investorProt.availToInvest}" pattern="#,###.00"/></td>
 								</tr>
 							</c:forEach>
 						</c:when>

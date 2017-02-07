@@ -60,7 +60,7 @@
 						   			</div>
 						   			
 						   			<div class="bigText blue">
-						   				&pound; <fmt:formatNumber type="number" maxFractionDigits="3" value="${investor.cashPosition}"  />
+						   				&pound; <fmt:formatNumber type="number" maxFractionDigits="3" value="${investor.cashPosition}"  pattern="#,###.00"/>
 						   			</div>
 						   		</div>
 				   			</div>
@@ -72,7 +72,7 @@
 						   			</div>
 						   			
 						   			<div class="bigText blue">
-						   				&pound; <fmt:formatNumber type="number" maxFractionDigits="3" value="${totalReceivablesPosition}"  />
+						   				&pound; <fmt:formatNumber type="number" maxFractionDigits="3" value="${totalReceivablesPosition}"  pattern="#,###.00"/>
 						   			</div>
 						   		</div>
 				   			</div>
@@ -84,7 +84,7 @@
 						   			</div>
 						   			
 						   			<div class="bigText blue">
-						   				&pound; <fmt:formatNumber type="number" maxFractionDigits="3" value="${totalAsset}"  />
+						   				&pound; <fmt:formatNumber type="number" maxFractionDigits="3" value="${totalAsset}"  pattern="#,###.00"/>
 						   			</div>
 						   		</div>
 				   			</div>	   		
@@ -209,7 +209,7 @@
 										</div>
 								</td>
 								<td>${investorTransaction.scfTradeId}</td>
-								<td class="${amountClass} rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${investorTransaction.amount}"  pattern="#0.00"/></td>
+								<td class="${amountClass} rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${investorTransaction.amount}"  pattern="#,###.00"/></td>
 								<td>${investorTransaction.reference}</td>
 							</tr>
 						</c:forEach>
