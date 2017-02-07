@@ -33,6 +33,41 @@
 		 <%@include file="tradefilter.jspf"%> 
 			<input type="hidden" id="sortVal" name="dynamicSort" />
 				<input type="hidden" id="sortVal_order" name="sortVal_order" value="${sortCompany_order}"/>
+		
+		
+		
+		<div class="lfr-pagination">			
+				<p:paginate  paginationModel="${paginationModel}"/>
+				
+				<div class="lfr-pagination-controls">
+					<div class="btn-group">
+					  <a class="btn btn-default dropdown-toggle" role="button" data-toggle="dropdown" href="#">${paginationModel.pageSize} items per page <i class="caret"></i></a>
+					  <ul id="menu1" class="dropdown-menu" role="menu" aria-labelledby="drop4">
+					  	  <li role="presentation" pageSize="2"><a role="menuitem" href="#">2 items per page</a></li>
+		                  <li role="presentation" pageSize="5"><a role="menuitem" href="#">5 items per page</a></li>
+		                  <li role="presentation" pageSize="10"><a role="menuitem" href="#">10 items per page</a></li>
+		                  <li role="presentation" pageSize="20"><a role="menuitem" href="#">20 items per page</a></li>
+		                  <li role="presentation" pageSize="30"><a role="menuitem" href="#">30 items per page</a></li>
+		                  <li role="presentation" pageSize="45"><a role="menuitem" href="#">45 items per page</a></li>
+		                  <li role="presentation" pageSize="60"><a role="menuitem" href="#">60 items per page</a></li>
+		                  <li role="presentation"  pageSize="75"><a role="menuitem" href="#">75 items per page</a></li>
+		                </ul> 		              
+					</div>
+					
+					<small class="search-results">Showing ${(paginationModel.currentPage-1)*paginationModel.pageSize+1} - 
+					<c:choose>
+							<c:when test="${paginationModel.currentPage*paginationModel.pageSize >= paginationModel.noOfRecords}">${paginationModel.noOfRecords}</c:when>
+							<c:otherwise>${paginationModel.currentPage*paginationModel.pageSize}</c:otherwise>
+					</c:choose>
+					 of ${paginationModel.noOfRecords} Results.</small>
+					
+					
+				</div>
+		  </div>
+		
+		
+		
+		
 		<div class="customTableContainer">
 			<table class="table  tablesorter table-bordered" id="tradeListTable">
 				<thead>
