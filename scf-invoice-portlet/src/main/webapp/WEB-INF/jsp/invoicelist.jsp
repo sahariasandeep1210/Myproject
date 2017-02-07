@@ -150,6 +150,8 @@
 		  		</div>
 		  	</div>
 	</div>
+	
+	
 		<div class="lfr-pagination">			
 				<p:paginate  paginationModel="${paginationModel}"/>
 				
