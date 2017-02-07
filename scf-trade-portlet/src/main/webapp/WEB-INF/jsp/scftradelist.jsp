@@ -25,8 +25,9 @@
         <input type="hidden" name="defaultRender"   	  id="defaultRender" 	  value="${defaultRenderURL}" />
         <input type="hidden" name="pageSize"        	  id="pageSize"      			value="${paginationModel.pageSize}" />
          
-         <input type="hidden" id="sortVal" name="dynamicSort" />
-         <input type="hidden" id="sortVal_order" name="sortVal_order" value="${sortCompany_order}"/>
+        <input type="hidden" id="sortVal_order" name="sortVal_order" value="${sortCompany_order}"/>
+		<input type="hidden" id="sort_Column" name="sort_Column" value="${sort_Column}" />
+		<input type="hidden" id="sort_order" name="sort_order" value="${sort_order}"/>
        <%@include file="tradefilter.jspf"%> 
 	  
 <div class="lfr-pagination">
