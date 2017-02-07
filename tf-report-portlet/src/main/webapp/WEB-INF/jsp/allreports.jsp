@@ -144,7 +144,7 @@
 									
 									</td>
 									
-									<td class="${amountClass}"><fmt:formatNumber type="number" maxFractionDigits="3" value="${report.amount}"  pattern="#0.00"/></td>
+									<td class="${amountClass} rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${report.amount}"  pattern="#,###.00"/></td>
 									<td>${report.scfTradeId}</td>
 									<%-- <td>${report.company.name}</td> --%>
 									<td>${report.reference}</td>
@@ -171,9 +171,9 @@
 												</div>								
 									
 									</td>
-									<td class="${amountClass}"><fmt:formatNumber type="number" maxFractionDigits="3" value="${report.amount}"  /></td>
+									<td class="${amountClass} rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${report.amount}"  pattern="#,###.00"/></td>
 									<td>${report.tradeID}</td>
-									<<%-- td>${report.company.name}</td> --%>
+									<%-- td>${report.company.name}</td> --%>
 									<td>${report.reference}</td>
 								</tr>
 							</c:forEach>
