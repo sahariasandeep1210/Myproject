@@ -32,10 +32,9 @@
 
 		 <input type="hidden" id="sortVal" name="dynamicSort" />
 		 <input type="hidden" id="sortVal_order" name="sortVal_order" value="${sortCompany_order}"/>
-		<%@include file="tradefilter.jspf"%>
-
-
-		<div class="lfr-pagination">			
+		<%@include file="tradefilter.jspf"%> 
+		
+<div class="lfr-pagination">			
 				<p:paginate  paginationModel="${paginationModel}"/>
 				
 				<div class="lfr-pagination-controls">
@@ -63,26 +62,25 @@
 					
 				</div>
 		  </div>
-		  
-
+	
 		<div class="customTableContainer">
 			<table class="table  tablesorter table-bordered" id="tradeListTable">
 				<thead>
 					<tr>
-						<th>Trade # <br><img id="trade_SortAsc" src="<%=request.getContextPath()%>/images/up.png" alt="asc"/><img id="trade_SortDesc" src="<%=request.getContextPath()%>/images/down.png" alt="desc"/></th>
-					    <th>SCF Company <br><img id="scfCompany_SortAsc" src="<%=request.getContextPath()%>/images/up.png" alt="asc"/><img id="scfCompany_SortDesc" src="<%=request.getContextPath()%>/images/down.png" alt="desc"/></th>
-						<th>Trade Value <br><img id="allotment_SortAsc" src="<%=request.getContextPath()%>/images/up.png" alt="asc"/><img id="allotment_SortDesc" src="<%=request.getContextPath()%>/images/down.png" alt="desc"/></th>
-						<th>Status <br><img id="status_SortAsc" src="<%=request.getContextPath()%>/images/up.png" alt="asc"/><img id="status_SortDesc" src="<%=request.getContextPath()%>/images/down.png" alt="desc"/></th>
-						<th>Duration <br><img id="duration_SortAsc" src="<%=request.getContextPath()%>/images/up.png" alt="asc"/><img id="duration_SortDesc" src="<%=request.getContextPath()%>/images/down.png" alt="desc"/></th>
-						<th width="8%">Opening Date <br><img id="openingDate_SortAsc" src="<%=request.getContextPath()%>/images/up.png" alt="asc"/><img id="openingDate_SortDesc" src="<%=request.getContextPath()%>/images/down.png" alt="desc"/></th>
-						<th width="8%">Maturity Date <br><img id="closingDate_SortAsc" src="<%=request.getContextPath()%>/images/up.png" alt="asc"/><img id="closingDate_SortDesc" src="<%=request.getContextPath()%>/images/down.png" alt="desc"/></th>
-						<th>Supplier Payment Date <br><img id="supplierPaymentDate_SortAsc" src="<%=request.getContextPath()%>/images/up.png" alt="asc"/><img id="supplierPaymentDate_SortDesc" src="<%=request.getContextPath()%>/images/down.png" alt="desc"/></th>
+						<th>Trade # <br><img column-name="scfId" class="sortColumn" id="trade_SortAsc" src="<%=request.getContextPath()%>/images/up.png" alt="asc"/><img column-name="scfId" class="sortColumn" id="trade_SortDesc" src="<%=request.getContextPath()%>/images/down.png" alt="desc"/></th>
+					    <th>SCF Company <br><img column-name="company.name" class="sortColumn" id="scfCompany_SortAsc" src="<%=request.getContextPath()%>/images/up.png" alt="asc"/><img column-name="company.name" class="sortColumn" id="scfCompany_SortDesc" src="<%=request.getContextPath()%>/images/down.png" alt="desc"/></th>
+						<th>Trade Value <br><img column-name="tradeAmount" class="sortColumn" id="allotment_SortAsc" src="<%=request.getContextPath()%>/images/up.png" alt="asc"/><img column-name="tradeAmount" class="sortColumn" id="allotment_SortDesc" src="<%=request.getContextPath()%>/images/down.png" alt="desc"/></th>
+						<th>Status <br><img column-name="status" class="sortColumn" id="status_SortAsc" src="<%=request.getContextPath()%>/images/up.png" alt="asc"/><img column-name="status" class="sortColumn" id="status_SortDesc" src="<%=request.getContextPath()%>/images/down.png" alt="desc"/></th>
+						<th>Duration <br><img column-name="duration" class="sortColumn" id="duration_SortAsc" src="<%=request.getContextPath()%>/images/up.png" alt="asc"/><img column-name="duration" class="sortColumn" id="duration_SortDesc" src="<%=request.getContextPath()%>/images/down.png" alt="desc"/></th>
+						<th width="8%">Opening Date <br><img column-name="openingDate" class="sortColumn" id="openingDate_SortAsc" src="<%=request.getContextPath()%>/images/up.png" alt="asc"/><img column-name="openingDate" class="sortColumn" id="openingDate_SortDesc" src="<%=request.getContextPath()%>/images/down.png" alt="desc"/></th>
+						<th width="8%">Maturity Date <br><img column-name="closingDate" class="sortColumn" id="closingDate_SortAsc" src="<%=request.getContextPath()%>/images/up.png" alt="asc"/><img column-name="closingDate" class="sortColumn" id="closingDate_SortDesc" src="<%=request.getContextPath()%>/images/down.png" alt="desc"/></th>
+						<th>Supplier Payment Date <br><img column-name="SellerPaymentDate" class="sortColumn" id="supplierPaymentDate_SortAsc" src="<%=request.getContextPath()%>/images/up.png" alt="asc"/><img column-name="SellerPaymentDate" class="sortColumn" id="supplierPaymentDate_SortDesc" src="<%=request.getContextPath()%>/images/down.png" alt="desc"/></th>
 						<th>Fixed Charges </th>
-						<th>Whitehall Variable Fees <br><img id="sellerFees_SortAsc" src="<%=request.getContextPath()%>/images/up.png" alt="asc"/><img id="sellerFees_SortDesc" src="<%=request.getContextPath()%>/images/down.png" alt="desc"/></th>
-						<th>Investors Fees <br><img id="investorFee_SortAsc" src="<%=request.getContextPath()%>/images/up.png" alt="asc"/><img id="investorFee_SortDesc" src="<%=request.getContextPath()%>/images/down.png" alt="desc"/></th>
+						<th>Whitehall Variable Fees <br><img column-name="sellerFees" class="sortColumn" id="sellerFees_SortAsc" src="<%=request.getContextPath()%>/images/up.png" alt="asc"/><img column-name="sellerFees" class="sortColumn" id="sellerFees_SortDesc" src="<%=request.getContextPath()%>/images/down.png" alt="desc"/></th>
+						<th>Investors Fees <br><img column-name="investorTotalGross" class="sortColumn" id="investorFee_SortAsc" src="<%=request.getContextPath()%>/images/up.png" alt="asc"/><img column-name="investorTotalGross" class="sortColumn" id="investorFee_SortDesc" src="<%=request.getContextPath()%>/images/down.png" alt="desc"/></th>
 						<th>Other Fees </th>
 						<th>Gross charges </th>
-						<th>Finance Amount <br><img id="financeAmount_SortAsc" src="<%=request.getContextPath()%>/images/up.png" alt="asc"/><img id="financeAmount_SortDesc" src="<%=request.getContextPath()%>/images/down.png" alt="desc"/></th>
+						<th>Finance Amount <br><img column-name="sellerNetAllotment" class="sortColumn" id="financeAmount_SortAsc" src="<%=request.getContextPath()%>/images/up.png" alt="asc"/><img column-name="sellerNetAllotment" class="sortColumn" id="financeAmount_SortDesc" src="<%=request.getContextPath()%>/images/down.png" alt="desc"/></th>
 
 					</tr>
 				</thead>
@@ -90,7 +88,7 @@
 					<c:choose>						
 						<c:when test="${fn:length(scftrades) gt 0}">
 
-							<tr class="btnBgGreenSm">
+							<tr>
 								<td><span class='underline'>Total</span></td>
 								<td></td>
 								<td class="rightalign"><fmt:formatNumber type="number"

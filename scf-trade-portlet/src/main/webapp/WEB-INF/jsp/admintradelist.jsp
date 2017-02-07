@@ -34,13 +34,11 @@
 		<input type="hidden" id="status" name="status" />
 		
 		
+		<input type="hidden" id="sortVal_order" name="sortVal_order" value="${sortCompany_order}"/>
 		<input type="hidden" id="sort_Column" name="sort_Column" value="${sort_Column}" />
 		<input type="hidden" id="sort_order" name="sort_order" value="${sort_order}"/>
 				<%@include file="tradefilter.jspf"%> 
 	
-		
-		
-		
 		<div class="lfr-pagination">
 			
 				<p:paginate  paginationModel="${paginationModel}"/>
@@ -71,24 +69,22 @@
 				</div>
 		  </div>
 		
-		
-		
 		<div class="customTableContainer">
 			<table class="table" id="tradeListTable">
 				<thead>
 					<tr>
 						<th width="3%" class=""></th>
-						<th>Trade # <br><img column-name="scfId" class="sortColumn" src="<%=request.getContextPath()%>/images/up.png" alt="asc" order="asc"/><img column-name="scfId" class="sortColumn" src="<%=request.getContextPath()%>/images/down.png" alt="desc" order="desc"/></th>
-					    <th>SCF Company <br><img id="scfCompany_SortAsc" src="<%=request.getContextPath()%>/images/up.png" alt="asc"/><img id="scfCompany_SortDesc" src="<%=request.getContextPath()%>/images/down.png" alt="desc"/></th>
-					    <th>Allotment <br><img id="allotment_SortAsc" src="<%=request.getContextPath()%>/images/up.png" alt="asc"/><img id="allotment_SortDesc" src="<%=request.getContextPath()%>/images/down.png" alt="desc"/></th>
-					    <th>BPS <br><img id="bps_SortAsc" src="<%=request.getContextPath()%>/images/up.png" alt="asc"/><img id="bps_SortDesc" src="<%=request.getContextPath()%>/images/down.png" alt="desc"/></th>
-						<th>Investor Gross Profit <br><img id="investorGross_SortAsc" src="<%=request.getContextPath()%>/images/up.png" alt="asc"/><img id="investorGross_SortDesc" src="<%=request.getContextPath()%>/images/down.png" alt="desc"/></th>
-						<th>WhiteHall Share<br><img id="whiteHallShare_SortAsc" src="<%=request.getContextPath()%>/images/up.png" alt="asc"/><img id="whiteHallShare_SortDesc" src="<%=request.getContextPath()%>/images/down.png" alt="desc"/></th>
-						<th>Investor Net Profit <br><img id="investorNetProfit_SortAsc" src="<%=request.getContextPath()%>/images/up.png" alt="asc"/><img id="investorNetProfit_SortDesc" src="<%=request.getContextPath()%>/images/down.png" alt="desc"/></th>	
-						<th>Seller Fees <br><img id="sellerFees_SortAsc" src="<%=request.getContextPath()%>/images/up.png" alt="asc"/><img id="sellerFees_SortDesc" src="<%=request.getContextPath()%>/images/down.png" alt="desc"/></th>
-						<th>WhiteHall Gross Profit <br><img id="whitehallGrossProfit_SortAsc" src="<%=request.getContextPath()%>/images/up.png" alt="asc"/><img id="whitehallGrossProfit_SortDesc" src="<%=request.getContextPath()%>/images/down.png" alt="desc"/></th>		
-						<th>Seller Allotment <br><img id="sellerAllotment_SortAsc" src="<%=request.getContextPath()%>/images/up.png" alt="asc"/><img id="sellerAllotment_SortDesc" src="<%=request.getContextPath()%>/images/down.png" alt="desc"/></th>
-						<th>Status <br><img id="status_SortAsc" src="<%=request.getContextPath()%>/images/up.png" alt="asc"/><img id="status_SortDesc" src="<%=request.getContextPath()%>/images/down.png" alt="desc"/></th>					
+						<th>Trade # <br><img id="scfId" column-name="scfId" class="sortColumn" src="<%=request.getContextPath()%>/images/up.png" alt="asc" order="asc"/><img id="scfIdDesc" column-name="scfId" class="sortColumn" src="<%=request.getContextPath()%>/images/down.png" alt="desc" order="desc"/></th>
+					    <th>SCF Company <br><img id="scfcompany" column-name="company.name" class="sortColumn" src="<%=request.getContextPath()%>/images/up.png" alt="asc" order="asc"/><img id="scfcompanyDesc"  column-name="company.name" class="sortColumn" src="<%=request.getContextPath()%>/images/down.png" alt="desc" order="desc"/></th>
+					    <th>Allotment <br><img id="allotment" column-name="tradeAmount" class="sortColumn" src="<%=request.getContextPath()%>/images/up.png" alt="asc" order="asc"/><img id="allotmentDesc" column-name="tradeAmount" class="sortColumn" src="<%=request.getContextPath()%>/images/down.png" alt="desc" order="desc"/></th>
+					    <th>BPS <br><img id="bps" column-name="allotments.marketDiscount" class="sortColumn" src="<%=request.getContextPath()%>/images/up.png" alt="asc" order="asc"/><img id="bpsDesc" column-name="allotments.marketDiscount" class="sortColumn" src="<%=request.getContextPath()%>/images/down.png" alt="desc" order="desc"/></th>
+						<th>Investor Gross Profit <br><img id="investorgross" column-name="investorTotalGross" class="sortColumn" src="<%=request.getContextPath()%>/images/up.png" alt="asc" order="asc"/><img id="investorgrossDesc" column-name="investorTotalGross" class="sortColumn" src="<%=request.getContextPath()%>/images/down.png" alt="desc" order="desc"/></th>
+						<th>WhiteHall Share<br><img id="whitehallShare" column-name="whitehallTotalShare" class="sortColumn" src="<%=request.getContextPath()%>/images/up.png" alt="asc" order="asc"/><img id="whitehallShareDesc" column-name="whitehallTotalShare" class="sortColumn" src="<%=request.getContextPath()%>/images/down.png" alt="desc" order="desc"/></th>
+						<th>Investor Net Profit <br><img id="InvestorNet" column-name="investorTotalProfit" class="sortColumn" src="<%=request.getContextPath()%>/images/up.png" alt="asc" order="asc"/><img id="InvestorNetDesc" column-name="investorTotalProfit" class="sortColumn" src="<%=request.getContextPath()%>/images/down.png" alt="desc" order="desc"/></th>	
+						<th>Seller Fees <br><img id="sellerFees" column-name="sellerFees" class="sortColumn" src="<%=request.getContextPath()%>/images/up.png" alt="asc" order="asc"/><img id="sellerFeesDesc" column-name="sellerFees" class="sortColumn" src="<%=request.getContextPath()%>/images/down.png" alt="desc" order="desc"/></th>
+						<th>WhiteHall Gross Profit <br><img id="whitehallGrossProfit" column-name="whitehallTotalProfit" class="sortColumn" src="<%=request.getContextPath()%>/images/up.png" alt="asc" order="asc"/><img id="whitehallGrossProfitDesc" column-name="whitehallTotalProfit" class="sortColumn" src="<%=request.getContextPath()%>/images/down.png" alt="desc" order="desc"/></th>		
+						<th>Seller Allotment <br><img id="SellerAllotment" column-name="sellerNetAllotment" class="sortColumn" src="<%=request.getContextPath()%>/images/up.png" alt="asc" order="asc"/><img id="SellerAllotmentDesc" column-name="sellerNetAllotment" class="sortColumn" src="<%=request.getContextPath()%>/images/down.png" alt="desc" order="desc"/></th>
+						<th>Status <br><img id="Status" column-name="status" class="sortColumn" src="<%=request.getContextPath()%>/images/up.png" alt="asc" order="asc"/><img id="StatusDesc" column-name="status" class="sortColumn" src="<%=request.getContextPath()%>/images/down.png" alt="desc" order="desc"/></th>					
 					</tr>
 				</thead>
 				<tbody>
