@@ -34,9 +34,12 @@ $(document).ready(
 				var columnnName = $(this).attr("column-name");
 				var order = $(this).attr("order");
 				var updateURL = $("#defaultRender").val();
+				var id = $(this).attr("id");
+				
 			
 				$('#sort_Column').val(columnnName);
 				$('#sort_order').val(order);
+				$('#sortVal_order').val(id);
 				
 				document.forms["scfTradeList"].action = updateURL;
 				document.forms["scfTradeList"].submit();

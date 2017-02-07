@@ -197,7 +197,8 @@ public class SCFTradeController {
 			
 			String columnName = ParamUtil.getString(request, "sort_Column");
 			String order = ParamUtil.getString(request, "sort_order");
-			
+			String sortCompany_order = ParamUtil.getString(request, "sortVal_order");
+			model.put("sortCompany_order", sortCompany_order);
 			model.put("sort_Column", columnName);
 			model.put("sort_order", order);
 			
@@ -302,10 +303,13 @@ public class SCFTradeController {
 			String to = ParamUtil.getString(request, "toDate");
 			
 			/*Sorting code starts from here*/
-			String sortCompany = ParamUtil.getString(request, "dynamicSort");
+			String columnName = ParamUtil.getString(request, "sort_Column");
+			String order = ParamUtil.getString(request, "sort_order");
 			String sortCompany_order = ParamUtil.getString(request, "sortVal_order");
 			model.put("sortCompany_order", sortCompany_order);
-			if(sortCompany==null || sortCompany==""){sortCompany="";}
+			model.put("sort_Column", columnName);
+			model.put("sort_order", order);
+			
 			
 			if (!StringUtils.isNullOrEmpty(from)) {
 				fromDate = formatter.parse(from);
@@ -316,13 +320,13 @@ public class SCFTradeController {
 			long companyId = userService.getCompanybyUserID(themeDisplay.getUserId()).getId();
 
 			if (StringUtils.isNullOrEmpty(search) && StringUtils.isNullOrEmpty(value)) {
-				scftrades = scfTradeService.getScfTrades(companyId, paginationModel.getStartIndex(), paginationModel.getPageSize(),sortCompany);
+				scftrades = scfTradeService.getScfTrades(companyId, paginationModel.getStartIndex(), paginationModel.getPageSize(),columnName,order);
 				noOfRecords = scfTradeService.getScfTradesCount(companyId);
 			}
 			else {
 				scftrades =
 					scfTradeService.getScfAdminTradeListWithSearch(
-						companyId, search, fromDate, toDate, value, paginationModel.getStartIndex(), paginationModel.getPageSize(),sortCompany);
+						companyId, search, fromDate, toDate, value, paginationModel.getStartIndex(), paginationModel.getPageSize(),columnName,order);
 				noOfRecords = scfTradeService.getScfAdminTradeListWithSearchCount(companyId, search, fromDate, toDate, value);
 				
 			}
@@ -342,15 +346,17 @@ public class SCFTradeController {
 			String search = ParamUtil.getString(request, "Search");
 			String regNum = liferayUtility.getWhiteHallComapanyRegNo(request);
 			/*Sorting code starts from here*/
-			String sortCompany = ParamUtil.getString(request, "dynamicSort");
+			String columnName = ParamUtil.getString(request, "sort_Column");
+			String order = ParamUtil.getString(request, "sort_order");
 			String sortCompany_order = ParamUtil.getString(request, "sortVal_order");
 			model.put("sortCompany_order", sortCompany_order);
-			if(sortCompany==null || sortCompany==""){sortCompany="";}
+			model.put("sort_Column", columnName);
+			model.put("sort_order", order);
 			if(StringUtils.isNullOrEmpty(search)){
-			scftrades = scfTradeService.getScfTradeList(regNum, paginationModel.getStartIndex(), paginationModel.getPageSize(),sortCompany);
+			scftrades = scfTradeService.getScfTradeList(regNum, paginationModel.getStartIndex(), paginationModel.getPageSize(),columnName,order);
 			noOfRecords = scfTradeService.getScfTradeCounts(regNum);
 			}else{
-			scftrades = scfTradeService.getScfTradeListWithSearch(search, regNum, paginationModel.getStartIndex(), paginationModel.getPageSize(),sortCompany);
+			scftrades = scfTradeService.getScfTradeListWithSearch(search, regNum, paginationModel.getStartIndex(), paginationModel.getPageSize(),columnName,order);
 			noOfRecords = scfTradeService.getScfTradeListWithSearchCount(search, regNum);
 			}
 			model.put("search", search);
@@ -366,16 +372,18 @@ public class SCFTradeController {
 			   BigDecimal totalGrossCharges = BigDecimal.ZERO;
 			   
 			   /*Sorting code starts from here*/
-				String sortCompany = ParamUtil.getString(request, "dynamicSort");
+			   String columnName = ParamUtil.getString(request, "sort_Column");
+				String order = ParamUtil.getString(request, "sort_order");
 				String sortCompany_order = ParamUtil.getString(request, "sortVal_order");
 				model.put("sortCompany_order", sortCompany_order);
-				if(sortCompany==null || sortCompany==""){sortCompany="";}
+				model.put("sort_Column", columnName);
+				model.put("sort_order", order);
 			
 			String search = ParamUtil.getString(request, "Search");
 		    Long companyId  = liferayUtility.getWhitehallCompanyID(request);
 		    Long investorID=investorService.getInvestorIDByCompanyId(companyId);
-		    scftrades = scfTradeService.getScfTradeListForInvestor(search, investorID, paginationModel.getStartIndex(), paginationModel.getPageSize(), false,sortCompany);
-			List<SCFTrade> list= scfTradeService.getScfTradeListForInvestor(search, investorID, paginationModel.getStartIndex(), paginationModel.getPageSize(), true,sortCompany);
+		    scftrades = scfTradeService.getScfTradeListForInvestor(search, investorID, paginationModel.getStartIndex(), paginationModel.getPageSize(), false,columnName,order);
+			List<SCFTrade> list= scfTradeService.getScfTradeListForInvestor(search, investorID, paginationModel.getStartIndex(), paginationModel.getPageSize(), true,columnName,order);
 			
 			List listSum = scfTradeService.getSumOfSCFTradeProperties(search);
 			   if (null != listSum || listSum.size() > 0) {

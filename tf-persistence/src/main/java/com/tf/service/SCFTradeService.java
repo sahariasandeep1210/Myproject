@@ -39,7 +39,7 @@ public interface SCFTradeService {
 
 	public Long getHistoryCount(long companyId);
 
-	public List<SCFTrade> getScfTrades(Long companyID, int startIndex, int pageSize,String order);
+	public List<SCFTrade> getScfTrades(Long companyID, int startIndex, int pageSize,String columnName,String order);
 
 	public Long getScfTradesCountByCompanyId(Long companyID);
 
@@ -51,7 +51,7 @@ public interface SCFTradeService {
 
 	public String findByQueryId(String tradeId);
 
-	public List<SCFTrade> getScfTradeList(String RegNum, int startIndex, int pageSize,String order);
+	public List<SCFTrade> getScfTradeList(String RegNum, int startIndex, int pageSize,String columnName,String order);
 
 	public List<SCFTrade> getTradeHistoryList(int startIndex, int pageSize);
 
@@ -59,17 +59,17 @@ public interface SCFTradeService {
 
 	public Long getScfTradesHistoryCount();
 
-	public List<SCFTrade> getScfTradeListWithSearch(String search, String regNum, int startIndex, int pageSize,String order);
+	public List<SCFTrade> getScfTradeListWithSearch(String search, String regNum, int startIndex, int pageSize,String columnName,String order);
 
 	public List<SCFTrade> getAdminTradeListWithSearch(String search, Date fromDate, Date toDate, String value, int startIndex, int pageSize, String columnName,String order);
 
 	public List<SCFTrade> getScfAdminTradeListWithSearch(
-		long companyId, String searchtxt, Date fromDate, Date toDate, String value, int startIndex, int pageSize,String order);
+		long companyId, String searchtxt, Date fromDate, Date toDate, String value, int startIndex, int pageSize,String columnName,String order);
 	
 	public Long getScfAdminTradeListWithSearchCount(long companyId, String searchtxt, Date fromDate, Date toDate, String value);
 	
 	public List<SCFTrade> getScfTradeListForInvestor(String searchtxt,
-			Long investorID, int startIndex, int pageSize, boolean count, String order);
+			Long investorID, int startIndex, int pageSize, boolean count,String columnName, String order);
 	
 	public SCFTrade findTradeDeatailsForInvestor(long tradeId,long investorID);
 	
