@@ -122,7 +122,7 @@
 										onclick="window.location.href='${invoiceURL}&invoiceID=${invoice.id}'">${invoice.invoiceNumber}</a></span></td>
 								<td><fmt:formatDate pattern="dd-MM-yyyy"
 										value="${invoice.payment_date}" /></td>
-								<td>${invoice.invoiceAmount}</td>
+								<td class="rightalign">${invoice.invoiceAmount}</td>
 								<td>${invoice.duration}</td>
 								<td>${invoice.scfCompany.name}</td>
 								<td>
