@@ -28,7 +28,7 @@
 				<div class="control-group">
 					<div class="input-append">
 						<input type="text" name="Search"	placeholder="Search Here" id="search" value="${companyName}">
-						<span class="add-on"><i	class="icomoon-search"></i></span>
+						<!-- <span class="add-on"><i	class="icomoon-search"></i></span> -->
 					</div>
 				</div>
 			</div>

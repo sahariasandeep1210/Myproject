@@ -19,8 +19,8 @@
 			<div class="control-group">
 				<div class="input-append">
 					<input name="Search" type="text" placeholder="Search" id="search"
-						value="${search}" /> <span class="add-on"><i
-						class="icomoon-search"></i></span><i class="icon-info-sign tooltipPhone"
+						value="${search}" /> <!-- <span class="add-on"><i
+						class="icomoon-search"></i></span> --><i class="icon-info-sign tooltipPhone"
 						data-toggle="tooltip" title="search in for Company and status"></i>
 				</div>
 			</div>
