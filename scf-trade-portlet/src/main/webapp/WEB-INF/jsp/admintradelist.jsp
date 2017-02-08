@@ -103,7 +103,7 @@
 									<td style="background-color:#189a80;color:white" class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalWhitehallSeller}"  pattern="#,###.00"/></td>
 									<td style="background-color:#189a80;color:white" class="rightalign blue_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalWhitehallTotalProfit}"  pattern="#,###.00"/></td>
 									<td style="background-color:#189a80;color:white" class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalSellerNetAllotment}"  pattern="#,###.00"/></td>	
-									<td></td>						
+									<td style="background-color:#189a80;color:white"></td>						
 								</tr>
 							<c:forEach items="${scftrades}" var="trade">
 								<tr>
