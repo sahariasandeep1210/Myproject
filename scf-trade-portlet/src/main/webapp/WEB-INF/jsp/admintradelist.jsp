@@ -92,17 +92,17 @@
 					<c:choose>						
 						<c:when test="${fn:length(scftrades) gt 0}">
 						     <tr>
-									<td width="3%"></td>
-									 <td >Total</td>
-									<td></td>
-									<td class="rightalign blue_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalTradeAmounts}"  pattern="#,###.00"/></td>
-									<td></td>
-									<td class="rightalign green_bold" ><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalInvestorTotalGross}"  pattern="#,###.00"/></td>
-									<td class="rightalign blue_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalWhitehallTotalShare}"  pattern="#,###.00"/></td>
-									<td class="rightalign green_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalInvestorTotalProfit}"  pattern="#,###.00"/></td>
-									<td class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalWhitehallSeller}"  pattern="#,###.00"/></td>
-									<td class="rightalign blue_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalWhitehallTotalProfit}"  pattern="#,###.00"/></td>
-									<td class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalSellerNetAllotment}"  pattern="#,###.00"/></td>	
+									<td style="background-color:#189a80;color:white" width="3%"></td>
+									 <td style="background-color:#189a80;color:white">Total</td>
+									<td style="background-color:#189a80;color:white"></td>
+									<td style="background-color:#189a80;color:white" class="rightalign blue_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalTradeAmounts}"  pattern="#,###.00"/></td>
+									<td style="background-color:#189a80;color:white"></td>
+									<td style="background-color:#189a80;color:white" class="rightalign green_bold" ><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalInvestorTotalGross}"  pattern="#,###.00"/></td>
+									<td style="background-color:#189a80;color:white" class="rightalign blue_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalWhitehallTotalShare}"  pattern="#,###.00"/></td>
+									<td style="background-color:#189a80;color:white" class="rightalign green_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalInvestorTotalProfit}"  pattern="#,###.00"/></td>
+									<td style="background-color:#189a80;color:white" class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalWhitehallSeller}"  pattern="#,###.00"/></td>
+									<td style="background-color:#189a80;color:white" class="rightalign blue_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalWhitehallTotalProfit}"  pattern="#,###.00"/></td>
+									<td style="background-color:#189a80;color:white" class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalSellerNetAllotment}"  pattern="#,###.00"/></td>	
 									<td></td>						
 								</tr>
 							<c:forEach items="${scftrades}" var="trade">

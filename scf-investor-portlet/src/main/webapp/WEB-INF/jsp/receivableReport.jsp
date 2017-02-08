@@ -84,15 +84,15 @@
 				<c:choose>
                         <c:when test="${fn:length(dtos) gt 0}">
                         			<tr>
-										<td><b>Totals</b></td>
-			                            <td></td>
-			                            <td></td>
-			                            <td></td>
-			                            <td class="rightalign green_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalAllotAmount}"  pattern="#,###.00"/></td>
-			                            <td class="rightalign green_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalMajurity}"  pattern="#,###.00"/></td>
-			                            <td class="rightalign green_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalFinance}"  pattern="#,###.00"/></td>
-			                            <td class="rightalign green_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalNet}"  pattern="#,###.00"/></td>
-			                            <td class="rightalign green_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalAmount}"  pattern="#,###.00"/></td>
+										<td style="background-color:#189a80;color:white"><b>Totals</b></td>
+			                            <td style="background-color:#189a80;color:white"></td>
+			                            <td style="background-color:#189a80;color:white"></td>
+			                            <td style="background-color:#189a80;color:white"></td>
+			                            <td style="background-color:#189a80;color:white" class="rightalign green_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalAllotAmount}"  pattern="#,###.00"/></td>
+			                            <td style="background-color:#189a80;color:white" class="rightalign green_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalMajurity}"  pattern="#,###.00"/></td>
+			                            <td style="background-color:#189a80;color:white" class="rightalign green_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalFinance}"  pattern="#,###.00"/></td>
+			                            <td style="background-color:#189a80;color:white" class="rightalign green_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalNet}"  pattern="#,###.00"/></td>
+			                            <td style="background-color:#189a80;color:white" class="rightalign green_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalAmount}"  pattern="#,###.00"/></td>
 			                            <td></td>
 								</tr>
 		                        <c:forEach items="${dtos}" var="allotment">						            

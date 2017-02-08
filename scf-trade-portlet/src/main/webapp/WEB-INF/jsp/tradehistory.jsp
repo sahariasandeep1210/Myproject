@@ -91,12 +91,12 @@
 					<c:choose>
 						<c:when test="${fn:length(scfTradesHistory) gt 0}">
 							<tr>
-									<td><b>Totals</b></td>
-									<td class="rightalign blue_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalTradeAmount}" pattern="#,###.00"/> </td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
+									<td style="background-color:#189a80;color:white"><b>Totals</b></td>
+									<td style="background-color:#189a80;color:white" class="rightalign blue_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalTradeAmount}" pattern="#,###.00"/> </td>
+									<td style="background-color:#189a80;color:white"></td>
+									<td style="background-color:#189a80;color:white"></td>
+									<td style="background-color:#189a80;color:white"></td>
+									<td style="background-color:#189a80;color:white"></td>
 								</tr>
 							<c:forEach items="${scfTradesHistory}" var="trade">
 								

@@ -50,13 +50,13 @@
 				 <c:choose>
 					<c:when test="${fn:length(investorHistoryList) gt 0}">
 							<tr class="totalstr">
-								<td>Totals</td>
-								<td class="rightalign"> <fmt:formatNumber type="number" maxFractionDigits="3" value="${totalsMap.creditLine}"  pattern="#,###.00"/> </td>
-								<td class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalsMap.myCreditLine}" pattern="#,###.00"/></td>
-								<td></td>
-								<td class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalsMap.amountInvested}" pattern="#,###.00"/></td>
-								<td class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalsMap.availToInvest}" pattern="#,###.00"/></td>
-								<td>
+								<td style="background-color:#189a80;color:white">Totals</td>
+								<td style="background-color:#189a80;color:white" class="rightalign"> <fmt:formatNumber type="number" maxFractionDigits="3" value="${totalsMap.creditLine}"  pattern="#,###.00"/> </td>
+								<td style="background-color:#189a80;color:white" class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalsMap.myCreditLine}" pattern="#,###.00"/></td>
+								<td style="background-color:#189a80;color:white" ></td>
+								<td style="background-color:#189a80;color:white"  class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalsMap.amountInvested}" pattern="#,###.00"/></td>
+								<td style="background-color:#189a80;color:white" class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalsMap.availToInvest}" pattern="#,###.00"/></td>
+								<td style="background-color:#189a80;color:white">
 								</td>	
 							</tr>
 						<c:forEach items="${investorHistoryList}" var="investorProt" varStatus="loop">

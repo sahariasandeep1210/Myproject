@@ -90,25 +90,25 @@
 						<c:when test="${fn:length(scftrades) gt 0}">
 
 							<tr>
-								<td><span class='underline'>Total</span></td>
-								<td></td>
-								<td class="rightalign"><fmt:formatNumber type="number"
+								<td style="background-color:#189a80;color:white" ><span class='underline'>Total</span></td>
+								<td style="background-color:#189a80;color:white" ></td>
+								<td style="background-color:#189a80 ;color:white"" class="rightalign"><fmt:formatNumber type="number"
 										maxFractionDigits="3" value="${totalTradeAmount}" pattern="#,###.00"/></td>
-								<td></td>
-								<td></td>
-								<td></td>
-								<td></td>
-								<td></td>
-								<td class="rightalign"><fmt:formatNumber type="number"
+								<td style="background-color:#189a80 ;color:white""></td>
+								<td style="background-color:#189a80;color:white""></td>
+								<td style="background-color:#189a80;color:white""></td>
+								<td style="background-color:#189a80;color:white""></td>
+								<td style="background-color:#189a80;color:white""></td>
+								<td style="background-color:#189a80;color:white"" class="rightalign"><fmt:formatNumber type="number"
 										maxFractionDigits="3" value="${totalSellerTransFee}" pattern="#,###.00"/></td>
-								<td class="rightalign"><fmt:formatNumber type="number"
+								<td style="background-color:#189a80;color:white"" class="rightalign"><fmt:formatNumber type="number"
 										maxFractionDigits="3" value="${totalSellerFees}" pattern="#,###.00"/></td>
-								<td class="rightalign"><fmt:formatNumber type="number"
+								<td style="background-color:#189a80;color:white"" class="rightalign"><fmt:formatNumber type="number"
 										maxFractionDigits="3" value="${totalInvestorTotalGross}" pattern="#,###.00"/></td>
-								<td></td>
-								<td class="rightalign"><fmt:formatNumber type="number"
+								<td style="background-color:#189a80;color:white""></td>
+								<td style="background-color:#189a80;color:white"" class="rightalign"><fmt:formatNumber type="number"
 										maxFractionDigits="3" value="${totalGrossCharges}" pattern="#,###.00"/></td>
-								<td class="rightalign"><fmt:formatNumber type="number"
+								<td style="background-color:#189a80;color:white"" class="rightalign"><fmt:formatNumber type="number"
 										maxFractionDigits="3" value="${totalSellerNetAllotment}" pattern="#,###.00"/></td>
 
 							</tr>

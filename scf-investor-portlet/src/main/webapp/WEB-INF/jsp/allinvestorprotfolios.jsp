@@ -38,12 +38,12 @@
 						<c:when test="${fn:length(investorList) gt 0}">
 							<c:set var="currentInvestor" value="" />
 								<tr>
-									<td class="highlightrow"><b>Totals</b></td>
-									<td></td>
-									<td class="rightalign blue_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalsMap.myCreditLine}" pattern="#,###.00"/></td>
-									<td></td>
-									<td class="rightalign blue_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalsMap.amountInvested}" pattern="#,###.00"/></td>
-									<td class="rightalign blue_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalsMap.availToInvest}" pattern="#,###.00"/></td>
+									<td style="background-color:#189a80;color:white" class="highlightrow"><b>Totals</b></td>
+									<td style="background-color:#189a80;color:white"></td>
+									<td style="background-color:#189a80;color:white" class="rightalign blue_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalsMap.myCreditLine}" pattern="#,###.00"/></td>
+									<td style="background-color:#189a80;color:white"></td>
+									<td style="background-color:#189a80;color:white" class="rightalign blue_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalsMap.amountInvested}" pattern="#,###.00"/></td>
+									<td style="background-color:#189a80;color:white" class="rightalign blue_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalsMap.availToInvest}" pattern="#,###.00"/></td>
 									<!-- <td></td> -->
 								</tr>
 							<c:forEach items="${investorList}" var="investorProt"
