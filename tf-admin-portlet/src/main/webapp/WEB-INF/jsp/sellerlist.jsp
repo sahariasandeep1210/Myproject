@@ -57,7 +57,7 @@
 					<tr>
 						<td>${seller.sellerCompany.name}</td>
 						<td>${seller.sellerCompany.regNumber}</td>
-					   <td><fmt:formatDate pattern="dd-MM-yyyy" value="${seller.sellerCompany.dateestablished}"/></td>
+					   <td class="text-center"><fmt:formatDate pattern="dd-MM-yyyy" value="${seller.sellerCompany.dateestablished}"/></td>
 						<td>${seller.sellerCompany.telnumber}</td>
 						<td>${seller.status}</td>
 

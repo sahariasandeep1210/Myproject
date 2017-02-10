@@ -44,9 +44,9 @@
 								<tr>
 									<td>${officer.name}</td>
 									<td>${officer.officerRole}</td>
-									<td><fmt:formatDate pattern="dd-MM-yyyy" value="${officer.appointedDate}" /></td>
+									<td class="text-center"><fmt:formatDate pattern="dd-MM-yyyy" value="${officer.appointedDate}" /></td>
 									<td>${officer.nationality}</td>
-									<td><fmt:formatDate pattern="dd-MM-yyyy" value="${officer.resignedDate}" /></td>
+									<td class="text-center"><fmt:formatDate pattern="dd-MM-yyyy" value="${officer.resignedDate}" /></td>
 								</tr>
 							</c:forEach>
 						</c:when>

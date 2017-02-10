@@ -34,10 +34,10 @@
 						<c:forEach items="${validInvoiceList}" var="invoice">
 							<tr>						
 								<td>${invoice.invoiceNumber}</td>
-								<td><fmt:formatDate pattern="dd-MM-yyyy"
+								<td class="text-center"><fmt:formatDate pattern="dd-MM-yyyy"
 										value="${invoice.payment_date}" /></td>
 								<td>${invoice.invoiceAmount} </td>
-								<td>${invoice.duration}</td>
+								<td class="text-center">${invoice.duration}</td>
 								<td>${invoice.scfCompany.name}</td>								
 								<td>
 								${invoice.status}
