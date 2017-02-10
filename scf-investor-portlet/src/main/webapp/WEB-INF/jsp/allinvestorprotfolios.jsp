@@ -5,9 +5,10 @@
 <div class="row-fluid">
 	<div class="panel panel-primary filterable">
 
-
+		
 		<div class="row-fluid" style="margin-bottom: 10px">
-			<div class="span6 pull-right">			
+			<div class="span6 pull-right">	
+				<span><font color="green">Click on filter image to filter table data</font></span>		
 				<button class="btnBrGrSm btnIconSm  filter-btn pull-right">
 					<span class="icomoon-filter"></span> 
 				</button>	
