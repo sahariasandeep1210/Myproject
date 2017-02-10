@@ -22,7 +22,7 @@
 					<c:when test="${fn:length(allotmentList) gt 0}">
 						<c:forEach items="${allotmentList}" var="allotment">
 							<tr>
-								<td>${allotment.allotmentAmount}</td>
+								<td class="text-right">${allotment.allotmentAmount}</td>
 								<td>${allotment.marketDiscount}</td>
 								<td class="text-center">${allotment.noOfdays}</td>
 								<td class="text-center"><fmt:formatDate value="${allotment.allotmentDate}" pattern="dd-MM-yyyy HH:mm" /> <%-- <fmt:formatDate type="both"        dateStyle="short" timeStyle="short"       value="" /> --%></td>

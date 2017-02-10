@@ -96,10 +96,10 @@
 								<tr>
 								    
 									<td>${trade.tradeNotes}</td>
-									<td class="rightalign blue_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${trade.tradeAmount}" pattern="#0.00"/></td>
+									<td class="rightalign blue_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${trade.tradeAmount}" pattern="#,##0.00"/></td>
 									<td>${trade.scfId}</td>
 									<td>${trade.status }</td>
-									<td>${trade.duration }</td>
+									<td class="text-center">${trade.duration }</td>
 									<td>${trade.insuranceDocName}</td>
 								</tr>
 							</c:forEach>

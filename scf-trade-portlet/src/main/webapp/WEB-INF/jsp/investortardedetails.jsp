@@ -35,13 +35,13 @@
 					<td><b>Duration</b></td>
 					<td class="text-center">${scfTradeModel.duration}</td>
 					<td><b>Investor Payment Date</b></td>
-					<td class="text-center">${scfTradeModel.investorPaymentDate}</td>
+					<td class="text-center">${scfTradeModel.investorPaymentDateString}</td>
 				</tr>
 				<tr>
 					<td><b>Seller Payment Date</b></td>
-					<td class="text-center">${scfTradeModel.sellerPaymentDate}</td>
+					<td class="text-center">${scfTradeModel.sellerPaymentDateString}</td>
 					<td><b>Trade Amount</b></td>
-					<td class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${scfTradeModel.tradeAmount}" pattern="#,###.00"/></td>
+					<td class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${scfTradeModel.tradeAmount}" pattern="#,##0.00"/></td>
 				</tr>
 				<tr>
 					<td><b>Company Name</b></td>
@@ -76,12 +76,12 @@
                         <c:when test="${fn:length(allotments) gt 0}">
                             <c:forEach items="${allotments}" var="allotment">
                                 <tr>
-                                    <td class="rightalign blue_normal"><fmt:formatNumber type="number" maxFractionDigits="3" value="${allotment.allotmentAmount}" pattern="#,###.00"/></td>
+                                    <td class="rightalign blue_normal"><fmt:formatNumber type="number" maxFractionDigits="3" value="${allotment.allotmentAmount}" pattern="#,##0.00"/></td>
                                     <td class="rightalign">${allotment.marketDiscount}</td>
                                     <td class="text-center">${allotment.noOfdays}</td>
                                     <td class="rightalign red_bold">${allotment.whitehallProfitShare }</td>
-                                    <td class="rightalign green_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${allotment.investorGrossProfit}" pattern="#,###.00"/></td>
-                                    <td class="rightalign green_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${allotment.investorNetProfit}" pattern="#,###.00"/></td>
+                                    <td class="rightalign green_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${allotment.investorGrossProfit}" pattern="#,##0.00"/></td>
+                                    <td class="rightalign green_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${allotment.investorNetProfit}" pattern="#,##0.00"/></td>
                                     <td class="text-center"><fmt:formatDate value="${allotment.allotmentDate}"
                                             pattern="dd-MM-yyyy HH:mm" /></td>
 

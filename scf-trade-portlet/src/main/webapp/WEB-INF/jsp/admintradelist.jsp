@@ -95,14 +95,14 @@
 									<td style="background-color:#189a80;color:white" width="3%"></td>
 									 <td style="background-color:#189a80;color:white">Total</td>
 									<td style="background-color:#189a80;color:white"></td>
-									<td style="background-color:#189a80;color:white" class="rightalign blue_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalTradeAmounts}"  pattern="#,###.00"/></td>
+									<td style="background-color:#189a80;color:white" class="rightalign blue_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalTradeAmounts}"  pattern="#,##0.00"/></td>
 									<td style="background-color:#189a80;color:white"></td>
-									<td style="background-color:#189a80;color:white" class="rightalign green_bold" ><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalInvestorTotalGross}"  pattern="#,###.00"/></td>
-									<td style="background-color:#189a80;color:white" class="rightalign blue_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalWhitehallTotalShare}"  pattern="#,###.00"/></td>
-									<td style="background-color:#189a80;color:white" class="rightalign green_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalInvestorTotalProfit}"  pattern="#,###.00"/></td>
-									<td style="background-color:#189a80;color:white" class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalWhitehallSeller}"  pattern="#,###.00"/></td>
-									<td style="background-color:#189a80;color:white" class="rightalign blue_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalWhitehallTotalProfit}"  pattern="#,###.00"/></td>
-									<td style="background-color:#189a80;color:white" class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalSellerNetAllotment}"  pattern="#,###.00"/></td>	
+									<td style="background-color:#189a80;color:white" class="rightalign green_bold" ><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalInvestorTotalGross}"  pattern="#,##0.00"/></td>
+									<td style="background-color:#189a80;color:white" class="rightalign blue_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalWhitehallTotalShare}"  pattern="#,##0.00"/></td>
+									<td style="background-color:#189a80;color:white" class="rightalign green_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalInvestorTotalProfit}"  pattern="#,##0.00"/></td>
+									<td style="background-color:#189a80;color:white" class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalWhitehallSeller}"  pattern="#,##0.00"/></td>
+									<td style="background-color:#189a80;color:white" class="rightalign blue_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalWhitehallTotalProfit}"  pattern="#,##0.00"/></td>
+									<td style="background-color:#189a80;color:white" class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalSellerNetAllotment}"  pattern="#,##0.00"/></td>	
 									<td style="background-color:#189a80;color:white"></td>						
 								</tr>
 							<c:forEach items="${scftrades}" var="trade">
@@ -111,14 +111,14 @@
 									 <td class="underline"><a href="javascript:void(0);"
                                         onclick="window.location.href='${createURL}&tradeID=${trade.id}'">${trade.scfId}</a></td>
 									<td><strong>${trade.company.name} ( ${trade.duration} Days )</strong></td>
-									<td class="rightalign blue_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${trade.tradeAmount}"  pattern="#,###.00"/></td>
+									<td class="rightalign blue_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${trade.tradeAmount}"  pattern="#,##0.00"/></td>
 									<td></td>
-									<td class="rightalign green_bold" ><fmt:formatNumber type="number" maxFractionDigits="3" value="${trade.investorTotalGross}"  pattern="#,###.00"/></td>
-									<td class="rightalign blue_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${trade.whitehallTotalShare}"  pattern="#,###.00"/></td>
-									<td class="rightalign green_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${trade.investorTotalProfit}"  pattern="#,###.00"/></td>
-									<td class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${trade.sellerFees + trade.sellerTransFee}"  pattern="#,###.00"/></td>
-									<td class="rightalign blue_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${trade.whitehallTotalProfit}"  pattern="#,###.00"/></td>
-									<td class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${trade.sellerNetAllotment}"  pattern="#,###.00"/></td>	
+									<td class="rightalign green_bold" ><fmt:formatNumber type="number" maxFractionDigits="3" value="${trade.investorTotalGross}"  pattern="#,##0.00"/></td>
+									<td class="rightalign blue_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${trade.whitehallTotalShare}"  pattern="#,##0.00"/></td>
+									<td class="rightalign green_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${trade.investorTotalProfit}"  pattern="#,##0.00"/></td>
+									<td class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${trade.sellerFees + trade.sellerTransFee}"  pattern="#,##0.00"/></td>
+									<td class="rightalign blue_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${trade.whitehallTotalProfit}"  pattern="#,##0.00"/></td>
+									<td class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${trade.sellerNetAllotment}"  pattern="#,##0.00"/></td>	
 									<td>${trade.status}</td>						
 								</tr>
 								<c:if test="${fn:length(trade.allotments) gt 0}">

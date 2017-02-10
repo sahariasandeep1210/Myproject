@@ -24,19 +24,19 @@
 				</tr>
 				<tr>
 					<td><b>TRADE VALUE</b></td>
-					<td><fmt:formatNumber type="number" maxFractionDigits="3" value="${trades.tradeAmount}"  pattern="#,###.00"/> </td>
+					<td><fmt:formatNumber type="number" maxFractionDigits="3" value="${trades.tradeAmount}"  pattern="#,##0.00"/> </td>
 					<td><b>Opening Date</b></td>
 					<td class="text-center"><fmt:formatDate value="${trades.openingDate}" pattern="dd-MM-yyyy" /></td>
 				</tr>
 				<tr>
 					<td><b>White Fixed Charges</b></td>
-					<td><fmt:formatNumber type="number" maxFractionDigits="3" value=" ${trades.sellerTransFee}"  pattern="#,###.00"/>  </td>
+					<td><fmt:formatNumber type="number" maxFractionDigits="3" value=" ${trades.sellerTransFee}"  pattern="#,##0.00"/>  </td>
 					<td><b>Maturity Date</b></td>
 					<td class="text-center"><fmt:formatDate value="${trades.closingDate}" pattern="dd-MM-yyyy" /></td>
 				</tr>
 				<tr>
 					<td><b>White Variable Charges</b></td>
-					<td><fmt:formatNumber type="number" maxFractionDigits="3" value="${trades.sellerFees}"  pattern="#,###.00"/></td>
+					<td><fmt:formatNumber type="number" maxFractionDigits="3" value="${trades.sellerFees}"  pattern="#,##0.00"/></td>
 					<td><b>Supplier Payment Date</b></td>
 					<td> <fmt:formatDate value="${trades.sellerPaymentDate}" pattern="dd-MM-yyyy " /></td>
 				</tr>
@@ -62,10 +62,10 @@
                         <c:when test="${fn:length(allotments) gt 0}">
                             <c:forEach items="${allotments}" var="allotment">
                                 <tr>
-                                    <td class="blue_normal"><fmt:formatNumber type="number" maxFractionDigits="3" value="${allotment.allotmentAmount}"  pattern="#,###.00"/> </td>
+                                    <td class="blue_normal"><fmt:formatNumber type="number" maxFractionDigits="3" value="${allotment.allotmentAmount}"  pattern="#,##0.00"/> </td>
                                     <td>${allotment.marketDiscount}</td>
                                     <td>${allotment.noOfdays}</td>                                    
-                                    <td class="blue_normal"><fmt:formatNumber type="number" maxFractionDigits="3" value="${allotment.investorGrossProfit}"  pattern="#,###.00"/></td>
+                                    <td class="blue_normal"><fmt:formatNumber type="number" maxFractionDigits="3" value="${allotment.investorGrossProfit}"  pattern="#,##0.00"/></td>
                                     <td><fmt:formatDate value="${allotment.allotmentDate}"
                                             pattern="dd-MM-yyyy HH:mm" /></td>
 
