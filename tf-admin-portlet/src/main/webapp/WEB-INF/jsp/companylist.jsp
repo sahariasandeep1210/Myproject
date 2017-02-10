@@ -129,7 +129,7 @@
 									<td>${company.name} </td>
 									<td>${company.regNumber}</td>
 									<td>${company.address.region}, ${company.address.country}</td>
-									<td><fmt:formatDate pattern="dd-MM-yyyy" value="${company.dateestablished}" /></td>
+									<td class="text-center"><fmt:formatDate pattern="dd-MM-yyyy" value="${company.dateestablished}" /></td>
 									<%-- <td>${company.website}</td> --%>
 									<td>${company.telnumber}</td>
 								<c:if test="${company.companyType == '1'}">
