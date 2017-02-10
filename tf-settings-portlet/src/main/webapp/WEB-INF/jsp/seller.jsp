@@ -121,10 +121,10 @@
 						<tr>
 							<td>${sellerSetting.company} </td>
 							<td>${sellerSetting.investorCompany} </td>
-							<td><fmt:formatDate pattern="dd-MM-yyyy" value="${sellerSetting.createDate}" /></td>
-							<td><fmt:formatDate pattern="dd-MM-yyyy" value="${sellerSetting.updateDate}" /></td>
-							<td>${sellerSetting.sellerTransFee}</td>
-							<td>${sellerSetting.sellerFinFee}</td>
+							<td class="text-center"><fmt:formatDate pattern="dd-MM-yyyy" value="${sellerSetting.createDate}" /></td>
+							<td class="text-center"><fmt:formatDate pattern="dd-MM-yyyy" value="${sellerSetting.updateDate}" /></td>
+							<td class="text-right"><fmt:formatNumber pattern="#,###.00" value="${sellerSetting.sellerTransFee}" /></td>
+							<td class="text-right"><fmt:formatNumber pattern="#,###.00" value="${sellerSetting.sellerFinFee}" /></td>
 						</tr>
 					</c:forEach>
 				</tbody>

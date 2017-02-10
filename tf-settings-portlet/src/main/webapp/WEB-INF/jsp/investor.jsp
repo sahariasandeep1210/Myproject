@@ -47,9 +47,9 @@
 												value="${investor.investorID}" /></td> --%>
 											<td>${investor.name}</td>
 											<td><input type="hidden" name="investorDTO[${indexattr.index}].investorID"
-												value="${investor.investorID}" /><input type="text"
+												value="${investor.investorID}" class="text-right"/><input type="text"
 												value="${investor.whitehallShare}"
-												name="investorDTO[${indexattr.index}].whitehallShare"></td>
+												name="investorDTO[${indexattr.index}].whitehallShare" class="text-right"></td>
 										</tr>
 									</c:forEach>
 								</c:when>

@@ -39,15 +39,15 @@
 							      <td>
 							      <input type="text"
 												value="${generalSetting.whitehalShare}"
-												name="whitehalShare" id="profit" class="field">
+												name="whitehalShare" id="profit" class="field text-right">
 							    </td> 
 							</tr>
 							<tr>
-							     <td>VAT</td>
+							     <td>VAT  %</td>
 							      <td>
 							         <input type="text"
 												value="${generalSetting.vat }"
-												name="vat" id="vat" class="field">
+												name="vat" id="vat" class="field text-right">
 							      
 							      </td>
 							</tr>
@@ -56,7 +56,7 @@
 							      <td>
 							      <input type="text"
 												value="${generalSetting.sellerTransFee }"
-												name="sellerTransFee" id="transaction" class="field">
+												name="sellerTransFee" id="transaction" class="field text-right">
 							       
 							      </td>
 							</tr>
@@ -65,7 +65,7 @@
 							      <td>
 							      <input type="text"
 												value="${generalSetting.sellerFinFee }"
-												name="sellerFinFee" id="finance" class="field">
+												name="sellerFinFee" id="finance" class="field text-right">
 							         
 							      </td>
 							</tr>
@@ -74,7 +74,7 @@
 							      <td>
 							      <input type="text"
 												value="${generalSetting.minPaymentDateDuartion }"
-												name="minPaymentDateDuartion" id="minPaymentDateDuartion" class="field">
+												name="minPaymentDateDuartion" id="minPaymentDateDuartion" class="field text-right">
 							         
 							      </td>
 							</tr>
@@ -83,7 +83,7 @@
 							      <td>
 							      <input type="text"
 												value="${generalSetting.minLevelOfInvestment }"
-												name="minLevelOfInvestment" id="minLevelOfInvestment" class="field">
+												name="minLevelOfInvestment" id="minLevelOfInvestment" class="field text-right">
 							         
 							      </td>
 							</tr>
