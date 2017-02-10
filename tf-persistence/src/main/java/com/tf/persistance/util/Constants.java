@@ -1,6 +1,5 @@
 package com.tf.persistance.util;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -35,7 +34,7 @@ public class Constants {
 			SimpleDateFormat formatter1 = new SimpleDateFormat("yyyy-MM-dd");
 			parsedDate = formatter1.format(initDate);
 			return parsedDate;
-		} catch (ParseException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -47,10 +46,25 @@ public class Constants {
 		  try {
 		   Date initDate = null;
 		   initDate = new SimpleDateFormat("yyyy-MM-dd").parse(inDate);
-		   SimpleDateFormat formatter1 = new SimpleDateFormat("dd-mm-yyyy");
+		   SimpleDateFormat formatter1 = new SimpleDateFormat("dd-MM-yyyy");
 		   parsedDate = formatter1.format(initDate);
 		   return parsedDate;
-		  } catch (ParseException e) {
+		  } catch (Exception e) {
+		   
+		   e.printStackTrace();
+		  }
+		  return parsedDate;
+		 }
+	
+	public static String formatDateInDDMMYY(String inDate) {
+		  String parsedDate = null;
+		  try {
+		   Date initDate = null;
+		   initDate = new SimpleDateFormat("yyyy-MM-dd").parse(inDate);
+		   SimpleDateFormat formatter1 = new SimpleDateFormat("dd-MM-yyyy");
+		   parsedDate = formatter1.format(initDate);
+		   return parsedDate;
+		  } catch (Exception e) {
 		   
 		   e.printStackTrace();
 		  }

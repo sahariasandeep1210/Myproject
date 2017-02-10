@@ -899,10 +899,21 @@ public class SCFTradeController {
 		scfTradeDTO.setClosingDate(scfTrade.getClosingDate());
 		scfTradeDTO.setCompany(scfTrade.getCompany());
 		scfTradeDTO.setDuration(scfTrade.getDuration());
+		
+		String investerPaymentDate=scfTrade.getInvestorPaymentDate()+"";
+		investerPaymentDate=investerPaymentDate.substring(0, investerPaymentDate.lastIndexOf("-")+3);
+		investerPaymentDate=Constants.formatDateInDDMMYYYY(investerPaymentDate);
+		scfTradeDTO.setInvestorPaymentDateString(investerPaymentDate);
+		
 		scfTradeDTO.setInvestorPaymentDate(scfTrade.getInvestorPaymentDate());
 		scfTradeDTO.setOpeningDate(scfTrade.getOpeningDate());
 		scfTradeDTO.setPromisoryNote(scfTrade.getPromisoryNote());
 		scfTradeDTO.setScfTrade(scfTrade.getScfTrade());
+		
+		String strringDate=scfTrade.getSellerPaymentDate()+"";
+		strringDate=strringDate.substring(0, strringDate.lastIndexOf("-")+3);
+		strringDate=Constants.formatDateInDDMMYYYY(strringDate);
+		scfTradeDTO.setSellerPaymentDateString(strringDate);
 		scfTradeDTO.setSellerPaymentDate(scfTrade.getSellerPaymentDate());
 		scfTradeDTO.setStatus(scfTrade.getStatus());
 		scfTradeDTO.setTradeAmount(scfTrade.getTradeAmount());
