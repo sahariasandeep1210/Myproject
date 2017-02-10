@@ -23,7 +23,7 @@
 						<c:forEach items="${investorHistoryList}" var="investorHis">
 							<tr>
 								<td>${investorHis.discountRate}</td>
-								<td class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${investorHis.myCreditLine}" pattern="#,###.00"/></td>
+								<td class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${investorHis.myCreditLine}" pattern="#,##0.00"/></td>
 								<td class="rightalign"><fmt:formatDate value="${investorHis.startDate}" pattern="dd-MM-yyyy HH:mm" /> <%-- <fmt:formatDate type="both"        dateStyle="short" timeStyle="short"       value="" /> --%></td>
 								<td class="rightalign"><fmt:formatDate value="${investorHis.endDate}" pattern="dd-MM-yyyy HH:mm" /> <%-- <fmt:formatDate type="both"        dateStyle="short" timeStyle="short"       value="" /> --%></td>
 
