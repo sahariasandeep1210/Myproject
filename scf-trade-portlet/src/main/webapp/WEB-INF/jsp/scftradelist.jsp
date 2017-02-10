@@ -84,9 +84,9 @@
 									<td class="underline"><a href="javascript:void(0);"
 										onclick="window.location.href='${createURL}&tradeID=${trade.id}'">${trade.scfId}</a></td>
 									<td>${trade.company.name}</td>
-									<td>${trade.duration}</td>
-									<td><fmt:formatDate pattern="dd-MM-yyyy" value="${trade.openingDate}" /></td>
-									<td><fmt:formatDate pattern="dd-MM-yyyy" value="${trade.closingDate}" /></td>
+									<td class="text-center">${trade.duration}</td>
+									<td class="text-center"><fmt:formatDate pattern="dd-MM-yyyy" value="${trade.openingDate}" /></td>
+									<td class="text-center"><fmt:formatDate pattern="dd-MM-yyyy" value="${trade.closingDate}" /></td>
 									<td class="blue_bold text-right">
 										<div class="pull-left"><fmt:formatNumber type="number" maxFractionDigits="3" value="${trade.tradeAmount}"  pattern="#,###.00"/></div>
 										<div class="text-align-icon">

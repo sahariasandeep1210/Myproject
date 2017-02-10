@@ -127,11 +127,11 @@
 											<td></td>
 											<td></td>
 											<td>${allotment.investorPortfolio.investor.company.name}</td> 
-											<td class="rightalign blue_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${allotment.allotmentAmount}"  pattern="#,###.00"/></td>
+											<td class="rightalign "><fmt:formatNumber type="number" maxFractionDigits="3" value="${allotment.allotmentAmount}"  pattern="#,###.00"/></td>
 											<td class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${allotment.marketDiscount}"  /></td>
-											<td class="rightalign green_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${allotment.investorGrossProfit}"  pattern="#,###.00"/></td>
-											<td class="rightalign blue_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${allotment.whitehallProfitShare}"  pattern="#,###.00"/></td>
-											<td class="rightalign green_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${allotment.investorNetProfit}"  pattern="#,###.00"/></td>
+											<td class="rightalign "><fmt:formatNumber type="number" maxFractionDigits="3" value="${allotment.investorGrossProfit}"  pattern="#,###.00"/></td>
+											<td class="rightalign "><fmt:formatNumber type="number" maxFractionDigits="3" value="${allotment.whitehallProfitShare}"  pattern="#,###.00"/></td>
+											<td class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${allotment.investorNetProfit}"  pattern="#,###.00"/></td>
 											<td></td>
 											<td></td>
 											<td></td>

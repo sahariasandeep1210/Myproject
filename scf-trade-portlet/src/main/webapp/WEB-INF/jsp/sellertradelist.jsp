@@ -96,11 +96,11 @@
 									<td  class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${trade.tradeAmount}"  pattern="#,###.00"/></td>
 									<td>${trade.status}</td>
 									<td>${trade.duration}</td>
-									<td><fmt:formatDate pattern="dd-MM-yyyy"
+									<td class="text-center"><fmt:formatDate pattern="dd-MM-yyyy"
 											value="${trade.openingDate}" /></td>
-									<td><fmt:formatDate pattern="dd-MM-yyyy"
+									<td class="text-center"><fmt:formatDate pattern="dd-MM-yyyy"
 											value="${trade.closingDate}" /></td>
-									<td><fmt:formatDate pattern="dd-MM-yyyy"
+									<td class="text-center"><fmt:formatDate pattern="dd-MM-yyyy"
 											value="${trade.sellerPaymentDate}" /></td>
 									<td class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${trade.sellerTransFee}"  pattern="#,###.00"/></td>
 									<td class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${trade.sellerFees}"  pattern="#,###.00"/></td>

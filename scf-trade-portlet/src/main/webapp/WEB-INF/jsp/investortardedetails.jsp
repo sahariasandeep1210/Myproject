@@ -33,13 +33,13 @@
 			<table class="table label-value">
 				<tr>
 					<td><b>Duration</b></td>
-					<td>${scfTradeModel.duration}</td>
+					<td class="text-center">${scfTradeModel.duration}</td>
 					<td><b>Investor Payment Date</b></td>
-					<td>${scfTradeModel.investorPaymentDate}</td>
+					<td class="text-center">${scfTradeModel.investorPaymentDate}</td>
 				</tr>
 				<tr>
 					<td><b>Seller Payment Date</b></td>
-					<td>${scfTradeModel.sellerPaymentDate}</td>
+					<td class="text-center">${scfTradeModel.sellerPaymentDate}</td>
 					<td><b>Trade Amount</b></td>
 					<td class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${scfTradeModel.tradeAmount}" pattern="#,###.00"/></td>
 				</tr>
@@ -78,11 +78,11 @@
                                 <tr>
                                     <td class="rightalign blue_normal"><fmt:formatNumber type="number" maxFractionDigits="3" value="${allotment.allotmentAmount}" pattern="#,###.00"/></td>
                                     <td class="rightalign">${allotment.marketDiscount}</td>
-                                    <td>${allotment.noOfdays}</td>
+                                    <td class="text-center">${allotment.noOfdays}</td>
                                     <td class="rightalign red_bold">${allotment.whitehallProfitShare }</td>
                                     <td class="rightalign green_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${allotment.investorGrossProfit}" pattern="#,###.00"/></td>
                                     <td class="rightalign green_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${allotment.investorNetProfit}" pattern="#,###.00"/></td>
-                                    <td><fmt:formatDate value="${allotment.allotmentDate}"
+                                    <td class="text-center"><fmt:formatDate value="${allotment.allotmentDate}"
                                             pattern="dd-MM-yyyy HH:mm" /></td>
 
                                 </tr>

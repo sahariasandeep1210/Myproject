@@ -24,8 +24,8 @@
 							<tr>
 								<td>${allotment.allotmentAmount}</td>
 								<td>${allotment.marketDiscount}</td>
-								<td>${allotment.noOfdays}</td>
-								<td><fmt:formatDate value="${allotment.allotmentDate}" pattern="dd-MM-yyyy HH:mm" /> <%-- <fmt:formatDate type="both"        dateStyle="short" timeStyle="short"       value="" /> --%></td>
+								<td class="text-center">${allotment.noOfdays}</td>
+								<td class="text-center"><fmt:formatDate value="${allotment.allotmentDate}" pattern="dd-MM-yyyy HH:mm" /> <%-- <fmt:formatDate type="both"        dateStyle="short" timeStyle="short"       value="" /> --%></td>
 
 							</tr>
 						</c:forEach>

@@ -37,9 +37,9 @@
 							<tr>						
 								<td>${invoice.invoiceNumber}</td>
 								<td>${sellerName}</td>
-								<td><fmt:formatDate pattern="dd-MM-yyyy" value="${invoice.invoiceDate}" /></td>
+								<td class="text-center"><fmt:formatDate pattern="dd-MM-yyyy" value="${invoice.invoiceDate}" /></td>
 								<td class="blue_normal rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${invoice.invoiceAmount}"  pattern="#,###.00"/></td>
-								<td>${invoice.duration}</td>
+								<td class="text-center">${invoice.duration}</td>
 								<td>${invoice.scfCompany.name}</td>
 								<td><fmt:formatDate pattern="dd-MM-yyyy" value="${invoice.financeDate}" /></td>
 							</tr>

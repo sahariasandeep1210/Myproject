@@ -26,13 +26,13 @@
 					<td><b>TRADE VALUE</b></td>
 					<td><fmt:formatNumber type="number" maxFractionDigits="3" value="${trades.tradeAmount}"  pattern="#,###.00"/> </td>
 					<td><b>Opening Date</b></td>
-					<td><fmt:formatDate value="${trades.openingDate}" pattern="dd-MM-yyyy" /></td>
+					<td class="text-center"><fmt:formatDate value="${trades.openingDate}" pattern="dd-MM-yyyy" /></td>
 				</tr>
 				<tr>
 					<td><b>White Fixed Charges</b></td>
 					<td><fmt:formatNumber type="number" maxFractionDigits="3" value=" ${trades.sellerTransFee}"  pattern="#,###.00"/>  </td>
 					<td><b>Maturity Date</b></td>
-					<td><fmt:formatDate value="${trades.closingDate}" pattern="dd-MM-yyyy" /></td>
+					<td class="text-center"><fmt:formatDate value="${trades.closingDate}" pattern="dd-MM-yyyy" /></td>
 				</tr>
 				<tr>
 					<td><b>White Variable Charges</b></td>
