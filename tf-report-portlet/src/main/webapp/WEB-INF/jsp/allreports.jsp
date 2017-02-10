@@ -28,7 +28,7 @@
 					<div class="control-group">
 						<div class="input-append">
 							<input type="text" name="Search" placeholder="Search Here" 	id="search" value="${search}">
-							<span	class="add-on" ><i	class="icomoon-search"></i></span>
+							<span	class="add-on" ></span>
 						</div>
 					</div>
 				</div>		  	
@@ -125,7 +125,7 @@
 						<c:when test="${fn:length(reportList) gt 0}">
 							<c:forEach items="${reportList}" var="report">
 								<tr>
-									<td><fmt:formatDate pattern="dd-MM-yyyy" value="${report.transcationDate}" /></td>
+									<td class="text-center"><fmt:formatDate pattern="dd-MM-yyyy" value="${report.transcationDate}" /></td>
 									<td class="text-right bigger-icon">
 										<div class="pull-left text-align-text">${report.transcationType}</div>
 											<div class="text-align-icon">	

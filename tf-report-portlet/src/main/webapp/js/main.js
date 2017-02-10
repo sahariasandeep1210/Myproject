@@ -1,5 +1,5 @@
 $(document).ready(function() {
-	
+	$('table').tablesorter();	
 	$("#pageSize").val($("#currPageSize").val());
 			$("#TransactionReport").click(function() {
 				var updateURL = $("#getReportURL").val();
