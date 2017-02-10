@@ -68,7 +68,7 @@
 										onclick="window.location.href='${invoiceURL}&invoiceID=${invoice.id}'">${invoice.invoiceNumber}</a></span></td>
 								<td class="text-center"><fmt:formatDate pattern="dd-MM-yyyy"
 										value="${invoice.payment_date}" /></td>
-								<td class="rightalign blue_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${invoice.invoiceAmount}"  pattern="#,###.00"/></td>
+								<td class="rightalign blue_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${invoice.invoiceAmount}"  pattern="#,##0.00"/></td>
 								<td class="text-center">${invoice.duration}</td>
 								<td>${invoice.scfCompany.name}</td>								
 								<td>
