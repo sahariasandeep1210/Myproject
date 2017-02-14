@@ -1,9 +1,11 @@
 package com.tf.controller.company;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -17,6 +19,12 @@ import javax.portlet.RenderResponse;
 import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
 
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.DataFormatter;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -33,17 +41,29 @@ import com.liferay.portal.DuplicateUserEmailAddressException;
 import com.liferay.portal.DuplicateUserScreenNameException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.repository.model.FileEntry;
+import com.liferay.portal.kernel.repository.model.Folder;
 import com.liferay.portal.kernel.servlet.SessionErrors;
+import com.liferay.portal.kernel.util.MimeTypesUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.security.permission.PermissionChecker;
+import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.service.ServiceContextFactory;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
+import com.liferay.portlet.documentlibrary.model.DLFileEntry;
+import com.liferay.portlet.documentlibrary.model.DLFolder;
+import com.liferay.portlet.documentlibrary.model.DLFolderConstants;
+import com.liferay.portlet.documentlibrary.service.DLAppServiceUtil;
 import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 import com.tf.controller.BaseController;
+import com.tf.model.Address;
 import com.tf.model.AddressModel;
 import com.tf.model.Company;
+import com.tf.model.CompanyAccountDetail;
+import com.tf.model.CompanyDocument;
 import com.tf.model.CompanyModel;
 import com.tf.model.Investor;
 import com.tf.model.Officer;
@@ -54,6 +74,7 @@ import com.tf.model.SellerScfCompanyMapping;
 import com.tf.model.User;
 import com.tf.persistance.util.CompanyStatus;
 import com.tf.persistance.util.Constants;
+import com.tf.util.CompanyDTO;
 import com.tf.util.OfficerDTO;
 import com.tf.util.ReportUtility;
 import com.tf.util.model.PaginationModel;
@@ -68,6 +89,8 @@ import com.tf.util.model.PaginationModel;
 @Controller
 @RequestMapping(value = "VIEW")
 public class CompanyController extends BaseController {
+	private final static String ACTIVETAB = "activetab";
+
 	
 	@RenderMapping
 	protected ModelAndView renderCompanyList(
@@ -91,9 +114,16 @@ public class CompanyController extends BaseController {
 			}
 			model.put("allCompanies", companyList);
 			model.put("search", searchValue);
+			model.put("defaultRender", Boolean.TRUE);
+			model.put(ACTIVETAB, "companylist");
+			if (liferayUtility.getPermissionChecker(request).isOmniadmin() ||
+					request.isUserInRole(Constants.WHITEHALL_ADMIN)) {				
+					model.put("userType", Constants.ADMIN);
+				}
 			if(request.isUserInRole(Constants.SCF_ADMIN)){
 				long compId = userService.getCompanybyUserID(themeDisplay.getUserId()).getId();
 				model.put("companyId", compId);
+				model.put("userType", Constants.SCF_ADMIN);
 			}
 
 		} catch (Exception e) {
@@ -425,7 +455,6 @@ public class CompanyController extends BaseController {
 	public void fetchCompanyDetails(ResourceRequest request,
 			ResourceResponse response) throws IOException {
 		String companyNo = ParamUtil.getString(request, "companyNo");
-		System.out.println("companyNo:::::" + companyNo);
 		String companyModelString = "";
 		// JSONArray cmpArray = JSONFactoryUtil.createJSONArray();
 
@@ -770,6 +799,274 @@ public class CompanyController extends BaseController {
 				_log.error(e);
 			}
 		
+	}
+	@RenderMapping(params = "render=supplierDocuments")
+	protected ModelAndView renderSupplierDocumentsList(@ModelAttribute("companyModelDetail") CompanyDTO company,ModelMap model,
+		RenderRequest request, RenderResponse response)
+		throws Exception {
+		try {
+			//ThemeDisplay themeDisplay = liferayUtility.getThemeDisplay(request);
+			List<CompanyDocument> companyDocumentList =	new ArrayList<CompanyDocument>();
+			if (liferayUtility.getPermissionChecker(request).isOmniadmin()) {
+				companyDocumentList =companyDocumentService.getCompanyDocuments();
+				model.put("userType", Constants.ADMIN);
+			}
+			else if (request.isUserInRole(Constants.SCF_ADMIN)) {
+				companyDocumentList =companyDocumentService.getCompanyDocuments();
+				model.put("userType", Constants.SCF_ADMIN);
+			}
+			model.put("companyDocumentList", companyDocumentList);
+			model.put(ACTIVETAB, "supplierdocList");
+		}
+		catch (Exception e) {
+			SessionErrors.add(request, "default-error-message");
+			_log.error("CompanyController.renderSupplierDocumentsList() - error occured while rendering supplierdocList  " +
+				e.getMessage());
+		}
+		return new ModelAndView("supplierdoclist", model);
+	}
+	
+	@ActionMapping(params = "action=importCompany")
+	protected void importCompany( @ModelAttribute("companyModelDetail") CompanyDTO company, ModelMap model,
+		ActionRequest request, ActionResponse response)
+		throws Exception {
+		request.getPortletSession().removeAttribute("companyDTO");
+		request.getPortletSession().removeAttribute("companyList");
+		request.getPortletSession().removeAttribute("validCompanyList");
+		request.getPortletSession().removeAttribute("invalidCompanyList");
+		int currentRow = 0;
+		Company companyObject = null;
+		CompanyAccountDetail companyAccountDetail = null;
+		Address address = null;
+		Workbook workbook = null;
+		List<Company> validCompanyList = new ArrayList<Company>();
+		List<Company> invalidCompanyList = new ArrayList<Company>();
+		try {
+			workbook =new XSSFWorkbook(company.getCompanyDoc().getInputStream());
+			int numberOfSheets = workbook.getNumberOfSheets();
+			DataFormatter formatter = new DataFormatter();
+			for (int i = 0; i < numberOfSheets; i++) {
+				Sheet sheet = workbook.getSheetAt(i);
+				// every sheet has rows, iterate over them
+				Iterator<Row> rowIterator = sheet.iterator();
+				while (rowIterator.hasNext()) {
+					
+					
+					currentRow = currentRow + 1;
+					
+					Row row = rowIterator.next();
+					// Every row has columns, get the column iterator and
+					// iterate over them
+					if(currentRow==1){
+						continue;
+					}
+					companyObject = new Company();
+					address = new Address();
+					companyAccountDetail = new CompanyAccountDetail();
+					
+					Iterator<Cell> cellIterator = row.cellIterator();
+					int index = 0;
+					while (cellIterator.hasNext()) {
+						Cell cell = cellIterator.next();
+						// Get the Cell object
+						if (index == 0) {
+							try{
+								companyObject.setName(cell.getStringCellValue());
+							}catch(Exception e){
+								_log.error("processing file - error occured while importCompany  " +e.getMessage());
+							}
+							
+							
+						}
+						else if (index == 1) {
+							try{
+								companyObject.setRegNumber(formatter.formatCellValue(cell));
+							}catch(Exception e){
+								_log.error("processing file - error occured while importCompany   " +e.getMessage());
+							}
+						}
+						else if (index == 2) {
+							try{
+								companyObject.setDateestablished(cell.getDateCellValue());
+							}catch(Exception e){
+								_log.error("processing file - error occured while  importCompany  " +e.getMessage());
+							}
+								
+						}
+						else if (index == 3) {
+							try{
+								address.setAddressLine1(cell.getStringCellValue());
+							}catch(Exception e){
+								_log.error("processing file - error occured while  importCompany  " +e.getMessage());
+							}
+						}
+						else if (index == 4) {
+							try{
+								address.setCountry(cell.getStringCellValue());
+							}catch(Exception e){
+								_log.error("processing file - error occured while rendering supplierdocList  " +e.getMessage());
+							}
+						}
+						else if (index == 5) {
+							try{
+								address.setPostalCode(formatter.formatCellValue(cell));
+							}catch(Exception e){
+								_log.error("processing file - error occured while rendering supplierdocList  " +e.getMessage());
+							}
+						}
+						else if (index == 6) {
+							try{
+								companyObject.setTelnumber(formatter.formatCellValue(cell));
+							}catch(Exception e){
+								_log.error("processing file - error occured while  importCompany  " +e.getMessage());
+							}
+							
+						}	
+						else if (index == 7) {
+							try{
+								companyObject.setCompanyType(formatter.formatCellValue(cell));
+							}catch(Exception e){
+								_log.error("processing file - error occured while importCompany   " +e.getMessage());
+							}
+							
+						}
+						else if (index == 8) {
+							try{
+								companyAccountDetail.setAccountNumber(formatter.formatCellValue(cell));
+							}catch(Exception e){
+								_log.error("processing file - error occured while importCompany   " +e.getMessage());
+							}
+							
+						}
+						else if (index == 9) {
+							try{
+								companyAccountDetail.setAccountName(cell.getStringCellValue());
+							}catch(Exception e){
+								_log.error("processing file - error occured while importCompany   " +e.getMessage());
+							}
+						}
+						else if (index == 10) {
+							try{
+								companyAccountDetail.setSortCode(formatter.formatCellValue(cell));
+							}catch(Exception e){
+								_log.error("processing file - error occured while importCompany   " +e.getMessage());
+							}
+							
+						}
+						else if (index == 11) {
+							try{
+								companyAccountDetail.setIban(formatter.formatCellValue(cell));
+							}catch(Exception e){
+								_log.error("processing file - error occured while importCompany   " +e.getMessage());
+							}
+							
+						}
+						else if (index == 12) {
+							try{
+								companyAccountDetail.setBankName(cell.getStringCellValue());
+							}catch(Exception e){
+								_log.error("processing file - error occured while importCompany   " +e.getMessage());
+							}
+						}
+						//in case of sheet has unnessary columns. 
+						else if(index>12){
+							break;
+						}   
+						index++;
+					}
+					companyObject.setActivestatus("New");
+					companyObject.setAddress(address);
+					companyObject.setCompanyAccountDetail(companyAccountDetail);
+					Company cmpModel = companyDocumentService.getCompanyDetail(companyObject.getRegNumber(),companyObject.getName());
+					if(cmpModel!=null && cmpModel.getId()>0){
+						companyObject.setId(cmpModel.getId());
+						invalidCompanyList.add(companyObject);
+					}else{
+					    validCompanyList.add(companyObject);
+					}
+					}
+
+			}
+			request.getPortletSession().setAttribute("companyDTO", company);
+			request.getPortletSession().setAttribute("invalidCompanyList", invalidCompanyList);
+			request.getPortletSession().setAttribute("validCompanyList", validCompanyList);
+			model.put("documentUpload", Boolean.TRUE);
+			model.put("invalidCompanyList", invalidCompanyList);
+			model.put("validCompanyList", validCompanyList);
+			response.setRenderParameter("render", "supplierDocuments");
+		}
+		catch (Exception e) {
+		    model.put("documentUpload", Boolean.TRUE);
+			model.put("errorOccured", true);
+			response.setRenderParameter("render", "supplierDocuments");
+			e.printStackTrace();
+		}
+		finally {
+			model.put("currentRow", currentRow);
+		}
+
+	}
+	
+	@SuppressWarnings("unchecked")
+	@ActionMapping(params = "action=saveCompanys")
+	protected void saveCompanys(
+		ModelMap model, ActionRequest request, ActionResponse response)
+		throws Exception {
+
+		CompanyDTO companyDTO =(CompanyDTO) request.getPortletSession().getAttribute("companyDTO");
+		List<Company> companyList =(List<Company>) request.getPortletSession().getAttribute("validCompanyList");
+
+		FileEntry fileEntry = null;
+		Folder folder = null;
+		CompanyDocument companyDocument = null;
+		ThemeDisplay themeDisplay =
+			(ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
+		long currentSideID = themeDisplay.getScopeGroupId();
+		long parentFolderId = DLFolderConstants.DEFAULT_PARENT_FOLDER_ID;
+		Folder parentfolder = null;
+		parentfolder = DLAppServiceUtil.getFolder(currentSideID, 0, "Invoices");
+		if (parentfolder != null) {
+			parentFolderId = parentfolder.getFolderId();
+		}
+		Integer folderCount =
+			DLAppServiceUtil.getFoldersCount(currentSideID, parentFolderId);
+		ServiceContext serviceContextDlFolder =
+			ServiceContextFactory.getInstance(DLFolder.class.getName(), request);
+		folder =
+			DLAppServiceUtil.addFolder(
+				currentSideID, parentFolderId, folderCount.toString(),
+				"Company Document Folder", serviceContextDlFolder);
+		String userName = themeDisplay.getUser().getScreenName();
+		String mimeType =
+			MimeTypesUtil.getContentType(
+					companyDTO.getCompanyDoc().getInputStream(),
+					companyDTO.getCompanyDoc().getName());
+		ServiceContext serviceContext =
+			ServiceContextFactory.getInstance(
+				DLFileEntry.class.getName(), request);
+		fileEntry =
+			DLAppServiceUtil.addFileEntry(
+				themeDisplay.getScopeGroupId(), folder.getFolderId(),
+				companyDTO.getCompanyDoc().getOriginalFilename(), mimeType,
+				companyDTO.getCompanyDoc().getOriginalFilename(),
+				companyDTO.getCompanyDoc().getOriginalFilename(), "upload",
+				companyDTO.getCompanyDoc().getInputStream(),
+				companyDTO.getCompanyDoc().getSize(), serviceContext);
+		companyDocument = new CompanyDocument();
+		companyDocument.setDocumentId(fileEntry.getFileEntryId());
+		companyDocument.setUploadDate(new Date());
+		companyDocument.setUploadedby(userName);
+		companyDocument.setDocumentName(companyDTO.getCompanyDoc().getOriginalFilename());
+		companyDocument.setDocumentUrl(liferayUtility.getDocumentURL(
+			themeDisplay, fileEntry));
+		companyDocument.setDocumentType(mimeType);
+
+		if (companyList != null && companyList.size() > 0) {
+			companyDocumentService.addCompanyDetailList(companyList);
+			companyDocumentService.addCompanyDocument(companyDocument);
+		}
+		response.setRenderParameter("render", "supplierDocuments");
+
 	}
 
 }

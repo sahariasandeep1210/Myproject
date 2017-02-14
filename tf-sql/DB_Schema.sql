@@ -599,6 +599,26 @@ CREATE TABLE tf_company_account_details(
 	FOREIGN KEY (idcompany) REFERENCES tf_company(idcompany)
 )
 
+DROP TABLE IF EXISTS `scf_company_document`;
+create table `scf_company_document` (
+	`id` bigint (20),
+	`document_id` bigint (20),
+	`document_name` varchar (765),
+	`document_type` varchar (765),
+	`document_url` varchar (765),
+	`upload_date` datetime ,
+	`uploadedby` varchar (765)
+); 
+
+
+
+
+
+
+
+
+
+
 
 
 

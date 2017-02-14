@@ -1,7 +1,7 @@
 var errormessage="Some required information is missing or incomplete. Please correct your entries and try again.";
 
 $(function() {
-	
+	enableTab();
 	//enableDisableoptions();
 	
 	$('.tooltipPhone').tooltip();
@@ -359,8 +359,56 @@ $(document).ready(function(){
 		   }
 	});
 	
+	
+	if ($('#confirmationModel').length > 0) {
+		$('#wrappersecond').removeClass('hideclass');
+		$('#confirmationModel').modal('show');
+	}
+	
+	 $("#exportCompanyDocs").click(function(){			
+			$('#companyDocTable').tableExport({
+				type : 'excel',
+				escape : 'false',
+				fileName: 'companyDocList',
+				worksheetName: 'companyDocList'
+			});			
+	});
+	 
+	 $("#uploadCpmpany").click(function() {
+			var error_free = true;
+			error_free = bulkUpload(error_free);
+			if(error_free){
+				document.forms["imporCompanyForm"].submit();
+			}	
+			
+		});
 	 
 });
+
+
+function bulkUpload(error_free){
+	var elements = [];
+		
+		//elements[0] = "scfCompany";
+		elements[0] = "fileType";
+		elements[1] = "companyDoc";
+		
+		for (i = 0; i < elements.length; i++) {
+			var element = $("#" + elements[i]);
+			if(element.length){
+				var eleValue = element.val();
+				if (eleValue == '' || eleValue == null || (element.is('select') && element[0].selectedIndex == 0)) {
+					element.addClass("error_show");
+					error_free = false;				
+				} else {
+					element.removeClass("error_show");
+				}
+			}	
+		}
+		return error_free;
+		
+	}
+
 
 function deleteCompany() {
 	$("#deleteCompany").dialog("open");
@@ -391,7 +439,16 @@ function submitUserForms(url) {
 	}
 	
 }*/
-
+function enableTab(){
+	var curentTab=$("#currentTab").val();
+	if(curentTab=='companylist'){
+		$("#companyList").addClass("active");
+	}else if(curentTab=='supplierdocList'){
+		$("#supplierdocList").addClass("active");
+	}else{
+		$("#companyList").addClass("active");
+	}
+}
 
 function validateCompanyInfo(error_free) {
 
