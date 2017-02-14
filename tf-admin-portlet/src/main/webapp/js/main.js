@@ -626,12 +626,12 @@ function validatePhoneNo(error_free,element){
 	if(element.inputmask('unmaskedvalue').length < 12){
 		element.addClass("error_show");
 		 error_free = false;
-	}else{
+	}/*else{
 		var splitValues= telNo.split(' ');
 		if(splitValues[1].startsWith("0")){
 			element.addClass("error_show");
 			error_free = false;
 		}
-	}	
+	}	*/
 	return error_free;
 }
