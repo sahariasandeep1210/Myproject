@@ -18,6 +18,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.tf.company.service.LiferayService;
 import com.tf.model.CompanyType;
 import com.tf.persistance.util.Constants;
+import com.tf.service.CompanyDocumentService;
 import com.tf.service.CompanyService;
 import com.tf.service.CompanyServices;
 import com.tf.service.CompanyTypeService;
@@ -38,6 +39,8 @@ public class BaseController {
 	@Autowired
 	protected CompanyService companyService;
 	
+	@Autowired
+	protected CompanyDocumentService companyDocumentService;
 	
 	
 	@Autowired
