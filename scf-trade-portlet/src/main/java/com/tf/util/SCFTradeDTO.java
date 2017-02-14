@@ -23,6 +23,8 @@ public class SCFTradeDTO implements Serializable {
 	private Date openingDate;
 	private Date investorPaymentDate;	
 	private Date SellerPaymentDate;
+	private String investorPaymentDateString;	
+	private String SellerPaymentDateString;
 	private BigDecimal tradeAmount;
 	private String status;
 	private Company company;
@@ -223,6 +225,22 @@ public class SCFTradeDTO implements Serializable {
 
 	public void setPromisoryDocURL(String promisoryDocURL) {
 		this.promisoryDocURL = promisoryDocURL;
+	}
+	
+	public String getInvestorPaymentDateString() {
+		return investorPaymentDateString;
+	}
+
+	public void setInvestorPaymentDateString(String investorPaymentDateString) {
+		this.investorPaymentDateString = investorPaymentDateString;
+	}
+
+	public String getSellerPaymentDateString() {
+		return SellerPaymentDateString;
+	}
+
+	public void setSellerPaymentDateString(String sellerPaymentDateString) {
+		SellerPaymentDateString = sellerPaymentDateString;
 	}
 
 	@Override
