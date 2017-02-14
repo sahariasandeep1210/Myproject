@@ -6,7 +6,7 @@
 
 <div id="dashboard">
 	<div class="row-fluid">
-		<div class="span6">
+		<div class="span4">
 			<div class="panel panel-blue quick-stat-panel">
 				<div class="panel-heading">
 					<h3 class="panel-title">Credit Line</h3>
@@ -16,8 +16,18 @@
 				</div>
 			</div>
 		</div>
-		
-	<div class="span6">
+		<div class="span4">
+			<div class="panel panel-blue quick-stat-panel">
+				<div class="panel-heading">
+					<h3 class="panel-title">SETTLED TRADES</h3>
+				</div>
+				<div class="panel-body">	
+					
+					<div id="barChart_setteled"></div>
+				</div>
+			</div>
+		</div>
+		<div class="span4">
 			<div class="panel panel-blue quick-stat-panel">
 				<div class="panel-heading">
 					<h3 class="panel-title">Available Credit Line</h3>
@@ -29,19 +39,7 @@
 			</div>
 		</div>
 		</div>
-		<div class="row-fluid">
-	<div class="span6">
-			<div class="panel panel-blue quick-stat-panel">
-				<div class="panel-heading">
-					<h3 class="panel-title">SETTLED TRADES</h3>
-				</div>
-				<div class="panel-body">	
-					
-					<div id="barChart_setteled"></div>
-				</div>
-			</div>
-		</div>
-	</div>
+		
 	</div>
 	
 
@@ -92,19 +90,45 @@
       
       var stackedBarChartOptions = {	        		
      		 legend: { position: "top" },
-     		 isStacked: true
+     		 isStacked: true,
+     		
+     		height:500,
+            chartArea: {
+            	height:300,
+              top:100,
+            },
+     		hAxis: {
+     	        
+     	        slantedText:true,
+     	        slantedTextAngle:45
+     	        } 
        };
       var barChartOptions = {	        		
-      		 legend: { position: "none"
-      			
-      			 	 
-      			 }
+      		 legend: { position: "none"},
+      		height:500,
+            chartArea: {
+            	height:300,
+              top:100,
+            },
+     		hAxis: {
+     	        
+     	        slantedText:true,
+     	        slantedTextAngle:45
+     	        } 
         };
       var barChartOptions_settledAmount = {	        		
-       		 legend: { position: "none"
-       			
-       			 	 
-       			 }
+       		 legend: { position: "none"},
+       		height:500,
+            chartArea: {
+            	height:300,
+              top:100,
+            },
+     		hAxis: {
+     	        
+     	        slantedText:true,
+     	        slantedTextAngle:45
+     	        } 
+      		
          };
 		
 		
