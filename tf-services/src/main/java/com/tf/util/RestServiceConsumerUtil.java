@@ -21,7 +21,6 @@ public class RestServiceConsumerUtil {
 	public  String getProperty(String key) {
 		String value = null;
 		value = prop.getProperty(key);
-		System.out.println("Value Is :::"+value);
 		return value;
 	}
 

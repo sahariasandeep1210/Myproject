@@ -476,7 +476,20 @@ public class CompanyController extends BaseController {
 		}
 
 	}
-
+	private CompanyModel getCompanyModelInfo(String companyNo) {
+		try {
+			if (!StringUtils.isEmpty(companyNo)) {
+				CompanyModel cmpModel = companyServices.getCompanyInfo(companyNo);
+				return cmpModel;
+			}
+			
+		} catch (Exception e) {
+			_log.error("Error occured while fetching company information"
+					+ e.getMessage());
+			
+		}
+		return null;
+	}
 	@ResourceMapping(value = "fetchOfficers")
 	public ModelAndView fetchOfficers(ResourceRequest request,
 			ResourceResponse response, ModelMap modelMap) throws IOException {
@@ -865,111 +878,93 @@ public class CompanyController extends BaseController {
 					companyAccountDetail = new CompanyAccountDetail();
 					
 					Iterator<Cell> cellIterator = row.cellIterator();
-					int index = 0;
+					int index = 1;
 					while (cellIterator.hasNext()) {
 						Cell cell = cellIterator.next();
 						// Get the Cell object
-						if (index == 0) {
-							try{
-								companyObject.setName(cell.getStringCellValue());
-							}catch(Exception e){
-								_log.error("processing file - error occured while importCompany  " +e.getMessage());
-							}
-							
-							
-						}
-						else if (index == 1) {
+						if (index == 1) {
 							try{
 								companyObject.setRegNumber(formatter.formatCellValue(cell));
+								String companyNo =formatter.formatCellValue(cell);
+								if(companyNo.length()<8){
+									companyNo ="0"+companyNo;
+								}
+								CompanyModel cmpModel = getCompanyModelInfo(companyNo);
+								if(null != cmpModel){
+									try{
+										companyObject.setName(cmpModel.getCompany_name());
+										companyObject.setDateestablished(cmpModel.getDate_of_creation());
+										companyObject.setOrgType(cmpModel.getType());
+										address.setAddressLine1(cmpModel.getRegistered_office_address().getAddress_line_1());
+										address.setAddressLine2(cmpModel.getRegistered_office_address().getAddress_line_2());
+										address.setLocality(cmpModel.getRegistered_office_address().getLocality());
+										address.setRegion(cmpModel.getRegistered_office_address().getRegion());
+										address.setCountry(cmpModel.getRegistered_office_address().getCountry());
+										address.setPostalCode(cmpModel.getRegistered_office_address().getPostal_code());
+									}catch(Exception e){
+										_log.error("processing file - error occured while importCompany in address detail " +e.getMessage());
+									}
+								}
 							}catch(Exception e){
-								_log.error("processing file - error occured while importCompany   " +e.getMessage());
+								_log.error("processing file - error occured while importCompany  setRegNumber " +e.getMessage());
 							}
 						}
 						else if (index == 2) {
 							try{
-								companyObject.setDateestablished(cell.getDateCellValue());
+								companyObject.setTelnumber(formatter.formatCellValue(cell));
 							}catch(Exception e){
-								_log.error("processing file - error occured while  importCompany  " +e.getMessage());
+								_log.error("processing file - error occured while  importCompany  setTelnumber " +e.getMessage());
 							}
-								
-						}
+							
+						}	
 						else if (index == 3) {
 							try{
-								address.setAddressLine1(cell.getStringCellValue());
+								companyObject.setCompanyType(formatter.formatCellValue(cell));
 							}catch(Exception e){
-								_log.error("processing file - error occured while  importCompany  " +e.getMessage());
+								_log.error("processing file - error occured while importCompany  setCompanyType " +e.getMessage());
 							}
+							
 						}
 						else if (index == 4) {
 							try{
-								address.setCountry(cell.getStringCellValue());
+								companyAccountDetail.setAccountNumber(formatter.formatCellValue(cell));
 							}catch(Exception e){
-								_log.error("processing file - error occured while rendering supplierdocList  " +e.getMessage());
+								_log.error("processing file - error occured while importCompany  setAccountNumber  " +e.getMessage());
 							}
+							
 						}
 						else if (index == 5) {
 							try{
-								address.setPostalCode(formatter.formatCellValue(cell));
+								companyAccountDetail.setAccountName(cell.getStringCellValue());
 							}catch(Exception e){
-								_log.error("processing file - error occured while rendering supplierdocList  " +e.getMessage());
+								_log.error("processing file - error occured while importCompany   setAccountName " +e.getMessage());
 							}
 						}
 						else if (index == 6) {
 							try{
-								companyObject.setTelnumber(formatter.formatCellValue(cell));
+								companyAccountDetail.setSortCode(formatter.formatCellValue(cell));
 							}catch(Exception e){
-								_log.error("processing file - error occured while  importCompany  " +e.getMessage());
+								_log.error("processing file - error occured while importCompany  setSortCode " +e.getMessage());
 							}
 							
-						}	
+						}
 						else if (index == 7) {
 							try{
-								companyObject.setCompanyType(formatter.formatCellValue(cell));
+								companyAccountDetail.setIban(formatter.formatCellValue(cell));
 							}catch(Exception e){
-								_log.error("processing file - error occured while importCompany   " +e.getMessage());
+								_log.error("processing file - error occured while importCompany   setIban" +e.getMessage());
 							}
 							
 						}
 						else if (index == 8) {
 							try{
-								companyAccountDetail.setAccountNumber(formatter.formatCellValue(cell));
-							}catch(Exception e){
-								_log.error("processing file - error occured while importCompany   " +e.getMessage());
-							}
-							
-						}
-						else if (index == 9) {
-							try{
-								companyAccountDetail.setAccountName(cell.getStringCellValue());
-							}catch(Exception e){
-								_log.error("processing file - error occured while importCompany   " +e.getMessage());
-							}
-						}
-						else if (index == 10) {
-							try{
-								companyAccountDetail.setSortCode(formatter.formatCellValue(cell));
-							}catch(Exception e){
-								_log.error("processing file - error occured while importCompany   " +e.getMessage());
-							}
-							
-						}
-						else if (index == 11) {
-							try{
-								companyAccountDetail.setIban(formatter.formatCellValue(cell));
-							}catch(Exception e){
-								_log.error("processing file - error occured while importCompany   " +e.getMessage());
-							}
-							
-						}
-						else if (index == 12) {
-							try{
 								companyAccountDetail.setBankName(cell.getStringCellValue());
 							}catch(Exception e){
-								_log.error("processing file - error occured while importCompany   " +e.getMessage());
+								_log.error("processing file - error occured while importCompany   setBankName " +e.getMessage());
 							}
 						}
 						//in case of sheet has unnessary columns. 
-						else if(index>12){
+						else if(index>8){
 							break;
 						}   
 						index++;
@@ -1007,6 +1002,10 @@ public class CompanyController extends BaseController {
 
 	}
 	
+	
+
+
+
 	@SuppressWarnings("unchecked")
 	@ActionMapping(params = "action=saveCompanys")
 	protected void saveCompanys(
@@ -1062,8 +1061,18 @@ public class CompanyController extends BaseController {
 		companyDocument.setDocumentType(mimeType);
 
 		if (companyList != null && companyList.size() > 0) {
-			companyDocumentService.addCompanyDetailList(companyList);
-			companyDocumentService.addCompanyDocument(companyDocument);
+			try{
+				companyDocumentService.addCompanyDetailList(companyList);
+			}catch(Exception e){
+				_log.error("processing file - error occured while saveCompanys  addCompanyDetailList  " +e.getMessage());
+			}
+			try{
+				companyDocumentService.addCompanyDocument(companyDocument);
+			}catch(Exception e){
+				_log.error("processing file - error occured while saveCompanys in   addCompanyDocument " +e.getMessage());
+			}
+			
+			
 		}
 		response.setRenderParameter("render", "supplierDocuments");
 

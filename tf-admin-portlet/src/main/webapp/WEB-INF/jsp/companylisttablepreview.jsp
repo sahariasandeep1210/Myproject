@@ -40,7 +40,7 @@
 								<tr onclick="window.location.href='${createURL}&companyID=${company.id}'">
 									<td>${company.name} </td>
 									<td>${company.regNumber}</td>
-									<td> ${company.address.country}</td>
+									<td> ${company.address.addressLine1} ${company.address.addressLine2}</td>
 									<td class="text-center"><fmt:formatDate pattern="dd-MM-yyyy" value="${company.dateestablished}" /></td>
 									<%-- <td>${company.website}</td> --%>
 									<td>${company.telnumber}</td>
@@ -85,7 +85,7 @@
 	
 	<div class="customTableContainer">
 		<table class="table table-hover tablesorter table-bordered"
-			id="invoiceListTable">
+			id="companyListTable">
 			<thead>
 				<tr>
 					<c:if test="${defaultRender}">
@@ -109,7 +109,7 @@
 							<%-- <c:if test="${defaultRender}"> --%>
 									<td>${company.name} </td>
 									<td>${company.regNumber}</td>
-									<td>${company.address.country}</td>
+									<td>${company.address.addressLine1}  ${company.address.addressLine2}</td>
 									<td class="text-center"><fmt:formatDate pattern="dd-MM-yyyy" value="${company.dateestablished}" /></td>
 									<%-- <td>${company.website}</td> --%>
 									<td>${company.telnumber}</td>

@@ -129,7 +129,13 @@
 								<tr onclick="window.location.href='${createURL}&companyID=${company.id}'">
 									<td>${company.name} </td>
 									<td>${company.regNumber}</td>
+									<c:if test="${empty company.address.region}">
+									<td>${company.address.country}</td>
+									</c:if>
+									<c:if test="${ not empty company.address.region}">
 									<td>${company.address.region}, ${company.address.country}</td>
+									</c:if>
+									
 									<td class="text-center"><fmt:formatDate pattern="dd-MM-yyyy" value="${company.dateestablished}" /></td>
 									<%-- <td>${company.website}</td> --%>
 									<td>${company.telnumber}</td>

@@ -21,10 +21,10 @@ public class CompanyDocumentDAOImpl extends BaseDAOImpl<InvoiceDocument, Long> i
 		super(InvoiceDocument.class);
 	}
 	
-	public void addCompanyDocument(CompanyDocument companyDocument) {
+	public void addCompanyDocument(CompanyDocument companyDocuments) {
 		try {
-			sessionFactory.getCurrentSession().save(companyDocument);
-			_log.debug("persist successful"+companyDocument);
+			sessionFactory.getCurrentSession().save(companyDocuments);
+			_log.debug("persist successful"+companyDocuments);
 		} catch (RuntimeException re) {
 			_log.error("persist failed", re);
 			throw re;

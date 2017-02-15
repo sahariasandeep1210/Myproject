@@ -7,7 +7,7 @@ import com.tf.model.CompanyDocument;
 
 public interface CompanyDocumentDAO {
 	
-	public void addCompanyDocument(CompanyDocument invoiceDocument);
+	public void addCompanyDocument(CompanyDocument companyDocuments);
 	
 	public List<CompanyDocument> getCompanyDocuments();
 	
