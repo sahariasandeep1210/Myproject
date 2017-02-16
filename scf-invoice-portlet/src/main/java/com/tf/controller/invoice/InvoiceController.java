@@ -508,7 +508,9 @@ public class InvoiceController {
 			
 			tradeURL=liferayUtility.getPortletURL(request, "scf-trade-portlet", "render", "createTrade", true);
 			if (liferayUtility.getPermissionChecker(request).isOmniadmin() ||
-				request.isUserInRole(Constants.WHITEHALL_ADMIN)) {				
+				request.isUserInRole(Constants.WHITEHALL_ADMIN)) {
+				 //companyID = liferayUtility.getWhitehallCompanyID(request);
+				companyID=(long) 9;
 				model.put("userType", Constants.ADMIN);
 			}
 			else if (request.isUserInRole(Constants.SCF_ADMIN)) {
@@ -528,6 +530,7 @@ public class InvoiceController {
 				}else{				
 				    genericListModel = invoiceService.getInvoices(companyID,paginationModel.getStartIndex(), paginationModel.getPageSize(),registrationNo,app);
 			}
+		
 			model.put("tradeURL",tradeURL);
 			model.put("value", value);
 			model.put("search", search);

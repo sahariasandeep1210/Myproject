@@ -22,7 +22,7 @@
 					<th>Supplier Company</th>
 					</c:if>
 					<c:if test="${userType !='SCF Company Admin'}">
-					<th>Investor Company</th>
+					<th>Supplier Company</th>
 					</c:if>
 					
 					<th>Status</th>
@@ -70,7 +70,24 @@
 										value="${invoice.payment_date}" /></td>
 								<td class="rightalign blue_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${invoice.invoiceAmount}"  pattern="#,##0.00"/></td>
 								<td class="text-center">${invoice.duration}</td>
-								<td>${invoice.scfCompany.name}</td>								
+								
+								<c:if test="${userType !='SCF Company Admin'}">
+									<c:if test="${invoice.scfCompany.name eq null}">
+									
+									<td class="co" id="co">${invoice.sellerCompanyRegistrationNumber}</td>	
+									</c:if>
+									<c:if test="${invoice.scfCompany.name ne null}">
+									<td>${invoice.scfCompany.name}</td>	
+									</c:if>
+								</c:if>
+								<c:if test="${userType =='SCF Company Admin'}">
+									<c:if test="${invoice.scfCompany.name ne null}">
+									<td>${invoice.scfCompany.name}</td>		
+									</c:if>	
+									<c:if test="${invoice.scfCompany.name eq null}">
+									<td>${invoice.scfCompany.name}</td>	
+									</c:if>
+								</c:if>							
 								<td>
 								${invoice.status}
 								<c:if test="${invoice.status ne 'New'}">
