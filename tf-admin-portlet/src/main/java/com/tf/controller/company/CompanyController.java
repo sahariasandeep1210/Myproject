@@ -878,13 +878,20 @@ public class CompanyController extends BaseController {
 					companyAccountDetail = new CompanyAccountDetail();
 					
 					Iterator<Cell> cellIterator = row.cellIterator();
-					int index = 1;
+					int index = 0;
 					while (cellIterator.hasNext()) {
 						Cell cell = cellIterator.next();
 						// Get the Cell object
-						if (index == 1) {
+						if (index == 0) {
 							try{
-								companyObject.setRegNumber(formatter.formatCellValue(cell));
+								companyObject.setName(cell.getStringCellValue());
+							}catch(Exception e){
+								_log.error("processing file - error occured while importCompany  " +e.getMessage());
+							}
+						}
+						else if (index == 1) {
+							try{
+								//companyObject.setRegNumber(formatter.formatCellValue(cell));
 								String companyNo =formatter.formatCellValue(cell);
 								if(companyNo.length()<8){
 									companyNo ="0"+companyNo;
@@ -892,7 +899,7 @@ public class CompanyController extends BaseController {
 								CompanyModel cmpModel = getCompanyModelInfo(companyNo);
 								if(null != cmpModel){
 									try{
-										companyObject.setName(cmpModel.getCompany_name());
+										companyObject.setRegNumber(cmpModel.getCompany_number());
 										companyObject.setDateestablished(cmpModel.getDate_of_creation());
 										companyObject.setOrgType(cmpModel.getType());
 										address.setAddressLine1(cmpModel.getRegistered_office_address().getAddress_line_1());
@@ -919,28 +926,20 @@ public class CompanyController extends BaseController {
 						}	
 						else if (index == 3) {
 							try{
-								companyObject.setCompanyType(formatter.formatCellValue(cell));
-							}catch(Exception e){
-								_log.error("processing file - error occured while importCompany  setCompanyType " +e.getMessage());
-							}
-							
-						}
-						else if (index == 4) {
-							try{
 								companyAccountDetail.setAccountNumber(formatter.formatCellValue(cell));
 							}catch(Exception e){
 								_log.error("processing file - error occured while importCompany  setAccountNumber  " +e.getMessage());
 							}
 							
 						}
-						else if (index == 5) {
+						else if (index == 4) {
 							try{
 								companyAccountDetail.setAccountName(cell.getStringCellValue());
 							}catch(Exception e){
 								_log.error("processing file - error occured while importCompany   setAccountName " +e.getMessage());
 							}
 						}
-						else if (index == 6) {
+						else if (index == 5) {
 							try{
 								companyAccountDetail.setSortCode(formatter.formatCellValue(cell));
 							}catch(Exception e){
@@ -948,7 +947,7 @@ public class CompanyController extends BaseController {
 							}
 							
 						}
-						else if (index == 7) {
+						else if (index == 6) {
 							try{
 								companyAccountDetail.setIban(formatter.formatCellValue(cell));
 							}catch(Exception e){
@@ -956,7 +955,7 @@ public class CompanyController extends BaseController {
 							}
 							
 						}
-						else if (index == 8) {
+						else if (index == 7) {
 							try{
 								companyAccountDetail.setBankName(cell.getStringCellValue());
 							}catch(Exception e){
@@ -964,12 +963,13 @@ public class CompanyController extends BaseController {
 							}
 						}
 						//in case of sheet has unnessary columns. 
-						else if(index>8){
+						else if(index>7){
 							break;
 						}   
 						index++;
 					}
 					companyObject.setActivestatus("New");
+					companyObject.setCompanyType("5");
 					companyObject.setAddress(address);
 					companyObject.setCompanyAccountDetail(companyAccountDetail);
 					Company cmpModel = companyDocumentService.getCompanyDetail(companyObject.getRegNumber(),companyObject.getName());
