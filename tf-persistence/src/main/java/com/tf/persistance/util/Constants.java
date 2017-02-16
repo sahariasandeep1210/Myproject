@@ -2,6 +2,8 @@ package com.tf.persistance.util;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.text.DateFormat;
+
 
 public class Constants {
 
@@ -70,6 +72,24 @@ public class Constants {
 		  }
 		  return parsedDate;
 		 }
+	
+	public static Date formatDateInDDMMYYYYInDate(String inDate) {
+		  String parsedDate = null;
+		  Date date = null;
+		  try {
+		   Date initDate = null;
+		   initDate = new SimpleDateFormat("yyyy-MM-dd").parse(inDate);
+		   SimpleDateFormat formatter1 = new SimpleDateFormat("dd-MM-yyyy");
+		   parsedDate = formatter1.format(initDate);
+		    date = formatter1.parse(parsedDate);
+		   return date;
+		  } catch (Exception e) {
+		   
+		   e.printStackTrace();
+		  }
+		  return date;
+		 }
+	
 	public static enum STATUS {
 		PENDING("Pending"), APPROVED("Approve"), REJECTED("Reject");
 

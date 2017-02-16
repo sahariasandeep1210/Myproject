@@ -158,10 +158,10 @@ public class SettingDAOImpl  extends BaseDAOImpl<Object, Long>   implements Sett
 					Date updateDate = null;
 					try{
 						DateFormat df = new SimpleDateFormat(Constants.DATE_FORMAT);
-						Date createDate = df.parse(row.get("create_date").toString());
+						Date createDate = Constants.formatDateInDDMMYYYYInDate(row.get("create_date").toString());
 						sellerSettingModel.setCreateDate(createDate);
-					    updateDate = df.parse(row.get("update_date").toString());
-						sellerSettingModel.setUpdateDate(updateDate);
+					    updateDate = Constants.formatDateInDDMMYYYYInDate(row.get("update_date").toString());
+					    sellerSettingModel.setUpdateDate(updateDate);
 					}catch(Exception e){
 						sellerSettingModel.setUpdateDate(updateDate);
 					}
