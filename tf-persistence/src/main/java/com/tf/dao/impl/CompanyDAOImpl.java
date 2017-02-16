@@ -423,7 +423,7 @@ public class CompanyDAOImpl  extends BaseDAOImpl<Company, Long>   implements Com
 	  try {
 	   StringBuilder sb = new StringBuilder();
 	   List<Company> results = new ArrayList<Company>();
-	   sb.append("SELECT idcompany,NAME,regnumber FROM tf_company tf INNER JOIN tf_seller_scfcompany_mapping tfs ON tf.idcompany = tfs.seller_company");
+	   sb.append("SELECT distinct idcompany,NAME,regnumber FROM tf_company tf INNER JOIN tf_seller_scfcompany_mapping tfs ON tf.idcompany = tfs.seller_company");
 	   sb.append(" WHERE tf.company_type ='"+CompanyTypes.SELLER.getValue()+"' AND tf.active_status <> '"+CompanyStatus.DELETED.getValue()+"' AND tfs.status = '"+CompanyStatus.APPROVE.getValue()+"' ");	  
 	  SQLQuery query = (SQLQuery) sessionFactory.getCurrentSession()
 	     .createSQLQuery(sb.toString());

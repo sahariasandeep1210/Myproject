@@ -2,6 +2,11 @@
 	margin-left: 0 !important;
 }
 
+/* #stackedBarChart {
+    height: 400px;
+    width: 100%;
+   
+} */
 .aui label {
   display: inline !important;
   margin-bottom: 5px;
@@ -146,3 +151,4 @@ table.tablesorter thead tr th {
     border-bottom: 0;
   }
 }
+
