@@ -891,6 +891,7 @@ public class CompanyController extends BaseController {
 						}
 						else if (index == 1) {
 							try{
+								
 								//companyObject.setRegNumber(formatter.formatCellValue(cell));
 								String companyNo =formatter.formatCellValue(cell);
 								if(companyNo.length()<8){
