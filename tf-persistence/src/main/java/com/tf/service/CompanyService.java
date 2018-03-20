@@ -54,4 +54,7 @@ public interface CompanyService {
 	public List<Company> getCompaniesByStatus(String status);
 	
 	public Long getCompaniesCountByStatus(String status) ;
+	
+	public List<Company> getCompaniesBySortingParam(int startIndex, int pageSize,String columnName,String order,String status,String searchValue);
 }
+

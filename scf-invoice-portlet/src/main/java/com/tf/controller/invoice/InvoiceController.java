@@ -480,6 +480,15 @@ public class InvoiceController {
 			ThemeDisplay themeDisplay =
 				(ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
 			DateFormat formatter = new SimpleDateFormat(Constants.DATE_FORMAT);
+			
+			//fiels are being used for server side sorting
+			String columnName = ParamUtil.getString(request, "sort_Column","scf.update_date");
+			String order = ParamUtil.getString(request, "sort_order","DESC");
+			String sortCompany_order = ParamUtil.getString(request, "sortVal_order");
+			model.put("sortCompany_order", sortCompany_order);
+			model.put("sort_Column", columnName);
+			model.put("sort_order", order);
+			
 			Date fromDate = null;
 			Date toDate = null;
 			String tradeURL=null;
@@ -526,9 +535,9 @@ public class InvoiceController {
 			String app="";
 			if(!StringUtils.isNullOrEmpty(search) || !StringUtils.isNullOrEmpty(value)){
 			    	   genericListModel =invoiceService.getInvoicesByFilter(search, fromDateString, toDateString, value,
-						paginationModel.getStartIndex(), paginationModel.getPageSize(),companyID,registrationNo);
+						paginationModel.getStartIndex(), paginationModel.getPageSize(),companyID,registrationNo,order,columnName);
 				}else{				
-				    genericListModel = invoiceService.getInvoices(companyID,paginationModel.getStartIndex(), paginationModel.getPageSize(),registrationNo,app);
+				    genericListModel = invoiceService.getInvoices(companyID,paginationModel.getStartIndex(), paginationModel.getPageSize(),registrationNo,app,order,columnName);
 			}
 		
 			model.put("tradeURL",tradeURL);

@@ -121,4 +121,9 @@ public class CompanyServiceImpl implements CompanyService {
 	public Long getCompaniesCountByStatus(String status) {
 		return companyDAO.getCompaniesCountByStatus(status);	
 	}
+
+	public List<Company> getCompaniesBySortingParam(int startIndex,
+			int pageSize, String columnName, String order, String status,String searchValue) {
+		return companyDAO.getCompaniesBySortingParam(startIndex, pageSize, columnName, order, status,searchValue);
+	}
 }

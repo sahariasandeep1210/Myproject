@@ -15,7 +15,7 @@ public interface InvoiceDAO extends BaseDAO<Invoice, Long> {
 	
 	public Long getInvoicesCount();
 	
-	public GenericListModel getInvoicesByFilter(String search,String frmDate,String toDate,String value,int startIndex,int pageSize,Long companyID,String registrationNo);
+	public GenericListModel getInvoicesByFilter(String search,String frmDate,String toDate,String value,int startIndex,int pageSize,Long companyID,String registrationNo,String order,String columnName);
 	
 	public List<Invoice> getInvoicesAmount(List<Long> invoiceIds);
 	
@@ -35,5 +35,5 @@ public interface InvoiceDAO extends BaseDAO<Invoice, Long> {
 	
 	public int validInvoiceImport(String invoiceNumber,Long Id);
 	
-	public GenericListModel getInvoices(Long companyID, int startIndex,int pageSize, String registrationNo,String app);
+	public GenericListModel getInvoices(Long companyID, int startIndex,int pageSize, String registrationNo,String app,String order,String columnName);
 }

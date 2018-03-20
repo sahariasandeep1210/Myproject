@@ -1,10 +1,17 @@
+<%@page import="com.liferay.portal.kernel.util.WebKeys"%>
+<%@page import="com.liferay.portal.model.Portlet"%>
+<%@page import="java.util.List"%>
+<%@page import="com.liferay.portal.service.PortletLocalServiceUtil"%>
+<%@page import="com.liferay.portal.theme.ThemeDisplay"%>
 <%@include file="init.jsp"%>
 <portlet:renderURL var="invoiceURL">
 	<portlet:param name="render" value="updateInvoices" />
 </portlet:renderURL>
+<%
+	ThemeDisplay themeDisp = (ThemeDisplay) request
+			.getAttribute(WebKeys.THEME_DISPLAY);
 
-
-
+%>
 
 	<div class="customTableContainer">
 		<table class="table table-hover tablesorter table-bordered"
@@ -14,18 +21,36 @@
 					<c:if test="${defaultRender}">
 						<th class="hide-tablesorter" width="20px"></th>
 					</c:if>
-					<th>Invoice Number</th>
-					<th>PaymentDate</th>
-					<th>Amount</th>
-					<th>Duration</th>
+					<th>Invoice Number<br><img id="invoiceNumbeAscr" column-name="scf.invoice_number" class="sortColumn" src="<%= themeDisp.getPathThemeImages() %>/up.png" alt="asc" order="asc"/>
+					<img id="invoiceNumberDesc" column-name="scf.invoice_number" class="sortColumn" src="<%= themeDisp.getPathThemeImages() %>/down.png" alt="desc" order="desc"/>
+					</th>
+					
+					<th>PaymentDate<br><img id="paymentDateAsc" column-name="scf.payment_date" class="sortColumn" src="<%= themeDisp.getPathThemeImages() %>/up.png" alt="asc" order="asc"/>
+					                   <img id="paymentDateDesc" column-name="scf.payment_date" class="sortColumn" src="<%= themeDisp.getPathThemeImages() %>/down.png" alt="desc" order="desc"/>
+					</th>
+					
+					<th>Amount<br><img id="invoiceAmoutAsc" column-name="scf.invoice_amout" class="sortColumn" src="<%= themeDisp.getPathThemeImages() %>/up.png" alt="asc" order="asc"/>
+					              <img id="invoiceAmoutDesc" column-name="scf.invoice_amout" class="sortColumn" src="<%= themeDisp.getPathThemeImages() %>/down.png" alt="desc" order="desc"/>
+					</th>
+					
+					<th>Duration<br><img id="DurationAmoutAsc" column-name="scf.duration" class="sortColumn" src="<%= themeDisp.getPathThemeImages() %>/up.png" alt="asc" order="asc"/>
+					                 <img id="DurationAmoutDesc" column-name="scf.duration" class="sortColumn" src="<%= themeDisp.getPathThemeImages() %>/down.png" alt="desc" order="desc"/>
+					</th>
+					
 					<c:if test="${userType =='SCF Company Admin'}">
-					<th>Supplier Company</th>
+					<th>Supplier Company<br><img id="scfCompanyAsc" column-name="scf.scf_company" class="sortColumn" src="<%= themeDisp.getPathThemeImages() %>/up.png" alt="asc" order="asc"/>
+					                        <img id="scfCompanyDesc" column-name="scf.scf_company" class="sortColumn" src="<%= themeDisp.getPathThemeImages() %>/down.png" alt="desc" order="desc"/>
+					</th>
 					</c:if>
 					<c:if test="${userType !='SCF Company Admin'}">
-					<th>Supplier Company</th>
+					<th>Supplier Company<br><img id="scfCompanyAsc" column-name="scf.scf_company" class="sortColumn" src="<%= themeDisp.getPathThemeImages() %>/up.png" alt="asc" order="asc"/>
+					        <img id="scfCompanyDesc" column-name="scf.scf_company" class="sortColumn" src="<%= themeDisp.getPathThemeImages() %>/down.png" alt="desc" order="desc"/>
+					</th>
 					</c:if>
 					
-					<th>Status</th>
+					<th>Status<br><img id="statusAsc" column-name="scf.status" class="sortColumn" src="<%= themeDisp.getPathThemeImages() %>/up.png" alt="asc" order="asc"/>
+					          <img id="statusDesc" column-name="scf.status" class="sortColumn" src="<%= themeDisp.getPathThemeImages() %>/down.png" alt="desc" order="desc"/>
+					</th>
 				</tr>
 			</thead>
 			<tbody>

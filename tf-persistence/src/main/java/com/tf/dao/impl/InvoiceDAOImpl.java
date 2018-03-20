@@ -33,6 +33,7 @@ import com.tf.model.SCFTrade;
 import com.tf.persistance.util.Constants;
 import com.tf.persistance.util.ValidationUtil;
 import com.tf.service.CompanyService;
+import com.tf.util.Utility;
 
 @Repository
 @Transactional(rollbackFor = Exception.class)
@@ -108,28 +109,28 @@ public void deleteInvoice(Invoice invoice){
 		}
 }
 	@SuppressWarnings({ "unchecked", "unused", "rawtypes" })
-	public GenericListModel getInvoices(Long companyID,int startIndex, int pageSize,String registrationNo, String app) {
+	public GenericListModel getInvoices(Long companyID,int startIndex, int pageSize,String registrationNo, String app,String order,String columnName) {
 		_log.debug("Inside getInvoices ");
 		try {
 			
 			 List<Invoice> results = new ArrayList<Invoice>();
-			 
 			 
 			if (companyID != null) {
 
 				StringBuilder sqlQuery = new StringBuilder();
 				if (companyID != null && ! StringUtils.isNotBlank(registrationNo)) {
 					sqlQuery.append("SELECT scf.*,tf.name,st.id AS Scfid,st.scf_id FROM scf_invoice scf LEFT JOIN tf_company  tf ON tf.regnumber = scf.seller_company_registration_number ");
-					sqlQuery.append("LEFT JOIN scf_trade st ON scf.trade_id = st.id where scf.scf_company = '"+companyID+"'  ORDER BY scf.update_date DESC");
+					sqlQuery.append("LEFT JOIN scf_trade st ON scf.trade_id = st.id where scf.scf_company = '"+companyID+"' ");
 							
 				} else if (StringUtils.isNotBlank(registrationNo)) {
 					
 					sqlQuery.append("SELECT scf.*,tf.name,st.id,st.scf_id FROM scf_invoice scf LEFT JOIN tf_company  tf ON tf.regnumber = scf.seller_company_registration_number ");
-					sqlQuery.append("LEFT JOIN scf_trade st ON scf.trade_id = st.id where scf.seller_company_registration_number = '"+registrationNo+"'  ORDER BY scf.update_date DESC");
+					sqlQuery.append("LEFT JOIN scf_trade st ON scf.trade_id = st.id where scf.seller_company_registration_number = '"+registrationNo+"' ");
 							
 					/*sqlQuery = "SELECT scf.*,tf.name,st.id,st.scf_id FROM scf_invoice scf LEFT JOIN tf_company  tf ON tf.regnumber = scf.seller_company_registration_number where scf.seller_company_registration_number = '"
 							+ companyID + "' ORDER BY scf.update_date DESC";*/
 				}
+				sqlQuery.append(" ORDER BY "+columnName+ " "+order);
 				SQLQuery query = (SQLQuery) sessionFactory.getCurrentSession()
 						.createSQLQuery(sqlQuery.toString()).setFirstResult(startIndex)
 						.setMaxResults(pageSize);
@@ -232,7 +233,22 @@ public void deleteInvoice(Invoice invoice){
 			    	}else if(StringUtils.isNotBlank(registrationNo)){
 			    	    criteria.add(Restrictions.eq("sellerCompanyRegistrationNumber", registrationNo));
 			    	}
-			    	results =(List<Invoice>)criteria.addOrder(Order.desc("updateDate")).setFirstResult(startIndex).setMaxResults(pageSize).list();
+			    	criteria.createAlias("scfCompany","scfcmp");
+			    	criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+			    	/*
+			    	 * Since criteria accept entity field name raher then DB column name
+			    	 * in this method getting DB column name since used for above native sql
+			    	 * Changing it to entity column name based on conditions
+			    	 */
+			    	columnName = changeDbClmNmToEntityClmNm(columnName);
+			    	
+					if ("asc".equals(order)) {
+						criteria.addOrder(Order.asc(columnName));
+					}
+					if ("desc".equals(order)) {
+						criteria.addOrder(Order.desc(columnName));
+					}
+			    	results =(List<Invoice>)criteria.setFirstResult(startIndex).setMaxResults(pageSize).list();
 			}
 			
 		       
@@ -247,6 +263,23 @@ public void deleteInvoice(Invoice invoice){
 			_log.error("getInvoices failed", re);
 			throw re;
 		}
+	}
+
+	private String changeDbClmNmToEntityClmNm(String columnName) {
+		if(columnName.equalsIgnoreCase("scf.invoice_number")){
+			columnName="invoiceNumber";
+		}else if(columnName.equalsIgnoreCase("scf.payment_date")){
+			columnName="payment_date";
+		}else if(columnName.equalsIgnoreCase("scf.invoice_amout")){
+			columnName="invoiceAmount";
+		}else if(columnName.equalsIgnoreCase("scf.duration")){
+			columnName="duration";
+		}else if(columnName.equalsIgnoreCase("scf.scf_company")){
+			columnName="scfcmp.name";
+		}else if(columnName.equalsIgnoreCase("scf.status")){
+			columnName="status";
+		}
+		return columnName;
 	}
 
 	public Long getInvoicesCount(Long companyID,String registrationNo) {
@@ -394,12 +427,9 @@ public void deleteInvoice(Invoice invoice){
 			throw re;
 		}
 	}
-
-	
-	
 	
 	@SuppressWarnings("unchecked")
-	public GenericListModel getInvoicesByFilter(String search, String frmDate, String toDate, String value, int startIndex, int pageSize,Long companyID,String registrationNo) {
+	public GenericListModel getInvoicesByFilter(String search, String frmDate, String toDate, String value, int startIndex, int pageSize,Long companyID,String registrationNo,String order,String columnName) {
 		_log.debug("Inside getInvoicesByFilter");
 		GenericListModel genericModel=new GenericListModel();
 		try {
@@ -448,7 +478,7 @@ public void deleteInvoice(Invoice invoice){
 					sqlQuery.append(" AND scf.finance_date <= '"+toDate+"'");
 				}
 			}
-			sqlQuery.append(" ORDER BY scf.update_date DESC");
+			sqlQuery.append(" ORDER BY "+columnName+ " "+order);
 			List<Invoice> invoicelist = new ArrayList<Invoice>();
 			
 			SQLQuery query = (SQLQuery) sessionFactory.getCurrentSession().createSQLQuery(sqlQuery.toString()).setFirstResult(startIndex)
@@ -456,7 +486,6 @@ public void deleteInvoice(Invoice invoice){
 			query.setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP);
 			List data = query.list();
 			if (null != data || data.size() > 0) {
-
 				for (Object invoiceObj : data) {
 					Map row = (Map) invoiceObj;
 					Invoice invoiceObject = new Invoice();
@@ -489,7 +518,7 @@ public void deleteInvoice(Invoice invoice){
 					} catch (Exception e) {
 						invoiceObject.setSellerCompanyVatNumber("");
 					}
-					try {
+					try {	
 						BigDecimal bt = new BigDecimal(null == row.get(
 								"vat_amount").toString() ? "" : row.get(
 								"vat_amount").toString());
@@ -499,28 +528,55 @@ public void deleteInvoice(Invoice invoice){
 						BigDecimal vatAmmount = new BigDecimal(ammount);
 						invoiceObject.setVatAmount(vatAmmount);
 					}
-					invoiceObject.setSellerCompanyRegistrationNumber(row
-							.get("seller_company_registration_number")
-							.toString());
-					BigDecimal bd = new BigDecimal(row.get("invoice_amout")
-							.toString());
-					invoiceObject.setInvoiceAmount(bd);
-					invoiceObject.setInvoiceDesc(null == row.get(
-							"invoice_desc").toString() ? "" : row.get(
-							"invoice_desc").toString());
+					
+					if(!Utility.isEmpty(row.get("seller_company_registration_number"))){
+						invoiceObject.setSellerCompanyRegistrationNumber(row
+								.get("seller_company_registration_number")
+								.toString());
+					}else{
+						invoiceObject.setSellerCompanyRegistrationNumber("");
+					}
+					
+					if(!Utility.isEmpty(row.get("invoice_amout"))){
+						invoiceObject.setInvoiceAmount(new BigDecimal(row.get("invoice_amout").toString()));
+					}else{
+						BigDecimal bd = new BigDecimal(0);
+						invoiceObject.setInvoiceAmount(bd);
+					}
+					
+					if(!Utility.isEmpty(row.get("invoice_desc"))){
+						invoiceObject.setInvoiceDesc(row.get("invoice_desc").toString());
+					}else{
+						invoiceObject.setInvoiceDesc("");
+					}
+					
+					if(!Utility.isEmpty(row.get("duration"))){
+						invoiceObject.setDuration(Integer.parseInt(row.get("duration").toString()));
+					}else{
+						invoiceObject.setDuration(1);
+					}
+					/*
 					invoiceObject.setDuration(Integer.parseInt(null == row
 							.get("duration").toString() ? "1" : row.get(
-							"duration").toString()));
+							"duration").toString()));*/
 
-					invoiceObject.setCurrency(null == row.get("currency")
-							.toString() ? "" : row.get("currency")
-							.toString());
-					company.setName(null == row.get("name").toString() ? ""
-							: row.get("name").toString());
+					if(!Utility.isEmpty(row.get("currency"))){
+						invoiceObject.setCurrency(row.get("currency").toString());
+					}else{
+						invoiceObject.setCurrency("");
+					}
+					
+					if(!Utility.isEmpty(row.get("name"))){
+						company.setName(row.get("name").toString());
+					}else{
+						company.setName("");
+					}
 					invoiceObject.setScfCompany(company);
-					invoiceObject
-							.setStatus(null == row.get("status").toString() ? ""
-									: row.get("status").toString());
+					if(!Utility.isEmpty(row.get("status"))){
+						invoiceObject.setStatus(row.get("status").toString());
+					}else{
+						invoiceObject.setStatus("");
+					}
 					
 					try {
 						scfTrade.setId(Long.parseLong(null == row.get("Scfid").toString() ? "": row.get("Scfid").toString()));

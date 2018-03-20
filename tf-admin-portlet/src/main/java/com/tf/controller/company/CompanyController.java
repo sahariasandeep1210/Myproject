@@ -1,7 +1,6 @@
 package com.tf.controller.company;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -19,6 +18,7 @@ import javax.portlet.RenderResponse;
 import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
 
+import org.apache.commons.lang.Validate;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.ss.usermodel.Row;
@@ -46,6 +46,7 @@ import com.liferay.portal.kernel.repository.model.Folder;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.util.MimeTypesUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.security.permission.PermissionChecker;
@@ -75,6 +76,7 @@ import com.tf.model.User;
 import com.tf.persistance.util.CompanyStatus;
 import com.tf.persistance.util.Constants;
 import com.tf.util.CompanyDTO;
+import com.tf.util.LiferayUtility;
 import com.tf.util.OfficerDTO;
 import com.tf.util.ReportUtility;
 import com.tf.util.model.PaginationModel;
@@ -102,20 +104,35 @@ public class CompanyController extends BaseController {
 			List<Company> companyList = new ArrayList<Company>();
 			ThemeDisplay themeDisplay = (ThemeDisplay) request
 					.getAttribute(WebKeys.THEME_DISPLAY);
-			if(searchValue==null || searchValue==""){
+			PaginationModel paginationModel = paginationUtil.preparePaginationModel(request);
+			
+			String columnName = ParamUtil.getString(request, "sort_Column");
+			String order = ParamUtil.getString(request, "sort_order");
+			String sortCompany_order = ParamUtil.getString(request, "sortVal_order");
+			
+		/*	if(searchValue==null || searchValue==""){
 				
 				companyList = prepareCompanyList(request, companyList,
-						themeDisplay, model);
+						themeDisplay, model,columnName,order,paginationModel.getStartIndex(), paginationModel.getPageSize());
 			}
 			else{
 				companyList = prepareCompanyListFilter(request, companyList,
-						themeDisplay, model,searchValue);
+						themeDisplay, model,searchValue,columnName,order,paginationModel.getStartIndex(), paginationModel.getPageSize());
 			
-			}
+			}*/
+			
+			companyList = prepareCompanyListFilter(request, companyList,
+					themeDisplay, model,searchValue,columnName,order,paginationModel.getStartIndex(), paginationModel.getPageSize());
+			
 			model.put("allCompanies", companyList);
 			model.put("search", searchValue);
 			model.put("defaultRender", Boolean.TRUE);
 			model.put(ACTIVETAB, "companylist");
+			
+			//being used in sorting.
+			model.put("sortCompany_order", sortCompany_order);
+			model.put("sort_Column", columnName);
+			model.put("sort_order", order);
 			if (liferayUtility.getPermissionChecker(request).isOmniadmin() ||
 					request.isUserInRole(Constants.WHITEHALL_ADMIN)) {				
 					model.put("userType", Constants.ADMIN);
@@ -602,7 +619,7 @@ public class CompanyController extends BaseController {
 	}
 
 	private List<Company> prepareCompanyList(RenderRequest request,
-			List<Company> companyList, ThemeDisplay themeDisplay, ModelMap model) {
+			List<Company> companyList, ThemeDisplay themeDisplay, ModelMap model, String columnName, String order, int startIndex, int resultSize) {
 		Long noOfRecords = 0l;
 
 		PaginationModel paginationModel = paginationUtil
@@ -614,6 +631,13 @@ public class CompanyController extends BaseController {
 					CompanyStatus.DELETED.getValue(),
 					paginationModel.getStartIndex(),
 					paginationModel.getPageSize());
+		/*	try {
+				companyList = companyService.getCompaniesBySortingParam(startIndex, resultSize, columnName, order,CompanyStatus.DELETED.getValue());
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}*/
+			
 			noOfRecords = companyService
 					.getCompaniesCount(CompanyStatus.DELETED.getValue());
 			_log.info("noOfRecords:::"+noOfRecords);
@@ -648,19 +672,28 @@ public class CompanyController extends BaseController {
 	}
 	
 	private List<Company> prepareCompanyListFilter(RenderRequest request,
-			List<Company> companyList, ThemeDisplay themeDisplay, ModelMap model,String searchValue) {
+			List<Company> companyList, ThemeDisplay themeDisplay, ModelMap model,String searchValue, String columnName, String order, int startIndex, int resultSize) {
 		Long noOfRecords = 0l;
-
 		PaginationModel paginationModel = paginationUtil
 				.preparePaginationModel(request);
 		if (getPermissionChecker(request).isOmniadmin()
 				|| request.isUserInRole(Constants.WHITEHALL_ADMIN)) {
 			_log.info("User is Omni Admin");
-			companyList = companyService.getCompaniesByStatusFilter(
+			
+			/*companyList = companyService.getCompaniesByStatusFilter(
 					CompanyStatus.DELETED.getValue(),
 					paginationModel.getStartIndex(),
-					paginationModel.getPageSize(),searchValue);
-			noOfRecords = companyService.getCompaniesCountByStatus(searchValue);
+					paginationModel.getPageSize(),searchValue);*/
+			
+			companyList = companyService.getCompaniesBySortingParam(startIndex, resultSize, columnName, order,CompanyStatus.DELETED.getValue(),searchValue);
+			
+			if(Validator.isNotNull(searchValue)){
+				noOfRecords = companyService.getCompaniesCountByStatus(searchValue);
+			}else{
+				noOfRecords = companyService
+						.getCompaniesCount(CompanyStatus.DELETED.getValue());
+			}
+			
 			
 			_log.info("noOfRecords:::"+noOfRecords);
 

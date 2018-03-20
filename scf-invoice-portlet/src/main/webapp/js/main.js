@@ -8,6 +8,27 @@ $(document).ready(function() {
 		}
 	});
 	
+	//hide the sorting icon
+	var sortingIcon=$('#sortVal_order').val();
+	if(sortingIcon!="" || sortingIcon!="undefined"){
+		$("#"+sortingIcon).hide();
+	}
+	
+	$(".sortColumn").click(function() {
+		
+		var columnnName = $(this).attr("column-name");
+		var order = $(this).attr("order");
+		var updateURL = $("#defaultURL").val();
+		var id = $(this).attr("id");
+		
+	
+		$('#sort_Column').val(columnnName);
+		$('#sort_order').val(order);
+		$('#sortVal_order').val(id);
+		
+		document.forms["invoicelist"].action = updateURL;
+		document.forms["invoicelist"].submit();
+	});
 	
 
 	
@@ -18,7 +39,6 @@ $(document).ready(function() {
 	$("#requestFinance").hide();
 	$("#errorMsg").hide(); 
 	$("#errorMsg").removeClass("alert alert-danger");
-	$('table').tablesorter();	 
 	$("#pageSize").change(function (){
 			var noOfRecords=parseInt($("#noOfRecords").val());
 			var pageSize=parseInt($("#currPageSize").val());

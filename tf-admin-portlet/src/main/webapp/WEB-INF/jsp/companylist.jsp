@@ -26,6 +26,11 @@
 	<input type="hidden" name="noOfRecords" 	id="noOfRecords"    	value="${paginationModel.noOfRecords}" />
 	<input type="hidden" name="defaultURL" 		id="defaultURL" 		value="${defaultRenderURL}" />
 	<input type="hidden" name="pageSize"        id="pageSize"      		value="${paginationModel.pageSize}" />
+	     
+	     
+	    <input type="hidden" id="sortVal_order" name="sortVal_order" value="${sortCompany_order}"/>
+		<input type="hidden" id="sort_Column" name="sort_Column" value="${sort_Column}" />
+		<input type="hidden" id="sort_order" name="sort_order" value="${sort_order}"/>
 
 		<div id="scf-tab" class="tab-pane">
 			<c:choose>
@@ -112,14 +117,21 @@
 			<table class="table table-hover tablesorter table-bordered"  id="companyListTable">
 				<thead>
 					<tr>
-						<th>Name</th>
-						<th>Registration No.</th>
-						<th>Address Registered</th>
-						<th>Established date</th>
+						<th>Name <br><img id="cnameAsc" column-name="name" class="sortColumn" src="<%=themeDisplay.getPathThemeImages()%>/up.png" alt="asc" order="asc"/><img id="cnameDesc" column-name="name" class="sortColumn" src="<%=themeDisplay.getPathThemeImages()%>/down.png" alt="desc" order="desc"/>
+						</th>
+						<th>Registration No.<br><img id="cregnumberAsc" column-name="regNumber" class="sortColumn" src="<%=themeDisplay.getPathThemeImages()%>/up.png" alt="asc" order="asc"/><img id="regNumber" column-name="regNumber" class="sortColumn" src="<%=themeDisplay.getPathThemeImages()%>/down.png" alt="desc" order="desc"/>
+						</th>
+						<th>Address Registered<br><img id="caddregisteredAsc" column-name="add.region" class="sortColumn" src="<%=themeDisplay.getPathThemeImages()%>/up.png" alt="asc" order="asc"/><img id="caddregisteredDesc" column-name="add.region" class="sortColumn" src="<%=themeDisplay.getPathThemeImages()%>/down.png" alt="desc" order="desc"/>
+						</th>
+						<th>Established date<br><img id="dateestablishedAsc" column-name="dateestablished" class="sortColumn" src="<%=themeDisplay.getPathThemeImages()%>/up.png" alt="asc" order="asc"/><img id="dateestablishedDesc" column-name="dateestablished" class="sortColumn" src="<%=themeDisplay.getPathThemeImages()%>/down.png" alt="desc" order="desc"/>						  
+						</th>
 						<!-- <th>URL</th> -->
-						<th>Tel Number</th>
-						<th>Type of Company</th>
-						<th>Status</th>						
+						<th>Tel Number<br><img id="telnumberAsc" column-name="telnumber" class="sortColumn" src="<%=themeDisplay.getPathThemeImages()%>/up.png" alt="asc" order="asc"/><img id="telnumberDesc" column-name="telnumber" class="sortColumn" src="<%=themeDisplay.getPathThemeImages()%>/down.png" alt="desc" order="desc"/>
+						</th>
+						<th>Type of Company<br><img id="companytypeAsc" column-name="companyType" class="sortColumn" src="<%=themeDisplay.getPathThemeImages()%>/up.png" alt="asc" order="asc"/><img id="companytypeDesc" column-name="companyType" class="sortColumn" src="<%=themeDisplay.getPathThemeImages()%>/down.png" alt="desc" order="desc"/>
+						</th>
+						<th>Status<br><img id="activestatusAsc" column-name="activestatus" class="sortColumn" src="<%=themeDisplay.getPathThemeImages()%>/up.png" alt="asc" order="asc"/><img id="activeStatusDesc" column-name="activestatus" class="sortColumn" src="<%=themeDisplay.getPathThemeImages()%>/down.png" alt="desc" order="desc"/>
+						</th>						
 					</tr>
 				</thead>
 				<tbody>
@@ -202,12 +214,7 @@
 			<div class="actionContainer text-left">
 				<a href="${createURL}"	class="btn btnBgBuSm" >Add Company</a>			
 			</div>
-			
-					
 		</c:if>
-		
-		
-
 	</form:form>
 
 

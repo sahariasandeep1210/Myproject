@@ -88,6 +88,10 @@
 		<input	type="hidden" name="getInvoiceReportURL"	id="getInvoiceReportURL"	value="${defaultRenderURL}" />
 		<input 	type="hidden" name="pageSize"        		id="pageSize"      			value="${paginationModel.pageSize}" />
 		
+		<input type="hidden" id="sortVal_order" name="sortVal_order" value="${sortCompany_order}"/>
+		<input type="hidden" id="sort_Column" name="sort_Column" value="${sort_Column}" />
+		<input type="hidden" id="sort_order" name="sort_order" value="${sort_order}"/>
+		
 		<div id="scf-tab" class="tab-pane">
 			  <div class="title-container clearfix">
 			  	

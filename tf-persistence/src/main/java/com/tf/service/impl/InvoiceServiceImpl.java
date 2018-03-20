@@ -333,8 +333,8 @@ public class InvoiceServiceImpl implements InvoiceService{
 		return invoiceDAO.findById(id); 
 	}
 	
-	public GenericListModel getInvoicesByFilter(String search,String frmDate,String toDate,String value,int startIndex,int pageSize,Long companyID,String registrationNo){
-		return invoiceDAO.getInvoicesByFilter(search, frmDate, toDate, value, startIndex, pageSize,companyID,registrationNo);
+	public GenericListModel getInvoicesByFilter(String search,String frmDate,String toDate,String value,int startIndex,int pageSize,Long companyID,String registrationNo,String order,String columnName){
+		return invoiceDAO.getInvoicesByFilter(search, frmDate, toDate, value, startIndex, pageSize,companyID,registrationNo,order,columnName);
 	}
 	
 
@@ -357,8 +357,8 @@ public class InvoiceServiceImpl implements InvoiceService{
 	}
 
 	public GenericListModel getInvoices(Long companyID, int startIndex,
-		int pageSize, String registrationNo,String app) {
-	    return invoiceDAO.getInvoices(companyID, startIndex, pageSize, registrationNo,app);
+		int pageSize, String registrationNo,String app,String order,String columnName) {
+	    return invoiceDAO.getInvoices(companyID, startIndex, pageSize, registrationNo,app,order,columnName);
 	}
 	
 	public FinanceConfirmationDTO triggerAllotmentCheck(List<String> invoiceIds,long sellerCmpId,long userId) throws InSuffcientFund, InvalidDuration   {		

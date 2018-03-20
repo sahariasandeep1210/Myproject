@@ -4,7 +4,28 @@ $(function() {
 	enableTab();
 	//enableDisableoptions();
 	
+	var sortingIcon=$('#sortVal_order').val();
+	if(sortingIcon!="" || sortingIcon!="undefined"){
+		$("#"+sortingIcon).hide();
+	}
+	
 	$('.tooltipPhone').tooltip();
+	
+	$("#companyList .sortColumn").click(function() {
+		
+		var columnnName = $(this).attr("column-name");
+		var order = $(this).attr("order");
+		var updateURL = $("#defaultURL").val();
+		var id = $(this).attr("id");
+		
+	
+		$('#sort_Column').val(columnnName);
+		$('#sort_order').val(order);
+		$('#sortVal_order').val(id);
+				
+		document.forms["companyList"].action = updateURL;
+		document.forms["companyList"].submit();
+	});
 	
 	$("#addSeller").click(function() {
 		var updateURL = $("#saveURL").val();
@@ -206,7 +227,8 @@ $(function() {
 	//enableDisableTab();
 	
 	$("#deleteCompany").hide();
-	 $('table').tablesorter();
+	//$('table').tablesorter();
+	
 	 
 		$(".dropdown-menu").on("click", "li", function(event){
 

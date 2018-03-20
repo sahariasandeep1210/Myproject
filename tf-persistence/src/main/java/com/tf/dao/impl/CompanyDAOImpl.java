@@ -6,9 +6,15 @@ import java.util.Map;
 import java.util.Set;
 
 import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
+import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.SQLQuery;
+import org.hibernate.Session;
+import org.hibernate.criterion.CriteriaQuery;
 import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.Transformers;
@@ -16,6 +22,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.tf.dao.CompanyDAO;
+import com.tf.model.AliasToBeanNestedResultTransformer;
 import com.tf.model.Company;
 import com.tf.model.User;
 import com.tf.persistance.util.CompanyStatus;
@@ -51,7 +58,6 @@ public class CompanyDAOImpl  extends BaseDAOImpl<Company, Long>   implements Com
 	public List<Company> getCompaniesByStatus(String status) {
 		_log.debug("Inside getCompanies ");
 		try {
-			
 			List<Company> results = (List<Company>) sessionFactory.getCurrentSession().createCriteria(Company.class).add(Restrictions.ne("activestatus", status)).list();
 			_log.debug("GetCompanies successful, result size: "
 					+ results.size());
@@ -60,6 +66,88 @@ public class CompanyDAOImpl  extends BaseDAOImpl<Company, Long>   implements Com
 			_log.error("GetCompanies failed", re);
 			throw re;
 		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Company> getCompaniesBySortingParam(int startIndex, int pageSize,String columnName,final String order,String status,String searchValue) {
+		_log.debug("Inside getCompaniesBySortingParam ");
+		try {
+			Session session = sessionFactory.getCurrentSession();
+			Criteria criteria = session.createCriteria(Company.class)
+					.createAlias("address", "add")
+					.add(Restrictions.ne("activestatus", status));
+			criteria.setFetchMode("users", FetchMode.JOIN).setFetchMode("address", FetchMode.JOIN).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+			
+			ProjectionList projList = setProjectionForCompanies();
+		    criteria.setProjection(projList);
+		    criteria.setResultTransformer(new AliasToBeanNestedResultTransformer(Company.class));
+		    
+		    //setting the restriction criteria for searched value enterd by user.
+			setRestrictionForSearchedVal(searchValue, criteria);
+
+			if ("".equals(columnName)) {
+				criteria.addOrder(Order.asc("name")); //default sorting
+			}
+			else {
+				/**
+				 * since regNumber is in VARCHAR in database so ordering 
+				 * will be converting it to number first then order
+				 */
+				
+				if(columnName.equalsIgnoreCase("regNumber")){
+					criteria.addOrder(new org.hibernate.criterion.Order("regnumber", true) {
+			            @Override
+			            public String toSqlString(Criteria criteria, CriteriaQuery criteriaQuery) throws HibernateException {
+			                return "cast(regnumber as unsigned) "+order;
+			            }
+			        });
+				}else{
+					if ("asc".equals(order)) {
+						criteria.addOrder(Order.asc(columnName));
+					}
+					if ("desc".equals(order)) {
+						criteria.addOrder(Order.desc(columnName));
+					}
+				}
+				
+				
+			}
+			List<Company> results =  (List<Company>)(criteria.setFirstResult(startIndex).setMaxResults(pageSize)).list();
+			_log.debug("GetCompanies successful, result size: " + results.size());
+			return results;
+		} catch (RuntimeException re) {
+			_log.error("GetCompanies failed", re);
+			throw re;
+		}
+	}
+
+	private void setRestrictionForSearchedVal(String searchValue, Criteria criteria) {
+		if (searchValue != null && searchValue.trim().length() > 1) {
+			if (searchValue.matches("[0-9]+") == true) {
+				criteria.add(Restrictions.like("regNumber", searchValue, MatchMode.ANYWHERE));
+			} else {
+				criteria.add(Restrictions.like("name", searchValue, MatchMode.ANYWHERE));
+			}
+		}
+	}
+
+	private ProjectionList setProjectionForCompanies() {
+		_log.debug("Inside getCompaniesBySortingParam ");
+		
+		ProjectionList projList = Projections.projectionList();
+		projList.add(Projections.property("id"),"id");
+		projList.add(Projections.property("name"),"name");
+		projList.add(Projections.property("regNumber"),"regNumber");
+		projList.add(Projections.property("companyType"),"companyType");
+		projList.add(Projections.property("activestatus"),"activestatus");
+		projList.add(Projections.property("telnumber"),"telnumber");
+		projList.add(Projections.property("dateestablished"),"dateestablished");
+		projList.add(Projections.property("add.region"),"address.region");
+		projList.add(Projections.property("add.id"),"address.id");
+		projList.add(Projections.property("add.country"),"address.country");
+		
+		_log.debug("Completed getCompaniesBySortingParam ");
+		return projList;
 	}
 	
 	
