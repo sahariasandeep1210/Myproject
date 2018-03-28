@@ -3,6 +3,8 @@ package com.tf.dao.impl;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -10,11 +12,13 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
 import org.hibernate.Hibernate;
 import org.hibernate.Query;
+import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.Disjunction;
@@ -23,22 +27,22 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.sql.JoinType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import com.tf.dao.AllotmentDAO;
 import com.tf.dao.InvestorDAO;
 import com.tf.dao.SCFTradeDAO;
 import com.tf.model.Allotment;
-import com.tf.model.InvestorPortfolio;
+import com.tf.model.Company;
+import com.tf.model.Invoice;
 import com.tf.model.SCFTrade;
-import com.tf.persistance.util.Constants;
 import com.tf.persistance.util.DashboardModel;
+import com.tf.persistance.util.StackedChartDTO;
 import com.tf.persistance.util.TradeStatus;
 import com.tf.persistance.util.ValidationUtil;
-import com.tf.persistance.util.StackedChartDTO;
 
 @Repository
 @Transactional
@@ -408,26 +412,74 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 
 			List<SCFTrade> results = new ArrayList<SCFTrade>();
 			Collection<Long> ids = getIDListForScfPagination(startIndex, pageSize, companyID,columnName,order);
+			DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
 			if (!ids.isEmpty()) {
 				Session session = sessionFactory.getCurrentSession();
-				Criteria criteria =
+				try {
+					StringBuilder builder = new StringBuilder("select tr.id as id,tr.scf_id as scfId,count(inv.id) as invoiceNumber,com.name as sellerName,"
+							+ " tr.duration as duration,tr.opening_date as openingDate,tr.closing_date as closingDate,tr.status as "
+							+ "status,tr.trade_amount from scf_trade tr  left outer join  scf_invoice inv on inv.trade_id=tr.id   left outer join tf_company com "
+							+ " on com.regnumber=inv.seller_company_registration_number where tr.id in (:list)  group by tr.scf_id ");
+				
+				
+					if("".equals(columnName)){	
+						builder.append("order by tr.update_date desc");
+						//criteria.addOrder(Order.desc("updatDate"));
+					}
+					else{
+					    if("asc".equals(order)){
+					    	builder.append("order by "+columnName+" asc");
+						   // criteria.addOrder(Order.asc(columnName));
+					    }
+					    if("desc".equals(order)){
+					    	builder.append("order by "+columnName+" desc");
+						    //criteria.addOrder(Order.desc(columnName));
+						}
+					}
+					SQLQuery createSQLQuery = session.createSQLQuery(builder.toString());
+					createSQLQuery.setParameterList("list", ids);
+					List<Object[]> scfTradeObjectList = createSQLQuery.list();
+					for (Object[] object : scfTradeObjectList) {
+						SCFTrade scfTrade = new SCFTrade();
+						
+						scfTrade.setId(Long.parseLong(object[0].toString()));
+						scfTrade.setScfId(object[1].toString());
+						
+						if(object[2]!=null){
+							scfTrade.setInvoiceNumber(Integer.parseInt(object[2].toString()));
+						}
+						if(object[3]!=null){
+							Company company = new Company();
+							company.setName(object[3].toString());
+							scfTrade.setCompany(company);
+						}
+						if(object[4]!=null){
+							scfTrade.setDuration(Integer.parseInt(object[4].toString()));
+						}
+						if(object[5]!=null){
+							scfTrade.setOpeningDate((Date)object[5]);
+						}
+						if(object[6]!=null){
+							scfTrade.setClosingDate((Date)object[6]);
+						}
+						if(object[7]!=null){
+							scfTrade.setStatus(object[7].toString());
+						}
+						if(object[8]!=null){
+							scfTrade.setTradeAmount(new BigDecimal(object[8].toString()));
+						}
+						results.add(scfTrade);
+					}
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					_log.error("getScfTrades failed", re);
+				}
+				/*Criteria criteria =
 					session.createCriteria(SCFTrade.class).add(Restrictions.in("id", ids)).setFetchMode("invoices", FetchMode.JOIN).setFetchMode(
 						"allotments", FetchMode.JOIN).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-				criteria.createAlias("company","company");
+				criteria.createAlias("company","company",JoinType.LEFT_OUTER_JOIN);*/
 				
-				if("".equals(columnName)){			
-					criteria.addOrder(Order.desc("updatDate"));
-				}
-				
-				else{
-				    if("asc".equals(order)){
-					criteria.addOrder(Order.asc(columnName));
-				    }
-				    if("desc".equals(order)){
-					criteria.addOrder(Order.desc(columnName));
-					}
-				}
-				results = (List<SCFTrade>) criteria.list();
+			//	results = (List<SCFTrade>) criteria.list();
 			}
 			_log.debug("getScfTrades successful, result size: " + results.size());
 			return results;
@@ -1439,14 +1491,14 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 			criteria.addOrder(Order.desc("updatDate"));
 		}
 		
-		else{
+		/*else{
 		    if("asc".equals(order)){
 			criteria.addOrder(Order.asc(columnName));
 		    }
 		    if("desc".equals(order)){
 			criteria.addOrder(Order.desc(columnName));
 			}
-		}
+		}*/
 		criteria.setFirstResult(startIndex);
 		criteria.setMaxResults(pageSize);
 		@SuppressWarnings("unchecked")

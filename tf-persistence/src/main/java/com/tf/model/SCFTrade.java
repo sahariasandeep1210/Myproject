@@ -16,6 +16,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name="scf_trade")
@@ -142,6 +143,7 @@ public class SCFTrade  implements Serializable{
 	@Column(name="update_date")
 	private Date updatDate;
 	
+
 	
 	@OneToMany(mappedBy = "scfTrade",cascade=CascadeType.ALL) 
 	private Set<Invoice> invoices;
@@ -150,7 +152,8 @@ public class SCFTrade  implements Serializable{
 	@OneToMany(mappedBy = "scfTrade",cascade=CascadeType.ALL) 
 	private Set<Allotment> allotments;
 	
-	
+	@Transient
+	private int invoiceNumber;
 	
 	
 	public SCFTrade() {
@@ -438,6 +441,14 @@ public class SCFTrade  implements Serializable{
 		this.promisoryDocType = promisoryDocType;
 	}
 
+	public int getInvoiceNumber() {
+		return invoiceNumber;
+	}
+
+	public void setInvoiceNumber(int invoiceNumber) {
+		this.invoiceNumber = invoiceNumber;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -445,6 +456,9 @@ public class SCFTrade  implements Serializable{
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		return result;
 	}
+
+	
+	
 
 	@Override
 	public boolean equals(Object obj) {
@@ -462,5 +476,86 @@ public class SCFTrade  implements Serializable{
 			return false;
 		return true;
 	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("SCFTrade [id=");
+		builder.append(id);
+		builder.append(", scfTrade=");
+		builder.append(scfTrade);
+		builder.append(", scfId=");
+		builder.append(scfId);
+		builder.append(", duration=");
+		builder.append(duration);
+		builder.append(", closingDate=");
+		builder.append(closingDate);
+		builder.append(", openingDate=");
+		builder.append(openingDate);
+		builder.append(", investorPaymentDate=");
+		builder.append(investorPaymentDate);
+		builder.append(", SellerPaymentDate=");
+		builder.append(SellerPaymentDate);
+		builder.append(", tradeAmount=");
+		builder.append(tradeAmount);
+		builder.append(", sellerTransFee=");
+		builder.append(sellerTransFee);
+		builder.append(", investorTotalGross=");
+		builder.append(investorTotalGross);
+		builder.append(", whitehallTotalShare=");
+		builder.append(whitehallTotalShare);
+		builder.append(", investorTotalProfit=");
+		builder.append(investorTotalProfit);
+		builder.append(", sellerFees=");
+		builder.append(sellerFees);
+		builder.append(", whitehallTotalProfit=");
+		builder.append(whitehallTotalProfit);
+		builder.append(", whitehallNetReceivable=");
+		builder.append(whitehallNetReceivable);
+		builder.append(", sellerNetAllotment=");
+		builder.append(sellerNetAllotment);
+		builder.append(", status=");
+		builder.append(status);
+		builder.append(", company=");
+		builder.append(company);
+		builder.append(", tradeNotes=");
+		builder.append(tradeNotes);
+		builder.append(", tradeSettled=");
+		builder.append(tradeSettled);
+		builder.append(", wantToInsure=");
+		builder.append(wantToInsure);
+		builder.append(", insuranceDocId=");
+		builder.append(insuranceDocId);
+		builder.append(", insuranceDocName=");
+		builder.append(insuranceDocName);
+		builder.append(", insuranceDocUrl=");
+		builder.append(insuranceDocUrl);
+		builder.append(", insuranceDocType=");
+		builder.append(insuranceDocType);
+		builder.append(", promisoryDocId=");
+		builder.append(promisoryDocId);
+		builder.append(", promisoryDocName=");
+		builder.append(promisoryDocName);
+		builder.append(", promisoryDocUrl=");
+		builder.append(promisoryDocUrl);
+		builder.append(", promisoryDocType=");
+		builder.append(promisoryDocType);
+		builder.append(", promisoryNote=");
+		builder.append(promisoryNote);
+		builder.append(", createDate=");
+		builder.append(createDate);
+		builder.append(", updatDate=");
+		builder.append(updatDate);
+		builder.append(", invoices=");
+		builder.append(invoices);
+		builder.append(", allotments=");
+		builder.append(allotments);
+		builder.append(", invoiceNumber=");
+		builder.append(", sellerName=");
+		builder.append("]");
+		return builder.toString();
+	}
+	
+	
 
 }
