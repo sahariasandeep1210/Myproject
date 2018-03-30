@@ -12,7 +12,6 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
@@ -27,9 +26,9 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
-import org.hibernate.sql.JoinType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import com.tf.dao.AllotmentDAO;
@@ -37,7 +36,6 @@ import com.tf.dao.InvestorDAO;
 import com.tf.dao.SCFTradeDAO;
 import com.tf.model.Allotment;
 import com.tf.model.Company;
-import com.tf.model.Invoice;
 import com.tf.model.SCFTrade;
 import com.tf.persistance.util.DashboardModel;
 import com.tf.persistance.util.StackedChartDTO;
@@ -472,7 +470,7 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 					}
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
-					_log.error("getScfTrades failed", re);
+					_log.error("getScfTrades failed", e);
 				}
 				/*Criteria criteria =
 					session.createCriteria(SCFTrade.class).add(Restrictions.in("id", ids)).setFetchMode("invoices", FetchMode.JOIN).setFetchMode(
