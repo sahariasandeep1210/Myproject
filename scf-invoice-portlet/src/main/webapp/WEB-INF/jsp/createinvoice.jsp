@@ -144,7 +144,7 @@
 			<div class="span3">
 				<div class="control-group">
 				<label class="control-label">Currency:</label>
-				<form:input path="currency" cssClass="field" id="currency" readonly="${readOnly}" />
+				<form:input path="currency" cssClass="field" id="currency" readonly="true" />
 				</div>
 			</div>
 			
