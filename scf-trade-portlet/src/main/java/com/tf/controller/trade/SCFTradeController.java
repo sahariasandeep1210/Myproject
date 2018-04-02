@@ -38,6 +38,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.repository.model.Folder;
+import com.liferay.portal.kernel.search.ParseException;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.util.JavaConstants;
 import com.liferay.portal.kernel.util.MimeTypesUtil;
@@ -371,6 +372,21 @@ public class SCFTradeController {
 			   BigDecimal totalSellerNetAllotment = BigDecimal.ZERO;
 			   BigDecimal totalGrossCharges = BigDecimal.ZERO;
 			   
+			    DateFormat formatter = new SimpleDateFormat(Constants.DATE_FORMAT);
+				Date fromDate = null;
+				Date toDate = null;
+				String value = ParamUtil.getString(request, "dateList");
+				String from = ParamUtil.getString(request, "fromDate"); // These are added by Abhishek to extend search 
+				String to = ParamUtil.getString(request, "toDate");
+				
+			       if (!StringUtils.isNullOrEmpty(from)) {
+						fromDate = formatter.parse(from);
+					}
+					if (!StringUtils.isNullOrEmpty(to)) {
+						toDate = formatter.parse(to);
+					}	
+				
+			   
 			   /*Sorting code starts from here*/
 			   String columnName = ParamUtil.getString(request, "sort_Column");
 				String order = ParamUtil.getString(request, "sort_order");
@@ -382,9 +398,11 @@ public class SCFTradeController {
 			String search = ParamUtil.getString(request, "Search");
 		    Long companyId  = liferayUtility.getWhitehallCompanyID(request);
 		    Long investorID=investorService.getInvestorIDByCompanyId(companyId);
-		    scftrades = scfTradeService.getScfTradeListForInvestor(search, investorID, paginationModel.getStartIndex(), paginationModel.getPageSize(), false,columnName,order);
-			List<SCFTrade> list= scfTradeService.getScfTradeListForInvestor(search, investorID, paginationModel.getStartIndex(), paginationModel.getPageSize(), true,columnName,order);
+		    scftrades = scfTradeService.getScfTradeListForInvestor(search, value,fromDate,toDate,investorID, paginationModel.getStartIndex(), paginationModel.getPageSize(), false,columnName,order);
+			List<SCFTrade> list= scfTradeService.getScfTradeListForInvestor(search, value,fromDate,toDate, investorID, paginationModel.getStartIndex(), paginationModel.getPageSize(), true,columnName,order);
 			
+		    System.out.println("*************************** TradeController_Search 2**** " +search);
+
 			List listSum = scfTradeService.getSumOfSCFTradeProperties(search);
 			   if (null != listSum || listSum.size() > 0) {
 			    Object[] obj = (Object[]) listSum.get(0);
@@ -408,6 +426,9 @@ public class SCFTradeController {
 			
 			
 			model.put("search", search);
+			model.put("from", from);
+			model.put("to", to);
+			model.put("value", value);
 			model.put("userType", Constants.PRIMARY_INVESTOR_ADMIN);
 			viewName = "inverstortradelist";
 		}

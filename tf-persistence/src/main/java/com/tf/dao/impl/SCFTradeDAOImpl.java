@@ -1506,9 +1506,10 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<SCFTrade> getScfTradeListForInvestor(String searchtxt,
+	public List<SCFTrade> getScfTradeListForInvestor(String searchtxt,String value,Date fromDate, Date toDate,
 			Long invNum, int startIndex, int pageSize, boolean count,String columnName, String order) {
 		_log.debug("Inside getScfTradeListWithSearch ");
+		_log.info("Inside getScfTradeListWithSearch ");
 		List<SCFTrade> scftrades = new ArrayList<SCFTrade>();
 		try {
 			Criteria criteria = sessionFactory.getCurrentSession().createCriteria(SCFTrade.class);
@@ -1527,7 +1528,8 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 				criteria.addOrder(Order.desc(columnName));
 				}
 			}
-			if(org.apache.commons.lang.StringUtils.isNotBlank(searchtxt)){
+			//if(org.apache.commons.lang.StringUtils.isNotBlank(searchtxt))
+		//	{
 				Disjunction or = Restrictions.disjunction();
 				if (validationUtil.isNumeric(searchtxt)) {
 					or.add(Restrictions.eq("tradeAmount", BigDecimal.valueOf(Long.valueOf(searchtxt))));
@@ -1535,10 +1537,33 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 				or.add(Restrictions.like("status", searchtxt, MatchMode.ANYWHERE));
 				or.add(Restrictions.like("scfId", searchtxt, MatchMode.ANYWHERE));
 				or.add(Restrictions.like("company.name", searchtxt, MatchMode.ANYWHERE));
-				criteria.add(or);
+				//criteria.add(or);
 				
+				Disjunction or2 = Restrictions.disjunction();
+				or2.add(Restrictions.between(value, fromDate, toDate));
+			
+				if (fromDate != null && toDate == null && !value.equalsIgnoreCase("") && searchtxt.equalsIgnoreCase("")) {
+					criteria.add(Restrictions.ge(value, fromDate));
+				}
+				else if (fromDate == null && toDate != null && !value.equalsIgnoreCase("") && searchtxt.equalsIgnoreCase("")) {
+					criteria.add(Restrictions.le(value, toDate));
+				}
+				else if (fromDate != null && toDate != null && !value.equalsIgnoreCase("") && searchtxt.equalsIgnoreCase("")) {
+					criteria.add(or2);
+				}
+				else if (fromDate != null && toDate != null && !value.equalsIgnoreCase("") && !searchtxt.equalsIgnoreCase("")) {
+					criteria.add(or2).add(or);
+				}else if (fromDate != null && toDate == null && !value.equalsIgnoreCase("") && !searchtxt.equalsIgnoreCase("")) {
+					criteria.add(or).add(Restrictions.ge(value, fromDate));
+				}else if (fromDate == null && toDate != null && !value.equalsIgnoreCase("") && !searchtxt.equalsIgnoreCase("")) {
+					criteria.add(or).add(Restrictions.le(value, toDate));
+				}
+				else {
+					criteria.add(or);
+				}
 				
-			}
+				System.out.println("***********SearchFrom******* "+ " "+value+" "+fromDate +" "+toDate);
+
 			if (!count) {
 				ProjectionList prList = Projections.projectionList();
 				prList.add((Projections.distinct(Projections.property("alt.scfTrade"))));
@@ -1563,7 +1588,6 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 		}
 		return scftrades;
 	}
-	
 	public SCFTrade findTradeDeatailsForInvestor(long tradeId,long investorID) {
 		try {
 			SCFTrade instance = (SCFTrade) sessionFactory.getCurrentSession().get("com.tf.model.SCFTrade", tradeId);

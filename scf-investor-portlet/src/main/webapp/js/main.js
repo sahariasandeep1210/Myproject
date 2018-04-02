@@ -407,8 +407,12 @@ $("#toDate").datepicker({
     	    	$("#editmyCreditLne").addClass("error_show");
     	    	errorFree=false;
     	    }
-    	  	
+    	  
     	  	 if(errorFree){
+    	      if(!confirm("Are you sure want to update.")){
+    	    	
+    	    	return;
+    	      }
     	  	 	document.forms["investorModel"].action = url;	  	  	
       			document.forms["investorModel"].submit();
         	  }
@@ -427,6 +431,7 @@ $("#toDate").datepicker({
    	        }
    	    });
     	  
+    	 
     	  if(errorFree){
     		 console.log("Validation pass>>");   	  	  	
   			document.forms["investorModel"].submit();

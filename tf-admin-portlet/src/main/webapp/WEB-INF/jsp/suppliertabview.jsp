@@ -13,9 +13,11 @@
 <input type="hidden" name="defaultURL" 		id="defaultURL" 		value="${defaultRenderURL}" />
 </form>
 
-
+<c:if test="${userType != 'Admin'}"> 
+  <c:set var = "myVisible" scope = "session" value = "My"/>
+  </c:if>
 <ul class="nav nav-tabs">
-	<li class="tab" id="companyList"><a href="${defaultRenderURL}">Company
+	<li class="tab" id="companyList"><a href="${defaultRenderURL}">${myVisible } Company
 	</a></li>
 	<c:if test="${userType eq 'SCF Company Admin' || userType eq 'Admin'}">
 		<li class="tab" id="supplierdocList"><a

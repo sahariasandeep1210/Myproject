@@ -65,7 +65,7 @@ public interface SCFTradeDAO extends BaseDAO<SCFTrade, Serializable> {
 	public List<SCFTrade> getScfAdminTradeListWithSearch(
 		long companyId, String searchtxt, Date fromDate, Date toDate, String value, int startIndex, int pageSize,String columnName, String order);
 	
-	public List<SCFTrade> getScfTradeListForInvestor(String searchtxt, Long investorID, int startIndex, int pageSize,boolean count,String columnName, String order);
+	public List<SCFTrade> getScfTradeListForInvestor(String searchtxt,String value,Date fromDate, Date toDate, Long investorID, int startIndex, int pageSize,boolean count,String columnName, String order);
 	
 	public SCFTrade findTradeDeatailsForInvestor(long tradeId,long investorID);
 	

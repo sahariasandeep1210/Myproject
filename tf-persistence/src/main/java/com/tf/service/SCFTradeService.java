@@ -68,8 +68,8 @@ public interface SCFTradeService {
 	
 	public Long getScfAdminTradeListWithSearchCount(long companyId, String searchtxt, Date fromDate, Date toDate, String value);
 	
-	public List<SCFTrade> getScfTradeListForInvestor(String searchtxt,
-			Long investorID, int startIndex, int pageSize, boolean count,String columnName, String order);
+	public List<SCFTrade> getScfTradeListForInvestor(String searchtxt,String value,Date fromDate, Date toDate,
+			Long investorID, int startIndex, int pageSize, boolean count,String columnName, String order);//modify by Abhishek to add date search
 	
 	public SCFTrade findTradeDeatailsForInvestor(long tradeId,long investorID);
 	

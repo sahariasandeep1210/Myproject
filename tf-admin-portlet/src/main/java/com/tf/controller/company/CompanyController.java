@@ -185,6 +185,12 @@ public class CompanyController extends BaseController {
 				model.put("companyId", companyID);
 				
 			}
+			if(request.isUserInRole(Constants.PRIMARY_INVESTOR_ADMIN)){//to check investor
+				model.put("userType", Constants.PRIMARY_INVESTOR_ADMIN);
+				_log.info("****UserType******1 " + Constants.PRIMARY_INVESTOR_ADMIN);
+			}
+		
+			
 			
 			ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
 			if(request.isUserInRole(Constants.SCF_ADMIN)){			

@@ -391,10 +391,10 @@ public class SCFTradeServiceImpl implements SCFTradeService {
 		return scfTradeDAO.getScfAdminTradeListWithSearchCount(companyId, searchtxt, fromDate, toDate, value);
 	}
 
-	public List<SCFTrade> getScfTradeListForInvestor(String searchtxt,
-		Long investorID, int startIndex, int pageSize, boolean count, String columnName, String order) {
-		return scfTradeDAO.getScfTradeListForInvestor(searchtxt, investorID, startIndex, pageSize, count,columnName,order);
-	}
+	public List<SCFTrade> getScfTradeListForInvestor(String searchtxt,String value,Date fromDate, Date toDate,
+			Long investorID, int startIndex, int pageSize, boolean count, String columnName, String order) {
+			return scfTradeDAO.getScfTradeListForInvestor(searchtxt,value,fromDate,toDate, investorID, startIndex, pageSize, count,columnName,order);
+		}
 	
 	public SCFTrade findTradeDeatailsForInvestor(long tradeId,long investorID){
 		return scfTradeDAO.findTradeDeatailsForInvestor(tradeId,investorID);

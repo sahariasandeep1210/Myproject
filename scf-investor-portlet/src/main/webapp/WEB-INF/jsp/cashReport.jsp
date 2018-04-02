@@ -204,12 +204,13 @@
 											<c:otherwise>
 												<i class="icomoon-round-minus red_normal cursor-pointer"></i>
 													<c:set var="amountClass" value="rightalign red_bold"/>
+												
 											</c:otherwise>										
 										</c:choose>
 										</div>
 								</td>
 								<td>${investorTransaction.scfTradeId}</td>
-								<td class="${amountClass} rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${investorTransaction.amount}"  pattern="#,##0.00"/></td>
+								<td class="${amountClass} rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value=" ${investorTransaction.amount}"  pattern="#,##0.00"/></td>
 								<td>${investorTransaction.reference}</td>
 							</tr>
 						</c:forEach>

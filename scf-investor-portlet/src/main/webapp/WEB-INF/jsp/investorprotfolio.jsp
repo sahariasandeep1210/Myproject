@@ -40,7 +40,7 @@
 						<th>SCF Company</th>
 						<th>Total Credit Line</th>
 						<th>My Credit Line</th>
-						<th>BPS</th>
+						<th>BPS Per Year</th>
 						<th>Utilised</th>
 						<th>Available</th>	
 						<th>My Transactions</th>										
@@ -178,10 +178,13 @@
 					</div>
 						 <div class="span3 mtXs10">
 						 	<div class="actionContainer text-left">
-						 <button type="button" class="btn btnBgGreenSm" id="updatebtn" data-url="${editProtfolioURL}"><i class="fa fa fa-pencil-square-o fa-3"></i> Update</button>
+						 	
+						 <button type="button" class="btn btnBgGreenSm" id="updatebtn"   data-url="${editProtfolioURL}"><i class="fa fa fa-pencil-square-o fa-3"></i> Update</button>
 						 <button type="button" class="btn  btnBgBuSm" id="editCancel">Cancel</button>
 						 </div>
 						 </div>
+						 
+						 
 					
 				</div>
 	
