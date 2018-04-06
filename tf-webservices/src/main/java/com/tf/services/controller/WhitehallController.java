@@ -95,11 +95,12 @@ public class WhitehallController {
          */
         @RequestMapping(value = "/invoices/{userID}",params = { "startIndex", "size" }, method = RequestMethod.GET)  
         public ResponseEntity<ListDTO> getInvoices(@PathVariable("userID") long userID,@RequestParam("startIndex") int startIndex, 
-        	@RequestParam("size") int size) {  
+        	@RequestParam("size") int size) {            
+            	String app = "app";
             	ListDTO listDTO=new ListDTO();
             	long companyId = userService.getCompanyIDbyUserID(userID);
             	String registrationNo=companyService.findById(companyId).getRegNumber();            	
-    		GenericListModel  genericListModel = invoiceService.getInvoices(null,startIndex, size,registrationNo);
+            	GenericListModel  genericListModel = invoiceService.getInvoices(null,startIndex, size,registrationNo,app);
     		if(genericListModel !=null && genericListModel.getList() !=null && genericListModel.getList().size() >0){
     		    List<Invoice> list=transformEntities.getInvoices((List<com.tf.model.Invoice>)genericListModel.getList());
     		  
@@ -127,9 +128,10 @@ public class WhitehallController {
         public ResponseEntity<ListDTO> getTrades(@PathVariable("userID") long userID,@RequestParam("startIndex") int startIndex, 
         	@RequestParam("size") int size) {  
             	ListDTO listDTO=new ListDTO();
+            	String order = "";
             	long companyId = userService.getCompanyIDbyUserID(userID);
             	String registrationNo=companyService.findById(companyId).getRegNumber();
-            	List<SCFTrade> scftrades = scfTradeService.getScfTradeList(registrationNo, startIndex, size);
+            	List<SCFTrade> scftrades = scfTradeService.getScfTradeList(registrationNo, startIndex, size, order, order);
             	Long noOfRecords = scfTradeService.getScfTradeCounts(registrationNo);
     		if(scftrades !=null && scftrades.size() >0){
     		    List<Trade> list=transformEntities.getTrades(scftrades,true);
@@ -150,9 +152,10 @@ public class WhitehallController {
         public ResponseEntity<ListDTO> getTradesAlt(@PathVariable("userID") long userID,@RequestParam("startIndex") int startIndex, 
         	@RequestParam("size") int size) {  
             	ListDTO listDTO=new ListDTO();
+            	String order = "";
             	long companyId = userService.getCompanyIDbyUserID(userID);
             	String registrationNo=companyService.findById(companyId).getRegNumber();
-            	List<SCFTrade> scftrades = scfTradeService.getScfTradeList(registrationNo, startIndex, size);
+            	List<SCFTrade> scftrades = scfTradeService.getScfTradeList(registrationNo, startIndex, size,order, order);
             	Long noOfRecords = scfTradeService.getScfTradeCounts(registrationNo);
     		if(scftrades !=null && scftrades.size() >0){
     		    List<Trade> list=transformEntities.getTrades(scftrades,true);
@@ -218,11 +221,13 @@ public class WhitehallController {
    
    @RequestMapping(value = "/checkfinance/{userID}/{invoiceids}",method = RequestMethod.GET )  
    public ResponseEntity<FinanceConfirmationDTO> checkfinance(@PathVariable("userID") long userID,@PathVariable("invoiceids") String[] invoiceids) throws InSuffcientFund, InvalidDuration {
-      		FinanceConfirmationDTO financeConfirmationDTO =new FinanceConfirmationDTO();
+      		System.out.println("invoiceids::"+invoiceids);
+       		FinanceConfirmationDTO financeConfirmationDTO =new FinanceConfirmationDTO();
       		if (invoiceids!=null && invoiceids.length >0) {
        	   	long companyId = userService.getCompanyIDbyUserID(userID);
        		long userId =userService.getUserbyLiferayUserID(userID);
        		List<String> invoicesIdList = Arrays.asList(invoiceids);
+       		System.out.println("invoicesIdList:::"+invoicesIdList);
        		 financeConfirmationDTO = 			invoiceService.triggerAllotmentCheck(invoicesIdList, companyId, userId);
        		 
        	}    

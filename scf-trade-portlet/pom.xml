@@ -52,6 +52,7 @@
 					<dependentWarExcludes></dependentWarExcludes>
 					<outputDirectory>
 						${liferay.auto.deploy.dir}
+						<!-- G:/Project/liferay-portal-6.2-ce-ga3/warfiles -->
 					</outputDirectory>
 				</configuration>
 			</plugin>
