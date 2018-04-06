@@ -26,5 +26,6 @@ public interface UserDAO {
 	public Long findUserByEmail(String emailID);
 	
 	public User  getUserbyLiferayID(long id);
-
+	
+	public void deleteUser(long UserId);
 }

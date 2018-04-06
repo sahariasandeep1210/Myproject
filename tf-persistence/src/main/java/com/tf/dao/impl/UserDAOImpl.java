@@ -205,5 +205,14 @@ public class UserDAOImpl extends BaseDAOImpl<User, Long>  implements UserDAO{
 			throw re;
 		}
 	}
+	
+
+	public void deleteUser(long UserId) {
+		// TODO Auto-generated method stub
+		Query query = sessionFactory.getCurrentSession().createQuery("delete User where id = "+UserId);
+		
+		query.executeUpdate();
+	}
+	
 
 }

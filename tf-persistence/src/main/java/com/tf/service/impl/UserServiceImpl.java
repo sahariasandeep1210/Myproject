@@ -54,4 +54,8 @@ public class UserServiceImpl implements UserService {
 	    return userDAO.getUserbyLiferayID(id);
 	}
 
+	public void deleteUser(long UserId) {
+		// TODO Auto-generated method stub
+		 userDAO.deleteUser(UserId);
+	}
 }

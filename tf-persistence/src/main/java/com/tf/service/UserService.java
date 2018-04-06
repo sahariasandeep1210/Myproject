@@ -24,5 +24,6 @@ public interface UserService {
 	public Object[] getUserTypeAndLifearyID(long id) ;
 	
 	public User  getUserbyLiferayID(long id);
+	public void deleteUser(long UserId);
 
 }

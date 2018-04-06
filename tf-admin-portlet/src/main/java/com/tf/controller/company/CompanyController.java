@@ -251,6 +251,12 @@ public class CompanyController extends BaseController {
 			SessionErrors.add(request, "default-error-message");
 			_log.error("CompanyController.createCompany() - error occured while rendering add company screen"+ e.getMessage());
 		}
+		Map userInfo = (Map) request.getAttribute(PortletRequest.USER_INFO);
+		if(userInfo.containsKey("liferay.user.id")){
+			 System.out.println("*********UserLogedInInformation "+   userInfo.get("liferay.user.id"));
+			  model.put("loggedUserLiferaryId", userInfo.get("liferay.user.id"));
+		}
+		
 		model.put("companyModel", company);
 		model.put("orgTypeMap", orgTypeMap);
 		model.put("companyTypeMap", companyTypeMap);
@@ -405,6 +411,13 @@ public class CompanyController extends BaseController {
 				adminUtility.getUserID(request),
 				companyTypeMap.get(Long.valueOf(companyService
 						.getCompanyTypebyID(companyID))), request);
+		
+		Map userInfo = (Map) request.getAttribute(PortletRequest.USER_INFO);
+		if(userInfo.containsKey("liferay.user.id")){
+			 System.out.println("*********UserLogedInInformation "+   userInfo.get("liferay.user.id"));
+			  model.put("loggedUserLiferaryId", userInfo.get("liferay.user.id"));
+		}
+		
 		model.put("userModel", user);
 		model.put("officers", officers);
 		model.put("companyID", companyID);
@@ -472,6 +485,20 @@ public class CompanyController extends BaseController {
 			response.setRenderParameter("render", "createUser");
 		}
 
+	}
+	@ActionMapping(params = "render=deleteUser")
+	protected void deleteUser(
+			@ModelAttribute("userModel") User user,
+			ModelMap model, ActionRequest request, ActionResponse response) throws Exception {
+	     long liferayId  = ParamUtil.getLong(request, "userLiferayId");
+	     long UserId  = ParamUtil.getLong(request, "userId");
+		
+		System.out.println("*****UserDelete*******" + liferayId + " "+UserId);
+		liferayService.deleteUserInformation(UserId,liferayId);
+		
+	
+		 
+	  
 	}
 
 	@ResourceMapping(value = "fetchCompanyDetails")

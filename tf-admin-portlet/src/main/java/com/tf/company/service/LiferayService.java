@@ -15,4 +15,6 @@ public interface LiferayService {
 			boolean createUser, ThemeDisplay themeDisplay, Long officerId)
 			throws PortalException, SystemException, DuplicateUserEmailAddressException,DuplicateUserScreenNameException;
 
+	public void deleteUserInformation(long UserId,long LiferaryId)throws PortalException, SystemException;
+	
 }

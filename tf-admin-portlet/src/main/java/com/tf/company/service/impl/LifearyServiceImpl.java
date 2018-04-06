@@ -104,5 +104,12 @@ public class LifearyServiceImpl implements LiferayService {
 			
 		}
 	}
+	
+public void deleteUserInformation(long UserId,long LiferaryId)throws PortalException, SystemException{
+		
+		UserLocalServiceUtil.deleteUser(LiferaryId);
+		userService.deleteUser(UserId);
+		
+	}
 
 }

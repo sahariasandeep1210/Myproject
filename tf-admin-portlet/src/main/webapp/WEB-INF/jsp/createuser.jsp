@@ -9,8 +9,10 @@
 </portlet:actionURL>
 
 <portlet:actionURL var="deleteUserURL">
-	<portlet:param name="action" value="deleteCompany" />
+	<portlet:param name="render" value="deleteUser" />
 </portlet:actionURL>
+
+
 <portlet:renderURL var="companyListURL">
 </portlet:renderURL>
 
@@ -129,12 +131,11 @@
 					<form:input path="mobile" cssClass="field" id="userTelNo" />
 				</div>
 			</div>
-			<div class="span3">
+			<%-- <div class="span3">
 				<div class="control-group">
 					<label class="control-label">Occupation:</label>
 					<form:input path="level" cssClass="field" id="occupation"/>
-				</div>
-			</div>
+				 --%>
 			
 			<div class="span3">
 				<div class="control-group">
@@ -161,7 +162,9 @@
 			<c:choose>
 				<c:when test="${userModel.id !=null && userModel.id !=0}">
 					<input type="button" value="Update"		 			class="btn btnBgBuSm"  data-url="${createUserURL}" id="userUpdate" />
-					<input type="button" value="Delete"		 			class="btn btnBgRedSm"   onclick="deleteCompany()" />
+					<c:if test="${userModel.liferayUserId ne  loggedUserLiferaryId}">
+					<input type="button" value="Delete" class="btn btnBgRedSm"   onclick="window.location.href='${deleteUserURL}&userLiferayId=${userModel.liferayUserId}&userId=${userModel.id}'" />
+					</c:if>
 					<input type="button" value="Go Back" 			 	class="btn btnBgBuSm"  data-url="${createURL}&companyID=${userModel.company.id}"	id="cmpbackBtn"  />
 				</c:when>
 				<c:otherwise>
