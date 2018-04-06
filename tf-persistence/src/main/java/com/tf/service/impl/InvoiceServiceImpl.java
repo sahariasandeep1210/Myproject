@@ -207,35 +207,30 @@ public class InvoiceServiceImpl implements InvoiceService{
 	}
 	 
 	private List<InvestorProtfolioDTO> getSameRateCountStamp(
-			List<InvestorProtfolioDTO> list) {
+		List<InvestorProtfolioDTO> list) {
 
-		List<InvestorProtfolioDTO> newInvestorList = new ArrayList<InvestorProtfolioDTO>();
-		Map<Integer, Integer> investorRateMap = new HashMap<Integer, Integer>();
-
-		int count = 1;
-
-		for (InvestorProtfolioDTO investorPortfolio : list) {
-
-			if (investorRateMap
-					.containsKey(investorPortfolio.getDiscountRate())) {
-				investorRateMap.put(investorPortfolio.getDiscountRate(),
-						++count);
-			} else {
-				count = 1;
-				investorRateMap.put(investorPortfolio.getDiscountRate(), count);
-			}
-		}
-
-		for (InvestorProtfolioDTO investorPortfolio : list) {
-			  if(investorPortfolio.getAvailToInvest().compareTo(BigDecimal.ZERO)==1){
-
-					investorPortfolio.setSameRateCount(investorRateMap
-							.get(investorPortfolio.getDiscountRate()));
-					newInvestorList.add(investorPortfolio);
-			  }
-		}
-
-		return newInvestorList;
+        	List<InvestorProtfolioDTO> newInvestorList = new ArrayList<InvestorProtfolioDTO>();
+        	Map<Integer, Integer> investorRateMap = new HashMap<Integer, Integer>();
+        
+        	System.out.println("Old List::"+list);
+        	for (InvestorProtfolioDTO investorPortfolio : list) {
+        
+        		if (investorRateMap.containsKey(investorPortfolio.getDiscountRate())) {
+        			investorRateMap.put(investorPortfolio.getDiscountRate(),(investorRateMap.get(investorPortfolio.getDiscountRate())+1));
+        		} else if(investorPortfolio.getAvailToInvest().compareTo(BigDecimal.ZERO) == 1) {
+        			investorRateMap.put(investorPortfolio.getDiscountRate(), 1);
+        		}
+        	}
+        
+        	for (InvestorProtfolioDTO investorPortfolio : list) {
+        		  if(investorPortfolio.getAvailToInvest().compareTo(BigDecimal.ZERO)==1){
+        
+        				investorPortfolio.setSameRateCount(investorRateMap
+        						.get(investorPortfolio.getDiscountRate()));
+        				newInvestorList.add(investorPortfolio);
+        		  }
+        	}
+        	return newInvestorList;
 
 	}
 	private  String generateId(Date date,String name){
