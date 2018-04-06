@@ -609,6 +609,16 @@ create table `scf_company_document` (
 	`upload_date` datetime ,
 	`uploadedby` varchar (765)
 ); 
+CREATE TABLE IF NOT EXISTS `scf_company_document` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `document_id` bigint(20) DEFAULT NULL,
+  `document_name` varchar(255) DEFAULT NULL,
+  `document_type` varchar(255) DEFAULT NULL,
+  `document_url` varchar(255) DEFAULT NULL,
+  `upload_date` datetime DEFAULT NULL,
+  `uploadedby` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ;
 
 
 
