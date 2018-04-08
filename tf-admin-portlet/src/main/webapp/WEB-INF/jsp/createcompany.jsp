@@ -64,7 +64,7 @@
 						<div class="toggleContent toggler-header-expanded" id="officersDiv">
 							<%@include file="officerslist.jsp"%>						
 						</div>
-				           <c:if test="${userType eq 'SCF Company Admin'  && cmpType ne 'Seller'}">
+				           <%-- <c:if test="${userType eq 'SCF Company Admin'  && cmpType ne 'Seller'}">
 				
 							<div class="toggleHeader toggler-header-expanded">
 							<div class="toggle-title pull-left">Seller Information</div>
@@ -76,7 +76,7 @@
 									<%@include file="sellerlist.jsp"%>	
 						</div>
 				 
-				   </c:if>
+				   </c:if> --%>
 				<c:if test="${userType eq 'Seller Admin'}">
 				
 					<div class="toggleHeader toggler-header-expanded">

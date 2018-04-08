@@ -13,7 +13,8 @@
 
 <portlet:resourceURL id="exportCompanies" var="exportCompaniesURL" ></portlet:resourceURL> 
 
-<%@include file="suppliertabview.jsp"%>
+
+<%-- <%@include file="suppliertabview.jsp"%> --%>
 
 <div class="tab-content">
 
