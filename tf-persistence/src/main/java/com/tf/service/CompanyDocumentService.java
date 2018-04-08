@@ -16,5 +16,7 @@ public interface CompanyDocumentService {
 	public Company getCompanyDetail(String regNumber, String name);
 
 	public void addCompanyDetailList(List<Company> companyList);
+	
+	public List<CompanyDocument> getCompanyDocumentsBasedOnUploadedBy(String uploadedBy);
 
 }

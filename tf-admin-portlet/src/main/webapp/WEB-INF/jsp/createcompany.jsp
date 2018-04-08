@@ -37,55 +37,55 @@
 
 		<c:when test="${companyModel.id !=null && companyModel.id !=0}">
 			<div id="myToggler" class="customToggler">
-				<div class="toggleHeader toggler-header-collapsed">
+				<div class="toggleHeader toggler-header-expanded">
 					<div class="toggle-title pull-left">Company Information</div>
 					<div class="toggle-icon-container text-right">
 						<i class="icomoon-accordian-arrow-down"></i>
 					</div>
 				</div>
-				<div class="toggleContent toggler-content-collapsed">
+				<div class="toggleContent toggler-header-expanded">
 							<%@include file="createcompanyform.jsp"%>
 				</div>
-					<div class="toggleHeader toggler-header-collapsed">
+					<div class="toggleHeader toggler-header-expanded">
 					  	<div class="toggle-title pull-left">User Information</div>
 					  	<div class="toggle-icon-container text-right">
 					  		<i class="icomoon-accordian-arrow-down"></i>
 					  	</div>
 	  				</div>
-						<div class="toggleContent toggler-content-collapsed">
+						<div class="toggleContent toggler-header-expanded">
 							<%@include file="userlist.jsp"%>
 						</div>
-						<div class="toggleHeader toggler-header-collapsed">
+						<div class="toggleHeader toggler-header-expanded">
 						  	<div class="toggle-title pull-left">Officer Information</div>
 						  	<div class="toggle-icon-container text-right">
 						  		<i class="icomoon-accordian-arrow-down"></i>
 						  	</div>
 					  	</div>
-						<div class="toggleContent toggler-content-collapsed" id="officersDiv">
+						<div class="toggleContent toggler-header-expanded" id="officersDiv">
 							<%@include file="officerslist.jsp"%>						
 						</div>
-				<c:if test="${userType eq 'SCF Company Admin'  && cmpType ne 'Seller'}">
+				           <c:if test="${userType eq 'SCF Company Admin'  && cmpType ne 'Seller'}">
 				
-							<div class="toggleHeader toggler-header-collapsed">
+							<div class="toggleHeader toggler-header-expanded">
 							<div class="toggle-title pull-left">Seller Information</div>
 							<div class="toggle-icon-container text-right">
 								<i class="icomoon-accordian-arrow-down"></i>
 							</div>
 						</div>
-						<div class="toggleContent toggler-content-collapsed">
+						<div class="toggleContent toggler-header-expanded">
 									<%@include file="sellerlist.jsp"%>	
 						</div>
 				 
-				</c:if>
+				   </c:if>
 				<c:if test="${userType eq 'Seller Admin'}">
 				
-					<div class="toggleHeader toggler-header-collapsed">
+					<div class="toggleHeader toggler-header-expanded">
 							<div class="toggle-title pull-left">SCF Company Information</div>
 							<div class="toggle-icon-container text-right">
 								<i class="icomoon-accordian-arrow-down"></i>
 							</div>
 						</div>
-						<div class="toggleContent toggler-content-collapsed">
+						<div class="toggleContent toggler-header-expanded">
 									<%@include file="scfcompanylist.jsp"%>	
 						</div>
 					

@@ -133,7 +133,7 @@
 		</div>
 	</div>
 	
-			<div class="control-group field-wrapper">
+			<div class="control-group field-wrapper hidden">
 
 				<label class="control-label"
 					for="roundingDetailsSection">
@@ -146,8 +146,8 @@
 			</div>
 
 
-			<div class="row-fluid" i>
-				<div class="span3" >
+			<div class="row-fluid hidden">
+				<div class="span3 " >
 					<div class="control-group form-inline">
 						<label class="checkbox" 	for="wantToInsure">
 							 <input 	class="field" 		id="wantToInsure"	name="wantToInsure" type="checkbox"  checked="${docPresent}">

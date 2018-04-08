@@ -26,7 +26,7 @@
 		</div>
 
 		<c:if
-			test="${userType == 'WhiteHall Admin' || userType == 'SCF Company Admi' || userType == 'Primary Investor Admin'}">
+			test="${userType == 'WhiteHall Admin' || userType == 'SCF Company Admin' || userType == 'Primary Investor Admin'}">
 
 
 			<div class="span3 spanSm6 mtXs10">

@@ -37,7 +37,9 @@ public class CompanyDocumentServiceImpl implements CompanyDocumentService {
 	}
 	public void addCompanyDetailList(List<Company> companyList) {
 		companyDocumentDAO.addCompanyDetailList(companyList);
-		
+	}
+	public List<CompanyDocument> getCompanyDocumentsBasedOnUploadedBy(String uploadedBy){
+		return companyDocumentDAO.getCompanyDocumentsBasedOnUploadedBy(uploadedBy);
 	}
 
 }

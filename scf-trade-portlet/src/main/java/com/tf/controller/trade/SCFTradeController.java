@@ -251,20 +251,25 @@ public class SCFTradeController {
 						search, fromDate, toDate, value, paginationModel.getStartIndex(), paginationModel.getPageSize(),columnName,order);
 				noOfRecords = scfTradeService.getAdminTradeListWithSearchCount(search, fromDate, toDate, value);
 				
-				List listSum = scfTradeService.getSumOfSCFTradePropertiesForAdmin(search, fromDate, toDate, value);
-				 if (null != listSum || listSum.size() > 0) {
-					    Object[] obj = (Object[]) listSum.get(0);
-					    
-					     totalTradeAmounts = (BigDecimal) obj[0];
-						 totalInvestorTotalGross = (BigDecimal) obj[1];
-						 totalWhitehallTotalShare =(BigDecimal) obj[2];
-						 totalInvestorTotalProfit = (BigDecimal) obj[3];
-						 totalWhitehallTotalProfit = (BigDecimal) obj[4];
-						 totalSellerNetAllotment = (BigDecimal) obj[5];
-						 totalSellerTransFee = (BigDecimal) obj[6];
-						 totalSellerFeess = (BigDecimal) obj[7];
-						 totalWhitehallSeller = totalWhitehallSeller.add(totalSellerFeess).add(totalSellerTransFee);
-					   }
+				//fetch the records only when record count is greater than 0
+				if(noOfRecords>0){
+					List listSum = scfTradeService.getSumOfSCFTradePropertiesForAdmin(search, fromDate, toDate, value);
+					 if (null != listSum || listSum.size() > 0) {
+						    Object[] obj = (Object[]) listSum.get(0);
+						    
+						     totalTradeAmounts = (BigDecimal) obj[0];
+							 totalInvestorTotalGross = (BigDecimal) obj[1];
+							 totalWhitehallTotalShare =(BigDecimal) obj[2];
+							 totalInvestorTotalProfit = (BigDecimal) obj[3];
+							 totalWhitehallTotalProfit = (BigDecimal) obj[4];
+							 totalSellerNetAllotment = (BigDecimal) obj[5];
+							 totalSellerTransFee = (BigDecimal) obj[6];
+							 totalSellerFeess = (BigDecimal) obj[7];
+							 if(totalSellerFeess!=null && totalSellerTransFee!=null){
+								 totalWhitehallSeller = totalWhitehallSeller.add(totalSellerFeess).add(totalSellerTransFee);
+							 }
+						   }
+				}
 			}
 			
 			model.put("totalTradeAmounts", totalTradeAmounts);

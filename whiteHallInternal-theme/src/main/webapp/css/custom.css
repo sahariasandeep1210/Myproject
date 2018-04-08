@@ -49,3 +49,6 @@ small {
     font-size:x-small !important;
 }
 
+.centeralign {
+	text-align: center !important;
+}

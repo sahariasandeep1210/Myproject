@@ -100,4 +100,20 @@ public class CompanyDocumentDAOImpl extends BaseDAOImpl<InvoiceDocument, Long> i
 		}
 		
 	}
+
+	@SuppressWarnings("unchecked")
+	public List<CompanyDocument> getCompanyDocumentsBasedOnUploadedBy(String uploadedBy) {
+		try {
+		
+			List<CompanyDocument> results = (List<CompanyDocument>) sessionFactory
+					.getCurrentSession().createCriteria(CompanyDocument.class)
+					.add(Restrictions.eq("uploadedby", uploadedBy)).list();
+			_log.debug("getCompanyDocumentsWithUserId successful, result size: "
+					+ results.size());
+			return results;
+		} catch (RuntimeException re) {
+			_log.error("getCompanyDocumentsWithUserId failed", re);
+			throw re;
+		}
+	}
 }

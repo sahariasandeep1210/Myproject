@@ -81,28 +81,31 @@
 							<c:forEach items="${scftrades}" var="trade">
 								<tr>
 									<%-- <td>${trade.scfTrade}</td> --%>
-									<td class="underline"><a href="javascript:void(0);"
-										onclick="window.location.href='${createURL}&tradeID=${trade.id}'">${trade.scfId}</a></td>
-									<td>${trade.company.name}</td>
+									<td class="underline">
+									<div class="centeralign">
+								     	<a href="javascript:void(0);"
+										    onclick="window.location.href='${createURL}&tradeID=${trade.id}'">${trade.scfId}
+										</a>
+										<a href="javascript:void(0);"	data-url="${breakdownURL}" class="breakdown" tradeID="${trade.id}">
+										<i id="${trade.id}_icon" class="icomoon-plus cursor-pointer credit-break"></i> </a>
+									</div>	
+									</td>
+									<td class="text-center">${trade.company.name}</td>
 									<td class="text-center">${trade.duration}</td>
 									<td class="text-center"><fmt:formatDate pattern="dd-MM-yyyy" value="${trade.openingDate}" /></td>
 									<td class="text-center"><fmt:formatDate pattern="dd-MM-yyyy" value="${trade.closingDate}" /></td>
 									<td class="blue_bold text-right">
-										<div class="pull-left"><fmt:formatNumber type="number" maxFractionDigits="3" value="${trade.tradeAmount}"  pattern="#,##0.00"/></div>
-										<div class="text-align-icon">
-											<a href="javascript:void(0);"	data-url="${breakdownURL}" class="breakdown" tradeID="${trade.id}">
-											<i id="${trade.id}_icon" class="icomoon-plus cursor-pointer credit-break"></i> </a>
-										</div>
+										<div class="pull-right"><fmt:formatNumber type="number" maxFractionDigits="3" value="${trade.tradeAmount}"  pattern="#,##0.00"/></div>
 									</td>
-									<td>${trade.status}</td>
+									<td class="text-center">${trade.status}</td>
 									<c:choose>
-											<c:when test="${trade.invoiceNumber gt 1}">												
-												<td class="bigger-icon green_normal" title="MultiInvoice"><i class="fa fa-files-o"></i> Yes</td>
-											</c:when>
-											<c:otherwise>
-												<td class="bigger-icon red_normal" title="SingleInvoice"><i class="fa fa-file-o"></i>No</td>												
-											</c:otherwise>
-										</c:choose>
+										<c:when test="${trade.invoiceNumber gt 1}">												
+											<td class="bigger-icon green_normal text-center" title="MultiInvoice"><i class="fa fa-files-o"></i> Yes</td>
+										</c:when>
+										<c:otherwise>
+											<td class="bigger-icon red_normal text-center" title="SingleInvoice"><i class="fa fa-file-o"></i>No</td>												
+										</c:otherwise>
+								    </c:choose>
 								</tr>
 								<tr class="historyRow" id="${trade.id}_row">
 									<td colspan=8></td>
