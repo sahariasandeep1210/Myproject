@@ -1746,10 +1746,12 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 			proList.add(Projections.sum("tradeAmount"), "tradeAmount");
 			proList.add(Projections.sum("sellerTransFee"), "sellerTransFee");
 			proList.add(Projections.sum("sellerFees"), "sellerFees");
-			proList.add(Projections.sum("investorTotalGross"),
-					"investorTotalGross");
-			proList.add(Projections.sum("sellerNetAllotment"),
-					"sellerNetAllotment");
+			proList.add(Projections.sum("investorTotalGross"),"investorTotalGross");
+			proList.add(Projections.sum("sellerNetAllotment"),"sellerNetAllotment");
+			
+			proList.add(Projections.sum("investorTotalGross"),"investorTotalGross");// Get Sum of Column - Abhishek
+			proList.add(Projections.sum("investorTotalProfit"),"investorTotalProfit");
+			proList.add(Projections.sum("sellerFees"),"sellerFees");
 			criteria.setProjection(proList);
 			Object[] obj = (Object[]) criteria.uniqueResult();
 			someOfValuesList.add(obj);
