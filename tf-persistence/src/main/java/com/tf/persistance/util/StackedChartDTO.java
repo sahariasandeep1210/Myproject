@@ -10,9 +10,9 @@ public class StackedChartDTO implements Serializable {
     
     private long id;
     private String companyName;
-    private BigDecimal liveTradeAmount=BigDecimal.ZERO;
-    private BigDecimal settledTradeAmount =BigDecimal.ZERO;
-    private BigDecimal availTradeAmount=BigDecimal.ZERO;
+    private BigDecimal liveTradeAmount= BigDecimal.ZERO;
+    private BigDecimal settledTradeAmount = BigDecimal.ZERO;
+    private BigDecimal availTradeAmount= BigDecimal.ZERO;
     
     public StackedChartDTO (){
 	

@@ -1573,8 +1573,14 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 				ProjectionList prList = Projections.projectionList();
 				prList.add((Projections.distinct(Projections.property("alt.scfTrade"))));
 				criteria.setProjection(prList);
-				scftrades =(List<SCFTrade>) criteria.add(Restrictions.eq("alt.investorID", invNum)).setFirstResult(startIndex).setMaxResults(
+				if(pageSize == -1){// -1 value coming from myInvestment. A separate function is called with -1 to calculate the sum of all records.
+				scftrades =(List<SCFTrade>) criteria.add(Restrictions.eq("alt.investorID", invNum)).list();
+				}else{
+					
+					scftrades =(List<SCFTrade>) criteria.add(Restrictions.eq("alt.investorID", invNum)).setFirstResult(startIndex).setMaxResults(
 							pageSize).list();
+					
+				}
 			}
 			else{
 				Long countList =
@@ -1650,26 +1656,37 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 	
 	public void setInvestorStackedBarChartInformation(DashboardModel dashModel,Long investorId) {
 	    Map<Long,StackedChartDTO> map = new LinkedHashMap<Long,StackedChartDTO>();
+	    
 	    StringBuilder qeryString = new StringBuilder();
+	    
 	    qeryString.append("SELECT t.company_id,SUM(a.allotment_amount), t.status ,c.name ");
 	    qeryString.append("FROM scf_trade  t, tf_allotments a, tf_company c ");
 	    qeryString.append("WHERE  t.id = a.trade_id ");
 	    qeryString.append("AND t.company_id=c.idcompany ");
 	    qeryString.append("AND a.investor_id=:investorId ");
 	    qeryString.append("AND t.status <> 'Closed' AND  t.status <> 'Hold'  ");
-	    qeryString.append("GROUP BY t.company_id, t.status  ");
+	    qeryString.append("GROUP BY t.company_id, t.status ");
+	    
 	    Query query= sessionFactory.getCurrentSession().createSQLQuery(qeryString.toString());
+	   
 	    if(investorId>0l){
 		query.setParameter("investorId", investorId);
 	    }
 	    StackedChartDTO stackedChartDTOtemp;
 		List<Object[]> graphArray = query.list();
+		System.out.println("******TotalGraph*****"+" Investor Id = "+ investorId+" "  );
 			if(graphArray !=null && graphArray.size() >0 ){
 					for (Object[] row : graphArray) {
+						System.out.println("******TotalGraph*****"+ row[0].toString() );
+						System.out.println("******TotalGraph*****"+ row[1].toString() );
+						System.out.println("******TotalGraph*****"+ row[2].toString() );
+						System.out.println("******TotalGraph*****"+ row[3].toString() );
+						
 					    	if(map.get(Long.valueOf(row[0].toString())) !=null){
 					    	    stackedChartDTOtemp =map.get(Long.valueOf(row[0].toString()));
 					    	    setTradeAmount(row, stackedChartDTOtemp);
-					    	}else{
+					    	}
+					    	else{
 					    	    StackedChartDTO stackedChartDTO=new StackedChartDTO();
 					    	    stackedChartDTO.setCompanyName(row[3].toString());
 					    	    setTradeAmount(row,stackedChartDTO);
@@ -1680,7 +1697,7 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 					}	
 			}
 			
-			StringBuilder builder=new StringBuilder();
+			StringBuilder builder = new StringBuilder();
 			builder.append("SELECT availToInvest, discountRate, company.name, company.id FROM InvestorPortfolio");
 			if(investorId!=null && investorId>0l){
 				builder.append(" where investor.investorId=:investorID");
@@ -1691,7 +1708,7 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 				if(investorId!=null && investorId>0l){
 					query.setParameter("investorID", investorId);
 				}
-				List<Object[]> investorPortfolios =query.setFirstResult(0).setMaxResults(5).list();
+				List<Object[]> investorPortfolios = query.setFirstResult(0).setMaxResults(5).list();
 				if(investorPortfolios!=null && investorPortfolios.size()>0){
 					for(Object[] objArray : investorPortfolios){
 					    if(map.get(Long.valueOf(objArray[3].toString())) !=null){
@@ -1699,7 +1716,9 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 					    }else{
 						StackedChartDTO stackedChartDTO=new StackedChartDTO();
 						stackedChartDTO.setCompanyName(objArray[2].toString());
+						
 						stackedChartDTO.setAvailTradeAmount(objArray[0]!=null ?new BigDecimal(objArray[0].toString()):BigDecimal.ZERO);
+						
 						map.put(Long.valueOf(objArray[3].toString()), stackedChartDTO);
 					    }
 					   
@@ -1709,14 +1728,56 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 			    e.printStackTrace();
 			}
 			
+			/**
+			 *  Abhishek - To show the graph all the company of investor portfolio in dashboard beloww is implemented.
+			 *  Since Above code  fetching the record of those companies for which trade is established.  
+			 *  So below code fetching the available amount and company name for those also which does not have any trade. 
+			 */
+		    StringBuilder qeryForNotUtilised = new StringBuilder();
+		    
+		    qeryForNotUtilised.append("SELECT t.available_to_invest , c.NAME , c.idcompany ");
+		    qeryForNotUtilised.append("FROM tf_investor_portfolio  t,  tf_company c ");
+		    qeryForNotUtilised.append("WHERE  t.amount_invested IS NULL ");
+		    qeryForNotUtilised.append("AND t.company_id = c.idcompany ");
+		    qeryForNotUtilised.append("AND t.investor_id=:investorId ");
+		  
+		    Query queryNotUtilised= sessionFactory.getCurrentSession().createSQLQuery(qeryForNotUtilised.toString());
+		   
+		    if(investorId>0l){
+		    	queryNotUtilised.setParameter("investorId", investorId);
+		    }
+		  //  StackedChartDTO stackedChartDTO_NotUtilised;
+			List<Object[]> graphArrayNotUtilised = queryNotUtilised.list();
+			System.out.println("******TotalGraph*****"+" Investor Id = "+ investorId+" "  );
+				if(graphArrayNotUtilised !=null && graphArrayNotUtilised.size() >0 ){
+						for (Object[] row : graphArrayNotUtilised) {
+							System.out.println("******TotalGraphNotUtilised*****"+ row[0].toString() );
+							System.out.println("******TotalGraphNotUtilised*****"+ row[1].toString() );
+							System.out.println("******TotalGraphNotUtilised*****"+ row[2].toString() );
+							
+							    {
+						    	    StackedChartDTO stackedChartDTO=new StackedChartDTO();
+						    	    stackedChartDTO.setCompanyName(row[1].toString());
+						    	    stackedChartDTO.setLiveTradeAmount(BigDecimal.ZERO);
+						    	    stackedChartDTO.setAvailTradeAmount(new BigDecimal(row[0].toString()));
+						    	    map.put(Long.valueOf(row[2].toString()), stackedChartDTO);
+						    	}
+							
+							
+						}	
+				}
+			
 			dashModel.setMap(map);
 	}
 
 	private void setTradeAmount(Object[] row,
 		StackedChartDTO stackedChartDTO) {
+		
 	    if(row[2] !=null && TradeStatus.SETTLED.toString().equalsIgnoreCase(row[2].toString())){
+	    	
 	    stackedChartDTO.setSettledTradeAmount(stackedChartDTO.getSettledTradeAmount().add(row[1]!=null ?new BigDecimal(row[1].toString()):BigDecimal.ZERO));
-	    }else{
+	    }
+	     else{
 	    stackedChartDTO.setLiveTradeAmount(stackedChartDTO.getLiveTradeAmount().add(row[1]!=null ?new BigDecimal(row[1].toString()):BigDecimal.ZERO)); ;
 	    }
 	}

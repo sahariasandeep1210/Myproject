@@ -90,7 +90,7 @@
 								<td style="background-color:#189a80;color:white" ><span class='underline'>Total</span></td>
 								<td style="background-color:#189a80;color:white" ></td>
 								<td style="background-color:#189a80 ;color:white"" class="rightalign"><fmt:formatNumber type="number"
-										maxFractionDigits="3" value="${totalSellerNetAllotment}" pattern="#,##0.00"/></td>
+										maxFractionDigits="3" value="${totalInvestorAllotment}" pattern="#,##0.00"/></td>
 								
 								<td style="background-color:#189a80;color:white"" class="rightalign"><fmt:formatNumber type="number"
 										maxFractionDigits="3" value="${investorTotalGrossProfit}" pattern="#,##0.00"/></td>
@@ -103,23 +103,23 @@
 								<td style="background-color:#189a80;color:white""></td>
 								
 							</tr> 
-							<c:forEach items="${scftrades}" var="trade">
+							<c:forEach items="${myInvestment}" var="myInvestment">
 								<tr>
-									<td>${trade.scfId}</td>
+									<td>${myInvestment.tradeNumber}</td>
 								
-									<td>${trade.status}</td>
-									<td class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${trade.sellerNetAllotment}"  pattern="#,##0.00"/></td>
-									<td class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${trade.investorTotalGross}"  pattern="#,##0.00"/></td>
-									<td class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${trade.investorTotalProfit}"  pattern="#,##0.00"/></td>
+									<td>${myInvestment.status}</td>
+									<td class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${myInvestment.myAllotment}"  pattern="#,##0.00"/></td>
+									<td class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${myInvestment.grossProfit}"  pattern="#,##0.00"/></td>
+									<td class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${myInvestment.netProfit}"  pattern="#,##0.00"/></td>
 									
-			                        <td class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${trade.sellerFees}"  pattern="#,##0.00"/></td>
+			                        <td class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${myInvestment.whiteHallCharges}"  pattern="#,##0.00"/></td>
 									
-									<td class="text-center">${trade.duration}</td>
+									<td class="text-center">${myInvestment.duration}</td>
 									<td class="text-center"><fmt:formatDate pattern="dd-MM-yyyy"
-											value="${trade.openingDate}" /></td>
+											value="${myInvestment.startDate}" /></td>
 									
 									<td class="text-center"><fmt:formatDate pattern="dd-MM-yyyy"
-											value="${trade.sellerPaymentDate}" /></td>
+											value="${myInvestment.endDate}" /></td>
 									
 								</tr>
 

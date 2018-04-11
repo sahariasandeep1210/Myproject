@@ -72,7 +72,7 @@
 	
 	  <c:forEach var="element" items="${dashboardModel.map}">
 	/*   parseFloat("${element.value.settledTradeAmount}"), */
-		<c:if test="${element.value.liveTradeAmount ne 0}">
+		<c:if test="${element.value.liveTradeAmount ne 0 || true}">
 		stackedBarChartdata.addRow(["${element.value.companyName}",parseFloat("${element.value.liveTradeAmount}"),parseFloat("${element.value.availTradeAmount}")]);
 	</c:if>
 	  

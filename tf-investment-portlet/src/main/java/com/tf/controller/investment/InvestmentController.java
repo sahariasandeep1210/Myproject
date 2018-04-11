@@ -6,9 +6,11 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
@@ -154,6 +156,9 @@ public class InvestmentController {
 		throws Exception {
        
 		List<SCFTrade> scftrades = null;
+		List<SCFTrade> scftradesForTotalCalculation = null ;
+		ArrayList<MyInvestmentModel> myInvestment = new ArrayList<MyInvestmentModel>();
+		MyInvestmentModel	myInvestmentModel; 
 		String viewName = "";
 		ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
 		Long noOfRecords = 0l;
@@ -166,7 +171,7 @@ public class InvestmentController {
 			   BigDecimal totalSellerTransFee = BigDecimal.ZERO;
 			   BigDecimal totalSellerFees = BigDecimal.ZERO;
 			   BigDecimal totalInvestorTotalGross = BigDecimal.ZERO;
-			   BigDecimal totalSellerNetAllotment = BigDecimal.ZERO;
+			   BigDecimal totalInvestorAllotment = BigDecimal.ZERO;
 			   BigDecimal totalGrossCharges = BigDecimal.ZERO;
 			   BigDecimal investorTotalGrossProfit = BigDecimal.ZERO;
 			   BigDecimal investorTotalNetProfit = BigDecimal.ZERO;
@@ -216,9 +221,10 @@ public class InvestmentController {
 			    
 			    totalGrossCharges = totalGrossCharges.add(totalSellerTransFee) .add(totalSellerFees).add(totalInvestorTotalGross);
 			    
-			    totalSellerNetAllotment = (BigDecimal) obj[4];
+			  /*  totalInvestorAllotment = (BigDecimal) obj[4]; 
 			    investorTotalGrossProfit  = (BigDecimal) obj[5];
-			    investorTotalNetProfit  = (BigDecimal) obj[6];
+			    investorTotalNetProfit  = (BigDecimal) obj[6];*/
+			    
 			    whiteHallTotalCharges   = (BigDecimal) obj[7];
 			   }
 			   if(list!=null & list.size()>0){
@@ -229,22 +235,83 @@ public class InvestmentController {
 			   model.put("totalSellerFees", totalSellerFees);
 			   model.put("totalInvestorTotalGross", totalInvestorTotalGross);
 			   model.put("totalGrossCharges", totalGrossCharges);
-			   model.put("totalSellerNetAllotment", totalSellerNetAllotment);
-			   model.put("investorTotalGrossProfit", investorTotalGrossProfit);
-			   model.put("investorTotalNetProfit", investorTotalNetProfit);
-			   model.put("whiteHallTotalCharges", whiteHallTotalCharges);
+			   
+		       model.put("whiteHallTotalCharges", whiteHallTotalCharges);
 			
-			model.put("searc", search);
-			model.put("from", from);
-			model.put("to", to);
-			model.put("value", value);
+			
 			model.put("userType", Constants.PRIMARY_INVESTOR_ADMIN);
 			viewName = "inverstortradelist";
 		
-		model.put("scftrades", scftrades);
-		  scftrades.get(0).getId();
-		  System.out.println("********* Get Allotments id **** "+  scftrades.get(0).getId() +" "+ scftrades.get(0).getInvestorTotalGross()+" "+ scftrades.get(0).getInvestorTotalProfit());
-		//  getMoreData(model, scftrades.get(0).getId(), request);
+		   model.put("scftrades", scftrades);
+	 	 
+		    System.out.println("********* Get Allotments id **** "+  scftrades.get(0).getId() +" "+ scftrades.get(0).getInvestorTotalGross()+" "+ scftrades.get(0).getInvestorTotalProfit());
+		    scftradesForTotalCalculation = scfTradeService.getScfTradeListForInvestor(search, value,fromDate,toDate,investorID, paginationModel.getStartIndex(), -1, false,columnName,order);
+
+		    for( SCFTrade scf : scftradesForTotalCalculation){
+		    	
+		    	Long tradeID = scf.getId(); 
+				System.out.println("*****TradeId***"+ tradeID);
+				
+				
+				Long companyIdTemp  = liferayUtility.getWhitehallCompanyID(request);
+			    Long investorIDTemp=investorService.getInvestorIDByCompanyId(companyIdTemp);
+				SCFTrade scfTrade = scfTradeService.findTradeDeatailsForInvestor(tradeID,investorIDTemp);
+					
+				Set<Allotment> set = scfTrade.getAllotments();
+				List<Allotment> listAllot = new ArrayList<Allotment>(set);
+				Allotment obj = listAllot.get(0);
+				System.out.println("*****getInvestorGrossProfit*****"+ obj.getInvestorGrossProfit());
+				System.out.println("*****getInvestorNetProfit*****"+ obj.getInvestorNetProfit());
+				System.out.println("*****getAllotmentAmount*****"+ obj.getAllotmentAmount());
+				
+				totalInvestorAllotment = totalInvestorAllotment.add(obj.getAllotmentAmount());
+				investorTotalGrossProfit = investorTotalGrossProfit.add(obj.getInvestorGrossProfit());
+				investorTotalNetProfit = investorTotalNetProfit.add(obj.getInvestorNetProfit());
+			
+		    }
+		  
+		  for(SCFTrade scf : scftrades){
+			
+	      myInvestmentModel	= new MyInvestmentModel();
+		  myInvestmentModel.setTradeNumber(scf.getScfId());
+		  myInvestmentModel.setStatus(scf.getStatus());
+		 
+		  myInvestmentModel.setDuration(scf.getDuration().toString());
+		  myInvestmentModel.setStartDate(scf.getOpeningDate());
+		  myInvestmentModel.setEndDate(scf.getSellerPaymentDate());
+		  myInvestmentModel.setWhiteHallCharges(scf.getSellerFees().toString());
+			Long tradeID = scf.getId(); 
+			System.out.println("*****TradeId***"+ tradeID);
+			
+			
+			Long companyIdTemp  = liferayUtility.getWhitehallCompanyID(request);
+		    Long investorIDTemp=investorService.getInvestorIDByCompanyId(companyIdTemp);
+			SCFTrade scfTrade = scfTradeService.findTradeDeatailsForInvestor(tradeID,investorIDTemp);
+			
+			//model.put("allotments", scfTrade.getAllotments());
+		//	System.out.println("*****AllotmentsValueProfit1*****"+scfTrade.getAllotments());
+					
+			Set<Allotment> set = scfTrade.getAllotments();
+			List<Allotment> listAllot = new ArrayList<Allotment>(set);
+			Allotment obj = listAllot.get(0);
+			System.out.println("*****getInvestorGrossProfit*****"+ obj.getInvestorGrossProfit());
+			System.out.println("*****getInvestorNetProfit*****"+ obj.getInvestorNetProfit());
+			System.out.println("*****getAllotmentAmount*****"+ obj.getAllotmentAmount());
+			
+			myInvestmentModel.setMyAllotment(String.valueOf(obj.getAllotmentAmount()));
+			myInvestmentModel.setGrossProfit(String.valueOf(obj.getInvestorGrossProfit()));
+			myInvestmentModel.setNetProfit(String.valueOf(obj.getInvestorNetProfit()));
+			
+			myInvestment.add(myInvestmentModel);
+			
+			
+			//System.out.println("*****AllotmentsValueProfit*****"+ obj.getInvestorGrossProfit().toString());
+		}
+		   model.put("totalInvestorAllotment", totalInvestorAllotment);
+		   model.put("investorTotalGrossProfit", investorTotalGrossProfit);
+		   model.put("investorTotalNetProfit", investorTotalNetProfit);
+		   
+		   model.put("myInvestment", myInvestment);
 		paginationUtil.setPaginationInfo(noOfRecords, paginationModel);
 		System.out.println("paginationsss:" + paginationModel);
 		model.put("paginationModel", paginationModel);

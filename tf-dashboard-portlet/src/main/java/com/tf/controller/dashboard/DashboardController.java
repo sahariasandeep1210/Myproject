@@ -69,15 +69,24 @@ public class DashboardController {
 		    	userType=Constants.WHITEHALL_ADMIN;
 		    	List<Investor> cashPosition =investorService.getCashPoition();
 		    	model.put("cashPosition",cashPosition);
-		    	model.put("dashboardModel", dashBoardService.setDashBoardInformation(dashModel,userType, companyId));			
+		    	model.put("dashboardModel", dashBoardService.setDashBoardInformation(dashModel,userType, companyId));
+		    	
 		    } else if(request.isUserInRole(Constants.PRIMARY_INVESTOR_ADMIN)){
+		    	
 		        	Long investorID=investorService.getInvestorIDByCompanyId(liferayUtility.getWhitehallCompanyID(request));
+		        	
 		        	dashBoardService.setInvestorStackedBarChartInformation(dashModel,investorID);
+		        	
 		    	dashModel.setInvestorPortfolios(investorService.getInvestorPortfolioDataForInvestorGraph(investorID)); 
+		    	
 		    	dashModel.setTotalCreditAvail(investorService.getTotalCreditAvailForInvestorGraph(investorID));
+		    	
 		    	userType=Constants.PRIMARY_INVESTOR_ADMIN;	
 		    	model.put("investorID", investorID);
 		    	model.put("dashboardModel", dashBoardService.setDashBoardInformation(dashModel,userType, companyId));
+		    	
+		    	///dashBoardService.setDashBoardInformation(dashModel,userType, companyId);
+		    	//System.out.println("*****GraphCheckInformation*******"+ dashBoardService.setDashBoardInformation(dashModel,userType, companyId));
 		    	viewName="investordashboard";
 		    }else if(request.isUserInRole(Constants.SELLER_ADMIN)){
 		    	Long sellerCmpID = userService.getCompanybyUserID(themeDisplay.getUserId()).getId();
