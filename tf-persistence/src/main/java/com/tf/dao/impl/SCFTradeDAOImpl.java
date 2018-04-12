@@ -1674,7 +1674,8 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 	    }
 	    StackedChartDTO stackedChartDTOtemp;
 		List<Object[]> graphArray = query.list();
-		System.out.println("******TotalGraph*****"+" Investor Id = "+ investorId+" "  );
+		System.out.println("******TotalGraph*****"+" Investor Id = "+ investorId+" ");
+		
 			if(graphArray !=null && graphArray.size() >0 ){
 					for (Object[] row : graphArray) {
 						System.out.println("******TotalGraph*****"+ row[0].toString() );
@@ -1748,7 +1749,7 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 		    }
 		  //  StackedChartDTO stackedChartDTO_NotUtilised;
 			List<Object[]> graphArrayNotUtilised = queryNotUtilised.list();
-			System.out.println("******TotalGraph*****"+" Investor Id = "+ investorId+" "  );
+			System.out.println("******TotalGraph*****"+" Investor Id = "+ investorId+" ");
 				if(graphArrayNotUtilised !=null && graphArrayNotUtilised.size() >0 ){
 						for (Object[] row : graphArrayNotUtilised) {
 							System.out.println("******TotalGraphNotUtilised*****"+ row[0].toString() );
@@ -1766,6 +1767,9 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 							
 						}	
 				}
+				
+				
+				 
 			
 			dashModel.setMap(map);
 	}
@@ -1774,13 +1778,40 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 		StackedChartDTO stackedChartDTO) {
 		
 	    if(row[2] !=null && TradeStatus.SETTLED.toString().equalsIgnoreCase(row[2].toString())){
-	    	
+	    	System.out.println("******TotalGraphSettled*****"+ row[1].toString() );
 	    stackedChartDTO.setSettledTradeAmount(stackedChartDTO.getSettledTradeAmount().add(row[1]!=null ?new BigDecimal(row[1].toString()):BigDecimal.ZERO));
 	    }
 	     else{
 	    stackedChartDTO.setLiveTradeAmount(stackedChartDTO.getLiveTradeAmount().add(row[1]!=null ?new BigDecimal(row[1].toString()):BigDecimal.ZERO)); ;
 	    }
 	}
+	
+	public List<Object[]> getSettledTradeAsPerSCFCompanies(){
+		
+		 StringBuilder qeryStringSettled = new StringBuilder();
+		    
+		  qeryStringSettled.append("SELECT t.company_id,SUM(a.allotment_amount), t.status ,c.name ");
+		  qeryStringSettled.append("FROM scf_trade  t, tf_allotments a, tf_company c ");
+		  qeryStringSettled.append("WHERE  t.id = a.trade_id ");
+		  qeryStringSettled.append("AND t.company_id=c.idcompany ");
+		 // qeryStringSettled.append("AND a.investor_id=:investorId ");
+		  qeryStringSettled.append("AND t.status = 'Settled' ");
+		  qeryStringSettled.append("GROUP BY t.company_id, c.name ");
+		    
+	      Query querySettled= sessionFactory.getCurrentSession().createSQLQuery(qeryStringSettled.toString());
+		   
+			List<Object[]> graphArraySettled = querySettled.list();
+			System.out.println("******TotalGraphSettledValueInSeparateQuery*****"+ graphArraySettled.size()+" " );
+			for (Object[] row : graphArraySettled) {
+				
+				System.out.println("******TotalGraphSettledValueInSeparateQuery*****"+ row[0] );
+				System.out.println("******TotalGraphSettledValueInSeparateQuery*****"+ row[1] );
+				System.out.println("******TotalGraphSettledValueInSeparateQuery*****"+ row[2] );
+				System.out.println("******TotalGraphSettledValueInSeparateQuery*****"+ row[3] );
+			}
+	    return graphArraySettled;
+	}
+	
 	
 	
 	public List getSumOfSCFTradeProperties(String searchTxt) {

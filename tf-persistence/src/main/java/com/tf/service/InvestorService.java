@@ -53,5 +53,9 @@ public interface InvestorService {
 	public List<Object[]> getInvestorPortfolioDataForInvestorGraph(Long investorID);
 	
 	public BigDecimal getTotalCreditAvailForInvestorGraph(Long investorID);
+	
+	public List<Object[]> getCreditAvailForSCFCompany(Long companyId);
+	
+	public List<Object[]> getAllScfCompaniesFromInvestorPortfolio();
 
 }

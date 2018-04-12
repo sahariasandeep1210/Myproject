@@ -1,5 +1,7 @@
 package com.tf.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -53,6 +55,12 @@ public class DashBoardServiceImpl implements DashBoardService {
 	public void setInvestorStackedBarChartInformation(DashboardModel dashModel,Long investorId){
 	    scfTradeDAO.setInvestorStackedBarChartInformation(dashModel, investorId);
 	}
+	
+	public List<Object[]> getSettledTradeAsPerSCFCompanies(){
+	    return scfTradeDAO.getSettledTradeAsPerSCFCompanies();
+	}
+	
+
 	
 
 }

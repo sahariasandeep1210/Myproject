@@ -67,4 +67,8 @@ public interface InvestorDAO extends BaseDAO<InvestorPortfolio, Long> {
 	public List<Object[]> getInvestorPortfolioDataForInvestorGraph(Long investorID);
 	
 	public BigDecimal getTotalCreditAvailForInvestorGraph(Long investorID);
+	
+	public List<Object[]> getCreditAvailForSCFCompany(Long companyId);
+	
+	public List<Object[]> getAllScfCompaniesFromInvestorPortfolio();
 }

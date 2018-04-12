@@ -2,13 +2,16 @@ package com.tf.controller.dashboard;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 
+import org.apache.commons.collections.map.HashedMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.portlet.ModelAndView;
 import org.springframework.web.portlet.bind.annotation.RenderMapping;
@@ -22,6 +25,7 @@ import com.liferay.portal.theme.ThemeDisplay;
 import com.tf.model.Company;
 import com.tf.model.Investor;
 import com.tf.model.SellerScfCompanyMapping;
+import com.tf.model.User;
 import com.tf.persistance.util.Constants;
 import com.tf.persistance.util.DashboardModel;
 import com.tf.service.DashBoardService;
@@ -72,6 +76,10 @@ public class DashboardController {
 		    	model.put("dashboardModel", dashBoardService.setDashBoardInformation(dashModel,userType, companyId));
 		    	
 		    } else if(request.isUserInRole(Constants.PRIMARY_INVESTOR_ADMIN)){
+		    	String selectedCompanyFromDropDown = ParamUtil.getString(request, "selectedCompany");// Getting the value from drop down
+		    	System.out.println("**********SelectedCompanyFrom JSP "+ selectedCompanyFromDropDown);
+		    	Long selectedCompanyId = null;
+		    	List<Object[]> creditAvailForSCFCompany = null;
 		    	
 		        	Long investorID=investorService.getInvestorIDByCompanyId(liferayUtility.getWhitehallCompanyID(request));
 		        	
@@ -81,8 +89,55 @@ public class DashboardController {
 		    	
 		    	dashModel.setTotalCreditAvail(investorService.getTotalCreditAvailForInvestorGraph(investorID));
 		    	
+		    	
+		    	List<Object[]> allScfCompaniesFromInvestorPortfolio = investorService.getAllScfCompaniesFromInvestorPortfolio();// getting scf companies to show in drop down list
+		    
+		    	 for (Object[] row : allScfCompaniesFromInvestorPortfolio) {
+						
+						System.out.println("******allScfCompaniesFromInvestorPortfolio*****"+ row[0] );// id
+						System.out.println("******allScfCompaniesFromInvestorPortfolio*****"+ row[1] );// Name
+						selectedCompanyId =  Long.parseLong(row[0].toString());// for first time 
+						break;
+						
+					}
+		    	
+		    	 if(selectedCompanyFromDropDown !=null && selectedCompanyFromDropDown.trim().length()>0 ){
+		    		 
+		    		 selectedCompanyId = Long.parseLong(selectedCompanyFromDropDown);
+		    	 }
+		    	
+		    	 if(selectedCompanyId != null){
+		    		 creditAvailForSCFCompany =	investorService.getCreditAvailForSCFCompany(selectedCompanyId);// retrieving the data corresponding to selected company id 
+		    	
+                 for (Object[] row : creditAvailForSCFCompany) {
+					
+					/*System.out.println("******AvailableCreditLine*****"+ row[0] );// Avail Amount
+					System.out.println("******AvailableCreditLine*****"+ row[1] );// BPS
+					System.out.println("******AvailableCreditLine*****"+ row[2] );// Company Name
+					*/
+				}
+		     }
+              
+		    	
+		    	List<Object[]> graphArraySettled =dashBoardService.getSettledTradeAsPerSCFCompanies();/* This function is added to show settled 
+		    	value corresponding to scf company 
+				*/
+				for (Object[] row : graphArraySettled) {
+					
+					/*System.out.println("******SettledValueInSeparateQueryController*****"+ row[0] );// Company id
+					System.out.println("******SettledValueInSeparateQueryController*****"+ row[1] );//Settled Amount 
+					System.out.println("******SettledValueInSeparateQueryController*****"+ row[2] );
+					System.out.println("******SettledValueInSeparateQueryController*****"+ row[3] );// Company Name*/				}
+				
+				
+				
 		    	userType=Constants.PRIMARY_INVESTOR_ADMIN;	
 		    	model.put("investorID", investorID);
+		    	model.put("graphArraySettled", graphArraySettled);
+		    	model.put("creditAvailForSCFCompany", creditAvailForSCFCompany);
+		    	model.put("allScfCompaniesFromInvestorPortfolio", allScfCompaniesFromInvestorPortfolio);
+		    	model.put("selectedCompanyId", selectedCompanyId);
+		    	
 		    	model.put("dashboardModel", dashBoardService.setDashBoardInformation(dashModel,userType, companyId));
 		    	
 		    	///dashBoardService.setDashBoardInformation(dashModel,userType, companyId);

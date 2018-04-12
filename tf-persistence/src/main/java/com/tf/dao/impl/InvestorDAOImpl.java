@@ -26,6 +26,7 @@ import com.tf.model.InvestorPortfolio;
 import com.tf.persistance.util.DashboardModel;
 import com.tf.persistance.util.InvestorDTO;
 import com.tf.persistance.util.InvestorProtfolioDTO;
+import com.tf.persistance.util.StackedChartDTO;
 
 @Repository
 @Transactional
@@ -562,6 +563,42 @@ public class InvestorDAOImpl extends BaseDAOImpl<InvestorPortfolio, Long>   impl
 			_log.error("getInvestorPortfolioDataForGraph", e);
 		}
 		return null;
+	}
+	
+    public List<Object[]> getCreditAvailForSCFCompany(Long companyId){
+	     StringBuilder qeryString = new StringBuilder();
+	    
+	    qeryString.append("SELECT SUM(t.available_to_invest),t.investment_discount_rate, c.name ");
+	    qeryString.append("FROM tf_investor_portfolio  t, tf_company c ");
+	    qeryString.append("WHERE  t.company_id=:companyId ");
+	    qeryString.append("AND t.company_id=c.idcompany ");
+	   qeryString.append("GROUP BY t.investment_discount_rate");
+	    
+	    Query query= sessionFactory.getCurrentSession().createSQLQuery(qeryString.toString());
+	   
+	   
+		query.setParameter("companyId", companyId);
+	    
+	    StackedChartDTO stackedChartDTOtemp;
+		List<Object[]> graphArray = query.list();
+		
+       return graphArray;
+	}
+    
+ public List<Object[]> getAllScfCompaniesFromInvestorPortfolio(){
+		
+	 StringBuilder qeryString = new StringBuilder();
+	    
+	    qeryString.append("SELECT t.company_id, c.name ");
+	    qeryString.append("FROM tf_investor_portfolio  t, tf_company c ");
+	    qeryString.append("WHERE  t.company_id=c.idcompany ");
+	    qeryString.append("GROUP BY t.company_id");
+	    
+	    Query query= sessionFactory.getCurrentSession().createSQLQuery(qeryString.toString());
+	   
+	   List<Object[]> graphArray = query.list();
+		
+    return graphArray;
 	}
 
 }

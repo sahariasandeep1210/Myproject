@@ -32,7 +32,7 @@
 			<div class="span3 spanSm6 mtXs10">
 				<div class="control-group">
 					<select id="dateList" name="dateList">
-						<option value="" selected="selected">Select Date</option>
+						<option value="" selected="selected" >Select Date</option>
 						<option value="openingDate"
 							<c:if test="${ value eq 'openingDate'}">selected="selected" </c:if>>Opening
 							Date</option>

@@ -8,6 +8,7 @@
 </portlet:actionURL>
 
 <portlet:resourceURL var="tradeURL"></portlet:resourceURL>
+
 <portlet:renderURL var="defaultRenderURL" />
 
 
@@ -58,7 +59,7 @@
 							<c:when test="${paginationModel.currentPage*paginationModel.pageSize >= paginationModel.noOfRecords}">${paginationModel.noOfRecords}</c:when>
 							<c:otherwise>${paginationModel.currentPage*paginationModel.pageSize}</c:otherwise>
 					</c:choose>
-					 of ${paginationModel.noOfRecords} Results.</small>
+					 of ${paginationModel.noOfRecords} Results. </small>
 					
 					
 				</div>
