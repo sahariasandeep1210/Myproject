@@ -118,6 +118,7 @@ public class InvoiceController {
 
 	@Autowired
 	protected GeneralSettingService generalSettingService;
+	
 
 
 	@InitBinder
@@ -397,49 +398,65 @@ public class InvoiceController {
 		throws Exception {
 	    	List<Company> sellerRegList = new ArrayList<Company>();
 		List<Company> companyList = new ArrayList<Company>();
-		ThemeDisplay themeDisplay =(ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
 		
 		
-		long invoiceId = ParamUtil.getLong(request, "invoiceID");
-		if (invoiceId > 0) {
-			Invoice invoice = invoiceService.getInvoicesById(invoiceId);
+		try {
+		    
+		    long invoiceId = ParamUtil.getLong(request, "invoiceID");
+		    _log.info("InvoiceId is ------"+invoiceId);
+		    if (invoiceId > 0) {
+			Invoice invoice = invoiceService
+				.getInvoicesById(invoiceId);
 			Company scfCompanies = invoice.getScfCompany();
 			invoiceModel.setId(invoice.getId());
 			invoiceModel.setScfCompany(scfCompanies.getId());
-			invoiceModel.setInvoiceNumber(invoice.getInvoiceNumber());
+			invoiceModel.setInvoiceNumber(invoice
+				.getInvoiceNumber());
 			invoiceModel.setInvoiceDate((invoice.getInvoiceDate()));
-			invoiceModel.setSellerRegNo(invoice.getSellerCompanyRegistrationNumber());
-			invoiceModel.setSellerVatNumber(invoice.getSellerCompanyVatNumber());
+			invoiceModel.setSellerRegNo(invoice
+				.getSellerCompanyRegistrationNumber());
+			invoiceModel.setSellerVatNumber(invoice
+				.getSellerCompanyVatNumber());
 			invoiceModel.setCurrency(invoice.getCurrency());
-			invoiceModel.setInvoiceDesc(invoice.getInvoiceDesc());		
+			invoiceModel.setInvoiceDesc(invoice.getInvoiceDesc());
 			invoiceModel.setDuration(invoice.getDuration());
-			invoiceModel.setInvoiceAmount(invoice.getInvoiceAmount());
+			invoiceModel.setInvoiceAmount(invoice
+				.getInvoiceAmount());
 			invoiceModel.setPaymentDate(invoice.getPayment_date());
 			invoiceModel.setVatAmount(invoice.getVatAmount());
 			invoiceModel.setStatus(invoice.getStatus());
 			model.put("scfCompanies", scfCompanies);
 			model.put("invoices", invoice);
 			companyList.add(scfCompanies);
-			if(!InvoiceStatus.NEW.getValue().equalsIgnoreCase(invoice.getStatus())){
-			    sellerRegList.add(companyService.getCompaniesByRegNum(invoice.getSellerCompanyRegistrationNumber()));
+			if (!InvoiceStatus.NEW.getValue().equalsIgnoreCase(
+				invoice.getStatus())) {
+			    sellerRegList
+				    .add(companyService.getCompaniesByRegNum(invoice
+					    .getSellerCompanyRegistrationNumber()));
 			    //making it read only when status other than New
 			    model.put("readOnly", Boolean.TRUE);
-			}else{
+			} else {
 			    //getting the all seller 
 			    //sellerRegList=companyService.getSellerCompanies(CompanyTypes.SELLER.getValue());
-			    sellerRegList=companyService.getSellerCompaniesUsingJoinForAdmin();
+			    sellerRegList = companyService
+				    .getSellerCompaniesUsingJoinForAdmin();
 			}
-			
-			if( (liferayUtility.getPermissionChecker(request).isOmniadmin() ||
-				request.isUserInRole(Constants.WHITEHALL_ADMIN) && !InvoiceStatus.NEW.getValue().equalsIgnoreCase(invoice.getStatus()))){
-			companyList = companyService.getCompanies(CompanyTypes.SCF_COMPANY.getValue());
-			
-	                }
-			
+
+			if ((liferayUtility.getPermissionChecker(request)
+				.isOmniadmin() || request
+				.isUserInRole(Constants.WHITEHALL_ADMIN)
+				&& !InvoiceStatus.NEW.getValue()
+					.equalsIgnoreCase(invoice.getStatus()))) {
+			    companyList = companyService
+				    .getCompanies(CompanyTypes.SCF_COMPANY
+					    .getValue());
+
+			}
+
+		    }
+		} catch (Exception e) {
+		    _log.error(e.getMessage());
 		}
-		
-		
-		
 		if(request.isUserInRole(Constants.SELLER_ADMIN)){
 			model.put("userType",Constants.SELLER_ADMIN);
 			model.put("readOnly", Boolean.TRUE);

@@ -36,12 +36,16 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-public class InvoiceServiceImpl implements InvoiceService{
+public class InvoiceServiceImpl implements InvoiceService {
+    
+    	protected static final Log _log = LogFactory.getLog(InvoiceServiceImpl.class);
 
 	@Autowired
 	private InvoiceDAO invoiceDAO;	
@@ -144,7 +148,9 @@ public class InvoiceServiceImpl implements InvoiceService{
 	}
 	
 	@Transactional(rollbackFor={Exception.class,InSuffcientFund.class,InvalidDuration.class})
-	public Date triggerAllotment(List<String> invoiceIds,long sellerCmpId,long userId) throws InSuffcientFund, InvalidDuration   {		
+	public Date triggerAllotment(List<String> invoiceIds,long sellerCmpId,long userId) throws InSuffcientFund, InvalidDuration   {	
+	    
+	    	_log.info("InvoiceServiceImpl >>> Entering triggerAllotment-----------------");
 		Date date=new Date();
 		Company company=null;
 		Invoice invoice;
@@ -184,6 +190,7 @@ public class InvoiceServiceImpl implements InvoiceService{
 		scfTrade.setTradeNotes("Finance requested by Supplier");
 		scfTrade.setInvoices(new HashSet<Invoice>(invoicesList));
 		scfTrade = scfTradeService.save(scfTrade);
+		_log.info("Trade Information --------------"+scfTrade);
 		updateTradeinfoToInvovices(invoicesList, scfTrade);
 		List<InvestorProtfolioDTO> list=investorDAO.findInvestorByRate(company.getId());
 		list=getSameRateCountStamp(list);
@@ -193,7 +200,8 @@ public class InvoiceServiceImpl implements InvoiceService{
 		scfTrade.setStatus(TradeStatus.LIVE.getValue());
 		scfTradeService.updateTrade(scfTrade);
 	
-		System.out.println("************************************ ALLOTMENTS END ************************************** \n ");
+		_log.info("************************************ ALLOTMENTS END ************************************** \n ");
+		_log.info("InvoiceServiceImpl >>> Exit triggerAllotment-----------------");
 		return financedate;
 
 	}

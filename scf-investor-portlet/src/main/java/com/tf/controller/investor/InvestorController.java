@@ -101,8 +101,8 @@ public class InvestorController {
 	}
 
 	protected Log _log = LogFactoryUtil.getLog(InvestorController.class);
-	private static final int MINDISCOUNT = 400;
-	private static final int MAXDISCOUNT = 600;
+	private static final int MINDISCOUNT = 200;
+	private static final int MAXDISCOUNT = 2000;
 	private final static String ACTIVETAB = "activetab";
 	private static final String Investor_Protfolios = "allinvestorprotfolios";
 	private static final String Investor_Balance = "investorbalance";

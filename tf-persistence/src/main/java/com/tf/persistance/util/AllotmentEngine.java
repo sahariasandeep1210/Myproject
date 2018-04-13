@@ -1,5 +1,17 @@
 package com.tf.persistance.util;
 
+import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.tf.dao.AllotmentDAO;
 import com.tf.dao.InvestorDAO;
 import com.tf.dao.InvestorTransactionDAO;
@@ -15,15 +27,6 @@ import com.tf.service.GeneralSettingService;
 import com.tf.service.InvestorService;
 import com.tf.service.SettingService;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 @Component
 public class AllotmentEngine {
 	
@@ -32,6 +35,8 @@ public class AllotmentEngine {
 	private static final BigDecimal YEAR=new BigDecimal(365);
 	
 	private static final BigDecimal HUNDRED=new BigDecimal(100);
+	
+	protected static final Log _log = LogFactory.getLog(AllotmentEngine.class);
 	
 	@Autowired
 	private InvestorDAO investorDAO;
@@ -58,7 +63,8 @@ public class AllotmentEngine {
 	private InvestorTransactionDAO investorTransactionDAO;
 	
 	public void  tradeAllotment(List<InvestorProtfolioDTO> investorsList,SCFTrade trade,long sellerCmpId,long userId) throws InSuffcientFund{
-
+	    
+	    	_log.info("Investor List --------- "+investorsList);
 		List<InvestorProtfolioDTO> investors = investorsList;
 		Allotment allotment ; 
 		InvestorTransaction invTranscation;
@@ -109,7 +115,8 @@ public class AllotmentEngine {
 					currentAllotment = investor.getAvailToInvest();
 				}
 			}
-			System.out.println("CurrentAllotment::"+currentAllotment);              
+			
+			_log.info("CurrentAllotment --------- "+currentAllotment);
 			
 			Date date=new Date();
 			setInvestmentInfo(currentAllotment, investor);
@@ -138,7 +145,7 @@ public class AllotmentEngine {
 
 			pendingAllotment = pendingAllotment.subtract(currentAllotment) ; 
 			sameRateCount = sameRateCount - 1; 
-
+			_log.info("Pending Allotment --------- "+pendingAllotment);
 			if(pendingAllotment.compareTo(BigDecimal.ZERO) == 0){
 				break;
 			}
@@ -151,7 +158,6 @@ public class AllotmentEngine {
 		}
 		
 	
-		System.out.println("************************************ ALLOTMENTS BEGIN ************************************** \n");
 		
 		//updating investment information
 		for(InvestorProtfolioDTO investor : investors){
@@ -181,20 +187,16 @@ public class AllotmentEngine {
 		//here we need to add VAT as well
 		trade.setWhitehallNetReceivable(calculateWhitehallTotalProfit(whitehallTotal,sellerFees,trade.getSellerTransFee()));
 		trade.setSellerNetAllotment(calculateSellerNetAllotment(tradeAmount,trade.getInvestorTotalProfit(),trade.getWhitehallNetReceivable()));
-		System.out.println("Trade to update ::::::::::::::::::::::::::::::"+trade);
 		
 		
-		System.out.println("------------------------------------------------------------------------------------)");
 		//saving allotment information to database
 		for(Allotment altment : allotments){
-			System.out.println("allotment::::::::"+altment);
 			allotmentDAO.saveEntity(altment);
 		}	
 		
 		//saving transaction information
 		
 		for(InvestorTransaction investorTransaction : invTranscations){
-			System.out.println("InvestorTransaction::::::::"+investorTransaction);
 			investorTransactionDAO.saveEntity(investorTransaction);
 		}
 		
@@ -217,43 +219,46 @@ public class AllotmentEngine {
 	}
 	
 	private BigDecimal calculateInvestorGrossProfit(BigDecimal currentAllotment,Integer discountRate,Integer duration){		
-		BigDecimal invGrossProfit=((currentAllotment.multiply(new BigDecimal(discountRate))).divide(TEN_THOUSAND)).multiply(((new BigDecimal(duration)).divide(YEAR,2, RoundingMode.HALF_UP)));
-		invGrossProfit.setScale(2, RoundingMode.CEILING);
+		BigDecimal invGrossProfit=((currentAllotment.multiply(new BigDecimal(discountRate),new MathContext(6, RoundingMode.HALF_EVEN))).divide(TEN_THOUSAND)).multiply(((new BigDecimal(duration)).divide(YEAR,6, RoundingMode.HALF_EVEN)));
+		invGrossProfit.setScale(4, RoundingMode.HALF_EVEN);
+		_log.info("Investor Gross Profit --------- "+invGrossProfit);
 		return invGrossProfit;
 	}
 	
 	private BigDecimal calculateWhiteHallShare(BigDecimal invGrossProfit,BigDecimal profitPercentage){		
-		BigDecimal whitehallProfit=(invGrossProfit.multiply(profitPercentage)).divide(HUNDRED);
-		whitehallProfit.setScale(2, RoundingMode.CEILING);
+		BigDecimal whitehallProfit=(invGrossProfit.multiply(profitPercentage, new MathContext(6, RoundingMode.HALF_EVEN))).divide(HUNDRED, 6, RoundingMode.HALF_EVEN);
+		whitehallProfit.setScale(2, RoundingMode.HALF_EVEN);
+		_log.info("WhiteHallShare --------- "+whitehallProfit);
 		return whitehallProfit;
 	}
 	
 	private BigDecimal calculateInvestorNetProfit(BigDecimal invGrossProfit,BigDecimal whitehallProfitShare){		
 		BigDecimal investorNetProfit=invGrossProfit.subtract(whitehallProfitShare);
-		investorNetProfit.setScale(2, RoundingMode.CEILING);
+		investorNetProfit.setScale(2, RoundingMode.HALF_EVEN);
+		_log.info("Investor Net Profit --------- "+investorNetProfit);
 		return investorNetProfit;
 	}
 	
 	private BigDecimal calculateSellerFees(Integer duration,BigDecimal tradeAmount,SellerSetting sellerSetting){		
-		BigDecimal sellerFees=((new BigDecimal(duration).multiply(sellerSetting.getSellerFinFee())).divide(TEN_THOUSAND,2, RoundingMode.HALF_UP)).multiply(tradeAmount);
-		sellerFees.setScale(2, RoundingMode.CEILING);
+		BigDecimal sellerFees=((new BigDecimal(duration).multiply(sellerSetting.getSellerFinFee(), new MathContext(6, RoundingMode.HALF_EVEN))).divide(TEN_THOUSAND,6, RoundingMode.HALF_EVEN)).multiply(tradeAmount, new MathContext(6, RoundingMode.HALF_EVEN));
+		sellerFees.setScale(6, RoundingMode.HALF_EVEN);
 		return sellerFees;
 	}
 	private BigDecimal calculateSellerFeesByGeneralSetting(Integer duration,BigDecimal tradeAmount,GeneralSetting generalSetting){		
-		BigDecimal sellerFees=((new BigDecimal(duration).multiply(generalSetting.getSellerFinFee())).divide(TEN_THOUSAND,2, RoundingMode.HALF_UP)).multiply(tradeAmount);
-		sellerFees.setScale(2, RoundingMode.CEILING);
+		BigDecimal sellerFees=((new BigDecimal(duration).multiply(generalSetting.getSellerFinFee(),  new MathContext(6, RoundingMode.HALF_EVEN)))).divide(TEN_THOUSAND,6, RoundingMode.HALF_EVEN).multiply(tradeAmount, new MathContext(6, RoundingMode.HALF_EVEN));
+		sellerFees.setScale(2, RoundingMode.HALF_EVEN);
 		return sellerFees;
 	}
 	
 	private BigDecimal calculateWhitehallTotalProfit(BigDecimal whitehallTotal,BigDecimal sellerFees,BigDecimal sellerTransFee){		
 		BigDecimal WhitehallTotalProfit=whitehallTotal.add(sellerFees).add(sellerTransFee);
-		WhitehallTotalProfit.setScale(2, RoundingMode.CEILING);
+		WhitehallTotalProfit.setScale(2, RoundingMode.HALF_EVEN);
 		return WhitehallTotalProfit;
 	}
 	
 	private BigDecimal calculateSellerNetAllotment(BigDecimal tradeAmount,BigDecimal investorTotalProfit,BigDecimal WhitehallNetReceivable){		
 		BigDecimal SellerNetAllotment=tradeAmount.subtract((investorTotalProfit.add(WhitehallNetReceivable)));
-		SellerNetAllotment.setScale(2, RoundingMode.CEILING);
+		SellerNetAllotment.setScale(2, RoundingMode.HALF_EVEN);
 		return SellerNetAllotment;
 	}
 	
