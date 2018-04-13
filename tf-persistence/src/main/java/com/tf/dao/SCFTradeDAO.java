@@ -80,4 +80,6 @@ public interface SCFTradeDAO extends BaseDAO<SCFTrade, Serializable> {
 	public List getSumOfSCFTradePropertiesForAdmin(String search,Date fromDate, Date toDate, String value);
 	
 	public List<Object[]> getSettledTradeAsPerSCFCompanies();// Added to fetch the settled trade company data
+	
+	public List<Object[]> getSumOfTradesAllotmentForParticularInvestor( Long investorId);//added by Abhishek
 }

@@ -43,7 +43,7 @@
 					</th>
 					</c:if>
 					<c:if test="${userType !='SCF Company Admin'}">
-					<th>Supplier Company<br><img id="scfCompanyAsc" column-name="scf.scf_company" class="sortColumn" src="<%= themeDisp.getPathThemeImages() %>/up.png" alt="asc" order="asc"/>
+					<th>SCF Company<br><img id="scfCompanyAsc" column-name="scf.scf_company" class="sortColumn" src="<%= themeDisp.getPathThemeImages() %>/up.png" alt="asc" order="asc"/>
 					        <img id="scfCompanyDesc" column-name="scf.scf_company" class="sortColumn" src="<%= themeDisp.getPathThemeImages() %>/down.png" alt="desc" order="desc"/>
 					</th>
 					</c:if>

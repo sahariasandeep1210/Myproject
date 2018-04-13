@@ -15,7 +15,7 @@
 		  	
 		  	<div class="main-title">Manage Invoice Documents</div>
 		  	
-		  	<div class="btn-wrapper">		  			
+		  	<div class="btn-wrapper">		
 		  			<input type="button" class="btnBgGreenSm" value="Export" id="exportInvoiceDocs" />
 		  	</div>
 		  	

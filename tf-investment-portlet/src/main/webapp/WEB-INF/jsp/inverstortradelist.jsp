@@ -32,7 +32,7 @@
 		 <input type="hidden" id="sortVal_order" name="sortVal_order" value="${sortCompany_order}"/>
 		<input type="hidden" id="sort_Column" name="sort_Column" value="${sort_Column}" />
 		<input type="hidden" id="sort_order" name="sort_order" value="${sort_order}"/>
-	<%-- 	<%@include file="tradefilte.jspf"%>  --%>
+		<%@include file="tradefilter.jspf"%> 
 		
 <div class="lfr-pagination">			
 				<p:paginate  paginationModel="${paginationModel}"/>
@@ -78,6 +78,7 @@
 						<th width="8%">Start Date <br><img column-name="openingDate" class="sortColumn" id="openingDate_SortAsc" src="<%=request.getContextPath()%>/images/up.png" alt="asc" order="asc"/><img column-name="openingDate" class="sortColumn" id="openingDate_SortDesc" src="<%=request.getContextPath()%>/images/down.png" alt="desc" order="desc"/></th>
 						
 						<th>End Date <br><img column-name="SellerPaymentDate" class="sortColumn" id="supplierPaymentDate_SortAsc" src="<%=request.getContextPath()%>/images/up.png" alt="asc" order="asc"/><img column-name="SellerPaymentDate" class="sortColumn" id="supplierPaymentDate_SortDesc" src="<%=request.getContextPath()%>/images/down.png" alt="desc" order="desc"/></th>
+						<th>Expected Amount<br><img column-name="SellerPaymentDate" class="sortColumn" id="supplierPaymentDate_SortAsc" src="<%=request.getContextPath()%>/images/up.png" alt="asc" order="asc"/><img column-name="SellerPaymentDate" class="sortColumn" id="supplierPaymentDate_SortDesc" src="<%=request.getContextPath()%>/images/down.png" alt="desc" order="desc"/></th>
 						
 	
 					</tr>
@@ -101,6 +102,8 @@
 								<td style="background-color:#189a80;color:white""></td>
 								<td style="background-color:#189a80;color:white""></td>
 								<td style="background-color:#189a80;color:white""></td>
+									<td style="background-color:#189a80;color:white"" class="rightalign"><fmt:formatNumber type="number"
+										maxFractionDigits="3" value="${receivableAmount}" pattern="#,##0.00"/></td>
 								
 							</tr> 
 							<c:forEach items="${myInvestment}" var="myInvestment">
@@ -120,7 +123,7 @@
 									
 									<td class="text-center"><fmt:formatDate pattern="dd-MM-yyyy"
 											value="${myInvestment.endDate}" /></td>
-									
+									<td class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${myInvestment.receivableAmount}"  pattern="#,##0.00"/></td>
 								</tr>
 
 							</c:forEach>

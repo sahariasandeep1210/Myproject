@@ -408,5 +408,11 @@ public class SCFTradeServiceImpl implements SCFTradeService {
 		
 		 return scfTradeDAO.getSumOfSCFTradePropertiesForAdmin(search,fromDate,toDate,value);
 	}
+	
+	public List<Object[]> getSumOfTradesAllotmentForParticularInvestor( Long investorId){
+		
+		 return scfTradeDAO.getSumOfTradesAllotmentForParticularInvestor(investorId);
+		
+	}//added by Abhishek
 
 }

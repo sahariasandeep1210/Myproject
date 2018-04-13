@@ -1,0 +1,90 @@
+<%@include file="init.jsp"%>
+<%@ taglib uri="http://liferay.com/tld/aui"  prefix="aui"%>
+
+<div class="title-container clearfix">
+		  	
+		  		<div class="main-title">Manage Trades</div>
+		  	
+		  	<div class="btn-wrapper">		  			
+		  			 <aui:button cssClass="btnBrGrSm btnIconSm filter-btn active"  icon="icomoon-filter"></aui:button>
+		  			<input type="button" class="btnBgGreenSm" value="Export"  id="exportData"/>
+		  	</div>
+		  	
+</div>
+
+ <div class="customWell filter-container">
+	<div class="row-fluid">
+		<div class="span3 spanSm6">
+
+			<div class="control-group">
+				<div class="input-append">
+					<input name="Search" type="text" placeholder="Search Trade No. or status" id="search"
+						value="${search}" /> <span class="add-on"><i class="icon-info-sign tooltipPhone"
+						data-toggle="tooltip" title="search in for trade no. or status"></i></span>
+				</div>
+			</div>
+		</div>
+
+		<c:if
+			test="${false}">
+
+
+			<div class="span3 spanSm6 mtXs10">
+				<div class="control-group">
+					<select id="dateList" name="dateList">
+						<option value="" selected="selected" >Select Date</option>
+						<option value="openingDate"
+							<c:if test="${ value eq 'openingDate'}">selected="selected" </c:if>>Opening
+							Date</option>
+						<option value="closingDate"
+							<c:if test="${ value eq 'closingDate'}">selected="selected" </c:if>>Closing
+							Date</option>
+						<option value="investorPaymentDate"
+							<c:if test="${ value eq 'investorPaymentDate'}">selected="selected" </c:if>>Investor
+							PaymentDate</option>
+						<option value="SellerPaymentDate"
+							<c:if test="${ value eq 'SellerPaymentDate'}">selected="selected" </c:if>>Seller
+							PaymentDate</option>
+						<option value="createDate"
+							<c:if test="${ value eq 'createDate'}">selected="selected" </c:if>>Create
+							Date</option>
+					</select>
+				</div>
+			</div>
+
+			<div class="span3 spanSm6 mtSm10 mtXs10">
+				<%-- <aui:input name="fromDate" id="fromDate" label=""  placeholder="From"  value="${from}"  suffix="<i class='icomoon-calendar'></i>"></aui:input> --%>
+				<%-- <input name="fromDate" type="text" id="fromDate" placeholder="From"  value="${from}" suffix="<i class='icomoon-calendar'></i>" /> --%>
+				<div class="control-group">
+					<div class="input-append">
+						<input name="fromDate" type="text" id="fromDate"
+							placeholder="From" value="${from}" /> <span class="add-on"><i
+							class="icomoon-calendar"></i></span>
+					</div>
+				</div>
+			</div>
+
+			<div class="span3 spanSm6 mtSm10 mtXs10">
+				<%-- <aui:input name="toDate" label="" id="toDate" placeholder="To" value="${to}"  suffix="<i class='icomoon-calendar'></i>"></aui:input>  --%>
+				<%-- <input name="toDate" type="text" id="toDate" placeholder="To" value="${to}" suffix="<i class='icomoon-calendar'></i>"/> --%>
+				<div class="control-group">
+					<div class="input-append">
+						<input name="toDate" type="text" id="toDate" placeholder="To"
+							value="${to}" /> <span class="add-on"><i
+							class="icomoon-calendar"></i></span>
+					</div>
+				</div>
+			</div>
+		</c:if>
+	</div>
+	<div class="row-fluid">
+		  		<div class="span12">
+		  			<div class="actionContainer noBorder text-left">
+		  				<!-- <aui:button cssClass="btnBgBuSm" value="Search"></aui:button> -->
+		  				 <input type="button" value="Search" id="adminTradeReport" class="btnBgBuSm" />
+		  			</div>
+		  			
+		  		</div>
+		  	</div>
+	</div>
+

@@ -349,6 +349,14 @@ public class SCFTradeController {
 			viewName = "scftradelist";
 		}
 		else if (request.isUserInRole(Constants.SELLER_ADMIN)) {
+			
+			   BigDecimal totalTradeAmount = BigDecimal.ZERO;
+			   BigDecimal totalSellerTransFee = BigDecimal.ZERO;
+			   BigDecimal totalSellerFees = BigDecimal.ZERO;
+			   BigDecimal totalInvestorTotalGross = BigDecimal.ZERO;
+			   BigDecimal totalSellerNetAllotment = BigDecimal.ZERO;
+			   BigDecimal totalGrossCharges = BigDecimal.ZERO;
+			   
 			String search = ParamUtil.getString(request, "Search");
 			String regNum = liferayUtility.getWhiteHallComapanyRegNo(request);
 			/*Sorting code starts from here*/
@@ -365,6 +373,29 @@ public class SCFTradeController {
 			scftrades = scfTradeService.getScfTradeListWithSearch(search, regNum, paginationModel.getStartIndex(), paginationModel.getPageSize(),columnName,order);
 			noOfRecords = scfTradeService.getScfTradeListWithSearchCount(search, regNum);
 			}
+			
+
+			List listSum = scfTradeService.getSumOfSCFTradeProperties(search);
+			   if (null != listSum || listSum.size() > 0) {
+			    Object[] obj = (Object[]) listSum.get(0);
+			    totalTradeAmount = obj[0]!=null?(BigDecimal) obj[0]:BigDecimal.ZERO;
+			    totalSellerTransFee =  obj[1] !=null ? (BigDecimal) obj[1]:BigDecimal.ZERO;
+			    totalSellerFees = obj[2]!=null ?(BigDecimal) obj[2]:BigDecimal.ZERO;
+			    totalInvestorTotalGross = obj[3]!=null?(BigDecimal) obj[3]:BigDecimal.ZERO;
+			    totalGrossCharges = totalGrossCharges.add(totalSellerTransFee)
+			      .add(totalSellerFees).add(totalInvestorTotalGross);
+			    totalSellerNetAllotment = (BigDecimal) obj[4];
+			   }
+			 
+			   model.put("totalTradeAmount", totalTradeAmount);
+			   model.put("totalSellerTransFee", totalSellerTransFee);
+			   model.put("totalSellerFees", totalSellerFees);
+			   model.put("totalInvestorTotalGross", totalInvestorTotalGross);
+			   model.put("totalGrossCharges", totalGrossCharges);
+			   model.put("totalSellerNetAllotment", totalSellerNetAllotment);
+			
+			
+			   
 			model.put("search", search);
 			model.put("userType", Constants.SELLER_ADMIN);
 			viewName = "sellertradelist";

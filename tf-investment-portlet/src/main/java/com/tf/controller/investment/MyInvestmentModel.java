@@ -1,8 +1,9 @@
 package com.tf.controller.investment;
 
+import java.util.Comparator;
 import java.util.Date;
 
-public class MyInvestmentModel {
+public class MyInvestmentModel implements Comparable<MyInvestmentModel> {
 	
 	private String tradeNumber;
 	private String status;
@@ -15,6 +16,15 @@ public class MyInvestmentModel {
 	private String myAllotment;
 	private String grossProfit;
 	private String netProfit;
+	private String receivableAmount;
+	
+	
+	public String getReceivableAmount() {
+		return receivableAmount;
+	}
+	public void setReceivableAmount(String receivableAmount) {
+		this.receivableAmount = receivableAmount;
+	}
 	public String getTradeNumber() {
 		return tradeNumber;
 	}
@@ -70,6 +80,54 @@ public class MyInvestmentModel {
 	public void setWhiteHallCharges(String whiteHallCharges) {
 		this.whiteHallCharges = whiteHallCharges;
 	}
+	
+	
+	public static class OrderByNetProfit implements Comparator<MyInvestmentModel>{
+
+		public int compare(MyInvestmentModel o1, MyInvestmentModel o2) {
+			// TODO Auto-generated method stub
+			return Float.parseFloat(o1.netProfit) > Float.parseFloat(o2.netProfit) ? 1 : (Float.parseFloat(o1.netProfit) < Float.parseFloat(o2.netProfit) ? -1 : 0);
+
+			
+		}
+		
+		
+	}
+	
+	public int compareTo(MyInvestmentModel o) {
+		// TODO Auto-generated method stub
+		 return this.tradeNumber.compareTo(o.tradeNumber);
+		 
+	}
+	@Override
+	public int hashCode() {
+		// TODO Auto-generated method stub
+		return super.hashCode();
+	}
+	@Override
+	public boolean equals(Object obj) {
+		// TODO Auto-generated method stub
+		return super.equals(obj);
+	}
+	@Override
+	protected Object clone() throws CloneNotSupportedException {
+		// TODO Auto-generated method stub
+		return super.clone();
+	}
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return super.toString();
+	}
+	@Override
+	protected void finalize() throws Throwable {
+		// TODO Auto-generated method stub
+		super.finalize();
+	}
+	
+	
+	
+	
 	
 	
 	

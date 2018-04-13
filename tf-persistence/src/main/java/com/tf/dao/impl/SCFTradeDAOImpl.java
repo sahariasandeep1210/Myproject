@@ -1924,4 +1924,26 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 
 	}
 	
+	public List<Object[]> getSumOfTradesAllotmentForParticularInvestor(Long investorId){// Added by Abhishek
+		
+		 StringBuilder qeryString = new StringBuilder();
+		    
+		    qeryString.append("SELECT SUM(a.allotment_amount), SUM(a.investor_net_profit), SUM(a.investor_gross_profit) ");
+		    qeryString.append("FROM  tf_allotments a ");
+		    qeryString.append("WHERE a.investor_id=:investorId ");
+		    qeryString.append("AND a.status <> 'Closed' AND  a.status <> 'Hold'  ");
+		    qeryString.append("GROUP BY a.investor_id ");
+		    
+		    Query query= sessionFactory.getCurrentSession().createSQLQuery(qeryString.toString());
+		   
+		    if(investorId>0l){
+			query.setParameter("investorId", investorId);
+		    }
+		  
+			List<Object[]> graphArray = query.list();
+			
+			return graphArray;
+		
+	}
+	
 }
