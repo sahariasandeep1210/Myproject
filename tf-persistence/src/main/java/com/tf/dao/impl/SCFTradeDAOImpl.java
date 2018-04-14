@@ -1214,7 +1214,7 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 	public List<SCFTrade> getScfAdminTradeListWithSearch(
 		long companyId, String searchtxt, Date fromDate, Date toDate, String value, int startIndex, int pageSize,String columnName,String order) {
 
-		_log.debug("Inside getScfAdminTradeListWithSearch ");
+		_log.info("Inside getScfAdminTradeListWithSearch ");
 		Criteria criteria = null;
 		try {
 			Collection<Long> ids = getIDListForScfPagination(startIndex, pageSize, companyId,columnName,order);

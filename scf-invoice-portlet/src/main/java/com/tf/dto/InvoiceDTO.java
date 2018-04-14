@@ -28,7 +28,7 @@ public class InvoiceDTO  implements Serializable{
 	private String invoiceDesc;
 	private Integer duration;
 	private Date paymentDate;
-	private String currency;
+	private String currency = "GBP";
 	private Date dueDate;
 	private String status;
 
