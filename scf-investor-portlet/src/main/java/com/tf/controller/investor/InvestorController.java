@@ -61,6 +61,7 @@ import com.tf.service.InvestorService;
 import com.tf.service.InvestorTransactionService;
 import com.tf.service.SCFTradeService;
 import com.tf.service.UserService;
+import com.tf.util.LiferayUtility;
 import com.tf.util.PaginationUtil;
 import com.tf.util.model.PaginationModel;
 
@@ -74,6 +75,8 @@ import com.tf.util.model.PaginationModel;
 @RequestMapping(value = "VIEW")
 public class InvestorController {
     
+	@Autowired
+	protected LiferayUtility liferayUtility;
 
 	@InitBinder
 	public void binder(WebDataBinder binder) {
@@ -170,7 +173,8 @@ public class InvestorController {
 	@RenderMapping(params = "report=casReport")
 	protected ModelAndView rendercasReport(ModelMap model, RenderRequest request, RenderResponse response)
 		throws Exception {
-		Investor inves=null;
+		Investor inves=null; String myInvestmentUrl= null;
+		
 		List<InvestorTransaction> investorList = new ArrayList<InvestorTransaction>();
 		Company company = null;
 		List<com.tf.persistance.util.InvestorDTO> investors = null;
@@ -182,6 +186,8 @@ public class InvestorController {
 		DateFormat formatter = new SimpleDateFormat(Constants.DATE_FORMAT);
 		if (request.isUserInRole(Constants.PRIMARY_INVESTOR_ADMIN)) {
 			if (companyId > 0) {
+				myInvestmentUrl = liferayUtility.getPortletURL(request, "tf-investment-portlet", "render", "", true);// To make hiperlink and redirect to MY Investment portlet.
+				
 				investors = companyService.getInvestors();
 				Date fromDate = formatter.parse("1-2-1970");
 				Date toDate = new Date();
@@ -242,6 +248,7 @@ public class InvestorController {
 				model.put("paginationModel", paginationModel);
 				model.put("companyname", company);
 				model.put("investorList", investorList);
+				model.put("myInvestmentUrl", myInvestmentUrl);
 				model.put(ACTIVETAB, Cash_Report);
 
 			}

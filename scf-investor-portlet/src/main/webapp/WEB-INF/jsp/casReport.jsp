@@ -58,11 +58,13 @@
 				   			<div class="span3 spanSm6">
 				   				<div class="labelBigTextContaier mtXs15">
 						   			<div class="smallLabelText">
-						   				Receivables Position 
+						   		Receivables Position
 						   			</div>
 						   			
 						   			<div class="bigText blue">
+						   			<a  href ="${myInvestmentUrl}&Search=Allotment Paid" style="text-decoration: underline;">
 						   				&pound; <fmt:formatNumber type="number" maxFractionDigits="3" value="${totalReceivablesPosition}"  pattern="#,##0.00"/>
+						   				</a>
 						   			</div>
 						   		</div>
 				   			</div>

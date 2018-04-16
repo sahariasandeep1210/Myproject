@@ -115,24 +115,25 @@
 	  <c:forEach var="element" items="${dashboardModel.map}">
 	/*   parseFloat("${element.value.settledTradeAmount}"), */
 		<c:if test="${element.value.liveTradeAmount ge 0  }">
-		stackedBarChartdata.addRow(["${element.value.companyName}",parseFloat("${element.value.liveTradeAmount}"),parseFloat("${element.value.availTradeAmount}")]);
+		stackedBarChartdata.addRow(["${element.value.companyName}",parseFloat("${element.value.liveTradeAmount/1000}"),parseFloat("${element.value.availTradeAmount/1000}")]);
 	</c:if>
 	  </c:forEach>
       
 	  <c:forEach var="element" items='${dashboardModel.investorPortfolios}'>
-		barChartdata.addRow(["${element[1]}",parseFloat("${element[0]}"), '#ff9900' ]);
+		barChartdata.addRow(["${element[1]}",parseFloat("${element[0]/1000}"), '#ff9900' ]);
 	</c:forEach>
 	
 	<c:forEach var="elementGraphSettled" items='${graphArraySettled}'>
 	<c:if test="${elementGraphSettled[1] ne 0}">
-	barChartdata_settledAmount.addRow(["${elementGraphSettled[3]}",parseFloat("${elementGraphSettled[1]}"), '#ff9900' ]);
+	barChartdata_settledAmount.addRow(["${elementGraphSettled[3]}",parseFloat("${elementGraphSettled[1]/1000}"), '#ff9900' ]);
 	</c:if>
 	</c:forEach>
       
 	 <c:forEach var="element" items='${creditAvailForSCFCompany}'>
-	 barChartdata_SCF.addRow(["${element[1]}",parseFloat("${element[0]}"), '#ff9900' ]);
+	 barChartdata_SCF.addRow(["${element[1]}",parseFloat("${element[0]/1000}"), '#ff9900' ]);
 	</c:forEach>
-      var stackedBarChartOptions = {	        		
+      var stackedBarChartOptions = {
+    		 
      		 legend: { position: "top" },
      		 isStacked: true,
      		
@@ -145,20 +146,41 @@
      	        
      	        slantedText:true,
      	        slantedTextAngle:45
-     	        } 
+     	        },
+     	        vAxis:{
+     	        	 title: 'Amount in thousand',
+     	        	 titleTextStyle: {
+     	                fontSize: 12,
+     	                color: '#000000',
+     	                bold: false,
+     	                italic: false
+     	              }
+     	        }
+     	        
        };
-      var barChartOptions = {	        		
+      var barChartOptions = {	 
+    		
       		 legend: { position: "none"},
       		height:500,
             chartArea: {
+            	
             	height:300,
               top:100,
             },
      		hAxis: {
-     	        
+     			 title: 'Basis point (BPS)',
      	        slantedText:true,
      	        slantedTextAngle:45
-     	        } 
+     	        },
+     	       vAxis:{
+   	        	 title: 'Amount in thousand',
+   	        	titleTextStyle: {
+ 	                fontSize: 12,
+ 	                color: '#000000',
+ 	                bold: false,
+ 	                italic: false
+ 	              }
+   	        }
         };
       var barChartOptions_settledAmount = {	        		
        		 legend: { position: "none"},
@@ -168,10 +190,19 @@
               top:100,
             },
      		hAxis: {
-     	        
+     			
      	        slantedText:true,
      	        slantedTextAngle:45
-     	        } 
+     	        },
+     	       vAxis:{
+   	        	 title: 'Amount in thousand',
+   	        	titleTextStyle: {
+ 	                fontSize: 12,
+ 	                color: '#000000',
+ 	                bold: false,
+ 	                italic: false
+ 	              }
+   	        }
       		
          };
 		
