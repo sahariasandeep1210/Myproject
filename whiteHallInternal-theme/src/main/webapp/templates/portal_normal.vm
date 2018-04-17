@@ -11,7 +11,7 @@
 	
 	<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700,300' rel='stylesheet' type='text/css'>
 	<link href='$css_folder/jquery-ui.css' rel='stylesheet' type='text/css'>
-	<script type="text/javascript" src="http://www.gstatic.com/charts/loader.js"></script>
+	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 	
 	$theme.include($top_head_include)
 </head>

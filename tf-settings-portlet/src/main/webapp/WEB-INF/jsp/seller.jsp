@@ -31,14 +31,14 @@
 
 				<div class="span3 spanSm6 mtXs10">
 		  			<div class="control-group">
-		  				<label class="control-label">Seller Transaction Fee</label>
+		  				<label class="control-label">Transaction Fee (Buyer)</label>
 		  				<form:input path="sellerTransFee" cssClass="field" id="transaction" />
 					</div>
 		  		</div>
 		  		
 		  		<div class="span3 spanSm6 mtSm10 mtXs10">
 				  	<div class="control-group">
-							<label class="control-label">Seller Finance Fee</label>
+							<label class="control-label">Seller Transaction Fee (Whitehall)</label>
 							 <form:input path="sellerFinFee" cssClass="field" id="finance"/>
 					</div>
 		  		</div>
@@ -112,8 +112,8 @@
 					    <th>SCF Company</th>
 						<th>Opening Date</th>
 						<th>Modify Date</th>
-						<th>Seller Transaction Fee</th>
-						<th>Seller Finance Fee</th>	
+						<th>Transaction Fee (Buyer)</th>
+						<th>Seller Transaction Fee (Whitehall)</th>	
 					</tr>
 				</thead>
 				<tbody>

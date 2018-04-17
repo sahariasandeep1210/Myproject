@@ -52,7 +52,7 @@
 							      </td>
 							</tr>
 							<tr>
-							     <td>Seller Transaction Fee</td>
+							     <td>Transaction Fee (Buyer) %</td>
 							      <td>
 							      <input type="text"
 												value="${generalSetting.sellerTransFee }"
@@ -61,7 +61,7 @@
 							      </td>
 							</tr>
 							<tr>
-							     <td>Seller Finance Fee</td>
+							     <td>Seller Transaction Fee (Whitehall) %</td>
 							      <td>
 							      <input type="text"
 												value="${generalSetting.sellerFinFee }"
@@ -70,7 +70,7 @@
 							      </td>
 							</tr>
 							<tr>
-							     <td>Min Payment Date Duartion</td>
+							     <td>Min Payment Date Duration</td>
 							      <td>
 							      <input type="text"
 												value="${generalSetting.minPaymentDateDuartion }"
