@@ -18,7 +18,6 @@ import javax.portlet.RenderResponse;
 import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
 
-import org.apache.commons.lang.Validate;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.ss.usermodel.Row;
@@ -76,7 +75,6 @@ import com.tf.model.User;
 import com.tf.persistance.util.CompanyStatus;
 import com.tf.persistance.util.Constants;
 import com.tf.util.CompanyDTO;
-import com.tf.util.LiferayUtility;
 import com.tf.util.OfficerDTO;
 import com.tf.util.ReportUtility;
 import com.tf.util.model.PaginationModel;
@@ -867,7 +865,7 @@ public class CompanyController extends BaseController {
 				if (getPermissionChecker(request).isOmniadmin()
 						|| request.isUserInRole(Constants.WHITEHALL_ADMIN)){
 			    List<Company> companies=companyService.getCompaniesByStatus(CompanyStatus.DELETED.getValue());
-			    ReportUtility.generateCusotomerDemoRepots(companies, response);
+			    ReportUtility.exportCompanies(companies, response);
 				}
 				else{
 					
@@ -1144,5 +1142,7 @@ public class CompanyController extends BaseController {
 		response.setRenderParameter("render", "supplierDocuments");
 
 	}
+	
+	
 
 }

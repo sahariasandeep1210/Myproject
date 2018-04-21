@@ -22,7 +22,6 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.servlet.HttpHeaders;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.tf.model.Company;
-import com.tf.persistance.util.CompanyStatus;
 import com.tf.persistance.util.Constants;
 
 public class ReportUtility {
@@ -32,35 +31,17 @@ public class ReportUtility {
 
     
     
-    public static void generateCusotomerDemoRepots(List<Company> companyList, ResourceResponse resourceResponse) throws SystemException, IOException{
+    public static void exportCompanies(List<Company> companyList, ResourceResponse resourceResponse) throws SystemException, IOException{
 	
 	
 	Workbook workbook = new XSSFWorkbook();
 	Sheet sheet = workbook.createSheet(Constants.COMPANY);
 	int rowIndex = 0;
-
-	CellStyle cellDateStyle = workbook.createCellStyle();
-	CreationHelper createHelper = workbook.getCreationHelper();
-	short dateFormat = createHelper.createDataFormat().getFormat(Constants.DATE_FORMAT);
-	cellDateStyle.setDataFormat(dateFormat);
+	CellStyle cellDateStyle = getCellDateStyle(workbook);
 	Row headerRow = sheet.createRow(rowIndex++);	
-	Cell headerCell = null;
-	CellStyle style = workbook.createCellStyle();
-	Font font = workbook.createFont();
-	font.setBoldweight(Font.BOLDWEIGHT_BOLD);
-	style.setFont(font);
-	
-	// Set Header columns	
-	for(int i=0;i<COMPANY_HEADER.size();i++){
-		headerCell = headerRow.createCell(i);
-		headerCell.setCellStyle(style);
-		headerCell.setCellValue(COMPANY_HEADER.get(i));
-	}
-	
-	
+	addHeaders(headerRow, workbook, COMPANY_HEADER);	
 	for(Company company : companyList){
-		Row row = sheet.createRow(rowIndex++);
-		
+		Row row = sheet.createRow(rowIndex++);		
 		int cellNo = 0;
 		sheet.autoSizeColumn(cellNo);
 		Cell cell = row.createCell(cellNo++);
@@ -106,6 +87,20 @@ public class ReportUtility {
 		
 	}
 	
+	addExcelToResponse(resourceResponse, workbook);
+		
+    }
+
+    private static CellStyle getCellDateStyle(Workbook workbook) {
+	CellStyle cellDateStyle = workbook.createCellStyle();
+	CreationHelper createHelper = workbook.getCreationHelper();
+	short dateFormat = createHelper.createDataFormat().getFormat(Constants.DATE_FORMAT);
+	cellDateStyle.setDataFormat(dateFormat);
+	return cellDateStyle;
+    }
+
+    private static void addExcelToResponse(ResourceResponse resourceResponse, Workbook workbook) throws IOException {
+	
 	resourceResponse.setContentType(ContentTypes.APPLICATION_VND_MS_EXCEL);
 	resourceResponse.addProperty(HttpHeaders.CONTENT_DISPOSITION, getReportName(Constants.COMPANY));
 	resourceResponse.addProperty("Set-Cookie", "fileDownload=true; path=/");
@@ -115,9 +110,21 @@ public class ReportUtility {
 	workbook.write(outStrm);
 	outStrm.flush();
 	outStrm.close();
+    }
+
+    private static void addHeaders(Row headerRow, Workbook workbook, List<String> headers) {
 	
-	
-		
+	CellStyle style = workbook.createCellStyle();
+	Font font = workbook.createFont();
+	font.setBoldweight(Font.BOLDWEIGHT_BOLD);
+	style.setFont(font);
+	Cell headerCell;
+	// Set Header columns	
+	for(int i=0;i<headers.size();i++){
+		headerCell = headerRow.createCell(i);
+		headerCell.setCellStyle(style);
+		headerCell.setCellValue(COMPANY_HEADER.get(i));
+	}
     }
     
     public static String getReportName(String reportType){

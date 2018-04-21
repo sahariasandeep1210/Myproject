@@ -4,8 +4,7 @@ import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.Logger;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -18,7 +17,7 @@ import com.tf.dao.BaseDAO;
 @Transactional
 public abstract  class BaseDAOImpl<T, ID extends Serializable> implements BaseDAO<T, ID>  {
 	
-	protected static final Log _log = LogFactory.getLog(BaseDAOImpl.class);
+	protected static final Logger _log = Logger.getLogger(BaseDAOImpl.class);
 
 	
 	 @Autowired

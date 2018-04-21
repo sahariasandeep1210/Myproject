@@ -7,8 +7,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -36,7 +35,7 @@ public class AllotmentEngine {
 	
 	private static final BigDecimal HUNDRED=new BigDecimal(100);
 	
-	protected static final Log _log = LogFactory.getLog(AllotmentEngine.class);
+	protected static final Logger _log = Logger.getLogger(AllotmentEngine.class);
 	
 	@Autowired
 	private InvestorDAO investorDAO;
@@ -348,7 +347,7 @@ public class AllotmentEngine {
 		    sellerFees=calculateSellerFees(trade.getDuration(), tradeAmount,sellerSetting);
 		}else{
 		    generalSetting=generalSettingService.getGeneralSetting();
-			sellerFees=calculateSellerFeesByGeneralSetting(trade.getDuration(), tradeAmount,generalSetting);
+		    sellerFees=calculateSellerFeesByGeneralSetting(trade.getDuration(), tradeAmount,generalSetting);
 		}
 		//setting back to Trade
 		trade.setInvestorTotalGross(investorTotalGross);

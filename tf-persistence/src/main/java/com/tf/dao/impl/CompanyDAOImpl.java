@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
 import org.hibernate.HibernateException;
@@ -56,10 +57,10 @@ public class CompanyDAOImpl  extends BaseDAOImpl<Company, Long>   implements Com
 	
 	@SuppressWarnings("unchecked")
 	public List<Company> getCompaniesByStatus(String status) {
-		_log.debug("Inside getCompanies ");
+		_log.info("Inside getCompanies ");
 		try {
 			List<Company> results = (List<Company>) sessionFactory.getCurrentSession().createCriteria(Company.class).add(Restrictions.ne("activestatus", status)).list();
-			_log.debug("GetCompanies successful, result size: "
+			_log.info("GetCompanies successful, result size: "
 					+ results.size());
 			return results;
 		} catch (RuntimeException re) {
@@ -72,28 +73,27 @@ public class CompanyDAOImpl  extends BaseDAOImpl<Company, Long>   implements Com
 	public List<Company> getCompaniesBySortingParam(int startIndex, int pageSize,String columnName,final String order,String status,String searchValue) {
 		_log.debug("Inside getCompaniesBySortingParam ");
 		try {
+		    	List<Company> results = null;
 			Session session = sessionFactory.getCurrentSession();
 			Criteria criteria = session.createCriteria(Company.class)
-					.createAlias("address", "add")
-					.add(Restrictions.ne("activestatus", status));
-			criteria.setFetchMode("users", FetchMode.JOIN).setFetchMode("address", FetchMode.JOIN).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-			
+					    .createAlias("address", "add")
+					    .add(Restrictions.ne("activestatus", status));
+			criteria.setFetchMode("users", FetchMode.JOIN).setFetchMode("address", FetchMode.JOIN).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);			
 			ProjectionList projList = setProjectionForCompanies();
-		    criteria.setProjection(projList);
-		    criteria.setResultTransformer(new AliasToBeanNestedResultTransformer(Company.class));
+			criteria.setProjection(projList);
+			criteria.setResultTransformer(new AliasToBeanNestedResultTransformer(Company.class));
 		    
-		    //setting the restriction criteria for searched value enterd by user.
+			//setting the restriction criteria for searched value enterd by user.
 			setRestrictionForSearchedVal(searchValue, criteria);
 
-			if ("".equals(columnName)) {
-				criteria.addOrder(Order.asc("name")); //default sorting
-			}
+			if (StringUtils.isEmpty(columnName)) {
+			    criteria.addOrder(Order.asc("name")); //default sorting
+			} 
 			else {
 				/**
 				 * since regNumber is in VARCHAR in database so ordering 
 				 * will be converting it to number first then order
-				 */
-				
+				 */				
 				if(columnName.equalsIgnoreCase("regNumber")){
 					criteria.addOrder(new org.hibernate.criterion.Order("regnumber", true) {
 			            @Override
@@ -101,7 +101,7 @@ public class CompanyDAOImpl  extends BaseDAOImpl<Company, Long>   implements Com
 			                return "cast(regnumber as unsigned) "+order;
 			            }
 			        });
-				}else{
+				} else {
 					if ("asc".equals(order)) {
 						criteria.addOrder(Order.asc(columnName));
 					}
@@ -112,7 +112,7 @@ public class CompanyDAOImpl  extends BaseDAOImpl<Company, Long>   implements Com
 				
 				
 			}
-			List<Company> results =  (List<Company>)(criteria.setFirstResult(startIndex).setMaxResults(pageSize)).list();
+			results =  (List<Company>)(criteria.setFirstResult(startIndex).setMaxResults(pageSize)).list();
 			_log.debug("GetCompanies successful, result size: " + results.size());
 			return results;
 		} catch (RuntimeException re) {
