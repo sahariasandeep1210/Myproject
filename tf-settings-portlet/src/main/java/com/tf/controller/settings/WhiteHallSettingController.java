@@ -74,7 +74,7 @@ public class WhiteHallSettingController {
 	protected ModelAndView renderGenraletings(@ModelAttribute("generalSettingModel")GeneralSetting  generalSettingModel,ModelMap model,RenderRequest request, RenderResponse response) throws Exception {		
 		_log.info("Render WhiteHall Settings Screen");
 		try {			
-			GeneralSetting generalSetting=generalSettingService.getGeneralSetting();
+			GeneralSetting generalSetting = generalSettingService.getGeneralSetting();
 			model.put(ACTIVETAB, GENERAL_SETTINGS);
 			model.put("generalSetting", generalSetting);
 		} catch (Exception e) {

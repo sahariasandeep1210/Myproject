@@ -30,6 +30,7 @@ public class GeneralSetting implements Serializable{
 	@Column(name="vat")
 	private BigDecimal 	vat;
 	
+	
 	@Column(name="seller_transaction_fee")
 	private BigDecimal 	sellerTransFee;
 	
@@ -47,6 +48,8 @@ public class GeneralSetting implements Serializable{
 	
 	@Column(name="min_level_of_investment")
 	private Integer MinLevelOfInvestment;
+	
+	
 	
 	
 	public Integer getMinLevelOfInvestment() {
@@ -160,6 +163,9 @@ public class GeneralSetting implements Serializable{
 	public void setMinPaymentDateDuartion(Integer minPaymentDateDuartion) {
 		MinPaymentDateDuartion = minPaymentDateDuartion;
 	}
+
+
+
 	
 	
 }

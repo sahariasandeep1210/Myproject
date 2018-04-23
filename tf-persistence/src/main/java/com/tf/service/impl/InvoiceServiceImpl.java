@@ -287,6 +287,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 		Calendar c2 = Calendar.getInstance();
 		c1.setTime(paymentdate);
 		c2.setTime(financedate);
+		System.out.println(" paymentDate "+paymentdate +" and financedate " + financedate);
 		Date d1=c1.getTime();
 		Date d2=c2.getTime();
         long diff=d1.getTime()-d2.getTime();

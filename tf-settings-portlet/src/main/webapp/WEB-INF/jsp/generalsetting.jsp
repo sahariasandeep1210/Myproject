@@ -19,11 +19,6 @@
 		<input type="hidden" value="${saveGeneralSettings}" id="saveSettingURL" />
 		<input type="hidden" value="${generalSetting.id}" name="id" />
 		
-	
-
-
-
-
 				<div class="customTableContainer" id="generalTable" style="width: 50%;">
 					<table class="table  tablesorter table-bordered" >
 						<thead>
@@ -51,6 +46,33 @@
 							      
 							      </td>
 							</tr>
+<%-- 							<tr>
+							     <td>VAT Investor Fee %</td>
+							      <td>
+							         <input type="text"
+												value="${generalSetting.vat }"
+												name="vat" id="vat" class="field text-right">
+							      
+							      </td>
+							</tr>
+							<tr>
+							     <td>VAT Seller Fee WhiteHall  %</td>
+							      <td>
+							         <input type="text"
+												value="${generalSetting.vat }"
+												name="vat" id="vat" class="field text-right">
+							      
+							      </td>
+							</tr>
+							<tr>
+							     <td>VAT Buyer Fee  %</td>
+							      <td>
+							         <input type="text"
+												value="${generalSetting.vat }"
+												name="vat" id="vat" class="field text-right">
+							      
+							      </td>
+							</tr> --%>
 							<tr>
 							     <td>Transaction Fee (Buyer) %</td>
 							      <td>

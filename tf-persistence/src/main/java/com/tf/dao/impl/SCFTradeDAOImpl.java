@@ -1786,20 +1786,21 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 	    }
 	}
 	
-	public List<Object[]> getSettledTradeAsPerSCFCompanies(){
+	public List<Object[]> getSettledTradeAsPerSCFCompanies(Long InvestorId){
 		
 		 StringBuilder qeryStringSettled = new StringBuilder();
 		    
-		  qeryStringSettled.append("SELECT t.company_id,SUM(a.allotment_amount), t.status ,c.name ");
-		  qeryStringSettled.append("FROM scf_trade  t, tf_allotments a, tf_company c ");
-		  qeryStringSettled.append("WHERE  t.id = a.trade_id ");
-		  qeryStringSettled.append("AND t.company_id=c.idcompany ");
+		  qeryStringSettled.append("SELECT t.company_id,SUM(t.trade_amount), t.status ,c.name ");
+		  qeryStringSettled.append("FROM  tf_allotments a,scf_trade  t, tf_company c ");
+		  qeryStringSettled.append("WHERE a.investor_id=:investorId  ");
+		  qeryStringSettled.append("AND a.trade_id = t.id ");
+		  qeryStringSettled.append("AND t.company_id = c.idcompany ");
 		 // qeryStringSettled.append("AND a.investor_id=:investorId ");
 		  qeryStringSettled.append("AND t.status = 'Settled' ");
 		  qeryStringSettled.append("GROUP BY t.company_id, c.name ");
 		    
 	      Query querySettled= sessionFactory.getCurrentSession().createSQLQuery(qeryStringSettled.toString());
-		   
+	      querySettled.setParameter("investorId",InvestorId);
 			List<Object[]> graphArraySettled = querySettled.list();
 			System.out.println("******TotalGraphSettledValueInSeparateQuery*****"+ graphArraySettled.size()+" " );
 			for (Object[] row : graphArraySettled) {

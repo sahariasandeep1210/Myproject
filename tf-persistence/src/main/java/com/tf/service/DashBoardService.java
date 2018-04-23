@@ -11,6 +11,6 @@ public interface DashBoardService {
 	public DashboardModel setDashBoardInformation(DashboardModel dashModel,String userType,Long scfCompanyID);
 	public void setInvestorStackedBarChartInformation(DashboardModel dashModel,Long investorId);
 	
-	public List<Object[]> getSettledTradeAsPerSCFCompanies();// Added to fetch the settled trade company data
+	public List<Object[]> getSettledTradeAsPerSCFCompanies(Long InvestorId);// Added to fetch the settled trade company data
 
 }

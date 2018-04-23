@@ -119,7 +119,7 @@ public class DashboardController {
 		     }
               
 		    	
-		    	List<Object[]> graphArraySettled =dashBoardService.getSettledTradeAsPerSCFCompanies();/* This function is added to show settled 
+		    	List<Object[]> graphArraySettled =dashBoardService.getSettledTradeAsPerSCFCompanies(investorID);/* This function is added to show settled 
 		    	value corresponding to scf company 
 				*/
 				for (Object[] row : graphArraySettled) {
@@ -127,11 +127,9 @@ public class DashboardController {
 					/*System.out.println("******SettledValueInSeparateQueryController*****"+ row[0] );// Company id
 					System.out.println("******SettledValueInSeparateQueryController*****"+ row[1] );//Settled Amount 
 					System.out.println("******SettledValueInSeparateQueryController*****"+ row[2] );
-					System.out.println("******SettledValueInSeparateQueryController*****"+ row[3] );// Company Name*/				}
+					System.out.println("******SettledValueInSeparateQueryController*****"+ row[3] );// Company Name*/}
 				
-				
-				
-		    	userType=Constants.PRIMARY_INVESTOR_ADMIN;	
+				userType=Constants.PRIMARY_INVESTOR_ADMIN;	
 		    	model.put("investorID", investorID);
 		    	model.put("graphArraySettled", graphArraySettled);
 		    	model.put("creditAvailForSCFCompany", creditAvailForSCFCompany);

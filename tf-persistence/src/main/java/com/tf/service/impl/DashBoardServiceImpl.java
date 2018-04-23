@@ -56,8 +56,8 @@ public class DashBoardServiceImpl implements DashBoardService {
 	    scfTradeDAO.setInvestorStackedBarChartInformation(dashModel, investorId);
 	}
 	
-	public List<Object[]> getSettledTradeAsPerSCFCompanies(){
-	    return scfTradeDAO.getSettledTradeAsPerSCFCompanies();
+	public List<Object[]> getSettledTradeAsPerSCFCompanies(Long InvestorId){
+	    return scfTradeDAO.getSettledTradeAsPerSCFCompanies(InvestorId);
 	}
 	
 
