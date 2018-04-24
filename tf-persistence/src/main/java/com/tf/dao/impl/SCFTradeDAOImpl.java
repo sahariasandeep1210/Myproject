@@ -1298,17 +1298,21 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 
 			Disjunction or2 = Restrictions.disjunction();
 			or2.add(Restrictions.between(value, fromDate, toDate));
-
 			if (fromDate != null && toDate == null && !value.equalsIgnoreCase("") && searchtxt.equalsIgnoreCase("")) {
-				criteria.add(Restrictions.eq(value, fromDate));
+				criteria.add(Restrictions.ge(value, fromDate));
+			}
+			else if (fromDate == null && toDate != null && !value.equalsIgnoreCase("") && searchtxt.equalsIgnoreCase("")) {
+				criteria.add(Restrictions.le(value, toDate));
 			}
 			else if (fromDate != null && toDate != null && !value.equalsIgnoreCase("") && searchtxt.equalsIgnoreCase("")) {
 				criteria.add(or2);
-
 			}
 			else if (fromDate != null && toDate != null && !value.equalsIgnoreCase("") && !searchtxt.equalsIgnoreCase("")) {
-				criteria.add(or2).add(or).add(Restrictions.eq(value, fromDate));
-
+				criteria.add(or2).add(or);
+			}else if (fromDate != null && toDate == null && !value.equalsIgnoreCase("") && !searchtxt.equalsIgnoreCase("")) {
+				criteria.add(or).add(Restrictions.ge(value, fromDate));
+			}else if (fromDate == null && toDate != null && !value.equalsIgnoreCase("") && !searchtxt.equalsIgnoreCase("")) {
+				criteria.add(or).add(Restrictions.le(value, toDate));
 			}
 			else {
 				criteria.add(or);

@@ -436,13 +436,13 @@ public void deleteInvoice(Invoice invoice){
 			
 			StringBuilder sqlQuery = new StringBuilder();
 			sqlQuery.append("SELECT scf.*,tf.name,st.id AS Scfid,st.scf_id FROM scf_invoice scf LEFT JOIN tf_company  tf ON tf.regnumber = scf.seller_company_registration_number LEFT JOIN scf_trade st ON scf.trade_id = st.id");
-			if(null != value && value.length()>3){
+		/*	if(null != value && value.length()>3){
 				sqlQuery.append(" Where scf.status LIKE '"+search+"%' AND scf.invoice_number LIKE '"+search+"%' AND tf.name LIKE '"+search+"%'");
 			}else{
 				sqlQuery.append(" Where scf.status LIKE '"+search+"%' OR scf.invoice_number LIKE '"+search+"%' OR tf.name LIKE '"+search+"%'");
-			}
+			}*/
 			
-		
+			sqlQuery.append(" Where ( scf.status LIKE '"+search+"%' OR scf.invoice_number LIKE '"+search+"%' OR tf.name LIKE '"+search+"%' )");
 			 if(companyID!=null){
 					sqlQuery.append(" AND scf.scf_company = '"+companyID+"'");
 			 }else if(StringUtils.isNotBlank(registrationNo)){
@@ -638,50 +638,66 @@ public void deleteInvoice(Invoice invoice){
 	
 	public Long getInvoicesByFilterCount(String search, String frmDate, String toDate, String value,Long companyID,String registrationNo) {
 		_log.debug("Inside getInvoicesByFilterCount ");
+		GenericListModel genericModel=new GenericListModel();
+		long count=0;
 		try {
-			DateFormat formatter = new SimpleDateFormat(Constants.DATE_FORMAT);
-			Date fromDate = null ;
-			Date toDates = null;
-			try {
-				if(null != frmDate && frmDate.length()>0){
-					fromDate = formatter.parse(frmDate);
-				}
-				if(null != toDate && toDate.length()>0){
-					toDates = formatter.parse(toDate);
-				}
-			} catch (ParseException e) {
-				System.out.println(e);
-			}
-			DetachedCriteria criteria = DetachedCriteria.forClass(Invoice.class);
-			Disjunction or = Restrictions.disjunction();
-				or.add(Restrictions.like("invoiceNumber",search,MatchMode.ANYWHERE));
-				or.add(Restrictions.like("status", search, MatchMode.ANYWHERE));
-				or.add(Restrictions.like("company.name", search, MatchMode.ANYWHERE));
 			
-			if(companyID!=null){
-		   	    criteria.add(Restrictions.eq("scfCompany.id", companyID));
-        		 }else if(StringUtils.isNotBlank(registrationNo)){
-        		    	    criteria.add(Restrictions.eq("sellerCompanyRegistrationNumber", registrationNo));
-        		 }
+			StringBuilder sqlQuery = new StringBuilder();
+			sqlQuery.append("SELECT scf.*,tf.name,st.id AS Scfid,st.scf_id FROM scf_invoice scf LEFT JOIN tf_company  tf ON tf.regnumber = scf.seller_company_registration_number LEFT JOIN scf_trade st ON scf.trade_id = st.id");
+			
+		/*	if(null != value && value.length()>3){
+				sqlQuery.append(" Where scf.status LIKE '"+search+"%' AND scf.invoice_number LIKE '"+search+"%' AND tf.name LIKE '"+search+"%'");
+			}else{
+				
+			}*/
+			sqlQuery.append(" Where ( scf.status LIKE '"+search+"%' OR scf.invoice_number LIKE '"+search+"%' OR tf.name LIKE '"+search+"%' )");
+		
+			 if(companyID!=null){
+					sqlQuery.append(" AND scf.scf_company = '"+companyID+"'");
+			 }else if(StringUtils.isNotBlank(registrationNo)){
+				     sqlQuery.append(" AND scf.seller_company_registration_number = '"+registrationNo+"'");
+			 }
+			
 			if (frmDate != null && toDate != null) {
-				criteria.add(Restrictions.ge(value, fromDate));
-				criteria.add(Restrictions.le(value, toDates));
-			} else if (frmDate != null && toDate == null) {
-				criteria.add(Restrictions.ge(value, fromDate));
-			} else if ( frmDate == null && toDate != null) {
-				criteria.add(Restrictions.le(value, toDates));
-			}			
-			Long resultCount =
-				(Long) criteria.getExecutableCriteria(sessionFactory.getCurrentSession()).createAlias("scfCompany", "company").add(or).setProjection(
-					Projections.rowCount()).uniqueResult();
-
-			_log.debug("getInvoicesByFilterCount  " + resultCount);
-			return resultCount;
+				 
+				if(value.equals("invoiceDate")){
+					sqlQuery.append(" AND scf.invoice_date between '"+frmDate+"' AND  '"+toDate+"'");
+				} else if(value.equals("payment_date")){
+					sqlQuery.append(" AND scf.payment_date between '"+frmDate+"' AND  '"+toDate+"'");
+				} else if(value.equals("financeDate")){
+					sqlQuery.append(" AND scf.finance_date between '"+frmDate+"' AND  '"+toDate+"'");
+				}
+			}
+			else if (frmDate != null && toDate == null) {
+				if(value.equals("invoiceDate")){
+					sqlQuery.append(" AND scf.invoice_date >= '"+frmDate+"'");
+				} else if(value.equals("payment_date")){
+					sqlQuery.append(" AND scf.payment_date >= '"+frmDate+"'");
+				} else if(value.equals("financeDate")){
+					sqlQuery.append(" AND scf.finance_date >= '"+frmDate+"'");
+				}
+				
+			}
+			else if (frmDate == null && toDate != null) {
+				if(value.equals("invoiceDate")){
+					sqlQuery.append(" AND scf.invoice_date <= '"+toDate+"'");
+				} else if(value.equals("payment_date")){
+					sqlQuery.append(" AND scf.payment_date <= '"+toDate+"'");
+				} else if(value.equals("financeDate")){
+					sqlQuery.append(" AND scf.finance_date <= '"+toDate+"'");
+				}
+			}
+			List<Invoice> invoicelist = new ArrayList<Invoice>();
+			
+			SQLQuery query = (SQLQuery) sessionFactory.getCurrentSession().createSQLQuery(sqlQuery.toString());
+			List data = query.list();
+			if(data!=null && data.size()>0){
+				return (long) data.size();
+			}
+		}catch(Exception e){
+			_log.error("getInvoicesByFilterCount failed", e);
 		}
-		catch (RuntimeException re) {
-			_log.error("getInvoicesByFilterCount failed", re);
-			throw re;
-		}
+	   return count;
 	}
 
 	public int validInvoiceImport(String invoiceNumber, Long Id) {
