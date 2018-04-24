@@ -4,9 +4,10 @@ import java.util.Comparator;
 import java.util.Date;
 
 public class MyInvestmentModel implements Comparable<MyInvestmentModel> {
-	
+	private int rowNo;
 	private String tradeNumber;
 	private String tradeId;
+	private String bps;
 	
 	private String status;
 	
@@ -23,6 +24,19 @@ public class MyInvestmentModel implements Comparable<MyInvestmentModel> {
 	private String totalTradeAmount;
 	
 	
+	
+	public int getRowNo() {
+		return rowNo;
+	}
+	public void setRowNo(int rowNo) {
+		this.rowNo = rowNo;
+	}
+	public String getBps() {
+		return bps;
+	}
+	public void setBps(String bps) {
+		this.bps = bps;
+	}
 	public String getTotalTradeAmount() {
 		return totalTradeAmount;
 	}

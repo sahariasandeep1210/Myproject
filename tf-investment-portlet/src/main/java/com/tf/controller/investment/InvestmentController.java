@@ -260,11 +260,15 @@ public class InvestmentController {
 				investorTotalGrossProfit = String.valueOf(row[2]);
 				
 			   }
-		   
+		    
+		    int rowNo = 0;
 		  
 			for (SCFTrade scf : scftrades) {
 
+				rowNo++;
+				
 				myInvestmentModel = new MyInvestmentModel();
+				myInvestmentModel.setRowNo(rowNo);
 				myInvestmentModel.setTradeNumber(scf.getScfId());
 				myInvestmentModel.setStatus(scf.getStatus());
 				myInvestmentModel.setTradeId(scf.getId().toString());
@@ -294,6 +298,8 @@ public class InvestmentController {
 				myInvestmentModel.setNetProfit(String.valueOf(obj
 						.getInvestorNetProfit()));
 				myInvestmentModel.setReceivableAmount(String.valueOf(obj.getAllotmentAmount().add(obj.getInvestorNetProfit())));
+				myInvestmentModel.setBps(obj.getMarketDiscount().toString());
+				
 				myInvestment.add(myInvestmentModel);
 				
 			
