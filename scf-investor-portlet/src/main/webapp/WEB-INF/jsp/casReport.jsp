@@ -205,6 +205,7 @@
 												<c:when test="${investorTransaction.transcationType eq 'Deposit' || investorTransaction.transcationType eq 'Repaid' || investorTransaction.transcationType eq 'Profit' }">
 													<i class="icomoon-round-plus green_normal cursor-pointer"></i>
 													<c:set var="amountClass"  value="rightalign green_bold"/>
+													<c:set var="negative" value=""/>
 												</c:when>
 												<c:otherwise>
 													<i class="icomoon-round-minus red_normal cursor-pointer"></i>
