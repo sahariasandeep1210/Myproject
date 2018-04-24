@@ -156,7 +156,7 @@ public class InvestmentController {
 	protected ModelAndView renderTradeList(ModelMap model, RenderRequest request, RenderResponse response)
 		throws Exception {
        
-		List<SCFTrade> scftrades = null;
+		List<SCFTrade> scftrades = null; String myTradeUrl = null;
 		
 		ArrayList<MyInvestmentModel> myInvestment = new ArrayList<MyInvestmentModel>();
 		MyInvestmentModel	myInvestmentModel; 
@@ -180,6 +180,10 @@ public class InvestmentController {
 			   String investorTotalNetProfit = "";
 			   String totalInvestorAllotment = "";
 			   
+			   BigDecimal investorTotalGrossProfitTemp = BigDecimal.ZERO;// These variables are used when search is not null
+			   BigDecimal investorTotalNetProfitTemp = BigDecimal.ZERO;
+			   BigDecimal totalInvestorAllotmentTemp = BigDecimal.ZERO;
+			   
 			    DateFormat formatter = new SimpleDateFormat(Constants.DATE_FORMAT);
 				Date fromDate = null;
 				Date toDate = null;
@@ -202,7 +206,8 @@ public class InvestmentController {
 				model.put("sortCompany_order", sortCompany_order);
 				model.put("sort_Column", columnName);
 				model.put("sort_order", order);
-			
+				myTradeUrl = liferayUtility.getPortletURL(request, "scf-trade-portlet", "render", "", true);// To make hiperlink and redirect to MY Investment portlet.
+				
 				 System.out.println(" *****SortingValue**************" +sortCompany_order+" "+ columnName + " "+order );
 			String search = ParamUtil.getString(request, "Search");
 		    Long companyId  = liferayUtility.getWhitehallCompanyID(request);
@@ -262,7 +267,9 @@ public class InvestmentController {
 				myInvestmentModel = new MyInvestmentModel();
 				myInvestmentModel.setTradeNumber(scf.getScfId());
 				myInvestmentModel.setStatus(scf.getStatus());
-
+				myInvestmentModel.setTradeId(scf.getId().toString());
+				myInvestmentModel.setTotalTradeAmount(scf.getTradeAmount().toString());
+				
 				myInvestmentModel.setDuration(scf.getDuration().toString());
 				myInvestmentModel.setStartDate(scf.getOpeningDate());
 				myInvestmentModel.setEndDate(scf.getSellerPaymentDate());
@@ -289,18 +296,26 @@ public class InvestmentController {
 				myInvestmentModel.setReceivableAmount(String.valueOf(obj.getAllotmentAmount().add(obj.getInvestorNetProfit())));
 				myInvestment.add(myInvestmentModel);
 				
-
+			
+				    totalInvestorAllotmentTemp =  totalInvestorAllotmentTemp.add(obj.getAllotmentAmount());
+				    investorTotalGrossProfitTemp = investorTotalGrossProfitTemp.add(obj.getInvestorGrossProfit());
+				    investorTotalNetProfitTemp = investorTotalNetProfitTemp.add(obj.getInvestorNetProfit());
+				
 				
 			}
-			if (columnName != null && columnName.equals("tradeAmount")) {
+			if (search != null && search.trim().length()>0 ){
 
 				//Collections.sort(myInvestment,new MyInvestmentModel.OrderByNetProfit());
+				totalInvestorAllotment = totalInvestorAllotmentTemp.toString();
+				investorTotalGrossProfit = investorTotalGrossProfitTemp.toString();
+				investorTotalNetProfit =  investorTotalNetProfitTemp.toString();
 			}
 			model.put("totalInvestorAllotment", totalInvestorAllotment);
 			model.put("investorTotalGrossProfit", investorTotalGrossProfit);
 			model.put("investorTotalNetProfit", investorTotalNetProfit);
 			model.put("receivableAmount", Float.parseFloat(totalInvestorAllotment)+Float.parseFloat(investorTotalNetProfit) );
 			model.put("search", search);
+			model.put("myTradeUrl", myTradeUrl);
 			model.put("myInvestment", myInvestment);
 			paginationUtil.setPaginationInfo(noOfRecords, paginationModel);
 			System.out.println("paginationsss:" + paginationModel);

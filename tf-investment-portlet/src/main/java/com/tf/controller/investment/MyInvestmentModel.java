@@ -6,6 +6,8 @@ import java.util.Date;
 public class MyInvestmentModel implements Comparable<MyInvestmentModel> {
 	
 	private String tradeNumber;
+	private String tradeId;
+	
 	private String status;
 	
 	private String duration;
@@ -18,6 +20,21 @@ public class MyInvestmentModel implements Comparable<MyInvestmentModel> {
 	private String netProfit;
 	private String receivableAmount;
 	
+	private String totalTradeAmount;
+	
+	
+	public String getTotalTradeAmount() {
+		return totalTradeAmount;
+	}
+	public void setTotalTradeAmount(String totalTradeAmount) {
+		this.totalTradeAmount = totalTradeAmount;
+	}
+	public String getTradeId() {
+		return tradeId;
+	}
+	public void setTradeId(String tradeId) {
+		this.tradeId = tradeId;
+	}
 	
 	public String getReceivableAmount() {
 		return receivableAmount;

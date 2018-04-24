@@ -70,6 +70,7 @@
 						<th>Trade # <br><img column-name="scfId" class="sortColumn" id="trade_SortAsc" src="<%=request.getContextPath()%>/images/up.png" alt="asc" order="asc"/><img column-name="scfId" class="sortColumn" id="trade_SortDesc" src="<%=request.getContextPath()%>/images/down.png" alt="desc" order="desc"/></th>
 					   
 						<th>Status <br><img column-name="status" class="sortColumn" id="status_SortAsc" src="<%=request.getContextPath()%>/images/up.png" alt="asc" order="asc"/><img column-name="status" class="sortColumn" id="status_SortDesc" src="<%=request.getContextPath()%>/images/down.png" alt="desc" order="desc"/></th>
+						<th>Trade Value <br><img column-name="tradeAmount" class="sortColumn" id="allotment_SortAsc" src="<%=request.getContextPath()%>/images/up.png" alt="asc" order="asc"/><img column-name="tradeAmount" class="sortColumn" id="allotment_SortDesc" src="<%=request.getContextPath()%>/images/down.png" alt="desc" order="desc"/></th>
 						<th>My Allotment<br><img column-name="sellerNetAllotment" class="sortColumn" id="financeAmount_SortAsc" src="<%=request.getContextPath()%>/images/up.png" alt="asc" order="asc"/><img column-name="sellerNetAllotment" class="sortColumn" id="financeAmount_SortDesc" src="<%=request.getContextPath()%>/images/down.png" alt="desc" order="desc"/></th>
 						<th>My Gross Profit <br><img column-name="tradeAmount" class="sortColumn" id="allotment_SortAsc" src="<%=request.getContextPath()%>/images/up.png" alt="asc" order="asc"/><img column-name="tradeAmount" class="sortColumn" id="allotment_SortDesc" src="<%=request.getContextPath()%>/images/down.png" alt="desc" order="desc"/></th>
 						<th>My Net Profit <br><img column-name="tradeAmount" class="sortColumn" id="allotment_SortAsc" src="<%=request.getContextPath()%>/images/up.png" alt="asc" order="asc"/><img column-name="tradeAmount" class="sortColumn" id="allotment_SortDesc" src="<%=request.getContextPath()%>/images/down.png" alt="desc" order="desc"/></th>
@@ -91,6 +92,9 @@
 								<td style="background-color:#189a80;color:white" ><span class='underline'>Total</span></td>
 								<td style="background-color:#189a80;color:white" ></td>
 								<td style="background-color:#189a80 ;color:white"" class="rightalign"><fmt:formatNumber type="number"
+										maxFractionDigits="3" value="${totalTradeAmount}" pattern="#,##0.00"/></td>
+								
+								<td style="background-color:#189a80 ;color:white"" class="rightalign"><fmt:formatNumber type="number"
 										maxFractionDigits="3" value="${totalInvestorAllotment}" pattern="#,##0.00"/></td>
 								
 								<td style="background-color:#189a80;color:white"" class="rightalign"><fmt:formatNumber type="number"
@@ -108,9 +112,18 @@
 							</tr> 
 							<c:forEach items="${myInvestment}" var="myInvestment">
 								<tr>
-									<td>${myInvestment.tradeNumber}</td>
-								
+									<td>
+										<div class="bigText blue">
+											<a href="${myTradeUrl}&Search=${myInvestment.tradeNumber}"
+												style="text-decoration: underline;">
+												${myInvestment.tradeNumber} </a>
+										</div>
+									</td>
+
 									<td>${myInvestment.status}</td>
+									
+									<td class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${myInvestment.totalTradeAmount}"  pattern="#,##0.00"/></td>
+									
 									<td class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${myInvestment.myAllotment}"  pattern="#,##0.00"/></td>
 									<td class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${myInvestment.grossProfit}"  pattern="#,##0.00"/></td>
 									<td class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${myInvestment.netProfit}"  pattern="#,##0.00"/></td>
