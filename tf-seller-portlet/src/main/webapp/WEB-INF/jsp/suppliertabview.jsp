@@ -15,10 +15,10 @@
 
 
 <ul class="nav nav-tabs">
-	<li class="tab" id="companyList"><a href="${defaultRenderURL}">Company
+	<li class="tab" id="companyList"><a href="${defaultRenderURL}">My Company Setup
 	</a></li>
 		<li class="tab" id="supplierdocList"><a
-			href="${supplierDocumentsURL}">Supplier Documents </a></li>
+			href="${supplierDocumentsURL}">Supplier Setup</a></li>
 </ul>
 
 
