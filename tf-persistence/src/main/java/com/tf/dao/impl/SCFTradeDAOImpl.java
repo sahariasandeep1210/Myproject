@@ -20,7 +20,9 @@ import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.criterion.CriteriaSpecification;
+import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Disjunction;
+import org.hibernate.criterion.LogicalExpression;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
@@ -297,7 +299,15 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 			prList.add((Projections.distinct(Projections.property("inv.scfTrade"))));
 			criteria.setProjection(prList);
 			criteria.createAlias("company", "company");
-
+			
+		
+			Criterion settled = Restrictions.ilike("status","Settled");
+			Criterion allotment = Restrictions.ilike("status","Allotment Paid");
+			Criterion live = Restrictions.ilike("status","Live");
+			// To get records matching with OR conditions
+			//LogicalExpression orExp = Restrictions.or(settled, allotment);
+			LogicalExpression orExp = Restrictions.or(Restrictions.or(settled, allotment),live);
+			criteria.add( orExp );// to only show Settled, Allotment Paid and Live status values
 			if("".equals(columnName)){			
 				criteria.addOrder(Order.desc("updatDate"));
 			}
@@ -353,6 +363,15 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 			or.add(Restrictions.like("status", searchtxt, MatchMode.ANYWHERE));
 			or.add(Restrictions.like("scfId", searchtxt, MatchMode.ANYWHERE));
 			or.add(Restrictions.like("company.name", searchtxt, MatchMode.ANYWHERE));
+			
+			Criterion settled = Restrictions.ilike("status","Settled");
+			Criterion allotment = Restrictions.ilike("status","Allotment Paid");
+			Criterion live = Restrictions.ilike("status","Live");
+			// To get records matching with OR conditions
+			//LogicalExpression orExp = Restrictions.or(settled, allotment);
+			LogicalExpression orExp = Restrictions.or(Restrictions.or(settled, allotment),live);
+			criteria.add( orExp );// to only show Settled, Allotment Paid and Live status values
+			
 			ProjectionList prList = Projections.projectionList();
 			prList.add((Projections.distinct(Projections.property("inv.scfTrade"))));
 			criteria.setProjection(prList);

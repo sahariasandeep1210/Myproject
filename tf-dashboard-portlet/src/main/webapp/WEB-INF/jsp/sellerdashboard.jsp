@@ -66,8 +66,11 @@
 						
 					</div>			
 					<div id="barchart"></div>
+					<div  class="span12"  style="color:#ff0000">  * Values are indicative and Fixed Fees are separate from this.</div>
 				</div>
+				
 			</div>
+			
 		</div>
 	</div>
 </div>

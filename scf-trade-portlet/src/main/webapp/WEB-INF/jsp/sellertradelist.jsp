@@ -113,6 +113,7 @@
 
 							</tr>		
 							<c:forEach items="${scftrades}" var="trade">
+							  
 								<tr>
 									<td><span class='underline'><a
 											href="javascript:void(0);"
@@ -135,6 +136,7 @@
 									<td class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${trade.sellerNetAllotment}"  pattern="#,##0.00"/></td>
 
 								</tr>
+							
 
 							</c:forEach>
 						</c:when>
