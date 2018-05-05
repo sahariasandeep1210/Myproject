@@ -46,35 +46,9 @@
 							      
 							      </td>
 							</tr>
-<%-- 							<tr>
-							     <td>VAT Investor Fee %</td>
-							      <td>
-							         <input type="text"
-												value="${generalSetting.vat }"
-												name="vat" id="vat" class="field text-right">
-							      
-							      </td>
-							</tr>
+							
 							<tr>
-							     <td>VAT Seller Fee WhiteHall  %</td>
-							      <td>
-							         <input type="text"
-												value="${generalSetting.vat }"
-												name="vat" id="vat" class="field text-right">
-							      
-							      </td>
-							</tr>
-							<tr>
-							     <td>VAT Buyer Fee  %</td>
-							      <td>
-							         <input type="text"
-												value="${generalSetting.vat }"
-												name="vat" id="vat" class="field text-right">
-							      
-							      </td>
-							</tr> --%>
-							<tr>
-							     <td>Transaction Fee (Buyer) %</td>
+							     <td>Transaction Fee (Buyer) Fixed</td>
 							      <td>
 							      <input type="text"
 												value="${generalSetting.sellerTransFee }"
@@ -109,6 +83,34 @@
 							         
 							      </td>
 							</tr>
+							
+						 <%-- <tr>
+							     <td>VAT Investor Fee %</td>
+							      <td>
+							         <input type="text"
+												value="${generalSetting.vatInvestor }"
+												name="vatInvestor" id="vatInvestor" class="field text-right">
+							      
+							      </td>
+							</tr>
+							<tr>
+							     <td>VAT WhiteHall Fee %</td>
+							      <td>
+							         <input type="text"
+												value="${generalSetting.vatWhitehall }"
+												name="vatWhitehall" id="vatWhitehall" class="field text-right">
+							      
+							      </td>
+							</tr>
+							<tr>
+							     <td>VAT Seller Fee  %</td>
+							      <td>
+							         <input type="text"
+												value="${generalSetting.vatSeller }"
+												name="vatSeller" id="vatSeller" class="field text-right">
+							      
+							      </td>
+							</tr> --%> 
 							
 					</tbody>
 					</table>

@@ -31,7 +31,7 @@
 
 				<div class="span3 spanSm6 mtXs10">
 		  			<div class="control-group">
-		  				<label class="control-label">Transaction Fee (Buyer)</label>
+		  				<label class="control-label">Transaction Fee (Buyer) Fixed</label>
 		  				<form:input path="sellerTransFee" cssClass="field" id="transaction" />
 					</div>
 		  		</div>
@@ -112,7 +112,7 @@
 					    <th>SCF Company</th>
 						<th>Opening Date</th>
 						<th>Modify Date</th>
-						<th>Transaction Fee (Buyer)</th>
+						<th>Transaction Fee (Buyer) Fixed</th>
 						<th>Seller Transaction Fee (Whitehall)</th>	
 					</tr>
 				</thead>
