@@ -400,13 +400,12 @@ public class CompanyController extends BaseController {
 		long userID = ParamUtil.getLong(request, "userID");
 		long companyID = ParamUtil.getLong(request, "companyID");
 		if (userID != 0) {
-			user = userService.findById(userID);
-			synchronizeDataFromLifeary(user);
+		    user = userService.findById(userID);
+		    synchronizeDataFromLifeary(user);
 		}
 		List<Officer> officers = officerService
 				.findOfficersByCompanyId(companyID);
-		Map<String, String> userTypesMap = adminUtility.getUserTypes(
-				adminUtility.getUserID(request),
+		Map<String, String> userTypesMap = adminUtility.getUserTypes(adminUtility.getUserID(request),
 				companyTypeMap.get(Long.valueOf(companyService
 						.getCompanyTypebyID(companyID))), request);
 		
@@ -459,14 +458,12 @@ public class CompanyController extends BaseController {
 			ModelMap model, ActionRequest request, ActionResponse response)
 			throws Exception {
 		boolean createUser = false;
-		ThemeDisplay themeDisplay = (ThemeDisplay) request
-				.getAttribute(WebKeys.THEME_DISPLAY);
+		ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
 		Long companyID = ParamUtil.getLong(request, "companyID");
 		Long officerId = ParamUtil.getLong(request, "officer", 0);
 		try {
 			user.setCompany(companyService.findById(companyID));
-			liferayService.addUserInformation(user, request, createUser,
-					themeDisplay, officerId);
+			liferayService.addUserInformation(user, request, createUser,themeDisplay, officerId);
 			response.setRenderParameter("companyID", companyID.toString());
 			response.setRenderParameter("render", "createCompany");
 
@@ -474,13 +471,14 @@ public class CompanyController extends BaseController {
 			response.setRenderParameter("companyID", companyID.toString());
 			model.put("userModel", user);
 			if (e instanceof DuplicateUserEmailAddressException) {
-				SessionErrors.add(request, "error-user-email");
+			    SessionErrors.add(request, "error-user-email");
 			} else if (e instanceof DuplicateUserScreenNameException) {
-				SessionErrors.add(request, "error-user-screenname");
+			    SessionErrors.add(request, "error-user-screenname");
 			} else {
-				SessionErrors.add(request, "default-error-message");
+			    SessionErrors.add(request, "default-error-message");
 			}
 			response.setRenderParameter("render", "createUser");
+			_log.error("Error occured while adding/upating user : "+e.getMessage());
 		}
 
 	}
