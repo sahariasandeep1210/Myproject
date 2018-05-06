@@ -86,7 +86,7 @@ public class AllotmentEngine {
 		for (InvestorProtfolioDTO investor : investors) {
 
 			if(sameRateCount == 0 ){
-				sameRateCount = investor.getSameRateCount();
+			    sameRateCount = investor.getSameRateCount();
 			}
 
 			allotment = new Allotment(); 

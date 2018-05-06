@@ -74,6 +74,7 @@ import com.tf.model.SellerScfCompanyMapping;
 import com.tf.model.User;
 import com.tf.persistance.util.CompanyStatus;
 import com.tf.persistance.util.Constants;
+import com.tf.persistance.util.InvalidRequest;
 import com.tf.util.CompanyDTO;
 import com.tf.util.OfficerDTO;
 import com.tf.util.ReportUtility;
@@ -106,19 +107,7 @@ public class CompanyController extends BaseController {
 			
 			String columnName = ParamUtil.getString(request, "sort_Column");
 			String order = ParamUtil.getString(request, "sort_order");
-			String sortCompany_order = ParamUtil.getString(request, "sortVal_order");
-			
-		/*	if(searchValue==null || searchValue==""){
-				
-				companyList = prepareCompanyList(request, companyList,
-						themeDisplay, model,columnName,order,paginationModel.getStartIndex(), paginationModel.getPageSize());
-			}
-			else{
-				companyList = prepareCompanyListFilter(request, companyList,
-						themeDisplay, model,searchValue,columnName,order,paginationModel.getStartIndex(), paginationModel.getPageSize());
-			
-			}*/
-			
+			String sortCompany_order = ParamUtil.getString(request, "sortVal_order");			
 			companyList = prepareCompanyListFilter(request, companyList,
 					themeDisplay, model,searchValue,columnName,order,paginationModel.getStartIndex(), paginationModel.getPageSize());
 			
@@ -168,7 +157,18 @@ public class CompanyController extends BaseController {
 		try {
 			users = new ArrayList<User>();
 			if (companyID != 0) {
-				company = companyService.findById(companyID);
+			    if (liferayUtility.getPermissionChecker(request).isOmniadmin() ||
+					request.isUserInRole(Constants.WHITEHALL_ADMIN)) {
+					company = companyService.findById(companyID);
+			    	} else {
+			    	    long compId = userService.getCompanybyUserID(themeDispay.getUserId()).getId();
+			    	    if(compId == companyID){
+			    		company = companyService.findById(companyID);
+			    	    } else {
+			    		throw new InvalidRequest();
+			    	    }
+			    	}
+				
 				users = userService.findUserByCompanyId(companyID);
 				company.setOfficers(new LinkedHashSet<Officer>(officerService.findOfficersByCompanyId(companyID)));
 				model.put("cmpType", companyTypeMap.get(Long.valueOf(company.getCompanyType())));
@@ -185,7 +185,6 @@ public class CompanyController extends BaseController {
 			}
 			if(request.isUserInRole(Constants.PRIMARY_INVESTOR_ADMIN)){//to check investor
 				model.put("userType", Constants.PRIMARY_INVESTOR_ADMIN);
-				_log.info("****UserType******1 " + Constants.PRIMARY_INVESTOR_ADMIN);
 			}
 		
 			
@@ -245,8 +244,13 @@ public class CompanyController extends BaseController {
 			model.put("users", users);
 
 		} catch (Exception e) {
-			e.printStackTrace();
-			SessionErrors.add(request, "default-error-message");
+		    
+		    	if(e instanceof InvalidRequest){
+		    	    SessionErrors.add(request, "invalid-request");
+		    	} else {
+		    	    e.printStackTrace();
+		    	    SessionErrors.add(request, "default-error-message");
+		    	}			
 			_log.error("CompanyController.createCompany() - error occured while rendering add company screen"+ e.getMessage());
 		}
 		Map userInfo = (Map) request.getAttribute(PortletRequest.USER_INFO);
