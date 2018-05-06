@@ -64,8 +64,8 @@ public class AdminUtility {
 	}
 	
 	private   Map<String,String> addSecInvestorUserTypes(Map<String,String> map){
-		map.put("Secondary Invester User","Secondary Invester User");
-		map.put("Secondary Invester Admin","Secondary Invester Admin");		
+		map.put("Secondary Investor User","Secondary Investor User");
+		map.put("Secondary Investor Admin","Secondary Investor Admin");		
 		return map;			
 	}
 	

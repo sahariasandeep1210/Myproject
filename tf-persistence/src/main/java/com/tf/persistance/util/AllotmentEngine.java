@@ -71,12 +71,11 @@ public class AllotmentEngine {
 		List<Allotment> allotments				  = new ArrayList<Allotment>(); 
 		List<InvestorTransaction> invTranscations = new ArrayList<InvestorTransaction>(); 
 
-		BigDecimal currentAllotment =		BigDecimal.ZERO; 
-		
+		BigDecimal currentAllotment =		BigDecimal.ZERO;		
 		BigDecimal investorTotalGross = 	BigDecimal.ZERO; 
-		BigDecimal whitehallTotal =			BigDecimal.ZERO; 
+		BigDecimal whitehallTotal =		BigDecimal.ZERO; 
 		BigDecimal investorTotalNet =		BigDecimal.ZERO; 
-		BigDecimal sellerFees =				BigDecimal.ZERO;		
+		BigDecimal sellerFees =			BigDecimal.ZERO;		
 		SellerSetting sellerSetting = null;
 		GeneralSetting generalSetting = null;
 		int sameRateCount = 0; 
@@ -241,28 +240,33 @@ public class AllotmentEngine {
 	private BigDecimal calculateSellerFees(Integer duration,BigDecimal tradeAmount,SellerSetting sellerSetting){		
 		BigDecimal sellerFees=((new BigDecimal(duration).multiply(sellerSetting.getSellerFinFee(), new MathContext(6, RoundingMode.HALF_EVEN))).divide(TEN_THOUSAND,6, RoundingMode.HALF_EVEN)).multiply(tradeAmount, new MathContext(6, RoundingMode.HALF_EVEN));
 		sellerFees.setScale(6, RoundingMode.HALF_EVEN);
+		_log.info("Seller fees without general settings :"+sellerFees);
 		return sellerFees;
 	}
 	private BigDecimal calculateSellerFeesByGeneralSetting(Integer duration,BigDecimal tradeAmount,GeneralSetting generalSetting){		
 		BigDecimal sellerFees=((new BigDecimal(duration).multiply(generalSetting.getSellerFinFee(),  new MathContext(6, RoundingMode.HALF_EVEN)))).divide(TEN_THOUSAND,6, RoundingMode.HALF_EVEN).multiply(tradeAmount, new MathContext(6, RoundingMode.HALF_EVEN));
 		sellerFees.setScale(2, RoundingMode.HALF_EVEN);
+		_log.info("Seller fees with general settings :"+sellerFees);
 		return sellerFees;
 	}
 	
 	private BigDecimal calculateWhitehallTotalProfit(BigDecimal whitehallTotal,BigDecimal sellerFees,BigDecimal sellerTransFee){		
-		BigDecimal WhitehallTotalProfit=whitehallTotal.add(sellerFees).add(sellerTransFee);
-		WhitehallTotalProfit.setScale(2, RoundingMode.HALF_EVEN);
-		return WhitehallTotalProfit;
+		BigDecimal whitehallTotalProfit=whitehallTotal.add(sellerFees).add(sellerTransFee);
+		whitehallTotalProfit.setScale(2, RoundingMode.HALF_EVEN);
+		_log.info("Whitehall total profit :"+whitehallTotalProfit);
+		return whitehallTotalProfit;
 	}
 	
 	private BigDecimal calculateSellerNetAllotment(BigDecimal tradeAmount,BigDecimal investorTotalProfit,BigDecimal WhitehallNetReceivable){		
-		BigDecimal SellerNetAllotment=tradeAmount.subtract((investorTotalProfit.add(WhitehallNetReceivable)));
-		SellerNetAllotment.setScale(2, RoundingMode.HALF_EVEN);
-		return SellerNetAllotment;
+		BigDecimal sellerNetAllotment=tradeAmount.subtract((investorTotalProfit.add(WhitehallNetReceivable)));
+		sellerNetAllotment.setScale(2, RoundingMode.HALF_EVEN);
+		_log.info("Seller net allotment :"+sellerNetAllotment);
+		return sellerNetAllotment;
 	}
 	
 	private void saveTradeAudit(SCFTrade trade, long userId,
 			SellerSetting sellerSetting,GeneralSetting setting) {
+	    	_log.info("Start adding Tarde audit for trade id :"+ trade.getScfId());
 		//creating trade audit
 		TradeAudit tradeAudit=new TradeAudit();
 		tradeAudit.setCreateDate(new Date());
@@ -276,6 +280,7 @@ public class AllotmentEngine {
 		}
 		tradeAudit.setUserID(userId);
 		tradeAuditDAO.saveEntity(tradeAudit);
+		_log.info("completed Tarde audit for tarde id : " + trade.getScfId());
 	}
 	
 	
