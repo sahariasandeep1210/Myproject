@@ -21,8 +21,11 @@ public class GeneralSettingServiceImpl implements GeneralSettingService {
 		if(generalSettingModel.getId()!=null){
 			GeneralSetting generalSetting=getGenralSettingFromModel(generalSettingModel);
 			generalSetting.setUpdateDate(date);
+			System.out.println("GeneralSettingServiceImpl******A"+ generalSettingModel.getVatInvestor());
 			generalSettingDAO.saveGeneralSettings(generalSetting);
+			
 		}else{
+			System.out.println("GeneralSettingServiceImpl*****B"+ generalSettingModel.getVatInvestor());
 			generalSettingModel.setCreateDate(date);
 			generalSettingDAO.saveGeneralSettings(generalSettingModel);
 		}
@@ -41,6 +44,9 @@ public class GeneralSettingServiceImpl implements GeneralSettingService {
 		generalSetting.setVat(generalSettingModel.getVat());
 		generalSetting.setWhitehalShare(generalSettingModel.getWhitehalShare());
 		generalSetting.setMinLevelOfInvestment(generalSettingModel.getMinLevelOfInvestment());
+		generalSetting.setVatInvestor(generalSettingModel.getVatInvestor());
+		generalSetting.setVatWhitehall(generalSettingModel.getVatWhitehall());
+		generalSetting.setVatSeller(generalSettingModel.getVatSeller());
 		return generalSetting;
 	}
 	

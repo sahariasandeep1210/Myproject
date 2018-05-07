@@ -50,6 +50,14 @@ public class GeneralSetting implements Serializable{
 	private Integer MinLevelOfInvestment;
 	
 	
+	@Column(name="vat_investor")
+	private BigDecimal vatInvestor;
+	
+	@Column(name="vat_whitehall")
+	private BigDecimal vatWhitehall;
+	
+	@Column(name="vat_seller")
+	private BigDecimal vatSeller;
 	
 	
 	public Integer getMinLevelOfInvestment() {
@@ -163,6 +171,46 @@ public class GeneralSetting implements Serializable{
 	public void setMinPaymentDateDuartion(Integer minPaymentDateDuartion) {
 		MinPaymentDateDuartion = minPaymentDateDuartion;
 	}
+
+
+
+	public BigDecimal getVatInvestor() {
+		return vatInvestor;
+	}
+
+
+
+	public void setVatInvestor(BigDecimal vatInvestor) {
+		this.vatInvestor = vatInvestor;
+	}
+
+
+
+	public BigDecimal getVatWhitehall() {
+		return vatWhitehall;
+	}
+
+
+
+	public void setVatWhitehall(BigDecimal vatWhitehall) {
+		this.vatWhitehall = vatWhitehall;
+	}
+
+
+
+	public BigDecimal getVatSeller() {
+		return vatSeller;
+	}
+
+
+
+	public void setVatSeller(BigDecimal vatSeller) {
+		this.vatSeller = vatSeller;
+	}
+
+
+
+	
 
 
 

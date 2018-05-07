@@ -20,6 +20,7 @@ import com.tf.service.GeneralSettingService;
 import com.tf.service.InvoiceService;
 import com.tf.service.SCFTradeService;
 
+import java.awt.Component;
 import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -32,12 +33,14 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.chainsaw.Main;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -292,13 +295,13 @@ public class InvoiceServiceImpl implements InvoiceService {
 		Date d2=c2.getTime();
         long diff=d1.getTime()-d2.getTime();
         int noofdays=(int)(diff/(1000*24*60*60));
-        GeneralSetting generalSetting=generalSettingService.getGeneralSetting();
+      /*  GeneralSetting generalSetting=generalSettingService.getGeneralSetting();
         if((generalSetting!=null && generalSetting.getMinPaymentDateDuartion() !=null) && (noofdays < generalSetting.getMinPaymentDateDuartion())){        	
         	throw new InvalidDuration(generalSetting.getMinPaymentDateDuartion());	
-        }
+        }*/
         return noofdays;		
 	}
-	
+	  
 	private  Date nextWorkingDate(Date date,List<Date> holidayList) {
 		Calendar c = Calendar.getInstance();
 		c.setTime(date);

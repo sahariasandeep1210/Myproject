@@ -155,7 +155,42 @@ public class SCFTrade  implements Serializable{
 	@Transient
 	private int invoiceNumber;
 	
+	@Column(name="investor_total_vat_amount")
+	private BigDecimal investorTotalVatAmount;
 	
+	@Column(name="vat_whitehall_gross_profit")
+	private BigDecimal vatWhitehallGrossProfit;
+	
+	@Column(name="vat_finance_amount")
+	private BigDecimal vatFinanceAmount;
+	
+	
+	
+	
+	public BigDecimal getVatWhitehallGrossProfit() {
+		return vatWhitehallGrossProfit;
+	}
+
+	public void setVatWhitehallGrossProfit(BigDecimal vatWhitehallGrossProfit) {
+		this.vatWhitehallGrossProfit = vatWhitehallGrossProfit;
+	}
+
+	public BigDecimal getVatFinanceAmount() {
+		return vatFinanceAmount;
+	}
+
+	public void setVatFinanceAmount(BigDecimal vatFinanceAmount) {
+		this.vatFinanceAmount = vatFinanceAmount;
+	}
+
+	public BigDecimal getInvestorTotalVatAmount() {
+		return investorTotalVatAmount;
+	}
+
+	public void setInvestorTotalVatAmount(BigDecimal investorTotalVatAmount) {
+		this.investorTotalVatAmount = investorTotalVatAmount;
+	}
+
 	public SCFTrade() {
 	}
 

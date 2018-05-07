@@ -84,7 +84,7 @@
 							      </td>
 							</tr>
 							
-						 <%-- <tr>
+						 <tr>
 							     <td>VAT Investor Fee %</td>
 							      <td>
 							         <input type="text"
@@ -110,7 +110,7 @@
 												name="vatSeller" id="vatSeller" class="field text-right">
 							      
 							      </td>
-							</tr> --%> 
+							</tr> 
 							
 					</tbody>
 					</table>

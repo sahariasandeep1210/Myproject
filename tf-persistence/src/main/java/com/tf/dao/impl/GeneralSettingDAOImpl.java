@@ -25,15 +25,18 @@ public class GeneralSettingDAOImpl extends BaseDAOImpl<GeneralSetting, Long>  im
 			_log.error("getGeneralSettings failed", re);
 			throw re;
 		}
-}
+ }
 	
 	public void saveGeneralSettings(GeneralSetting generalSettingModel) {
 		_log.debug("persisting General Settings instance");
+		System.out.println("saved general setting*******1"+ generalSettingModel.getVatInvestor());
 		try{
 		Session session=sessionFactory.getCurrentSession();
 		session.saveOrUpdate(generalSettingModel);
-		_log.debug("persist successful"+generalSettingModel);
+		
+		_log.info("persist successful"+generalSettingModel.toString());
 
+		System.out.println("saved general setting*******2"+ generalSettingModel.getVatInvestor());
 		}catch(RuntimeException re) {
 			_log.error("persist failed", re);
 			throw re;

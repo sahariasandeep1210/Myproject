@@ -114,6 +114,8 @@ public class WhiteHallSettingController {
 												 ModelMap model,
 												 ActionRequest request,
 												 ActionResponse response) throws Exception {
+		
+		_log.info("Save general settings**********" + generalSettingModel.getVatInvestor() + " "+generalSettingModel.getVat());
 		generalSettingService.saveGeneralSettings(generalSettingModel);
 		
 		response.setRenderParameter("render", "generalSettings");
