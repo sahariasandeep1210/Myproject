@@ -2,7 +2,9 @@
 
 	 <root>
 			 <roles>
+			 	<role name="Primary Investor User" 			title="Primary Investor User" 		description="Primary Investor User"  	type="Regular"	/>
 			  	<role name="Primary Investor Admin" 		title="Primary Investor Admin" 		description="Primary Investor Admin"  	type="Regular"	/>
+			  	<role name="Secondary Investor User" 		title="Secondary Investor User" 	description="Secondary Investor User"  type="Regular"	/>
 			  	<role name="Secondary Investor Admin" 		title="Secondary Investor Admin" 	description="Secondary Investor Admin"  type="Regular"	/>
 			  	<role name="SCF Company Admin" 				title="SCF Company Admin" 			description="SCF Company Admin" 		type="Regular"	/>
 			  	<role name="SCF Company User" 				title="SCF Company User" 			description="SCF Company User" 			type="Regular"	/>

@@ -30,6 +30,7 @@
 </liferay-ui:error> 
 
 <liferay-ui:error key="default-error-message" 		message="default.error.message" /> 
+<liferay-ui:error key="invalid-request" 			message="invalid.request" /> 
 
 <div class="" id="errorMsg"></div>
 
