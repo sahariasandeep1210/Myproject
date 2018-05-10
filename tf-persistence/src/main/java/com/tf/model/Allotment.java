@@ -75,6 +75,20 @@ public class Allotment implements Serializable {
 	@Column(name="status")
 	private String status;
 	
+	/**
+	 * New column added to store vat on investor profit 
+	 */
+	@Column(name="vat_investor_fee")
+	private BigDecimal vatInvestorFee;
+	
+	public BigDecimal getVatInvestorFee() {
+		return vatInvestorFee;
+	}
+
+	public void setVatInvestorFee(BigDecimal vatInvestorFee) {
+		this.vatInvestorFee = vatInvestorFee;
+	}
+
 	public Allotment() {
 	}
 

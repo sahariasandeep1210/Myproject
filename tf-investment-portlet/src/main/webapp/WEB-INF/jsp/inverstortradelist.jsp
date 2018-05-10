@@ -75,6 +75,7 @@
 						<th>BPS<br><img column-name="sellerNetAllotment" class="sortColumn" id="financeAmount_SortAsc" src="<%=request.getContextPath()%>/images/up.png" alt="asc" order="asc"/><img column-name="sellerNetAllotment" class="sortColumn" id="financeAmount_SortDesc" src="<%=request.getContextPath()%>/images/down.png" alt="desc" order="desc"/></th>
 						
 						<th>My Gross Profit <br><img column-name="tradeAmount" class="sortColumn" id="allotment_SortAsc" src="<%=request.getContextPath()%>/images/up.png" alt="asc" order="asc"/><img column-name="tradeAmount" class="sortColumn" id="allotment_SortDesc" src="<%=request.getContextPath()%>/images/down.png" alt="desc" order="desc"/></th>
+						<th>VAT On Profit</th>
 						<th>My Net Profit <br><img column-name="tradeAmount" class="sortColumn" id="allotment_SortAsc" src="<%=request.getContextPath()%>/images/up.png" alt="asc" order="asc"/><img column-name="tradeAmount" class="sortColumn" id="allotment_SortDesc" src="<%=request.getContextPath()%>/images/down.png" alt="desc" order="desc"/></th>
 						<th>Whitehall Charges <br><img column-name="sellerFees" class="sortColumn" id="sellerFees_SortAsc" src="<%=request.getContextPath()%>/images/up.png" alt="asc" order="asc"/><img column-name="sellerFees" class="sortColumn" id="sellerFees_SortDesc" src="<%=request.getContextPath()%>/images/down.png" alt="desc" order="desc"/></th>
 					    <th>Duration <br><img column-name="duration" class="sortColumn" id="duration_SortAsc" src="<%=request.getContextPath()%>/images/up.png" alt="asc" order="asc"/><img column-name="duration" class="sortColumn" id="duration_SortDesc" src="<%=request.getContextPath()%>/images/down.png" alt="desc" order="desc"/></th>
@@ -99,8 +100,10 @@
 								<td style="background-color:#189a80 ;color:white"" class="rightalign"><fmt:formatNumber type="number"
 										maxFractionDigits="3" value="${totalInvestorAllotment}" pattern="#,##0.00"/></td>
 								<td style="background-color:#189a80;color:white" ></td>
+								
 								<td style="background-color:#189a80;color:white"" class="rightalign"><fmt:formatNumber type="number"
 										maxFractionDigits="3" value="${investorTotalGrossProfit}" pattern="#,##0.00"/></td>
+								<td style="background-color:#189a80;color:white" ></td>
 								<td style="background-color:#189a80;color:white"" class="rightalign"><fmt:formatNumber type="number"
 										maxFractionDigits="3" value="${investorTotalNetProfit}" pattern="#,##0.00"/></td>
 								<td style="background-color:#189a80;color:white"" class="rightalign"><fmt:formatNumber type="number"
@@ -140,6 +143,8 @@
 									<td  style="background-color:${color};" class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${myInvestment.myAllotment}"  pattern="#,##0.00"/></td>
 									<td  style="background-color:${color};">${myInvestment.bps}</td>
 									<td  style="background-color:${color};" class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${myInvestment.grossProfit}"  pattern="#,##0.00"/></td>
+									<td  style="background-color:${color};" class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${myInvestment.vatInvestorFee}"  pattern="#,##0.00"/></td>
+									
 									<td  style="background-color:${color};" class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${myInvestment.netProfit}"  pattern="#,##0.00"/></td>
 									
 			                        <td  style="background-color:${color};" class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${myInvestment.whiteHallCharges}"  pattern="#,##0.00"/></td>

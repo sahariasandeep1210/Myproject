@@ -299,6 +299,9 @@ public class InvestmentController {
 						.getInvestorNetProfit()));
 				myInvestmentModel.setReceivableAmount(String.valueOf(obj.getAllotmentAmount().add(obj.getInvestorNetProfit())));
 				myInvestmentModel.setBps(obj.getMarketDiscount().toString());
+				if(obj.getVatInvestorFee()!=null){
+				myInvestmentModel.setVatInvestorFee((obj.getVatInvestorFee()).toString());
+				}
 				
 				myInvestment.add(myInvestmentModel);
 				

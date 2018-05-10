@@ -154,7 +154,10 @@ public class SCFTrade  implements Serializable{
 	
 	@Transient
 	private int invoiceNumber;
-	
+	 
+	/**
+	 * Three new column added to store vat values 
+	 */
 	@Column(name="investor_total_vat_amount")
 	private BigDecimal investorTotalVatAmount;
 	

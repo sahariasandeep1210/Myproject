@@ -169,6 +169,8 @@ public class SCFTradeController {
 			BigDecimal totalWhiteHallFees = BigDecimal.ZERO;
 			BigDecimal totalSellerAmount = BigDecimal.ZERO;
 			
+		
+			
 			/*added by avneet*/
 			
 			BigDecimal totalTradeAmounts = BigDecimal.ZERO;
@@ -242,6 +244,7 @@ public class SCFTradeController {
 					 totalSellerNetAllotment = obj[5]!=null ?(BigDecimal) obj[5]:BigDecimal.ZERO;
 					 totalSellerTransFee = obj[6]!=null ? (BigDecimal) obj[6]:BigDecimal.ZERO;
 					 totalSellerFeess = obj[7]!=null ?(BigDecimal) obj[7]:BigDecimal.ZERO;
+					
 					 totalWhitehallSeller = totalWhitehallSeller.add(totalSellerFeess).add(totalSellerTransFee);
 				   }
 			}

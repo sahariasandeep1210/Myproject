@@ -22,9 +22,15 @@ public class MyInvestmentModel implements Comparable<MyInvestmentModel> {
 	private String receivableAmount;
 	
 	private String totalTradeAmount;
+	private String vatInvestorFee;
 	
 	
-	
+	public String getVatInvestorFee() {
+		return vatInvestorFee;
+	}
+	public void setVatInvestorFee(String vatInvestorFee) {
+		this.vatInvestorFee = vatInvestorFee;
+	}
 	public int getRowNo() {
 		return rowNo;
 	}

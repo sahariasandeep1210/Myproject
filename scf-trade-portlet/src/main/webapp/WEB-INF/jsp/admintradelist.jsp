@@ -83,6 +83,8 @@
 						<th>Investor Net Profit <br><img id="InvestorNet" column-name="investorTotalProfit" class="sortColumn" src="<%=request.getContextPath()%>/images/up.png" alt="asc" order="asc"/><img id="InvestorNetDesc" column-name="investorTotalProfit" class="sortColumn" src="<%=request.getContextPath()%>/images/down.png" alt="desc" order="desc"/></th>	
 						<th>Seller Fees <br><img id="sellerFees" column-name="sellerFees" class="sortColumn" src="<%=request.getContextPath()%>/images/up.png" alt="asc" order="asc"/><img id="sellerFeesDesc" column-name="sellerFees" class="sortColumn" src="<%=request.getContextPath()%>/images/down.png" alt="desc" order="desc"/></th>
 						<th>WhiteHall Gross Profit <br><img id="whitehallGrossProfit" column-name="whitehallTotalProfit" class="sortColumn" src="<%=request.getContextPath()%>/images/up.png" alt="asc" order="asc"/><img id="whitehallGrossProfitDesc" column-name="whitehallTotalProfit" class="sortColumn" src="<%=request.getContextPath()%>/images/down.png" alt="desc" order="desc"/></th>		
+						<th>VAT On Whitehall</th>
+						
 						<th>Seller Allotment <br><img id="SellerAllotment" column-name="sellerNetAllotment" class="sortColumn" src="<%=request.getContextPath()%>/images/up.png" alt="asc" order="asc"/><img id="SellerAllotmentDesc" column-name="sellerNetAllotment" class="sortColumn" src="<%=request.getContextPath()%>/images/down.png" alt="desc" order="desc"/></th>
 						<th>Status <br><img id="Status" column-name="status" class="sortColumn" src="<%=request.getContextPath()%>/images/up.png" alt="asc" order="asc"/><img id="StatusDesc" column-name="status" class="sortColumn" src="<%=request.getContextPath()%>/images/down.png" alt="desc" order="desc"/></th>					
 					</tr>
@@ -102,6 +104,8 @@
 									<td style="background-color:#189a80;color:white" class="rightalign green_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalInvestorTotalProfit}"  pattern="#,##0.00"/></td>
 									<td style="background-color:#189a80;color:white" class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalWhitehallSeller}"  pattern="#,##0.00"/></td>
 									<td style="background-color:#189a80;color:white" class="rightalign blue_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalWhitehallTotalProfit}"  pattern="#,##0.00"/></td>
+									<td style="background-color:#189a80;color:white"></td>		
+									<td style="background-color:#189a80;color:white"></td>		
 									<td style="background-color:#189a80;color:white" class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalSellerNetAllotment}"  pattern="#,##0.00"/></td>	
 									<td style="background-color:#189a80;color:white"></td>						
 								</tr>
@@ -118,6 +122,7 @@
 									<td class="rightalign green_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${trade.investorTotalProfit}"  pattern="#,##0.00"/></td>
 									<td class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${trade.sellerFees + trade.sellerTransFee}"  pattern="#,##0.00"/></td>
 									<td class="rightalign blue_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${trade.whitehallTotalProfit}"  pattern="#,##0.00"/></td>
+									<td class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${trade.vatWhitehallGrossProfit}"  pattern="#,##0.00"/></td>	
 									<td class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${trade.sellerNetAllotment}"  pattern="#,##0.00"/></td>	
 									<td>${trade.status}</td>						
 								</tr>

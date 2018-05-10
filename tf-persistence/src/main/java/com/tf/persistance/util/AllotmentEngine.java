@@ -75,7 +75,8 @@ public class AllotmentEngine {
 		BigDecimal investorTotalGross = 	BigDecimal.ZERO; 
 		BigDecimal whitehallTotal =		BigDecimal.ZERO; 
 		BigDecimal investorTotalNet =		BigDecimal.ZERO; 
-		BigDecimal sellerFees =			BigDecimal.ZERO;		
+		BigDecimal sellerFees =			BigDecimal.ZERO;
+		BigDecimal investorTotalVatAmount =	BigDecimal.ZERO;
 		SellerSetting sellerSetting = null;
 		GeneralSetting generalSetting = null;
 		int sameRateCount = 0; 
@@ -125,6 +126,7 @@ public class AllotmentEngine {
 			allotment.setStatus(TranscationStatus.ALLOTED.getValue());			
 			//Calculate investor and Whitehall Share
 			allotment.setInvestorGrossProfit(calculateInvestorGrossProfit(currentAllotment,investor.getDiscountRate(),trade.getDuration()));
+			allotment.setVatInvestorFee(calculateInvestorVatAmount(allotment.getInvestorGrossProfit()));// Calculate the vat amount on each gross profit
 			allotment.setWhitehallProfitShare(calculateWhiteHallShare(allotment.getInvestorGrossProfit(),investorService.getWhiteHallShare(investor.getInvestorId())));
 			allotment.setInvestorNetProfit(calculateInvestorNetProfit(allotment.getInvestorGrossProfit(),allotment.getWhitehallProfitShare()));
 			allotments.add(allotment);
@@ -140,7 +142,8 @@ public class AllotmentEngine {
 			investorTotalGross=investorTotalGross.add(allotment.getInvestorGrossProfit());
 			whitehallTotal=whitehallTotal.add(allotment.getWhitehallProfitShare());
 			investorTotalNet=investorTotalNet.add(allotment.getInvestorNetProfit());
-
+			investorTotalVatAmount = investorTotalVatAmount.add(allotment.getVatInvestorFee());
+			
 			pendingAllotment = pendingAllotment.subtract(currentAllotment) ; 
 			sameRateCount = sameRateCount - 1; 
 			_log.info("Pending Allotment --------- "+pendingAllotment);
@@ -176,6 +179,7 @@ public class AllotmentEngine {
 		trade.setWhitehallTotalShare(whitehallTotal);
 		trade.setInvestorTotalProfit(investorTotalNet);
 		trade.setSellerFees(sellerFees);
+		trade.setInvestorTotalVatAmount(investorTotalVatAmount);
 		if(sellerSetting != null){
 		  trade.setSellerTransFee(sellerSetting.getSellerTransFee());
 		}else{
@@ -183,7 +187,9 @@ public class AllotmentEngine {
 		}
 		trade.setWhitehallTotalProfit(calculateWhitehallTotalProfit(whitehallTotal,sellerFees,trade.getSellerTransFee()));
 		//here we need to add VAT as well
+		trade.setVatWhitehallGrossProfit(calculateVatWhitehallGrossProfit(trade.getWhitehallTotalProfit()));// calculate vat amount on whitehall gross profit 	
 		trade.setWhitehallNetReceivable(calculateWhitehallTotalProfit(whitehallTotal,sellerFees,trade.getSellerTransFee()));
+		trade.setVatFinanceAmount(calculateVatOnTradeAmount(tradeAmount));// calculate vat amount on trade amount which will further deduct from trade amount 
 		trade.setSellerNetAllotment(calculateSellerNetAllotment(tradeAmount,trade.getInvestorTotalProfit(),trade.getWhitehallNetReceivable()));
 		
 		
@@ -230,6 +236,26 @@ public class AllotmentEngine {
 		return whitehallProfit;
 	}
 	
+	  /**		
+	    *  calculate the vat amount on each investor gross profit 		
+	    * @param invGrossProfit		
+	    * @return		
+	    */		
+				
+		private BigDecimal calculateInvestorVatAmount(BigDecimal invGrossProfit){			
+			BigDecimal vatConstantValue = generalSettingService.getGeneralSetting().getVatInvestor().divide(new BigDecimal(100)); // fetching the vat of investor from general setting		
+					
+			if(vatConstantValue.compareTo(BigDecimal.ZERO)>0){				
+				BigDecimal vatAmount=invGrossProfit.multiply(vatConstantValue);		
+				
+			   _log.info("Vat calulated on investor gross profit******* "+vatAmount);		
+			return vatAmount;		
+			}else{								
+				return null;		
+			}		
+		}		
+	
+	
 	private BigDecimal calculateInvestorNetProfit(BigDecimal invGrossProfit,BigDecimal whitehallProfitShare){		
 		BigDecimal investorNetProfit=invGrossProfit.subtract(whitehallProfitShare);
 		investorNetProfit.setScale(2, RoundingMode.HALF_EVEN);
@@ -256,6 +282,43 @@ public class AllotmentEngine {
 		_log.info("Whitehall total profit :"+whitehallTotalProfit);
 		return whitehallTotalProfit;
 	}
+	
+	
+    /*** calculate the vat on whitehall gross profit		
+	 * @param whitehallTotal		
+	 * @return		
+	 */		
+	private BigDecimal calculateVatWhitehallGrossProfit(BigDecimal whitehallTotal){				
+   BigDecimal vatConstantValue = generalSettingService.getGeneralSetting().getVatWhitehall().divide(new BigDecimal(100)); // fetching the vat of investor from general setting		
+							if(vatConstantValue.compareTo(BigDecimal.ZERO)>0){		
+		BigDecimal vatAmount=whitehallTotal.multiply(vatConstantValue);		
+			
+		_log.info("Vat calulated on investor gross profit******* "+vatAmount);		
+		return vatAmount;		
+		}else{		
+					
+			return null;		
+		}		
+		}		
+			
+	/**		
+	 * calculate the vat on whitehall gross profit		
+	 * @param whitehallTotal		
+	 * @return		
+	 */		
+	private BigDecimal calculateVatOnTradeAmount(BigDecimal tradeAmount){				
+   BigDecimal vatConstantValue = generalSettingService.getGeneralSetting().getVatSeller().divide(new BigDecimal(100)); // fetching the vat of investor from general setting		
+				
+		if(vatConstantValue.compareTo(BigDecimal.ZERO)>0){		
+		BigDecimal vatAmount=tradeAmount.multiply(vatConstantValue);		
+			
+		_log.info("Vat calulated on investor gross profit******* "+vatAmount);		
+		return vatAmount;		
+		}else{		
+					
+			return null;		
+		}		
+	}		
 	
 	private BigDecimal calculateSellerNetAllotment(BigDecimal tradeAmount,BigDecimal investorTotalProfit,BigDecimal WhitehallNetReceivable){		
 		BigDecimal sellerNetAllotment=tradeAmount.subtract((investorTotalProfit.add(WhitehallNetReceivable)));
