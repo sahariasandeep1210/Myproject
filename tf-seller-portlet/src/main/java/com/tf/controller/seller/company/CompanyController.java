@@ -844,7 +844,7 @@ public class CompanyController extends BaseController {
 				if (getPermissionChecker(request).isOmniadmin()
 						|| request.isUserInRole(Constants.WHITEHALL_ADMIN)){
 			    List<Company> companies=companyService.getCompaniesByStatus(CompanyStatus.DELETED.getValue());
-			    ReportUtility.generateCusotomerDemoRepots(companies, response);
+			    ReportUtility.exportCompanies(companies, response);
 				}
 				else{
 					
@@ -963,7 +963,7 @@ public class CompanyController extends BaseController {
 							}
 							
 						}	
-						else if (index == 3) {
+						else if (index == 4) {
 							try{
 								companyAccountDetail.setAccountNumber(formatter.formatCellValue(cell));
 							}catch(Exception e){
@@ -971,14 +971,14 @@ public class CompanyController extends BaseController {
 							}
 							
 						}
-						else if (index == 4) {
+						else if (index == 5) {
 							try{
 								companyAccountDetail.setAccountName(cell.getStringCellValue());
 							}catch(Exception e){
 								_log.error("processing file - error occured while importCompany   setAccountName " +e.getMessage());
 							}
 						}
-						else if (index == 5) {
+						else if (index == 6) {
 							try{
 								companyAccountDetail.setSortCode(formatter.formatCellValue(cell));
 							}catch(Exception e){
@@ -986,7 +986,7 @@ public class CompanyController extends BaseController {
 							}
 							
 						}
-						else if (index == 6) {
+						else if (index == 7) {
 							try{
 								companyAccountDetail.setIban(formatter.formatCellValue(cell));
 							}catch(Exception e){
@@ -994,7 +994,7 @@ public class CompanyController extends BaseController {
 							}
 							
 						}
-						else if (index == 7) {
+						else if (index == 8) {
 							try{
 								companyAccountDetail.setBankName(cell.getStringCellValue());
 							}catch(Exception e){
