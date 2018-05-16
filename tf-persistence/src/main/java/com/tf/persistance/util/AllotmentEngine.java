@@ -128,7 +128,7 @@ public class AllotmentEngine {
 			allotment.setInvestorGrossProfit(calculateInvestorGrossProfit(currentAllotment,investor.getDiscountRate(),trade.getDuration()));
 			allotment.setVatInvestorFee(calculateInvestorVatAmount(allotment.getInvestorGrossProfit()));// Calculate the vat amount on each gross profit
 			allotment.setWhitehallProfitShare(calculateWhiteHallShare(allotment.getInvestorGrossProfit(),investorService.getWhiteHallShare(investor.getInvestorId())));
-			allotment.setInvestorNetProfit(calculateInvestorNetProfit(allotment.getInvestorGrossProfit(),allotment.getWhitehallProfitShare()));
+			allotment.setInvestorNetProfit(calculateInvestorNetProfit(allotment.getInvestorGrossProfit(),allotment.getWhitehallProfitShare(),allotment.getVatInvestorFee()));
 			allotments.add(allotment);
 			
 			// adding transaction information
@@ -188,9 +188,9 @@ public class AllotmentEngine {
 		trade.setWhitehallTotalProfit(calculateWhitehallTotalProfit(whitehallTotal,sellerFees,trade.getSellerTransFee()));
 		//here we need to add VAT as well
 		trade.setVatWhitehallGrossProfit(calculateVatWhitehallGrossProfit(trade.getWhitehallTotalProfit()));// calculate vat amount on whitehall gross profit 	
-		trade.setWhitehallNetReceivable(calculateWhitehallTotalProfit(whitehallTotal,sellerFees,trade.getSellerTransFee()));
+		trade.setWhitehallNetReceivable(calculateWhitehallNetReceivable(whitehallTotal,sellerFees,trade.getSellerTransFee(),trade.getVatWhitehallGrossProfit()));
 		trade.setVatFinanceAmount(calculateVatOnTradeAmount(tradeAmount));// calculate vat amount on trade amount which will further deduct from trade amount 
-		trade.setSellerNetAllotment(calculateSellerNetAllotment(tradeAmount,trade.getInvestorTotalProfit(),trade.getWhitehallNetReceivable()));
+		trade.setSellerNetAllotment(calculateSellerNetAllotment(tradeAmount,trade.getInvestorTotalGross(),trade.getWhitehallTotalProfit(),trade.getVatFinanceAmount(),trade.getWhitehallTotalShare()));
 		
 		
 		//saving allotment information to database
@@ -256,8 +256,8 @@ public class AllotmentEngine {
 		}		
 	
 	
-	private BigDecimal calculateInvestorNetProfit(BigDecimal invGrossProfit,BigDecimal whitehallProfitShare){		
-		BigDecimal investorNetProfit=invGrossProfit.subtract(whitehallProfitShare);
+	private BigDecimal calculateInvestorNetProfit(BigDecimal invGrossProfit,BigDecimal whitehallProfitShare,BigDecimal investorVatFee){		
+		BigDecimal investorNetProfit=invGrossProfit.subtract(whitehallProfitShare).subtract(investorVatFee);// Modified by abhishek to calculate net profit as now vat have to calculate.
 		investorNetProfit.setScale(2, RoundingMode.HALF_EVEN);
 		_log.info("Investor Net Profit --------- "+investorNetProfit);
 		return investorNetProfit;
@@ -278,6 +278,12 @@ public class AllotmentEngine {
 	
 	private BigDecimal calculateWhitehallTotalProfit(BigDecimal whitehallTotal,BigDecimal sellerFees,BigDecimal sellerTransFee){		
 		BigDecimal whitehallTotalProfit=whitehallTotal.add(sellerFees).add(sellerTransFee);
+		whitehallTotalProfit.setScale(2, RoundingMode.HALF_EVEN);
+		_log.info("Whitehall total profit :"+whitehallTotalProfit);
+		return whitehallTotalProfit;
+	}
+	private BigDecimal calculateWhitehallNetReceivable(BigDecimal whitehallTotal,BigDecimal sellerFees,BigDecimal sellerTransFee,BigDecimal vatOnWhithallGrossProfit ){		
+		BigDecimal whitehallTotalProfit=whitehallTotal.add(sellerFees).add(sellerTransFee).subtract(vatOnWhithallGrossProfit);
 		whitehallTotalProfit.setScale(2, RoundingMode.HALF_EVEN);
 		_log.info("Whitehall total profit :"+whitehallTotalProfit);
 		return whitehallTotalProfit;
@@ -320,10 +326,10 @@ public class AllotmentEngine {
 		}		
 	}		
 	
-	private BigDecimal calculateSellerNetAllotment(BigDecimal tradeAmount,BigDecimal investorTotalProfit,BigDecimal WhitehallNetReceivable){		
-		BigDecimal sellerNetAllotment=tradeAmount.subtract((investorTotalProfit.add(WhitehallNetReceivable)));
+	private BigDecimal calculateSellerNetAllotment(BigDecimal tradeAmount,BigDecimal investorTotalProfit,BigDecimal WhitehallGrossProfit,BigDecimal vatOnTradeAmount,BigDecimal whitehallTotalShare){		
+		BigDecimal sellerNetAllotment=tradeAmount.subtract((investorTotalProfit.add(WhitehallGrossProfit).add(vatOnTradeAmount))).add(whitehallTotalShare);//modified by Abhishek in order to calculate net finance amount after vat calculation on total trade amount
 		sellerNetAllotment.setScale(2, RoundingMode.HALF_EVEN);
-		_log.info("Seller net allotment :"+sellerNetAllotment);
+		_log.info("Seller net allotment :"+sellerNetAllotment + " "+ vatOnTradeAmount + ""+WhitehallGrossProfit);
 		return sellerNetAllotment;
 	}
 	
@@ -358,6 +364,7 @@ public class AllotmentEngine {
 		BigDecimal sellerFees =			BigDecimal.ZERO;
 		BigDecimal investorGrossProfit=		BigDecimal.ZERO;
 		BigDecimal whiteHallShare=		BigDecimal.ZERO;
+		BigDecimal investorVatFee=		BigDecimal.ZERO;
 		SellerSetting sellerSetting = null;
 		GeneralSetting generalSetting = null;
 		int sameRateCount = 0; 
@@ -393,7 +400,8 @@ public class AllotmentEngine {
 			
 			investorTotalGross=investorTotalGross.add(investorGrossProfit);
 			whitehallTotal=whitehallTotal.add(whiteHallShare);
-			investorTotalNet=investorTotalNet.add(calculateInvestorNetProfit(investorGrossProfit,whiteHallShare));
+			investorVatFee = calculateInvestorVatAmount(investorTotalGross);// Added by abhishek in order to calculate net investor profit
+			investorTotalNet=investorTotalNet.add(calculateInvestorNetProfit(investorGrossProfit,whiteHallShare,investorVatFee));
 
 			pendingAllotment = pendingAllotment.subtract(currentAllotment) ; 
 			sameRateCount = sameRateCount - 1; 
@@ -429,8 +437,10 @@ public class AllotmentEngine {
 		}
 		trade.setWhitehallTotalProfit(calculateWhitehallTotalProfit(whitehallTotal,sellerFees,trade.getSellerTransFee()));
 		//here we need to add VAT as well
-		trade.setWhitehallNetReceivable(calculateWhitehallTotalProfit(whitehallTotal,sellerFees,trade.getSellerTransFee()));
-		trade.setSellerNetAllotment(calculateSellerNetAllotment(tradeAmount,trade.getInvestorTotalProfit(),trade.getWhitehallNetReceivable()));		
+		trade.setVatWhitehallGrossProfit(calculateVatWhitehallGrossProfit(trade.getWhitehallTotalProfit()));
+		trade.setWhitehallNetReceivable(calculateWhitehallNetReceivable(whitehallTotal,sellerFees,trade.getSellerTransFee(),trade.getVatWhitehallGrossProfit()));
+		trade.setVatFinanceAmount(calculateVatOnTradeAmount(tradeAmount));// Added by Abhishek in order to calculate net finance amount after vat calculation 
+		trade.setSellerNetAllotment(calculateSellerNetAllotment(tradeAmount,trade.getInvestorTotalGross(),trade.getWhitehallTotalProfit(),trade.getVatFinanceAmount(),trade.getWhitehallTotalShare()));		
 		
 	}
 
