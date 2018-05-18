@@ -79,6 +79,7 @@
 						<th>Whitehall Variable Fees <br><img column-name="sellerFees" class="sortColumn" id="sellerFees_SortAsc" src="<%=request.getContextPath()%>/images/up.png" alt="asc" order="asc"/><img column-name="sellerFees" class="sortColumn" id="sellerFees_SortDesc" src="<%=request.getContextPath()%>/images/down.png" alt="desc" order="desc"/></th>
 						<th>Investors Fees <br><img column-name="investorTotalGross" class="sortColumn" id="investorFee_SortAsc" src="<%=request.getContextPath()%>/images/up.png" alt="asc" order="asc"/><img column-name="investorTotalGross" class="sortColumn" id="investorFee_SortDesc" src="<%=request.getContextPath()%>/images/down.png" alt="desc" order="desc"/></th>
 						<th>Other Fees </th>
+						<th>VAT On Trade </th>
 						<th>Gross charges </th>
 						<th>Finance Amount <br><img column-name="sellerNetAllotment" class="sortColumn" id="financeAmount_SortAsc" src="<%=request.getContextPath()%>/images/up.png" alt="asc" order="asc"/><img column-name="sellerNetAllotment" class="sortColumn" id="financeAmount_SortDesc" src="<%=request.getContextPath()%>/images/down.png" alt="desc" order="desc"/></th>
 
@@ -106,6 +107,7 @@
 								<td style="background-color:#189a80;color:white"" class="rightalign"><fmt:formatNumber type="number"
 										maxFractionDigits="3" value="${totalInvestorTotalGross}" pattern="#,##0.00"/></td>
 								<td style="background-color:#189a80;color:white""></td>
+								<td style="background-color:#189a80;color:white""></td>
 								<td style="background-color:#189a80;color:white"" class="rightalign"><fmt:formatNumber type="number"
 										maxFractionDigits="3" value="${totalGrossCharges}" pattern="#,##0.00"/></td>
 								<td style="background-color:#189a80;color:white"" class="rightalign"><fmt:formatNumber type="number"
@@ -132,6 +134,7 @@
 									<td class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${trade.sellerFees}"  pattern="#,##0.00"/></td>
 									<td class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${trade.investorTotalGross}"  pattern="#,##0.00"/></td>
 									<td></td>
+									<td class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${trade.vatFinanceAmount}"  pattern="#,##0.00"/></td>
 									<td class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${trade.sellerTransFee + trade.sellerFees + trade.investorTotalGross}"  pattern="#,##0.00"/></td>
 									<td class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${trade.sellerNetAllotment}"  pattern="#,##0.00"/></td>
 

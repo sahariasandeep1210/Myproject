@@ -620,8 +620,15 @@ CREATE TABLE IF NOT EXISTS `scf_company_document` (
   PRIMARY KEY (`id`)
 ) ;
 
+# Added on 18th May 2018
 
-
+ALTER TABLE tf_allotments
+  ADD vat_investor_fee  DECIMAL(10,2) DEFAULT NULL;
+  
+ALTER TABLE scf_trade
+  ADD  investor_total_vat_amount   DECIMAL(10,2) DEFAULT NULL,
+  ADD  vat_whitehall_gross_profit  DECIMAL(10,2) DEFAULT NULL,
+  ADD  vat_finance_amount          DECIMAL(10,2) DEFAULT NULL;
 
 
 
