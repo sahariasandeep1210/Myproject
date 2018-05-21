@@ -35,13 +35,13 @@
 						<div class="span4 fg-blue">
 							<div class="text-container">
 								<div class="small-text">TOTAL CREDIT LINE</div>
-								<div class="big-text">&pound; <fmt:formatNumber type="number" maxFractionDigits="3" value="${dashboardModel.investmentCap}" pattern="#,###.00" /></div>
+								<div class="big-text">&pound; <fmt:formatNumber type="number" maxFractionDigits="0" value="${dashboardModel.investmentCap}" pattern="#,###.00" /></div>
 							</div>
 						</div>
 						<div class="span4 fg-red">
 							<div class="text-container">
 								<div class="small-text">CREDIT AVAILABLE</div>
-								<div class="big-text">&pound; <fmt:formatNumber type="number" maxFractionDigits="3" value="${dashboardModel.availToInvest}" pattern="#,###.00" /></div>
+								<div class="big-text">&pound; <fmt:formatNumber type="number" maxFractionDigits="0" value="${dashboardModel.availToInvest}" pattern="#,###.00" /></div>
 							</div>
 						</div>
 						
@@ -60,7 +60,7 @@
 						<div class="span4 fg-blue">
 							<div class="text-container">
 								<div class="small-text">Credit Available</div>
-								<div class="big-text">&pound; <fmt:formatNumber type="number" maxFractionDigits="3" value="${dashboardModel.totalCreditAvail}"  /></div>
+								<div class="big-text">&pound; <fmt:formatNumber type="number" maxFractionDigits="0" value="${dashboardModel.totalCreditAvail}"  /></div>
 							</div>
 						</div>
 						

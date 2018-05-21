@@ -72,20 +72,20 @@
 							<div class="span4 fg-blue">
 								<div class="text-container">
 									<div class="small-text">${dashboardModel.settledTradeCount} PAID</div>
-									<div class="big-text">&pound; <fmt:formatNumber type="number" maxFractionDigits="3" value="${dashboardModel.settledTradeAmount}"  pattern="#,###.00"/></div>
+									<div class="big-text">&pound; <fmt:formatNumber type="number" maxFractionDigits="0" value="${dashboardModel.settledTradeAmount}"  pattern="#,###.00"/></div>
 								</div>
 								
 							</div>
 							<div class="span4 fg-red">
 								<div class="text-container">
 									<div class="small-text">${dashboardModel.liveTradeCount} UNPAID</div>
-									<div class="big-text">&pound;  <fmt:formatNumber type="number" maxFractionDigits="3" value="${dashboardModel.liveTradeAmount}"  pattern="#,###.00"/></div>
+									<div class="big-text">&pound;  <fmt:formatNumber type="number" maxFractionDigits="0" value="${dashboardModel.liveTradeAmount}"  pattern="#,###.00"/></div>
 								</div>
 							</div>
 							<div class="span4 fg-green">
 								<div class="text-container">
 									<div class="small-text">TOTAL SCF TRADE</div>
-									<div class="big-text">&pound;  <fmt:formatNumber type="number" maxFractionDigits="3" value="${dashboardModel.totalTradeAmount}"  pattern="#,###.00"/></div>
+									<div class="big-text">&pound;  <fmt:formatNumber type="number" maxFractionDigits="0" value="${dashboardModel.totalTradeAmount}"  pattern="#,###.00"/></div>
 								</div>
 							</div>
 						</div>
@@ -117,13 +117,13 @@
 						<div class="span6 fg-red">
 							<div class="text-container">
 								<div class="small-text">AVAILABLE TO INVEST</div>
-								<div class="big-text">&pound; <fmt:formatNumber type="number" maxFractionDigits="3" value="${dashboardModel.availToInvest}"  pattern="#,###.00"/></div>
+								<div class="big-text">&pound; <fmt:formatNumber type="number" maxFractionDigits="0" value="${dashboardModel.availToInvest}"  pattern="#,###.00"/></div>
 							</div>
 						</div>
 						<div class="span6 fg-green">
 							<div class="text-container">
 								<div class="small-text">AMOUNT INVESTED</div>
-								<div class="big-text">&pound; <fmt:formatNumber type="number" maxFractionDigits="3" value="${dashboardModel.amountInvested}"  pattern="#,###.00"/></div>
+								<div class="big-text">&pound; <fmt:formatNumber type="number" maxFractionDigits="0" value="${dashboardModel.amountInvested}"  pattern="#,###.00"/></div>
 							</div>
 						</div>
 					</div>
@@ -140,7 +140,7 @@
 					<ul>
 						<c:forEach items="${dashboardModel.investors}" var="investor">
 						<li><span class="pull-right cash-amount">&pound;
-								<fmt:formatNumber type="number" maxFractionDigits="3" value="${investor.cashPosition}"  pattern="#,###.00"/></span><span class="org-name">${investor.company.name}</span></li>
+								<fmt:formatNumber type="number" maxFractionDigits="0" value="${investor.cashPosition}"  pattern="#,###.00"/></span><span class="org-name">${investor.company.name}</span></li>
 						
 						</c:forEach>
 					</ul>

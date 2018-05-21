@@ -1,14 +1,14 @@
 <%@include file="init.jsp"%>
 	
 <div id="myToggler" class="customToggler">
-  <div class="toggleHeader toggler-header-collapsed">
+  <div class="toggleHeader  toggler-header-expanded">
   	<div class="toggle-title pull-left">Invoice within Trade</div>
   	<div class="toggle-icon-container text-right">
   		<i class="icomoon-accordian-arrow-down"></i>
   	</div>
   	
   </div>
-  <div class="toggleContent toggler-content-collapsed">
+  <div class="toggleContent toggler-header-expanded">
   	<div class="row-fluid">
   		<div class="span12 text-right">
   			<div class="actionContainer noBorder pt0">
