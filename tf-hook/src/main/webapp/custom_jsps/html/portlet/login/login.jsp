@@ -164,7 +164,7 @@
 					<aui:validator name="required" />
 				</aui:input>
 
-				<aui:input name="password" showRequiredLabel="<%= false %>" type="password" value="<%= password %>">
+				<aui:input name="password" autocomplete = "new-password" showRequiredLabel="<%= false %>" type="password" value="<%= password %>">
 					<aui:validator name="required" />
 				</aui:input>
 

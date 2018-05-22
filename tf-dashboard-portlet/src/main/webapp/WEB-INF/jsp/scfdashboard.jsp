@@ -1,7 +1,9 @@
 <%@include file="init.jsp"%>
 
 <portlet:defineObjects />
-
+<portlet:resourceURL var="refreshGraphCallURL"
+	id="refreshGraphCall">
+</portlet:resourceURL>
 <div id="dashboard">
 	<div class="row-fluid">
 		<div class="span6">
@@ -98,5 +100,32 @@
 				.getElementById('donutchart'));
 		chart.draw(data, options);
 	}
+	 setInterval(function(){
+	        refreshGraphCall()}, 30000
+		)
+		
+		function refreshGraphCall (){
+			  $.ajax({
+		          type: 'GET',
+		          url: '${refreshGraphCallURL}',
+		          success: function (data) {
+		          var barChartdata = new google.visualization.DataTable();		
+			      barChartdata.addColumn('string', 'Discount Rate');
+			      barChartdata.addColumn('number', 'Avail To Invest');
+				  var barChartOptions = {	        		
+	     		     legend: { position: "none" }
+	             };
+			     $.each($.parseJSON(data) , function (index, value){
+				  barChartdata.addRow([(value[1]+""),parseFloat(value[0])]);
+			    });
+				var barChart = new google.visualization.ColumnChart(document.getElementById('barchart'));
+	             barChart.draw(barChartdata, barChartOptions);
+		          },
+		          error: function (data) {
+		              console.log('An error occurred.');
+		          }
+		      });
+		}
+		
 </script>
 	  
