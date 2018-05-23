@@ -1,8 +1,7 @@
 <%@include file="init.jsp"%>
 <portlet:renderURL var="invoiceURL">
 	<portlet:param name="render" value="updateInvoices" />
-</portlet:renderURL>
-<portlet:renderURL var="createURL">
+</portlet:renderURL><portlet:renderURL var="createURL">
 	<portlet:param name="render" value="createCompany" />
 </portlet:renderURL>
 <portlet:resourceURL id="closeSessionValues" var="closeSessionValuesURL" ></portlet:resourceURL> 

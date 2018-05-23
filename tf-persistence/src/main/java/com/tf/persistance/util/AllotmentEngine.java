@@ -168,11 +168,11 @@ public class AllotmentEngine {
 		}
 		sellerSetting=settingService.getSellerSetting(sellerCmpId);
 
-		if( sellerSetting != null){
+		if( sellerSetting != null) {
 		    sellerFees=calculateSellerFees(trade.getDuration(), tradeAmount,sellerSetting);
-		}else{
+		} else {
 		    generalSetting=generalSettingService.getGeneralSetting();
-			sellerFees=calculateSellerFeesByGeneralSetting(trade.getDuration(), tradeAmount,generalSetting);
+		    sellerFees=calculateSellerFeesByGeneralSetting(trade.getDuration(), tradeAmount,generalSetting);
 		}
 		//setting back to Trade
 		trade.setInvestorTotalGross(investorTotalGross);
@@ -180,10 +180,10 @@ public class AllotmentEngine {
 		trade.setInvestorTotalProfit(investorTotalNet);
 		trade.setSellerFees(sellerFees);
 		trade.setInvestorTotalVatAmount(investorTotalVatAmount);
-		if(sellerSetting != null){
+		if(sellerSetting != null) {
 		  trade.setSellerTransFee(sellerSetting.getSellerTransFee());
-		}else{
-			trade.setSellerTransFee(generalSetting.getSellerTransFee());
+		} else {
+		    trade.setSellerTransFee(generalSetting.getSellerTransFee());
 		}
 		trade.setWhitehallTotalProfit(calculateWhitehallTotalProfit(whitehallTotal,sellerFees,trade.getSellerTransFee()));
 		//here we need to add VAT as well
@@ -264,13 +264,15 @@ public class AllotmentEngine {
 	}
 	
 	private BigDecimal calculateSellerFees(Integer duration,BigDecimal tradeAmount,SellerSetting sellerSetting){		
-		BigDecimal sellerFees=((new BigDecimal(duration).multiply(sellerSetting.getSellerFinFee(), new MathContext(6, RoundingMode.HALF_EVEN))).divide(TEN_THOUSAND,6, RoundingMode.HALF_EVEN)).multiply(tradeAmount, new MathContext(6, RoundingMode.HALF_EVEN));
+		//BigDecimal sellerFees=((new BigDecimal(duration).multiply(sellerSetting.getSellerFinFee(), new MathContext(6, RoundingMode.HALF_EVEN))).divide(TEN_THOUSAND,6, RoundingMode.HALF_EVEN)).multiply(tradeAmount, new MathContext(6, RoundingMode.HALF_EVEN));
+	    	BigDecimal sellerFees = (new BigDecimal(duration).multiply(sellerSetting.getSellerFinFee(), new MathContext(4, RoundingMode.HALF_EVEN)).multiply(tradeAmount)).divide(YEAR.multiply(HUNDRED), new MathContext(6, RoundingMode.HALF_EVEN));
 		sellerFees.setScale(6, RoundingMode.HALF_EVEN);
 		_log.info("Seller fees without general settings :"+sellerFees);
 		return sellerFees;
 	}
 	private BigDecimal calculateSellerFeesByGeneralSetting(Integer duration,BigDecimal tradeAmount,GeneralSetting generalSetting){		
-		BigDecimal sellerFees=((new BigDecimal(duration).multiply(generalSetting.getSellerFinFee(),  new MathContext(6, RoundingMode.HALF_EVEN)))).divide(TEN_THOUSAND,6, RoundingMode.HALF_EVEN).multiply(tradeAmount, new MathContext(6, RoundingMode.HALF_EVEN));
+		//BigDecimal sellerFees=((new BigDecimal(duration).multiply(generalSetting.getSellerFinFee(),  new MathContext(6, RoundingMode.HALF_EVEN)))).divide(TEN_THOUSAND,6, RoundingMode.HALF_EVEN).multiply(tradeAmount, new MathContext(6, RoundingMode.HALF_EVEN));
+		BigDecimal sellerFees = (new BigDecimal(duration).multiply(generalSetting.getSellerFinFee(), new MathContext(4, RoundingMode.HALF_EVEN)).multiply(tradeAmount)).divide(YEAR.multiply(HUNDRED), new MathContext(6, RoundingMode.HALF_EVEN));
 		sellerFees.setScale(2, RoundingMode.HALF_EVEN);
 		_log.info("Seller fees with general settings :"+sellerFees);
 		return sellerFees;
@@ -295,17 +297,15 @@ public class AllotmentEngine {
 	 * @return		
 	 */		
 	private BigDecimal calculateVatWhitehallGrossProfit(BigDecimal whitehallTotal){				
-   BigDecimal vatConstantValue = generalSettingService.getGeneralSetting().getVatWhitehall().divide(new BigDecimal(100)); // fetching the vat of investor from general setting		
-							if(vatConstantValue.compareTo(BigDecimal.ZERO)>0){		
-		BigDecimal vatAmount=whitehallTotal.multiply(vatConstantValue);		
-			
-		_log.info("Vat calulated on investor gross profit******* "+vatAmount);		
-		return vatAmount;		
-		}else{		
-					
-			return null;		
+	    	BigDecimal vatConstantValue = generalSettingService.getGeneralSetting().getVatWhitehall().divide(new BigDecimal(100)); // fetching the vat of investor from general setting		
+		if(vatConstantValue.compareTo(BigDecimal.ZERO)>0){		
+		    BigDecimal vatAmount=whitehallTotal.multiply(vatConstantValue);			
+		    _log.info("Vat calulated on investor gross profit******* "+vatAmount);		
+		    return vatAmount;		
+		} else {				
+		    return null;		
 		}		
-		}		
+	}		
 			
 	/**		
 	 * calculate the vat on whitehall gross profit		

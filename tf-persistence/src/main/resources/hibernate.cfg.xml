@@ -30,7 +30,8 @@
 		<mapping class="com.tf.model.WhiteHallTransaction" />
 		<mapping class="com.tf.model.SellerScfCompanyMapping" />
 		<mapping class="com.tf.model.CompanyAccountDetail" />
-			<mapping class="com.tf.model.CompanyDocument" />
+		<mapping class="com.tf.model.CompanyDocument" />
+		<mapping class="com.tf.model.Brochure" />
 	</session-factory>
 
 </hibernate-configuration>
