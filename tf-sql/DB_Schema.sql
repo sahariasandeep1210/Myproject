@@ -629,7 +629,14 @@ ALTER TABLE scf_trade
   ADD  investor_total_vat_amount   DECIMAL(10,2) DEFAULT NULL,
   ADD  vat_whitehall_gross_profit  DECIMAL(10,2) DEFAULT NULL,
   ADD  vat_finance_amount          DECIMAL(10,2) DEFAULT NULL;
+  
+  
+ALTER TABLE tf_general_setting
+  ADD  vat_investor   DECIMAL(10,2) DEFAULT NULL,
+  ADD  vat_whitehall  DECIMAL(10,2) DEFAULT NULL,
+  ADD  vat_seller     DECIMAL(10,2) DEFAULT NULL;
 
+  
 
 
 
