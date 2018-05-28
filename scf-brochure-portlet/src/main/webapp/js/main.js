@@ -40,8 +40,9 @@ $(document).ready(function() {
 		              $("#broDownlodLink").attr("href",$("#pdfBrochurDownloadRes").val());
 		              $("#broDownlodLink").attr("target","_blank");
 		              $("#savedInfo").val("a");
-		              $("#borucurSubmit").attr("disabled","true");
-		              $("#saveBrouchurForm").find("input").prop("readonly",true);
+		              $("#saveBrouchurForm .modal-header").nextAll().hide();
+		              $("#saveBrouchurForm .modal-header h4").hide();
+		              $("#saveBrouchurForm .modal-header button").addClass("closeButtonMargin");
 		            },
 		            error: function (data) {
 		                console.log('An error occurred.');
@@ -50,13 +51,12 @@ $(document).ready(function() {
 		  }
 		 
 	  });
-	  
 	  $('#brochurModal').on('hidden.bs.modal', function() {
 		    $(this).find("input").val("");
 		    $("#saveBrouchurForm").find(".error_show").removeClass("error_show");
-		    $("#borucurSubmit").removeAttr("disabled");
-		    $("#saveBrouchurForm").find("input").removeAttr("readonly");
+		    $("#saveBrouchurForm .modal-header").nextAll().show();
+		    $("#saveBrouchurForm .modal-header h4").show();
+		    $("#saveBrouchurForm .modal-header button").removeClass("closeButtonMargin");
 	  });
-	  
 	 
 });

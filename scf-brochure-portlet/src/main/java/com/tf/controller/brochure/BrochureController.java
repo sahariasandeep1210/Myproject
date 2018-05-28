@@ -112,7 +112,6 @@ public class BrochureController {
 				contentStream = file.getContentStream();
 			}
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		try {
