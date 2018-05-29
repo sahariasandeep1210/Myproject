@@ -46,7 +46,7 @@ ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DI
 <%-- <liferay-ui:success key="success" message="your information has been saved.please download now"></liferay-ui:success> --%>
 
 
-<div id="brochurModal" style="z-index: 99999!important" class="modal  fade" tabindex="-1" role="dialog"
+<div id="brochurModal" style="z-index: 99999!important;top:30%!important" class="modal  fade" tabindex="-1" role="dialog"
 	aria-labelledby="myModalLabel" aria-hidden="true">
 	<form:form autocomplete="nope" id="saveBrouchurForm" type="GET" action="${saveUserInfoUrl}">
 	<div id="popMessageDisplayId" style="margin-left:4px!important;color: green;font-weight: bold;top:10%!important" class="popMessageDisplay">Information has been saved,please click again to download</div>

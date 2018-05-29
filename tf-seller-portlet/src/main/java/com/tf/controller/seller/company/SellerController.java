@@ -559,7 +559,7 @@ public class SellerController extends BaseController {
 						index++;
 					}
 					companyObject.setActivestatus("New");
-					companyObject.setCompanyType("5");
+					companyObject.setCompanyType("4");
 					companyObject.setAddress(address);
 					companyObject.setCompanyAccountDetail(companyAccountDetail);
 					Company cmpModel = companyDocumentService.getCompanyDetail(companyObject.getRegNumber(),companyObject.getName());
