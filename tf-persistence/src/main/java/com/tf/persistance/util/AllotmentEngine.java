@@ -257,7 +257,8 @@ public class AllotmentEngine {
 	
 	
 	private BigDecimal calculateInvestorNetProfit(BigDecimal invGrossProfit,BigDecimal whitehallProfitShare,BigDecimal investorVatFee){		
-		BigDecimal investorNetProfit=invGrossProfit.subtract(whitehallProfitShare).subtract(investorVatFee);// Modified by abhishek to calculate net profit as now vat have to calculate.
+		//BigDecimal investorNetProfit=invGrossProfit.subtract(whitehallProfitShare).subtract(investorVatFee);// Modified by abhishek to calculate net profit as now vat have to calculate.
+	    	BigDecimal investorNetProfit=invGrossProfit.subtract(whitehallProfitShare);
 		investorNetProfit.setScale(2, RoundingMode.HALF_EVEN);
 		_log.info("Investor Net Profit --------- "+investorNetProfit);
 		return investorNetProfit;
@@ -285,7 +286,8 @@ public class AllotmentEngine {
 		return whitehallTotalProfit;
 	}
 	private BigDecimal calculateWhitehallNetReceivable(BigDecimal whitehallTotal,BigDecimal sellerFees,BigDecimal sellerTransFee,BigDecimal vatOnWhithallGrossProfit ){		
-		BigDecimal whitehallTotalProfit=whitehallTotal.add(sellerFees).add(sellerTransFee).subtract(vatOnWhithallGrossProfit);
+		//BigDecimal whitehallTotalProfit=whitehallTotal.add(sellerFees).add(sellerTransFee).subtract(vatOnWhithallGrossProfit);
+	    	BigDecimal whitehallTotalProfit=whitehallTotal.add(sellerFees).add(sellerTransFee);
 		whitehallTotalProfit.setScale(2, RoundingMode.HALF_EVEN);
 		_log.info("Whitehall total profit :"+whitehallTotalProfit);
 		return whitehallTotalProfit;
@@ -327,9 +329,10 @@ public class AllotmentEngine {
 	}		
 	
 	private BigDecimal calculateSellerNetAllotment(BigDecimal tradeAmount,BigDecimal investorTotalProfit,BigDecimal WhitehallGrossProfit,BigDecimal vatOnTradeAmount,BigDecimal whitehallTotalShare){		
-		BigDecimal sellerNetAllotment=tradeAmount.subtract((investorTotalProfit.add(WhitehallGrossProfit).add(vatOnTradeAmount))).add(whitehallTotalShare);//modified by Abhishek in order to calculate net finance amount after vat calculation on total trade amount
+		//BigDecimal sellerNetAllotment=tradeAmount.subtract((investorTotalProfit.add(WhitehallGrossProfit).add(vatOnTradeAmount))).add(whitehallTotalShare);//modified by Abhishek in order to calculate net finance amount after vat calculation on total trade amount
+		BigDecimal sellerNetAllotment=tradeAmount.subtract((investorTotalProfit.add(WhitehallGrossProfit))).add(whitehallTotalShare);//modified by Abhishek in order to calculate net finance amount after vat calculation on total trade amount
 		sellerNetAllotment.setScale(2, RoundingMode.HALF_EVEN);
-		_log.info("Seller net allotment :"+sellerNetAllotment + " "+ vatOnTradeAmount + ""+WhitehallGrossProfit);
+		_log.info("Seller net allotment :"+sellerNetAllotment);
 		return sellerNetAllotment;
 	}
 	
