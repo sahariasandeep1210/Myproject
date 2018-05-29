@@ -635,8 +635,20 @@ ALTER TABLE tf_general_setting
   ADD  vat_investor   DECIMAL(10,2) DEFAULT NULL,
   ADD  vat_whitehall  DECIMAL(10,2) DEFAULT NULL,
   ADD  vat_seller     DECIMAL(10,2) DEFAULT NULL;
-
   
+# Added on 29th May 2018
+  
+CREATE TABLE IF NOT EXISTS `tf_brochure` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `company_name` varchar(255) DEFAULT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `firstname` varchar(255) DEFAULT NULL,
+  `lastname` varchar(255) DEFAULT NULL,
+  `phone` varchar(255) DEFAULT NULL,
+  `brochure_type` char(1) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+
 
 
 
