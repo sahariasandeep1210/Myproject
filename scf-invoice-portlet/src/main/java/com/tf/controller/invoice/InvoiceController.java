@@ -3,6 +3,7 @@ package com.tf.controller.invoice;
 
 import java.beans.PropertyEditorSupport;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -12,6 +13,8 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 import javax.portlet.PortletConfig;
@@ -41,6 +44,7 @@ import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.mail.MailMessage;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.repository.model.Folder;
 import com.liferay.portal.kernel.servlet.SessionErrors;
@@ -57,6 +61,8 @@ import com.liferay.portlet.documentlibrary.model.DLFileEntry;
 import com.liferay.portlet.documentlibrary.model.DLFolder;
 import com.liferay.portlet.documentlibrary.model.DLFolderConstants;
 import com.liferay.portlet.documentlibrary.service.DLAppServiceUtil;
+import com.liferay.util.mail.MailEngine;
+import com.liferay.util.mail.MailEngineException;
 import com.mysql.jdbc.StringUtils;
 import com.tf.dto.InvoiceDTO;
 import com.tf.model.Company;
@@ -188,16 +194,20 @@ public class InvoiceController {
 		long companyId = 0 ;
 		List<Company> companyList = new ArrayList<Company>();
 		List<Company> sellerRegList = new ArrayList<Company>();
+		System.out.println(" CreateInvoice6 " + companyList + " "+sellerRegList );
 		ThemeDisplay themeDisplay =
 						(ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
         if(liferayUtility.getPermissionChecker(request).isOmniadmin() ||
 				request.isUserInRole(Constants.WHITEHALL_ADMIN)){
     		companyList = companyService.getCompanies(CompanyTypes.SCF_COMPANY.getValue());
     		
+    		System.out.println(" CreateInvoice7 " + companyList + " "+sellerRegList );
+    		
         }else if(request.isUserInRole(Constants.SCF_ADMIN)){
         	companyId =userService.getCompanyIDbyUserID(themeDisplay.getUserId());
         	companyList=companyService.getCompaniesById(companyId);
         	invoice.setScfCompany(companyId);
+        	System.out.println(" CreateInvoice8 " + companyList + " "+companyId );
         }
         //getting the all seller 
         if(companyId == 0){
@@ -219,6 +229,7 @@ public class InvoiceController {
 		Long invoiceId = ParamUtil.getLong(request, "invoiceId", 0);
 		invoice.setId(invoiceId);
 		long scfCompanyId = ParamUtil.getLong(request, "scfCompany");
+		System.out.println(" CreateInvoice1 " + invoiceId + " "+scfCompanyId );
 
 		try {
 			Invoice invoice2 =
@@ -230,8 +241,12 @@ public class InvoiceController {
 
 			Company company = companyService.findById(scfCompanyId);
 			GeneralSetting generalSetting=generalSettingService.getGeneralSetting();
+			System.out.println(" CreateInvoice2 " + company + " " );
+			
 			if (invoice2 != null && invoiceId != invoice2.getId()) {
-
+				
+				System.out.println(" CreateInvoice3 " + invoice2.getId() + " " );
+				
 				SessionErrors.add(request, "invoice.duplicate.error");
 				StringBuilder sb = new StringBuilder();
 				model.put(
@@ -249,21 +264,22 @@ public class InvoiceController {
 			} else if((invoice.getPaymentDate().getTime()-new Date().getTime())/ (1000 * 60 * 60 * 24) < 0){
 				SessionErrors.add(request, "invoice.minPaymentDuration.invalid");
 				model.put("invoiceModel", invoice);
+				System.out.println(" CreateInvoice4 " + invoice + " " );
 				response.setRenderParameter("render", "createInvoice");
 				
 			} else if((generalSetting!=null && generalSetting.getMinPaymentDateDuartion() !=null) && (((invoice.getPaymentDate().getTime()-new Date().getTime())/ (1000 * 60 * 60 * 24)) < generalSetting.getMinPaymentDateDuartion())){
 				SessionErrors.add(request, "invoice.minPaymentDuration.error");
-				model.put(
-						"errorMessage",LanguageUtil.get(portletConfig, request.getLocale(), "invoice.payment.duration.error"));
+				model.put("errorMessage",LanguageUtil.get(portletConfig, request.getLocale(), "invoice.payment.duration.error"));
 				model.put("invoiceModel", invoice);
 				model.put("company", company);
 				model.put("minPaymentDurationDate", generalSetting.getMinPaymentDateDuartion());
+				System.out.println(" CreateInvoice5 " + generalSetting.getMinPaymentDateDuartion() + " " );
 				response.setRenderParameter("render", "createInvoice");
 			}
 			else {
 				if (invoiceId > 0) {
 					// Update record
-
+					
 					Invoice inv = invoiceService.getInvoicesById(invoiceId);
 					inv.setInvoiceNumber(invoice.getInvoiceNumber());
 					inv.setInvoiceDate(invoice.getInvoiceDate());
@@ -281,13 +297,15 @@ public class InvoiceController {
 					List<Invoice> invoices = new ArrayList<Invoice>();
 					invoices.add(inv);
 					invoiceService.addInvoices(invoices);
-
+					System.out.println(" CreateInvoice10 " + company + " " );
 				}
 				else {
 					Invoice invoiceModel = transfromInvoiceDtoToInvoiceModel(invoice);
 					List<Invoice> invoices = new ArrayList<Invoice>();
 					invoices.add(invoiceModel);
 					invoiceService.addInvoices(invoices);
+					System.out.println(" CreateInvoice11 " + company + " " );
+					//sendEmail();
 					// Email Notification
 					try {
 						// invoices has been added, now we need to trigger email
@@ -301,22 +319,28 @@ public class InvoiceController {
 						// notification to user irrespective of invoice created
 						// by Whitehall admin or SCF company admin
 						Company cmp = companyService.getCompaniesByRegNum(invoiceModel.getSellerCompanyRegistrationNumber());
+						System.out.println(" CreateInvoice12 " + company + " " );
 						// Sending mail to Seller
 						sendInvoiceCreateNotification(request, portletConfig, invoiceModel, content, contentTable, cmp, Boolean.FALSE);
+						
 						if (liferayUtility.getPermissionChecker(request).isOmniadmin()) {
 							// Sending mail to SCF company
 							cmp = invoiceModel.getScfCompany();
 							sendInvoiceCreateNotification(request, portletConfig, invoiceModel, content, contentTable, cmp, Boolean.FALSE);
+							System.out.println(" CreateInvoice13 " + company + " " );
 						}
 						else {
 							sendInvoiceCreateNotification(request, portletConfig, invoiceModel, content, contentTable, cmp, Boolean.TRUE);
+							
+							System.out.println(" CreateInvoice14 " + company + " " );
 						}
 					}
 					catch (Exception e) {
 						_log.error(e.getMessage());
 					}
-				}
+				
 
+			}
 			}
 		}
 		catch (Exception e) {
@@ -326,11 +350,28 @@ public class InvoiceController {
 		}
 
 	}
-
+    private void sendEmail() throws MailEngineException, AddressException{
+    	 MailMessage mailMessage = new MailMessage();
+			mailMessage.setHTMLFormat(true);
+			mailMessage.setBody("Hello how are you");
+			System.out.println(" CreateInvoice12 "  + " " );
+			try {
+				mailMessage.setFrom(new InternetAddress("nuevothoughts.abhishek@gmail.com","Abhishek"));
+				
+				mailMessage.setSubject("set mail subject here");
+				mailMessage.setTo(new InternetAddress("nuevothoughts.abhishek@gmail.com"));
+				MailEngine.send(mailMessage);
+			} catch (UnsupportedEncodingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+    	
+    }
 	private void sendInvoiceCreateNotification(
 		ActionRequest request, PortletConfig portletConfig,
 		Invoice invoiceModel, String content, String contentTable, Company cmp, boolean mailToAdmin) {
-
+		System.out.println(" CreateInvoice15 " + cmp + " " );
 		if (mailToAdmin) {
 			// needs to be replaced omni admin name
 			content = content.replaceAll("\\[PH-NAME\\]", liferayUtility.getThemeDisplay(request).getUser().getFullName());
@@ -350,6 +391,7 @@ public class InvoiceController {
 		String from = LanguageUtil.get(portletConfig, request.getLocale(), "invoice.sender.email");
 		String to = userService.findUserOjectByCompanyId(cmp.getId());
 
+		 System.out.print("Send_Notification " + " to "+ to + " from "+ from );
 		if (!StringUtils.isNullOrEmpty(content) && !StringUtils.isNullOrEmpty(from) && !StringUtils.isNullOrEmpty(to)) {
 			liferayUtility.sendEmail(request, from, to, "Your invoice has been created.", content);
 		}
@@ -451,7 +493,7 @@ public class InvoiceController {
 				    .getCompanies(CompanyTypes.SCF_COMPANY
 					    .getValue());
 
-			}
+			          }
 
 		    }
 		} catch (Exception e) {

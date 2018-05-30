@@ -93,7 +93,8 @@ public class WhitehallController {
          * @param size
          * @return
          */
-        @RequestMapping(value = "/invoices/{userID}",params = { "startIndex", "size" }, method = RequestMethod.GET)  
+        @SuppressWarnings("unchecked")
+		@RequestMapping(value = "/invoices/{userID}",params = { "startIndex", "size" }, method = RequestMethod.GET)  
         public ResponseEntity<ListDTO> getInvoices(@PathVariable("userID") long userID,@RequestParam("startIndex") int startIndex, 
         	@RequestParam("size") int size) {            
             	String app = "app";

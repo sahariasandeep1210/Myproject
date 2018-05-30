@@ -1,33 +1,41 @@
 package com.tf.controller.dashboard;
 
-import java.io.IOException;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
+import javax.mail.internet.InternetAddress;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
-import javax.portlet.ResourceRequest;
-import javax.portlet.ResourceResponse;
 
+import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.collections.map.HashedMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.portlet.ModelAndView;
 import org.springframework.web.portlet.bind.annotation.RenderMapping;
-import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 
-import com.google.gson.Gson;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.mail.MailMessage;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.security.permission.PermissionChecker;
 import com.liferay.portal.theme.ThemeDisplay;
+import com.liferay.util.mail.InternetAddressUtil;
+import com.liferay.util.mail.MailEngine;
+import com.tf.model.Company;
 import com.tf.model.Investor;
 import com.tf.model.SellerScfCompanyMapping;
+import com.tf.model.User;
 import com.tf.persistance.util.Constants;
 import com.tf.persistance.util.DashboardModel;
 import com.tf.service.DashBoardService;
@@ -64,6 +72,9 @@ public class DashboardController {
 		_log.info("Render Dashboard");
 		String viewName = "admindashboard";
 		try {
+
+			
+			
 			List<SellerScfCompanyMapping> sellerRegList = new ArrayList<SellerScfCompanyMapping>();
 		    String userType=null;
 		    Long companyId =null;
@@ -169,7 +180,45 @@ public class DashboardController {
 		    	model.put("dashboardModel", dashBoardService.setDashBoardInformation(dashModel,userType, companyId));
 		    	
 		    }
+		    
 		    setPortletURls(dashModel,request);
+		  
+		/*    
+		    MailMessage mailMessage = new MailMessage();
+			mailMessage.setHTMLFormat(true);
+			mailMessage.setBody("Hello how are you");
+			mailMessage.setFrom(new InternetAddress("nuevothoughts.abhishek@gmail.com","Abhishek"));
+			mailMessage.setSubject("set mail subject here");
+			mailMessage.setTo(new InternetAddress("nuevothoughts.abhishek@gmail.com"));
+			MailEngine.send(mailMessage);*/
+			
+		    
+		   /* String phoneNumber = "+919643784742";
+            String appKey = "cd3da2c9-374e-4615-b2eb-0a05e990bd7";
+            String appSecret = "WI//35fjK0a9jaEK+T92uA=";
+            String message = "";
+            URL url = new URL("https://messagingapi.sinch.com/v1/sms/" + phoneNumber);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setDoOutput(true);
+            connection.setRequestMethod("POST");
+            connection.setRequestProperty("Content-Type", "application/json");
+            String userCredentials = "application\\" + appKey + ":" + appSecret;
+            byte[] encoded = Base64.encodeBase64(userCredentials.getBytes());
+            String basicAuth = "Basic " + new String(encoded);
+            connection.setRequestProperty("Authorization", basicAuth);
+            String postData = "{\"Message\":\"" + message + "\"}";
+            OutputStream os = connection.getOutputStream();
+            os.write(postData.getBytes());
+            StringBuilder res = new StringBuilder();
+            BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            String line;
+            while ( (line = br.readLine()) != null)
+            	res.append(line);
+            br.close();
+            os.close();
+            System.out.println(res.toString());*/
+			
+			
 		} catch (Exception e) {
 		    // TODO Auto-generated catch block
 		    e.printStackTrace();
@@ -186,33 +235,9 @@ public class DashboardController {
 		dashModel.setCreateInvestorURL(liferayUtility.getPortletURL( request, "tf-company-portlet","render","createInvestor",true));
 	}
 
-	@ResourceMapping("refreshGraphCall")
-	public void graphRefreshCall(ResourceRequest request, ResourceResponse response,ModelMap modelMap)
-			throws IOException, PortalException, SystemException {
-		String jsonString="";
-		try {
-			if(request.isUserInRole(Constants.SCF_ADMIN)){
-				     DashboardModel dashModel=new DashboardModel();	
-				    String userType=null;
-				    Long companyId =null;
-				    ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
-				companyId = userService.getCompanybyUserID(themeDisplay.getUserId()).getId();
-				dashModel.setInvestorPortfolios(investorService.getInvestorPortfolioDataForGraph(companyId));
-				dashModel.setTotalCreditAvail(investorService.getTotalCreditAvailForGraph(companyId));			
-				userType=Constants.SCF_ADMIN;
-				DashboardModel setDashBoardInformation = dashBoardService.setDashBoardInformation(dashModel,userType, companyId);
-				modelMap.addAttribute("dashboardModel", setDashBoardInformation);
-					// JSONObject companyObject =
-					// JSONFactoryUtil.createJSONObject();
-					Gson gson = new Gson();
-					if(setDashBoardInformation!=null && setDashBoardInformation.getInvestorPortfolios()!=null && setDashBoardInformation.getInvestorPortfolios().size()>0){
-						 jsonString = gson.toJson(setDashBoardInformation.getInvestorPortfolios());
-					}
-			}
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		 response.getWriter().println(jsonString);
-	}	
+	
+
+
+	
+
 }

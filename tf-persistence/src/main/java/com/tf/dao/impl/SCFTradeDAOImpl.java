@@ -1952,7 +1952,7 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 		
 		 StringBuilder qeryString = new StringBuilder();
 		    
-		    qeryString.append("SELECT SUM(a.allotment_amount), SUM(a.investor_net_profit), SUM(a.investor_gross_profit) ");
+		    qeryString.append("SELECT SUM(a.allotment_amount), SUM(a.investor_net_profit), SUM(a.investor_gross_profit), SUM(a.whitehall_profit_share) ");
 		    qeryString.append("FROM  tf_allotments a ");
 		    qeryString.append("WHERE a.investor_id=:investorId ");
 		    qeryString.append("AND a.status <> 'Closed' AND  a.status <> 'Hold'  ");

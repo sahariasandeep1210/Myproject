@@ -1,6 +1,7 @@
 package com.tf.controller.settings;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -115,6 +116,18 @@ public class WhiteHallSettingController {
 												 ActionRequest request,
 												 ActionResponse response) throws Exception {
 		
+		 if(generalSettingModel.getVatInvestor() == null){
+			 
+			 generalSettingModel.setVatInvestor(new BigDecimal(0));
+		 }
+         if(generalSettingModel.getVatWhitehall() == null){
+			 
+        	 generalSettingModel.setVatWhitehall(new BigDecimal(0));
+
+		 }
+          if(generalSettingModel.getVatSeller() == null){
+        	  generalSettingModel.setVatSeller(new BigDecimal(0));
+          }
 		_log.info("Save general settings**********" + generalSettingModel.getVatInvestor() + " "+generalSettingModel.getVat());
 		generalSettingService.saveGeneralSettings(generalSettingModel);
 		

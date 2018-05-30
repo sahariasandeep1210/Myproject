@@ -174,11 +174,12 @@ public class InvestmentController {
 			   BigDecimal totalInvestorTotalGross = BigDecimal.ZERO;
 			   
 			   BigDecimal totalGrossCharges = BigDecimal.ZERO;
-			   BigDecimal whiteHallTotalCharges = BigDecimal.ZERO;
+			   BigDecimal whiteHallTotalChargesTemp = BigDecimal.ZERO;
 			   
 			   String investorTotalGrossProfit= ""; 
 			   String investorTotalNetProfit = "";
 			   String totalInvestorAllotment = "";
+			   String  whiteHallTotalCharges = "";
 			   
 			   BigDecimal investorTotalGrossProfitTemp = BigDecimal.ZERO;// These variables are used when search is not null
 			   BigDecimal investorTotalNetProfitTemp = BigDecimal.ZERO;
@@ -206,7 +207,7 @@ public class InvestmentController {
 				model.put("sortCompany_order", sortCompany_order);
 				model.put("sort_Column", columnName);
 				model.put("sort_order", order);
-				myTradeUrl = liferayUtility.getPortletURL(request, "scf-trade-portlet", "render", "", true);// To make hiperlink and redirect to MY Investment portlet.
+				myTradeUrl = liferayUtility.getPortletURL(request, "scf-trade-portlet", "render", "investorDetails", true);// To make hiperlink and redirect to MY Investment portlet.
 				
 				 System.out.println(" *****SortingValue**************" +sortCompany_order+" "+ columnName + " "+order );
 			String search = ParamUtil.getString(request, "Search");
@@ -233,7 +234,7 @@ public class InvestmentController {
 			    investorTotalGrossProfit  = (BigDecimal) obj[5];
 			    investorTotalNetProfit  = (BigDecimal) obj[6];*/
 			    
-			    whiteHallTotalCharges   = (BigDecimal) obj[7];
+			  //  whiteHallTotalCharges   = (BigDecimal) obj[7];
 			   }
 			   if(list!=null & list.size()>0){
 			    noOfRecords=(long) list.get(list.size()-1).getId();
@@ -243,7 +244,7 @@ public class InvestmentController {
 			model.put("totalSellerFees", totalSellerFees);
 			model.put("totalInvestorTotalGross", totalInvestorTotalGross);
 			model.put("totalGrossCharges", totalGrossCharges);
-			model.put("whiteHallTotalCharges", whiteHallTotalCharges);
+			
 			model.put("scftrades", scftrades);
 			model.put("userType", Constants.PRIMARY_INVESTOR_ADMIN);
 			viewName = "inverstortradelist";
@@ -258,7 +259,7 @@ public class InvestmentController {
 		    	totalInvestorAllotment = String.valueOf(row[0]);
 		    	investorTotalNetProfit = String.valueOf(row[1]);
 				investorTotalGrossProfit = String.valueOf(row[2]);
-				
+				whiteHallTotalCharges = String.valueOf(row[3]);
 			   }
 		    
 		    int rowNo = 0;
@@ -275,10 +276,9 @@ public class InvestmentController {
 				myInvestmentModel.setTotalTradeAmount(scf.getTradeAmount().toString());
 				
 				myInvestmentModel.setDuration(scf.getDuration().toString());
-				myInvestmentModel.setStartDate(scf.getOpeningDate());
-				myInvestmentModel.setEndDate(scf.getSellerPaymentDate());
-				myInvestmentModel.setWhiteHallCharges(scf.getSellerFees()
-						.toString());
+				myInvestmentModel.setStartDate(scf.getSellerPaymentDate());
+				myInvestmentModel.setEndDate(scf.getClosingDate());
+				
 				Long tradeID = scf.getId();
 				System.out.println("*****TradeId***" + tradeID);
 
@@ -297,6 +297,7 @@ public class InvestmentController {
 						.getInvestorGrossProfit()));
 				myInvestmentModel.setNetProfit(String.valueOf(obj
 						.getInvestorNetProfit()));
+				myInvestmentModel.setWhiteHallCharges(String.valueOf(obj.getWhitehallProfitShare()));
 				myInvestmentModel.setReceivableAmount(String.valueOf(obj.getAllotmentAmount().add(obj.getInvestorNetProfit())));
 				myInvestmentModel.setBps(obj.getMarketDiscount().toString());
 				if(obj.getVatInvestorFee()!=null){
@@ -309,7 +310,7 @@ public class InvestmentController {
 				    totalInvestorAllotmentTemp =  totalInvestorAllotmentTemp.add(obj.getAllotmentAmount());
 				    investorTotalGrossProfitTemp = investorTotalGrossProfitTemp.add(obj.getInvestorGrossProfit());
 				    investorTotalNetProfitTemp = investorTotalNetProfitTemp.add(obj.getInvestorNetProfit());
-				
+				    whiteHallTotalChargesTemp = whiteHallTotalChargesTemp.add(obj.getWhitehallProfitShare());
 				
 			}
 			if (search != null && search.trim().length()>0 ){
@@ -318,10 +319,12 @@ public class InvestmentController {
 				totalInvestorAllotment = totalInvestorAllotmentTemp.toString();
 				investorTotalGrossProfit = investorTotalGrossProfitTemp.toString();
 				investorTotalNetProfit =  investorTotalNetProfitTemp.toString();
+				whiteHallTotalCharges = whiteHallTotalChargesTemp.toString();
 			}
 			model.put("totalInvestorAllotment", totalInvestorAllotment);
 			model.put("investorTotalGrossProfit", investorTotalGrossProfit);
 			model.put("investorTotalNetProfit", investorTotalNetProfit);
+			model.put("whiteHallTotalCharges", whiteHallTotalCharges);
 			model.put("receivableAmount", Float.parseFloat(totalInvestorAllotment)+Float.parseFloat(investorTotalNetProfit) );
 			model.put("search", search);
 			model.put("myTradeUrl", myTradeUrl);

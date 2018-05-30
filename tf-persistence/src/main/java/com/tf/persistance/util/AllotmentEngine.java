@@ -260,7 +260,7 @@ public class AllotmentEngine {
 		//BigDecimal investorNetProfit=invGrossProfit.subtract(whitehallProfitShare).subtract(investorVatFee);// Modified by abhishek to calculate net profit as now vat have to calculate.
 	    	BigDecimal investorNetProfit=invGrossProfit.subtract(whitehallProfitShare);
 		investorNetProfit.setScale(2, RoundingMode.HALF_EVEN);
-		_log.info("Investor Net Profit --------- "+investorNetProfit);
+		_log.info("Investor Net Profit --------- "+investorNetProfit + " "+invGrossProfit );
 		return investorNetProfit;
 	}
 	
