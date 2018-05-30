@@ -240,12 +240,13 @@ public void deleteInvoice(Invoice invoice){
 			    	 * in this method getting DB column name since used for above native sql
 			    	 * Changing it to entity column name based on conditions
 			    	 */
+			    	System.out.println("Query*******1 "+ columnName);
 			    	columnName = changeDbClmNmToEntityClmNm(columnName);
-			    	
-					if ("asc".equals(order)) {
+			    	System.out.println("Query*******2 "+ columnName);
+					if ("asc".equalsIgnoreCase(order)) {
 						criteria.addOrder(Order.asc(columnName));
 					}
-					if ("desc".equals(order)) {
+					if ("desc".equalsIgnoreCase(order)) {
 						criteria.addOrder(Order.desc(columnName));
 					}
 			    	results =(List<Invoice>)criteria.setFirstResult(startIndex).setMaxResults(pageSize).list();
@@ -278,7 +279,11 @@ public void deleteInvoice(Invoice invoice){
 			columnName="scfcmp.name";
 		}else if(columnName.equalsIgnoreCase("scf.status")){
 			columnName="status";
+		}else if(columnName.equalsIgnoreCase("scf.update_date")){
+			columnName="updateDate";
 		}
+		
+		
 		return columnName;
 	}
 
