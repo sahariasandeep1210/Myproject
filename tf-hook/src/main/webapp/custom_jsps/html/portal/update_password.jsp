@@ -89,7 +89,7 @@ PasswordPolicy passwordPolicy = user.getPasswordPolicy();
 					</c:if>
 
 					<c:if test="<%= upe.getType() == UserPasswordException.PASSWORD_TOO_TRIVIAL %>">
-						<liferay-ui:message key="that-password-is-too-trivial" />
+						<liferay-ui:message key="password-is-too-trivial(password should be alphanumeric with special character and having minimum 8 characters.)" />
 					</c:if>
 
 					<c:if test="<%= upe.getType() == UserPasswordException.PASSWORD_TOO_YOUNG %>">
