@@ -16,9 +16,16 @@
 			#end
 
 			<li class="$nav_item_css_class" id="layout_$nav_item.getLayoutId()" $nav_item_attr_selected role="presentation">
-				<a aria-labelledby="layout_$nav_item.getLayoutId()" href="$nav_item.getURL()" $nav_item_attr_has_popup $nav_item.getTarget() role="menuitem"><i class="$nav_item.getLayout().getTypeSettingsProperties().getProperty('lfr-theme:regular:icon-class')"></i><span class="nav-label">$nav_item.icon() $nav_item.getName()</span></a>
-				
-					
+				<a aria-labelledby="layout_$nav_item.getLayoutId()" href="$nav_item.getURL()" $nav_item_attr_has_popup $nav_item.getTarget() role="menuitem"><i class="$nav_item.getLayout().getTypeSettingsProperties().getProperty('lfr-theme:regular:icon-class')"></i>
+					<span class="nav-label">				
+						$nav_item.icon()
+						#if ($showMyCompany && $nav_item.getName() == 'Company')
+							My Company
+						#else
+							$nav_item.getName()
+						#end
+					</span>
+				</a>				
 			
 				
 				#if ($nav_item.hasChildren())

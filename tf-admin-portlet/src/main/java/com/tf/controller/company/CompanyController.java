@@ -711,23 +711,13 @@ public class CompanyController extends BaseController {
 				.preparePaginationModel(request);
 		if (getPermissionChecker(request).isOmniadmin()
 				|| request.isUserInRole(Constants.WHITEHALL_ADMIN)) {
-			_log.info("User is Omni Admin");
-			
-			/*companyList = companyService.getCompaniesByStatusFilter(
-					CompanyStatus.DELETED.getValue(),
-					paginationModel.getStartIndex(),
-					paginationModel.getPageSize(),searchValue);*/
-			
-			companyList = companyService.getCompaniesBySortingParam(startIndex, resultSize, columnName, order,CompanyStatus.DELETED.getValue(),searchValue);
-			
-			if(Validator.isNotNull(searchValue)){
-				noOfRecords = companyService.getCompaniesCountByStatus(searchValue);
-			}else{
-				noOfRecords = companyService
-						.getCompaniesCount(CompanyStatus.DELETED.getValue());
-			}
-			
-			
+			_log.info("User is Omni Admin");			
+			companyList = companyService.getCompaniesBySortingParam(startIndex, resultSize, columnName, order,CompanyStatus.DELETED.getValue(),searchValue);			
+			if(Validator.isNotNull(searchValue)) {
+			    noOfRecords = companyService.getCompaniesCountByStatus(searchValue);
+			} else {
+			    noOfRecords = companyService.getCompaniesCount(CompanyStatus.DELETED.getValue());
+			}			
 			_log.info("noOfRecords:::"+noOfRecords);
 
 		}else if (request.isUserInRole(Constants.SCF_ADMIN)) {

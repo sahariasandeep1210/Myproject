@@ -1,5 +1,6 @@
 #set ($theme_display = $themeDisplay)
 #set ($portlet_display = $portletDisplay)
+#set ($showMyCompany = true)
 
 #set ($dockbar = $theme.getSetting("dockbar-split"))
 #set ($navNotification = $theme.getSetting("nav-notification-Show"))
@@ -28,3 +29,14 @@
 
 #set ($show_dockbar = $is_signed_in && $permissionChecker.isGroupAdmin($group_id))
 #set ($userPortraitURL = $user.getPortraitURL($theme_display) )
+
+#if ($is_signed_in)
+	#set ($roleService = $serviceLocator.findService("com.liferay.portal.service.RoleLocalService"))
+ 	#set ($usrRoles = $roleService.getUserRoles( $user_id )) 
+ 	#foreach( $usrRole in $usrRoles )
+ 		#if ( $usrRole.getName() == "WhiteHall Admin" || $permissionChecker.isOmniadmin() )
+         	#set ($showMyCompany = false)        	 
+       	#end
+ 	#end
+	
+#end
