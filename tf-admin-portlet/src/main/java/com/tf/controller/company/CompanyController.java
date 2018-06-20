@@ -135,7 +135,7 @@ public class CompanyController extends BaseController {
 			_log.error("CompanyController.renderCompanyList() - error occured while rendering company/companies"
 					+ e.getMessage());
 		}
-		return new ModelAndView("companylist", model);
+		return new ModelAndView(model.get("viewName"), model);
 	}
 
 	
@@ -706,47 +706,57 @@ public class CompanyController extends BaseController {
 	
 	private List<Company> prepareCompanyListFilter(RenderRequest request,
 			List<Company> companyList, ThemeDisplay themeDisplay, ModelMap model,String searchValue, String columnName, String order, int startIndex, int resultSize) {
-		Long noOfRecords = 0l;
-		PaginationModel paginationModel = paginationUtil
-				.preparePaginationModel(request);
+	    Company cmpObject = null;
+	    String viewName = "createcompany";
 		if (getPermissionChecker(request).isOmniadmin()
 				|| request.isUserInRole(Constants.WHITEHALL_ADMIN)) {
 			_log.info("User is Omni Admin");			
-			companyList = companyService.getCompaniesBySortingParam(startIndex, resultSize, columnName, order,CompanyStatus.DELETED.getValue(),searchValue);			
+			companyList = companyService.getCompaniesBySortingParam(startIndex, resultSize, columnName, order,CompanyStatus.DELETED.getValue(),searchValue);
+			Long noOfRecords = 0l;
+			PaginationModel paginationModel = paginationUtil.preparePaginationModel(request);
 			if(Validator.isNotNull(searchValue)) {
 			    noOfRecords = companyService.getCompaniesCountByStatus(searchValue);
 			} else {
 			    noOfRecords = companyService.getCompaniesCount(CompanyStatus.DELETED.getValue());
 			}			
 			_log.info("noOfRecords:::"+noOfRecords);
-
-		}else if (request.isUserInRole(Constants.SCF_ADMIN)) {
+			paginationUtil.setPaginationInfo(noOfRecords, paginationModel);
+			model.put("paginationModel", paginationModel);
+			viewName = "companylist";
+		} else if (request.isUserInRole(Constants.SCF_ADMIN)) {
 			_log.info("User is SCF Admin");
-			long companyId = userService.getCompanyIDbyUserID(themeDisplay
-					.getUserId());
-			Company cmpObject = companyService.findById(companyId);
-			companyList.add(cmpObject);
-			noOfRecords = 1l;
+			long companyId = userService.getCompanyIDbyUserID(themeDisplay.getUserId());
+			cmpObject = companyService.findById(companyId);
+			model.put("userType", Constants.SCF_ADMIN);
+			setCompanyDetailsInfo(model, cmpObject);			
 		} else if (request.isUserInRole(Constants.PRIMARY_INVESTOR_ADMIN)){
 			_log.info("User is Primary Investor Admin");
 			long companyId = userService.getCompanyIDbyUserID(themeDisplay
 					.getUserId());
-			Company cmpObject = companyService.findById(companyId);
-			companyList.add(cmpObject);
-			noOfRecords = 1l;
-			
+			cmpObject = companyService.findById(companyId);
+			setCompanyDetailsInfo(model, cmpObject);
+			model.put("userType", Constants.PRIMARY_INVESTOR_ADMIN);			
 		} else {
 			_log.info("User is Seller Admin");
 			long companyId = userService.getCompanyIDbyUserID(themeDisplay
 					.getUserId());
-			Company cmpObject = companyService.findById(companyId);
-			companyList.add(cmpObject);
-			noOfRecords = 1l;
+			cmpObject = companyService.findById(companyId);
+			setCompanyDetailsInfo(model, cmpObject);
+			model.put("userType", Constants.SELLER_ADMIN);
 		}
-
-		paginationUtil.setPaginationInfo(noOfRecords, paginationModel);
-		model.put("paginationModel", paginationModel);
+		model.put("viewName", viewName);
+		model.put("companyModel", cmpObject);
+		model.put("orgTypeMap", orgTypeMap);
+		model.put("companyTypeMap", companyTypeMap);
 		return companyList;
+	}
+
+
+
+	private void setCompanyDetailsInfo(ModelMap model, Company company) {
+	    company.setOfficers(new LinkedHashSet<Officer>(officerService.findOfficersByCompanyId(company.getId())));
+	    model.put("users", userService.findUserByCompanyId(company.getId()));
+	    model.put("cmpType", companyTypeMap.get(Long.valueOf(company.getCompanyType())));
 	}
 	
 	
