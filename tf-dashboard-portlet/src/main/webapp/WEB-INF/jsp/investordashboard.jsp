@@ -6,7 +6,7 @@
 
 <div id="dashboard">
 	<div class="row-fluid">
-		<div class="span4">
+		<div class="span6">
 			<div class="panel panel-blue quick-stat-panel">
 				<div class="panel-heading">
 					<h3 class="panel-title">Credit Line</h3>
@@ -16,7 +16,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="span4">
+		<div class="span6">
 			<div class="panel panel-blue quick-stat-panel">
 				<div class="panel-heading">
 					<h3 class="panel-title">SETTLED TRADES</h3>
@@ -28,32 +28,32 @@
 				</div>
 			</div>
 		</div>
-		<div class="span4">
+		<div class="span6" style="margin-left:0px!important">
 			<div class="panel panel-blue quick-stat-panel">
 				<div class="panel-heading">
 					<h3 class="panel-title">Available Credit Line</h3>
 				</div>
-				<div class="panel-body">
+				<div class="panel-body credit-line">
 
 					<div id="barchart"></div>
 				</div>
 			</div>
 		</div>
-	</div>
+	
 
-	<form:form commandName="scfCompany" method="post"
+	<form:form commandName="scfCompany" method="post" 
 		action="${defaultRenderURL}">
 		<input type="hidden" name="defaultRender" id="defaultRender"
 			value="${defaultRenderURL}" />
 		<div class="row-fluid">
 
-			<div class="span4">
+			<div class="span6" style="margin-left:2.5%!important">
 
 				<div class="panel panel-blue quick-stat-panel">
 					<div class="panel-heading">
 						<h3 class="panel-title">Available SCF Credit Line</h3>
 					</div>
-					<div class="panel-body">
+					<div class="panel-body scf-credit-line">
 						<div class="control-group">
 
 							<select id="selectedCompany" name="selectedCompany"
@@ -73,12 +73,8 @@
 			</div>
 		</div>
 	</form:form>
-	
+	</div>
 </div>
-
-
-
-
 
 
 
@@ -220,4 +216,5 @@
 		barChart.draw(barChartdata_SCF, barChartOptions);
 
 	}
+	$(".panel-body.credit-line").height($(".panel-body.scf-credit-line").height());
 </script>

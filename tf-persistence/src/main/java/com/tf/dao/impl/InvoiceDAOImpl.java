@@ -120,12 +120,12 @@ public void deleteInvoice(Invoice invoice){
 				StringBuilder sqlQuery = new StringBuilder();
 				if (companyID != null && ! StringUtils.isNotBlank(registrationNo)) {
 					sqlQuery.append("SELECT scf.*,tf.name,st.id AS Scfid,st.scf_id FROM scf_invoice scf LEFT JOIN tf_company  tf ON tf.regnumber = scf.seller_company_registration_number ");
-					sqlQuery.append("LEFT JOIN scf_trade st ON scf.trade_id = st.id where scf.scf_company = '"+companyID+"' ");
+					sqlQuery.append("LEFT JOIN scf_trade st ON scf.trade_id = st.id where scf.scf_company = '"+companyID+"' and scf.status='New' ");
 							
 				} else if (StringUtils.isNotBlank(registrationNo)) {
 					
 					sqlQuery.append("SELECT scf.*,tf.name,st.id,st.scf_id FROM scf_invoice scf LEFT JOIN tf_company  tf ON tf.regnumber = scf.seller_company_registration_number ");
-					sqlQuery.append("LEFT JOIN scf_trade st ON scf.trade_id = st.id where scf.seller_company_registration_number = '"+registrationNo+"' ");
+					sqlQuery.append("LEFT JOIN scf_trade st ON scf.trade_id = st.id where scf.seller_company_registration_number = '"+registrationNo+"' and  scf.status='New' ");
 							
 					/*sqlQuery = "SELECT scf.*,tf.name,st.id,st.scf_id FROM scf_invoice scf LEFT JOIN tf_company  tf ON tf.regnumber = scf.seller_company_registration_number where scf.seller_company_registration_number = '"
 							+ companyID + "' ORDER BY scf.update_date DESC";*/
@@ -447,7 +447,7 @@ public void deleteInvoice(Invoice invoice){
 				sqlQuery.append(" Where scf.status LIKE '"+search+"%' OR scf.invoice_number LIKE '"+search+"%' OR tf.name LIKE '"+search+"%'");
 			}*/
 			
-			sqlQuery.append(" Where ( scf.status LIKE '"+search+"%' OR scf.invoice_number LIKE '"+search+"%' OR tf.name LIKE '"+search+"%' )");
+			sqlQuery.append(" Where ( scf.status = 'New' and (scf.invoice_number LIKE '"+search+"%' OR scf.status LIKE '"+search+"%' OR tf.name LIKE '"+search+"%') )");
 			 if(companyID!=null){
 					sqlQuery.append(" AND scf.scf_company = '"+companyID+"'");
 			 }else if(StringUtils.isNotBlank(registrationNo)){
@@ -655,7 +655,7 @@ public void deleteInvoice(Invoice invoice){
 			}else{
 				
 			}*/
-			sqlQuery.append(" Where ( scf.status LIKE '"+search+"%' OR scf.invoice_number LIKE '"+search+"%' OR tf.name LIKE '"+search+"%' )");
+			sqlQuery.append(" Where ( scf.status='New' and  (scf.invoice_number LIKE '"+search+"%' OR scf.status LIKE '"+search+"%' OR tf.name LIKE '"+search+"%') )");
 		
 			 if(companyID!=null){
 					sqlQuery.append(" AND scf.scf_company = '"+companyID+"'");

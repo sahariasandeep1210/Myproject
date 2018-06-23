@@ -414,8 +414,9 @@ function bulkUpload(error_free){
 		//elements[0] = "scfCompany";
 		elements[0] = "fileType";
 		elements[1] = "companyDoc";
+		elements[2] = "scfCompany";
 		
-		for (i = 0; i < elements.length; i++) {
+		for (var i = 0; i < elements.length; i++) {
 			var element = $("#" + elements[i]);
 			if(element.length){
 				var eleValue = element.val();
@@ -429,7 +430,7 @@ function bulkUpload(error_free){
 		}
 		return error_free;
 		
-	}
+}
 
 
 function deleteCompany() {

@@ -1,5 +1,6 @@
 package com.tf.dao.impl;
 
+import java.util.Calendar;
 import java.util.List;
 
 import org.hibernate.Session;
@@ -11,6 +12,8 @@ import com.tf.dao.CompanyDocumentDAO;
 import com.tf.model.Company;
 import com.tf.model.CompanyDocument;
 import com.tf.model.InvoiceDocument;
+import com.tf.model.SellerScfCompanyMapping;
+import com.tf.persistance.util.Constants;
 
 
 @Repository
@@ -115,5 +118,36 @@ public class CompanyDocumentDAOImpl extends BaseDAOImpl<InvoiceDocument, Long> i
 			_log.error("getCompanyDocumentsWithUserId failed", re);
 			throw re;
 		}
+	}
+
+	public void saveSellerScfCompanyMapping(List<Company> companyList,
+			long scfCompanyId) {
+		_log.debug("inside saveSellerScfCompanyMapping()");
+		try {
+			Session session = sessionFactory.getCurrentSession();
+			for(Company companyObj : companyList){
+				try{
+					
+					SellerScfCompanyMapping scfSellerComapnyMappingObj=new SellerScfCompanyMapping();
+					scfSellerComapnyMappingObj.setScfCompany(scfCompanyId);
+					scfSellerComapnyMappingObj.setSellerCompany(companyObj);
+					scfSellerComapnyMappingObj.setUpdateDate(Calendar.getInstance().getTime());
+					scfSellerComapnyMappingObj.setStatus(Constants.STATUS.PENDING.getValue());
+					companyObj.getAddress().setCompany(companyObj);
+					companyObj.getCompanyAccountDetail().setCompany(companyObj);
+					
+					session.saveOrUpdate(scfSellerComapnyMappingObj);
+					_log.debug("persist successful"+companyObj);
+				}catch(Exception e){
+					_log.debug("persist fail"+companyObj);
+				}
+			}
+			
+		} catch (RuntimeException re) {
+			_log.error("saveSellerScfCompanyMapping() persist failed", re);
+			throw re;
+		}
+		
+		
 	}
 }

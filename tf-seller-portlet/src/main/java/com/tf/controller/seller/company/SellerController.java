@@ -3,6 +3,8 @@ package com.tf.controller.seller.company;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
@@ -55,6 +57,7 @@ import com.tf.model.Company;
 import com.tf.model.CompanyAccountDetail;
 import com.tf.model.CompanyDocument;
 import com.tf.model.CompanyModel;
+import com.tf.model.CompanyType;
 import com.tf.model.Investor;
 import com.tf.model.Officer;
 import com.tf.model.SellerScfCompanyMapping;
@@ -145,6 +148,8 @@ public class SellerController extends BaseController {
 			PaginationModel paginationModel = paginationUtil.preparePaginationModel(request);
 			if(request.isUserInRole(Constants.SCF_ADMIN)){
 				sellerScfMappings=sellerScfMappingService.getSellerScfMapping(paginationModel.getStartIndex(), paginationModel.getPageSize(),null,companyID,null);
+				
+				sortSellerScfMapping(sellerScfMappings);
 				companyList = companyService.getCompanies("4");
 				companies=prepareCompanyList(companyList,sellerScfMappings,Constants.SCF_ADMIN);
 			}else{
@@ -171,6 +176,20 @@ public class SellerController extends BaseController {
 		model.put("companyTypeMap", companyTypeMap);
 
 		return new ModelAndView("companylist", model);
+	}
+
+
+
+	/**
+	 * @param sellerScfMappings
+	 */
+	private void sortSellerScfMapping(List<SellerScfCompanyMapping> sellerScfMappings) {
+		Collections.sort(sellerScfMappings, new Comparator<SellerScfCompanyMapping>() {
+			@Override
+			public int compare(SellerScfCompanyMapping c1, SellerScfCompanyMapping c2) {
+				return c1.getSellerCompany().getName().compareToIgnoreCase(c2.getSellerCompany().getName());
+			}
+		});
 	}
 
 	
@@ -274,6 +293,7 @@ public class SellerController extends BaseController {
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
 	private List<Company> prepareCompanyList(List<Company> companyList,
 		  List<SellerScfCompanyMapping> sellerScfMappings,String companyType){
 		  Company company=null;
@@ -293,8 +313,21 @@ public class SellerController extends BaseController {
 				 }
              }
 	        }	
+		    companySortOnName(companyList);
 		    return companyList;		
 	   }
+
+
+
+	private void companySortOnName(List<Company> companyList) {
+		Collections.sort(companyList, new Comparator<Company>() 
+		  {
+			@Override
+			public int compare(Company c1, Company c2) {
+				return c1.getName().compareToIgnoreCase(c2.getName());
+			}
+		  });
+	}
 	
 	private List<SellerScfCompanyMapping> prepareCompanyListForListing(List<SellerScfCompanyMapping> sellerScfMappings){
 			  for(SellerScfCompanyMapping seller: sellerScfMappings){
@@ -407,35 +440,39 @@ public class SellerController extends BaseController {
 			}
 		
 	}
+
 	@RenderMapping(params = "render=supplierDocuments")
-	protected ModelAndView renderSupplierDocumentsList(@ModelAttribute("companyModelDetail") CompanyDTO company,ModelMap model,
-		RenderRequest request, RenderResponse response)
-		throws Exception {
+	protected ModelAndView renderSupplierDocumentsList(@ModelAttribute("companyModelDetail") CompanyDTO company, ModelMap model,
+			RenderRequest request, RenderResponse response) throws Exception {
 		try {
+			
 			ThemeDisplay themeDisplay = liferayUtility.getThemeDisplay(request);
 			themeDisplay.getUser().getScreenName();
-			List<CompanyDocument> companyDocumentList =	new ArrayList<CompanyDocument>();
-				companyDocumentList =companyDocumentService.getCompanyDocumentsBasedOnUploadedBy(themeDisplay.getUser().getScreenName());
-				model.put("userType", Constants.SCF_ADMIN);
+			List<CompanyDocument> companyDocumentList = new ArrayList<CompanyDocument>();
+			companyDocumentList = companyDocumentService.getCompanyDocumentsBasedOnUploadedBy(themeDisplay.getUser().getScreenName());
+			model.put("userType", Constants.SCF_ADMIN);
+			
+			List<Company> companyList = companyService.getCompanies("5");
 			model.put("companyDocumentList", companyDocumentList);
+			companySortOnName(companyList);
+			
+			model.put("scfCompanyList", companyList);
 			model.put(ACTIVETAB, "supplierdocList");
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			SessionErrors.add(request, "default-error-message");
-			_log.error("CompanyController.renderSupplierDocumentsList() - error occured while rendering supplierdocList  " +
-				e.getMessage());
+			_log.error("CompanyController.renderSupplierDocumentsList() - error occured while rendering supplierdocList  " + e.getMessage());
 		}
 		return new ModelAndView("supplierdoclist", model);
 	}
-	
+
 	@ActionMapping(params = "action=importCompany")
 	protected void importCompany( @ModelAttribute("companyModelDetail") CompanyDTO company, ModelMap model,
 		ActionRequest request, ActionResponse response)
 		throws Exception {
-		request.getPortletSession().removeAttribute("companyDTO");
-		request.getPortletSession().removeAttribute("companyList");
-		request.getPortletSession().removeAttribute("validCompanyList");
-		request.getPortletSession().removeAttribute("invalidCompanyList");
+		
+		
+		removeSessionAttr(request);
+		
 		int currentRow = 0;
 		Company companyObject = null;
 		CompanyAccountDetail companyAccountDetail = null;
@@ -443,6 +480,11 @@ public class SellerController extends BaseController {
 		Workbook workbook = null;
 		List<Company> validCompanyList = new ArrayList<Company>();
 		List<Company> invalidCompanyList = new ArrayList<Company>();
+		
+		/*
+		 *in case of admin user,he can add the scf company while mapping to seller.
+		 */
+		String scfCompanyId = request.getParameter("scfCompany");
 		try {
 			workbook =new XSSFWorkbook(company.getCompanyDoc().getInputStream());
 			int numberOfSheets = workbook.getNumberOfSheets();
@@ -575,6 +617,7 @@ public class SellerController extends BaseController {
 			request.getPortletSession().setAttribute("companyDTO", company);
 			request.getPortletSession().setAttribute("invalidCompanyList", invalidCompanyList);
 			request.getPortletSession().setAttribute("validCompanyList", validCompanyList);
+			request.getPortletSession().setAttribute("scfCompanyId", scfCompanyId);
 			model.put("documentUpload", Boolean.TRUE);
 			model.put("invalidCompanyList", invalidCompanyList);
 			model.put("validCompanyList", validCompanyList);
@@ -591,25 +634,41 @@ public class SellerController extends BaseController {
 		}
 
 	}
-	
-	
 
 
+
+	private void removeSessionAttr(ActionRequest request) {
+		request.getPortletSession().removeAttribute("companyDTO");
+		request.getPortletSession().removeAttribute("companyList");
+		request.getPortletSession().removeAttribute("validCompanyList");
+		request.getPortletSession().removeAttribute("invalidCompanyList");
+		request.getPortletSession().removeAttribute("scfCompanyId");
+	}
 
 	@SuppressWarnings("unchecked")
 	@ActionMapping(params = "action=saveCompanys")
 	protected void saveCompanys(
 		ModelMap model, ActionRequest request, ActionResponse response)
 		throws Exception {
-
+		ThemeDisplay themeDisplay =
+				(ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
 		CompanyDTO companyDTO =(CompanyDTO) request.getPortletSession().getAttribute("companyDTO");
 		List<Company> companyList =(List<Company>) request.getPortletSession().getAttribute("validCompanyList");
-
+		long scfCompanyID=0l;
+		
+		/**
+		 * If scf company gets login,internally seller will be mapped to login SCF company admin user
+		 */
+		if(request.isUserInRole(Constants.SCF_ADMIN)){
+			 scfCompanyID = userService.getCompanybyUserID(themeDisplay.getUserId()).getId();
+		}else{
+			scfCompanyID = Long.parseLong((String) request.getPortletSession().getAttribute("scfCompanyId"));
+		}
+		
 		FileEntry fileEntry = null;
 		Folder folder = null;
 		CompanyDocument companyDocument = null;
-		ThemeDisplay themeDisplay =
-			(ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
+		
 		long currentSideID = themeDisplay.getScopeGroupId();
 		long parentFolderId = DLFolderConstants.DEFAULT_PARENT_FOLDER_ID;
 		Folder parentfolder = null;
@@ -652,7 +711,9 @@ public class SellerController extends BaseController {
 
 		if (companyList != null && companyList.size() > 0) {
 			try{
-				companyDocumentService.addCompanyDetailList(companyList);
+				
+				companyDocumentService.addCompanyDetailsAndSCFSellerMaping(companyList, scfCompanyID);
+				
 			}catch(Exception e){
 				_log.error("processing file - error occured while saveCompanys  addCompanyDetailList  " +e.getMessage());
 			}

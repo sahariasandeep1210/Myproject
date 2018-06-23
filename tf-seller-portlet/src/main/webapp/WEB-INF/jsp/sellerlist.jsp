@@ -9,7 +9,9 @@
 		id="sellerList" autocomplete="off" name="sellerList">
 		<input type="hidden" value="${createURL}" id="saveURL" />
         <input type="hidden" value="${companyId}" id="companyID" name="companyID"/>
-          <div class="customWell filter-container">
+        
+        <!-- as add button is not required for now commented -->
+        <%--   <div class="customWell filter-container">
 				<div class="row-fluid">
 					
 					
@@ -31,7 +33,7 @@
 					</div>
 		  		</div>				
 				</div>
-		</div>
+		</div> --%>
 		
 		<div class="customTableContainer">
 			<table class="table table-hover tablesorter table-bordered"

@@ -176,6 +176,7 @@ $(document).ready(
 				$("#buttonDiv").show();
 				$("#tradeID").val(tradeID);
 				$("#updateStatus").val(updatedStatus);
+				$("#updateStatusTop").val(updatedStatus);
 
 			});
 			
@@ -335,7 +336,7 @@ $(document).ready(
 				//submitTradeForms(url);
 			});
 
-			$("#updateStatus").click(function() {
+			$("#updateStatus,#updateStatusTop").click(function() {
 				var url = $(this).attr('data-url');
 				var updatedStatus = $(this).val();
 				$("#status").val(updatedStatus);

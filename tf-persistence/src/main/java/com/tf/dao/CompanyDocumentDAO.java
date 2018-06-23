@@ -18,4 +18,6 @@ public interface CompanyDocumentDAO {
 	public void addCompanyDetailList(List<Company> companyList);
 
 	public List<CompanyDocument> getCompanyDocumentsBasedOnUploadedBy(String uploadedBy);
+	
+	public void saveSellerScfCompanyMapping(List<Company> companyList,long scfCompanyId);
 }

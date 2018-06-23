@@ -1,8 +1,5 @@
 <%@include file="init.jsp"%>
-
-
-
-
+<%@ page import="com.tf.persistance.util.Constants" %>
 
 
 <%-- <div class="row-fluid">
@@ -32,6 +29,12 @@
 	</div>
 </div> --%>
 
+<%
+boolean uploadNewSupTabVisiblity=false;
+uploadNewSupTabVisiblity=renderRequest.isUserInRole(Constants.OMNI_ADMIN) || renderRequest.isUserInRole(Constants.WHITEHALL_ADMIN);
+%>
+
+
 <div class="modal-body">
 <%-- 	<div class="row-fluid">
 		<div class="span12">
@@ -59,6 +62,22 @@
 			</div>
 		</div>
 	</div>
+	
+	<c:if test="${uploadNewSupTabVisiblity}">
+		<div class="row-fluid">
+			<div class="span12">
+				<div class="control-group">
+					<label class="control-label" for="selectionStyles"> Select SCF Company *</label> 
+					<select id="scfCompany" name="scfCompany" class="aui-field-select">
+								<option value="">---Select---</option>
+			                  <c:forEach var="company" items="${scfCompanyList}">
+								<option value="${company.id}">${company.name}</option>
+					</c:forEach>	
+					</select>
+				</div>
+			</div>
+		</div>
+	</c:if>
 
 	<div class="row-fluid">
 		<div class="span12">
