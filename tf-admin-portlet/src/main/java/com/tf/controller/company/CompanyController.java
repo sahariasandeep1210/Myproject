@@ -862,21 +862,18 @@ public class CompanyController extends BaseController {
 	}
 	
 	@ResourceMapping("exportCompanies")
-	protected void generateReport(ResourceRequest request, ResourceResponse response){			
-			try {
-				if (getPermissionChecker(request).isOmniadmin()
-						|| request.isUserInRole(Constants.WHITEHALL_ADMIN)){
-			    List<Company> companies=companyService.getCompaniesByStatus(CompanyStatus.DELETED.getValue());
-			    ReportUtility.exportCompanies(companies, response);
-				}
-				else{
-					
-				}
-			} catch (SystemException e) {
-				_log.error(e);
-			} catch (IOException e) {
-				_log.error(e);
-			}
+	protected void generateReport(ResourceRequest request, ResourceResponse response){
+	    try {
+    		  if (getPermissionChecker(request).isOmniadmin()	|| request.isUserInRole(Constants.WHITEHALL_ADMIN)) {
+    		    String searchValue = request.getParameter("searchValue");
+    		    List<Company> companies=companyService.getCompaniesByStatusFilter(CompanyStatus.DELETED.getValue(), 0, 0, searchValue);
+    		    ReportUtility.exportCompanies(companies, response);
+    		  }		
+	    	} catch (SystemException e) {
+        	    _log.error(e);
+        	} catch (IOException e) {
+        	    _log.error(e);
+        	}			
 		
 	}
 	@RenderMapping(params = "render=supplierDocuments")
