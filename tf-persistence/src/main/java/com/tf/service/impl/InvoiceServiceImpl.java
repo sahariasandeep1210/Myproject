@@ -23,6 +23,7 @@ import com.tf.service.SCFTradeService;
 import java.awt.Component;
 import java.math.BigDecimal;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -364,8 +365,8 @@ public class InvoiceServiceImpl implements InvoiceService {
 	}
 
 	public GenericListModel getInvoices(Long companyID, int startIndex,
-		int pageSize, String registrationNo,String app,String order,String columnName) {
-	    return invoiceDAO.getInvoices(companyID, startIndex, pageSize, registrationNo,app,order,columnName);
+		int pageSize, String registrationNo,String order,String columnName) throws ParseException {
+	    return invoiceDAO.getInvoices(companyID, startIndex, pageSize, registrationNo,order,columnName);
 	}
 	
 	public FinanceConfirmationDTO triggerAllotmentCheck(List<String> invoiceIds,long sellerCmpId,long userId) throws InSuffcientFund, InvalidDuration   {		

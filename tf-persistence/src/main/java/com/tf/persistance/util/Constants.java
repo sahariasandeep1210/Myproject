@@ -2,7 +2,6 @@ package com.tf.persistance.util;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.text.DateFormat;
 
 
 public class Constants {
@@ -15,10 +14,15 @@ public class Constants {
 	public static final String OMNI_ADMIN 			= "Administrator";
 	public static final String WHITEHALL_ADMIN 		= "WhiteHall Admin";
 
-	public static final String DATE_FORMAT 			= "dd-MM-yyyy";
+	public static final String DATE_FORMAT 			= "dd-MM-yyyy"; 
+	public static final String DB_DATE_FORMAT 		= "yyyy-MM-dd";
+	
 	public static final String COMPANY 			= "Companies";
 	public static final String COMMA 			= ",";
 	public static final String SPACE 			= " ";
+	public static final String EMPTY 			= "";
+	public static final String ZERO_STRING 			= "0";
+	public static final int    ZERO				= 0;
 	
 	
 	public static final String UNDERSCORE			= "_";

@@ -577,8 +577,6 @@ public class InvoiceController {
 			tradeURL=liferayUtility.getPortletURL(request, "scf-trade-portlet", "render", "createTrade", true);
 			if (liferayUtility.getPermissionChecker(request).isOmniadmin() ||
 				request.isUserInRole(Constants.WHITEHALL_ADMIN)) {
-				 //companyID = liferayUtility.getWhitehallCompanyID(request);
-				companyID=(long) 9;
 				model.put("userType", Constants.ADMIN);
 			}
 			else if (request.isUserInRole(Constants.SCF_ADMIN)) {
@@ -591,12 +589,11 @@ public class InvoiceController {
 				tradeURL=liferayUtility.getPortletURL(request, "scf-trade-portlet", "render", "singleTrade", true);
 				model.put("userType", Constants.SELLER_ADMIN);
 			}
-			String app="";
 			if(!StringUtils.isNullOrEmpty(search) || !StringUtils.isNullOrEmpty(value)){
-			    	   genericListModel =invoiceService.getInvoicesByFilter(search, fromDateString, toDateString, value,
+			   genericListModel =invoiceService.getInvoicesByFilter(search, fromDateString, toDateString, value,
 						paginationModel.getStartIndex(), paginationModel.getPageSize(),companyID,registrationNo,order,columnName);
-				}else{				
-				    genericListModel = invoiceService.getInvoices(companyID,paginationModel.getStartIndex(), paginationModel.getPageSize(),registrationNo,app,order,columnName);
+			} else {				
+			   genericListModel = invoiceService.getInvoices(companyID,paginationModel.getStartIndex(), paginationModel.getPageSize(),registrationNo,order,columnName);
 			}
 		
 			model.put("tradeURL",tradeURL);

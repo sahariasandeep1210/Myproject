@@ -97,14 +97,12 @@ public class WhitehallController {
 		@RequestMapping(value = "/invoices/{userID}",params = { "startIndex", "size" }, method = RequestMethod.GET)  
         public ResponseEntity<ListDTO> getInvoices(@PathVariable("userID") long userID,@RequestParam("startIndex") int startIndex, 
         	@RequestParam("size") int size) {            
-            	String app = "app";
             	ListDTO listDTO=new ListDTO();
             	long companyId = userService.getCompanyIDbyUserID(userID);
             	String registrationNo=companyService.findById(companyId).getRegNumber();            	
-            	GenericListModel  genericListModel = invoiceService.getInvoices(null,startIndex, size,registrationNo,app);
+            	GenericListModel  genericListModel = invoiceService.getInvoices(null,startIndex, size,registrationNo,null,null);
     		if(genericListModel !=null && genericListModel.getList() !=null && genericListModel.getList().size() >0){
-    		    List<Invoice> list=transformEntities.getInvoices((List<com.tf.model.Invoice>)genericListModel.getList());
-    		  
+    		    List<Invoice> list=transformEntities.getInvoices((List<com.tf.model.Invoice>)genericListModel.getList());    		  
     		    listDTO.setList(list);
     		    listDTO.setPageSize(size);
     		    listDTO.setStartIndex(startIndex);

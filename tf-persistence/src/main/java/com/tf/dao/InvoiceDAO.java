@@ -1,6 +1,6 @@
 package com.tf.dao;
 
-import java.util.Date;
+import java.text.ParseException;
 import java.util.List;
 
 import com.tf.model.GenericListModel;
@@ -35,5 +35,5 @@ public interface InvoiceDAO extends BaseDAO<Invoice, Long> {
 	
 	public int validInvoiceImport(String invoiceNumber,Long Id);
 	
-	public GenericListModel getInvoices(Long companyID, int startIndex,int pageSize, String registrationNo,String app,String order,String columnName);
+	public GenericListModel getInvoices(Long companyID, int startIndex,int pageSize, String registrationNo, String order,String columnName) throws ParseException;
 }
