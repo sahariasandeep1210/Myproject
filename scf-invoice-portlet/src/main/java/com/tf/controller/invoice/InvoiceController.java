@@ -534,8 +534,7 @@ public class InvoiceController {
 		throws Exception {
 
 		try {
-			PaginationModel paginationModel =
-				paginationUtil.preparePaginationModel(request);
+			PaginationModel paginationModel = paginationUtil.preparePaginationModel(request);
 			ThemeDisplay themeDisplay =
 				(ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
 			DateFormat formatter = new SimpleDateFormat(Constants.DATE_FORMAT);

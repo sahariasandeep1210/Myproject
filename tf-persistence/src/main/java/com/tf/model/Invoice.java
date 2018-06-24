@@ -61,8 +61,6 @@ public class Invoice implements Serializable {
 	private Company scfCompany;
 	
 	
-	
-	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "finance_date")
 	private Date financeDate;

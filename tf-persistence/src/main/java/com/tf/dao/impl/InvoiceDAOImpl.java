@@ -111,24 +111,65 @@ public void deleteInvoice(Invoice invoice){
 		_log.debug("Inside getInvoices ");
 		try {			
 			 List<Invoice> results = new ArrayList<Invoice>();
-			 Criteria  criteria=sessionFactory.getCurrentSession().createCriteria(Invoice.class);
-			 criteria.add(Restrictions.eq("status", "NEW"));
-			 if(companyID!=null){
-			   criteria.add(Restrictions.eq("scfCompany.id", companyID));
-			 } else if (StringUtils.isNotBlank(registrationNo)){
-			   criteria.add(Restrictions.eq("sellerCompanyRegistrationNumber", registrationNo));
+			 StringBuilder sqlQuery = null;
+			 if(companyID != null && StringUtils.isBlank(registrationNo)) {
+			     sqlQuery = new StringBuilder();
+			     sqlQuery.append("SELECT scf.*,tf.name,st.id AS Scfid,st.scf_id FROM scf_invoice scf LEFT JOIN tf_company  tf ON tf.regnumber = scf.seller_company_registration_number ");
+			     sqlQuery.append("LEFT JOIN scf_trade st ON scf.trade_id = st.id where scf.scf_company = '"+companyID+"' and scf.status='New' ");
+			     sqlQuery.append(" ORDER BY "+columnName+ " "+order);
+			     SQLQuery query = (SQLQuery) sessionFactory.getCurrentSession()
+						.createSQLQuery(sqlQuery.toString()).setFirstResult(startIndex)
+						.setMaxResults(pageSize);
+			     query.setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP);
+			     List data = query.list();
+			     if (null != data || data.size() > 0) {
+					for (Object invoiceObj : data) {
+						Map row = (Map) invoiceObj;
+						Invoice invoiceObject = new Invoice();
+						Company company = new Company();
+						SCFTrade scfTrade = new SCFTrade();						
+						invoiceObject.setId(Long.parseLong(row.get("id").toString()));
+						invoiceObject.setInvoiceNumber(row.get("invoice_number").toString());
+						Date PaymentDate = row.get("payment_date") !=null ? WhitehallUtility.stringToDate(row.get("payment_date").toString(), Constants.DB_DATE_FORMAT, Constants.DATE_FORMAT) : null;
+						invoiceObject.setPayment_date(PaymentDate);
+						invoiceObject.setSellerCompanyVatNumber(row.get("seller_company_vat_number") != null  ? row.get("seller_company_vat_number").toString() : Constants.EMPTY);
+						BigDecimal vatAmount = new BigDecimal(row.get("vat_amount") !=null ? row.get("vat_amount").toString() : Constants.ZERO_STRING);
+						invoiceObject.setVatAmount(vatAmount);
+						invoiceObject.setSellerCompanyRegistrationNumber(row.get("seller_company_registration_number") != null ? row.get("seller_company_registration_number").toString() : null);
+						invoiceObject.setInvoiceAmount(row.get("invoice_amout") !=null ? new BigDecimal(row.get("invoice_amout").toString()) : null);
+						invoiceObject.setInvoiceDesc(row.get("invoice_desc") != null ? row.get("invoice_desc").toString() : null);
+						invoiceObject.setDuration(row.get("duration") !=null ? Integer.parseInt(row.get("duration").toString()) : Constants.ZERO);
+						invoiceObject.setCurrency(row.get("currency") !=null  ? row.get("currency").toString() : null);
+						company.setName(row.get("name") !=null ? row.get("name").toString() : null);
+						invoiceObject.setScfCompany(company);
+						invoiceObject.setStatus(row.get("status") != null ? row.get("status").toString() : null);
+						scfTrade.setId(row.get("Scfid") !=null ? Long.parseLong(row.get("Scfid").toString()) : null);
+						scfTrade.setScfId(row.get("scf_id") !=null ? row.get("scf_id").toString() : null);						
+						invoiceObject.setScfTrade(scfTrade);
+						results.add(invoiceObject);
+					}
+				}
+			 } else {
+			     Criteria  criteria=sessionFactory.getCurrentSession().createCriteria(Invoice.class);
+				 criteria.add(Restrictions.eq("status", "NEW"));
+				 if(companyID!=null){
+				   criteria.add(Restrictions.eq("scfCompany.id", companyID));
+				 } else if (StringUtils.isNotBlank(registrationNo)){
+				   criteria.add(Restrictions.eq("sellerCompanyRegistrationNumber", registrationNo));
+				 }
+				 criteria.createAlias("scfCompany","scfcmp");
+				 criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+				 columnName = changeDbClmNmToEntityClmNm(columnName);
+				 if ("asc".equalsIgnoreCase(order)) {
+				     criteria.addOrder(Order.asc(columnName));
+				 } else if ("desc".equalsIgnoreCase(order)) {
+				     criteria.addOrder(Order.desc(columnName));
+				} else {
+				    criteria.addOrder(Order.desc("updateDate"));
+				}
+				results =(List<Invoice>)criteria.setFirstResult(startIndex).setMaxResults(pageSize).list();
 			 }
-			 criteria.createAlias("scfCompany","scfcmp");
-			 criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-			 columnName = changeDbClmNmToEntityClmNm(columnName);
-			 if ("asc".equalsIgnoreCase(order)) {
-			     criteria.addOrder(Order.asc(columnName));
-			 } else if ("desc".equalsIgnoreCase(order)) {
-			     criteria.addOrder(Order.desc(columnName));
-			} else {
-			    criteria.addOrder(Order.desc("updateDate"));
-			}
-			results =(List<Invoice>)criteria.setFirstResult(startIndex).setMaxResults(pageSize).list();			
+						
 			GenericListModel genericModel=new GenericListModel();
 			genericModel.setCount(getInvoicesCount(companyID,registrationNo));
 			genericModel.setList(results);
