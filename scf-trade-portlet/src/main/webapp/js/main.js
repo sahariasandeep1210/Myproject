@@ -4,6 +4,7 @@ $(document).ready(
 			$('.tooltipPhone').tooltip();
 			$(".historyRow").hide();
 			$("#buttonDiv").hide();
+			$("#buttonDivTop").hide();
 			$("#pageSize").val($("#currPageSize").val());
 			$("#pagSize").val($("#curPageSize").val());
 			$("#pgSize").val($("#currPageSizes").val());
@@ -174,6 +175,7 @@ $(document).ready(
 					updatedStatus = 'Settled';
 				}
 				$("#buttonDiv").show();
+				$("#buttonDivTop").show();
 				$("#tradeID").val(tradeID);
 				$("#updateStatus").val(updatedStatus);
 				$("#updateStatusTop").val(updatedStatus);

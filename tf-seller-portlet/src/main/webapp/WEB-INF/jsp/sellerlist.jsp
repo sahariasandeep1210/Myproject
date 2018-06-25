@@ -1,7 +1,11 @@
 <%@include file="init.jsp"%>
+<%@ page import="com.tf.persistance.util.Constants" %>
 
 <portlet:actionURL var="saveSellerURL">
 	<portlet:param name="action" value="saveSeller" />
+</portlet:actionURL>
+<portlet:actionURL var="suspendMappingUrl">
+	<portlet:param name="action" value="suspendMapping" />
 </portlet:actionURL>
 
 
@@ -9,31 +13,6 @@
 		id="sellerList" autocomplete="off" name="sellerList">
 		<input type="hidden" value="${createURL}" id="saveURL" />
         <input type="hidden" value="${companyId}" id="companyID" name="companyID"/>
-        
-        <!-- as add button is not required for now commented -->
-        <%--   <div class="customWell filter-container">
-				<div class="row-fluid">
-					
-					
-					<div class="span3 spanSm6">
-					<div class="control-group">
-						<label class="control-label">Supplier</label>						
-						<select id="sellerCompany" name="sellerCompany" class="aui-field-select">
-							<option value="">---Select---</option>
-		                  <c:forEach var="company" items="${companies}">
-							<option value="${company.id}">${company.name}</option>
-						</c:forEach>					
-					</select>
-					</div>
-				</div>
-				
-				<div class="span3 spanSm6 mtSm10 mtXs10">
-		  				<div class="actionContainer noBorder text-left">
-						<input type="button" value="Add" id="addSeller"				class="btnBgGreenSm" />
-					</div>
-		  		</div>				
-				</div>
-		</div> --%>
 		
 		<div class="customTableContainer">
 			<table class="table table-hover tablesorter table-bordered"
@@ -45,6 +24,7 @@
 						<th>Established date</th>
 						<th>Tel Number</th>
 						<th>Status</th>
+						<th>Action</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -58,7 +38,15 @@
 					   <td class="text-center"><fmt:formatDate pattern="dd-MM-yyyy" value="${seller.sellerCompany.dateestablished}"/></td>
 						<td>${seller.sellerCompany.telnumber}</td>
 						<td>${seller.status}</td>
+						<td>
+						<c:if test="${(seller.status eq 'Approve' or seller.status eq 'Pending')}">
+							<a href="${suspendMappingUrl}&sellerCompanyId=${seller.id}">
+									<span  class="add-on seller-add-on-mapping"><i class="icon-remove-sign"
+							            data-toggle="tooltip" title="Reject"></i></span>
+						     </a>
+						</c:if>
 
+						</td>
 					</tr>
 					 </c:forEach>
 						 </c:when>

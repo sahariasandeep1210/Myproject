@@ -16,10 +16,18 @@
 					 	<div class="main-title">Seller Information</div>
 					 </div>
 		</div>
+		
 		<div id="myTogglerd" class="customToggler">
-				  <c:if test="${userType eq 'SCF Company Admin'  && cmpType ne 'Seller'}">
-									<%@include file="sellerlist.jsp"%>	
-				   </c:if>
-			</div>
+				   <c:choose>
+					    <c:when test="${userType eq 'SCF Company Admin'}">
+					         <%@include file="sellerlist.jsp"%>	
+					    </c:when>
+						 <c:when test="${userType eq 'Administrator' or userType eq 'WhiteHall Admin'}">
+					         <%@include file="sellerlistadmin.jsp"%>	
+					    </c:when>
+					    <c:otherwise>
+					    </c:otherwise>
+				</c:choose>
+		</div>
 
 </div>

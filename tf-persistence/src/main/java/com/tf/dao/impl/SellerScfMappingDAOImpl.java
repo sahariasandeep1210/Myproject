@@ -13,6 +13,8 @@ import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.transform.Transformers;
+import org.hibernate.type.StandardBasicTypes;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,6 +22,7 @@ import com.tf.dao.SellerScfMappingDAO;
 import com.tf.model.Company;
 import com.tf.model.SellerScfCompanyMapping;
 import com.tf.persistance.util.Constants;
+import com.tf.persistance.util.SellerScfCompanyDTO;
 
 @Repository
 @Transactional
@@ -203,11 +206,33 @@ public class SellerScfMappingDAOImpl extends BaseDAOImpl<SellerScfCompanyMapping
 	    throw re;
 	   }
 	  }
-	
-	
-	
-	
-	
-	
+
+	public List<SellerScfCompanyDTO> getSellerScfMappingAdminList(int startIndex, int pageSize, Long loggedInUserId, String orderBy) {
+		_log.debug("Inside getSellerScfMappingAdminList ");
+		try {
+			StringBuilder sb = new StringBuilder();
+			List<SellerScfCompanyMapping> results = new ArrayList<SellerScfCompanyMapping>();
+			sb.append(" select mapping.id as sellerScfCompanyId, com.NAME as sellerName,"
+					+ " com.regnumber as regNumber,com.dateestablished as dateestablished,"
+					+ " com.telnumber,com1.name as scfCompanyName,mapping.status as status from tf_seller_scfcompany_mapping mapping"
+					+ " left join tf_company com1 on mapping.scf_company = com1.idcompany left join tf_company com"
+					+ " on mapping.seller_company = com.idcompany order by com."+orderBy);
+			SQLQuery query = (SQLQuery) sessionFactory.getCurrentSession().createSQLQuery(sb.toString());
+			
+			query.addScalar("sellerScfCompanyId", StandardBasicTypes.LONG)
+			     .addScalar("sellerName", StandardBasicTypes.STRING)
+			     .addScalar("dateestablished", StandardBasicTypes.DATE)
+			     .addScalar("telnumber", StandardBasicTypes.STRING)
+			     .addScalar("scfCompanyName", StandardBasicTypes.STRING)
+			     .addScalar("status", StandardBasicTypes.STRING)
+			     .setResultTransformer(Transformers.aliasToBean(SellerScfCompanyDTO.class));
+			List<SellerScfCompanyDTO> dataList = query.list();
+		    return dataList;
+		   } catch (RuntimeException re) {
+		    _log.error("getSellerScfMappingAdminList failed", re);
+		    throw re;
+		   }
+	}
+
 
 }

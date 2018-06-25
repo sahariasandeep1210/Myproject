@@ -3,6 +3,7 @@ package com.tf.dao.impl;
 import java.util.Calendar;
 import java.util.List;
 
+import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
@@ -120,34 +121,42 @@ public class CompanyDocumentDAOImpl extends BaseDAOImpl<InvoiceDocument, Long> i
 		}
 	}
 
-	public void saveSellerScfCompanyMapping(List<Company> companyList,
-			long scfCompanyId) {
+	public void saveSellerScfCompanyMapping(List<Company> companyList, long scfCompanyId) {
 		_log.debug("inside saveSellerScfCompanyMapping()");
 		try {
 			Session session = sessionFactory.getCurrentSession();
-			for(Company companyObj : companyList){
-				try{
-					
-					SellerScfCompanyMapping scfSellerComapnyMappingObj=new SellerScfCompanyMapping();
+			for (Company companyObj : companyList) {
+				try {
+					SellerScfCompanyMapping scfSellerComapnyMappingObj = new SellerScfCompanyMapping();
 					scfSellerComapnyMappingObj.setScfCompany(scfCompanyId);
 					scfSellerComapnyMappingObj.setSellerCompany(companyObj);
 					scfSellerComapnyMappingObj.setUpdateDate(Calendar.getInstance().getTime());
 					scfSellerComapnyMappingObj.setStatus(Constants.STATUS.PENDING.getValue());
-					companyObj.getAddress().setCompany(companyObj);
-					companyObj.getCompanyAccountDetail().setCompany(companyObj);
-					
 					session.saveOrUpdate(scfSellerComapnyMappingObj);
-					_log.debug("persist successful"+companyObj);
-				}catch(Exception e){
-					_log.debug("persist fail"+companyObj);
+					_log.debug("persist successful" + companyObj);
+				} catch (Exception e) {
+					_log.debug("persist fail" + companyObj);
 				}
 			}
-			
 		} catch (RuntimeException re) {
 			_log.error("saveSellerScfCompanyMapping() persist failed", re);
 			throw re;
 		}
-		
+	}
+
+	public void chnageSellerScfMappingStatus(long scfCompanyId,String status) {
+		_log.debug("inside chnageSellerScfMappingStatus()");
+		try {
+			Session session = sessionFactory.getCurrentSession();
+			SQLQuery createSQLQuery = session.createSQLQuery("update tf_seller_scfcompany_mapping set status=:status where id=:id");
+			createSQLQuery.setParameter("status", status);
+			createSQLQuery.setParameter("id", scfCompanyId);
+			createSQLQuery.executeUpdate();
+		} catch (RuntimeException e) {
+			_log.error("chnageSellerScfMappingStatus() persist failed", e);
+			throw e;
+		}
+		_log.debug("completed chnageSellerScfMappingStatus()");
 		
 	}
 }

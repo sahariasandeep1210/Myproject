@@ -46,5 +46,8 @@ public class CompanyDocumentServiceImpl implements CompanyDocumentService {
 		companyDocumentDAO.addCompanyDetailList(companyList);
 		companyDocumentDAO.saveSellerScfCompanyMapping(companyList, scfCompanyId);
 	}
+	public void chnageSellerScfMappingStatus(long scfCompanyId, String status) {
+		companyDocumentDAO.chnageSellerScfMappingStatus(scfCompanyId, status);
+	}
 
 }
