@@ -34,7 +34,7 @@ boolean uploadNewSupTabVisiblity=false;
 uploadNewSupTabVisiblity=renderRequest.isUserInRole(Constants.OMNI_ADMIN) || renderRequest.isUserInRole(Constants.WHITEHALL_ADMIN);
 %>
 
-
+<c:set var="uploadNewSupTabVisiblity" value="<%=uploadNewSupTabVisiblity%>"></c:set>
 <div class="modal-body">
 <%-- 	<div class="row-fluid">
 		<div class="span12">

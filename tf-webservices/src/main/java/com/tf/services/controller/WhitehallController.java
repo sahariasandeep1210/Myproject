@@ -1,5 +1,6 @@
 package com.tf.services.controller;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
@@ -92,11 +93,12 @@ public class WhitehallController {
          * @param startIndex
          * @param size
          * @return
+         * @throws ParseException 
          */
         @SuppressWarnings("unchecked")
 		@RequestMapping(value = "/invoices/{userID}",params = { "startIndex", "size" }, method = RequestMethod.GET)  
         public ResponseEntity<ListDTO> getInvoices(@PathVariable("userID") long userID,@RequestParam("startIndex") int startIndex, 
-        	@RequestParam("size") int size) {            
+        	@RequestParam("size") int size) throws ParseException {            
             	ListDTO listDTO=new ListDTO();
             	long companyId = userService.getCompanyIDbyUserID(userID);
             	String registrationNo=companyService.findById(companyId).getRegNumber();            	

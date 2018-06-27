@@ -144,7 +144,7 @@
 									<td  style="background-color:${color};" class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${myInvestment.totalTradeAmount}"  pattern="#,##0.00"/></td>
 									
 									<td  style="background-color:${color};" class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${myInvestment.myAllotment}"  pattern="#,##0.00"/></td>
-									<td  style="background-color:${color};">${myInvestment.bps}</td>
+									<td  style="background-color:${color};"  class="rightalign">${myInvestment.bps}</td>
 									<td  style="background-color:${color};" class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${myInvestment.grossProfit}"  pattern="#,##0.00"/></td>
 									 <%-- <td  style="background-color:${color};" class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${myInvestment.vatInvestorFee}"  pattern="#,##0.00"/></td>
 									 --%> 
@@ -153,7 +153,7 @@
 									<td  style="background-color:${color};" class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${myInvestment.netProfit}"  pattern="#,##0.00"/></td>
 									
 			                      
-									<td  style="background-color:${color};" class="text-center">${myInvestment.duration}</td>
+									<td  style="background-color:${color};"  class="rightalign" class="text-center">${myInvestment.duration}</td>
 									<td  style="background-color:${color};" class="text-center"><fmt:formatDate pattern="dd-MM-yyyy"
 											value="${myInvestment.startDate}" /></td>
 									
