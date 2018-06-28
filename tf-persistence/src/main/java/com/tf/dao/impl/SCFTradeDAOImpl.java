@@ -301,13 +301,15 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 			criteria.createAlias("company", "company");
 			
 		
-			Criterion settled = Restrictions.ilike("status","Settled");
-			Criterion allotment = Restrictions.ilike("status","Allotment Paid");
-			Criterion live = Restrictions.ilike("status","Live");
+			/*//Criterion settled = Restrictions.ilike("status","Settled");  
+			//Criterion allotment = Restrictions.ilike("status","Allotment Paid");
+			//Criterion live = Restrictions.ilike("status","Live");
+			
 			// To get records matching with OR conditions
 			//LogicalExpression orExp = Restrictions.or(settled, allotment);
-			LogicalExpression orExp = Restrictions.or(Restrictions.or(settled, allotment),live);
-			criteria.add( orExp );// to only show Settled, Allotment Paid and Live status values
+			//LogicalExpression orExp = Restrictions.or(Restrictions.or(settled, allotment),live);
+			//criteria.add( orExp );// to only show Settled, Allotment Paid and Live status values    //On 08-June As per new requirement show all trades so commented by Abhishek 
+           */	
 			if("".equals(columnName)){			
 				criteria.addOrder(Order.desc("updatDate"));
 			}
@@ -367,10 +369,16 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 			Criterion settled = Restrictions.ilike("status","Settled");
 			Criterion allotment = Restrictions.ilike("status","Allotment Paid");
 			Criterion live = Restrictions.ilike("status","Live");
+			Criterion supplier = Restrictions.ilike("status","Supplier Paid");
+			
 			// To get records matching with OR conditions
 			//LogicalExpression orExp = Restrictions.or(settled, allotment);
-			LogicalExpression orExp = Restrictions.or(Restrictions.or(settled, allotment),live);
-			criteria.add( orExp );// to only show Settled, Allotment Paid and Live status values
+			//LogicalExpression orExp = Restrictions.or(Restrictions.or(settled, allotment),live);
+			//criteria.add( orExp );// to only show Settled, Allotment Paid and Live status values
+			
+			LogicalExpression orExp = Restrictions.or(Restrictions.or(Restrictions.or(settled, allotment),live),supplier);
+			criteria.add( orExp );// to only show Settled, Allotment Paid and Live status values and supplier 
+		
 			
 			ProjectionList prList = Projections.projectionList();
 			prList.add((Projections.distinct(Projections.property("inv.scfTrade"))));

@@ -32,6 +32,7 @@
 		<mapping class="com.tf.model.CompanyAccountDetail" />
 		<mapping class="com.tf.model.CompanyDocument" />
 		<mapping class="com.tf.model.Brochure" />
+		<mapping class="com.tf.model.FcmToken" />
 	</session-factory>
 
 </hibernate-configuration>

@@ -22,7 +22,12 @@ import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
-
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;		
+import java.net.MalformedURLException;		
+import java.net.URL;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.ss.usermodel.Row;
@@ -41,6 +46,7 @@ import org.springframework.web.portlet.bind.annotation.ActionMapping;
 import org.springframework.web.portlet.bind.annotation.RenderMapping;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 
+import com.tf.service.FcmTokenService;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -102,6 +108,9 @@ public class InvoiceController {
 
 	@Autowired
 	protected UserService userService;
+	
+	@Autowired		
+	protected FcmTokenService fcmTokenService;
 
 	@Autowired
 	private InSuffcientFund fund;
@@ -310,6 +319,7 @@ public class InvoiceController {
 					try {
 						// invoices has been added, now we need to trigger email
 						// notification
+						sendNotificationOnApp(invoice.getSellerRegNo());
 						String articleName = "create-invoice-by-scf-company";
 						String content = liferayUtility.getContentByURLTitle(request, articleName);
 						String articleNameTable = "create-invoice-by-scf-company-table";
@@ -350,6 +360,54 @@ public class InvoiceController {
 		}
 
 	}
+	
+	private void sendNotificationOnApp(String sellerRegNo ) throws IOException{
+		 
+		String userId =  fcmTokenService.getUserId(sellerRegNo);
+		System.out.println("*******UserId **************" + userId);
+		 String token =   fcmTokenService.getFcmToken(userId);
+		   System.out.println("*******token**************"+ token);
+		   
+		   String url = "https://fcm.googleapis.com/fcm/send";
+			URL obj = new URL(url);
+			HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+
+			//add reuqest header
+			con.setRequestMethod("POST");
+			con.addRequestProperty("Content-Type", "application/json");
+			con.setRequestProperty("Authorization", "key=AIzaSyCRoBKtxSEkZ9UxxqPRCPgkmfau39z8q7A");
+			
+			String urlParameters =	new String("{ \"notification\":{ \"title\":\"WhiteHall Finance\", \"body\":\"A new invoice is added by scf company \", \"sound\":\"default\", \"click_action\":\"FCM_PLUGIN_ACTIVITY\" },  \"data\":{ \"action\":\"ping\", \"message\": \"\" }, \"to\":\" "+token+"\", \"priority\":\"high\" }");
+			
+			// Send post request
+			con.setDoOutput(true);
+			DataOutputStream wr = new DataOutputStream(con.getOutputStream());
+			wr.writeBytes(urlParameters);
+			wr.flush();
+			wr.close();
+
+			int responseCode = con.getResponseCode();
+			System.out.println("\nSending 'POST' request to URL : " + url);
+			System.out.println("Post parameters : " + urlParameters);
+			System.out.println("Response Code : " + responseCode);
+
+			BufferedReader in = new BufferedReader(
+			        new InputStreamReader(con.getInputStream()));
+			String inputLine;
+			StringBuffer response = new StringBuffer();
+
+			while ((inputLine = in.readLine()) != null) {
+				response.append(inputLine);
+			}
+			in.close();
+			
+			//print result
+			System.out.println(response.toString());
+
+		 
+	 }
+	 
+	
     private void sendEmail() throws MailEngineException, AddressException{
     	 MailMessage mailMessage = new MailMessage();
 			mailMessage.setHTMLFormat(true);

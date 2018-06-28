@@ -32,6 +32,7 @@ import com.liferay.portal.service.CompanyLocalServiceUtil;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.util.ContentUtil;
 import com.tf.model.Company;
+import com.tf.model.FcmToken;
 import com.tf.model.GenericListModel;
 import com.tf.model.SCFTrade;
 import com.tf.persistance.util.Constants;
@@ -41,6 +42,7 @@ import com.tf.persistance.util.InSuffcientFund;
 import com.tf.persistance.util.InvalidDuration;
 import com.tf.service.CompanyService;
 import com.tf.service.DashBoardService;
+import com.tf.service.FcmTokenService;
 import com.tf.service.InvestorService;
 import com.tf.service.InvoiceService;
 import com.tf.service.SCFTradeService;
@@ -53,6 +55,7 @@ import com.tf.services.dto.ListDTO;
 import com.tf.services.dto.PasswordReset;
 import com.tf.services.dto.SellerDetails;
 import com.tf.services.dto.SuccessResponse;
+import com.tf.services.dto.Token;
 import com.tf.services.dto.Trade;
 import com.tf.services.helper.TransformEntities;
 
@@ -79,6 +82,9 @@ public class WhitehallController {
 	
 	@Autowired
 	protected SellerScfMappingService sellerScfMappingService;
+	
+	@Autowired		
+	protected FcmTokenService fcmTokenService;
 	
 	@Autowired
 	private DashBoardService dashBoardService;
@@ -235,6 +241,34 @@ public class WhitehallController {
               return new ResponseEntity<FinanceConfirmationDTO>(financeConfirmationDTO, HttpStatus.OK);  
      }
        
+   /**
+	 * FCM token inserted 
+	 * 
+	 * @param userID
+	 * @param token
+	 * @return
+	 */
+	@RequestMapping(value = "/token/{userId}/{token}", method = RequestMethod.PUT)
+	public ResponseEntity<SuccessResponse> updateCompany(
+			@PathVariable("userId") long userId, @RequestBody Token token) {
+		SuccessResponse successResponse = new SuccessResponse();
+		if (userId > 0) {
+			FcmToken fcmtoken = new FcmToken();
+			fcmtoken.setUserId(token.getUserId());
+			fcmtoken.setToken(token.getToken());
+			
+			fcmTokenService.addFcmToken(fcmtoken);
+			successResponse.setStatus("success" +token.getUserId() );
+			successResponse.setMessage("Token inserted/updated successfully");
+			return new ResponseEntity<SuccessResponse>(successResponse,
+					HttpStatus.OK);
+		} else {
+			successResponse.setStatus("error");
+			successResponse.setMessage("Invalid Input");
+			return new ResponseEntity<SuccessResponse>(successResponse,
+					HttpStatus.BAD_REQUEST);
+		}
+	}
        
         /**
          * Return Invoice details

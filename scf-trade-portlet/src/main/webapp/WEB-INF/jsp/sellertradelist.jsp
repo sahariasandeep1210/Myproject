@@ -122,7 +122,15 @@
 											onclick="window.location.href='${supplierURL}&tradeID=${trade.id}'">${trade.scfId}</a></span></td>
 									<td>${trade.company.name}</td>
 									<td  class="rightalign"><fmt:formatNumber type="number" maxFractionDigits="3" value="${trade.tradeAmount}"  pattern="#,##0.00"/></td>
-									<td>${trade.status}</td>
+									<c:choose>
+										<c:when
+											test="${trade.status=='Live' || trade.status=='Settled' || trade.status=='Allotment Paid'}">
+											<td>${trade.status}</td>
+										</c:when>
+										<c:otherwise>
+											<td>Supplier Paid</td>
+										</c:otherwise>
+									</c:choose>
 									<td class="text-center">${trade.duration}</td>
 									<td class="text-center"><fmt:formatDate pattern="dd-MM-yyyy"
 											value="${trade.openingDate}" /></td>
