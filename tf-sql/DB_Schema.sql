@@ -650,7 +650,12 @@ CREATE TABLE IF NOT EXISTS `tf_brochure` (
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
 
 
+# Added on 28th june for Notification 
 
+CREATE TABLE IF NOT EXISTS `fcm_token` (
+  `userId` bigint(20) NOT NULL DEFAULT '0',
+  `token` varchar(500) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 
