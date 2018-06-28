@@ -2,6 +2,7 @@ package com.tf.service.impl;
 
 import com.tf.dao.SellerScfMappingDAO;
 import com.tf.model.SellerScfCompanyMapping;
+import com.tf.persistance.util.SellerScfCompanyDTO;
 import com.tf.service.SellerScfMappingService;
 
 import java.util.List;
@@ -39,6 +40,9 @@ public class SellerScfMappingServiceImpl implements SellerScfMappingService{
 	}
 	public List<SellerScfCompanyMapping> getSellerCompanies(Long sellerComp) {
 		 return sellerScfMappingDAO.getSellerCompanies(sellerComp);
+	}
+	public List<SellerScfCompanyDTO> getSellerScfMappingAdminList(int startIndex, int pageSize, Long loggedInUserId, String orderBy) {
+		 return sellerScfMappingDAO.getSellerScfMappingAdminList(startIndex, pageSize, loggedInUserId, orderBy);
 	}
 	
 }

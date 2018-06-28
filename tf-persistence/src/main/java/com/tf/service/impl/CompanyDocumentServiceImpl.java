@@ -41,5 +41,13 @@ public class CompanyDocumentServiceImpl implements CompanyDocumentService {
 	public List<CompanyDocument> getCompanyDocumentsBasedOnUploadedBy(String uploadedBy){
 		return companyDocumentDAO.getCompanyDocumentsBasedOnUploadedBy(uploadedBy);
 	}
+	public void addCompanyDetailsAndSCFSellerMaping(List<Company> companyList,
+			long scfCompanyId) {
+		companyDocumentDAO.addCompanyDetailList(companyList);
+		companyDocumentDAO.saveSellerScfCompanyMapping(companyList, scfCompanyId);
+	}
+	public void chnageSellerScfMappingStatus(long scfCompanyId, String status) {
+		companyDocumentDAO.chnageSellerScfMappingStatus(scfCompanyId, status);
+	}
 
 }

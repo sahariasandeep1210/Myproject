@@ -153,31 +153,21 @@ public class CompanyDAOImpl  extends BaseDAOImpl<Company, Long>   implements Com
 	
 	
 	@SuppressWarnings("unchecked")
-	public List<Company> getCompaniesByStatusFilter(String status,
-			int startIndex, int pageSize, String searchValue) {
-		_log.debug("Inside getCompaniesByStatusFilter ");
-		List<Company> results=null;
-		try {
-			if(searchValue.matches("[0-9]+") == true){
-			    results = (List<Company>) sessionFactory.getCurrentSession().createCriteria(Company.class).add(Restrictions.like("regNumber", searchValue,MatchMode.ANYWHERE)).setFirstResult(startIndex).setMaxResults(pageSize).list();
-			    
-			   }else {
-			    results = (List<Company>) sessionFactory.getCurrentSession().createCriteria(Company.class).add(Restrictions.like("name", searchValue,MatchMode.ANYWHERE)).setFirstResult(startIndex).setMaxResults(pageSize).list();
-			   }
-			/*DetachedCriteria criteria = DetachedCriteria.forClass(Company.class); 
-			   Disjunction or = Restrictions.disjunction();
-			    //or.add(Restrictions.like("regnumber",searchValue,MatchMode.ANYWHERE));
-			    or.add(Restrictions.like("name", searchValue, MatchMode.ANYWHERE));
-			
-			List<Company> results = (List<Company>) criteria.getExecutableCriteria(sessionFactory.getCurrentSession()).add(or).setFirstResult(startIndex).setMaxResults(pageSize).list();
-			*/
-			_log.debug("GetCompanies successful, result size: "
-					+ results.size());
-			return results;
-		} catch (RuntimeException re) {
-			_log.error("GetCompanies failed", re);
-			throw re;
-		}
+	public List<Company> getCompaniesByStatusFilter(String status, int startIndex, int pageSize, String searchValue) {
+	    _log.debug("Inside getCompaniesByStatusFilter");
+	    List<Company> results=null;
+	    Criteria  criteria = null;
+	    try {
+		  criteria = sessionFactory.getCurrentSession().createCriteria(Company.class).add(Restrictions.ne("activestatus", status));
+		  criteria = searchValue.matches("[0-9]+") ? criteria.add(Restrictions.like("regNumber", searchValue,MatchMode.ANYWHERE)) :  criteria.add(Restrictions.like("name", searchValue,MatchMode.ANYWHERE));
+		  criteria = pageSize > 0 ? criteria.setFirstResult(startIndex).setMaxResults(pageSize) : criteria;
+		  results =  (List<Company>)criteria.list();		
+		   _log.debug("GetCompanies successful, result size: "+ results.size());
+		  return results;		    	
+	    } catch (RuntimeException re) {
+		   _log.error("GetCompanies failed", re);
+		   throw re;
+	    }		
 	}
 	
 	public Long getCompaniesCount(String status) {

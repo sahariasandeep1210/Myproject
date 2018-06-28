@@ -18,5 +18,9 @@ public interface CompanyDocumentService {
 	public void addCompanyDetailList(List<Company> companyList);
 	
 	public List<CompanyDocument> getCompanyDocumentsBasedOnUploadedBy(String uploadedBy);
+	
+	public void chnageSellerScfMappingStatus(long scfCompanyId,String status);
+	
+	public void addCompanyDetailsAndSCFSellerMaping(List<Company> companyList,long scfCompanyId);
 
 }

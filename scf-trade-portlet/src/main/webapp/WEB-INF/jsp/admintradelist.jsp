@@ -68,6 +68,15 @@
 					
 				</div>
 		  </div>
+		  	<div class="row-fluid" id="buttonDivTop">
+		  		<div class="span12">
+		  			<div class="actionContainer noBorder text-left">
+		  				
+		  				 <input type="button" value="Update Status" 	class="btnBgBuSm"  id="updateStatusTop"  data-url="${updateStatusURL}"/>
+		  			</div>
+		  			
+		  		</div>
+		  	</div>
 		
 		<div class="customTableContainer">
 			<table class="table" id="tradeListTable">

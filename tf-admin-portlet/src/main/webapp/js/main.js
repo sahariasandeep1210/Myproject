@@ -56,20 +56,8 @@ $(function() {
 		
 		
 		
-	});
+	});	
 	
-	$("#exportCompanies").click(function(){
-		/* window.open('data:application/vnd.ms-excel,' + $('#dvData').html());
-		 e.preventDefault();*/	
-		
-		$('#companyListTable').tableExport({
-			type : 'excel',
-			escape : 'false',
-			fileName: 'companieslist',
-			worksheetName: 'Company List'
-		});
-		
-	});
 	
 	$("#findCompany").click(function(){
 		
@@ -403,6 +391,19 @@ $(document).ready(function(){
 				document.forms["imporCompanyForm"].submit();
 			}	
 			
+		});
+	 
+	 $("#exportCompanies").click(function(){
+		 	var searchValue = $("#search").val();
+		 	$("html").mask("Please wait while we are exporting data..");
+			$.fileDownload($("#exportUrl").val()+"&searchValue="+searchValue, {
+			    successCallback: function (url) {		 
+			    	$("html").unmask();
+			    },
+			    failCallback: function (html, url) {		 
+			    	$("html").unmask();
+			    }
+			});		
 		});
 	 
 });

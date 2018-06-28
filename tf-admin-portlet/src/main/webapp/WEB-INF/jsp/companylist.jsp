@@ -27,6 +27,7 @@
 	<input type="hidden" name="noOfRecords" 	id="noOfRecords"    	value="${paginationModel.noOfRecords}" />
 	<input type="hidden" name="defaultURL" 		id="defaultURL" 		value="${defaultRenderURL}" />
 	<input type="hidden" name="pageSize"        id="pageSize"      		value="${paginationModel.pageSize}" />
+	<input type="hidden" name="exportUrl"       id="exportUrl"  		value="${exportCompaniesURL}" />
 	     
 	     
 	    <input type="hidden" id="sortVal_order" name="sortVal_order" value="${sortCompany_order}"/>
@@ -41,8 +42,8 @@
 					 	
 					 	<div class="btn-wrapper">
 					 		<aui:button cssClass="btnBrGrSm btnIconSm filter-btn active"  icon="icomoon-filter"></aui:button>
-			  				<!-- <input type="button" class="btnBgGreenSm" value="Export"  id="exportCompanies"/> -->
-			  				<a href="${exportCompaniesURL}" class="btnBgGreenSm" >Export</a>
+			  				<input type="button" class="btnBgGreenSm" value="Export"  id="exportCompanies"/>
+			  				<%-- <a href="${exportCompaniesURL}" class="btnBgGreenSm" >Export</a> --%>
 			  			</div>
 					 </div>
 					<div class="customWell filter-container">

@@ -6,54 +6,32 @@
 
 <div id="dashboard">
 	<div class="row-fluid">
-		<div class="span4">
+		<div class="span6">
 			<div class="panel panel-blue quick-stat-panel">
 				<div class="panel-heading">
 					<h3 class="panel-title">Credit Line</h3>
 				</div>
-				<div class="panel-body">
+				<div class="panel-body normal-credit-line">
 					<div id="stackedBarChart"></div>
 				</div>
 			</div>
 		</div>
-		<div class="span4">
-			<div class="panel panel-blue quick-stat-panel">
-				<div class="panel-heading">
-					<h3 class="panel-title">SETTLED TRADES</h3>
+		
+	
 
-				</div>
-				<div class="panel-body">
-
-					<div id="barChart_setteled"></div>
-				</div>
-			</div>
-		</div>
-		<div class="span4">
-			<div class="panel panel-blue quick-stat-panel">
-				<div class="panel-heading">
-					<h3 class="panel-title">Available Credit Line</h3>
-				</div>
-				<div class="panel-body">
-
-					<div id="barchart"></div>
-				</div>
-			</div>
-		</div>
-	</div>
-
-	<form:form commandName="scfCompany" method="post"
+	<form:form commandName="scfCompany" method="post" 
 		action="${defaultRenderURL}">
 		<input type="hidden" name="defaultRender" id="defaultRender"
 			value="${defaultRenderURL}" />
 		<div class="row-fluid">
 
-			<div class="span4">
+			<div style="margin-left: 2.5%!important;" class="span6">
 
 				<div class="panel panel-blue quick-stat-panel">
 					<div class="panel-heading">
 						<h3 class="panel-title">Available SCF Credit Line</h3>
 					</div>
-					<div class="panel-body">
+					<div class="panel-body scf-credit-line">
 						<div class="control-group">
 
 							<select id="selectedCompany" name="selectedCompany"
@@ -74,21 +52,45 @@
 		</div>
 	</form:form>
 	
+	<div class="span6" style="margin-left:0px!important">
+		<div class="panel panel-blue quick-stat-panel">
+			<div class="panel-heading">
+				<h3 class="panel-title">Available Credit Line</h3>
+			</div>
+			<div class="panel-body credit-line">
+
+				<div id="barchart"></div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="span6">
+			<div class="panel panel-blue quick-stat-panel">
+				<div class="panel-heading">
+					<h3 class="panel-title">SETTLED TRADES</h3>
+
+				</div>
+				<div class="panel-body">
+
+					<div id="barChart_setteled"></div>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
 
 
 
-
-
-
-
 <script type="text/javascript">
+
 	google.charts.load("current", {
 		packages : [ "corechart" ]
 	});
-	google.charts.setOnLoadCallback(drawChart);
-	function drawChart() {
 	
+	google.charts.setOnLoadCallback(drawChart);
+	
+	function drawChart() {
+		
 		
 		var stackedBarChartdata = new google.visualization.DataTable();		
 		stackedBarChartdata.addColumn('string', 'SCF Company');
@@ -206,7 +208,6 @@
       		
          };
 		
-		
 		var stackedBarChart = new google.visualization.ColumnChart(document.getElementById('stackedBarChart'));
 		stackedBarChart.draw(stackedBarChartdata, stackedBarChartOptions);
 		
@@ -218,6 +219,8 @@
 		
 		var barChart = new google.visualization.ColumnChart(document.getElementById('barchartAvailSCF'));
 		barChart.draw(barChartdata_SCF, barChartOptions);
-
+		
+		$(".panel-body.normal-credit-line").height($(".panel-body.scf-credit-line").height());
 	}
+	
 </script>

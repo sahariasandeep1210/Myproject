@@ -4,6 +4,7 @@ $(document).ready(
 			$('.tooltipPhone').tooltip();
 			$(".historyRow").hide();
 			$("#buttonDiv").hide();
+			$("#buttonDivTop").hide();
 			$("#pageSize").val($("#currPageSize").val());
 			$("#pagSize").val($("#curPageSize").val());
 			$("#pgSize").val($("#currPageSizes").val());
@@ -174,8 +175,10 @@ $(document).ready(
 					updatedStatus = 'Settled';
 				}
 				$("#buttonDiv").show();
+				$("#buttonDivTop").show();
 				$("#tradeID").val(tradeID);
 				$("#updateStatus").val(updatedStatus);
+				$("#updateStatusTop").val(updatedStatus);
 
 			});
 			
@@ -335,7 +338,7 @@ $(document).ready(
 				//submitTradeForms(url);
 			});
 
-			$("#updateStatus").click(function() {
+			$("#updateStatus,#updateStatusTop").click(function() {
 				var url = $(this).attr('data-url');
 				var updatedStatus = $(this).val();
 				$("#status").val(updatedStatus);

@@ -3,6 +3,8 @@ package com.tf.controller.seller.company;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
@@ -61,6 +63,7 @@ import com.tf.model.SellerScfCompanyMapping;
 import com.tf.model.User;
 import com.tf.persistance.util.CompanyStatus;
 import com.tf.persistance.util.Constants;
+import com.tf.persistance.util.SellerScfCompanyDTO;
 import com.tf.seller.util.CompanyDTO;
 import com.tf.util.ReportUtility;
 import com.tf.util.model.PaginationModel;
@@ -76,7 +79,6 @@ import com.tf.util.model.PaginationModel;
 @RequestMapping(value = "VIEW")
 public class SellerController extends BaseController {
 	private final static String ACTIVETAB = "activetab";
-
 	
 	@RenderMapping
 	protected ModelAndView renderCompanyList(	
@@ -90,81 +92,52 @@ public class SellerController extends BaseController {
 		ThemeDisplay themeDispay = (ThemeDisplay) request
 				.getAttribute(WebKeys.THEME_DISPLAY);
 		List<User> users;
-		List<Company> companyList = new ArrayList<Company>();
 		List<SellerScfCompanyMapping> sellerScfMappings=null; 
-		List<Company> scfFinalCompanyList=null;
 		List<Company> companies=null;
-		long sellerId=0l;
-		long scfCompanyId=0l;
-		try {
-			if(request.isUserInRole(Constants.SCF_ADMIN)){	
-			model.put("userType", Constants.SCF_ADMIN);
-			long companyID = userService.getCompanybyUserID(themeDisplay.getUserId()).getId();
-			users = new ArrayList<User>();
-			if (companyID != 0) {
-				company = companyService.findById(companyID);
-				users = userService.findUserByCompanyId(companyID);
-				company.setOfficers(new LinkedHashSet<Officer>(officerService.findOfficersByCompanyId(companyID)));
-				model.put("cmpType", companyTypeMap.get(Long.valueOf(company.getCompanyType())));
-			}
-			if(request.isUserInRole(Constants.SCF_ADMIN)){
-				model.put("userType", Constants.SCF_ADMIN);
-				sellerId=ParamUtil.getLong(request, "sellerCompany");
-			}
-			model.put("companyId", companyID);
-			/**
-			 * When the SCF_Admin gets login.
-			 * Adding the seller
-			 */
-			if(sellerId>0 && request.isUserInRole(Constants.SCF_ADMIN) ){
-				long compId = userService.getCompanybyUserID(themeDisplay.getUserId()).getId();
-				Company comp =companyService.findById(sellerId);
-				SellerScfCompanyMapping sellerScfMapping = new SellerScfCompanyMapping();
-				sellerScfMapping.setScfCompany(compId);
-				sellerScfMapping.setSellerCompany(comp);
-				sellerScfMapping.setStatus(Constants.STATUS.APPROVED.getValue());
-				sellerScfMapping.setUpdateDate(Calendar.getInstance().getTime());
-				sellerScfMappingService.saveSeller(sellerScfMapping);
-			}
-			/**
-			 * When the Seller gets login.
-			 * Adding the SCF_Company
-			 */
-			else if(scfCompanyId>0 && request.isUserInRole(Constants.SELLER_ADMIN)){
-				long compId = userService.getCompanybyUserID(themeDisplay.getUserId()).getId();
-				Company comp =companyService.findById(compId);
-				SellerScfCompanyMapping sellerScfMapping = new SellerScfCompanyMapping();
-				sellerScfMapping.setScfCompany(scfCompanyId);
-				sellerScfMapping.setSellerCompany(comp);
-				sellerScfMapping.setStatus(Constants.STATUS.PENDING.getValue());
-				sellerScfMapping.setComment("Member Requetsed");
-				sellerScfMapping.setUpdateDate(Calendar.getInstance().getTime());
-				sellerScfMappingService.saveSeller(sellerScfMapping);
-			}
-			Long noOfRecords = 0l;
-			PaginationModel paginationModel = paginationUtil.preparePaginationModel(request);
-			if(request.isUserInRole(Constants.SCF_ADMIN)){
-				sellerScfMappings=sellerScfMappingService.getSellerScfMapping(paginationModel.getStartIndex(), paginationModel.getPageSize(),null,companyID,null);
-				companyList = companyService.getCompanies("4");
-				companies=prepareCompanyList(companyList,sellerScfMappings,Constants.SCF_ADMIN);
-			}else{
-				sellerScfMappings=sellerScfMappingService.getSellerScfMapping(paginationModel.getStartIndex(), paginationModel.getPageSize(),companyID,null,null);
-				companyList = companyService.getCompanies("5");
-				companies=prepareCompanyList(companyList,sellerScfMappings,Constants.SELLER_ADMIN);
-				sellerScfMappings=prepareCompanyListForListing(sellerScfMappings);
-			}
-			noOfRecords=sellerScfMappingService.getSellerScfMappingCount();
 		
-			paginationUtil.setPaginationInfo(noOfRecords, paginationModel);
-			model.put("companies", companies);
-			model.put("sellerScfMappings", sellerScfMappings);
-			model.put("currentUser", themeDispay.getRealUser());
-			model.put("users", users);
+		try {
+			if (request.isUserInRole(Constants.SCF_ADMIN)) {
+				model.put("userType", Constants.SCF_ADMIN);
+				long companyID = userService.getCompanybyUserID(themeDisplay.getUserId()).getId();
+				users = new ArrayList<User>();
+				
+				if (companyID != 0) {
+					company = companyService.findById(companyID);
+					users = userService.findUserByCompanyId(companyID);
+					company.setOfficers(new LinkedHashSet<Officer>(officerService.findOfficersByCompanyId(companyID)));
+					model.put("cmpType", companyTypeMap.get(Long.valueOf(company.getCompanyType())));
+					model.put("userType", Constants.SCF_ADMIN);
+					model.put("companyId", companyID);
+				}
+				/**
+				 * When the SCF_Admin gets login. Adding the seller
+				 */
+				Long noOfRecords = 0l;
+				PaginationModel paginationModel = paginationUtil.preparePaginationModel(request);
 
-		}} catch (Exception e) {
-			e.printStackTrace();
+				sellerScfMappings = sellerScfMappingService.getSellerScfMapping(paginationModel.getStartIndex(),
+						paginationModel.getPageSize(), null, companyID, null);
+				sortSellerScfMapping(sellerScfMappings);
+				
+				paginationUtil.setPaginationInfo(noOfRecords, paginationModel);
+				model.put("companies", companies);
+				model.put("sellerScfMappings", sellerScfMappings);
+				model.put("currentUser", themeDispay.getRealUser());
+				model.put("users", users);
+
+			} else if (request.isUserInRole(Constants.WHITEHALL_ADMIN) || request.isUserInRole(Constants.OMNI_ADMIN)) {
+				long companyID = 0l;
+				int startIndex = 0;
+				int pageSize = 0;
+				String orderBy = "name";
+				List<SellerScfCompanyDTO> sellerScfMappingAdminList = sellerScfMappingService.getSellerScfMappingAdminList(startIndex,
+						pageSize, companyID, orderBy);
+				model.put("userType", Constants.WHITEHALL_ADMIN);
+				model.put("sellerScfMappingAdminList", sellerScfMappingAdminList);
+			}
+		} catch (Exception e) {
 			SessionErrors.add(request, "default-error-message");
-			_log.error("CompanyController.createCompany() - error occured while rendering add company screen"+ e.getMessage());
+			_log.error("CompanyController.createCompany() - error occured while rendering add company screen" + e.getMessage());
 		}
 		model.put("companyModel", company);
 		model.put("orgTypeMap", orgTypeMap);
@@ -173,7 +146,18 @@ public class SellerController extends BaseController {
 		return new ModelAndView("companylist", model);
 	}
 
-	
+	/**
+	 * @param sellerScfMappings
+	 */
+	private void sortSellerScfMapping(List<SellerScfCompanyMapping> sellerScfMappings) {
+		Collections.sort(sellerScfMappings, new Comparator<SellerScfCompanyMapping>() {
+			@Override
+			public int compare(SellerScfCompanyMapping c1, SellerScfCompanyMapping c2) {
+				return c1.getSellerCompany().getName().compareToIgnoreCase(c2.getSellerCompany().getName());
+			}
+		});
+	}
+
 
 	@RenderMapping(params = "render=createCompany")
 	protected ModelAndView renderCreateCompany(
@@ -274,6 +258,7 @@ public class SellerController extends BaseController {
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
 	private List<Company> prepareCompanyList(List<Company> companyList,
 		  List<SellerScfCompanyMapping> sellerScfMappings,String companyType){
 		  Company company=null;
@@ -293,8 +278,21 @@ public class SellerController extends BaseController {
 				 }
              }
 	        }	
+		    companySortOnName(companyList);
 		    return companyList;		
 	   }
+
+
+
+	private void companySortOnName(List<Company> companyList) {
+		Collections.sort(companyList, new Comparator<Company>() 
+		  {
+			@Override
+			public int compare(Company c1, Company c2) {
+				return c1.getName().compareToIgnoreCase(c2.getName());
+			}
+		  });
+	}
 	
 	private List<SellerScfCompanyMapping> prepareCompanyListForListing(List<SellerScfCompanyMapping> sellerScfMappings){
 			  for(SellerScfCompanyMapping seller: sellerScfMappings){
@@ -407,35 +405,39 @@ public class SellerController extends BaseController {
 			}
 		
 	}
+
 	@RenderMapping(params = "render=supplierDocuments")
-	protected ModelAndView renderSupplierDocumentsList(@ModelAttribute("companyModelDetail") CompanyDTO company,ModelMap model,
-		RenderRequest request, RenderResponse response)
-		throws Exception {
+	protected ModelAndView renderSupplierDocumentsList(@ModelAttribute("companyModelDetail") CompanyDTO company, ModelMap model,
+			RenderRequest request, RenderResponse response) throws Exception {
 		try {
+			
 			ThemeDisplay themeDisplay = liferayUtility.getThemeDisplay(request);
 			themeDisplay.getUser().getScreenName();
-			List<CompanyDocument> companyDocumentList =	new ArrayList<CompanyDocument>();
-				companyDocumentList =companyDocumentService.getCompanyDocumentsBasedOnUploadedBy(themeDisplay.getUser().getScreenName());
-				model.put("userType", Constants.SCF_ADMIN);
+			List<CompanyDocument> companyDocumentList = new ArrayList<CompanyDocument>();
+			companyDocumentList = companyDocumentService.getCompanyDocumentsBasedOnUploadedBy(themeDisplay.getUser().getScreenName());
+			model.put("userType", Constants.SCF_ADMIN);
+			
+			List<Company> companyList = companyService.getCompanies("5");
 			model.put("companyDocumentList", companyDocumentList);
+			companySortOnName(companyList);
+			
+			model.put("scfCompanyList", companyList);
 			model.put(ACTIVETAB, "supplierdocList");
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			SessionErrors.add(request, "default-error-message");
-			_log.error("CompanyController.renderSupplierDocumentsList() - error occured while rendering supplierdocList  " +
-				e.getMessage());
+			_log.error("CompanyController.renderSupplierDocumentsList() - error occured while rendering supplierdocList  " + e.getMessage());
 		}
 		return new ModelAndView("supplierdoclist", model);
 	}
-	
+
 	@ActionMapping(params = "action=importCompany")
 	protected void importCompany( @ModelAttribute("companyModelDetail") CompanyDTO company, ModelMap model,
 		ActionRequest request, ActionResponse response)
 		throws Exception {
-		request.getPortletSession().removeAttribute("companyDTO");
-		request.getPortletSession().removeAttribute("companyList");
-		request.getPortletSession().removeAttribute("validCompanyList");
-		request.getPortletSession().removeAttribute("invalidCompanyList");
+		
+		
+		removeSessionAttr(request);
+		
 		int currentRow = 0;
 		Company companyObject = null;
 		CompanyAccountDetail companyAccountDetail = null;
@@ -443,6 +445,11 @@ public class SellerController extends BaseController {
 		Workbook workbook = null;
 		List<Company> validCompanyList = new ArrayList<Company>();
 		List<Company> invalidCompanyList = new ArrayList<Company>();
+		
+		/*
+		 *in case of admin user,he can add the scf company while mapping to seller.
+		 */
+		String scfCompanyId = request.getParameter("scfCompany");
 		try {
 			workbook =new XSSFWorkbook(company.getCompanyDoc().getInputStream());
 			int numberOfSheets = workbook.getNumberOfSheets();
@@ -575,6 +582,7 @@ public class SellerController extends BaseController {
 			request.getPortletSession().setAttribute("companyDTO", company);
 			request.getPortletSession().setAttribute("invalidCompanyList", invalidCompanyList);
 			request.getPortletSession().setAttribute("validCompanyList", validCompanyList);
+			request.getPortletSession().setAttribute("scfCompanyId", scfCompanyId);
 			model.put("documentUpload", Boolean.TRUE);
 			model.put("invalidCompanyList", invalidCompanyList);
 			model.put("validCompanyList", validCompanyList);
@@ -591,25 +599,41 @@ public class SellerController extends BaseController {
 		}
 
 	}
-	
-	
 
 
+
+	private void removeSessionAttr(ActionRequest request) {
+		request.getPortletSession().removeAttribute("companyDTO");
+		request.getPortletSession().removeAttribute("companyList");
+		request.getPortletSession().removeAttribute("validCompanyList");
+		request.getPortletSession().removeAttribute("invalidCompanyList");
+		request.getPortletSession().removeAttribute("scfCompanyId");
+	}
 
 	@SuppressWarnings("unchecked")
 	@ActionMapping(params = "action=saveCompanys")
 	protected void saveCompanys(
 		ModelMap model, ActionRequest request, ActionResponse response)
 		throws Exception {
-
+		ThemeDisplay themeDisplay =
+				(ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
 		CompanyDTO companyDTO =(CompanyDTO) request.getPortletSession().getAttribute("companyDTO");
 		List<Company> companyList =(List<Company>) request.getPortletSession().getAttribute("validCompanyList");
-
+		long scfCompanyID=0l;
+		
+		/**
+		 * If scf company gets login,internally seller will be mapped to login SCF company admin user
+		 */
+		if(request.isUserInRole(Constants.SCF_ADMIN)){
+			 scfCompanyID = userService.getCompanybyUserID(themeDisplay.getUserId()).getId();
+		}else{
+			scfCompanyID = Long.parseLong((String) request.getPortletSession().getAttribute("scfCompanyId"));
+		}
+		
 		FileEntry fileEntry = null;
 		Folder folder = null;
 		CompanyDocument companyDocument = null;
-		ThemeDisplay themeDisplay =
-			(ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
+		
 		long currentSideID = themeDisplay.getScopeGroupId();
 		long parentFolderId = DLFolderConstants.DEFAULT_PARENT_FOLDER_ID;
 		Folder parentfolder = null;
@@ -649,10 +673,9 @@ public class SellerController extends BaseController {
 		companyDocument.setDocumentUrl(liferayUtility.getDocumentURL(
 			themeDisplay, fileEntry));
 		companyDocument.setDocumentType(mimeType);
-
 		if (companyList != null && companyList.size() > 0) {
 			try{
-				companyDocumentService.addCompanyDetailList(companyList);
+				companyDocumentService.addCompanyDetailsAndSCFSellerMaping(companyList, scfCompanyID);
 			}catch(Exception e){
 				_log.error("processing file - error occured while saveCompanys  addCompanyDetailList  " +e.getMessage());
 			}
@@ -661,11 +684,30 @@ public class SellerController extends BaseController {
 			}catch(Exception e){
 				_log.error("processing file - error occured while saveCompanys in   addCompanyDocument " +e.getMessage());
 			}
-			
-			
 		}
 		response.setRenderParameter("render", "supplierDocuments");
-
 	}
-
+	
+	@ActionMapping(params = "action=suspendMapping")
+	protected void suspendScfSellerMapping(ActionRequest request, ActionResponse response){
+		_log.info("inside suspendScfSellerMapping method(");
+		
+		long sellerCompanyId = ParamUtil.getLong(request, "sellerCompanyId");
+		if(sellerCompanyId>0l){
+			companyDocumentService.chnageSellerScfMappingStatus(sellerCompanyId, Constants.STATUS.REJECTED.getValue());
+		}
+		
+		_log.info("exist suspendScfSellerMapping method(");
+	}
+	@ActionMapping(params = "action=approveMapping")
+	protected void approveScfSellerMapping(ActionRequest request, ActionResponse response){
+		_log.info("inside suspendScfSellerMapping method(");
+		
+		long sellerCompanyId = ParamUtil.getLong(request, "sellerCompanyId");
+		if(sellerCompanyId>0l){
+			companyDocumentService.chnageSellerScfMappingStatus(sellerCompanyId, Constants.STATUS.APPROVED.getValue());
+		}
+		
+		_log.info("exist suspendScfSellerMapping method(");
+	}
 }

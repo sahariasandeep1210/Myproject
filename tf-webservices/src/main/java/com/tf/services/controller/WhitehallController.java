@@ -1,5 +1,6 @@
 package com.tf.services.controller;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
@@ -92,19 +93,18 @@ public class WhitehallController {
          * @param startIndex
          * @param size
          * @return
+         * @throws ParseException 
          */
         @SuppressWarnings("unchecked")
 		@RequestMapping(value = "/invoices/{userID}",params = { "startIndex", "size" }, method = RequestMethod.GET)  
         public ResponseEntity<ListDTO> getInvoices(@PathVariable("userID") long userID,@RequestParam("startIndex") int startIndex, 
-        	@RequestParam("size") int size) {            
-            	String app = "app";
+        	@RequestParam("size") int size) throws ParseException {            
             	ListDTO listDTO=new ListDTO();
             	long companyId = userService.getCompanyIDbyUserID(userID);
             	String registrationNo=companyService.findById(companyId).getRegNumber();            	
-            	GenericListModel  genericListModel = invoiceService.getInvoices(null,startIndex, size,registrationNo,app);
+            	GenericListModel  genericListModel = invoiceService.getInvoices(null,startIndex, size,registrationNo,null,null);
     		if(genericListModel !=null && genericListModel.getList() !=null && genericListModel.getList().size() >0){
-    		    List<Invoice> list=transformEntities.getInvoices((List<com.tf.model.Invoice>)genericListModel.getList());
-    		  
+    		    List<Invoice> list=transformEntities.getInvoices((List<com.tf.model.Invoice>)genericListModel.getList());    		  
     		    listDTO.setList(list);
     		    listDTO.setPageSize(size);
     		    listDTO.setStartIndex(startIndex);

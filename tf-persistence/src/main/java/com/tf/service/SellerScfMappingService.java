@@ -2,6 +2,7 @@ package com.tf.service;
 
 import com.tf.model.Company;
 import com.tf.model.SellerScfCompanyMapping;
+import com.tf.persistance.util.SellerScfCompanyDTO;
 
 import java.util.List;
 
@@ -21,4 +22,6 @@ public interface SellerScfMappingService {
 	public Long getSellerScfMappingCountBasedOnId(Long scfCompanyID);
 	
 	public List<SellerScfCompanyMapping> getSellerCompanies(Long sellerComp);
+	
+	public List<SellerScfCompanyDTO> getSellerScfMappingAdminList(int startIndex, int pageSize, Long loggedInUserId, String orderBy);
 }

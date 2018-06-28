@@ -5,15 +5,12 @@
 	<portlet>
 		<portlet-name>tf-company-portlet</portlet-name>
 		<icon>/icon.png</icon>
-		<!-- <instanceable>true</instanceable> -->
-		<requires-namespaced-parameters>false</requires-namespaced-parameters>		
-		<header-portlet-css>/css/main.css</header-portlet-css> 	
-		<!-- <footer-portlet-javascript>/js/jquery.inputmask.js</footer-portlet-javascript> 	
-		<footer-portlet-javascript>/js/tableExport.min.js</footer-portlet-javascript> 
-		<footer-portlet-javascript>/js/FileSaver.min.js</footer-portlet-javascript> 
-		<footer-portlet-javascript>/js/bootstrap.min.js</footer-portlet-javascript>  -->
-		<footer-portlet-javascript>/js/main.js</footer-portlet-javascript> 
-		
+		<requires-namespaced-parameters>false</requires-namespaced-parameters>	
+		<header-portlet-css>/css/jquery.loadmask.css</header-portlet-css>	
+		<header-portlet-css>/css/main.css</header-portlet-css>		
+		<footer-portlet-javascript>/js/jquery.fileDownload.js</footer-portlet-javascript>
+		<footer-portlet-javascript>/js/jquery.loadmask.js</footer-portlet-javascript>
+		<footer-portlet-javascript>/js/main.js</footer-portlet-javascript>		
 	</portlet>
 	<role-mapper>
 		<role-name>administrator</role-name>
