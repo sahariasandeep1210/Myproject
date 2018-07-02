@@ -7,6 +7,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -18,14 +19,18 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.tf.dao.InvoiceDAO;
 import com.tf.model.Company;
 import com.tf.model.GenericListModel;
 import com.tf.model.Invoice;
+import com.tf.model.InvoiceNotTraded;
 import com.tf.model.SCFTrade;
 import com.tf.persistance.util.Constants;
 import com.tf.persistance.util.ValidationUtil;
@@ -106,6 +111,105 @@ public void deleteInvoice(Invoice invoice){
 		throw e;
 		}
 }
+
+    @SuppressWarnings({ "unchecked", "unused", "rawtypes" })
+	public List<InvoiceNotTraded>  getInvoicesNotTraded(Long companyID,int startIndex, int pageSize,String registrationNo, String order,String columnName)throws ParseException  {	    
+		_log.debug("Inside getInvoices " + companyID + " "+registrationNo );
+		System.out.println("Inside getInvoicesNotTraded " + companyID + " "+registrationNo);
+		try {		
+			 List<InvoiceNotTraded>  finalResult = new ArrayList<InvoiceNotTraded>();;
+			 List<Invoice> results = new ArrayList<Invoice>();
+			 StringBuilder sqlQuery = null;
+			  {
+			     sqlQuery = new StringBuilder();
+			     
+			     sqlQuery.append("SELECT scf.*,tf.name AS seller_company_name FROM scf_invoice scf LEFT JOIN tf_company  tf ON tf.regnumber = scf.seller_company_registration_number where  scf.status='New' ");
+			    // sqlQuery.append("LEFT JOIN tf_company tfc ON scf.scf_company = tfc.idcompany where  scf.status='New' ");
+			     sqlQuery.append(" ORDER BY "+columnName+ " "+order);
+			     SQLQuery query = (SQLQuery) sessionFactory.getCurrentSession()
+						.createSQLQuery(sqlQuery.toString()).setFirstResult(startIndex)
+						.setMaxResults(pageSize);
+			     query.setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP);
+			     List dataWithSellerName = query.list();
+			    
+			     System.out.println("getInvoicesNotTraded fetch data "+ dataWithSellerName.size());
+			     
+			    
+			     sqlQuery = new StringBuilder();
+			     sqlQuery.append("SELECT scf.*,tf.name AS scf_company_name FROM scf_invoice scf LEFT JOIN tf_company  tf ON tf.idcompany = scf.scf_company where  scf.status='New' ");
+			    // sqlQuery.append("LEFT JOIN tf_company tfc ON scf.scf_company = tfc.id where  scf.status='New' ");
+			     sqlQuery.append(" ORDER BY "+columnName+ " "+order);
+			     SQLQuery querySCF = (SQLQuery) sessionFactory.getCurrentSession()
+						.createSQLQuery(sqlQuery.toString()).setFirstResult(startIndex)
+						.setMaxResults(pageSize);
+			     
+			     querySCF.setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP);
+			     List dataWithSCFName = querySCF.list();
+			   
+			     System.out.println("getInvoicesNotTraded fetch data SCF "+ dataWithSCFName.size());
+			     Gson gson = null, gsonSeller = null;
+			     DateFormat readFormat = new SimpleDateFormat( "MMMM dd, yyyy");
+				  DateFormat writeFormat = new SimpleDateFormat( "dd-MM-yyyy");
+				  Date date = null;  String formattedDate = "";
+				    
+				     
+			    if (dataWithSCFName.size()>0 && dataWithSellerName.size() > 0) {
+			          
+			            for(int i = 0; i<dataWithSCFName.size();i++){
+			            	
+			    		  Object invoiceObj = dataWithSCFName.get(i);
+			    		   gson = new Gson();
+			    		   String valueSCF = gson.toJson(invoiceObj);
+			    		    JSONObject mJSONObject = new JSONObject(valueSCF);
+			    		    
+			    		 
+			    		    gsonSeller = new Gson();
+			    		   Object invoiceSellerName = dataWithSellerName.get(i);
+			    		   String valueSeller = gsonSeller.toJson(invoiceSellerName);
+			    		   JSONObject mJSONObjectSeller = new JSONObject(valueSeller);
+			    			
+			    			System.out.println("******INvoiceFetchNot*****"+  " "+ mJSONObjectSeller);
+			    			System.out.println( mJSONObjectSeller.getString("seller_company_name"));
+			    			
+			    			
+								
+						  InvoiceNotTraded invoiceNotTraded = new InvoiceNotTraded();
+						 
+						 invoiceNotTraded.setSeller_company_name(mJSONObjectSeller.getString("seller_company_name"));
+						 invoiceNotTraded.setScf_company_name(mJSONObject.getString("scf_company_name"));
+						
+						  date = readFormat.parse( mJSONObject.getString("payment_date") );
+						  formattedDate = writeFormat.format( date ); 
+
+						  invoiceNotTraded.setFinance_date(formattedDate);
+						  
+						  date = readFormat.parse( mJSONObject.getString("invoice_date"));
+						  formattedDate = writeFormat.format( date ); 
+						  
+						  invoiceNotTraded.setInvoice_date(formattedDate);
+						  invoiceNotTraded.setStatus(mJSONObject.getString("status"));
+						  invoiceNotTraded.setAmount((mJSONObject.getBigDecimal("invoice_amout")));
+						  finalResult.add(invoiceNotTraded);
+						 
+						  
+					  
+					
+				}
+				
+			    }
+			  }
+			 				
+		
+			return finalResult;
+			 //return null;
+		}
+		catch (RuntimeException re) {
+			_log.error("getInvoicesNotTraded failed", re);
+			throw re;
+		}
+	}
+
+	
 	@SuppressWarnings({ "unchecked", "unused", "rawtypes" })
 	public GenericListModel getInvoices(Long companyID,int startIndex, int pageSize,String registrationNo, String order,String columnName) throws ParseException {	    
 		_log.debug("Inside getInvoices ");
@@ -350,6 +454,7 @@ public void deleteInvoice(Invoice invoice){
 			throw re;
 		}
 	}
+	
 	
 	@SuppressWarnings("unchecked")
 	public GenericListModel getInvoicesByFilter(String search, String frmDate, String toDate, String value, int startIndex, int pageSize,Long companyID,String registrationNo,String order,String columnName) {
