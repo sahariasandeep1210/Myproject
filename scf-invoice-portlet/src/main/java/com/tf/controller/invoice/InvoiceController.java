@@ -596,6 +596,7 @@ public class InvoiceController {
 			ThemeDisplay themeDisplay =
 				(ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
 			DateFormat formatter = new SimpleDateFormat(Constants.DATE_FORMAT);
+			BigDecimal totalInvoiceAmount = BigDecimal.ZERO;
 			
 			//fiels are being used for server side sorting
 			String columnName = ParamUtil.getString(request, "sort_Column","scf.update_date");
@@ -652,7 +653,15 @@ public class InvoiceController {
 			} else {				
 			   genericListModel = invoiceService.getInvoices(companyID,paginationModel.getStartIndex(), paginationModel.getPageSize(),registrationNo,order,columnName);
 			}
-		
+			
+			if(genericListModel.getList()!=null && genericListModel.getList().size()>0){
+				List<Invoice> invoiceList = (List<Invoice>) genericListModel.getList();
+				for (Invoice invObj : invoiceList) {
+					totalInvoiceAmount=totalInvoiceAmount.add(invObj.getInvoiceAmount());
+				}
+			}
+			
+			
 			model.put("tradeURL",tradeURL);
 			model.put("value", value);
 			model.put("search", search);
@@ -665,6 +674,7 @@ public class InvoiceController {
 			paginationUtil.setPaginationInfo(genericListModel.getCount(), paginationModel);
 			model.put("paginationModel", paginationModel);
 			model.put("invoicesList", genericListModel.getList());
+			model.put("totalInvoiceAmount", totalInvoiceAmount);
 			model.put("defaultRender", Boolean.TRUE);
 			model.put(ACTIVETAB, "invoiceslist");
 		}

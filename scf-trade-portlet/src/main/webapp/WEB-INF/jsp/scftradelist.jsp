@@ -13,7 +13,6 @@
 
 <portlet:resourceURL id="breakdownURL" var="breakdownURL"></portlet:resourceURL>
 
-
 <div class="tab-content">
 
 	<form:form commandName="scfTradeModel" method="post" action="${createURL}" id="scfTradeList"  >
@@ -59,7 +58,6 @@
 					
 				</div>
 		  </div>
-
 		<div class="customTableContainer">
 			<table class="table  tablesorter table-bordered" id="tradeListTable">
 				<thead>
@@ -78,6 +76,20 @@
 				<tbody>						
 					<c:choose>						
 						<c:when test="${fn:length(scftrades) gt 0}">
+								<tr>
+								<td style="background-color:#189a80;color:white" ><span class='underline'>Total</span></td>
+								<td style="background-color:#189a80;color:white" ></td>
+								<td style="background-color:#189a80 ;color:white""></td>
+								<td style="background-color:#189a80;color:white""></td>
+								<td style="background-color:#189a80;color:white""></td>
+								<td style="background-color:#189a80 ;color:white"" class="rightalign"><fmt:formatNumber type="number"
+										maxFractionDigits="3" value="${totalTradeAmount}" pattern="#,##0.00"/></td>
+								<td style="background-color:#189a80;color:white""></td>
+								<td style="background-color:#189a80;color:white""></td>
+							</tr>
+						
+						
+						
 							<c:forEach items="${scftrades}" var="trade">
 								<tr>
 									<%-- <td>${trade.scfTrade}</td> --%>
