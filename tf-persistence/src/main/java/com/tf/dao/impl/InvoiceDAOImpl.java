@@ -7,6 +7,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -18,19 +19,20 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
-import org.hibernate.transform.Transformers;
-import org.hibernate.type.StandardBasicTypes;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.tf.dao.InvoiceDAO;
 import com.tf.model.Company;
 import com.tf.model.GenericListModel;
 import com.tf.model.Invoice;
+import com.tf.model.InvoiceNotTraded;
 import com.tf.model.SCFTrade;
 import com.tf.persistance.util.Constants;
-import com.tf.persistance.util.PaymentScheduleDTO;
 import com.tf.persistance.util.ValidationUtil;
 import com.tf.persistance.util.WhitehallUtility;
 import com.tf.service.CompanyService;
@@ -109,6 +111,146 @@ public void deleteInvoice(Invoice invoice){
 		throw e;
 		}
 }
+
+    @SuppressWarnings({ "unchecked", "unused", "rawtypes" })
+	public GenericListModel  getInvoicesNotTraded(Long companyID,int startIndex, int pageSize,String registrationNo, String order,String columnName)throws ParseException  {	    
+		_log.debug("Inside getInvoices " + companyID + " "+registrationNo );
+		
+		try {		
+			 List<InvoiceNotTraded>  finalResult = new ArrayList<InvoiceNotTraded>();;
+			 List<Invoice> results = new ArrayList<Invoice>();
+			 StringBuilder sqlQuery = null;
+			  {
+			     sqlQuery = new StringBuilder();
+			     
+			     sqlQuery.append("SELECT scf.*,tf.name AS seller_company_name FROM scf_invoice scf LEFT JOIN tf_company  tf ON tf.regnumber = scf.seller_company_registration_number where  scf.status='New' ");
+			    // sqlQuery.append("LEFT JOIN tf_company tfc ON scf.scf_company = tfc.idcompany where  scf.status='New' ");
+			     sqlQuery.append(" ORDER BY "+columnName+ " "+order);
+			     SQLQuery query = (SQLQuery) sessionFactory.getCurrentSession()
+						.createSQLQuery(sqlQuery.toString()).setFirstResult(startIndex)
+						.setMaxResults(pageSize);
+			     query.setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP);
+			     List dataWithSellerName = query.list();
+			    
+			  
+			     
+			    
+			     sqlQuery = new StringBuilder();
+			     sqlQuery.append("SELECT scf.*,tf.name AS scf_company_name FROM scf_invoice scf LEFT JOIN tf_company  tf ON tf.idcompany = scf.scf_company where  scf.status='New' ");
+			    // sqlQuery.append("LEFT JOIN tf_company tfc ON scf.scf_company = tfc.id where  scf.status='New' ");
+			     sqlQuery.append(" ORDER BY "+columnName+ " "+order);
+			     SQLQuery querySCF = (SQLQuery) sessionFactory.getCurrentSession()
+						.createSQLQuery(sqlQuery.toString()).setFirstResult(startIndex)
+						.setMaxResults(pageSize);
+			     
+			     querySCF.setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP);
+			     List dataWithSCFName = querySCF.list();
+			   
+			   
+			     Gson gson = null, gsonSeller = null;
+			     DateFormat readFormat = new SimpleDateFormat( "MMMM dd, yyyy");
+				  DateFormat writeFormat = new SimpleDateFormat( "dd-MM-yyyy");
+				  Date date = null;  String formattedDate = "";
+				    
+				
+				
+				
+			    if (dataWithSCFName.size()>0 && dataWithSellerName.size() > 0) {
+			          
+			            for(int i = 0; i<dataWithSCFName.size();i++){
+			            	
+			    		  Object invoiceObj = dataWithSCFName.get(i);
+			    		   gson = new Gson();
+			    		   String valueSCF = gson.toJson(invoiceObj);
+			    		    JSONObject mJSONObject = new JSONObject(valueSCF);
+			    		    
+			    		 
+			    		    gsonSeller = new Gson();
+			    		   Object invoiceSellerName = dataWithSellerName.get(i);
+			    		   String valueSeller = gsonSeller.toJson(invoiceSellerName);
+			    		   JSONObject mJSONObjectSeller = new JSONObject(valueSeller);
+			    			
+			    		
+								
+						  InvoiceNotTraded invoiceNotTraded = new InvoiceNotTraded();
+						 
+						 invoiceNotTraded.setSeller_company_name(mJSONObjectSeller.getString("seller_company_name"));
+						 invoiceNotTraded.setScf_company_name(mJSONObject.getString("scf_company_name"));
+						
+						  date = readFormat.parse( mJSONObject.getString("payment_date") );
+						  formattedDate = writeFormat.format( date ); 
+
+						  invoiceNotTraded.setFinance_date(formattedDate);
+						  
+						  date = readFormat.parse( mJSONObject.getString("invoice_date"));
+						  formattedDate = writeFormat.format( date ); 
+						  
+						  invoiceNotTraded.setInvoice_date(formattedDate);
+						  invoiceNotTraded.setStatus(mJSONObject.getString("status"));
+						  invoiceNotTraded.setAmount((mJSONObject.getBigDecimal("invoice_amout")));
+						  
+						  finalResult.add(invoiceNotTraded);
+						 
+						  
+					  
+					
+				}
+				
+			    }
+			  }
+			
+			  StringBuilder sqlQuery2 = null;
+			  
+				  sqlQuery2 = new StringBuilder();
+			     
+				  sqlQuery2.append("SELECT SUM(scf.invoice_amout)  FROM scf_invoice scf LEFT JOIN tf_company  tf ON tf.regnumber = scf.seller_company_registration_number where  scf.status='New' ");
+			    // sqlQuery.append("LEFT JOIN tf_company tfc ON scf.scf_company = tfc.idcompany where  scf.status='New' ");
+				  sqlQuery2.append(" ORDER BY "+columnName+ " "+order);
+			     SQLQuery query = (SQLQuery) sessionFactory.getCurrentSession()
+						.createSQLQuery(sqlQuery2.toString());
+			     query.setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP);
+			     List dataWithSellerName = query.list();
+			      Gson  gson = new Gson();
+	    		   String totalAmount = gson.toJson(dataWithSellerName.get(0));
+	    		    JSONObject mJSONObject = new JSONObject(totalAmount);
+	    		    Long TotalAmount = mJSONObject.getLong("SUM(scf.invoice_amout)");
+	    		 
+			 
+			  GenericListModel genericModel=new GenericListModel();
+				genericModel.setCount( getInvoicesNotTradedCount());
+				genericModel.setTotalAmount(TotalAmount);	
+			    genericModel.setList(finalResult);
+			return genericModel;
+			 //return null;
+		}
+		catch (RuntimeException re) {
+			_log.error("getInvoicesNotTraded failed", re);
+			throw re;
+		}
+	}
+    
+   
+    @SuppressWarnings({ "unchecked", "unused", "rawtypes" })
+    private int getInvoicesNotTradedCount(){
+    	
+    	
+		 StringBuilder sqlQuery = null;
+		  
+		     sqlQuery = new StringBuilder();
+		     
+		     sqlQuery.append("SELECT scf.*,tf.name AS seller_company_name FROM scf_invoice scf LEFT JOIN tf_company  tf ON tf.regnumber = scf.seller_company_registration_number where  scf.status='New' ");
+		    // sqlQuery.append("LEFT JOIN tf_company tfc ON scf.scf_company = tfc.idcompany where  scf.status='New' ");
+		   //  sqlQuery.append(" ORDER BY "+columnName+ " "+order);
+		     SQLQuery query = (SQLQuery) sessionFactory.getCurrentSession()
+					.createSQLQuery(sqlQuery.toString());
+		     query.setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP);
+		     List dataWithSellerName = query.list();
+		   
+		     
+		    
+    	return dataWithSellerName.size();
+    }
+	
 	@SuppressWarnings({ "unchecked", "unused", "rawtypes" })
 	public GenericListModel getInvoices(Long companyID,int startIndex, int pageSize,String registrationNo, String order,String columnName) throws ParseException {	    
 		_log.debug("Inside getInvoices ");
@@ -184,6 +326,325 @@ public void deleteInvoice(Invoice invoice){
 			throw re;
 		}
 	
+	}
+	
+	
+	public GenericListModel getInvoiceNotTradedOnSearch(String search, String frmDate, String toDate, String value, int startIndex, int pageSize,Long companyID,String registrationNo,String order,String columnName) throws ParseException{
+		GenericListModel genericModel=new GenericListModel();
+		try {
+			
+			 List<InvoiceNotTraded>  finalResult = new ArrayList<InvoiceNotTraded>();;
+			
+			 StringBuilder sqlQuery = null;
+			  
+			     sqlQuery = new StringBuilder();
+			     
+			     sqlQuery.append("SELECT scf.*,tf.name AS seller_company_name FROM scf_invoice scf LEFT JOIN tf_company  tf ON tf.regnumber = scf.seller_company_registration_number ");
+			     sqlQuery.append(" Where scf.status = 'New' ");
+						
+			if (frmDate != null && toDate != null) {
+				 
+				if(value.equals("invoiceDate")){
+					sqlQuery.append(" AND scf.invoice_date between '"+frmDate+"' AND  '"+toDate+"'");
+				} else if(value.equals("payment_date")){
+					sqlQuery.append(" AND scf.payment_date between '"+frmDate+"' AND  '"+toDate+"'");
+				} else if(value.equals("financeDate")){
+					sqlQuery.append(" AND scf.finance_date between '"+frmDate+"' AND  '"+toDate+"'");
+				}
+			}
+			else if (frmDate != null && toDate == null) {
+				if(value.equals("invoiceDate")){
+					sqlQuery.append(" AND scf.invoice_date >= '"+frmDate+"'");
+				} else if(value.equals("payment_date")){
+					sqlQuery.append(" AND scf.payment_date >= '"+frmDate+"'");
+				} else if(value.equals("financeDate")){
+					sqlQuery.append(" AND scf.finance_date >= '"+frmDate+"'");
+				}
+				
+			}
+			else if (frmDate == null && toDate != null) {
+				if(value.equals("invoiceDate")){
+					sqlQuery.append(" AND scf.invoice_date <= '"+toDate+"'");
+				} else if(value.equals("payment_date")){
+					sqlQuery.append(" AND scf.payment_date <= '"+toDate+"'");
+				} else if(value.equals("financeDate")){
+					sqlQuery.append(" AND scf.finance_date <= '"+toDate+"'");
+				}
+			}
+			sqlQuery.append(" ORDER BY "+columnName+ " "+order);
+		
+			
+			 SQLQuery query = (SQLQuery) sessionFactory.getCurrentSession().createSQLQuery(sqlQuery.toString());
+			 query.setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP);
+			 List dataWithSellerName = query.list();
+			    
+			     
+			     sqlQuery = new StringBuilder();
+			     sqlQuery.append("SELECT scf.*,tf.name AS scf_company_name FROM scf_invoice scf LEFT JOIN tf_company  tf ON tf.idcompany = scf.scf_company ");
+			     sqlQuery.append(" Where  scf.status = 'New' ");
+					
+			      
+				  if (frmDate != null && toDate != null) {
+						 
+						if(value.equals("invoiceDate")){
+							sqlQuery.append(" AND scf.invoice_date between '"+frmDate+"' AND  '"+toDate+"'");
+						} else if(value.equals("payment_date")){
+							sqlQuery.append(" AND scf.payment_date between '"+frmDate+"' AND  '"+toDate+"'");
+						} else if(value.equals("financeDate")){
+							sqlQuery.append(" AND scf.finance_date between '"+frmDate+"' AND  '"+toDate+"'");
+						}
+					}
+					else if (frmDate != null && toDate == null) {
+						if(value.equals("invoiceDate")){
+							sqlQuery.append(" AND scf.invoice_date >= '"+frmDate+"'");
+						} else if(value.equals("payment_date")){
+							sqlQuery.append(" AND scf.payment_date >= '"+frmDate+"'");
+						} else if(value.equals("financeDate")){
+							sqlQuery.append(" AND scf.finance_date >= '"+frmDate+"'");
+						}
+						
+					}
+					else if (frmDate == null && toDate != null) {
+						if(value.equals("invoiceDate")){
+							sqlQuery.append(" AND scf.invoice_date <= '"+toDate+"'");
+						} else if(value.equals("payment_date")){
+							sqlQuery.append(" AND scf.payment_date <= '"+toDate+"'");
+						} else if(value.equals("financeDate")){
+							sqlQuery.append(" AND scf.finance_date <= '"+toDate+"'");
+						}
+					}
+				  
+				  sqlQuery.append(" ORDER BY "+columnName+ " "+order);
+				     SQLQuery querySCF = (SQLQuery) sessionFactory.getCurrentSession()
+							.createSQLQuery(sqlQuery.toString());
+				     
+				     querySCF.setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP);
+				     List dataWithSCFName = querySCF.list();
+				   
+				 
+				     Gson gson = null, gsonSeller = null;
+				     DateFormat readFormat = new SimpleDateFormat( "MMMM dd, yyyy");
+					  DateFormat writeFormat = new SimpleDateFormat( "dd-MM-yyyy");
+					  Date date = null;  String formattedDate = "";
+					  
+					   if (dataWithSCFName.size()>0 && dataWithSellerName.size() > 0) {
+					          
+				            for(int i = 0; i<dataWithSCFName.size();i++){
+				            	
+				    		  Object invoiceObj = dataWithSCFName.get(i);
+				    		   gson = new Gson();
+				    		   String valueSCF = gson.toJson(invoiceObj);
+				    		    JSONObject mJSONObject = new JSONObject(valueSCF);
+				    		    
+				    		 
+				    		    gsonSeller = new Gson();
+				    		   Object invoiceSellerName = dataWithSellerName.get(i);
+				    		   String valueSeller = gsonSeller.toJson(invoiceSellerName);
+				    		   JSONObject mJSONObjectSeller = new JSONObject(valueSeller);
+				    		
+				    			
+									
+							  InvoiceNotTraded invoiceNotTraded = new InvoiceNotTraded();
+							 String sellerName = mJSONObjectSeller.getString("seller_company_name");
+							 String scfCompanyName = mJSONObject.getString("scf_company_name");
+							 invoiceNotTraded.setSeller_company_name(sellerName);
+							 invoiceNotTraded.setScf_company_name(scfCompanyName);
+							
+							
+							  date = readFormat.parse( mJSONObject.getString("payment_date") );
+							  formattedDate = writeFormat.format( date ); 
+
+							  invoiceNotTraded.setFinance_date(formattedDate);
+							  
+							  date = readFormat.parse( mJSONObject.getString("invoice_date"));
+							  formattedDate = writeFormat.format( date ); 
+							  
+							  invoiceNotTraded.setInvoice_date(formattedDate);
+							  invoiceNotTraded.setStatus(mJSONObject.getString("status"));
+							  invoiceNotTraded.setAmount((mJSONObject.getBigDecimal("invoice_amout")));
+							  
+							  if(search.trim().length()>0 && (frmDate ==null && toDate == null) && (sellerName.toLowerCase().contains(search.toLowerCase()) ||scfCompanyName.toLowerCase().contains(search.toLowerCase())) ){
+								
+								  finalResult.add(invoiceNotTraded);
+							  }else if(search.trim().length()<=0 && (frmDate !=null || toDate!=null )){
+								 
+							  finalResult.add(invoiceNotTraded);
+							  }else if((search.trim().length()>0 && (frmDate !=null || toDate != null) && (sellerName.toLowerCase().contains(search.toLowerCase())||scfCompanyName.toLowerCase().contains(search.toLowerCase())))){
+								 
+								  finalResult.add(invoiceNotTraded);
+							  }
+						
+				    }
+				  }
+					  
+			           List<InvoiceNotTraded> desiredList = new ArrayList<InvoiceNotTraded>();
+			           if(startIndex+pageSize>finalResult.size()){
+			        	   
+			        	   pageSize = finalResult.size();
+			           }else{
+			        	   pageSize = startIndex+pageSize;
+			           }
+			           
+					   for(int i = startIndex; i<pageSize; i++){
+						   
+						   desiredList.add(finalResult.get(i));
+						   
+					   }
+					genericModel.setCount(getInvoiceNotTradeddByFilterCount(search,frmDate,toDate,value));
+			        genericModel.setList(desiredList);
+				return genericModel;
+				 //return null;
+			}
+			catch (RuntimeException re) {
+				_log.error("getInvoicesNotTraded failed", re);
+				throw re;
+			}
+
+			
+	}
+	
+	
+	
+	public Long getInvoiceNotTradeddByFilterCount(String search, String frmDate, String toDate, String value){
+		try{
+		 List<InvoiceNotTraded>  finalResult = new ArrayList<InvoiceNotTraded>();;
+		 List<Invoice> results = new ArrayList<Invoice>();
+		 StringBuilder sqlQuery = null;
+		  
+		     sqlQuery = new StringBuilder();
+		     
+		     sqlQuery.append("SELECT scf.*,tf.name AS seller_company_name FROM scf_invoice scf LEFT JOIN tf_company  tf ON tf.regnumber = scf.seller_company_registration_number ");
+		     sqlQuery.append(" Where scf.status = 'New' ");
+					
+		if (frmDate != null && toDate != null) {
+			 
+			if(value.equals("invoiceDate")){
+				sqlQuery.append(" AND scf.invoice_date between '"+frmDate+"' AND  '"+toDate+"'");
+			} else if(value.equals("payment_date")){
+				sqlQuery.append(" AND scf.payment_date between '"+frmDate+"' AND  '"+toDate+"'");
+			} else if(value.equals("financeDate")){
+				sqlQuery.append(" AND scf.finance_date between '"+frmDate+"' AND  '"+toDate+"'");
+			}
+		}
+		else if (frmDate != null && toDate == null) {
+			if(value.equals("invoiceDate")){
+				sqlQuery.append(" AND scf.invoice_date >= '"+frmDate+"'");
+			} else if(value.equals("payment_date")){
+				sqlQuery.append(" AND scf.payment_date >= '"+frmDate+"'");
+			} else if(value.equals("financeDate")){
+				sqlQuery.append(" AND scf.finance_date >= '"+frmDate+"'");
+			}
+			
+		}
+		else if (frmDate == null && toDate != null) {
+			if(value.equals("invoiceDate")){
+				sqlQuery.append(" AND scf.invoice_date <= '"+toDate+"'");
+			} else if(value.equals("payment_date")){
+				sqlQuery.append(" AND scf.payment_date <= '"+toDate+"'");
+			} else if(value.equals("financeDate")){
+				sqlQuery.append(" AND scf.finance_date <= '"+toDate+"'");
+			}
+		}
+	
+	
+		
+		 SQLQuery query = (SQLQuery) sessionFactory.getCurrentSession().createSQLQuery(sqlQuery.toString());
+		 query.setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP);
+		 List dataWithSellerName = query.list();
+		       
+		     
+		     sqlQuery = new StringBuilder();
+		     sqlQuery.append("SELECT scf.*,tf.name AS scf_company_name FROM scf_invoice scf LEFT JOIN tf_company  tf ON tf.idcompany = scf.scf_company ");
+		     sqlQuery.append(" Where  scf.status = 'New' ");
+				
+		      
+			  if (frmDate != null && toDate != null) {
+					 
+					if(value.equals("invoiceDate")){
+						sqlQuery.append(" AND scf.invoice_date between '"+frmDate+"' AND  '"+toDate+"'");
+					} else if(value.equals("payment_date")){
+						sqlQuery.append(" AND scf.payment_date between '"+frmDate+"' AND  '"+toDate+"'");
+					} else if(value.equals("financeDate")){
+						sqlQuery.append(" AND scf.finance_date between '"+frmDate+"' AND  '"+toDate+"'");
+					}
+				}
+				else if (frmDate != null && toDate == null) {
+					if(value.equals("invoiceDate")){
+						sqlQuery.append(" AND scf.invoice_date >= '"+frmDate+"'");
+					} else if(value.equals("payment_date")){
+						sqlQuery.append(" AND scf.payment_date >= '"+frmDate+"'");
+					} else if(value.equals("financeDate")){
+						sqlQuery.append(" AND scf.finance_date >= '"+frmDate+"'");
+					}
+					
+				}
+				else if (frmDate == null && toDate != null) {
+					if(value.equals("invoiceDate")){
+						sqlQuery.append(" AND scf.invoice_date <= '"+toDate+"'");
+					} else if(value.equals("payment_date")){
+						sqlQuery.append(" AND scf.payment_date <= '"+toDate+"'");
+					} else if(value.equals("financeDate")){
+						sqlQuery.append(" AND scf.finance_date <= '"+toDate+"'");
+					}
+				}
+			  
+			 
+			     SQLQuery querySCF = (SQLQuery) sessionFactory.getCurrentSession()
+						.createSQLQuery(sqlQuery.toString());
+			     
+			     querySCF.setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP);
+			     List dataWithSCFName = querySCF.list();
+			   
+			  
+			     Gson gson = null, gsonSeller = null;
+			   
+				  
+				   if (dataWithSCFName.size()>0 && dataWithSellerName.size() > 0) {
+				          
+			            for(int i = 0; i<dataWithSCFName.size();i++){
+			            	
+			    		  Object invoiceObj = dataWithSCFName.get(i);
+			    		   gson = new Gson();
+			    		   String valueSCF = gson.toJson(invoiceObj);
+			    		    JSONObject mJSONObject = new JSONObject(valueSCF);
+			    		    
+			    		 
+			    		    gsonSeller = new Gson();
+			    		   Object invoiceSellerName = dataWithSellerName.get(i);
+			    		   String valueSeller = gsonSeller.toJson(invoiceSellerName);
+			    		   JSONObject mJSONObjectSeller = new JSONObject(valueSeller);
+			    			
+								
+						  InvoiceNotTraded invoiceNotTraded = new InvoiceNotTraded();
+						 String sellerName = mJSONObjectSeller.getString("seller_company_name");
+						 String scfCompanyName = mJSONObject.getString("scf_company_name");
+						
+						   if(search.trim().length()>0 && (frmDate ==null && toDate == null) && (sellerName.toLowerCase().contains(search.toLowerCase()) ||scfCompanyName.toLowerCase().contains(search.toLowerCase())) ){
+							
+								  finalResult.add(invoiceNotTraded);
+							  }else if(search.trim().length()<=0 && (frmDate !=null || toDate!=null )){
+								 
+							  finalResult.add(invoiceNotTraded);
+							  }else if((search.trim().length()>0 && (frmDate !=null || toDate != null) && (sellerName.toLowerCase().contains(search.toLowerCase())||scfCompanyName.toLowerCase().contains(search.toLowerCase())))){
+								 
+								  finalResult.add(invoiceNotTraded);
+							  }
+					
+			    }
+			  }
+				   
+				  
+		 
+				
+			return Long.parseLong(finalResult.size()+"");
+			 //return null;
+		}
+		catch (RuntimeException re) {
+			_log.error("getInvoicesNotTraded failed", re);
+			throw re;
+		}
+
+		
 	}
 
 	private String changeDbClmNmToEntityClmNm(String columnName) {
@@ -353,6 +814,7 @@ public void deleteInvoice(Invoice invoice){
 			throw re;
 		}
 	}
+	
 	
 	@SuppressWarnings("unchecked")
 	public GenericListModel getInvoicesByFilter(String search, String frmDate, String toDate, String value, int startIndex, int pageSize,Long companyID,String registrationNo,String order,String columnName) {
@@ -660,44 +1122,6 @@ public void deleteInvoice(Invoice invoice){
 		    // TODO: handle exception
 		}
 	    	 return 0l;
-	}
-
-	public List<PaymentScheduleDTO> getPaymentScheduleList(int startIndex, int pageSize, Long scfCompanyId, String orderBy, String search,
-			String status,boolean forCount) {
-		_log.debug("Inside getPaymentScheduleList ");
-		try {
-			SQLQuery query=null;
-			StringBuilder sb = new StringBuilder();
-			sb.append("select com.name as sellerName,scf.payment_date as paymentDate,scf.invoice_number as invoiceNumber"
-					+ ",scf.invoice_amout as invoiceAmount,scf.duration as duration,scf.finance_date as financeDate  "
-					+ "from scf_invoice scf inner join scf_trade tr on tr.id=scf.trade_id  "
-					+ "inner join tf_company com on com.regnumber=scf.seller_company_registration_number "
-					+ "where scf.scf_company=:scfCompanyId and tr.status=:status and scf.payment_date > CURDATE() "
-					+ "order by "+orderBy);
-			if(forCount){
-				  query = (SQLQuery) sessionFactory.getCurrentSession().createSQLQuery(sb.toString());
-			}else{
-				  query = (SQLQuery) sessionFactory.getCurrentSession().createSQLQuery(sb.toString()).setFirstResult(startIndex)
-							.setMaxResults(pageSize);
-			}
-		 
-			query.setParameter("scfCompanyId", scfCompanyId);
-			query.setParameter("status", status);
-			
-			query.addScalar("sellerName", StandardBasicTypes.STRING)
-			     .addScalar("invoiceNumber", StandardBasicTypes.STRING)
-			     .addScalar("invoiceAmount", StandardBasicTypes.STRING)
-			     .addScalar("financeDate", StandardBasicTypes.DATE)
-			     .addScalar("duration", StandardBasicTypes.INTEGER)
-			     .addScalar("paymentDate", StandardBasicTypes.DATE)
-			     .setResultTransformer(Transformers.aliasToBean(PaymentScheduleDTO.class));
-			List<PaymentScheduleDTO> dataList = query.list();
-		    return dataList;
-		   } catch (Exception re) {
-		    _log.error("getPaymentScheduleList failed", re);
-		  
-		   }
-		return null;
 	}
 	
 	

@@ -8,6 +8,7 @@ import com.tf.model.Company;
 import com.tf.model.GeneralSetting;
 import com.tf.model.GenericListModel;
 import com.tf.model.Invoice;
+import com.tf.model.InvoiceNotTraded;
 import com.tf.model.SCFTrade;
 import com.tf.persistance.util.AllotmentEngine;
 import com.tf.persistance.util.FinanceConfirmationDTO;
@@ -346,6 +347,11 @@ public class InvoiceServiceImpl implements InvoiceService {
 		return invoiceDAO.getInvoicesByFilter(search, frmDate, toDate, value, startIndex, pageSize,companyID,registrationNo,order,columnName);
 	}
 	
+	public GenericListModel getInvoiceNotTradedOnSearch(String search,String frmDate,String toDate,String value,int startIndex,int pageSize,Long companyID,String registrationNo,String order,String columnName)throws ParseException{
+		return invoiceDAO.getInvoiceNotTradedOnSearch(search, frmDate, toDate, value, startIndex, pageSize,companyID,registrationNo,order,columnName);
+	}
+	
+	
 
 	public String getSellerRegNumberByTradeID(long id) {
 		//there should be exception handling here
@@ -369,6 +375,11 @@ public class InvoiceServiceImpl implements InvoiceService {
 		int pageSize, String registrationNo,String order,String columnName) throws ParseException {
 	    return invoiceDAO.getInvoices(companyID, startIndex, pageSize, registrationNo,order,columnName);
 	}
+	
+	public GenericListModel  getInvoicesNotTraded(Long companyID, int startIndex,
+			int pageSize, String registrationNo,String order,String columnName)throws ParseException   {
+		  return  invoiceDAO.getInvoicesNotTraded(companyID, startIndex, pageSize, registrationNo,order,columnName);
+		}
 	
 	public FinanceConfirmationDTO triggerAllotmentCheck(List<String> invoiceIds,long sellerCmpId,long userId) throws InSuffcientFund, InvalidDuration   {		
 	    FinanceConfirmationDTO financeConfirmationDTO=new FinanceConfirmationDTO();

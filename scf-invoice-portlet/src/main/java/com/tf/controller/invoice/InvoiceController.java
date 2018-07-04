@@ -22,12 +22,14 @@ import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
+
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;		
 import java.net.MalformedURLException;		
 import java.net.URL;
+
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.ss.usermodel.Row;
@@ -46,7 +48,6 @@ import org.springframework.web.portlet.bind.annotation.ActionMapping;
 import org.springframework.web.portlet.bind.annotation.RenderMapping;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 
-import com.tf.service.FcmTokenService;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -76,6 +77,7 @@ import com.tf.model.GeneralSetting;
 import com.tf.model.GenericListModel;
 import com.tf.model.Invoice;
 import com.tf.model.InvoiceDocument;
+import com.tf.model.InvoiceNotTraded;
 import com.tf.persistance.util.CompanyTypes;
 import com.tf.persistance.util.Constants;
 import com.tf.persistance.util.InSuffcientFund;
@@ -83,6 +85,7 @@ import com.tf.persistance.util.InvalidDuration;
 import com.tf.persistance.util.InvoiceStatus;
 import com.tf.persistance.util.ValidationUtil;
 import com.tf.service.CompanyService;
+import com.tf.service.FcmTokenService;
 import com.tf.service.GeneralSettingService;
 import com.tf.service.InvoiceDocumentService;
 import com.tf.service.InvoiceService;
@@ -90,6 +93,7 @@ import com.tf.service.UserService;
 import com.tf.util.LiferayUtility;
 import com.tf.util.PaginationUtil;
 import com.tf.util.model.PaginationModel;
+
 
 /**
  * This controller is responsible for request/response handling on Invoice
@@ -194,6 +198,122 @@ public class InvoiceController {
 		}
 		return new ModelAndView("invoicedoclist", model);
 	}
+	
+	@RenderMapping(params = "render=invoiceNotTraded")
+	protected ModelAndView renderInvoiceNotTraded(
+		RenderRequest request, RenderResponse response, ModelMap model)
+		throws Exception {
+  
+   try {
+		PaginationModel paginationModel = paginationUtil.preparePaginationModel(request);
+		ThemeDisplay themeDisplay =
+			(ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
+		DateFormat formatter = new SimpleDateFormat(Constants.DATE_FORMAT);
+		
+		//fields are being used for server side sorting
+		String columnName = ParamUtil.getString(request, "sort_Column","scf.update_date");
+		String order = ParamUtil.getString(request, "sort_order","DESC");
+		String sortCompany_order = ParamUtil.getString(request, "sortVal_order");
+		model.put("sortCompany_order", sortCompany_order);
+		model.put("sort_Column", columnName);
+		model.put("sort_order", order);
+		
+		Date fromDate = null;
+		Date toDate = null;
+		String tradeURL=null;
+		String fromDateString = null;
+		String toDateString = null;
+		String search = ParamUtil.getString(request, "Search");
+		String value = ParamUtil.getString(request, "dateList");
+		String from = ParamUtil.getString(request, "fromDate");
+		String to = ParamUtil.getString(request, "toDate");
+		Long companyID = null;
+		String registrationNo=null;
+		
+		GenericListModel genericListModel=null;
+		List<InvoiceNotTraded> invoiceNotTraded=null;
+		if (!StringUtils.isNullOrEmpty(from)) {
+			fromDate = formatter.parse(from);
+		}
+		if (!StringUtils.isNullOrEmpty(to)) {
+			toDate = formatter.parse(to);
+		}
+		if (!StringUtils.isNullOrEmpty(from)) {
+			fromDateString = Constants.formatDate(from);
+		}
+		if (!StringUtils.isNullOrEmpty(to)) {
+			toDateString = Constants.formatDate(to);
+		}
+		
+		tradeURL=liferayUtility.getPortletURL(request, "scf-trade-portlet", "render", "createTrade", true);
+		if (liferayUtility.getPermissionChecker(request).isOmniadmin() ||
+			request.isUserInRole(Constants.WHITEHALL_ADMIN)) {
+			model.put("userType", Constants.ADMIN);
+		}
+		else if (request.isUserInRole(Constants.SCF_ADMIN)) {
+		        companyID = liferayUtility.getWhitehallCompanyID(request);
+			model.put("userType", Constants.SCF_ADMIN);
+		}
+		else if (request.isUserInRole(Constants.SELLER_ADMIN)) {
+			long companyId = userService.getCompanyIDbyUserID(themeDisplay.getUserId());
+			registrationNo=companyService.findById(companyId).getRegNumber();
+			tradeURL=liferayUtility.getPortletURL(request, "scf-trade-portlet", "render", "singleTrade", true);
+			model.put("userType", Constants.SELLER_ADMIN);
+		}
+		if(!StringUtils.isNullOrEmpty(search) || !StringUtils.isNullOrEmpty(value)){
+			
+		   genericListModel =invoiceService.getInvoiceNotTradedOnSearch(search, fromDateString, toDateString, value,
+					paginationModel.getStartIndex(), paginationModel.getPageSize(),companyID,registrationNo,order,columnName);
+		} else {	
+		
+			genericListModel =  invoiceService.getInvoicesNotTraded(companyID,paginationModel.getStartIndex(), paginationModel.getPageSize(),registrationNo,order,columnName);
+			 	
+		   
+		}
+	
+		model.put("tradeURL",tradeURL);
+		model.put("value", value);
+		model.put("search", search);
+		model.put("from", from);
+		model.put("to", to);
+		request.getPortletSession().removeAttribute("invoiceDTO");
+		request.getPortletSession().removeAttribute("invoiceList");
+		request.getPortletSession().removeAttribute("validInvoiceList");
+		request.getPortletSession().removeAttribute("invalidnvoiceList");
+		paginationUtil.setPaginationInfo(genericListModel.getCount(), paginationModel);
+		model.put("paginationModel", paginationModel);
+		
+		model.put("invoicesNotTradedList", genericListModel.getList());
+		model.put("totalTradeAmounts",genericListModel.getTotalAmount());
+		model.put("defaultRender", Boolean.TRUE);
+		model.put(ACTIVETAB, "invoiceNotTraded");
+	
+	}
+	catch (Exception e) {
+		SessionErrors.add(request, "default-error-message");
+	
+		_log.error("InvoiceController.renderInvoiceList() - error occured while rendering invoices " +
+			e.getMessage() );
+	}
+	return new ModelAndView("invoiceNotTraded", model);
+
+	}
+	
+	 public static String dateFormater(String dateFromJSON, String expectedFormat, String oldFormat) {
+		    SimpleDateFormat dateFormat = new SimpleDateFormat(oldFormat);
+		    Date date = null;
+		    String convertedDate = null;
+		    try {
+		        date = dateFormat.parse(dateFromJSON);
+		        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(expectedFormat);
+		        convertedDate = simpleDateFormat.format(date);
+		    } catch (Exception e) {
+		        e.printStackTrace();
+		    }
+
+		    return convertedDate;
+		}
+
 
 	@RenderMapping(params = "render=createInvoice")
 	protected ModelAndView renderCreateInvoice(
@@ -615,7 +735,7 @@ public class InvoiceController {
 			String value = ParamUtil.getString(request, "dateList");
 			String from = ParamUtil.getString(request, "fromDate");
 			String to = ParamUtil.getString(request, "toDate");
-			Long companyID=null;
+			Long companyID= null;
 			String registrationNo=null;
 			
 			GenericListModel genericListModel=null;

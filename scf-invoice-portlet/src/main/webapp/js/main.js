@@ -296,10 +296,15 @@ Array.prototype.unique = function() {
 
 function enableTab(){
 	var curentTab=$("#currentTab").val();
+	
 	if(curentTab=='invoiceslist'){
 		$("#invoiceList").addClass("active");
-	}else if(curentTab=='invoiceDocuments'){
+	}else if(curentTab =='invoiceDocuments'){
+		
 		$("#invoicedocList").addClass("active");
+	}else if(curentTab =='invoiceNotTraded'){
+		
+		$("#invoiceNotTradedList").addClass("active");
 	}else{
 		$("#invoiceList").addClass("active");
 	}

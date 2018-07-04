@@ -10,6 +10,7 @@ public class GenericListModel  implements Serializable {
     private static final long serialVersionUID = -5443978907849652613L;
     
     private long count=0;
+    private Long totalAmount;
     private List<?> list=new ArrayList();
     
     public GenericListModel() {
@@ -31,5 +32,15 @@ public class GenericListModel  implements Serializable {
     public void setList(List<?> list) {
         this.list = list;
     }
+
+	public Long getTotalAmount() {
+		return totalAmount;
+	}
+
+	public void setTotalAmount(Long totalAmount) {
+		this.totalAmount = totalAmount;
+	}
+    
+    
    
 }

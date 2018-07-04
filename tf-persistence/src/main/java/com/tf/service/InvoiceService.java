@@ -10,6 +10,7 @@ import java.util.Set;
 import com.tf.model.Company;
 import com.tf.model.GenericListModel;
 import com.tf.model.Invoice;
+import com.tf.model.InvoiceNotTraded;
 import com.tf.persistance.util.FinanceConfirmationDTO;
 import com.tf.persistance.util.InSuffcientFund;
 import com.tf.persistance.util.InvalidDuration;
@@ -47,6 +48,10 @@ public interface InvoiceService {
 
 	public GenericListModel getInvoices(Long companyID, int startIndex,int pageSize, String registrationNo,String order,String columnName) throws ParseException;
 	
+	public GenericListModel getInvoicesNotTraded(Long companyID, int startIndex,int pageSize, String registrationNo,String order,String columnName) throws ParseException;
+	
+	public GenericListModel getInvoiceNotTradedOnSearch(String search, String frmDate, String toDate, String value, int startIndex, int pageSize,Long companyID,String registrationNo,String order,String columnName) throws ParseException;
+	  
 	public FinanceConfirmationDTO triggerAllotmentCheck(List<String> invoiceIds,long sellerCmpId,long userId) throws InSuffcientFund, InvalidDuration;
 	
 	public List<PaymentScheduleDTO> getPaymentScheduleList(int startIndex, int pageSize, Long scfCompanyId, String orderBy,String search,String status,boolean forCount);
