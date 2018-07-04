@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.tf.model.GenericListModel;
 import com.tf.model.Invoice;
+import com.tf.persistance.util.PaymentScheduleDTO;
 
 
 public interface InvoiceDAO extends BaseDAO<Invoice, Long> {
@@ -36,4 +37,7 @@ public interface InvoiceDAO extends BaseDAO<Invoice, Long> {
 	public int validInvoiceImport(String invoiceNumber,Long Id);
 	
 	public GenericListModel getInvoices(Long companyID, int startIndex,int pageSize, String registrationNo, String order,String columnName) throws ParseException;
+	
+	public List<PaymentScheduleDTO> getPaymentScheduleList(int startIndex, int pageSize, Long scfCompanyId, String orderBy,String search,String status,boolean forCount);
+	
 }

@@ -1846,12 +1846,19 @@ public class SCFTradeDAOImpl extends BaseDAOImpl<SCFTrade, Serializable> impleme
 	
 	
 	
-	public List getSumOfSCFTradeProperties(String searchTxt) {
+	public List getSumOfSCFTradeProperties(String searchTxt,String regNumber,boolean isSeller,long investorId) {
 		List<Object[]> someOfValuesList = new ArrayList<Object[]>();
 		try {
 			Criteria criteria = sessionFactory.getCurrentSession()
 					.createCriteria(SCFTrade.class);
 			criteria.createAlias("company", "company");
+			if(isSeller){
+				criteria.createAlias("invoices", "inv");
+				criteria.add(Restrictions.eq("inv.sellerCompanyRegistrationNumber", regNumber));
+			}else{
+				criteria.createAlias("allotments", "alt");
+			    criteria.add(Restrictions.eq("alt.investorID", investorId));
+			}
 			if (org.apache.commons.lang.StringUtils.isNotBlank(searchTxt)) {
 				Disjunction or = Restrictions.disjunction();
 				if (validationUtil.isNumeric(searchTxt)) {

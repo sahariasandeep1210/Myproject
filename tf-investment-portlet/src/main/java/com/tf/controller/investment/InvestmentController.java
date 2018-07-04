@@ -218,7 +218,7 @@ public class InvestmentController {
 			
 		    System.out.println("*************************** TradeController_Search 2**** " +search);
 
-			List listSum = scfTradeService.getSumOfSCFTradeProperties(search);
+			List listSum = scfTradeService.getSumOfSCFTradeProperties(search,null,false,investorID);
 			   if (null != listSum || listSum.size() > 0) {// Getting the sum of values of specific columns
 			    Object[] obj = (Object[]) listSum.get(0);
 			    totalTradeAmount = obj[0]!=null?(BigDecimal) obj[0]:BigDecimal.ZERO;

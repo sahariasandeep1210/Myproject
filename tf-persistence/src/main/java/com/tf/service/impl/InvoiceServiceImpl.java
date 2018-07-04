@@ -15,6 +15,7 @@ import com.tf.persistance.util.InSuffcientFund;
 import com.tf.persistance.util.InvalidDuration;
 import com.tf.persistance.util.InvestorProtfolioDTO;
 import com.tf.persistance.util.InvoiceStatus;
+import com.tf.persistance.util.PaymentScheduleDTO;
 import com.tf.persistance.util.TradeStatus;
 import com.tf.service.GeneralSettingService;
 import com.tf.service.InvoiceService;
@@ -409,6 +410,11 @@ public class InvoiceServiceImpl implements InvoiceService {
 		
 		return financeConfirmationDTO;
 
+	}
+
+	public List<PaymentScheduleDTO> getPaymentScheduleList(int startIndex, int pageSize, Long scfCompanyId, String orderBy, String search,
+			String status,boolean forCount) {
+		return invoiceDAO.getPaymentScheduleList(startIndex, pageSize, scfCompanyId, orderBy, search, status,forCount);
 	}
 
 

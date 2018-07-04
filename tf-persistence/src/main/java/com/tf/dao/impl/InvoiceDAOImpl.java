@@ -18,6 +18,8 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.transform.Transformers;
+import org.hibernate.type.StandardBasicTypes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,6 +30,7 @@ import com.tf.model.GenericListModel;
 import com.tf.model.Invoice;
 import com.tf.model.SCFTrade;
 import com.tf.persistance.util.Constants;
+import com.tf.persistance.util.PaymentScheduleDTO;
 import com.tf.persistance.util.ValidationUtil;
 import com.tf.persistance.util.WhitehallUtility;
 import com.tf.service.CompanyService;
@@ -657,6 +660,44 @@ public void deleteInvoice(Invoice invoice){
 		    // TODO: handle exception
 		}
 	    	 return 0l;
+	}
+
+	public List<PaymentScheduleDTO> getPaymentScheduleList(int startIndex, int pageSize, Long scfCompanyId, String orderBy, String search,
+			String status,boolean forCount) {
+		_log.debug("Inside getPaymentScheduleList ");
+		try {
+			SQLQuery query=null;
+			StringBuilder sb = new StringBuilder();
+			sb.append("select com.name as sellerName,scf.payment_date as paymentDate,scf.invoice_number as invoiceNumber"
+					+ ",scf.invoice_amout as invoiceAmount,scf.duration as duration,scf.finance_date as financeDate  "
+					+ "from scf_invoice scf inner join scf_trade tr on tr.id=scf.trade_id  "
+					+ "inner join tf_company com on com.regnumber=scf.seller_company_registration_number "
+					+ "where scf.scf_company=:scfCompanyId and tr.status=:status and scf.payment_date > CURDATE() "
+					+ "order by "+orderBy);
+			if(forCount){
+				  query = (SQLQuery) sessionFactory.getCurrentSession().createSQLQuery(sb.toString());
+			}else{
+				  query = (SQLQuery) sessionFactory.getCurrentSession().createSQLQuery(sb.toString()).setFirstResult(startIndex)
+							.setMaxResults(pageSize);
+			}
+		 
+			query.setParameter("scfCompanyId", scfCompanyId);
+			query.setParameter("status", status);
+			
+			query.addScalar("sellerName", StandardBasicTypes.STRING)
+			     .addScalar("invoiceNumber", StandardBasicTypes.STRING)
+			     .addScalar("invoiceAmount", StandardBasicTypes.STRING)
+			     .addScalar("financeDate", StandardBasicTypes.DATE)
+			     .addScalar("duration", StandardBasicTypes.INTEGER)
+			     .addScalar("paymentDate", StandardBasicTypes.DATE)
+			     .setResultTransformer(Transformers.aliasToBean(PaymentScheduleDTO.class));
+			List<PaymentScheduleDTO> dataList = query.list();
+		    return dataList;
+		   } catch (Exception re) {
+		    _log.error("getPaymentScheduleList failed", re);
+		  
+		   }
+		return null;
 	}
 	
 	
