@@ -9,7 +9,7 @@
 <form:form  method="post" action="${defaultRenderURL}" id="payemtnScheduleList"  >
 		
 		<input type="hidden" name="currentPage"           id="currentPage"        value="${paginationModel.currentPage}" />
-        <input type="hidden" name="currPageSizes"         id="currPageSizes"      value="${paginationModel.pageSize}" />
+        <input type="hidden" name="currPageSize"         id="currPageSize"      value="${paginationModel.pageSize}" />
         <input type="hidden" name="noOfRecords"           id="noOfRecords"        value="${paginationModel.noOfRecords}" />
         <input type="hidden" name="defaultURL"            id="defaultURL"         value="${defaultRenderURL}" />
         <input type="hidden" name="defaultRender"   	  id="defaultRender" 	  value="${defaultRenderURL}" />
@@ -21,8 +21,6 @@
 	  
 <div class="lfr-pagination">
 			
-			
-		fdsafdas	${paginationModel}fdsa
 				<p:paginate  paginationModel="${paginationModel}"/>
 				
 				<div class="lfr-pagination-controls">
