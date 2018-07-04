@@ -346,6 +346,11 @@ public class InvoiceServiceImpl implements InvoiceService {
 		return invoiceDAO.getInvoicesByFilter(search, frmDate, toDate, value, startIndex, pageSize,companyID,registrationNo,order,columnName);
 	}
 	
+	public GenericListModel getInvoiceNotTradedOnSearch(String search,String frmDate,String toDate,String value,int startIndex,int pageSize,Long companyID,String registrationNo,String order,String columnName)throws ParseException{
+		return invoiceDAO.getInvoiceNotTradedOnSearch(search, frmDate, toDate, value, startIndex, pageSize,companyID,registrationNo,order,columnName);
+	}
+	
+	
 
 	public String getSellerRegNumberByTradeID(long id) {
 		//there should be exception handling here
@@ -370,7 +375,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 	    return invoiceDAO.getInvoices(companyID, startIndex, pageSize, registrationNo,order,columnName);
 	}
 	
-	public List<InvoiceNotTraded>  getInvoicesNotTraded(Long companyID, int startIndex,
+	public GenericListModel  getInvoicesNotTraded(Long companyID, int startIndex,
 			int pageSize, String registrationNo,String order,String columnName)throws ParseException   {
 		  return  invoiceDAO.getInvoicesNotTraded(companyID, startIndex, pageSize, registrationNo,order,columnName);
 		}

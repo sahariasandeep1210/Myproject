@@ -47,8 +47,10 @@ public interface InvoiceService {
 
 	public GenericListModel getInvoices(Long companyID, int startIndex,int pageSize, String registrationNo,String order,String columnName) throws ParseException;
 	
-	public List<InvoiceNotTraded> getInvoicesNotTraded(Long companyID, int startIndex,int pageSize, String registrationNo,String order,String columnName) throws ParseException;
+	public GenericListModel getInvoicesNotTraded(Long companyID, int startIndex,int pageSize, String registrationNo,String order,String columnName) throws ParseException;
 	
+	public GenericListModel getInvoiceNotTradedOnSearch(String search, String frmDate, String toDate, String value, int startIndex, int pageSize,Long companyID,String registrationNo,String order,String columnName) throws ParseException;
+	  
 	public FinanceConfirmationDTO triggerAllotmentCheck(List<String> invoiceIds,long sellerCmpId,long userId) throws InSuffcientFund, InvalidDuration;
 
 }

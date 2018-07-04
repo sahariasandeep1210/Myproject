@@ -9,7 +9,7 @@ public class InvoiceNotTraded implements Serializable {
 	  
 	
 	  private BigDecimal amount;
-	 
+	  private int totalInvoiceCount;
 	  private String status;
 	  private String vat_amount;
 	  private String finance_date;
@@ -149,6 +149,12 @@ public class InvoiceNotTraded implements Serializable {
 	}
 	public void setSeller_company_name(String seller_company_name) {
 		this.seller_company_name = seller_company_name;
+	}
+	public int getTotalInvoiceCount() {
+		return totalInvoiceCount;
+	}
+	public void setTotalInvoiceCount(int totalInvoiceCount) {
+		this.totalInvoiceCount = totalInvoiceCount;
 	}
 	  
 	

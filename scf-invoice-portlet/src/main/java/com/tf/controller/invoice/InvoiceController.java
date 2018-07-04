@@ -203,7 +203,7 @@ public class InvoiceController {
 	protected ModelAndView renderInvoiceNotTraded(
 		RenderRequest request, RenderResponse response, ModelMap model)
 		throws Exception {
-   System.out.println("Inside the invoiceNotTraded Render ");
+  
    try {
 		PaginationModel paginationModel = paginationUtil.preparePaginationModel(request);
 		ThemeDisplay themeDisplay =
@@ -227,7 +227,7 @@ public class InvoiceController {
 		String value = ParamUtil.getString(request, "dateList");
 		String from = ParamUtil.getString(request, "fromDate");
 		String to = ParamUtil.getString(request, "toDate");
-		Long companyID= null;
+		Long companyID = null;
 		String registrationNo=null;
 		
 		GenericListModel genericListModel=null;
@@ -261,16 +261,13 @@ public class InvoiceController {
 			model.put("userType", Constants.SELLER_ADMIN);
 		}
 		if(!StringUtils.isNullOrEmpty(search) || !StringUtils.isNullOrEmpty(value)){
-		   genericListModel =invoiceService.getInvoicesByFilter(search, fromDateString, toDateString, value,
+			
+		   genericListModel =invoiceService.getInvoiceNotTradedOnSearch(search, fromDateString, toDateString, value,
 					paginationModel.getStartIndex(), paginationModel.getPageSize(),companyID,registrationNo,order,columnName);
 		} else {	
-			System.out.println("***************BforeCallInvoice*************");
-			invoiceNotTraded =  invoiceService.getInvoicesNotTraded(companyID,paginationModel.getStartIndex(), paginationModel.getPageSize(),registrationNo,order,columnName);
-			  System.out.println("***************AfterCallInvoice*************");
-			
-		   genericListModel = invoiceService.getInvoices(companyID,paginationModel.getStartIndex(), paginationModel.getPageSize(),registrationNo,order,columnName);
-		   
-			
+		
+			genericListModel =  invoiceService.getInvoicesNotTraded(companyID,paginationModel.getStartIndex(), paginationModel.getPageSize(),registrationNo,order,columnName);
+			 	
 		   
 		}
 	
@@ -285,15 +282,16 @@ public class InvoiceController {
 		request.getPortletSession().removeAttribute("invalidnvoiceList");
 		paginationUtil.setPaginationInfo(genericListModel.getCount(), paginationModel);
 		model.put("paginationModel", paginationModel);
-		model.put("invoicesList", genericListModel.getList());
-		model.put("invoicesNotTradedList", invoiceNotTraded);
 		
+		model.put("invoicesNotTradedList", genericListModel.getList());
+		model.put("totalTradeAmounts",genericListModel.getTotalAmount());
 		model.put("defaultRender", Boolean.TRUE);
 		model.put(ACTIVETAB, "invoiceNotTraded");
+	
 	}
 	catch (Exception e) {
 		SessionErrors.add(request, "default-error-message");
-		System.out.println("ErrorInsideINvoceNotTraded***************" + e);
+	
 		_log.error("InvoiceController.renderInvoiceList() - error occured while rendering invoices " +
 			e.getMessage() );
 	}
