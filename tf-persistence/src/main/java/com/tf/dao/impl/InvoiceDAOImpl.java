@@ -25,10 +25,10 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import com.tf.dao.InvoiceDAO;
 import com.tf.model.Company;
 import com.tf.model.GenericListModel;
+import com.tf.model.InvestorShortFall;
 import com.tf.model.Invoice;
 import com.tf.model.InvoiceNotTraded;
 import com.tf.model.SCFTrade;
@@ -1124,5 +1124,71 @@ public void deleteInvoice(Invoice invoice){
 	    	 return 0l;
 	}
 	
-	
+	public GenericListModel  getSCFInvestorShortFall() throws ParseException{
+		
+		 StringBuilder sqlQuery = null;
+		 List<InvestorShortFall> finalShortFallList = new ArrayList<InvestorShortFall>();
+			try {
+		     sqlQuery = new StringBuilder();
+		   ///  sqlQuery.append("SELECT scf.*,tf.name AS seller_company_name FROM scf_invoice scf LEFT JOIN tf_company  tf ON tf.regnumber = scf.seller_company_registration_number where  scf.status='New' ");
+		     sqlQuery.append("SELECT x.credit,x.avail,x.invested, y.amount, x.NAME FROM ");
+		     sqlQuery.append("( SELECT SUM(tf.my_credit_line) AS credit,SUM(tf.available_to_invest) AS avail, SUM(tf.amount_invested) AS invested, comp.NAME, comp.idcompany  FROM tf_investor_portfolio tf JOIN tf_company comp ON tf.company_id = comp.idcompany GROUP BY comp.idcompany ) AS x ");
+		     sqlQuery.append("JOIN ");
+		     sqlQuery.append("( SELECT SUM(scf.invoice_amout) AS amount, comp.idcompany FROM scf_invoice scf JOIN  tf_company comp ON comp.idcompany = scf.scf_company where scf.status='New' GROUP BY comp.idcompany ) AS y ");
+		     sqlQuery.append("ON x.idcompany = y.idcompany ");
+		     //sqlQuery.append("GROUP BY comp.NAME ");
+		     //sqlQuery.append(" ORDER BY "+columnName+ " "+order);
+		     SQLQuery query = (SQLQuery) sessionFactory.getCurrentSession()
+					.createSQLQuery(sqlQuery.toString());
+		     query.setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP);
+		     List shortFallList = query.list();
+		    
+		  System.out.println("getSCFInvestorShortFall" + shortFallList);
+		  Gson gson = null; InvestorShortFall investorShortFall;
+		   if (shortFallList.size()> 0) {
+		          
+	            for(int i = 0; i<shortFallList.size();i++){
+	            	
+	    		  Object shortFallObj = shortFallList.get(i);
+	    		    gson = new Gson();
+	    		   String shortFallValue = gson.toJson(shortFallObj);
+	    		   JSONObject mJSONObject = new JSONObject(shortFallValue);
+	    		   
+	    		   investorShortFall = new InvestorShortFall();
+	    		   System.out.println("ShortFall***** "+ mJSONObject); 	 
+	    		Long credit = mJSONObject.getLong("credit");
+	    		Long invested = mJSONObject.getLong("invested");
+	    		Long avail = mJSONObject.getLong("avail");
+	    		Long amount = mJSONObject.getLong("amount");
+	    		String name = mJSONObject.getString("NAME");
+	    		Long shortAmount = amount - avail;
+	    		investorShortFall.setCredit(credit);
+	    		investorShortFall.setInvested(invested);
+	    		investorShortFall.setAvail(avail);
+	    		investorShortFall.setInvoiceAmount(amount);
+	    		investorShortFall.setScfName(name);
+	    		
+	    		if(shortAmount>0){
+	    			investorShortFall.setShortFallAmount(shortAmount);
+	    		}else{
+	    			
+	    			investorShortFall.setShortFallAmount(0L);
+	    		}
+	    		
+	    		finalShortFallList.add(investorShortFall);
+			 System.out.println("ShortFallValue " + credit + " "+invested + " " + avail + " "+amount + " "+ name ); 
+			 
+	            }
+		     }
+		   GenericListModel genericListModel = new GenericListModel();
+		   genericListModel.setList(finalShortFallList);
+		   return genericListModel;
+			}
+			catch (RuntimeException re) {
+				_log.error("getInvoicesBytradeId failed", re);
+				throw re;
+			}
+	     
+		  
+       }
 }

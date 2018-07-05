@@ -19,7 +19,7 @@ import javax.persistence.TemporalType;
 public class Invoice implements Serializable {
 
 
-    	private static final long serialVersionUID = -5860678209842565066L;
+   private static final long serialVersionUID = -5860678209842565066L;
 
 	@Id
 	@Column(name = "id")

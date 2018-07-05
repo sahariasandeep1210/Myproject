@@ -423,4 +423,14 @@ public class InvoiceServiceImpl implements InvoiceService {
 	}
 
 
+
+
+	public GenericListModel getSCFInvestorShortFall() throws ParseException {
+		// TODO Auto-generated method stub
+		return invoiceDAO.getSCFInvestorShortFall();
+	}
+	
+	
+
+
 }

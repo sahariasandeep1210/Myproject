@@ -53,4 +53,5 @@ public interface InvoiceService {
 	  
 	public FinanceConfirmationDTO triggerAllotmentCheck(List<String> invoiceIds,long sellerCmpId,long userId) throws InSuffcientFund, InvalidDuration;
 
+	public GenericListModel  getSCFInvestorShortFall() throws ParseException;
 }
