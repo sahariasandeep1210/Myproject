@@ -12,7 +12,6 @@
 			.getAttribute(WebKeys.THEME_DISPLAY);
 
 %>
-
 	<div class="customTableContainer">
 		<table class="table table-hover tablesorter table-bordered"
 			id="invoiceListTable">
@@ -56,6 +55,21 @@
 			<tbody>
 				<c:choose>
 					<c:when test="${fn:length(invoicesList) gt 0}">
+					
+						<c:if test="${userType eq 'SCF Company Admin'}">
+					
+								  <tr>
+											<td style="background-color:#189a80;color:white" ><span class='underline'>Total</span></td>
+											<td style="background-color:#189a80;color:white" ></td>
+											<td style="background-color:#189a80 ;color:white""></td>
+											<td style="background-color:#189a80 ;color:white"" class="rightalign"><fmt:formatNumber type="number"
+													maxFractionDigits="3" value="${totalInvoiceAmount}" pattern="#,##0.00"/></td>
+											<td style="background-color:#189a80;color:white""></td>
+											<td style="background-color:#189a80;color:white""></td>
+											<td style="background-color:#189a80;color:white""></td>
+								  </tr>
+						</c:if>
+						
 						<c:forEach items="${invoicesList}" var="invoice">
 							<tr>
 								<c:if test="${defaultRender}">

@@ -377,8 +377,12 @@ public class SCFTradeController {
 			noOfRecords = scfTradeService.getScfTradeListWithSearchCount(search, regNum);
 			}
 			
-
-			List listSum = scfTradeService.getSumOfSCFTradeProperties(search);
+			long companyId = liferayUtility.getWhitehallCompanyID(request);
+			Company company = companyService.findById(companyId);
+			List listSum=null;
+			if(company.getRegNumber()!=null){
+				listSum = scfTradeService.getSumOfSCFTradeProperties(search,company.getRegNumber().trim(),true,0l);
+			}
 			   if (null != listSum || listSum.size() > 0) {
 			    Object[] obj = (Object[]) listSum.get(0);
 			    totalTradeAmount = obj[0]!=null?(BigDecimal) obj[0]:BigDecimal.ZERO;
@@ -442,7 +446,7 @@ public class SCFTradeController {
 			
 		    System.out.println("*************************** TradeController_Search 2**** " +search);
 
-			List listSum = scfTradeService.getSumOfSCFTradeProperties(search);
+			List listSum = scfTradeService.getSumOfSCFTradeProperties(search,null,false,investorID);
 			   if (null != listSum || listSum.size() > 0) {
 			    Object[] obj = (Object[]) listSum.get(0);
 			    totalTradeAmount = obj[0]!=null?(BigDecimal) obj[0]:BigDecimal.ZERO;

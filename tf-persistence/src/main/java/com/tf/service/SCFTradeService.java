@@ -73,7 +73,7 @@ public interface SCFTradeService {
 	
 	public SCFTrade findTradeDeatailsForInvestor(long tradeId,long investorID);
 	
-	public List getSumOfSCFTradeProperties(String searchText);
+	public List getSumOfSCFTradeProperties(String searchText,String regNumber,boolean isSeller,long invesorId);
 
 	public List getSumOfSCFTradePropertiesForAdmin(String search,Date fromDate, Date toDate, String value);
 	

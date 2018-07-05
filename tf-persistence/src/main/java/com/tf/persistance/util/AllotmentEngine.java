@@ -142,8 +142,9 @@ public class AllotmentEngine {
 			investorTotalGross=investorTotalGross.add(allotment.getInvestorGrossProfit());
 			whitehallTotal=whitehallTotal.add(allotment.getWhitehallProfitShare());
 			investorTotalNet=investorTotalNet.add(allotment.getInvestorNetProfit());
-			investorTotalVatAmount = investorTotalVatAmount.add(allotment.getVatInvestorFee());
-			
+			if(allotment.getVatInvestorFee()!=null){
+				investorTotalVatAmount = investorTotalVatAmount.add(allotment.getVatInvestorFee());
+			}
 			pendingAllotment = pendingAllotment.subtract(currentAllotment) ; 
 			sameRateCount = sameRateCount - 1; 
 			_log.info("Pending Allotment --------- "+pendingAllotment);
@@ -243,16 +244,21 @@ public class AllotmentEngine {
 	    */		
 				
 		private BigDecimal calculateInvestorVatAmount(BigDecimal invGrossProfit){			
-			BigDecimal vatConstantValue = generalSettingService.getGeneralSetting().getVatInvestor().divide(new BigDecimal(100)); // fetching the vat of investor from general setting		
+			try {
+				BigDecimal vatConstantValue = generalSettingService.getGeneralSetting().getVatInvestor().divide(new BigDecimal(100)); // fetching the vat of investor from general setting		
+						
+				if(vatConstantValue.compareTo(BigDecimal.ZERO)>0){				
+					BigDecimal vatAmount=invGrossProfit.multiply(vatConstantValue);		
 					
-			if(vatConstantValue.compareTo(BigDecimal.ZERO)>0){				
-				BigDecimal vatAmount=invGrossProfit.multiply(vatConstantValue);		
-				
-			   _log.info("Vat calulated on investor gross profit******* "+vatAmount);		
-			return vatAmount;		
-			}else{								
-				return null;		
-			}		
+				   _log.info("Vat calulated on investor gross profit******* "+vatAmount);		
+				return vatAmount;		
+				}else{								
+					return null;		
+				}
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+			}
+			return null;		
 		}		
 	
 	
@@ -299,7 +305,7 @@ public class AllotmentEngine {
 	 * @return		
 	 */		
 	private BigDecimal calculateVatWhitehallGrossProfit(BigDecimal whitehallTotal){				
-	    	BigDecimal vatConstantValue = generalSettingService.getGeneralSetting().getVatWhitehall().divide(new BigDecimal(100)); // fetching the vat of investor from general setting		
+	    BigDecimal vatConstantValue = generalSettingService.getGeneralSetting().getVatWhitehall().divide(new BigDecimal(100)); // fetching the vat of investor from general setting		
 		if(vatConstantValue.compareTo(BigDecimal.ZERO)>0){		
 		    BigDecimal vatAmount=whitehallTotal.multiply(vatConstantValue);			
 		    _log.info("Vat calulated on investor gross profit******* "+vatAmount);		

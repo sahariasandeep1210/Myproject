@@ -14,6 +14,7 @@ import com.tf.model.InvoiceNotTraded;
 import com.tf.persistance.util.FinanceConfirmationDTO;
 import com.tf.persistance.util.InSuffcientFund;
 import com.tf.persistance.util.InvalidDuration;
+import com.tf.persistance.util.PaymentScheduleDTO;
 
 public interface InvoiceService {
 	 
@@ -52,6 +53,8 @@ public interface InvoiceService {
 	public GenericListModel getInvoiceNotTradedOnSearch(String search, String frmDate, String toDate, String value, int startIndex, int pageSize,Long companyID,String registrationNo,String order,String columnName) throws ParseException;
 	  
 	public FinanceConfirmationDTO triggerAllotmentCheck(List<String> invoiceIds,long sellerCmpId,long userId) throws InSuffcientFund, InvalidDuration;
+	
+	public List<PaymentScheduleDTO> getPaymentScheduleList(int startIndex, int pageSize, Long scfCompanyId, String orderBy,String search,String status,boolean forCount);
 
 	public GenericListModel  getSCFInvestorShortFall() throws ParseException;
 }

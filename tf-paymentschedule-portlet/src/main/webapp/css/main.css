@@ -1,0 +1,9 @@
+div.scroll {
+    width: 550px;
+    height: 500px;
+    overflow: scroll;
+}
+	
+.seller-add-on-mapping{
+	font-size: 20px!important
+}

@@ -219,7 +219,7 @@ public class InvestmentController {
 			
 		    System.out.println("*************************** TradeController_Search 2**** " +search);
 
-			List listSum = scfTradeService.getSumOfSCFTradeProperties(search);
+			List listSum = scfTradeService.getSumOfSCFTradeProperties(search,null,false,investorID);
 			   if (null != listSum || listSum.size() > 0) {// Getting the sum of values of specific columns
 			    Object[] obj = (Object[]) listSum.get(0);
 			    totalTradeAmount = obj[0]!=null?(BigDecimal) obj[0]:BigDecimal.ZERO;
@@ -334,36 +334,33 @@ public class InvestmentController {
 			System.out.println("paginationsss:" + paginationModel);
 			model.put("paginationModel", paginationModel);
 			return new ModelAndView(viewName, model);
-		} else if (liferayUtility.getPermissionChecker(request).isOmniadmin() || request.isUserInRole(Constants.WHITEHALL_ADMIN)) {
-		      	viewName = "";
-					model.put("userType", Constants.ADMIN);
+		}else if (liferayUtility.getPermissionChecker(request).isOmniadmin() || request.isUserInRole(Constants.WHITEHALL_ADMIN)) {
+	      	viewName = "";
+				model.put("userType", Constants.ADMIN);
+			
 				
-					
-					String columnName = ParamUtil.getString(request, "sort_Column");
-					String order = ParamUtil.getString(request, "sort_order");
-					String sortCompany_order = ParamUtil.getString(request, "sortVal_order");// Sorting value ascending- Descending order 
-					model.put("sortCompany_order", sortCompany_order);
-					model.put("sort_Column", columnName);
-					model.put("sort_order", order);
-					System.out.println("Order Sorting "+sortCompany_order + " "+ columnName +" "+ order );
-					
-					GenericListModel genericListModel = invoiceService.getSCFInvestorShortFall();
-					
-					model.put("myTradeUrl", myTradeUrl);
-					model.put("myInvestment", myInvestment);
-					paginationUtil.setPaginationInfo(noOfRecords, paginationModel);
-					System.out.println("paginationsss:" + paginationModel);
-					model.put("paginationModel", paginationModel);
-					model.put("investorShorFallList", genericListModel.getList());
-					
-					return new ModelAndView("investorShortFall", model);
-			
-		}else{
-			
-			
-			
+				String columnName = ParamUtil.getString(request, "sort_Column");
+				String order = ParamUtil.getString(request, "sort_order");
+				String sortCompany_order = ParamUtil.getString(request, "sortVal_order");// Sorting value ascending- Descending order 
+				model.put("sortCompany_order", sortCompany_order);
+				model.put("sort_Column", columnName);
+				model.put("sort_order", order);
+				System.out.println("Order Sorting "+sortCompany_order + " "+ columnName +" "+ order );
+				
+				GenericListModel genericListModel = invoiceService.getSCFInvestorShortFall();
+				
+				model.put("myTradeUrl", myTradeUrl);
+				model.put("myInvestment", myInvestment);
+				paginationUtil.setPaginationInfo(noOfRecords, paginationModel);
+				System.out.println("paginationsss:" + paginationModel);
+				model.put("paginationModel", paginationModel);
+				model.put("investorShorFallList", genericListModel.getList());
+				
+				return new ModelAndView("investorShortFall", model);
+		
+	} else {
+
 			return new ModelAndView(null, model);
-			
 		}
 		
 }
