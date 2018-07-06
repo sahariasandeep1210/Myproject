@@ -39,8 +39,8 @@ $(document).ready(
 				$('#sort_Column').val(columnnName);
 				$('#sort_order').val(order);
 				$('#sortVal_order').val(id);
-				/*alert(updateURL + " Column Name = " + columnnName + " "+ order + " "+id +" id ===== "+  $('#sort_Column').length );
-				console.log(+"URL ****************   "+updateURL)*/
+				//alert(updateURL + " Column Name = " + columnnName + " "+ order + " "+id +" id ===== "+  $('#sort_Column').length );
+				//console.log(+"URL ****************   "+updateURL)
 				document.forms["scfTradeList"].action = updateURL;
 				document.forms["scfTradeList"].submit();
 			});

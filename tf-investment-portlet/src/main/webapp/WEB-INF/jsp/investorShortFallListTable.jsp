@@ -7,6 +7,8 @@
 <portlet:renderURL var="invoiceURL">
 	<portlet:param name="render" value="updateInvoices" />
 </portlet:renderURL>
+
+
 <%
 	ThemeDisplay themeDisp = (ThemeDisplay) request
 			.getAttribute(WebKeys.THEME_DISPLAY);
@@ -19,41 +21,44 @@
 			<thead>
 				<tr>
 					
-						<th>SCF Company<br><img id="scfCompanyAsc" column-name="x.NAME" class="sortColumn" src="<%= themeDisp.getPathThemeImages() %>/up.png" alt="asc" order="asc"/>
-					        <img id="scfCompanyDesc" column-name="x.NAME" class="sortColumn" src="<%= themeDisp.getPathThemeImages() %>/down.png" alt="desc" order="desc"/>
+						<th>SCF Company<br><img id="scfCompanyAsc" column-name="x.NAME" class="sortColumn" src="<%=  themeDisp.getPathThemeImages() %>/up.png" alt="ASC" order="ASC"/>
+					        <img id="scfCompanyDesc" column-name="x.NAME" class="sortColumn" src="<%=  themeDisp.getPathThemeImages() %>/down.png" alt="DESC" order="DESC"/>
 					</th>
 				
-					<th>Invoices Not Traded <br><img id="invoicesNotTradedAsc" column-name="y.amount" class="sortColumn" src="<%= themeDisp.getPathThemeImages() %>/up.png" alt="asc" order="asc"/>
-					                        <img id="invoicesNotTradedDesc" column-name="y.amount" class="sortColumn" src="<%= themeDisp.getPathThemeImages() %>/down.png" alt="desc" order="desc"/>
+					<th>Invoices Not Traded <br><img id="invoicesNotTradedAsc" column-name="y.amount" class="sortColumn" src="<%= themeDisp.getPathThemeImages() %>/up.png" alt="ASC" order="ASC"/>
+					                        <img id="invoicesNotTradedDesc" column-name="y.amount" class="sortColumn" src="<%= themeDisp.getPathThemeImages() %>/down.png" alt="DESC" order="DESC"/>
 					</th>
 					
-					<th>Investor Credit Line<br><img id="invoiceDateAsc" column-name="scf.invoice_date" class="sortColumn" src="<%= themeDisp.getPathThemeImages() %>/up.png" alt="asc" order="asc"/>
-					                   <img id="invoiceDateDesc" column-name="scf.invoice_date" class="sortColumn" src="<%= themeDisp.getPathThemeImages() %>/down.png" alt="desc" order="desc"/>
+					<th>Investor Credit Line<br><img id="invoiceDateAsc" column-name="x.credit" class="sortColumn" src="<%= themeDisp.getPathThemeImages() %>/up.png" alt="ASC" order="ASC"/>
+					                   <img id="invoiceDateDesc" column-name="x.credit" class="sortColumn" src="<%= themeDisp.getPathThemeImages() %>/down.png" alt="DESC" order="DESC"/>
 					</th>
 				
 					
-					<th>Investor Amount Utilised<br><img id="paymentDateAsc" column-name="scf.payment_date" class="sortColumn" src="<%= themeDisp.getPathThemeImages() %>/up.png" alt="asc" order="asc"/>
-					                   <img id="paymentDateDesc" column-name="scf.payment_date" class="sortColumn" src="<%= themeDisp.getPathThemeImages() %>/down.png" alt="desc" order="desc"/>
+					<th>Investor Amount Utilised<br><img id="paymentDateAsc" column-name="x.invested" class="sortColumn" src="<%= themeDisp.getPathThemeImages() %>/up.png" alt="ASC" order="ASC"/>
+					                   <img id="paymentDateDesc" column-name="x.invested" class="sortColumn" src="<%= themeDisp.getPathThemeImages() %>/down.png" alt="DESC" order="DESC"/>
 					</th>
 					
-					<th>Remaining<br><img id="invoiceAmoutAsc" column-name="scf.invoice_amout" class="sortColumn" src="<%= themeDisp.getPathThemeImages() %>/up.png" alt="asc" order="asc"/>
-					              <img id="invoiceAmoutDesc" column-name="scf.invoice_amout" class="sortColumn" src="<%= themeDisp.getPathThemeImages() %>/down.png" alt="desc" order="desc"/>
+					<th>Remaining<br><img id="invoiceAmoutAsc" column-name="x.avail" class="sortColumn" src="<%= themeDisp.getPathThemeImages() %>/up.png" alt="ASC" order="ASC"/>
+					              <img id="invoiceAmoutDesc" column-name="x.avail" class="sortColumn" src="<%= themeDisp.getPathThemeImages() %>/down.png" alt="DESC" order="DESC"/>
 					</th>
 					
 					
-					<th>Potential Shortfall<br><img id="statusAsc" column-name="scf.status" class="sortColumn" src="<%= themeDisp.getPathThemeImages() %>/up.png" alt="asc" order="asc"/>
-					          <img id="statusDesc" column-name="scf.status" class="sortColumn" src="<%= themeDisp.getPathThemeImages() %>/down.png" alt="desc" order="desc"/>
+					<th>Potential Shortfall<br><img id="statusAsc" column-name="y.amount" class="sortColumn" src="<%= themeDisp.getPathThemeImages() %>/up.png" alt="ASC" order="ASC"/>
+					          <img id="statusDesc" column-name="y.amount" class="sortColumn" src="<%= themeDisp.getPathThemeImages() %>/down.png" alt="DESC" order="DESC"/>
 					</th>
 				</tr>
 			</thead>
-			<tbody>
-			            <tr>
+			<tbody>    
+			                     <tr>
 									<td style="background-color:#189a80;color:white" >Total</td>
-									 <td style="background-color:#189a80;color:white"></td>
-									<td style="background-color:#189a80;color:white"></td>
-									<td style="background-color:#189a80;color:white"></td>
-									<td style="background-color:#189a80;color:white" class="rightalign blue_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalTradeAmounts}"  pattern="#,##0.00"/></td>
-									<td style="background-color:#189a80;color:white"></td>
+									<td style="background-color:#189a80;color:white" class="rightalign blue_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalInvoiceNotTraded}"  pattern="#,##0.00"/></td>
+									<td style="background-color:#189a80;color:white" class="rightalign blue_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalCredit}"  pattern="#,##0.00"/></td>
+									<td style="background-color:#189a80;color:white" class="rightalign blue_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalInvested}"  pattern="#,##0.00"/></td>
+									
+									<td style="background-color:#189a80;color:white" class="rightalign blue_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalAvail}"  pattern="#,##0.00"/></td>
+									
+									<td style="background-color:#189a80;color:white" class="rightalign blue_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalShortFall}"  pattern="#,##0.00"/></td>
+									
 									</tr>
 				<c:choose>
 					<c:when test="${fn:length(investorShorFallList) gt 0}">
@@ -64,10 +69,7 @@
 								<td class="text-center">${shortfall.scfName}</td>
 								<td class="rightalign blue_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${shortfall.invoiceAmount}"  pattern="#,##0.00"/></td>
 							
-								<td class="rightalign blue_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${shortfall.credit}"  pattern="#,##0.00"/></td>
-							
-								
-								
+								<td class="rightalign blue_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${shortfall.credit}"  pattern="#,##0.00"/></td>	
 										
 								<td class="rightalign blue_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${shortfall.invested}"  pattern="#,##0.00"/></td>
 							   <td class="rightalign blue_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${shortfall.avail}"  pattern="#,##0.00"/></td>

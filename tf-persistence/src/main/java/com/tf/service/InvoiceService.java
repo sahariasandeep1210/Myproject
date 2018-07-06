@@ -56,5 +56,7 @@ public interface InvoiceService {
 	
 	public List<PaymentScheduleDTO> getPaymentScheduleList(int startIndex, int pageSize, Long scfCompanyId, String orderBy,String search,String status,boolean forCount);
 
-	public GenericListModel  getSCFInvestorShortFall() throws ParseException;
+	public GenericListModel  getSCFInvestorShortFall(String Search,int startIndex,int pageSize,String order,String columnName) throws ParseException;
+	
+	public Map<String,Long>getSCFInvestorShortFallTotalAmount( ) throws ParseException;
 }

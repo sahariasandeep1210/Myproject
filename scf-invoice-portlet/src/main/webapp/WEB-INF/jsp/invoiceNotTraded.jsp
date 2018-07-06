@@ -114,7 +114,7 @@
 					<div class="input-append">
 						<input name="Search" type="text" placeholder="Search" id="search"	value="${search}" /> 
 						<span class="add-on"><i class="icon-info-sign tooltipPhone"
-						data-toggle="tooltip" title="search for Supplier name and Invoice number"></i></span>
+						data-toggle="tooltip" title="search for Supplier name and SCF company"></i></span>
 					</div>
 				</div>
 			</div>

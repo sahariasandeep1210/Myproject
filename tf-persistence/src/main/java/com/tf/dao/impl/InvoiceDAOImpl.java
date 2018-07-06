@@ -7,6 +7,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -1164,27 +1165,37 @@ public void deleteInvoice(Invoice invoice){
 		return null;
 	}
 	
-	
-	public GenericListModel  getSCFInvestorShortFall() throws ParseException{
+	 
+	public GenericListModel  getSCFInvestorShortFall(String search,int startIndex,int pageSize,String order,String columnName) throws ParseException{
 		
 		 StringBuilder sqlQuery = null;
 		 List<InvestorShortFall> finalShortFallList = new ArrayList<InvestorShortFall>();
 			try {
+				
+				String sortOrder = order;
 		     sqlQuery = new StringBuilder();
 		   ///  sqlQuery.append("SELECT scf.*,tf.name AS seller_company_name FROM scf_invoice scf LEFT JOIN tf_company  tf ON tf.regnumber = scf.seller_company_registration_number where  scf.status='New' ");
 		     sqlQuery.append("SELECT x.credit,x.avail,x.invested, y.amount, x.NAME FROM ");
 		     sqlQuery.append("( SELECT SUM(tf.my_credit_line) AS credit,SUM(tf.available_to_invest) AS avail, SUM(tf.amount_invested) AS invested, comp.NAME, comp.idcompany  FROM tf_investor_portfolio tf JOIN tf_company comp ON tf.company_id = comp.idcompany GROUP BY comp.idcompany ) AS x ");
 		     sqlQuery.append("JOIN ");
+		     if(search != null && search.trim().length()>0){
+		    	 sqlQuery.append("( SELECT SUM(scf.invoice_amout) AS amount, comp.idcompany FROM scf_invoice scf JOIN  tf_company comp ON comp.idcompany = scf.scf_company where ( scf.status='New' and ( comp.NAME LIKE '"+search+"%' ) ) GROUP BY comp.idcompany ) AS y ");
+				     
+		     }else{
 		     sqlQuery.append("( SELECT SUM(scf.invoice_amout) AS amount, comp.idcompany FROM scf_invoice scf JOIN  tf_company comp ON comp.idcompany = scf.scf_company where scf.status='New' GROUP BY comp.idcompany ) AS y ");
+		     }
 		     sqlQuery.append("ON x.idcompany = y.idcompany ");
-		     //sqlQuery.append("GROUP BY comp.NAME ");
-		     //sqlQuery.append(" ORDER BY "+columnName+ " "+order);
+		     if( order != null && columnName!= null && columnName.trim().length()>0  ){
+		     sqlQuery.append(" ORDER BY "+columnName+ " "+ order + " " );
+		     }
+		     System.out.println("getSCFInvestorShortFall 0" + " "+order + " "+ columnName + " "+ sqlQuery );
 		     SQLQuery query = (SQLQuery) sessionFactory.getCurrentSession()
-					.createSQLQuery(sqlQuery.toString());
+					.createSQLQuery(sqlQuery.toString()).setFirstResult(startIndex)
+					.setMaxResults(pageSize);
 		     query.setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP);
 		     List shortFallList = query.list();
 		    
-		  System.out.println("getSCFInvestorShortFall" + shortFallList);
+		  System.out.println("getSCFInvestorShortFall" + shortFallList + " "+order + " "+ columnName + " "+ sqlQuery );
 		  Gson gson = null; InvestorShortFall investorShortFall;
 		   if (shortFallList.size()> 0) {
 		          
@@ -1224,6 +1235,87 @@ public void deleteInvoice(Invoice invoice){
 		   GenericListModel genericListModel = new GenericListModel();
 		   genericListModel.setList(finalShortFallList);
 		   return genericListModel;
+			}
+			catch (RuntimeException re) {
+				_log.error("getInvoicesBytradeId failed", re);
+				throw re;
+			}
+	     
+		  
+       }
+	
+	
+	  @SuppressWarnings({ "unchecked", "unused", "rawtypes" })
+	public Map<String,Long>  getSCFInvestorShortFallTotalAmount() throws ParseException{
+		
+		 StringBuilder sqlQuery = null;
+		 List<InvestorShortFall> finalShortFallList = new ArrayList<InvestorShortFall>();
+			try {
+		     sqlQuery = new StringBuilder();
+		   ///  sqlQuery.append("SELECT scf.*,tf.name AS seller_company_name FROM scf_invoice scf LEFT JOIN tf_company  tf ON tf.regnumber = scf.seller_company_registration_number where  scf.status='New' ");
+		     sqlQuery.append("SELECT x.credit,x.avail,x.invested, y.amount, x.NAME FROM ");
+		     sqlQuery.append("( SELECT SUM(tf.my_credit_line) AS credit,SUM(tf.available_to_invest) AS avail, SUM(tf.amount_invested) AS invested, comp.NAME, comp.idcompany  FROM tf_investor_portfolio tf JOIN tf_company comp ON tf.company_id = comp.idcompany GROUP BY comp.idcompany ) AS x ");
+		     sqlQuery.append("JOIN ");
+		     sqlQuery.append("( SELECT SUM(scf.invoice_amout) AS amount, comp.idcompany FROM scf_invoice scf JOIN  tf_company comp ON comp.idcompany = scf.scf_company where scf.status='New' GROUP BY comp.idcompany ) AS y ");
+		     sqlQuery.append("ON x.idcompany = y.idcompany ");
+		     //sqlQuery.append("GROUP BY comp.NAME ");
+		    // sqlQuery.append(" ORDER BY  x.NAME ASC " );
+		   
+		     SQLQuery query = (SQLQuery) sessionFactory.getCurrentSession()
+					.createSQLQuery(sqlQuery.toString());
+		     query.setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP);
+		     List shortFallList = query.list();
+		    
+		  System.out.println("getSCFInvestorShortFall" + shortFallList  );
+		  Gson gson = null; 
+		  Long totalSCFCompanies = (long) shortFallList.size();
+		  Long totalCreditAmount=0L, toatalAvailAmount=0L,totalInvestedAmount=0L, totalInvoiceNotTradedAmount =0L, totalShortFallAmount = 0L;
+		   if (shortFallList.size()> 0) {
+		          
+	            for(int i = 0; i<shortFallList.size();i++){
+	            	
+	    		  Object shortFallObj = shortFallList.get(i);
+	    		    gson = new Gson();
+	    		   String shortFallValue = gson.toJson(shortFallObj);
+	    		   JSONObject mJSONObject = new JSONObject(shortFallValue);
+	    		   
+	    		   
+	    		   System.out.println("ShortFall***** "+ mJSONObject); 	 
+	    		Long credit = mJSONObject.getLong("credit");
+	    		Long invested = mJSONObject.getLong("invested");
+	    		Long avail = mJSONObject.getLong("avail");
+	    		Long amount = mJSONObject.getLong("amount");
+	    		
+	    		Long shortAmount = amount - avail;
+	    		
+	    		totalCreditAmount = totalCreditAmount+ credit;
+	    		toatalAvailAmount = toatalAvailAmount + avail;
+	    		totalInvestedAmount = totalInvestedAmount + invested;
+	    		totalInvoiceNotTradedAmount = totalInvoiceNotTradedAmount + amount;
+	    		if(shortAmount>0){
+	    			
+	    			totalShortFallAmount = totalShortFallAmount + shortAmount;
+	    			
+	    		}else{
+	    			
+	    			
+	    			totalShortFallAmount = totalShortFallAmount + 0L;
+	    		}
+	    		
+	    		   }
+	            System.out.println("ShortFallValue " + totalCreditAmount + " "+toatalAvailAmount + " " + totalInvestedAmount  ); 
+				
+		     }
+		   Map<String, Long> totalShortFallAmountList = new HashMap<String,Long>();
+		   totalShortFallAmountList.put("totalCredit", totalCreditAmount);
+		   totalShortFallAmountList.put("totalInvested", totalInvestedAmount);
+		   totalShortFallAmountList.put("totalAvail", toatalAvailAmount);
+		   totalShortFallAmountList.put("totalInvoiceNotTraded", totalInvoiceNotTradedAmount);
+		   totalShortFallAmountList.put("totalShortFall", totalShortFallAmount);
+		   totalShortFallAmountList.put("totalNoOFSCFCompanies", totalSCFCompanies);
+		   
+		 
+		   return totalShortFallAmountList ;
 			}
 			catch (RuntimeException re) {
 				_log.error("getInvoicesBytradeId failed", re);

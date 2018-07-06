@@ -431,11 +431,15 @@ public class InvoiceServiceImpl implements InvoiceService {
 
 
 
-	public GenericListModel getSCFInvestorShortFall() throws ParseException {
+	public GenericListModel getSCFInvestorShortFall(String Search,int startIndex,int pageSize,String order,String columnName) throws ParseException {
 		// TODO Auto-generated method stub
-		return invoiceDAO.getSCFInvestorShortFall();
+		return invoiceDAO.getSCFInvestorShortFall(  Search,startIndex, pageSize, order, columnName);
 	}
 	
+	public Map<String,Long>getSCFInvestorShortFallTotalAmount( ) throws ParseException{
+		
+		return invoiceDAO.getSCFInvestorShortFallTotalAmount();
+	}
 	
 
 
