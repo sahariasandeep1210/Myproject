@@ -1,9 +1,11 @@
 package com.tf.service;
 
 import java.math.BigDecimal;
+import java.text.ParseException;
 import java.util.List;
 import java.util.Map;
 
+import com.tf.model.AllInvestorsBalanceSummary;
 import com.tf.model.Investor;
 import com.tf.model.InvestorPortfolio;
 import com.tf.persistance.util.InvestorDTO;
@@ -57,5 +59,7 @@ public interface InvestorService {
 	public List<Object[]> getCreditAvailForSCFCompany(Long companyId);
 	
 	public List<Object[]> getAllScfCompaniesFromInvestorPortfolio();
+	
+	public List<AllInvestorsBalanceSummary> getAllInvestorsBalanceSummary(String search, int indexPage, int pageSize, String order,String Column)throws ParseException ;
 
 }

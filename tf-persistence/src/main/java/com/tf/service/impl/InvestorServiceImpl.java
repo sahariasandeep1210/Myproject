@@ -1,6 +1,7 @@
 package com.tf.service.impl;
 
 import java.math.BigDecimal;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -12,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.tf.dao.InvestorDAO;
 import com.tf.dao.InvestorHistoryDAO;
+import com.tf.model.AllInvestorsBalanceSummary;
 import com.tf.model.Investor;
 import com.tf.model.InvestorPortfolio;
 import com.tf.model.InvestorPortfolioHistory;
@@ -169,6 +171,13 @@ public class InvestorServiceImpl implements InvestorService {
 		
 		return investorDAO.getAllScfCompaniesFromInvestorPortfolio();
 	}
+     
+     public List<AllInvestorsBalanceSummary> getAllInvestorsBalanceSummary(String search, int indexPage, int pageSize, String order,String Column)throws ParseException{
+ 		
+ 		return investorDAO.getAllInvestorsBalanceSummary( search, indexPage,  pageSize,  order, Column) ;
+ 	}
+     
+ 	
 	
 	
 }

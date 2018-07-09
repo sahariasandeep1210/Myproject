@@ -42,9 +42,11 @@ import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.security.permission.PermissionChecker;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.tf.controller.investor.util.InvestorDTO;
+import com.tf.model.AllInvestorsBalanceSummary;
 import com.tf.model.Allotment;
 import com.tf.model.Company;
 import com.tf.model.GeneralSetting;
+import com.tf.model.GenericListModel;
 import com.tf.model.Investor;
 import com.tf.model.InvestorPortfolio;
 import com.tf.model.InvestorPortfolioHistory;
@@ -169,6 +171,38 @@ public class InvestorController {
 		model.put(ACTIVETAB, Investor_Balance);
 		return new ModelAndView(Investor_Balance, model);
 	}
+	
+	@RenderMapping(params = "render=allinvestorsbalance")
+	protected ModelAndView renderAllInvestors(
+		@ModelAttribute("investorBalanceModel") InvestorTransaction investorBalanceModel, ModelMap model, RenderRequest request,
+		RenderResponse response)
+		throws Exception {
+		PaginationModel paginationModel = paginationUtil.preparePaginationModel(request);
+        Long noOfRecords = 0L;
+     
+		model.put("userType", Constants.ADMIN);
+		String search = ParamUtil.getString(request, "Search");
+		 
+		String columnName = ParamUtil.getString(request, "sort_Column");
+		String order = ParamUtil.getString(request, "sort_order");
+		String sortCompany_order = ParamUtil.getString(request, "sortVal_order");// Sorting value ascending- Descending order 
+		model.put("sortCompany_order", sortCompany_order);
+		model.put("sort_Column", columnName);
+		model.put("sort_order", order);
+		System.out.println("InvestorScreen1 " + paginationModel.getStartIndex() +" "+ paginationModel.getPageSize() +" "+ columnName + " "+order );
+	   List<AllInvestorsBalanceSummary>	balanceSummary = investorService.getAllInvestorsBalanceSummary(search, paginationModel.getStartIndex(), paginationModel.getPageSize() , order, columnName);;
+	    noOfRecords = (long) balanceSummary.size();
+		model.put("search", search );
+		paginationUtil.setPaginationInfo(noOfRecords, paginationModel);
+		System.out.println("paginationsss:" + paginationModel + " "+ balanceSummary);
+		model.put("paginationModel", paginationModel);
+		model.put("invoicesNotTradedList", null);
+		model.put("balanceSummary", balanceSummary);
+		paginationUtil.setPaginationInfo(noOfRecords, paginationModel);
+		model.put("paginationModel", paginationModel);
+		model.put(ACTIVETAB, "allinvestorsbalance");
+		return new ModelAndView("allinvestorsbalance", model);
+	}
 
 	@RenderMapping(params = "report=casReport")
 	protected ModelAndView rendercasReport(ModelMap model, RenderRequest request, RenderResponse response)
@@ -220,7 +254,7 @@ public class InvestorController {
 				     inves = investorService.findByInvestorId(investorId);
 					inves.setCashPosition(inves.getCashPosition() != null ? inves.getCashPosition() : BigDecimal.ZERO);
 					// block also needs to be optimized. right now putting quick
-					// fix for Dhanush code
+					// fix for Dhanush code 
 					List<Allotment> allotments = allotmentService.getAllotmentByInvestorAndStatus(investorId, TranscationStatus.INVESTED.getValue());
 					for (Allotment allot : allotments) {
 						receivablesPosition = allot.getAllotmentAmount().add(allot.getInvestorNetProfit());

@@ -22,6 +22,27 @@ $(document).ready(function() {
 			});
 			
 		});
+	//hide the sorting icon
+		var sortingIcon=$('#sortVal_order').val();
+		if(sortingIcon!="" || sortingIcon!="undefined"){
+			$("#"+sortingIcon).hide();
+		}
+		
+		$(".sortColumn").click(function() {
+			
+			var columnnName = $(this).attr("column-name");
+			var order = $(this).attr("order");
+			var updateURL = $("#defaultURL").val();
+			var id = $(this).attr("id");
+			
+			//alert(updateURL);
+			$('#sort_Column').val(columnnName);
+			$('#sort_order').val(order);
+			$('#sortVal_order').val(id);
+			
+			document.forms["allinvestorbalance"].action = updateURL;
+			document.forms["allinvestorbalance"].submit();
+		});
 	  
 	  $("#exportCashReport").click(function(){
 			/* window.open('data:application/vnd.ms-excel,' + $('#dvData').html());
@@ -486,12 +507,15 @@ $("#toDate").datepicker({
 	
 function enableTab(){
 	var curentTab=$("#currentTab").val();
+	
 	if(curentTab=='allinvestorprotfolios'){
 		$("#investorProtfoliosList").addClass("active");
 	}else if(curentTab=='investorbalance'){
 		$("#invbalList").addClass("active");
 	}else if (curentTab=='casReport') {
 		$("#casList").addClass("active");
+	}else if (curentTab=='allinvestorsbalance') {
+		$("#allinvestorstab").addClass("active");
 	}
 	else if (curentTab=='investorprotfolio') {
 		$("#invesProtList").addClass("active");

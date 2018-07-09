@@ -1,6 +1,7 @@
 package com.tf.dao.impl;
 
 import java.math.BigDecimal;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -14,15 +15,19 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.google.gson.Gson;
 import com.tf.dao.GeneralSettingDAO;
 import com.tf.dao.InvestorDAO;
 import com.tf.dao.UserDAO;
+import com.tf.model.AllInvestorsBalanceSummary;
 import com.tf.model.Investor;
 import com.tf.model.InvestorPortfolio;
+import com.tf.model.InvestorShortFall;
 import com.tf.persistance.util.DashboardModel;
 import com.tf.persistance.util.InvestorDTO;
 import com.tf.persistance.util.InvestorProtfolioDTO;
@@ -600,5 +605,80 @@ public class InvestorDAOImpl extends BaseDAOImpl<InvestorPortfolio, Long>   impl
 		
     return graphArray;
 	}
+
+
+public List<AllInvestorsBalanceSummary> getAllInvestorsBalanceSummary(String search,
+		int indexPage, int pageSize, String order, String columnName)throws ParseException {
+	 System.out.println("getSCFInvestorShortFall 0"  + " "+order + " "+ columnName + " " );
+	 StringBuilder sqlQuery = new StringBuilder();
+	 List<AllInvestorsBalanceSummary> result= new ArrayList<AllInvestorsBalanceSummary>();
+	 try {
+	   
+		 
+	     sqlQuery.append("SELECT y.NAME, x.investor_id, x.netProfit,x.allotAmount, y.cash_position FROM ");
+	     sqlQuery.append("( SELECT a.investor_id, SUM(a.investor_net_profit) AS netProfit, SUM(a.allotment_amount) AS allotAmount, tf.company_id, tf.cash_position  FROM tf_investor tf  JOIN tf_allotments a ON tf.investor_id =  a.investor_id  WHERE a.status ='Invested' GROUP BY a.investor_id ) AS x ");
+	     sqlQuery.append("RIGHT JOIN ");
+	     if(search != null && search.trim().length()>0){
+	    	 sqlQuery.append("(  SELECT comp.NAME,comp.idcompany FROM tf_company comp where ( comp.NAME LIKE '"+search+"%' ) ) AS y ");
+			     
+	     }else{
+	     sqlQuery.append("( SELECT comp.NAME,comp.idcompany,tf.cash_position FROM tf_company comp JOIN tf_investor tf ON tf.company_id = comp.idcompany  ) AS y ");
+	     }
+	     sqlQuery.append("ON x.company_id = y.idcompany ");
+	     if( order != null && columnName!= null && columnName.trim().length()>0  ){
+	     sqlQuery.append(" ORDER BY "+columnName+ " "+ order + " " );
+	     }
+	    
+	    Query query= sessionFactory.getCurrentSession().createSQLQuery(sqlQuery.toString());
+	    query.setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP);
+	   List graphArray = query.list();
+	   
+	 
+	   System.out.println("getSCFInvestorShortFall" + graphArray + " "+order + " "+ columnName + " "+ sqlQuery );
+		  Gson gson = null; 
+		   if (graphArray.size()> 0) {
+			  
+	            for(int i = 0; i<graphArray.size();i++){
+	            	
+	    		  Object shortFallObj = graphArray.get(i);
+	    		    gson = new Gson();
+	    		   String shortFallValue = gson.toJson(shortFallObj);
+	    		   JSONObject mJSONObject = new JSONObject(shortFallValue);
+	    		   
+	    		  
+	    	    System.out.println("ShortFall***** "+ mJSONObject); 	 
+	    		String investorName = mJSONObject.has("NAME")?mJSONObject.getString("NAME"):"";
+	    		Long netProfit = mJSONObject.has("netProfit")?mJSONObject.getLong("netProfit"):0L;
+	    		Long cashPosition = mJSONObject.has("cash_position")?mJSONObject.getLong("cash_position"):0L;
+	    		Long allotAmount = mJSONObject.has("allotAmount")?mJSONObject.getLong("allotAmount"):0L;
+	    		
+	    		Long receivableAmount = allotAmount+ netProfit;
+	    		Long totalBalanceSheet = receivableAmount + cashPosition;
+	    		
+	    		AllInvestorsBalanceSummary balanceSummary = new AllInvestorsBalanceSummary();
+	    		
+	    		balanceSummary.setInvestorName(investorName);
+	    		balanceSummary.setCashPostion(cashPosition);
+	    		
+	    		balanceSummary.setReceivableAmount(receivableAmount);;
+	    		
+	    		balanceSummary.setTotalBalanceSheet(totalBalanceSheet);
+	    		
+	    		result.add(balanceSummary);
+	    		
+	    		System.out.println("Retrieved Values "+ investorName + " "+netProfit +" "+ cashPosition);
+	    		
+	        }
+	   }
+	 }catch (RuntimeException re) {
+			_log.error("getInvoicesBytradeId failed", re);
+			throw re;
+		}
+  
+	
+	return result;
+}
+ 
+ 
 
 }
