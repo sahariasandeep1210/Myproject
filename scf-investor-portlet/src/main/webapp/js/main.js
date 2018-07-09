@@ -1,5 +1,28 @@
 
 $(document).ready(function() {
+	//hide the sorting icon
+	var sortingIcon=$('#sortVal_order').val();
+	if(sortingIcon!="" || sortingIcon!="undefined"){
+		$("#"+sortingIcon).hide();
+	}
+  
+	
+	$(".sortColumn").click(function() {
+		
+		var columnnName = $(this).attr("column-name");
+		var order = $(this).attr("order");
+		var updateURL = $("#defaultURL").val();
+		var id = $(this).attr("id");
+		
+		//alert(updateURL);
+		$('#sort_Column').val(columnnName);
+		$('#sort_order').val(order);
+		$('#sortVal_order').val(id);
+		
+		document.forms["allinvestorbalance"].action = updateURL;
+		document.forms["allinvestorbalance"].submit();
+	});
+	
 	
 	  investorIndex = 0;
 	  $("#pageSize").val($("#curPageSize").val());
@@ -10,6 +33,12 @@ $(document).ready(function() {
 	  enableTab();
 	  $('table').tablesorter();
 	  
+	  $("#pageSize").val($("#currPageSize").val());
+		$("#pagSize").val($("#curPageSize").val());
+		$("#pgSize").val($("#currPageSizes").val());
+		
+	  
+	
 	  $("#exportInvestor").click(function(){
 			/* window.open('data:application/vnd.ms-excel,' + $('#dvData').html());
 			 e.preventDefault();*/	
@@ -22,27 +51,68 @@ $(document).ready(function() {
 			});
 			
 		});
-	//hide the sorting icon
-		var sortingIcon=$('#sortVal_order').val();
-		if(sortingIcon!="" || sortingIcon!="undefined"){
-			$("#"+sortingIcon).hide();
-		}
+	
 		
-		$(".sortColumn").click(function() {
-			
-			var columnnName = $(this).attr("column-name");
-			var order = $(this).attr("order");
+		
+		
+	
+		
+		$("#adminTradeReport").click(function() {
 			var updateURL = $("#defaultURL").val();
-			var id = $(this).attr("id");
-			
-			//alert(updateURL);
-			$('#sort_Column').val(columnnName);
-			$('#sort_order').val(order);
-			$('#sortVal_order').val(id);
-			
 			document.forms["allinvestorbalance"].action = updateURL;
 			document.forms["allinvestorbalance"].submit();
+		});	
+		
+		$("#pageSize").val($("#currPageSize").val());
+		$("#pagSize").val($("#curPageSize").val());
+		$("#pgSize").val($("#currPageSizes").val());
+	
+		$("#pgSize").change(function() {
+			var noOfRecords = parseInt($("#noOfRecords").val());
+			var pageSize = parseInt($("#currPageSizes").val());
+			var newPageSize = parseInt($(this).val());
+			$("#currentPage").val(1);
+			if (noOfRecords < pageSize && newPageSize > pageSize) {
+				return;
+			} else {
+				var actionUrl = $("#defaultURL").val();
+				document.forms["allinvestorbalance"].action = actionUrl;
+				document.forms["allinvestorbalance"].submit();
+			}
 		});
+		
+		$("#pageSize").change(function() {
+			var noOfRecords = parseInt($("#noOfRecords").val());
+			var pageSize = parseInt($("#currPageSize").val());
+			var newPageSize = parseInt($(this).val());
+			
+			$("#currentPage").val(1);
+			if (noOfRecords < pageSize && newPageSize > pageSize) {
+				return;
+			} else {
+				var actionUrl = $("#defaultURL").val();
+				document.forms["allinvestorbalance"].action = actionUrl;
+				document.forms["allinvestorbalance"].submit();
+			}
+		});
+
+		$("#pagSize").change(function() {
+			var noOfRecords = parseInt($("#noOfRecords").val());
+			var pageSize = parseInt($("#curPageSize").val());
+			var newPageSize = parseInt($(this).val());
+			$("#currentPage").val(1);
+			if (noOfRecords < pageSize && newPageSize > pageSize) {
+				return;
+			} else {
+				var actionUrl = $("#defaultURL").val();
+				document.forms["allinvestorbalance"].action = actionUrl;
+				document.forms["allinvestorbalance"].submit();
+			}
+		});
+
+		
+		
+		 
 	  
 	  $("#exportCashReport").click(function(){
 			/* window.open('data:application/vnd.ms-excel,' + $('#dvData').html());
@@ -77,7 +147,30 @@ $(document).ready(function() {
 					worksheetName: 'CashReport'
 				});
 				
+				
 			});
+		 
+		 $("#exportScreenData").click(function() {	
+			 var curentTab=$("#currentTab").val();
+			
+				if(curentTab == 'investorShortFall'){ 
+				$( '#investorShortFallListTable').tableExport({
+					type : 'excel',
+					escape : 'false',
+				    fileName : 'InvestorShortfall',
+					worksheetName : 'InvestorShortfall'
+				});
+				}else if(curentTab== 'allinvestorsbalance'){
+					$( '#allInvestorBalanceSummaryListTable').tableExport({
+						type : 'excel',
+						escape : 'false',
+					    fileName : 'InvestorBalanceSummary',
+						worksheetName : 'InvestorBalanceSummary'
+					});
+					
+				}
+				
+			}); 
 		
 	  $("#exportReceivable").click(function(){
 			
@@ -91,6 +184,50 @@ $(document).ready(function() {
 		});
 		
 	  
+	  $('#allinvestorbalance').on('click', '.breakdown', function() {
+			var breakdownURL = $(this).attr('data-url');
+			var tradeID = $(this).attr('tradeID');
+			// resting icon
+			$("[id$='_icon']").removeClass('icomoon-minus cursor-pointer credit-break');
+			$("[id$='_icon']").addClass('icomoon-plus cursor-pointer credit-break');
+			// hiding all other history rows
+			$(".historyRow").hide();
+			if ($(this).parent().parent().hasClass("highlightedClass")) {
+				$(this).parent().parent().toggleClass('highlightedClass');
+				changeExpandIcon(tradeID);
+				return;
+			} else {
+				$('#tradeListTable tr').removeClass("highlightedClass");
+				$(this).parent().parent().toggleClass('highlightedClass');
+			}
+
+			if ($("#" + tradeID + "_table").length) {
+				$("#" + tradeID + "_row").slideToggle();
+				changeExpandIcon(tradeID);
+
+			} else {
+				$.ajax({
+					url : breakdownURL,
+					type : 'POST',
+					cache : false,
+					data : {
+						tradeID : tradeID
+					},
+					success : function(data) {
+						$("#" + tradeID + "_row > td").html(data);
+						$("#" + tradeID + "_row").slideToggle();
+						changeExpandIcon(tradeID);
+
+					},
+					error : function(jqXHR, textStatus, errorThrown) {
+						ajaxindicatorstop();
+
+					}
+				});
+			}
+
+		});
+
 	  $('#investorModel').on('keypress', '.addprotfolio input', function(e) {
 		  
 		  //if the letter is not digit then display error and don't type anything
@@ -196,6 +333,8 @@ $(document).ready(function() {
     	        }
     	    });
     	  
+    	  
+    	  
     	  if(showModel){
     		 
     		  var currentID=$(this).attr('id');
@@ -239,7 +378,11 @@ $(document).ready(function() {
 				  } else if($("#receivableReportForm").length){
 					  document.forms["receivableReportForm"].action = actionUrl;
 					  document.forms["receivableReportForm"].submit();
+				  } else if($("#allinvestorbalance").length){
+					  document.forms["allinvestorbalance"].action = actionUrl;
+					  document.forms["allinvestorbalance"].submit();
 				  } 
+				  
 				  
 				
 			}
@@ -476,6 +619,12 @@ $("#toDate").datepicker({
           }
       });
       
+      $(".filter-btn-collapse").on({
+			click: function(){
+				$(".filter-container").slideToggle();
+			}
+		});
+      
       $('.filterable .filters input').keyup(function(e){
           /* Ignore tab key */
           var code = e.keyCode || e.which;
@@ -519,6 +668,10 @@ function enableTab(){
 	}
 	else if (curentTab=='investorprotfolio') {
 		$("#invesProtList").addClass("active");
+	}else if (curentTab == 'investorShortFall') {
+		$("#investorshortfalltab").addClass("active");
+	}else if (curentTab == 'investorSCFSummary') {
+		$("#investorscftab").addClass("active");
 	}
 	else{
 		$("#investorProtfoliosList").addClass("active");
@@ -652,6 +805,11 @@ function setPage(pageNumber) {
 		var actionUrl = $("#defaultRenderURL").val();
 		document.forms["receivableReportForm"].action = actionUrl;
 		document.forms["receivableReportForm"].submit();
+	}else if ($("#allinvestorbalance").length) {
+		$("#currentPage").val(pageNumber);
+		var actionUrl = $("#defaultURL").val();
+		document.forms["allinvestorbalance"].action = actionUrl;
+		document.forms["allinvestorbalance"].submit();
 	}
 }
 

@@ -59,6 +59,7 @@ public interface InvestorService {
 	public List<Object[]> getCreditAvailForSCFCompany(Long companyId);
 	
 	public List<Object[]> getAllScfCompaniesFromInvestorPortfolio();
+	public Map<String,Long>getAllInvestorsBalanceTotalValues()throws ParseException ;
 	
 	public List<AllInvestorsBalanceSummary> getAllInvestorsBalanceSummary(String search, int indexPage, int pageSize, String order,String Column)throws ParseException ;
 

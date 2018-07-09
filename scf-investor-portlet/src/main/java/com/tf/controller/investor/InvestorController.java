@@ -61,6 +61,7 @@ import com.tf.service.GeneralSettingService;
 import com.tf.service.InvestorHistoryService;
 import com.tf.service.InvestorService;
 import com.tf.service.InvestorTransactionService;
+import com.tf.service.InvoiceService;
 import com.tf.service.SCFTradeService;
 import com.tf.service.UserService;
 import com.tf.util.LiferayUtility;
@@ -127,6 +128,10 @@ public class InvestorController {
 	@Autowired
 	protected CompanyService companyService;
 
+
+	@Autowired
+	private InvoiceService invoiceService;
+	
 	@Autowired
 	protected InvestorHistoryService investorHistoryService;
 
@@ -190,18 +195,127 @@ public class InvestorController {
 		model.put("sort_Column", columnName);
 		model.put("sort_order", order);
 		System.out.println("InvestorScreen1 " + paginationModel.getStartIndex() +" "+ paginationModel.getPageSize() +" "+ columnName + " "+order );
-	   List<AllInvestorsBalanceSummary>	balanceSummary = investorService.getAllInvestorsBalanceSummary(search, paginationModel.getStartIndex(), paginationModel.getPageSize() , order, columnName);;
-	    noOfRecords = (long) balanceSummary.size();
+	   List<AllInvestorsBalanceSummary>	balanceSummary = investorService.getAllInvestorsBalanceSummary(search, paginationModel.getStartIndex(), paginationModel.getPageSize() , order, columnName);
+	   Map<String,Long> allInvestorsTotalValues  =  investorService.getAllInvestorsBalanceTotalValues();
+	     
+	   noOfRecords = allInvestorsTotalValues.get("totalNumberOfInvestor");
 		model.put("search", search );
 		paginationUtil.setPaginationInfo(noOfRecords, paginationModel);
 		System.out.println("paginationsss:" + paginationModel + " "+ balanceSummary);
 		model.put("paginationModel", paginationModel);
 		model.put("invoicesNotTradedList", null);
 		model.put("balanceSummary", balanceSummary);
+		model.put("search", search);
+		model.put("totalCashAmount", allInvestorsTotalValues.get("totalCashAmount"));
+		model.put("totalReceivabbles", allInvestorsTotalValues.get("totalReceivabbles"));
+		model.put("totalBalanceSheetAmount", allInvestorsTotalValues.get("totalBalanceSheetAmount"));
 		paginationUtil.setPaginationInfo(noOfRecords, paginationModel);
 		model.put("paginationModel", paginationModel);
 		model.put(ACTIVETAB, "allinvestorsbalance");
 		return new ModelAndView("allinvestorsbalance", model);
+	}
+
+	
+	@RenderMapping(params = "render=investorShortFall")
+	protected ModelAndView renderInvestorShortfall(
+		@ModelAttribute("investorBalanceModel") InvestorTransaction investorBalanceModel, ModelMap model, RenderRequest request,
+		RenderResponse response)
+		throws Exception {
+		PaginationModel paginationModel = paginationUtil.preparePaginationModel(request);
+        Long noOfRecords = 0L;
+       
+		model.put("userType", Constants.ADMIN);
+		String search = ParamUtil.getString(request, "Search");
+		 
+		String columnName = ParamUtil.getString(request, "sort_Column");
+		String order = ParamUtil.getString(request, "sort_order");
+		String sortCompany_order = ParamUtil.getString(request, "sortVal_order");// Sorting value ascending- Descending order 
+		model.put("sortCompany_order", sortCompany_order);
+		model.put("sort_Column", columnName);
+		model.put("sort_order", order);
+		System.out.println("Order Sorting  " + paginationModel.getStartIndex() +" "+ paginationModel.getPageSize() +" "+ search);
+		   
+		  
+		GenericListModel genericListModel = invoiceService.getSCFInvestorShortFall( search, paginationModel.getStartIndex() , paginationModel.getPageSize(), order, columnName);
+		
+	   Map<String,Long> totalShortFallValues = invoiceService.getSCFInvestorShortFallTotalAmount();
+		/*totalShortFallValues.get("totalInvested");
+		totalShortFallValues.get("totalAvail");
+		totalShortFallValues.get("totalInvoiceNotTraded");
+		totalShortFallValues.get("totalShortFall");
+		totalShortFallValues.get("totalCredit");*/
+		noOfRecords = 	totalShortFallValues.get("totalNoOFSCFCompanies");
+	
+		
+		
+		model.put("totalInvested", totalShortFallValues.get("totalInvested"));
+		model.put("totalAvail", totalShortFallValues.get("totalAvail"));
+		model.put("totalInvoiceNotTraded", totalShortFallValues.get("totalInvoiceNotTraded"));
+		model.put("totalShortFall", totalShortFallValues.get("totalShortFall"));
+		model.put("totalNoOFSCFCompanies", totalShortFallValues.get("totalNoOFSCFCompanies"));
+		model.put("totalCredit", totalShortFallValues.get("totalCredit"));
+		model.put(ACTIVETAB, "investorShortFall");
+		model.put("search", search);
+		paginationUtil.setPaginationInfo(noOfRecords, paginationModel);
+		System.out.println("paginationsss:" + paginationModel);
+		model.put("paginationModel", paginationModel);
+		model.put("investorShorFallList", genericListModel.getList());
+		paginationUtil.setPaginationInfo(noOfRecords, paginationModel);
+		model.put("paginationModel", paginationModel);
+		
+		return new ModelAndView("investorShortFall", model);
+
+	}
+
+	@RenderMapping(params = "render=investorSCFSummary")
+	protected ModelAndView renderInvestorSCFSummary(
+		@ModelAttribute("investorBalanceModel") InvestorTransaction investorBalanceModel, ModelMap model, RenderRequest request,
+		RenderResponse response)
+		throws Exception {
+		PaginationModel paginationModel = paginationUtil.preparePaginationModel(request);
+        Long noOfRecords = 0L;
+       
+		model.put("userType", Constants.ADMIN);
+		String search = ParamUtil.getString(request, "Search");
+		 
+		String columnName = ParamUtil.getString(request, "sort_Column");
+		String order = ParamUtil.getString(request, "sort_order");
+		String sortCompany_order = ParamUtil.getString(request, "sortVal_order");// Sorting value ascending- Descending order 
+		model.put("sortCompany_order", sortCompany_order);
+		model.put("sort_Column", columnName);
+		model.put("sort_order", order);
+		System.out.println("Order Sorting  " + paginationModel.getStartIndex() +" "+ paginationModel.getPageSize() +" "+ search);
+		   
+		  
+		GenericListModel genericListModel = invoiceService.getSCFInvestorShortFall( search, paginationModel.getStartIndex() , paginationModel.getPageSize(), order, columnName);
+		
+	   Map<String,Long> totalShortFallValues = invoiceService.getSCFInvestorShortFallTotalAmount();
+		/*totalShortFallValues.get("totalInvested");
+		totalShortFallValues.get("totalAvail");
+		totalShortFallValues.get("totalInvoiceNotTraded");
+		totalShortFallValues.get("totalShortFall");
+		totalShortFallValues.get("totalCredit");*/
+		noOfRecords = 	totalShortFallValues.get("totalNoOFSCFCompanies");
+	
+		
+		
+		model.put("totalInvested", totalShortFallValues.get("totalInvested"));
+		model.put("totalAvail", totalShortFallValues.get("totalAvail"));
+		model.put("totalInvoiceNotTraded", totalShortFallValues.get("totalInvoiceNotTraded"));
+		model.put("totalShortFall", totalShortFallValues.get("totalShortFall"));
+		model.put("totalNoOFSCFCompanies", totalShortFallValues.get("totalNoOFSCFCompanies"));
+		model.put("totalCredit", totalShortFallValues.get("totalCredit"));
+		model.put(ACTIVETAB, "investorSCFSummary");
+		model.put("search", search);
+		paginationUtil.setPaginationInfo(noOfRecords, paginationModel);
+		System.out.println("paginationsss:" + paginationModel);
+		model.put("paginationModel", paginationModel);
+		model.put("investorShorFallList", genericListModel.getList());
+		paginationUtil.setPaginationInfo(noOfRecords, paginationModel);
+		model.put("paginationModel", paginationModel);
+		
+		return new ModelAndView("investorSCFSummary", model);
+
 	}
 
 	@RenderMapping(params = "report=casReport")

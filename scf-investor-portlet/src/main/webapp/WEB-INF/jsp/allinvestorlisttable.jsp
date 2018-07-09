@@ -17,7 +17,7 @@
 
 	<div class="customTableContainer">
 		<table class="table table-hover tablesorter table-bordered"
-			id="invoiceListTable">
+			id="allInvestorBalanceSummaryListTable">
 			<thead>
 				<tr>
 					
@@ -48,17 +48,16 @@
 					</th>
 					-->
 				</tr>
-			</thead>
-			<tbody>    <!--  
+		     	<tbody>     
 			                     <tr>
 									<td style="background-color:#189a80;color:white" >Total</td>
-									<td style="background-color:#189a80;color:white" class="rightalign blue_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalInvoiceNotTraded}"  pattern="#,##0.00"/></td>
-									<td style="background-color:#189a80;color:white" class="rightalign blue_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalCredit}"  pattern="#,##0.00"/></td>
-									<td style="background-color:#189a80;color:white" class="rightalign blue_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalInvested}"  pattern="#,##0.00"/></td>
+									<td style="background-color:#189a80;color:white" class="rightalign blue_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalCashAmount}"  pattern="#,##0.00"/></td>
+									<td style="background-color:#189a80;color:white" class="rightalign blue_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalReceivabbles}"  pattern="#,##0.00"/></td>
+									<td style="background-color:#189a80;color:white" class="rightalign blue_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalBalanceSheetAmount}"  pattern="#,##0.00"/></td>
 									
 						
 									</tr>
-									-->
+									
 				<c:choose>
 					<c:when test="${fn:length(balanceSummary) gt 0}">
 						<c:forEach items="${balanceSummary}" var="summary">

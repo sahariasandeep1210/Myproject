@@ -1,7 +1,6 @@
-<%@page import="com.tf.persistance.util.TranscationStatus"%>
 <%@include file="init.jsp"%>
-<%@include file="tabview.jsp"%> 
 <liferay-theme:defineObjects />
+<%@include file="tabview.jsp"%> 
 <%@ taglib uri="http://whitehall.com/jsp/tld/p" prefix="p"%>
 
 <portlet:actionURL var="getSellerTradeURL">
@@ -23,15 +22,13 @@
 		<input type="hidden" name="currentPage" 		id="currentPage" 		value="${paginationModel.currentPage}" />
 		<input type="hidden" name="currPageSize" 		id="currPageSize"		value="${paginationModel.pageSize}" />
 		<input type="hidden" name="noOfRecords"			id="noOfRecords"		value="${paginationModel.noOfRecords}" />
-		<input type="hidden" name="defaultURL"		 	id="defaultURL"			value="${allInvestorListURL}" />
+		<input type="hidden" name="defaultURL"		 	id="defaultURL"			value="${investorShortfallURL}" />
 		<input type="hidden" name="getSellerTradeURL" 	id="getSellerTradeURL"	value="${defaultRenderURL}" />
 		<input type="hidden" name="tradeURL"			id="tradeURL"  			value="${tradeURL}" />
 		<input type="hidden" name="invoices"			id="invoices" 			value="${trade.invoices}">
 		<input type="hidden" name="invoices"			id="invoices" 			value="${trade.invoices}">
 		<input type="hidden" name="pageSize"        	id="pageSize"      		value="${paginationModel.pageSize}" /> 
 		<input type="hidden" name="defaultRender"       id="defaultRender"      value="${defaultRenderURL}" />
-
-
 
 		 <input type="hidden" id="sortVal_order" name="sortVal_order" value="${sortCompany_order}"/>
 		<input type="hidden" id="sort_Column" name="sort_Column" value="${sort_Column}" />
@@ -66,8 +63,7 @@
 					
 				</div>
 		  </div>
-		  <%@include file="allinvestorlisttable.jsp"%> 
-	
+	<%@include file="investorSCFListTable.jsp"%> 
 					<div class="lfr-pagination">			
 				<p:paginate  paginationModel="${paginationModel}"/>
 				

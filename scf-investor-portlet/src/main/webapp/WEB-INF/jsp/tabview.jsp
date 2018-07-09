@@ -11,6 +11,13 @@
 	<portlet:param name="render" value="investorBalance" />
 </portlet:renderURL>
 
+<portlet:renderURL var="investorscfURL">
+	<portlet:param name="render" value="investorSCFSummary" />
+</portlet:renderURL>
+
+<portlet:renderURL var="investorShortfallURL">
+	<portlet:param name="render" value="investorShortFall" />
+</portlet:renderURL>
 
 
 
@@ -22,7 +29,8 @@
 	
 <li class="tab" id="investorProtfoliosList"><a href="${investorProtfoliosURL}">Investor Portfolio </a></li>
 <li class="tab" id="invbalList"><a href="${investorbalanceURL}">Investor Balance Sheet</a></li>
+<li class="tab" id="investorshortfalltab"><a href="${investorShortfallURL}">Investor Shortfall</a></li>
 <li class="tab" id="allinvestorstab"><a href="${allInvestorListURL}">Investor Screen 1</a></li>
-		
+<li class="tab" id="investorscftab"><a href="${investorscfURL}">Investor Screen 2</a></li>
 			
 </ul>

@@ -6,8 +6,8 @@
 		  		<div class="main-title"></div>
 		  	
 		  	<div class="btn-wrapper">		  			
-		  			 <aui:button cssClass="btnBrGrSm btnIconSm filter-btn active"  icon="icomoon-filter"></aui:button>
-		  			<input type="button" class="btnBgGreenSm" value="Export"  id="exportData"/>
+		  			 <aui:button cssClass="btnBrGrSm btnIconSm filter-btn-collapse active"  icon="icomoon-filter"></aui:button>
+		  			<input type="button" class="btnBgGreenSm" value="Export"  id="exportScreenData"/>
 		  	</div>
 		  	
 </div>

@@ -177,7 +177,10 @@ public class InvestorServiceImpl implements InvestorService {
  		return investorDAO.getAllInvestorsBalanceSummary( search, indexPage,  pageSize,  order, Column) ;
  	}
      
- 	
+     public Map<String,Long>getAllInvestorsBalanceTotalValues()throws ParseException {
+    	 
+    	 return investorDAO.getAllInvestorsBalanceTotalValues() ;
+     } ;
 	
 	
 }
