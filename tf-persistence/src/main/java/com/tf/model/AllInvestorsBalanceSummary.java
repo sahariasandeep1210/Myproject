@@ -7,9 +7,14 @@ public class AllInvestorsBalanceSummary implements Serializable{
 	private static final long serialVersionUID = -6353198600315497352L;
 	
 	private String investorName;
+	private String scfName;
 	private Long   cashPostion;
+	private Long   allocatedAmount;
+	private Long   remainingAmount;
 	private Long receivableAmount;
 	private Long totalBalanceSheet;
+	
+	
 	public String getInvestorName() {
 		return investorName;
 	}
@@ -33,6 +38,24 @@ public class AllInvestorsBalanceSummary implements Serializable{
 	}
 	public void setTotalBalanceSheet(Long totalBalanceSheet) {
 		this.totalBalanceSheet = totalBalanceSheet;
+	}
+	public String getScfName() {
+		return scfName;
+	}
+	public void setScfName(String scfName) {
+		this.scfName = scfName;
+	}
+	public Long getAllocatedAmount() {
+		return allocatedAmount;
+	}
+	public void setAllocatedAmount(Long allocatedAmount) {
+		this.allocatedAmount = allocatedAmount;
+	}
+	public Long getRemainingAmount() {
+		return remainingAmount;
+	}
+	public void setRemainingAmount(Long remainingAmount) {
+		this.remainingAmount = remainingAmount;
 	}
 	
 	

@@ -74,6 +74,9 @@ public interface InvestorDAO extends BaseDAO<InvestorPortfolio, Long> {
 	
 	public List<Object[]> getAllScfCompaniesFromInvestorPortfolio();
 	
+	public List<AllInvestorsBalanceSummary> getAllInvestorSCFBalanceSummary( String search, int startIndex, int pageSize, String columnName, String order )throws ParseException;
 	public Map<String,Long>getAllInvestorsBalanceTotalValues()throws ParseException ;
 	public List<AllInvestorsBalanceSummary> getAllInvestorsBalanceSummary(String search, int indexPage, int pageSize, String order,String Column) throws ParseException ;
+
+	public Map<String,Long>getAllInvestorsSCFTotalValues()throws ParseException;
 }

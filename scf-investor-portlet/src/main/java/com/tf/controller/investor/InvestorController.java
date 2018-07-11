@@ -286,31 +286,31 @@ public class InvestorController {
 		model.put("sort_order", order);
 		System.out.println("Order Sorting  " + paginationModel.getStartIndex() +" "+ paginationModel.getPageSize() +" "+ search);
 		   
-		  
-		GenericListModel genericListModel = invoiceService.getSCFInvestorShortFall( search, paginationModel.getStartIndex() , paginationModel.getPageSize(), order, columnName);
-		
-	   Map<String,Long> totalShortFallValues = invoiceService.getSCFInvestorShortFallTotalAmount();
-		/*totalShortFallValues.get("totalInvested");
-		totalShortFallValues.get("totalAvail");
-		totalShortFallValues.get("totalInvoiceNotTraded");
-		totalShortFallValues.get("totalShortFall");
-		totalShortFallValues.get("totalCredit");*/
-		noOfRecords = 	totalShortFallValues.get("totalNoOFSCFCompanies");
+		  if(columnName == null || columnName == ""){
+			  columnName = "y.investorName";
+				order =  "ASC";
+		  }
+		//GenericListModel genericListModel = invoiceService.getSCFInvestorShortFall( search, paginationModel.getStartIndex() , paginationModel.getPageSize(), order, columnName);
+		List<AllInvestorsBalanceSummary>balanceSummary = investorService.getAllInvestorSCFBalanceSummary( search,  paginationModel.getStartIndex(),   paginationModel.getPageSize(),columnName,order );
+	 
+		Map<String,Long> investorSCFTotalValues  = investorService.getAllInvestorsSCFTotalValues();
+		   
+		noOfRecords = 	investorSCFTotalValues.get("totalNumberOfItems");
 	
+		model.put("totalCashAmount", investorSCFTotalValues.get("totalCashAmount"));
+		model.put("totalReceivabbles", investorSCFTotalValues.get("totalReceivabbles"));
+		model.put("totalBalanceSheetAmount", investorSCFTotalValues.get("totalBalanceSheetAmount"));
+		model.put("totalAllocatedAmount", investorSCFTotalValues.get("totalAllocatedAmount"));
+		model.put("totalRemaingAmount", investorSCFTotalValues.get("totalRemaingAmount"));
 		
 		
-		model.put("totalInvested", totalShortFallValues.get("totalInvested"));
-		model.put("totalAvail", totalShortFallValues.get("totalAvail"));
-		model.put("totalInvoiceNotTraded", totalShortFallValues.get("totalInvoiceNotTraded"));
-		model.put("totalShortFall", totalShortFallValues.get("totalShortFall"));
-		model.put("totalNoOFSCFCompanies", totalShortFallValues.get("totalNoOFSCFCompanies"));
-		model.put("totalCredit", totalShortFallValues.get("totalCredit"));
+		model.put("balanceSummary", balanceSummary);
 		model.put(ACTIVETAB, "investorSCFSummary");
 		model.put("search", search);
 		paginationUtil.setPaginationInfo(noOfRecords, paginationModel);
 		System.out.println("paginationsss:" + paginationModel);
 		model.put("paginationModel", paginationModel);
-		model.put("investorShorFallList", genericListModel.getList());
+		//model.put("investorShorFallList", genericListModel.getList());
 		paginationUtil.setPaginationInfo(noOfRecords, paginationModel);
 		model.put("paginationModel", paginationModel);
 		

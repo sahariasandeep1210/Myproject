@@ -22,7 +22,7 @@
 		<input type="hidden" name="currentPage" 		id="currentPage" 		value="${paginationModel.currentPage}" />
 		<input type="hidden" name="currPageSize" 		id="currPageSize"		value="${paginationModel.pageSize}" />
 		<input type="hidden" name="noOfRecords"			id="noOfRecords"		value="${paginationModel.noOfRecords}" />
-		<input type="hidden" name="defaultURL"		 	id="defaultURL"			value="${investorShortfallURL}" />
+		<input type="hidden" name="defaultURL"		 	id="defaultURL"			value="${investorscfURL}" />
 		<input type="hidden" name="getSellerTradeURL" 	id="getSellerTradeURL"	value="${defaultRenderURL}" />
 		<input type="hidden" name="tradeURL"			id="tradeURL"  			value="${tradeURL}" />
 		<input type="hidden" name="invoices"			id="invoices" 			value="${trade.invoices}">

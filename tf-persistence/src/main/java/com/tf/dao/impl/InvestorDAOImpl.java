@@ -740,13 +740,185 @@ public Map<String,Long>getAllInvestorsBalanceTotalValues()throws ParseException 
 			_log.error("getInvoicesBytradeId failed", re);
 			throw re;
 		}
-  
+	
 	
 	return mapFinalResult;
 	
 }
 
+ @SuppressWarnings("null")
+public List<AllInvestorsBalanceSummary> getAllInvestorSCFBalanceSummary( String search, int startIndex, int pageSize, String columnName, String order )throws ParseException{
+	 
+	 StringBuilder sqlQuery = new StringBuilder();
+	 Map<String,Long> mapFinalResult = new HashMap<String,Long>();
+	 List<AllInvestorsBalanceSummary> result= new ArrayList<AllInvestorsBalanceSummary>();
+	 try {
+	     System.out.println("getAllInvestorSCFBalanceSummary Order "+ columnName + " "+order );
+		 
+	     sqlQuery.append("SELECT y.investorName,xy.scfName , abc.netProfit,abc.allotAmount, y.cash_position FROM ");
+	     
+	     sqlQuery.append("( SELECT x.investor_id, x.netProfit, x.allotAmount, x.trade_id,x.investorID,td.company_id FROM ");
+	     sqlQuery.append("( SELECT a.investor_id, a.investor_net_profit AS netProfit, a.allotment_amount AS allotAmount,tf.company_id As investorID, a.trade_id FROM tf_investor tf  JOIN tf_allotments a ON tf.investor_id =  a.investor_id  WHERE a.status ='Invested' ) AS x ");
+	     sqlQuery.append(" JOIN scf_trade td ON td.id = x.trade_id ) AS abc ");
+	     
+	     sqlQuery.append("RIGHT JOIN ");
+	     
+	     sqlQuery.append("( SELECT comp.NAME As investorName ,comp.idcompany,tf.cash_position FROM tf_company comp JOIN tf_investor tf ON tf.company_id = comp.idcompany  ) AS y ");
+	     
+	     sqlQuery.append("ON abc.investorID = y.idcompany ");
+	     
+	     sqlQuery.append(" LEFT JOIN ");
+	     
+	     sqlQuery.append("( SELECT comp.NAME As scfName ,comp.idcompany FROM tf_company comp ) AS xy ");
+	     
+	     sqlQuery.append("ON abc.company_id = xy.idcompany ");
+	     if(search!=null || search.trim().length()>0){
+	    	 sqlQuery.append("  Where ( y.investorName LIKE '"+search+"%' OR xy.scfName LIKE '"+search+"%' ) ");
+	     }
+	     sqlQuery.append(" ORDER BY "+columnName+ " "+ order + " " );
+	     
+	    
+	    Query query= sessionFactory.getCurrentSession().createSQLQuery(sqlQuery.toString()).setFirstResult(startIndex)
+				.setMaxResults(pageSize);
+	    query.setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP);
+	    List graphArray = query.list();
+	   
+	    Long totalNumberOfInvestor = 0L, totalCashAmount = 0L, totalReceivablbesAmount = 0L, totalBalanceSheetAmount = 0L;
+	    totalNumberOfInvestor = (long) graphArray.size();
+		  Gson gson = null; 
+		   if (graphArray.size()> 0) {
+			  
+	            for(int i = 0; i<graphArray.size();i++){
+	            	
+	    		  Object shortFallObj = graphArray.get(i);
+	    		    gson = new Gson();
+	    		   String shortFallValue = gson.toJson(shortFallObj);
+	    		   JSONObject mJSONObject = new JSONObject(shortFallValue);
+	    		   
+	    		  
+	    	    System.out.println("getAllInvestorSCFBalanceSummary**** "+ mJSONObject); 	 
+	    		String investorName = mJSONObject.has("investorName")?mJSONObject.getString("investorName"):"";
+	    		String scfName = mJSONObject.has("scfName")?mJSONObject.getString("scfName"):"";
+	    		Long netProfit = mJSONObject.has("netProfit")?mJSONObject.getLong("netProfit"):0L;
+	    		Long cashPosition = mJSONObject.has("cash_position")?mJSONObject.getLong("cash_position"):0L;
+	    		Long allotAmount = mJSONObject.has("allotAmount")?mJSONObject.getLong("allotAmount"):0L;
+	    		
+	    		Long receivableAmount = allotAmount+ netProfit;
+	    		Long totalBalanceSheet = receivableAmount + cashPosition;
+	    		
+	    		totalCashAmount = totalCashAmount + cashPosition;
+	    		totalReceivablbesAmount = totalReceivablbesAmount + receivableAmount;
+	    		totalBalanceSheetAmount = totalBalanceSheetAmount + totalBalanceSheet;
+	    		
+	           AllInvestorsBalanceSummary balanceSummary = new AllInvestorsBalanceSummary();
+	    		
+	    		balanceSummary.setInvestorName(investorName);
+	    		balanceSummary.setScfName(scfName);
+	    		balanceSummary.setAllocatedAmount(allotAmount);
+	    		balanceSummary.setCashPostion(cashPosition);
+	    		
+	    		balanceSummary.setReceivableAmount(receivableAmount);;
+	    		
+	    		balanceSummary.setTotalBalanceSheet(totalBalanceSheet);
+	    		
+	    		result.add(balanceSummary);
+	    		
+	    		System.out.println("Retrieved Values "+ investorName + " "+netProfit +" "+ cashPosition);
+	    		
+	        }
+	   }
+		  
+		 
+		   
+	 }catch (RuntimeException re) {
+			_log.error("getInvoicesBytradeId failed", re);
+			throw re;
+		}
+   
+	 return result;
+	 
+ }
  
- 
+ public Map<String,Long>getAllInvestorsSCFTotalValues()throws ParseException { 
+	 
+	 StringBuilder sqlQuery = new StringBuilder();
+	 Map<String,Long> mapFinalResult = new HashMap<String,Long>();
+	 List<AllInvestorsBalanceSummary> result= new ArrayList<AllInvestorsBalanceSummary>();
+	 try {
+	   
+		 
+	     sqlQuery.append("SELECT y.investorName,xy.scfName , abc.netProfit,abc.allotAmount, y.cash_position FROM ");
+	     
+	     sqlQuery.append("( SELECT x.investor_id, x.netProfit, x.allotAmount, x.trade_id,x.investorID,td.company_id FROM ");
+	     sqlQuery.append("( SELECT a.investor_id, a.investor_net_profit AS netProfit, a.allotment_amount AS allotAmount,tf.company_id As investorID, a.trade_id FROM tf_investor tf  JOIN tf_allotments a ON tf.investor_id =  a.investor_id  WHERE a.status ='Invested' ) AS x ");
+	     sqlQuery.append(" JOIN scf_trade td ON td.id = x.trade_id ) AS abc ");
+	     
+	     sqlQuery.append("RIGHT JOIN ");
+	     sqlQuery.append("( SELECT comp.NAME As investorName ,comp.idcompany,tf.cash_position FROM tf_company comp JOIN tf_investor tf ON tf.company_id = comp.idcompany  ) AS y ");
+	     
+	     sqlQuery.append("ON abc.investorID = y.idcompany ");
+	     
+	     sqlQuery.append(" LEFT JOIN ");
+	     
+	     sqlQuery.append("( SELECT comp.NAME As scfName ,comp.idcompany FROM tf_company comp ) AS xy ");
+	     
+	     sqlQuery.append("ON abc.company_id = xy.idcompany ");
+	    
+	    
+	    
+	    Query query= sessionFactory.getCurrentSession().createSQLQuery(sqlQuery.toString());
+	    query.setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP);
+	    List graphArray = query.list();
+	   
+	    Long totalNumberOfInvestor = 0L, totalCashAmount = 0L,totalRemaingAmount = 0L, totalReceivablbesAmount = 0L, totalBalanceSheetAmount = 0L,totalAllocatedAmount = 0L;
+	    totalNumberOfInvestor = (long) graphArray.size();
+		  Gson gson = null; 
+		   if (graphArray.size()> 0) {
+			  
+	            for(int i = 0; i<graphArray.size();i++){
+	            	
+	    		  Object shortFallObj = graphArray.get(i);
+	    		    gson = new Gson();
+	    		   String shortFallValue = gson.toJson(shortFallObj);
+	    		   JSONObject mJSONObject = new JSONObject(shortFallValue);
+	    		   
+	    		  
+	    	    System.out.println("getAllInvestorSCFBalanceSummary**** "+ mJSONObject); 	 
+	    		String investorName = mJSONObject.has("investorName")?mJSONObject.getString("investorName"):"";
+	    		String scfName = mJSONObject.has("scfName")?mJSONObject.getString("scfName"):"";
+	    		Long netProfit = mJSONObject.has("netProfit")?mJSONObject.getLong("netProfit"):0L;
+	    		Long cashPosition = mJSONObject.has("cash_position")?mJSONObject.getLong("cash_position"):0L;
+	    		Long allotAmount = mJSONObject.has("allotAmount")?mJSONObject.getLong("allotAmount"):0L;
+	    		
+	    		Long receivableAmount = allotAmount+ netProfit;
+	    		Long totalBalanceSheet = receivableAmount + cashPosition;
+	    		
+	    		totalCashAmount = totalCashAmount + cashPosition;
+	    		totalReceivablbesAmount = totalReceivablbesAmount + receivableAmount;
+	    		totalBalanceSheetAmount = totalBalanceSheetAmount + totalBalanceSheet;
+	    		totalAllocatedAmount = allotAmount + totalAllocatedAmount;
+	          
+	    		
+	    		System.out.println("Retrieved Values "+ investorName + " "+netProfit +" "+ cashPosition);
+	    		
+	        }
+	   }
+		  
+		   mapFinalResult.put("totalNumberOfItems", totalNumberOfInvestor);
+		   mapFinalResult.put("totalCashAmount", totalCashAmount);
+		   mapFinalResult.put("totalReceivabbles", totalReceivablbesAmount);
+		   mapFinalResult.put("totalBalanceSheetAmount", totalBalanceSheetAmount); 
+		   mapFinalResult.put("totalAllocatedAmount", totalAllocatedAmount); 
+		   mapFinalResult.put("totalRemainingAmount", totalRemaingAmount); 
+		   
+	 }catch (RuntimeException re) {
+			_log.error("getInvoicesBytradeId failed", re);
+			throw re;
+		}
+   
+	 return mapFinalResult;
+	 
+ }
+
 
 }

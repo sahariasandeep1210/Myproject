@@ -14,7 +14,7 @@ $(document).ready(function() {
 		var updateURL = $("#defaultURL").val();
 		var id = $(this).attr("id");
 		
-		//alert(updateURL);
+		alert(updateURL);
 		$('#sort_Column').val(columnnName);
 		$('#sort_order').val(order);
 		$('#sortVal_order').val(id);

@@ -182,5 +182,13 @@ public class InvestorServiceImpl implements InvestorService {
     	 return investorDAO.getAllInvestorsBalanceTotalValues() ;
      } ;
 	
-	
+     public List<AllInvestorsBalanceSummary> getAllInvestorSCFBalanceSummary( String search, int startIndex, int pageSize, String columnName, String order )throws ParseException{
+    	 return investorDAO.getAllInvestorSCFBalanceSummary(  search,  startIndex,  pageSize,  columnName,  order) ;
+    	 
+     }
+     
+     public Map<String,Long>getAllInvestorsSCFTotalValues()throws ParseException{
+    	 return investorDAO.getAllInvestorsSCFTotalValues() ;
+    	 
+     }
 }
