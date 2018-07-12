@@ -11,9 +11,7 @@
 <portlet:renderURL var="defaultRenderURL" />
 
 
-<portlet:renderURL var="investorDetailsURL">
-	<portlet:param name="render" value="investorDetails" />
-</portlet:renderURL>
+
 
 <div class="tab-content">
 

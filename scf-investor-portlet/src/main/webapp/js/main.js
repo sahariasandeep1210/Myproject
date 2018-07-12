@@ -14,7 +14,7 @@ $(document).ready(function() {
 		var updateURL = $("#defaultURL").val();
 		var id = $(this).attr("id");
 		
-		alert(updateURL);
+		//alert(updateURL);
 		$('#sort_Column').val(columnnName);
 		$('#sort_order').val(order);
 		$('#sortVal_order').val(id);
@@ -31,7 +31,7 @@ $(document).ready(function() {
 	  $("#errorMsg").hide(); 
 	  $("#errorMsg").removeClass("alert alert-danger");
 	  enableTab();
-	  $('table').tablesorter();
+	
 	  
 	  $("#pageSize").val($("#currPageSize").val());
 		$("#pagSize").val($("#curPageSize").val());
@@ -659,6 +659,7 @@ function enableTab(){
 	
 	if(curentTab=='allinvestorprotfolios'){
 		$("#investorProtfoliosList").addClass("active");
+		  $('table').tablesorter();
 	}else if(curentTab=='investorbalance'){
 		$("#invbalList").addClass("active");
 	}else if (curentTab=='casReport') {
@@ -676,6 +677,7 @@ function enableTab(){
 	else{
 		$("#investorProtfoliosList").addClass("active");
 		$("#invesProtList").addClass("active");
+		 $('table').tablesorter();
 	}
 	 
 }	

@@ -21,8 +21,8 @@
 			<thead>
 				<tr>
 					
-						<th>Investor<br><img id="scfCompanyAsc" column-name="y.investorName" class="sortColumn" src="<%=  themeDisp.getPathThemeImages() %>/up.png" alt="ASC" order="ASC"/>
-					        <img id="scfCompanyDesc" column-name="y.investorName" class="sortColumn" src="<%=  themeDisp.getPathThemeImages() %>/down.png" alt="DESC" order="DESC"/>
+						<th>Investor<br><img id="investorNameAsc" column-name="y.investorName" class="sortColumn" src="<%=themeDisp.getPathThemeImages() %>/up.png" alt="ASC" order="ASC"/>
+					        <img id="investorNameDesc" column-name="y.investorName" class="sortColumn" src="<%=themeDisp.getPathThemeImages() %>/down.png" alt="DESC" order="DESC"/>
 					</th>
 				
 					<th>SCF company<br><img id="invoicesNotTradedAsc" column-name="xy.scfName" class="sortColumn" src="<%= themeDisp.getPathThemeImages() %>/up.png" alt="ASC" order="ASC"/>
@@ -75,8 +75,8 @@
 							    <tr>
 							    	
 								
-								<td class="text-center">${balanceSummary.investorName}</td>
-								<td class="text-center">${balanceSummary.scfName}</td>
+								<td class="text-left">${balanceSummary.investorName}</td>
+								<td class="text-left">${balanceSummary.scfName}</td>
 								<td class="rightalign blue_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${balanceSummary.allocatedAmount}"  pattern="#,##0.00"/></td>
 							
 								<td class="rightalign blue_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${balanceSummary.receivableAmount}"  pattern="#,##0.00"/></td>	

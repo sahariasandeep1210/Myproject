@@ -64,7 +64,7 @@
 						     
 							    <tr>
 								
-								<td class="text-left">${summary.investorName}</td>
+								<td class="text-left "><a href="${investorUrl}&Search=${summary.investorName}" style="text-decoration: underline;">${summary.investorName} </a></td>
 								<td class="rightalign blue_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${summary.cashPostion}"  pattern="#,##0.00"/></td>
 							
 								<td class="rightalign blue_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${summary.receivableAmount}"  pattern="#,##0.00"/></td>	

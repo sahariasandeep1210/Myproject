@@ -156,7 +156,9 @@ public class InvestorController {
 			Map<String, BigDecimal> totalsMap = investorService.getProtfolioTotals();
 			model.put("totalsMap", totalsMap);
 			model.put("investorList", list);
+			model.put("userType", Constants.ADMIN);
 		}
+		
 		return new ModelAndView(Investor_Protfolios, model);
 	}
 
@@ -173,6 +175,10 @@ public class InvestorController {
 		investorsTransactions = investorTransactionService.getInvestorTransactions();
 		model.put("investorsTransactions", investorsTransactions);
 		model.put("investors", investors);
+		if (liferayUtility.getPermissionChecker(request).isOmniadmin() ||
+				request.isUserInRole(Constants.WHITEHALL_ADMIN)) {
+				model.put("userType", Constants.ADMIN);
+			}
 		model.put(ACTIVETAB, Investor_Balance);
 		return new ModelAndView(Investor_Balance, model);
 	}
@@ -183,9 +189,14 @@ public class InvestorController {
 		RenderResponse response)
 		throws Exception {
 		PaginationModel paginationModel = paginationUtil.preparePaginationModel(request);
+		if (liferayUtility.getPermissionChecker(request).isOmniadmin() ||
+				request.isUserInRole(Constants.WHITEHALL_ADMIN)) {
+				model.put("userType", Constants.ADMIN);
+			}
         Long noOfRecords = 0L;
-     
-		model.put("userType", Constants.ADMIN);
+       String investorUrl = liferayUtility.getPortletURL(request, "scf-investor-portlet", "render", "investorSCFSummary", true);// To make hiperlink and redirect to MY Investment portlet.
+		
+		
 		String search = ParamUtil.getString(request, "Search");
 		 
 		String columnName = ParamUtil.getString(request, "sort_Column");
@@ -197,9 +208,13 @@ public class InvestorController {
 		System.out.println("InvestorScreen1 " + paginationModel.getStartIndex() +" "+ paginationModel.getPageSize() +" "+ columnName + " "+order );
 	   List<AllInvestorsBalanceSummary>	balanceSummary = investorService.getAllInvestorsBalanceSummary(search, paginationModel.getStartIndex(), paginationModel.getPageSize() , order, columnName);
 	   Map<String,Long> allInvestorsTotalValues  =  investorService.getAllInvestorsBalanceTotalValues();
-	     
-	   noOfRecords = allInvestorsTotalValues.get("totalNumberOfInvestor");
-		model.put("search", search );
+	   if(search != null && search.trim().length()>0){
+			noOfRecords = (long) balanceSummary.size();
+		}else{
+			 noOfRecords = allInvestorsTotalValues.get("totalNumberOfInvestor");
+		}
+	   
+		model.put("investorUrl", investorUrl );
 		paginationUtil.setPaginationInfo(noOfRecords, paginationModel);
 		System.out.println("paginationsss:" + paginationModel + " "+ balanceSummary);
 		model.put("paginationModel", paginationModel);
@@ -223,8 +238,11 @@ public class InvestorController {
 		throws Exception {
 		PaginationModel paginationModel = paginationUtil.preparePaginationModel(request);
         Long noOfRecords = 0L;
-       
-		model.put("userType", Constants.ADMIN);
+        if (liferayUtility.getPermissionChecker(request).isOmniadmin() ||
+				request.isUserInRole(Constants.WHITEHALL_ADMIN)) {
+				model.put("userType", Constants.ADMIN);
+			}
+    	
 		String search = ParamUtil.getString(request, "Search");
 		 
 		String columnName = ParamUtil.getString(request, "sort_Column");
@@ -239,12 +257,13 @@ public class InvestorController {
 		GenericListModel genericListModel = invoiceService.getSCFInvestorShortFall( search, paginationModel.getStartIndex() , paginationModel.getPageSize(), order, columnName);
 		
 	   Map<String,Long> totalShortFallValues = invoiceService.getSCFInvestorShortFallTotalAmount();
-		/*totalShortFallValues.get("totalInvested");
-		totalShortFallValues.get("totalAvail");
-		totalShortFallValues.get("totalInvoiceNotTraded");
-		totalShortFallValues.get("totalShortFall");
-		totalShortFallValues.get("totalCredit");*/
-		noOfRecords = 	totalShortFallValues.get("totalNoOFSCFCompanies");
+		
+	   if(search != null && search.trim().length()>0){
+			noOfRecords =(long) genericListModel.getList().size();
+		}else{
+			noOfRecords = 	totalShortFallValues.get("totalNoOFSCFCompanies");
+		}
+		
 	
 		
 		
@@ -274,8 +293,11 @@ public class InvestorController {
 		throws Exception {
 		PaginationModel paginationModel = paginationUtil.preparePaginationModel(request);
         Long noOfRecords = 0L;
-       
-		model.put("userType", Constants.ADMIN);
+        if (liferayUtility.getPermissionChecker(request).isOmniadmin() ||
+				request.isUserInRole(Constants.WHITEHALL_ADMIN)) {
+				model.put("userType", Constants.ADMIN);
+			}
+    	
 		String search = ParamUtil.getString(request, "Search");
 		 
 		String columnName = ParamUtil.getString(request, "sort_Column");
@@ -295,7 +317,11 @@ public class InvestorController {
 	 
 		Map<String,Long> investorSCFTotalValues  = investorService.getAllInvestorsSCFTotalValues();
 		   
-		noOfRecords = 	investorSCFTotalValues.get("totalNumberOfItems");
+		if(search != null && search.trim().length()>0){
+			noOfRecords = (long) balanceSummary.size();
+		}else{
+			noOfRecords = 	investorSCFTotalValues.get("totalNumberOfItems");
+		}
 	
 		model.put("totalCashAmount", investorSCFTotalValues.get("totalCashAmount"));
 		model.put("totalReceivabbles", investorSCFTotalValues.get("totalReceivabbles"));
@@ -495,6 +521,10 @@ public class InvestorController {
 		List<InvestorPortfolio> investorPortfolioList = null;
 		String viewName = prepareInvestorProtfolioInformation(request, investorDTO, model, themeDisplay, investorId, investorPortfolioList);
 		prepareDiscountList(model);
+		if (liferayUtility.getPermissionChecker(request).isOmniadmin() ||
+				request.isUserInRole(Constants.WHITEHALL_ADMIN)) {
+				model.put("userType", Constants.ADMIN);
+			}
 
 		return new ModelAndView(viewName, model);
 	}
