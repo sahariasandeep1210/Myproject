@@ -1117,6 +1117,7 @@ public void deleteInvoice(Invoice invoice){
 	    	try {
 		    Criteria criteria = sessionFactory.getCurrentSession()
 			    .createCriteria(Invoice.class);
+		    criteria.add(Restrictions.eq("status", "NEW"));
 		    Long resultCount = (Long) criteria.setProjection(
 			    Projections.rowCount()).uniqueResult();
 		    _log.info("getInvoicesCount Count:: " + resultCount);

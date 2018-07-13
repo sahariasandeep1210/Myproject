@@ -87,6 +87,7 @@ public class DashboardController {
 		    	List<Investor> cashPosition =investorService.getCashPoition();
 		    	model.put("cashPosition",cashPosition);
 		    	model.put("dashboardModel", dashBoardService.setDashBoardInformation(dashModel,userType, companyId));
+		    	model.put("invoicesUrl", liferayUtility.getPortletURL(request, "scf-invoice-portlet", "render", "invoiceNotTraded", true));
 		    	
 		    } else if(request.isUserInRole(Constants.PRIMARY_INVESTOR_ADMIN)){
 		    	String selectedCompanyFromDropDown = ParamUtil.getString(request, "selectedCompany");// Getting the value from drop down

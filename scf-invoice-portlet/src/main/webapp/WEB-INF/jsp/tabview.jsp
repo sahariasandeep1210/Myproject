@@ -24,7 +24,7 @@
 		
 	</c:if>
 	<c:if test="${userType eq 'Admin'}">
-	<li class="tab" id="invoiceNotTradedList"><a href="${invoiceNotTradedURL}" >Invoice Not Traded  </a></li>
+	<li class="tab" id="invoiceNotTradedList"><a href="${invoiceNotTradedURL}" >Invoice View- New  </a></li>
 	</c:if>
 </ul>
 

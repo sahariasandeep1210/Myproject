@@ -20,7 +20,7 @@
 						<a href="${dashboardModel.createInvoiceURL}">CREATE NEW</a>
 					</div>
 					<div class="widget-footer-button">
-						<a href="/group/guest/invoices"> VIEW ALL</a>
+						<a href="${invoicesUrl}"> VIEW ALL</a>
 					</div>
 				</div>
 			</div>
