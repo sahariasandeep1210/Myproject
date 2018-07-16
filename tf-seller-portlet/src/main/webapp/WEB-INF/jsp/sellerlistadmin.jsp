@@ -55,7 +55,7 @@ uploadNewSupTabVisiblity=renderRequest.isUserInRole(Constants.OMNI_ADMIN) || ren
 							            data-toggle="tooltip" title="Reject"></i></span>
 						        </a>
 							</c:if>
-							<c:if test="${(seller.status eq 'Pending')}">
+							<c:if test="${(seller.status eq 'Pending' or  seller.status eq 'Reject')}">
 								<a href="${approveMappingUrl}&sellerCompanyId=${seller.sellerScfCompanyId}">
 									<span style="margin-left: 6px!important" class="add-on seller-add-on-mapping"><i class="icon-ok-sign"
 							            data-toggle="tooltip" title="Approve"></i></span>

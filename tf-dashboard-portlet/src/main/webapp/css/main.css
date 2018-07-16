@@ -2,6 +2,10 @@
 	margin-left: 0 !important;
 }
 
+#p_p_id_tfdashboardportlet_WAR_tfdashboardportlet_ .portlet-borderless-container{
+	background-color:inherit!important;
+}
+
 /* #stackedBarChart {
     height: 400px;
     width: 100%;

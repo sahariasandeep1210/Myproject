@@ -469,7 +469,7 @@ public class CompanyDAOImpl  extends BaseDAOImpl<Company, Long>   implements Com
 	   StringBuilder sb = new StringBuilder();
 	   List<Company> results = new ArrayList<Company>();
 	   sb.append("SELECT idcompany,NAME,regnumber FROM tf_company tf INNER JOIN tf_seller_scfcompany_mapping tfs ON tf.idcompany = tfs.seller_company");
-	   sb.append(" WHERE tf.company_type ='" + companyType+"' AND tf.active_status <> '"+ CompanyStatus.DELETED.getValue()+ "' AND tfs.scf_company ='" + scfCcompany + "'");
+	   sb.append(" WHERE tf.company_type ='" + companyType+"' AND tf.active_status <> '"+ CompanyStatus.DELETED.getValue()+ "'  AND tfs.status = '"+CompanyStatus.APPROVE.getValue()+"' AND tfs.scf_company ='" + scfCcompany + "'");
 	   SQLQuery query = (SQLQuery) sessionFactory.getCurrentSession()
 	     .createSQLQuery(sb.toString());
 	   query.setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP);
@@ -478,10 +478,17 @@ public class CompanyDAOImpl  extends BaseDAOImpl<Company, Long>   implements Com
 	    for (Object companyObj : data) {
 	     Map row = (Map) companyObj;
 	     Company company = new Company();
-	     company.setId(Long.parseLong(row.get("idcompany")
-	       .toString()));
-	     company.setName(row.get("NAME").toString());
-	     company.setRegNumber(row.get("regnumber").toString());
+	     if(row.get("idcompany")!=null){
+	    	  company.setId(Long.parseLong(row.get("idcompany")
+	    		       .toString()));
+	     }
+	     if(row.get("NAME")!=null){
+	    	 company.setName(row.get("NAME").toString());
+	     }
+	     if(row.get("regnumber")!=null){
+	    	 company.setRegNumber(row.get("regnumber").toString());
+	     }
+	    
 	     results.add(company);
 	    }
 	   }
@@ -511,10 +518,17 @@ public class CompanyDAOImpl  extends BaseDAOImpl<Company, Long>   implements Com
 	    for (Object companyObj : data) {
 	     Map row = (Map) companyObj;
 	     Company company = new Company();
-	     company.setId(Long.parseLong(row.get("idcompany")
-	       .toString()));
-	     company.setName(row.get("NAME").toString());
-	     company.setRegNumber(row.get("regnumber").toString());
+	     if(row.get("idcompany")!=null){
+	    	  company.setId(Long.parseLong(row.get("idcompany")
+	    		       .toString()));
+	     }
+	     if(row.get("NAME")!=null){
+	    	 company.setName(row.get("NAME").toString());
+	     }
+	     if(row.get("regnumber")!=null){
+	    	 company.setRegNumber(row.get("regnumber").toString());
+	     }
+	    
 	     results.add(company);
 	    }
 	   }
