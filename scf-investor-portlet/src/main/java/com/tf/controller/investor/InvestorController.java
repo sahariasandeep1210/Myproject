@@ -327,7 +327,7 @@ public class InvestorController {
 		model.put("totalReceivabbles", investorSCFTotalValues.get("totalReceivabbles"));
 		model.put("totalBalanceSheetAmount", investorSCFTotalValues.get("totalBalanceSheetAmount"));
 		model.put("totalAllocatedAmount", investorSCFTotalValues.get("totalAllocatedAmount"));
-		model.put("totalRemaingAmount", investorSCFTotalValues.get("totalRemaingAmount"));
+		model.put("totalRemaingAmount", investorSCFTotalValues.get("totalRemainingAmount"));
 		
 		
 		model.put("balanceSummary", balanceSummary);

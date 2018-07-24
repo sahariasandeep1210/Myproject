@@ -116,6 +116,8 @@ public class CompanyController extends BaseController {
 			model.put("defaultRender", Boolean.TRUE);
 			model.put(ACTIVETAB, "companylist");
 			
+			System.out.println("****AllComppanies****** "+companyList + " "+ companyList.size() );
+			
 			//being used in sorting.
 			model.put("sortCompany_order", sortCompany_order);
 			model.put("sort_Column", columnName);
@@ -144,6 +146,8 @@ public class CompanyController extends BaseController {
 	protected ModelAndView renderCreateCompany(
 			@ModelAttribute("companyModel") Company company, ModelMap model,
 			RenderRequest request, RenderResponse response) throws Exception {
+		
+		 System.out.println("InCompaniesError************* ");
 		long companyID = ParamUtil.getLong(request, "companyID");
 		ThemeDisplay themeDispay = (ThemeDisplay) request
 				.getAttribute(WebKeys.THEME_DISPLAY);
@@ -707,6 +711,7 @@ public class CompanyController extends BaseController {
 	private List<Company> prepareCompanyListFilter(RenderRequest request,
 			List<Company> companyList, ThemeDisplay themeDisplay, ModelMap model,String searchValue, String columnName, String order, int startIndex, int resultSize) {
 	    Company cmpObject = null;
+	    System.out.println(" INCOmapnies********* 2");
 	    String viewName = "createcompany";
 		if (getPermissionChecker(request).isOmniadmin()
 				|| request.isUserInRole(Constants.WHITEHALL_ADMIN)) {
@@ -737,11 +742,11 @@ public class CompanyController extends BaseController {
 			setCompanyDetailsInfo(model, cmpObject);
 			model.put("userType", Constants.PRIMARY_INVESTOR_ADMIN);			
 		} else {
-			_log.info("User is Seller Admin");
-			long companyId = userService.getCompanyIDbyUserID(themeDisplay
-					.getUserId());
-			cmpObject = companyService.findById(companyId);
+			_log.info("User is Seller Admin" );
+			long companyId = userService.getCompanyIDbyUserID(themeDisplay.getUserId());
+			cmpObject = companyService.findById(companyId); 
 			setCompanyDetailsInfo(model, cmpObject);
+			System.out.println("*********Added the project*******  " + companyId + " "+ cmpObject+ " " );
 			model.put("userType", Constants.SELLER_ADMIN);
 		}
 		model.put("viewName", viewName);
@@ -842,6 +847,7 @@ public class CompanyController extends BaseController {
 			noOfRecords=sellerScfMappingService.getSellerScfMappingCount();
 		
 			paginationUtil.setPaginationInfo(noOfRecords, paginationModel);
+			System.out.println(" CompaniesDataInCOmpany "+ companies + " "+ companies.size());
 			model.put("companies", companies);
 			model.put("sellerScfMappings", sellerScfMappings);
 			model.put("currentUser", themeDispay.getRealUser());

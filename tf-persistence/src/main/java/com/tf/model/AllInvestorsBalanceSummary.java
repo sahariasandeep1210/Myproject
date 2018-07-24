@@ -14,6 +14,20 @@ public class AllInvestorsBalanceSummary implements Serializable{
 	private Long receivableAmount;
 	private Long totalBalanceSheet;
 	
+	private Long investorId;
+	public Long getInvestorId() {
+		return investorId;
+	}
+	public void setInvestorId(Long investorId) {
+		this.investorId = investorId;
+	}
+	public Long getScfId() {
+		return scfId;
+	}
+	public void setScfId(Long scfId) {
+		this.scfId = scfId;
+	}
+	private Long scfId;
 	
 	public String getInvestorName() {
 		return investorName;
