@@ -29,27 +29,27 @@
 					                        <img id="invoicesNotTradedDesc" column-name="xy.scfName" class="sortColumn" src="<%= themeDisp.getPathThemeImages() %>/down.png" alt="DESC" order="DESC"/>
 					</th>
 					
-					<th>Allocated<br><img id="invoiceDateAsc" column-name="abc.allotAmount" class="sortColumn" src="<%= themeDisp.getPathThemeImages() %>/up.png" alt="ASC" order="ASC"/>
-					                   <img id="invoiceDateDesc" column-name="abc.allotAmount" class="sortColumn" src="<%= themeDisp.getPathThemeImages() %>/down.png" alt="DESC" order="DESC"/>
+					<th>Allocated<br><img id="invoiceDateAsc" column-name="pqr.my_credit_line" class="sortColumn" src="<%= themeDisp.getPathThemeImages() %>/up.png" alt="ASC" order="ASC"/>
+					                   <img id="invoiceDateDesc" column-name="pqr.my_credit_line" class="sortColumn" src="<%= themeDisp.getPathThemeImages() %>/down.png" alt="DESC" order="DESC"/>
 					</th>
 				
 					
-					<th>Receivable<br><img id="paymentDateAsc" column-name="abc.allotAmount" class="sortColumn" src="<%= themeDisp.getPathThemeImages() %>/up.png" alt="ASC" order="ASC"/>
-					                   <img id="paymentDateDesc" column-name="abc.allotAmount" class="sortColumn" src="<%= themeDisp.getPathThemeImages() %>/down.png" alt="DESC" order="DESC"/>
+					<th>Receivable<br><img id="paymentDateAsc" column-name="pqr.my_credit_line" class="sortColumn" src="<%= themeDisp.getPathThemeImages() %>/up.png" alt="ASC" order="ASC"/>
+					                   <img id="paymentDateDesc" column-name="pqr.my_credit_line" class="sortColumn" src="<%= themeDisp.getPathThemeImages() %>/down.png" alt="DESC" order="DESC"/>
 					</th>
 					
-					<th>Remaining<br><img id="invoiceAmoutAsc" column-name="abc.netProfit" class="sortColumn" src="<%= themeDisp.getPathThemeImages() %>/up.png" alt="ASC" order="ASC"/>
-					              <img id="invoiceAmoutDesc" column-name="abc.netProfit" class="sortColumn" src="<%= themeDisp.getPathThemeImages() %>/down.png" alt="DESC" order="DESC"/>
+					<th>Remaining<br><img id="invoiceAmoutAsc" column-name="pqr.my_credit_line" class="sortColumn" src="<%= themeDisp.getPathThemeImages() %>/up.png" alt="ASC" order="ASC"/>
+					              <img id="invoiceAmoutDesc" column-name="pqr.my_credit_line" class="sortColumn" src="<%= themeDisp.getPathThemeImages() %>/down.png" alt="DESC" order="DESC"/>
 					</th>
 					
 					
-					<th>Cash<br><img id="statusAsc" column-name="y.cash_position" class="sortColumn" src="<%= themeDisp.getPathThemeImages() %>/up.png" alt="ASC" order="ASC"/>
-					          <img id="statusDesc" column-name="y.cash_position" class="sortColumn" src="<%= themeDisp.getPathThemeImages() %>/down.png" alt="DESC" order="DESC"/>
+					<th>Cash<br><img id="statusAsc" column-name="pqr.cash_position" class="sortColumn" src="<%= themeDisp.getPathThemeImages() %>/up.png" alt="ASC" order="ASC"/>
+					          <img id="statusDesc" column-name="pqr.cash_position" class="sortColumn" src="<%= themeDisp.getPathThemeImages() %>/down.png" alt="DESC" order="DESC"/>
 					</th>
-					<th>Total Balance sheet<br><img id="statusAsc" column-name="y.cash_position" class="sortColumn" src="<%= themeDisp.getPathThemeImages() %>/up.png" alt="ASC" order="ASC"/>
-					          <img id="statusDesc" column-name="y.cash_position" class="sortColumn" src="<%= themeDisp.getPathThemeImages() %>/down.png" alt="DESC" order="DESC"/>
+					<th>Total Balance sheet<br><img id="statusAsc" column-name="pqr.cash_position" class="sortColumn" src="<%= themeDisp.getPathThemeImages() %>/up.png" alt="ASC" order="ASC"/>
+					          <img id="statusDesc" column-name="pqr.cash_position" class="sortColumn" src="<%= themeDisp.getPathThemeImages() %>/down.png" alt="DESC" order="DESC"/>
 					</th>
-					<th>Total Balance sheet<br><img id="statusAsc" column-name="y.cash_position" class="sortColumn" src="<%= themeDisp.getPathThemeImages() %>/up.png" alt="ASC" order="ASC"/>
+					<th>Cash Less Committed<br><img id="statusAsc" column-name="y.cash_position" class="sortColumn" src="<%= themeDisp.getPathThemeImages() %>/up.png" alt="ASC" order="ASC"/>
 					          <img id="statusDesc" column-name="y.cash_position" class="sortColumn" src="<%= themeDisp.getPathThemeImages() %>/down.png" alt="DESC" order="DESC"/>
 					</th>
 				</tr>
@@ -65,7 +65,7 @@
 									<td style="background-color:#189a80;color:white" class="rightalign blue_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalCashAmount}"  pattern="#,##0.00"/></td>
 									
 									<td style="background-color:#189a80;color:white" class="rightalign blue_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalBalanceSheetAmount}"  pattern="#,##0.00"/></td>
-									<td style="background-color:#189a80;color:white" class="rightalign blue_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalBalanceSheetAmount}"  pattern="#,##0.00"/></td>
+									<td style="background-color:#189a80;color:white" class="rightalign blue_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value=""  pattern="#,##0.00"/></td>
 									
 									</tr>
 				<c:choose>
@@ -79,13 +79,13 @@
 								<td class="text-left">${balanceSummary.scfName}</td>
 								<td class="rightalign blue_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${balanceSummary.allocatedAmount}"  pattern="#,##0.00"/></td>
 							
-								<td class="rightalign blue_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${balanceSummary.receivableAmount}"  pattern="#,##0.00"/></td>	
+								<td class="rightalign blue_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${balanceSummary.receivableAmount == null ? 0:balanceSummary.receivableAmount}"  pattern="#,##0.00"/></td>	
 										
-								<td class="rightalign blue_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${balanceSummary.remainingAmount}"  pattern="#,##0.00"/></td>
+								<td class="rightalign blue_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${balanceSummary.receivableAmount == null ?balanceSummary.allocatedAmount:balanceSummary.remainingAmount}"  pattern="#,##0.00"/></td>
 							   <td class="rightalign blue_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${balanceSummary.cashPostion}"  pattern="#,##0.00"/></td>
 							
-	                        	<td class="rightalign red_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${balanceSummary.totalBalanceSheet}"  pattern="#,##0.00"/></td>
-								<td class="rightalign red_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${balanceSummary.totalBalanceSheet}"  pattern="#,##0.00"/></td>
+	                        	<td class="rightalign red_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${balanceSummary.receivableAmount== null ?balanceSummary.allocatedAmount:balanceSummary.totalBalanceSheet}"  pattern="#,##0.00"/></td>
+								<td class="rightalign red_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value=""  pattern="#,##0.00"/></td>
 								
 													
 							</tr>

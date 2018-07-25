@@ -33,7 +33,7 @@
 
 			<div class="span3 spanSm6 mtSm10 mtXs10">
 		  				<div class="actionContainer noBorder text-left">
-						<input type="button" value="Request Membership" id="addSeller"			class="btnBgGreenSm" />
+						<input type="button" value="Request Membership" id="addSeller"	class="btnBgGreenSm" />
 					</div>
 		  		</div>				
 				</div>
