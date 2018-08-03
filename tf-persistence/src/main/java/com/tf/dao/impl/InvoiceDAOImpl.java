@@ -863,7 +863,7 @@ public void deleteInvoice(Invoice invoice){
 					sqlQuery.append(" AND scf.finance_date <= '"+toDate+"'");
 				}
 			}
-			sqlQuery.append(" ORDER BY "+columnName+ " "+order);
+			sqlQuery.append(" ORDER BY  "+columnName+ " "+sqlQuery);
 			List<Invoice> invoicelist = new ArrayList<Invoice>();
 			
 			SQLQuery query = (SQLQuery) sessionFactory.getCurrentSession().createSQLQuery(sqlQuery.toString()).setFirstResult(startIndex)

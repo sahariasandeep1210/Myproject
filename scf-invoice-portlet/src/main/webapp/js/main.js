@@ -54,12 +54,15 @@ $(document).ready(function() {
 	 });  
 	 
 	 $("#invoiceUpdate").click(function (){
+		 	alert("Are you sure");
 			var updateURL=$("#updateInvoiceURL").val();
 			document.forms["createInvoiceForm"].action = updateURL;
 			document.forms["createInvoiceForm"].submit();
 	 });
 	 
 	 $("#invoiceDelete").click(function (){
+		 	
+		 	alert("Are you sure");
 			var updateURL=$("#deleteInvoiceURL").val();
 			document.forms["createInvoiceForm"].action = updateURL;
 			document.forms["createInvoiceForm"].submit();

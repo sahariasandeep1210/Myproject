@@ -12,8 +12,8 @@
 			.getAttribute(WebKeys.THEME_DISPLAY);
 
 %>
-	<div class="customTableContainer">
-		<table class="table table-hover tablesorter table-bordered"
+	<div class="customTableContainer ">
+		<table class="table table-hover tablesorter table-bordered table_invoice"
 			id="invoiceListTable">
 			<thead>
 				<tr>
@@ -32,9 +32,13 @@
 					              <img id="invoiceAmoutDesc" column-name="scf.invoice_amout" class="sortColumn" src="<%= themeDisp.getPathThemeImages() %>/down.png" alt="desc" order="desc"/>
 					</th>
 					
+					
+					
 					<th>Duration<br><img id="DurationAmoutAsc" column-name="scf.duration" class="sortColumn" src="<%= themeDisp.getPathThemeImages() %>/up.png" alt="asc" order="asc"/>
 					                 <img id="DurationAmoutDesc" column-name="scf.duration" class="sortColumn" src="<%= themeDisp.getPathThemeImages() %>/down.png" alt="desc" order="desc"/>
 					</th>
+					
+					
 					
 					<c:if test="${userType =='SCF Company Admin'}">
 					<th>Supplier Company<br><img id="scfCompanyAsc" column-name="scf.scf_company" class="sortColumn" src="<%= themeDisp.getPathThemeImages() %>/up.png" alt="asc" order="asc"/>
@@ -50,6 +54,11 @@
 					<th>Status<br><img id="statusAsc" column-name="scf.status" class="sortColumn" src="<%= themeDisp.getPathThemeImages() %>/up.png" alt="asc" order="asc"/>
 					          <img id="statusDesc" column-name="scf.status" class="sortColumn" src="<%= themeDisp.getPathThemeImages() %>/down.png" alt="desc" order="desc"/>
 					</th>
+				<c:if test="${userType =='Admin'}">	
+				<th>InvoiceDate<br><img id="invoiceDateAsc" column-name="scf.invoice_Date" class="sortColumn" src="<%= themeDisp.getPathThemeImages() %>/up.png" alt="asc" order="asc"/>
+					                   <img id="invoiceDateDesc" column-name="scf.invoice_Date" class="sortColumn" src="<%= themeDisp.getPathThemeImages() %>/down.png" alt="desc" order="desc"/>
+					</th>
+				</c:if>
 				</tr>
 			</thead>
 			<tbody>
@@ -67,6 +76,7 @@
 											<td style="background-color:#189a80;color:white""></td>
 											<td style="background-color:#189a80;color:white""></td>
 											<td style="background-color:#189a80;color:white""></td>
+<!-- 											<td style="background-color:#189a80;color:white""></td> -->
 								  </tr>
 						</c:if>
 						
@@ -107,7 +117,8 @@
 										onclick="window.location.href='${invoiceURL}&invoiceID=${invoice.id}'">${invoice.invoiceNumber}</a></span></td>
 								<td class="text-center"><fmt:formatDate pattern="dd-MM-yyyy"
 										value="${invoice.payment_date}" /></td>
-								<td class="rightalign blue_bold"><fmt:formatNumber type="number" maxFractionDigits="3" value="${invoice.invoiceAmount}"  pattern="#,##0.00"/></td>
+								<td class="rightalign blue_bold text-center"><fmt:formatNumber type="number" maxFractionDigits="3" value="${invoice.invoiceAmount}"  pattern="#,##0.00"/></td>
+								
 								<td class="text-center">${invoice.duration}</td>
 								
 								<c:if test="${userType !='SCF Company Admin'}">
@@ -133,6 +144,14 @@
 								 (<a  href ="${tradeURL}&tradeID=${invoice.scfTrade.id}">${invoice.scfTrade.scfId} </a>)
 								</c:if>
 								</td>
+								
+								<c:if test="${userType =='Admin'}">
+								
+								<td class="text-center"><fmt:formatDate pattern="dd-MM-yyyy"
+										value="${invoice.invoiceDate}" /></td>
+								</c:if>
+							
+								
 							</tr>
 						</c:forEach>
 					</c:when>					
