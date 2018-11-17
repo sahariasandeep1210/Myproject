@@ -296,7 +296,7 @@ public class InvoiceController {
 			e.getMessage() );
 	}
 	return new ModelAndView("invoiceNotTraded", model);
-
+      _log.info("MOdel");
 	}
 	
 	 public static String dateFormater(String dateFromJSON, String expectedFormat, String oldFormat) {
